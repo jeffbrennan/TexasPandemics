@@ -1,0 +1,328 @@
+---
+title: "COVID VIZ"
+author: "Jeffrey Brennan"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+knitr::opts_chunk$set(warning = F)
+
+library(ggplot2)
+library(ggpubr)
+library(ggrepel)
+library(readr)
+library(scales)
+```
+
+
+```{r}
+confirmed = read.csv(url('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv'))
+
+deaths = read.csv(url('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv'))
+```
+
+```{r}
+confirmed$Type = 'confirmed'
+deaths$Type = 'deaths'
+
+texas_df = subset(deaths, Province_State == 'Texas')
+
+big_city_ids = texas_df[order(texas_df$Population, decreasing = T)[1:5], ][, 'UID']
+big_city_pops = texas_df[texas_df$UID %in% big_city_ids, 'Population']
+
+# combine dfs
+big_city_df = rbind(confirmed[confirmed$UID %in% big_city_ids, ],
+                    deaths[deaths$UID %in% big_city_ids, -12])
+
+big_city_df$Population = rep(big_city_pops, times = 2)
+```
+
+
+
+```{r}
+# Convert to long format
+
+# drop unused cols & fix names
+big_city_df = big_city_df[, -c(2:10)]
+colnames(big_city_df)[2] = 'Location'
+
+big_city_long = reshape::melt(big_city_df, id = c('UID', 'Location', 'Type', 'Population'))
+```
+
+
+```{r}
+# Clean long format data
+
+colnames(big_city_long) = c('ID', 'Location', 'Type', 'Population', 'Date', 'Value')
+
+# fix types
+big_city_long$Type = as.factor(big_city_long$Type)
+big_city_long$Location = droplevels(big_city_long$Location)
+
+# fix dates
+big_city_long$Date = gsub('X', '', big_city_long$Date)
+big_city_long$Date = as.Date(as.character(big_city_long$Date), format = '%m.%d.%y')
+```
+
+
+```{r}
+# Convert days to normalized "Since 1st case.."
+
+
+sorted_df = big_city_long[order(big_city_long$Location), ] 
+
+test = subset(sorted_df, Value != 0)
+
+day_ones = test[!duplicated(test[c('Location', 'Type')]),]
+date_delay = as.integer(day_ones$Date - sorted_df$Date[1])
+
+sorted_df$Day = (sorted_df$Date - sorted_df$Date[1]) + 1
+sorted_df$Day_norm = 0
+
+
+# TODO: try to figure out tidy solution
+for (i in seq(1:5)) {
+  sorted_df$Day_norm = 
+    with(sorted_df, 
+          ifelse(Location == levels(Location)[i] & Type == levels(Type)[1], Day - date_delay[2 * i - 1],
+                 ifelse(Location == levels(Location)[i] & Type == levels(Type)[2], Day - date_delay[2 * i], Day_norm)))
+}
+
+
+normed_df = subset(sorted_df, Day_norm > 0)
+```
+
+
+```{r}
+# Split 
+
+
+# Rename Locations for plotting
+levels(normed_df$Location) = c('San Antonio', 'Dallas', 'Houston', 'Fort Worth', 'Austin')
+
+normed_cases = subset(normed_df, Type == 'confirmed')
+normed_deaths = subset(normed_df, Type == 'deaths')
+```
+
+
+
+```{r}
+# Relevel locations for plotting
+newest_cases = subset(normed_cases, Date == max(Date))
+newest_deaths = subset(normed_deaths, Date == max(Date))
+
+case_location_order = as.character(newest_cases[order(newest_cases$Value, decreasing = T), 'Location'])
+death_location_order = as.character(newest_deaths[order(newest_deaths$Value, decreasing = T), 'Location'])
+
+normed_cases$Location = factor(normed_cases$Location, levels = death_location_order)
+normed_deaths$Location = factor(normed_deaths$Location, levels = death_location_order)
+```
+
+
+# Cases
+
+## Daily cases
+
+### Log transformed
+
+```{r, warning = FALSE}
+ggplot(normed_cases,
+       aes(x = Day_norm, y = Value, color = Location, group = Location)) +
+  geom_point(size = 2) +
+  geom_line(size = 1.5) +
+  geom_text_repel(aes(label = ifelse(Day == max(Day), as.character(Location), NA)), size = 3.5,
+                   nudge_x = 10, fontface = 'bold', min.segment.length = 0, segment.size=0.5, label.padding = 2) +
+  scale_y_log10() +
+  expand_limits(x = (max(normed_cases$Day_norm) * 1.1)) +
+  labs(title = 'Daily Cases of COVID-19 in 5 Major Texas Cities',
+       subtitle = '',
+       y = 'log(Daily Cases)',
+       x = '# Days since First Recorded Case') + 
+  theme_pubr() + 
+  theme(legend.position = 'none')
+```
+
+### Untransformed
+
+```{r, warning = FALSE}
+ggplot(normed_cases,
+       aes(x = Day_norm, y = Value, color = Location, group = Location)) +
+  geom_point(size = 2) +
+  geom_line(size = 1.5) +
+  geom_text_repel(aes(label = ifelse(Day == max(Day), paste0(as.character(Location), '\n', Value), NA)), size = 3.5,
+                   nudge_x = 6, fontface = 'bold', min.segment.length = 0, segment.size=0.5, label.padding = 2) +
+  expand_limits(x = (max(normed_cases$Day_norm) * 1.1)) +
+  labs(title = 'Daily Cases of COVID-19 in 5 Major Texas Cities',
+       subtitle = '',
+       y = 'Daily Cases',
+       x = '# Days since First Recorded Case') + 
+  theme_pubr() + 
+  theme(legend.position = 'none')
+```
+
+
+## Last 14 Days
+
+```{r}
+ggplot(subset(normed_cases, Date > (Sys.Date() - 14)),
+       aes(x = Day_norm, y = Value, color = Location, group = Location)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  geom_text_repel(aes(label = ifelse(Day == max(Day), paste0(Location, '\n', Value), NA)), size = 3.5,
+                 nudge_x = 1, fontface = 'bold', min.segment.length = 5, segment.size=0.5, label.padding = 2) +
+  expand_limits(x = (max(normed_cases$Day_norm * 1.02))) +
+  labs(title = 'Daily Cases of COVID-19 over Last 2 Weeks',
+       subtitle = Sys.Date(),
+       y = 'Daily Cases',
+       x = '# Days since First Recorded Case') + 
+  theme_pubr() + 
+  theme(legend.position = 'none')
+
+ggsave('viz/case_summary.png', width = 8, height = 6, dpi = 600)
+```
+
+
+## Cumulative cases
+
+## Log transformed
+
+```{r, warning = FALSE}
+ggplot(normed_cases %>% group_by(Location) %>% mutate(cv = cumsum(Value)),
+       aes(x = Day_norm, y = cv, color = Location, group = Location)) +
+  geom_point(size = 2) +
+  geom_line(size = 1.5) +
+  scale_y_log10() +
+  geom_text_repel(aes(label = ifelse(Day == max(Day), as.character(Location), NA)), size = 3.5,
+                   nudge_x = 6, fontface = 'bold', min.segment.length = 0, segment.size=0.5, label.padding = 2) +
+  expand_limits(x = (max(normed_cases$Day_norm) * 1.1)) +
+  labs(title = 'Cumulative Cases of COVID-19 in 5 Major Texas Cities',
+       subtitle = '',
+       y = 'Cumulative Cases',
+       x = '# Days since First Recorded Case') + 
+  theme_pubr() + 
+  theme(legend.position = 'none')
+```
+
+
+## Untransformed
+
+```{r, warning = FALSE}
+ggplot(normed_cases %>% group_by(Location) %>% mutate(cv = cumsum(Value)),
+       aes(x = Day_norm, y = cv, color = Location, group = Location)) +
+  geom_point(size = 2) +
+  geom_line(size = 1.5) +
+  geom_text_repel(aes(label = ifelse(Day == max(Day), paste0(as.character(Location), '\n', cv), NA)), size = 3.5,
+                   nudge_x = 6, fontface = 'bold', min.segment.length = 0, segment.size=0.5, label.padding = 2) +
+  expand_limits(x = (max(normed_cases$Day_norm) * 1.1)) +
+  labs(title = 'Cumulative Cases of COVID-19 in 5 Major Texas Cities',
+       subtitle = '',
+       y = 'Cumulative Cases',
+       x = '# Days since First Recorded Case') + 
+  theme_pubr() + 
+  theme(legend.position = 'none')
+```
+
+# Deaths
+
+
+## Daily Deaths
+
+### Log transformed
+
+```{r, warning = FALSE}
+ggplot(normed_deaths,
+       aes(x = Day_norm, y = Value, color = Location, group = Location)) +
+  geom_point(size = 2) +
+  geom_line(size = 1.5) +
+  geom_text_repel(aes(label = ifelse(Day == max(Day), as.character(Location), NA)), size = 3.5,
+                   nudge_x = 10, fontface = 'bold', min.segment.length = 0, segment.size=0.5, label.padding = 2) +
+  scale_y_log10() +
+  expand_limits(x = (max(normed_deaths$Day_norm) * 1.1)) +
+  labs(title = 'Daily Deaths of COVID-19 in 5 Major Texas Cities',
+       subtitle = '',
+       y = 'log(Daily Deaths)',
+       x = '# Days since First Recorded Death') + 
+  theme_pubr() + 
+  theme(legend.position = 'none')
+```
+
+### Untransformed
+
+```{r, warning = FALSE}
+ggplot(normed_deaths,
+       aes(x = Day_norm, y = Value, color = Location, group = Location)) +
+  geom_point(size = 2) +
+  geom_line(size = 1.5) +
+  geom_text_repel(aes(label = ifelse(Day == max(Day), paste0(as.character(Location), '\n', Value), NA)),
+                  size = 3.5, nudge_x = 2, nudge_y = 10, fontface = 'bold', min.segment.length = 0,
+                  segment.size=0.5, label.padding = 2) +
+  expand_limits(x = (max(normed_deaths$Day_norm) * 1.1)) +
+  labs(title = 'Daily Deaths of COVID-19 in 5 Major Texas Cities',
+       subtitle = '',
+       y = 'Daily Deaths',
+       x = '# Days since First Recorded Death') + 
+  theme_pubr() + 
+  theme(legend.position = 'none')
+```
+
+
+## Last 14 Days
+
+```{r}
+ggplot(subset(normed_deaths, Date > (Sys.Date() - 14)),
+       aes(x = Day_norm, y = Value, color = Location, group = Location)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  geom_text_repel(aes(label = ifelse(Day == max(Day), paste0(Location, '\n', Value), NA)), size = 3.5,
+                 nudge_x = 0.5, nudge_y = 5, fontface = 'bold', min.segment.length = 5, segment.size=0,
+                 label.padding = 0) +
+  expand_limits(x = (max(normed_deaths$Day_norm * 1.02))) +
+  labs(title = 'Daily Deaths of COVID-19 over Last 2 Weeks',
+       subtitle = Sys.Date(),
+       y = 'Daily Deaths',
+       x = '# Days since First Recorded Death') + 
+  theme_pubr() + 
+  theme(legend.position = 'none')
+
+ggsave('viz/death_summary.png', width = 8, height = 6, dpi = 600)
+```
+
+
+## Cumulative Deaths
+
+## Log transformed
+
+```{r, warning = FALSE}
+ggplot(normed_deaths %>% group_by(Location) %>% mutate(cv = cumsum(Value)),
+       aes(x = Day_norm, y = cv, color = Location, group = Location)) +
+  geom_point(size = 2) +
+  geom_line(size = 1.5) +
+  scale_y_log10() +
+  expand_limits(x = (max(normed_deaths$Day_norm) * 1.1)) +
+  labs(title = 'Cumulative Deaths of COVID-19 in 5 Major Texas Cities',
+       subtitle = '',
+       y = 'Cumulative Deaths',
+       x = '# Days since First Recorded Death') + 
+  theme_pubr() + 
+  theme(legend.position = 'right')
+```
+
+
+## Untransformed
+
+```{r, warning = FALSE}
+ggplot(normed_deaths %>% group_by(Location) %>% mutate(cv = cumsum(Value)),
+       aes(x = Day_norm, y = cv, color = Location, group = Location)) +
+  geom_point(size = 2) +
+  geom_line(size = 1.5) +
+  geom_text_repel(aes(label = ifelse(Day == max(Day), paste0(as.character(Location), '\n', cv), NA)), size = 3.5,
+                   nudge_x = 6, fontface = 'bold', min.segment.length = 0, segment.size=0.5, label.padding = 2) +
+  expand_limits(x = (max(normed_deaths$Day_norm) * 1.1)) +
+  labs(title = 'Cumulative Deaths of COVID-19 in 5 Major Texas Cities',
+       subtitle = '',
+       y = 'Cumulative Deaths',
+       x = '# Days since First Recorded Death') + 
+  theme_pubr() + 
+  theme(legend.position = 'none')
+```
