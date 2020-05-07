@@ -2,7 +2,7 @@
 
 Counts of cases and deaths for 5 major Texas cities, updated daily. 
 
-County-level data sourced from [John's Hopkins](https://github.com/CSSEGISandData/COVID-19)
+County-level data sourced from [Johns Hopkins](https://github.com/CSSEGISandData/COVID-19)
 
 ## Cases
 ![Cases](viz/case_summary.png)
