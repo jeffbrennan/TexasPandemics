@@ -173,7 +173,7 @@ ggplot(subset(normed_cases, Date > (Sys.Date() - 14)),
                  nudge_x = 1, fontface = 'bold', min.segment.length = 5, segment.size=0.5, label.padding = 2) +
   expand_limits(x = (max(normed_cases$Day_norm * 1.02))) +
   labs(title = 'Daily Cases of COVID-19 over Last 2 Weeks',
-       subtitle = Sys.Date(),
+       subtitle = Sys.time(),
        y = 'Daily Cases',
        x = '# Days since First Recorded Case') + 
   theme_pubr() + 
@@ -239,7 +239,7 @@ ggplot(normed_deaths,
                    nudge_x = 10, fontface = 'bold', min.segment.length = 0, segment.size=0.5, label.padding = 2) +
   scale_y_log10() +
   expand_limits(x = (max(normed_deaths$Day_norm) * 1.1)) +
-  labs(title = 'Daily Deaths of COVID-19 in 5 Major Texas Cities',
+  labs(title = 'Daily Deaths from COVID-19 in 5 Major Texas Cities',
        subtitle = '',
        y = 'log(Daily Deaths)',
        x = '# Days since First Recorded Death') + 
@@ -258,7 +258,7 @@ ggplot(normed_deaths,
                   size = 3.5, nudge_x = 2, nudge_y = 10, fontface = 'bold', min.segment.length = 0,
                   segment.size=0.5, label.padding = 2) +
   expand_limits(x = (max(normed_deaths$Day_norm) * 1.1)) +
-  labs(title = 'Daily Deaths of COVID-19 in 5 Major Texas Cities',
+  labs(title = 'Daily Deaths from COVID-19 in 5 Major Texas Cities',
        subtitle = '',
        y = 'Daily Deaths',
        x = '# Days since First Recorded Death') + 
@@ -278,8 +278,8 @@ ggplot(subset(normed_deaths, Date > (Sys.Date() - 14)),
                  nudge_x = 0.5, nudge_y = 5, fontface = 'bold', min.segment.length = 5, segment.size=0,
                  label.padding = 0) +
   expand_limits(x = (max(normed_deaths$Day_norm * 1.02))) +
-  labs(title = 'Daily Deaths of COVID-19 over Last 2 Weeks',
-       subtitle = Sys.Date(),
+  labs(title = 'Daily Deaths from COVID-19 over Last 2 Weeks',
+       subtitle = Sys.time(),
        y = 'Daily Deaths',
        x = '# Days since First Recorded Death') + 
   theme_pubr() + 
@@ -300,7 +300,7 @@ ggplot(normed_deaths %>% group_by(Location) %>% mutate(cv = cumsum(Value)),
   geom_line(size = 1.5) +
   scale_y_log10() +
   expand_limits(x = (max(normed_deaths$Day_norm) * 1.1)) +
-  labs(title = 'Cumulative Deaths of COVID-19 in 5 Major Texas Cities',
+  labs(title = 'Cumulative Deaths from COVID-19 in 5 Major Texas Cities',
        subtitle = '',
        y = 'Cumulative Deaths',
        x = '# Days since First Recorded Death') + 
@@ -319,7 +319,7 @@ ggplot(normed_deaths %>% group_by(Location) %>% mutate(cv = cumsum(Value)),
   geom_text_repel(aes(label = ifelse(Day == max(Day), paste0(as.character(Location), '\n', cv), NA)), size = 3.5,
                    nudge_x = 6, fontface = 'bold', min.segment.length = 0, segment.size=0.5, label.padding = 2) +
   expand_limits(x = (max(normed_deaths$Day_norm) * 1.1)) +
-  labs(title = 'Cumulative Deaths of COVID-19 in 5 Major Texas Cities',
+  labs(title = 'Cumulative Deaths from COVID-19 in 5 Major Texas Cities',
        subtitle = '',
        y = 'Cumulative Deaths',
        x = '# Days since First Recorded Death') + 

@@ -14,6 +14,6 @@ County-level data sourced from [John's Hopkins](https://github.com/CSSEGISandDat
 
 TODO: 
 
-- automate uploads
-- animations
-- Shiny app for different counties
+- [x] automate uploads
+- [ ] animations
+- [ ] Shiny app for different counties
