@@ -1,6 +1,6 @@
 # COVID-19 Visualizations
 
-Counts of cases and deaths for 5 major Texas cities, updated daily. 
+Counts of cases and deaths for 5 major Texas cities, updated daily at 00:05.
 
 County-level data sourced from [Johns Hopkins](https://github.com/CSSEGISandData/COVID-19)
 
