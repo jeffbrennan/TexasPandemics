@@ -2,6 +2,7 @@
 
 
 Previously: Counts of cases and deaths for 5 major Texas cities, updated daily at 00:05.
+
 Now: Scraping of various COVID sources to be used in UTHealth COVID dashboard focused on statistical trends
 
 ---
