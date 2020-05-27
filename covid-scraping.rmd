@@ -310,9 +310,9 @@ CLAFLIN_capacity_60 = gsheet::gsheet2tbl('https://docs.google.com/spreadsheets/d
 Cleaning
 
 ```{r}
-CLAFLIN_capacity_20$Capacity = '20'
-CLAFLIN_capacity_40$Capacity = '40'
-CLAFLIN_capacity_60$Capacity = '60'
+CLAFLIN_capacity_20$Infection_Rate = '20'
+CLAFLIN_capacity_40$Infection_Rate = '40'
+CLAFLIN_capacity_60$Infection_Rate = '60'
 
 CLAFLIN_combined = rbind(CLAFLIN_capacity_20, CLAFLIN_capacity_40, CLAFLIN_capacity_60)
 CLAFLIN_texas = subset(CLAFLIN_combined, State == 'TX')
@@ -338,7 +338,7 @@ colnames(CLAFLIN_texas) =
     'ICU_Bed_Need_6mo', 'ICU_Bed_Need_PCT_6mo', 'ICU_Bed_Potential_Need_PCT_6mo', 'ICU_Bed_Total_Need_PCT_6mo',
     'ICU_Bed_Need_12mo', 'ICU_Bed_Need_PCT_12mo', 'ICU_Bed_Potential_Need_PCT_12mo', 'ICU_Bed_Total_Need_PCT_12mo',
     'ICU_Bed_Need_12mo', 'ICU_Bed_Need_PCT_12mo', 'ICU_Bed_Potential_Need_PCT_12mo', 'ICU_Bed_Total_Need_PCT_12mo',
-    'Capacity')
+    'Infection_Rate')
 ```
 
 ## DSHS (time series)
