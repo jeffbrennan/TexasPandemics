@@ -1,19 +1,42 @@
-# COVID-19 Visualizations
+# COVID-19 Scraping
 
-Counts of cases and deaths for 5 major Texas cities, updated daily at 00:05.
 
-County-level data sourced from [Johns Hopkins](https://github.com/CSSEGISandData/COVID-19)
-
-## Cases
-![Cases](viz/case_summary.png)
-
-## Deaths
-![Cases](viz/death_summary.png)
+Previously: Counts of cases and deaths for 5 major Texas cities, updated daily at 00:05.
+Now: Scraping of various COVID sources to be used in UTHealth COVID dashboard focused on statistical trends
 
 ---
 
-TODO: 
+## combined-datasets
+### county_counts.csv: County-level data
 
-- [x] automate uploads
-- [ ] animations
-- [ ] Shiny app for different counties
+- [Johns Hopkins University](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series)
+- [New York Times](https://github.com/nytimes/covid-19-data)
+- [Texas Department of Health and Human Services (DSHS)](https://www.dshs.state.tx.us/coronavirus)
+- [Google mobility data](https://www.google.com/covid19/mobility/)
+
+### state_hosp_tests.csv: State-level data
+
+- [Covidtracking.com](https://covidtracking.com/data)
+- [IHME](http://www.healthdata.org/covid/data-downloads)
+- [DSHS](https://www.dshs.state.tx.us/coronavirus)
+
+### demographics.csv
+
+DSHS-sourced data containing 
+
+- Race
+- Gender
+- Age
+
+for both cases and fatality investigations.
+
+----
+
+## original-sources
+
+Texas subsets of unmodified datasets
+
+---
+
+## Visualizations 
+forthcoming...
