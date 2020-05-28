@@ -344,7 +344,7 @@ colnames(CLAFLIN_texas) =
 ## DSHS (time series)
 
 ```{r}
-DSHS_tests = DSHS_data[[4]]
+DSHS_tests = DSHS_data[[5]]
 DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests)-2), ]
 
 colnames(DSHS_tests) = c('Date', 'Viral_Tests', 'Antibody_Tests', 'Total_Tests', 'Positive_Rate')
@@ -524,6 +524,20 @@ merged_counts4$State = as.factor(merged_counts4$State)
 merged_counts4$State = droplevels(revalue(merged_counts4$State, c('TX' = 'Texas')))
 ```
 
+
+```{r}
+# declare metro and border designations
+Metro = c("Aransas", "Archer", "Armstrong", "Atascosa", "Austin", "Bandera", "Bastrop", "Bell", "Bexar", "Bowie", "Brazoria", "Brazos", "Burleson", "Caldwell", "Callahan", "Cameron", "Carson", "Chambers", "Clay", "Collin", "Comal", "Coryell", "Crosby", "Dallas", "Denton", "Ector", "Ellis", "El Paso", "Falls", "Fort Bend", "Galveston", "Goliad", "Grayson", "Gregg", "Guadalupe", "Hardin", "Harris", "Hays", "Hidalgo", "Hood", "Hudspeth", "Hunt", "Irion", "Jefferson", "Johnson", "Jones", "Kaufman", "Kendall", "Lampasas", "Liberty", "Lubbock", "Lynn", "McLennan", "Martin", "Medina", "Midland", "Montgomery", "Newton", "Nueces", "Oldham", "Orange", "Parker", "Potter", "Randall", "Robertson", "Rockwall", "Rusk", "San Patricio", "Smith", "Somervell", "Tarrant", "Taylor", "Tom Green", "Travis", "Upshur", "Victoria", "Waller", "Webb", "Wichita", "Williamson", "Wilson", "Wise")
+
+Border = c("Brewster", "Brooks", "Cameron", "Crockett", "Culberson", "Dimmit", "Duval", "Edwards", "El Paso", "Frio", "Hidalgo", "Hudspeth", "Jeff Davis", "Jim Hogg", "Kenedy", "Kinney", "La Salle", "McMullen", "Maverick", "Pecos", "Presidio", "Real", "Reeves", "Starr", "Sutton", "Terrell", "Uvalde", "Val Verde", "Webb", "Willacy", "Zapata", "Zavala")
+```
+
+```{r}
+merged_counts4$Metro = ifelse(merged_counts4$County %in% Metro, 'Metro', 'Nonmetro')
+merged_counts4$Border = ifelse(merged_counts4$County %in% Border, 'Border', 'Nonborder')
+```
+
+
 ```{r}
 write.csv(merged_counts4, file=paste0('combined-datasets/county_counts_', Sys.Date(), '.csv'),
           row.names = F)
@@ -540,7 +554,7 @@ merged_state4 = rbind.fill(merged_state3, DSHS_demographics)
 
 ```{r}
 # additional postprocessing
-merged_state4$State = 'Texas' 
+merged_state4$State = 'Texas'
 ```
 
 
