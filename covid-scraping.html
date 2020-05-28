@@ -594,9 +594,9 @@ CLAFLIN_capacity_40 = gsheet::gsheet2tbl(&#39;https://docs.google.com/spreadshee
 
 CLAFLIN_capacity_60 = gsheet::gsheet2tbl(&#39;https://docs.google.com/spreadsheets/d/1XUVyZF3X_4m72ztFnXZFvDKn5Yys1aKgu2Zmefd7wVo/edit?fbclid=IwAR3fi4RzFRBZqolwpKY-g20BXHLyltp18rgCrzKX0LLSe_2dkCsimZan_VY#gid=0&#39;)</code></pre>
 <p>Cleaning</p>
-<pre class="r"><code>CLAFLIN_capacity_20$Capacity = &#39;20&#39;
-CLAFLIN_capacity_40$Capacity = &#39;40&#39;
-CLAFLIN_capacity_60$Capacity = &#39;60&#39;
+<pre class="r"><code>CLAFLIN_capacity_20$Infection_Rate = &#39;20&#39;
+CLAFLIN_capacity_40$Infection_Rate = &#39;40&#39;
+CLAFLIN_capacity_60$Infection_Rate = &#39;60&#39;
 
 CLAFLIN_combined = rbind(CLAFLIN_capacity_20, CLAFLIN_capacity_40, CLAFLIN_capacity_60)
 CLAFLIN_texas = subset(CLAFLIN_combined, State == &#39;TX&#39;)
@@ -622,11 +622,11 @@ colnames(CLAFLIN_texas) =
     &#39;ICU_Bed_Need_6mo&#39;, &#39;ICU_Bed_Need_PCT_6mo&#39;, &#39;ICU_Bed_Potential_Need_PCT_6mo&#39;, &#39;ICU_Bed_Total_Need_PCT_6mo&#39;,
     &#39;ICU_Bed_Need_12mo&#39;, &#39;ICU_Bed_Need_PCT_12mo&#39;, &#39;ICU_Bed_Potential_Need_PCT_12mo&#39;, &#39;ICU_Bed_Total_Need_PCT_12mo&#39;,
     &#39;ICU_Bed_Need_12mo&#39;, &#39;ICU_Bed_Need_PCT_12mo&#39;, &#39;ICU_Bed_Potential_Need_PCT_12mo&#39;, &#39;ICU_Bed_Total_Need_PCT_12mo&#39;,
-    &#39;Capacity&#39;)</code></pre>
+    &#39;Infection_Rate&#39;)</code></pre>
 </div>
 <div id="dshs-time-series" class="section level2">
 <h2>DSHS (time series)</h2>
-<pre class="r"><code>DSHS_tests = DSHS_data[[4]]
+<pre class="r"><code>DSHS_tests = DSHS_data[[5]]
 DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests)-2), ]
 
 colnames(DSHS_tests) = c(&#39;Date&#39;, &#39;Viral_Tests&#39;, &#39;Antibody_Tests&#39;, &#39;Total_Tests&#39;, &#39;Positive_Rate&#39;)
@@ -781,6 +781,12 @@ merged_counts4$State = as.factor(merged_counts4$State)
 
 # replace TX with Texas
 merged_counts4$State = droplevels(revalue(merged_counts4$State, c(&#39;TX&#39; = &#39;Texas&#39;)))</code></pre>
+<pre class="r"><code># declare metro and border designations
+Metro = c(&quot;Aransas&quot;, &quot;Archer&quot;, &quot;Armstrong&quot;, &quot;Atascosa&quot;, &quot;Austin&quot;, &quot;Bandera&quot;, &quot;Bastrop&quot;, &quot;Bell&quot;, &quot;Bexar&quot;, &quot;Bowie&quot;, &quot;Brazoria&quot;, &quot;Brazos&quot;, &quot;Burleson&quot;, &quot;Caldwell&quot;, &quot;Callahan&quot;, &quot;Cameron&quot;, &quot;Carson&quot;, &quot;Chambers&quot;, &quot;Clay&quot;, &quot;Collin&quot;, &quot;Comal&quot;, &quot;Coryell&quot;, &quot;Crosby&quot;, &quot;Dallas&quot;, &quot;Denton&quot;, &quot;Ector&quot;, &quot;Ellis&quot;, &quot;El Paso&quot;, &quot;Falls&quot;, &quot;Fort Bend&quot;, &quot;Galveston&quot;, &quot;Goliad&quot;, &quot;Grayson&quot;, &quot;Gregg&quot;, &quot;Guadalupe&quot;, &quot;Hardin&quot;, &quot;Harris&quot;, &quot;Hays&quot;, &quot;Hidalgo&quot;, &quot;Hood&quot;, &quot;Hudspeth&quot;, &quot;Hunt&quot;, &quot;Irion&quot;, &quot;Jefferson&quot;, &quot;Johnson&quot;, &quot;Jones&quot;, &quot;Kaufman&quot;, &quot;Kendall&quot;, &quot;Lampasas&quot;, &quot;Liberty&quot;, &quot;Lubbock&quot;, &quot;Lynn&quot;, &quot;McLennan&quot;, &quot;Martin&quot;, &quot;Medina&quot;, &quot;Midland&quot;, &quot;Montgomery&quot;, &quot;Newton&quot;, &quot;Nueces&quot;, &quot;Oldham&quot;, &quot;Orange&quot;, &quot;Parker&quot;, &quot;Potter&quot;, &quot;Randall&quot;, &quot;Robertson&quot;, &quot;Rockwall&quot;, &quot;Rusk&quot;, &quot;San Patricio&quot;, &quot;Smith&quot;, &quot;Somervell&quot;, &quot;Tarrant&quot;, &quot;Taylor&quot;, &quot;Tom Green&quot;, &quot;Travis&quot;, &quot;Upshur&quot;, &quot;Victoria&quot;, &quot;Waller&quot;, &quot;Webb&quot;, &quot;Wichita&quot;, &quot;Williamson&quot;, &quot;Wilson&quot;, &quot;Wise&quot;)
+
+Border = c(&quot;Brewster&quot;, &quot;Brooks&quot;, &quot;Cameron&quot;, &quot;Crockett&quot;, &quot;Culberson&quot;, &quot;Dimmit&quot;, &quot;Duval&quot;, &quot;Edwards&quot;, &quot;El Paso&quot;, &quot;Frio&quot;, &quot;Hidalgo&quot;, &quot;Hudspeth&quot;, &quot;Jeff Davis&quot;, &quot;Jim Hogg&quot;, &quot;Kenedy&quot;, &quot;Kinney&quot;, &quot;La Salle&quot;, &quot;McMullen&quot;, &quot;Maverick&quot;, &quot;Pecos&quot;, &quot;Presidio&quot;, &quot;Real&quot;, &quot;Reeves&quot;, &quot;Starr&quot;, &quot;Sutton&quot;, &quot;Terrell&quot;, &quot;Uvalde&quot;, &quot;Val Verde&quot;, &quot;Webb&quot;, &quot;Willacy&quot;, &quot;Zapata&quot;, &quot;Zavala&quot;)</code></pre>
+<pre class="r"><code>merged_counts4$Metro = ifelse(merged_counts4$County %in% Metro, &#39;Metro&#39;, &#39;Nonmetro&#39;)
+merged_counts4$Border = ifelse(merged_counts4$County %in% Border, &#39;Border&#39;, &#39;Nonborder&#39;)</code></pre>
 <pre class="r"><code>write.csv(merged_counts4, file=paste0(&#39;combined-datasets/county_counts_&#39;, Sys.Date(), &#39;.csv&#39;),
           row.names = F)</code></pre>
 </div>
@@ -791,12 +797,12 @@ merged_state2 = rbind.fill(merged_state1, DSHS_state_time)
 merged_state3 = rbind.fill(merged_state2, DSHS_day_counts)
 merged_state4 = rbind.fill(merged_state3, DSHS_demographics)</code></pre>
 <pre class="r"><code># additional postprocessing
-merged_state4$State = &#39;Texas&#39; </code></pre>
-<pre class="r"><code>write.csv(merged_state4, paste0(&#39;combined-datasets/state_tests_hosp_&#39;, Sys.Date(), &#39;.csv&#39;))</code></pre>
+merged_state4$State = &#39;Texas&#39;</code></pre>
+<pre class="r"><code>write.csv(merged_state4, paste0(&#39;combined-datasets/state_tests_hosp_&#39;, Sys.Date(), &#39;.csv&#39;), row.names = F)</code></pre>
 </div>
 <div id="additional-csvs" class="section level2">
 <h2>Additional csvs</h2>
-<pre class="r"><code>write.csv(CLAFLIN_texas, paste0(&#39;combined-datasets/claflin_capacity_&#39;, Sys.Date(), &#39;.csv&#39;), row.names = F)
+<pre class="r"><code>write.csv(CLAFLIN_texas, paste0(&#39;combined-datasets/claflin_capacity.csv&#39;), row.names = F)
 write.csv(DSHS_demographics, paste0(&#39;combined-datasets/demographics_&#39;, Sys.Date(), &#39;.csv&#39;), row.names = F)</code></pre>
 </div>
 </div>

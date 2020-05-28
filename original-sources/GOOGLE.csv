@@ -88,9 +88,14 @@
 "Texas","","2020-05-11",-21,-9,2,-34,-40,15
 "Texas","","2020-05-12",-22,-7,-11,-34,-41,17
 "Texas","","2020-05-13",-18,-2,10,-32,-39,16
-"Texas","","2020-05-14",-20,-4,15,-34,-40,NA
+"Texas","","2020-05-14",-20,-4,15,-34,-40,16
 "Texas","","2020-05-15",-24,-6,-10,-35,-39,16
 "Texas","","2020-05-16",-29,-8,-30,-35,-24,11
+"Texas","","2020-05-17",-22,-6,-1,-34,-21,7
+"Texas","","2020-05-18",-17,-6,3,-34,-37,14
+"Texas","","2020-05-19",-15,-4,7,-32,-38,14
+"Texas","","2020-05-20",-14,-1,15,-30,-38,14
+"Texas","","2020-05-21",-14,-1,20,-29,-39,14
 "Texas","Anderson County","2020-02-15",3,1,NA,NA,-1,NA
 "Texas","Anderson County","2020-02-16",7,10,NA,NA,-4,NA
 "Texas","Anderson County","2020-02-17",1,-3,NA,NA,-13,3
@@ -183,6 +188,11 @@
 "Texas","Anderson County","2020-05-14",-8,3,NA,NA,-23,5
 "Texas","Anderson County","2020-05-15",-14,-1,NA,NA,-22,8
 "Texas","Anderson County","2020-05-16",-22,-7,NA,NA,-12,NA
+"Texas","Anderson County","2020-05-17",-16,0,NA,NA,-11,NA
+"Texas","Anderson County","2020-05-18",-9,1,NA,NA,-21,6
+"Texas","Anderson County","2020-05-19",-4,4,NA,NA,-23,6
+"Texas","Anderson County","2020-05-20",0,9,NA,NA,-27,7
+"Texas","Anderson County","2020-05-21",-6,10,NA,NA,-26,6
 "Texas","Andrews County","2020-02-15",-3,-8,NA,NA,-6,NA
 "Texas","Andrews County","2020-02-16",17,-4,NA,NA,2,NA
 "Texas","Andrews County","2020-02-17",4,-1,NA,44,-5,NA
@@ -275,6 +285,11 @@
 "Texas","Andrews County","2020-05-14",NA,NA,NA,-12,-27,NA
 "Texas","Andrews County","2020-05-15",-24,NA,NA,-24,-29,NA
 "Texas","Andrews County","2020-05-16",NA,NA,NA,-15,-25,NA
+"Texas","Andrews County","2020-05-17",NA,NA,NA,NA,-17,NA
+"Texas","Andrews County","2020-05-18",NA,NA,NA,-12,-25,NA
+"Texas","Andrews County","2020-05-19",NA,NA,NA,-17,-26,NA
+"Texas","Andrews County","2020-05-20",NA,NA,NA,-7,-29,NA
+"Texas","Andrews County","2020-05-21",NA,NA,NA,0,-28,NA
 "Texas","Angelina County","2020-02-15",2,1,-5,-8,-6,0
 "Texas","Angelina County","2020-02-16",5,-1,NA,-4,-4,1
 "Texas","Angelina County","2020-02-17",4,1,NA,-1,-18,4
@@ -364,9 +379,14 @@
 "Texas","Angelina County","2020-05-11",-6,4,NA,-11,-25,9
 "Texas","Angelina County","2020-05-12",-2,7,NA,-10,-26,10
 "Texas","Angelina County","2020-05-13",-3,11,NA,-5,-27,10
-"Texas","Angelina County","2020-05-14",-9,6,NA,-13,-29,NA
+"Texas","Angelina County","2020-05-14",-9,6,NA,-13,-29,11
 "Texas","Angelina County","2020-05-15",-12,2,NA,-15,-28,12
 "Texas","Angelina County","2020-05-16",-20,1,-44,-23,-17,9
+"Texas","Angelina County","2020-05-17",-10,5,NA,-16,-13,6
+"Texas","Angelina County","2020-05-18",-6,3,NA,-11,-23,8
+"Texas","Angelina County","2020-05-19",5,5,NA,-7,-25,9
+"Texas","Angelina County","2020-05-20",0,11,NA,-3,-27,8
+"Texas","Angelina County","2020-05-21",3,14,NA,-4,-27,9
 "Texas","Aransas County","2020-02-15",19,4,60,NA,-1,NA
 "Texas","Aransas County","2020-02-16",19,11,41,NA,-2,NA
 "Texas","Aransas County","2020-02-17",5,4,NA,NA,-10,2
@@ -459,6 +479,11 @@
 "Texas","Aransas County","2020-05-14",-20,-8,19,NA,-24,NA
 "Texas","Aransas County","2020-05-15",-12,-3,39,NA,-22,NA
 "Texas","Aransas County","2020-05-16",-6,12,NA,NA,-18,NA
+"Texas","Aransas County","2020-05-17",11,NA,NA,NA,-12,NA
+"Texas","Aransas County","2020-05-18",-10,-2,31,NA,-15,NA
+"Texas","Aransas County","2020-05-19",-10,-2,NA,NA,-18,6
+"Texas","Aransas County","2020-05-20",-2,6,NA,NA,-16,5
+"Texas","Aransas County","2020-05-21",-8,8,NA,NA,-18,5
 "Texas","Archer County","2020-02-17",NA,NA,NA,NA,-28,NA
 "Texas","Archer County","2020-02-18",NA,NA,NA,NA,0,NA
 "Texas","Archer County","2020-02-19",NA,NA,NA,NA,9,NA
@@ -524,6 +549,10 @@
 "Texas","Archer County","2020-05-13",NA,NA,NA,NA,-15,NA
 "Texas","Archer County","2020-05-14",NA,NA,NA,NA,-22,NA
 "Texas","Archer County","2020-05-15",NA,NA,NA,NA,-28,NA
+"Texas","Archer County","2020-05-18",NA,NA,NA,NA,-18,NA
+"Texas","Archer County","2020-05-19",NA,NA,NA,NA,-23,NA
+"Texas","Archer County","2020-05-20",NA,NA,NA,NA,-19,NA
+"Texas","Archer County","2020-05-21",NA,NA,NA,NA,-29,NA
 "Texas","Atascosa County","2020-02-15",3,-1,NA,3,3,NA
 "Texas","Atascosa County","2020-02-16",8,2,NA,9,-3,NA
 "Texas","Atascosa County","2020-02-17",1,3,NA,16,-18,3
@@ -616,6 +645,11 @@
 "Texas","Atascosa County","2020-05-14",-14,-8,NA,-28,-34,11
 "Texas","Atascosa County","2020-05-15",-17,-9,NA,-21,-31,13
 "Texas","Atascosa County","2020-05-16",-6,-7,NA,-27,-15,NA
+"Texas","Atascosa County","2020-05-17",-9,-8,NA,-18,-14,NA
+"Texas","Atascosa County","2020-05-18",-12,-10,NA,-34,-30,10
+"Texas","Atascosa County","2020-05-19",-11,-12,NA,-26,-33,12
+"Texas","Atascosa County","2020-05-20",-7,-8,NA,-24,-32,11
+"Texas","Atascosa County","2020-05-21",-12,-7,NA,-13,-33,12
 "Texas","Austin County","2020-02-15",3,3,NA,NA,-5,NA
 "Texas","Austin County","2020-02-16",6,5,NA,NA,3,NA
 "Texas","Austin County","2020-02-17",8,-5,NA,NA,-15,2
@@ -708,6 +742,11 @@
 "Texas","Austin County","2020-05-14",-6,3,NA,NA,-30,NA
 "Texas","Austin County","2020-05-15",-14,-2,NA,NA,-30,NA
 "Texas","Austin County","2020-05-16",-17,-1,NA,NA,-14,NA
+"Texas","Austin County","2020-05-17",-10,NA,NA,NA,-12,NA
+"Texas","Austin County","2020-05-18",-11,-3,NA,NA,-22,NA
+"Texas","Austin County","2020-05-19",-2,2,NA,NA,-25,NA
+"Texas","Austin County","2020-05-20",-3,9,NA,NA,-28,NA
+"Texas","Austin County","2020-05-21",-2,12,NA,NA,-27,NA
 "Texas","Bailey County","2020-02-15",-1,-6,NA,NA,NA,NA
 "Texas","Bailey County","2020-02-16",NA,-6,NA,NA,NA,NA
 "Texas","Bailey County","2020-02-17",-3,0,NA,NA,-19,NA
@@ -789,6 +828,10 @@
 "Texas","Bailey County","2020-05-13",NA,NA,NA,NA,-22,NA
 "Texas","Bailey County","2020-05-14",NA,NA,NA,NA,-22,NA
 "Texas","Bailey County","2020-05-15",NA,NA,NA,NA,-22,NA
+"Texas","Bailey County","2020-05-18",NA,NA,NA,NA,-19,NA
+"Texas","Bailey County","2020-05-19",NA,NA,NA,NA,-24,NA
+"Texas","Bailey County","2020-05-20",NA,NA,NA,NA,-26,NA
+"Texas","Bailey County","2020-05-21",NA,NA,NA,NA,-19,NA
 "Texas","Bandera County","2020-02-15",71,4,NA,NA,11,NA
 "Texas","Bandera County","2020-02-16",16,2,NA,NA,0,NA
 "Texas","Bandera County","2020-02-17",8,-4,NA,NA,-19,NA
@@ -881,6 +924,11 @@
 "Texas","Bandera County","2020-05-14",NA,NA,NA,NA,-29,NA
 "Texas","Bandera County","2020-05-15",NA,NA,NA,NA,-29,NA
 "Texas","Bandera County","2020-05-16",NA,NA,NA,NA,-16,NA
+"Texas","Bandera County","2020-05-17",NA,NA,NA,NA,-16,NA
+"Texas","Bandera County","2020-05-18",NA,NA,NA,NA,-21,NA
+"Texas","Bandera County","2020-05-19",NA,NA,NA,NA,-23,NA
+"Texas","Bandera County","2020-05-20",NA,NA,NA,NA,-26,NA
+"Texas","Bandera County","2020-05-21",NA,NA,NA,NA,-27,NA
 "Texas","Bastrop County","2020-02-15",7,7,51,NA,2,-1
 "Texas","Bastrop County","2020-02-16",9,8,NA,NA,-1,-1
 "Texas","Bastrop County","2020-02-17",5,6,NA,NA,-25,6
@@ -970,9 +1018,14 @@
 "Texas","Bastrop County","2020-05-11",-13,-8,NA,NA,-37,13
 "Texas","Bastrop County","2020-05-12",-28,-19,NA,NA,-42,19
 "Texas","Bastrop County","2020-05-13",-1,2,NA,NA,-38,14
-"Texas","Bastrop County","2020-05-14",-9,1,NA,NA,-37,NA
+"Texas","Bastrop County","2020-05-14",-9,1,NA,NA,-37,14
 "Texas","Bastrop County","2020-05-15",-12,-4,-25,NA,-35,12
 "Texas","Bastrop County","2020-05-16",-13,-3,-39,NA,-22,9
+"Texas","Bastrop County","2020-05-17",-10,-5,-8,NA,-21,7
+"Texas","Bastrop County","2020-05-18",-7,-4,NA,NA,-35,12
+"Texas","Bastrop County","2020-05-19",-2,0,NA,NA,-37,13
+"Texas","Bastrop County","2020-05-20",0,3,NA,NA,-35,13
+"Texas","Bastrop County","2020-05-21",-5,6,NA,NA,-36,13
 "Texas","Bee County","2020-02-15",1,3,NA,NA,-4,NA
 "Texas","Bee County","2020-02-16",4,-9,NA,NA,-5,NA
 "Texas","Bee County","2020-02-17",-1,3,NA,NA,-9,NA
@@ -1065,6 +1118,11 @@
 "Texas","Bee County","2020-05-14",-15,-6,NA,NA,-31,NA
 "Texas","Bee County","2020-05-15",-18,-10,NA,NA,-33,NA
 "Texas","Bee County","2020-05-16",-20,-4,NA,NA,-21,NA
+"Texas","Bee County","2020-05-17",-15,-7,NA,NA,-21,NA
+"Texas","Bee County","2020-05-18",-15,NA,NA,NA,-27,NA
+"Texas","Bee County","2020-05-19",-16,NA,NA,NA,-31,NA
+"Texas","Bee County","2020-05-20",-4,NA,NA,NA,-31,NA
+"Texas","Bee County","2020-05-21",-20,-5,NA,NA,-30,NA
 "Texas","Bell County","2020-02-15",5,-3,-4,10,-3,0
 "Texas","Bell County","2020-02-16",8,2,36,11,-3,-1
 "Texas","Bell County","2020-02-17",7,0,44,12,-32,7
@@ -1154,9 +1212,14 @@
 "Texas","Bell County","2020-05-11",-9,-2,35,-15,-34,12
 "Texas","Bell County","2020-05-12",-14,-4,-6,-20,-36,14
 "Texas","Bell County","2020-05-13",-9,2,63,-12,-34,13
-"Texas","Bell County","2020-05-14",-11,1,111,-14,-35,NA
+"Texas","Bell County","2020-05-14",-11,1,111,-14,-35,12
 "Texas","Bell County","2020-05-15",-13,1,55,-16,-34,11
 "Texas","Bell County","2020-05-16",-14,-6,26,-21,-20,8
+"Texas","Bell County","2020-05-17",-11,-1,100,-16,-19,6
+"Texas","Bell County","2020-05-18",-7,-2,67,-14,-32,11
+"Texas","Bell County","2020-05-19",-8,1,81,-16,-33,11
+"Texas","Bell County","2020-05-20",-5,4,83,-10,-33,11
+"Texas","Bell County","2020-05-21",-8,6,114,-12,-33,11
 "Texas","Bexar County","2020-02-15",4,7,6,0,0,-1
 "Texas","Bexar County","2020-02-16",7,4,13,-1,1,-1
 "Texas","Bexar County","2020-02-17",6,5,20,-4,-23,5
@@ -1246,9 +1309,14 @@
 "Texas","Bexar County","2020-05-11",-26,-10,-14,-34,-43,15
 "Texas","Bexar County","2020-05-12",-26,-8,-30,-36,-45,18
 "Texas","Bexar County","2020-05-13",-21,-4,-6,-30,-43,17
-"Texas","Bexar County","2020-05-14",-24,-3,-11,-35,-44,NA
+"Texas","Bexar County","2020-05-14",-24,-3,-11,-35,-44,17
 "Texas","Bexar County","2020-05-15",-28,-2,-29,-33,-42,17
 "Texas","Bexar County","2020-05-16",-28,-2,-43,-33,-26,9
+"Texas","Bexar County","2020-05-17",-28,-9,-31,-37,-24,7
+"Texas","Bexar County","2020-05-18",-21,-6,-20,-34,-40,14
+"Texas","Bexar County","2020-05-19",-19,-4,-19,-34,-42,15
+"Texas","Bexar County","2020-05-20",-18,-4,-15,-32,-41,15
+"Texas","Bexar County","2020-05-21",-20,-1,-14,-31,-42,15
 "Texas","Blanco County","2020-02-15",26,28,NA,NA,NA,NA
 "Texas","Blanco County","2020-02-16",54,24,NA,NA,NA,NA
 "Texas","Blanco County","2020-02-17",32,18,NA,NA,-23,NA
@@ -1338,6 +1406,10 @@
 "Texas","Blanco County","2020-05-14",NA,NA,NA,NA,-32,NA
 "Texas","Blanco County","2020-05-15",NA,NA,NA,NA,-34,NA
 "Texas","Blanco County","2020-05-16",NA,NA,-44,NA,NA,NA
+"Texas","Blanco County","2020-05-18",NA,NA,NA,NA,-23,NA
+"Texas","Blanco County","2020-05-19",NA,NA,NA,NA,-26,NA
+"Texas","Blanco County","2020-05-20",NA,NA,NA,NA,-24,NA
+"Texas","Blanco County","2020-05-21",NA,NA,NA,NA,-27,NA
 "Texas","Bosque County","2020-02-15",0,6,NA,NA,2,NA
 "Texas","Bosque County","2020-02-16",18,13,NA,NA,9,NA
 "Texas","Bosque County","2020-02-17",0,3,NA,NA,-14,NA
@@ -1430,6 +1502,11 @@
 "Texas","Bosque County","2020-05-14",NA,NA,NA,NA,-20,NA
 "Texas","Bosque County","2020-05-15",NA,NA,NA,NA,-21,NA
 "Texas","Bosque County","2020-05-16",NA,NA,NA,NA,-11,NA
+"Texas","Bosque County","2020-05-17",NA,NA,NA,NA,-10,NA
+"Texas","Bosque County","2020-05-18",NA,NA,NA,NA,-16,NA
+"Texas","Bosque County","2020-05-19",NA,NA,NA,NA,-15,NA
+"Texas","Bosque County","2020-05-20",NA,NA,NA,NA,-17,NA
+"Texas","Bosque County","2020-05-21",NA,NA,NA,NA,-21,NA
 "Texas","Bowie County","2020-02-15",6,0,4,-7,-2,0
 "Texas","Bowie County","2020-02-16",8,4,6,-3,-1,0
 "Texas","Bowie County","2020-02-17",7,0,NA,-2,-21,6
@@ -1519,9 +1596,14 @@
 "Texas","Bowie County","2020-05-11",-1,4,NA,-15,-22,8
 "Texas","Bowie County","2020-05-12",-3,7,-9,-11,-23,9
 "Texas","Bowie County","2020-05-13",4,11,NA,-12,-23,7
-"Texas","Bowie County","2020-05-14",-1,9,NA,-15,-21,NA
+"Texas","Bowie County","2020-05-14",-1,9,NA,-15,-21,7
 "Texas","Bowie County","2020-05-15",-10,3,NA,-18,-20,9
 "Texas","Bowie County","2020-05-16",-20,-6,-10,-21,-10,8
+"Texas","Bowie County","2020-05-17",-6,11,11,-17,-14,5
+"Texas","Bowie County","2020-05-18",2,4,NA,-17,-20,6
+"Texas","Bowie County","2020-05-19",4,6,NA,-9,-20,7
+"Texas","Bowie County","2020-05-20",4,7,NA,-4,-22,7
+"Texas","Bowie County","2020-05-21",0,7,NA,-8,-23,7
 "Texas","Brazoria County","2020-02-15",5,5,22,3,3,-2
 "Texas","Brazoria County","2020-02-16",7,4,24,10,3,-1
 "Texas","Brazoria County","2020-02-17",7,0,7,2,-20,4
@@ -1611,9 +1693,14 @@
 "Texas","Brazoria County","2020-05-11",-8,-6,18,-6,-37,15
 "Texas","Brazoria County","2020-05-12",-7,-2,22,-8,-36,15
 "Texas","Brazoria County","2020-05-13",-5,1,30,5,-37,15
-"Texas","Brazoria County","2020-05-14",-8,-2,21,-15,-37,NA
+"Texas","Brazoria County","2020-05-14",-8,-2,21,-15,-37,16
 "Texas","Brazoria County","2020-05-15",-19,-9,-4,-6,-38,19
 "Texas","Brazoria County","2020-05-16",-13,0,2,-9,-20,10
+"Texas","Brazoria County","2020-05-17",-12,-2,56,7,-17,7
+"Texas","Brazoria County","2020-05-18",-4,-3,17,-2,-34,13
+"Texas","Brazoria County","2020-05-19",-2,0,24,-1,-34,14
+"Texas","Brazoria County","2020-05-20",1,4,42,4,-35,14
+"Texas","Brazoria County","2020-05-21",-2,4,35,-3,-35,14
 "Texas","Brazos County","2020-02-15",1,-1,19,NA,3,-1
 "Texas","Brazos County","2020-02-16",3,-3,2,NA,2,-1
 "Texas","Brazos County","2020-02-17",5,-8,13,NA,-10,3
@@ -1703,9 +1790,14 @@
 "Texas","Brazos County","2020-05-11",-25,-15,NA,-47,-43,16
 "Texas","Brazos County","2020-05-12",-32,-18,-36,-58,-45,18
 "Texas","Brazos County","2020-05-13",-22,-6,6,-49,-43,16
-"Texas","Brazos County","2020-05-14",-27,-7,9,-58,-43,NA
+"Texas","Brazos County","2020-05-14",-27,-7,9,-58,-43,17
 "Texas","Brazos County","2020-05-15",-29,-8,-5,-53,-41,18
 "Texas","Brazos County","2020-05-16",-35,-16,-30,-47,-24,11
+"Texas","Brazos County","2020-05-17",-31,-18,-11,-52,-22,9
+"Texas","Brazos County","2020-05-18",-22,-12,NA,-51,-41,15
+"Texas","Brazos County","2020-05-19",-22,-10,-1,-55,-41,15
+"Texas","Brazos County","2020-05-20",-19,-7,12,-44,-40,15
+"Texas","Brazos County","2020-05-21",-23,-7,0,-50,-41,16
 "Texas","Brewster County","2020-02-15",33,16,NA,NA,NA,NA
 "Texas","Brewster County","2020-02-16",32,14,NA,NA,NA,NA
 "Texas","Brewster County","2020-02-17",20,12,NA,NA,-20,NA
@@ -1787,6 +1879,10 @@
 "Texas","Brewster County","2020-05-13",NA,NA,NA,NA,-26,NA
 "Texas","Brewster County","2020-05-14",NA,NA,NA,NA,-27,NA
 "Texas","Brewster County","2020-05-15",NA,NA,NA,NA,-24,NA
+"Texas","Brewster County","2020-05-18",NA,NA,NA,NA,-22,NA
+"Texas","Brewster County","2020-05-19",NA,NA,NA,NA,-24,NA
+"Texas","Brewster County","2020-05-20",NA,NA,NA,NA,-19,NA
+"Texas","Brewster County","2020-05-21",NA,NA,NA,NA,-26,NA
 "Texas","Brooks County","2020-02-15",-6,1,NA,4,NA,NA
 "Texas","Brooks County","2020-02-16",4,11,NA,17,NA,NA
 "Texas","Brooks County","2020-02-17",-14,-11,NA,5,-16,NA
@@ -1879,6 +1975,11 @@
 "Texas","Brooks County","2020-05-14",NA,NA,NA,-46,-31,NA
 "Texas","Brooks County","2020-05-15",NA,NA,NA,-48,-29,NA
 "Texas","Brooks County","2020-05-16",NA,NA,NA,-56,NA,NA
+"Texas","Brooks County","2020-05-17",NA,NA,NA,-56,NA,NA
+"Texas","Brooks County","2020-05-18",NA,NA,NA,-50,-15,NA
+"Texas","Brooks County","2020-05-19",NA,NA,NA,-44,-21,NA
+"Texas","Brooks County","2020-05-20",NA,NA,NA,-42,-20,NA
+"Texas","Brooks County","2020-05-21",NA,NA,NA,-36,-28,NA
 "Texas","Brown County","2020-02-15",0,6,NA,NA,-1,NA
 "Texas","Brown County","2020-02-16",3,4,NA,NA,0,NA
 "Texas","Brown County","2020-02-17",2,-5,NA,NA,-21,4
@@ -1971,6 +2072,11 @@
 "Texas","Brown County","2020-05-14",1,7,NA,NA,-23,4
 "Texas","Brown County","2020-05-15",-1,3,NA,NA,-23,8
 "Texas","Brown County","2020-05-16",-4,11,NA,NA,-10,NA
+"Texas","Brown County","2020-05-17",-4,4,NA,NA,-12,NA
+"Texas","Brown County","2020-05-18",5,2,NA,NA,-22,6
+"Texas","Brown County","2020-05-19",10,2,NA,NA,-21,7
+"Texas","Brown County","2020-05-20",8,5,NA,NA,-21,8
+"Texas","Brown County","2020-05-21",5,8,NA,NA,-22,6
 "Texas","Burleson County","2020-02-15",7,2,NA,NA,-8,NA
 "Texas","Burleson County","2020-02-16",10,6,NA,NA,-2,NA
 "Texas","Burleson County","2020-02-17",-1,-1,NA,NA,-14,NA
@@ -2063,6 +2169,11 @@
 "Texas","Burleson County","2020-05-14",NA,NA,NA,NA,-25,NA
 "Texas","Burleson County","2020-05-15",NA,NA,NA,NA,-26,NA
 "Texas","Burleson County","2020-05-16",NA,NA,NA,NA,-21,NA
+"Texas","Burleson County","2020-05-17",NA,NA,NA,NA,-11,NA
+"Texas","Burleson County","2020-05-18",NA,NA,NA,NA,-25,NA
+"Texas","Burleson County","2020-05-19",NA,NA,NA,NA,-25,NA
+"Texas","Burleson County","2020-05-20",NA,NA,NA,NA,-26,NA
+"Texas","Burleson County","2020-05-21",NA,NA,NA,NA,-25,NA
 "Texas","Burnet County","2020-02-15",4,6,2,NA,-1,NA
 "Texas","Burnet County","2020-02-16",14,12,46,NA,-1,NA
 "Texas","Burnet County","2020-02-17",12,5,NA,NA,-19,3
@@ -2152,9 +2263,14 @@
 "Texas","Burnet County","2020-05-11",-1,-3,NA,NA,-27,9
 "Texas","Burnet County","2020-05-12",-11,1,NA,NA,-31,13
 "Texas","Burnet County","2020-05-13",-4,4,NA,NA,-27,9
-"Texas","Burnet County","2020-05-14",-5,1,NA,NA,-30,NA
+"Texas","Burnet County","2020-05-14",-5,1,NA,NA,-30,9
 "Texas","Burnet County","2020-05-15",-7,-2,-1,NA,-29,9
 "Texas","Burnet County","2020-05-16",-6,3,-5,NA,-17,NA
+"Texas","Burnet County","2020-05-17",7,5,35,NA,-15,NA
+"Texas","Burnet County","2020-05-18",0,-2,NA,NA,-26,8
+"Texas","Burnet County","2020-05-19",-4,0,NA,NA,-28,9
+"Texas","Burnet County","2020-05-20",0,3,NA,NA,-26,8
+"Texas","Burnet County","2020-05-21",2,7,NA,NA,-30,7
 "Texas","Caldwell County","2020-02-15",4,12,NA,10,-2,NA
 "Texas","Caldwell County","2020-02-16",5,17,NA,16,-5,NA
 "Texas","Caldwell County","2020-02-17",2,11,NA,10,-22,4
@@ -2247,6 +2363,11 @@
 "Texas","Caldwell County","2020-05-14",-16,-6,NA,-6,-35,11
 "Texas","Caldwell County","2020-05-15",-22,-13,NA,-21,-33,14
 "Texas","Caldwell County","2020-05-16",-15,-17,NA,-25,-24,NA
+"Texas","Caldwell County","2020-05-17",-13,-10,NA,-10,-25,NA
+"Texas","Caldwell County","2020-05-18",-17,-9,NA,-6,-32,10
+"Texas","Caldwell County","2020-05-19",-7,-5,NA,-6,-33,12
+"Texas","Caldwell County","2020-05-20",-8,-3,NA,1,-31,12
+"Texas","Caldwell County","2020-05-21",-7,6,NA,9,-32,11
 "Texas","Calhoun County","2020-02-15",5,11,NA,NA,7,NA
 "Texas","Calhoun County","2020-02-16",7,10,NA,NA,9,NA
 "Texas","Calhoun County","2020-02-17",2,-6,NA,NA,-13,NA
@@ -2339,6 +2460,11 @@
 "Texas","Calhoun County","2020-05-14",-23,-3,NA,NA,-23,NA
 "Texas","Calhoun County","2020-05-15",-18,-6,NA,NA,-25,NA
 "Texas","Calhoun County","2020-05-16",-10,NA,NA,NA,-13,NA
+"Texas","Calhoun County","2020-05-17",-6,NA,NA,NA,-2,NA
+"Texas","Calhoun County","2020-05-18",-10,-7,NA,NA,-20,NA
+"Texas","Calhoun County","2020-05-19",-19,-6,NA,NA,-21,NA
+"Texas","Calhoun County","2020-05-20",-17,-8,NA,NA,-24,NA
+"Texas","Calhoun County","2020-05-21",-15,0,NA,NA,-23,NA
 "Texas","Callahan County","2020-02-15",0,-3,NA,3,6,NA
 "Texas","Callahan County","2020-02-16",19,-14,NA,13,NA,NA
 "Texas","Callahan County","2020-02-17",4,-6,NA,7,-14,NA
@@ -2431,6 +2557,11 @@
 "Texas","Callahan County","2020-05-14",NA,NA,NA,-17,-27,NA
 "Texas","Callahan County","2020-05-15",NA,NA,NA,-13,-28,NA
 "Texas","Callahan County","2020-05-16",NA,NA,NA,-10,-7,NA
+"Texas","Callahan County","2020-05-17",NA,NA,NA,-7,NA,NA
+"Texas","Callahan County","2020-05-18",NA,NA,NA,-22,-26,NA
+"Texas","Callahan County","2020-05-19",NA,NA,NA,-18,-25,NA
+"Texas","Callahan County","2020-05-20",NA,NA,NA,-11,-25,NA
+"Texas","Callahan County","2020-05-21",NA,NA,NA,-13,-25,NA
 "Texas","Cameron County","2020-02-15",6,4,22,3,-1,-1
 "Texas","Cameron County","2020-02-16",12,2,20,4,-1,-1
 "Texas","Cameron County","2020-02-17",7,1,17,1,-14,4
@@ -2520,9 +2651,14 @@
 "Texas","Cameron County","2020-05-11",-25,-12,-27,-52,-36,15
 "Texas","Cameron County","2020-05-12",-24,-6,-24,-52,-39,15
 "Texas","Cameron County","2020-05-13",-23,-8,-18,-52,-39,15
-"Texas","Cameron County","2020-05-14",-24,-7,-21,-55,-39,NA
+"Texas","Cameron County","2020-05-14",-24,-7,-21,-55,-39,15
 "Texas","Cameron County","2020-05-15",-25,-4,-22,-54,-37,17
 "Texas","Cameron County","2020-05-16",-30,-8,-30,-54,-25,12
+"Texas","Cameron County","2020-05-17",-23,-8,-15,-55,-19,7
+"Texas","Cameron County","2020-05-18",-19,-8,-21,-49,-32,13
+"Texas","Cameron County","2020-05-19",-18,-4,-23,-50,-37,13
+"Texas","Cameron County","2020-05-20",-18,-7,-10,-51,-37,13
+"Texas","Cameron County","2020-05-21",-18,-6,-17,-48,-37,14
 "Texas","Camp County","2020-02-15",12,6,NA,NA,4,NA
 "Texas","Camp County","2020-02-16",NA,1,NA,NA,NA,NA
 "Texas","Camp County","2020-02-17",21,-9,NA,NA,-17,NA
@@ -2610,6 +2746,10 @@
 "Texas","Camp County","2020-05-14",NA,NA,NA,NA,-22,NA
 "Texas","Camp County","2020-05-15",NA,NA,NA,NA,-22,NA
 "Texas","Camp County","2020-05-16",NA,NA,NA,NA,-11,NA
+"Texas","Camp County","2020-05-18",NA,NA,NA,NA,-21,NA
+"Texas","Camp County","2020-05-19",NA,NA,NA,NA,-22,NA
+"Texas","Camp County","2020-05-20",NA,NA,NA,NA,-22,NA
+"Texas","Camp County","2020-05-21",NA,NA,NA,NA,-28,NA
 "Texas","Carson County","2020-02-15",NA,-2,NA,13,NA,NA
 "Texas","Carson County","2020-02-16",NA,NA,NA,-12,NA,NA
 "Texas","Carson County","2020-02-17",NA,11,NA,NA,-25,NA
@@ -2701,6 +2841,11 @@
 "Texas","Carson County","2020-05-14",NA,NA,NA,-10,-23,NA
 "Texas","Carson County","2020-05-15",NA,NA,NA,-5,-30,NA
 "Texas","Carson County","2020-05-16",NA,NA,NA,16,NA,NA
+"Texas","Carson County","2020-05-17",NA,NA,NA,0,NA,NA
+"Texas","Carson County","2020-05-18",NA,NA,NA,NA,-25,NA
+"Texas","Carson County","2020-05-19",NA,NA,NA,NA,-21,NA
+"Texas","Carson County","2020-05-20",NA,NA,NA,6,-18,NA
+"Texas","Carson County","2020-05-21",NA,NA,NA,7,-30,NA
 "Texas","Cass County","2020-02-15",4,-2,NA,-6,3,NA
 "Texas","Cass County","2020-02-16",0,7,NA,-8,-6,NA
 "Texas","Cass County","2020-02-17",4,-2,NA,11,-19,NA
@@ -2793,6 +2938,11 @@
 "Texas","Cass County","2020-05-14",2,NA,NA,-8,-24,NA
 "Texas","Cass County","2020-05-15",0,26,NA,-3,-24,NA
 "Texas","Cass County","2020-05-16",-4,NA,NA,-19,-2,NA
+"Texas","Cass County","2020-05-17",NA,NA,NA,5,-14,NA
+"Texas","Cass County","2020-05-18",NA,NA,NA,7,-20,NA
+"Texas","Cass County","2020-05-19",8,NA,NA,0,-24,NA
+"Texas","Cass County","2020-05-20",6,NA,NA,-5,-23,NA
+"Texas","Cass County","2020-05-21",7,NA,NA,10,-23,NA
 "Texas","Castro County","2020-02-17",NA,NA,NA,NA,-18,NA
 "Texas","Castro County","2020-02-18",NA,NA,NA,NA,2,NA
 "Texas","Castro County","2020-02-19",NA,NA,NA,NA,4,NA
@@ -2859,6 +3009,10 @@
 "Texas","Castro County","2020-05-13",NA,NA,NA,NA,-13,NA
 "Texas","Castro County","2020-05-14",NA,NA,NA,NA,-22,NA
 "Texas","Castro County","2020-05-15",NA,NA,NA,NA,-15,NA
+"Texas","Castro County","2020-05-18",NA,NA,NA,NA,-18,NA
+"Texas","Castro County","2020-05-19",NA,NA,NA,NA,-15,NA
+"Texas","Castro County","2020-05-20",NA,NA,NA,NA,-12,NA
+"Texas","Castro County","2020-05-21",NA,NA,NA,NA,-17,NA
 "Texas","Chambers County","2020-02-15",9,9,NA,-8,3,NA
 "Texas","Chambers County","2020-02-16",13,3,NA,7,-3,NA
 "Texas","Chambers County","2020-02-17",11,-2,NA,-14,-12,3
@@ -2948,9 +3102,14 @@
 "Texas","Chambers County","2020-05-11",-9,14,NA,-17,-28,12
 "Texas","Chambers County","2020-05-12",-10,10,NA,-16,-28,13
 "Texas","Chambers County","2020-05-13",-8,10,NA,-11,-29,13
-"Texas","Chambers County","2020-05-14",-12,12,NA,-21,-30,NA
+"Texas","Chambers County","2020-05-14",-12,12,NA,-21,-30,15
 "Texas","Chambers County","2020-05-15",-23,0,NA,-24,-30,16
 "Texas","Chambers County","2020-05-16",-24,11,NA,-25,-19,NA
+"Texas","Chambers County","2020-05-17",-16,0,NA,-14,-15,NA
+"Texas","Chambers County","2020-05-18",-7,8,NA,-17,-24,11
+"Texas","Chambers County","2020-05-19",-5,12,NA,-14,-26,12
+"Texas","Chambers County","2020-05-20",1,19,NA,-11,-28,11
+"Texas","Chambers County","2020-05-21",0,14,NA,-16,-28,12
 "Texas","Cherokee County","2020-02-15",7,-1,NA,NA,-4,NA
 "Texas","Cherokee County","2020-02-16",10,2,NA,NA,2,NA
 "Texas","Cherokee County","2020-02-17",2,-2,NA,NA,-20,4
@@ -3043,6 +3202,11 @@
 "Texas","Cherokee County","2020-05-14",-5,8,NA,NA,-25,6
 "Texas","Cherokee County","2020-05-15",-10,8,NA,NA,-28,10
 "Texas","Cherokee County","2020-05-16",-14,-4,NA,NA,-20,NA
+"Texas","Cherokee County","2020-05-17",-6,6,NA,NA,-12,NA
+"Texas","Cherokee County","2020-05-18",-4,3,NA,NA,-24,7
+"Texas","Cherokee County","2020-05-19",-1,6,NA,NA,-25,8
+"Texas","Cherokee County","2020-05-20",0,13,NA,NA,-24,7
+"Texas","Cherokee County","2020-05-21",-5,7,NA,NA,-25,7
 "Texas","Childress County","2020-02-15",1,4,NA,-7,NA,NA
 "Texas","Childress County","2020-02-16",2,2,NA,11,NA,NA
 "Texas","Childress County","2020-02-17",-6,0,NA,NA,-34,NA
@@ -3133,6 +3297,10 @@
 "Texas","Childress County","2020-05-13",NA,NA,NA,NA,-19,NA
 "Texas","Childress County","2020-05-14",NA,NA,NA,4,-21,NA
 "Texas","Childress County","2020-05-15",NA,NA,NA,-3,-20,NA
+"Texas","Childress County","2020-05-18",NA,NA,NA,-7,NA,NA
+"Texas","Childress County","2020-05-19",NA,NA,NA,NA,-18,NA
+"Texas","Childress County","2020-05-20",NA,NA,NA,NA,-15,NA
+"Texas","Childress County","2020-05-21",NA,NA,NA,16,-19,NA
 "Texas","Clay County","2020-02-15",NA,NA,NA,-2,NA,NA
 "Texas","Clay County","2020-02-16",NA,NA,NA,-6,NA,NA
 "Texas","Clay County","2020-02-17",NA,NA,NA,2,-12,NA
@@ -3221,6 +3389,10 @@
 "Texas","Clay County","2020-05-14",NA,NA,NA,NA,-21,NA
 "Texas","Clay County","2020-05-15",NA,NA,NA,NA,-22,NA
 "Texas","Clay County","2020-05-16",NA,NA,NA,8,NA,NA
+"Texas","Clay County","2020-05-18",NA,NA,NA,27,-15,NA
+"Texas","Clay County","2020-05-19",NA,NA,NA,20,-22,NA
+"Texas","Clay County","2020-05-20",NA,NA,NA,NA,-19,NA
+"Texas","Clay County","2020-05-21",NA,NA,NA,NA,-21,NA
 "Texas","Coke County","2020-02-21",NA,-11,NA,NA,NA,NA
 "Texas","Coke County","2020-02-28",NA,11,NA,NA,NA,NA
 "Texas","Coke County","2020-03-06",NA,2,NA,NA,NA,NA
@@ -3310,6 +3482,10 @@
 "Texas","Coleman County","2020-05-13",NA,NA,NA,NA,-17,NA
 "Texas","Coleman County","2020-05-14",NA,NA,NA,NA,-18,NA
 "Texas","Coleman County","2020-05-15",NA,NA,NA,NA,-22,NA
+"Texas","Coleman County","2020-05-18",NA,NA,NA,NA,-15,NA
+"Texas","Coleman County","2020-05-19",NA,NA,NA,NA,-4,NA
+"Texas","Coleman County","2020-05-20",NA,NA,NA,NA,-17,NA
+"Texas","Coleman County","2020-05-21",NA,NA,NA,NA,-24,NA
 "Texas","Collin County","2020-02-15",4,1,24,4,0,-1
 "Texas","Collin County","2020-02-16",7,2,63,3,0,-1
 "Texas","Collin County","2020-02-17",12,3,44,2,-24,5
@@ -3399,9 +3575,14 @@
 "Texas","Collin County","2020-05-11",-29,-19,12,-31,-57,21
 "Texas","Collin County","2020-05-12",-29,-16,2,-33,-57,24
 "Texas","Collin County","2020-05-13",-26,-10,30,-25,-56,22
-"Texas","Collin County","2020-05-14",-27,-10,30,-31,-57,NA
+"Texas","Collin County","2020-05-14",-27,-10,30,-31,-57,22
 "Texas","Collin County","2020-05-15",-31,-13,3,-25,-54,22
 "Texas","Collin County","2020-05-16",-43,-25,-54,-43,-29,15
+"Texas","Collin County","2020-05-17",-29,-14,30,-23,-25,9
+"Texas","Collin County","2020-05-18",-23,-13,17,-31,-54,20
+"Texas","Collin County","2020-05-19",-20,-9,28,-29,-54,21
+"Texas","Collin County","2020-05-20",-19,-6,41,-20,-54,20
+"Texas","Collin County","2020-05-21",-20,-5,30,-25,-55,21
 "Texas","Colorado County","2020-02-15",8,3,NA,-2,-4,NA
 "Texas","Colorado County","2020-02-16",15,11,NA,13,2,NA
 "Texas","Colorado County","2020-02-17",5,6,NA,3,-10,NA
@@ -3494,6 +3675,11 @@
 "Texas","Colorado County","2020-05-14",NA,NA,NA,-20,-24,NA
 "Texas","Colorado County","2020-05-15",-23,NA,NA,-33,-20,NA
 "Texas","Colorado County","2020-05-16",-25,NA,NA,-31,-2,NA
+"Texas","Colorado County","2020-05-17",NA,NA,NA,-24,-8,NA
+"Texas","Colorado County","2020-05-18",NA,NA,NA,-21,-20,NA
+"Texas","Colorado County","2020-05-19",NA,NA,NA,-13,-21,NA
+"Texas","Colorado County","2020-05-20",NA,NA,NA,-17,-21,NA
+"Texas","Colorado County","2020-05-21",0,NA,NA,-18,-20,NA
 "Texas","Comal County","2020-02-15",3,14,12,4,-1,-1
 "Texas","Comal County","2020-02-16",12,12,22,16,0,-1
 "Texas","Comal County","2020-02-17",9,11,24,0,-23,4
@@ -3583,9 +3769,14 @@
 "Texas","Comal County","2020-05-11",-14,1,43,-12,-38,12
 "Texas","Comal County","2020-05-12",-27,-11,-34,-19,-41,18
 "Texas","Comal County","2020-05-13",-11,9,41,-5,-38,14
-"Texas","Comal County","2020-05-14",-14,7,96,-10,-39,NA
+"Texas","Comal County","2020-05-14",-14,7,96,-10,-39,15
 "Texas","Comal County","2020-05-15",-18,6,55,-3,-38,14
 "Texas","Comal County","2020-05-16",-18,10,87,-12,-21,8
+"Texas","Comal County","2020-05-17",-12,6,127,4,-24,6
+"Texas","Comal County","2020-05-18",-6,5,55,-2,-35,12
+"Texas","Comal County","2020-05-19",-7,12,97,0,-36,13
+"Texas","Comal County","2020-05-20",-5,11,114,-6,-35,13
+"Texas","Comal County","2020-05-21",-6,13,157,-5,-37,12
 "Texas","Comanche County","2020-02-15",0,2,NA,NA,NA,NA
 "Texas","Comanche County","2020-02-16",-1,-3,NA,NA,NA,NA
 "Texas","Comanche County","2020-02-17",1,1,NA,NA,-11,NA
@@ -3668,6 +3859,10 @@
 "Texas","Comanche County","2020-05-13",NA,NA,NA,NA,-23,NA
 "Texas","Comanche County","2020-05-14",NA,NA,NA,NA,-21,NA
 "Texas","Comanche County","2020-05-15",NA,NA,NA,NA,-20,NA
+"Texas","Comanche County","2020-05-18",NA,NA,NA,NA,-8,NA
+"Texas","Comanche County","2020-05-19",NA,NA,NA,NA,-17,NA
+"Texas","Comanche County","2020-05-20",NA,NA,NA,NA,-23,NA
+"Texas","Comanche County","2020-05-21",NA,NA,NA,NA,-21,NA
 "Texas","Cooke County","2020-02-15",2,-2,NA,NA,4,NA
 "Texas","Cooke County","2020-02-16",13,4,NA,NA,8,NA
 "Texas","Cooke County","2020-02-17",10,5,NA,NA,-16,3
@@ -3757,9 +3952,14 @@
 "Texas","Cooke County","2020-05-11",-2,7,NA,NA,-27,9
 "Texas","Cooke County","2020-05-12",-6,-1,NA,NA,-29,13
 "Texas","Cooke County","2020-05-13",0,NA,NA,NA,-28,10
-"Texas","Cooke County","2020-05-14",-2,11,NA,NA,-30,NA
+"Texas","Cooke County","2020-05-14",-2,11,NA,NA,-30,10
 "Texas","Cooke County","2020-05-15",-12,15,NA,NA,-30,11
 "Texas","Cooke County","2020-05-16",-31,-13,-51,NA,-23,NA
+"Texas","Cooke County","2020-05-17",-6,NA,24,NA,-24,NA
+"Texas","Cooke County","2020-05-18",-1,9,NA,-31,-31,10
+"Texas","Cooke County","2020-05-19",7,10,NA,NA,-30,10
+"Texas","Cooke County","2020-05-20",10,NA,NA,NA,-31,10
+"Texas","Cooke County","2020-05-21",6,23,NA,NA,-31,9
 "Texas","Coryell County","2020-02-15",2,7,14,NA,-2,-1
 "Texas","Coryell County","2020-02-16",8,8,41,NA,-2,-1
 "Texas","Coryell County","2020-02-17",-4,-3,8,NA,-40,9
@@ -3849,9 +4049,14 @@
 "Texas","Coryell County","2020-05-11",-14,1,0,NA,-28,10
 "Texas","Coryell County","2020-05-12",-20,4,-6,NA,-31,13
 "Texas","Coryell County","2020-05-13",-9,10,10,NA,-30,12
-"Texas","Coryell County","2020-05-14",-10,4,7,NA,-29,NA
+"Texas","Coryell County","2020-05-14",-10,4,7,NA,-29,11
 "Texas","Coryell County","2020-05-15",-7,5,19,NA,-28,9
 "Texas","Coryell County","2020-05-16",-13,5,-14,NA,-20,8
+"Texas","Coryell County","2020-05-17",-6,2,32,NA,-16,5
+"Texas","Coryell County","2020-05-18",-10,6,2,NA,-23,9
+"Texas","Coryell County","2020-05-19",-13,8,4,NA,-27,12
+"Texas","Coryell County","2020-05-20",-4,11,6,NA,-28,10
+"Texas","Coryell County","2020-05-21",-9,5,5,NA,-26,10
 "Texas","Crane County","2020-02-15",NA,-7,NA,NA,NA,NA
 "Texas","Crane County","2020-02-16",NA,0,NA,NA,NA,NA
 "Texas","Crane County","2020-02-17",NA,-7,NA,NA,NA,NA
@@ -3909,6 +4114,7 @@
 "Texas","Crane County","2020-04-28",NA,NA,NA,NA,-33,NA
 "Texas","Crane County","2020-05-05",NA,NA,NA,NA,-34,NA
 "Texas","Crane County","2020-05-12",NA,NA,NA,NA,-33,NA
+"Texas","Crane County","2020-05-19",NA,NA,NA,NA,-31,NA
 "Texas","Crockett County","2020-02-21",NA,-16,NA,NA,NA,NA
 "Texas","Crockett County","2020-02-24",NA,-7,NA,NA,NA,NA
 "Texas","Crockett County","2020-02-25",NA,-25,NA,NA,NA,NA
@@ -4002,6 +4208,10 @@
 "Texas","Crosby County","2020-05-13",NA,NA,NA,NA,-28,NA
 "Texas","Crosby County","2020-05-14",NA,NA,NA,NA,-31,NA
 "Texas","Crosby County","2020-05-15",NA,NA,NA,NA,-32,NA
+"Texas","Crosby County","2020-05-18",NA,NA,NA,NA,-30,NA
+"Texas","Crosby County","2020-05-19",NA,NA,NA,NA,-31,NA
+"Texas","Crosby County","2020-05-20",NA,NA,NA,NA,-28,NA
+"Texas","Crosby County","2020-05-21",NA,NA,NA,NA,-32,NA
 "Texas","Culberson County","2020-02-15",-3,NA,NA,-4,NA,NA
 "Texas","Culberson County","2020-02-16",0,NA,NA,4,NA,NA
 "Texas","Culberson County","2020-02-17",12,NA,NA,10,NA,NA
@@ -4094,6 +4304,11 @@
 "Texas","Culberson County","2020-05-14",NA,NA,NA,-18,NA,NA
 "Texas","Culberson County","2020-05-15",NA,NA,NA,-25,NA,NA
 "Texas","Culberson County","2020-05-16",NA,NA,NA,-22,NA,NA
+"Texas","Culberson County","2020-05-17",NA,NA,NA,-26,NA,NA
+"Texas","Culberson County","2020-05-18",NA,NA,NA,-29,NA,NA
+"Texas","Culberson County","2020-05-19",NA,NA,NA,-17,NA,NA
+"Texas","Culberson County","2020-05-20",NA,NA,NA,-20,NA,NA
+"Texas","Culberson County","2020-05-21",NA,NA,NA,-20,NA,NA
 "Texas","Dallam County","2020-02-15",3,4,NA,NA,NA,NA
 "Texas","Dallam County","2020-02-16",-1,16,NA,NA,NA,NA
 "Texas","Dallam County","2020-02-17",0,11,NA,NA,-11,NA
@@ -4175,6 +4390,10 @@
 "Texas","Dallam County","2020-05-13",NA,NA,NA,NA,-19,NA
 "Texas","Dallam County","2020-05-14",NA,NA,NA,NA,-16,NA
 "Texas","Dallam County","2020-05-15",NA,NA,NA,NA,-19,NA
+"Texas","Dallam County","2020-05-18",NA,NA,NA,NA,-9,NA
+"Texas","Dallam County","2020-05-19",NA,NA,NA,NA,-18,NA
+"Texas","Dallam County","2020-05-20",NA,NA,NA,NA,-21,NA
+"Texas","Dallam County","2020-05-21",NA,NA,NA,NA,-19,NA
 "Texas","Dallas County","2020-02-15",4,1,16,0,1,-1
 "Texas","Dallas County","2020-02-16",9,2,50,3,1,-2
 "Texas","Dallas County","2020-02-17",7,0,39,-2,-18,4
@@ -4264,9 +4483,14 @@
 "Texas","Dallas County","2020-05-11",-26,-12,10,-37,-43,16
 "Texas","Dallas County","2020-05-12",-26,-9,-1,-39,-44,19
 "Texas","Dallas County","2020-05-13",-23,-3,25,-35,-42,16
-"Texas","Dallas County","2020-05-14",-24,-6,18,-36,-44,NA
+"Texas","Dallas County","2020-05-14",-24,-6,18,-36,-44,16
 "Texas","Dallas County","2020-05-15",-26,-8,-4,-35,-42,15
 "Texas","Dallas County","2020-05-16",-40,-20,-62,-49,-30,15
+"Texas","Dallas County","2020-05-17",-23,-5,12,-33,-24,7
+"Texas","Dallas County","2020-05-18",-21,-9,10,-37,-41,15
+"Texas","Dallas County","2020-05-19",-20,-7,18,-37,-41,15
+"Texas","Dallas County","2020-05-20",-18,-2,31,-33,-41,14
+"Texas","Dallas County","2020-05-21",-19,-3,18,-34,-42,15
 "Texas","Dawson County","2020-02-15",13,15,NA,NA,NA,NA
 "Texas","Dawson County","2020-02-16",12,17,NA,NA,NA,NA
 "Texas","Dawson County","2020-02-17",4,2,NA,NA,-11,NA
@@ -4348,6 +4572,10 @@
 "Texas","Dawson County","2020-05-13",NA,NA,NA,NA,-15,NA
 "Texas","Dawson County","2020-05-14",NA,NA,NA,NA,-19,NA
 "Texas","Dawson County","2020-05-15",NA,NA,NA,NA,-14,NA
+"Texas","Dawson County","2020-05-18",NA,NA,NA,NA,-12,NA
+"Texas","Dawson County","2020-05-19",NA,NA,NA,NA,-18,NA
+"Texas","Dawson County","2020-05-20",NA,NA,NA,NA,-13,NA
+"Texas","Dawson County","2020-05-21",NA,NA,NA,NA,-19,NA
 "Texas","Deaf Smith County","2020-02-15",1,-12,NA,NA,-10,NA
 "Texas","Deaf Smith County","2020-02-16",0,3,NA,NA,-2,NA
 "Texas","Deaf Smith County","2020-02-17",-5,-4,NA,NA,-20,NA
@@ -4440,6 +4668,11 @@
 "Texas","Deaf Smith County","2020-05-14",-11,NA,NA,NA,-29,NA
 "Texas","Deaf Smith County","2020-05-15",-10,NA,NA,-8,-26,NA
 "Texas","Deaf Smith County","2020-05-16",-2,NA,NA,NA,-8,NA
+"Texas","Deaf Smith County","2020-05-17",NA,NA,NA,NA,-22,NA
+"Texas","Deaf Smith County","2020-05-18",NA,NA,NA,NA,-29,NA
+"Texas","Deaf Smith County","2020-05-19",NA,NA,NA,NA,-31,NA
+"Texas","Deaf Smith County","2020-05-20",NA,NA,NA,NA,-26,NA
+"Texas","Deaf Smith County","2020-05-21",-7,NA,NA,NA,-29,NA
 "Texas","Delta County","2020-03-11",NA,NA,NA,NA,-20,NA
 "Texas","Delta County","2020-03-17",NA,NA,NA,NA,-26,NA
 "Texas","Delta County","2020-03-18",NA,NA,NA,NA,-29,NA
@@ -4467,6 +4700,7 @@
 "Texas","Delta County","2020-05-11",NA,NA,NA,NA,-30,NA
 "Texas","Delta County","2020-05-12",NA,NA,NA,NA,-31,NA
 "Texas","Delta County","2020-05-13",NA,NA,NA,NA,-28,NA
+"Texas","Delta County","2020-05-20",NA,NA,NA,NA,-29,NA
 "Texas","Denton County","2020-02-15",1,1,18,7,0,0
 "Texas","Denton County","2020-02-16",6,5,60,17,1,-1
 "Texas","Denton County","2020-02-17",12,4,73,2,-22,4
@@ -4556,9 +4790,14 @@
 "Texas","Denton County","2020-05-11",-20,-10,55,-18,-51,20
 "Texas","Denton County","2020-05-12",-20,-9,41,-23,-52,22
 "Texas","Denton County","2020-05-13",-16,-3,92,-22,-50,20
-"Texas","Denton County","2020-05-14",-19,-3,98,-21,-51,NA
+"Texas","Denton County","2020-05-14",-19,-3,98,-21,-51,21
 "Texas","Denton County","2020-05-15",-21,-5,49,-13,-49,20
 "Texas","Denton County","2020-05-16",-37,-23,-56,-31,-29,15
+"Texas","Denton County","2020-05-17",-19,-5,58,-6,-26,8
+"Texas","Denton County","2020-05-18",-13,-5,56,-23,-49,18
+"Texas","Denton County","2020-05-19",-9,-2,98,-23,-49,19
+"Texas","Denton County","2020-05-20",-10,1,108,-18,-48,18
+"Texas","Denton County","2020-05-21",-11,4,86,-15,-49,19
 "Texas","DeWitt County","2020-02-15",1,-4,NA,NA,-6,NA
 "Texas","DeWitt County","2020-02-16",4,4,NA,NA,-4,NA
 "Texas","DeWitt County","2020-02-17",-1,-1,NA,NA,-17,NA
@@ -4651,6 +4890,11 @@
 "Texas","DeWitt County","2020-05-14",-17,NA,NA,NA,-23,NA
 "Texas","DeWitt County","2020-05-15",-20,NA,NA,NA,-22,NA
 "Texas","DeWitt County","2020-05-16",-20,NA,NA,NA,-16,NA
+"Texas","DeWitt County","2020-05-17",NA,NA,NA,NA,-12,NA
+"Texas","DeWitt County","2020-05-18",NA,NA,NA,NA,-23,NA
+"Texas","DeWitt County","2020-05-19",NA,NA,NA,NA,-25,NA
+"Texas","DeWitt County","2020-05-20",NA,NA,NA,NA,-22,NA
+"Texas","DeWitt County","2020-05-21",-12,NA,NA,NA,-21,NA
 "Texas","Dimmit County","2020-02-15",-6,-3,NA,NA,NA,NA
 "Texas","Dimmit County","2020-02-16",6,-1,NA,NA,NA,NA
 "Texas","Dimmit County","2020-02-17",1,-4,NA,-6,-17,NA
@@ -4743,6 +4987,11 @@
 "Texas","Dimmit County","2020-05-14",NA,NA,NA,-37,-37,NA
 "Texas","Dimmit County","2020-05-15",NA,NA,NA,-37,-36,NA
 "Texas","Dimmit County","2020-05-16",NA,NA,NA,-39,NA,NA
+"Texas","Dimmit County","2020-05-17",NA,NA,NA,-47,NA,NA
+"Texas","Dimmit County","2020-05-18",NA,NA,NA,-27,-28,NA
+"Texas","Dimmit County","2020-05-19",NA,NA,NA,-27,-34,NA
+"Texas","Dimmit County","2020-05-20",NA,NA,NA,-31,-32,NA
+"Texas","Dimmit County","2020-05-21",NA,NA,NA,-36,-37,NA
 "Texas","Donley County","2020-02-16",NA,NA,NA,2,NA,NA
 "Texas","Donley County","2020-02-19",NA,NA,NA,-6,NA,NA
 "Texas","Donley County","2020-02-22",NA,NA,NA,9,NA,NA
@@ -4766,6 +5015,7 @@
 "Texas","Donley County","2020-05-06",NA,NA,NA,-40,NA,NA
 "Texas","Donley County","2020-05-07",NA,NA,NA,-21,NA,NA
 "Texas","Donley County","2020-05-10",NA,NA,NA,0,NA,NA
+"Texas","Donley County","2020-05-20",NA,NA,NA,12,NA,NA
 "Texas","Duval County","2020-02-15",NA,-7,NA,NA,NA,NA
 "Texas","Duval County","2020-02-16",NA,3,NA,NA,NA,NA
 "Texas","Duval County","2020-02-17",-31,-3,NA,NA,-5,NA
@@ -4847,6 +5097,10 @@
 "Texas","Duval County","2020-05-13",NA,NA,NA,NA,-39,NA
 "Texas","Duval County","2020-05-14",NA,NA,NA,NA,-32,NA
 "Texas","Duval County","2020-05-15",NA,NA,NA,NA,-38,NA
+"Texas","Duval County","2020-05-18",NA,NA,NA,NA,-25,NA
+"Texas","Duval County","2020-05-19",NA,NA,NA,NA,-37,NA
+"Texas","Duval County","2020-05-20",NA,NA,NA,NA,-38,NA
+"Texas","Duval County","2020-05-21",NA,NA,NA,NA,-36,NA
 "Texas","Eastland County","2020-02-15",0,15,NA,5,2,NA
 "Texas","Eastland County","2020-02-16",4,4,NA,14,6,NA
 "Texas","Eastland County","2020-02-17",3,5,NA,20,-10,NA
@@ -4939,6 +5193,11 @@
 "Texas","Eastland County","2020-05-14",NA,NA,NA,-12,-15,NA
 "Texas","Eastland County","2020-05-15",NA,NA,NA,-14,-23,NA
 "Texas","Eastland County","2020-05-16",NA,NA,NA,-8,-15,NA
+"Texas","Eastland County","2020-05-17",NA,NA,NA,-15,-16,NA
+"Texas","Eastland County","2020-05-18",NA,NA,NA,-9,-17,NA
+"Texas","Eastland County","2020-05-19",NA,NA,NA,-16,-16,NA
+"Texas","Eastland County","2020-05-20",NA,NA,NA,-9,-13,NA
+"Texas","Eastland County","2020-05-21",NA,NA,NA,-2,-17,NA
 "Texas","Ector County","2020-02-15",0,-4,NA,4,2,-1
 "Texas","Ector County","2020-02-16",5,1,NA,4,1,-3
 "Texas","Ector County","2020-02-17",4,0,NA,1,-3,1
@@ -5028,9 +5287,14 @@
 "Texas","Ector County","2020-05-11",-22,-17,NA,-23,-29,15
 "Texas","Ector County","2020-05-12",-17,-7,NA,-21,-27,13
 "Texas","Ector County","2020-05-13",-18,-10,NA,-20,-27,15
-"Texas","Ector County","2020-05-14",-15,-4,NA,-14,-27,NA
+"Texas","Ector County","2020-05-14",-15,-4,NA,-14,-27,13
 "Texas","Ector County","2020-05-15",-23,-12,NA,-25,-30,16
 "Texas","Ector County","2020-05-16",-22,-4,NA,-20,-19,8
+"Texas","Ector County","2020-05-17",-20,-10,NA,-26,-14,6
+"Texas","Ector County","2020-05-18",-14,-8,NA,-25,-27,13
+"Texas","Ector County","2020-05-19",-12,-5,NA,-23,-26,12
+"Texas","Ector County","2020-05-20",-9,-3,NA,-16,-26,13
+"Texas","Ector County","2020-05-21",-7,1,NA,-19,-26,11
 "Texas","El Paso County","2020-02-15",4,3,-18,17,0,-1
 "Texas","El Paso County","2020-02-16",9,4,-11,19,-2,-1
 "Texas","El Paso County","2020-02-17",7,1,-19,18,-16,3
@@ -5120,9 +5384,14 @@
 "Texas","El Paso County","2020-05-11",-29,-12,-55,-25,-41,17
 "Texas","El Paso County","2020-05-12",-27,-4,-52,-24,-42,18
 "Texas","El Paso County","2020-05-13",-26,-4,-48,-23,-42,18
-"Texas","El Paso County","2020-05-14",-27,-5,-50,-25,-43,NA
+"Texas","El Paso County","2020-05-14",-27,-5,-50,-25,-43,18
 "Texas","El Paso County","2020-05-15",-29,-1,-51,-26,-41,19
 "Texas","El Paso County","2020-05-16",-33,-2,-59,-26,-25,12
+"Texas","El Paso County","2020-05-17",-33,-9,-62,-30,-24,11
+"Texas","El Paso County","2020-05-18",-23,-8,-48,-24,-38,16
+"Texas","El Paso County","2020-05-19",-21,-3,-45,-22,-40,17
+"Texas","El Paso County","2020-05-20",-21,-2,-46,-17,-40,17
+"Texas","El Paso County","2020-05-21",-22,-2,-45,-20,-41,17
 "Texas","Ellis County","2020-02-15",2,0,16,9,-1,0
 "Texas","Ellis County","2020-02-16",7,1,59,4,-2,-1
 "Texas","Ellis County","2020-02-17",7,1,48,5,-23,5
@@ -5212,9 +5481,14 @@
 "Texas","Ellis County","2020-05-11",-11,-12,26,-6,-36,14
 "Texas","Ellis County","2020-05-12",-13,-11,22,-16,-37,16
 "Texas","Ellis County","2020-05-13",-8,-4,35,-11,-35,15
-"Texas","Ellis County","2020-05-14",-10,-6,40,-14,-37,NA
+"Texas","Ellis County","2020-05-14",-10,-6,40,-14,-37,14
 "Texas","Ellis County","2020-05-15",-12,-3,18,-12,-36,14
 "Texas","Ellis County","2020-05-16",-30,-22,-63,-27,-22,13
+"Texas","Ellis County","2020-05-17",-10,-8,26,-17,-20,7
+"Texas","Ellis County","2020-05-18",-6,-7,20,-11,-34,13
+"Texas","Ellis County","2020-05-19",-5,-2,39,-16,-34,13
+"Texas","Ellis County","2020-05-20",-2,7,45,-2,-34,13
+"Texas","Ellis County","2020-05-21",-4,7,40,-14,-35,13
 "Texas","Erath County","2020-02-15",2,2,NA,NA,-1,NA
 "Texas","Erath County","2020-02-16",8,5,NA,NA,-5,NA
 "Texas","Erath County","2020-02-17",4,-3,NA,NA,-15,3
@@ -5307,6 +5581,11 @@
 "Texas","Erath County","2020-05-14",-16,2,NA,NA,-29,7
 "Texas","Erath County","2020-05-15",-19,-4,NA,NA,-26,NA
 "Texas","Erath County","2020-05-16",-20,-11,NA,NA,-15,NA
+"Texas","Erath County","2020-05-17",-16,-5,NA,NA,-16,NA
+"Texas","Erath County","2020-05-18",-16,-10,NA,NA,-29,9
+"Texas","Erath County","2020-05-19",-15,-2,NA,NA,-28,10
+"Texas","Erath County","2020-05-20",-11,-6,NA,NA,-28,8
+"Texas","Erath County","2020-05-21",-14,-1,NA,NA,-30,7
 "Texas","Falls County","2020-02-15",-1,-2,NA,NA,2,NA
 "Texas","Falls County","2020-02-16",9,4,NA,NA,NA,NA
 "Texas","Falls County","2020-02-17",3,1,NA,NA,-18,NA
@@ -5395,6 +5674,10 @@
 "Texas","Falls County","2020-05-14",NA,NA,NA,NA,-23,NA
 "Texas","Falls County","2020-05-15",NA,NA,NA,NA,-28,NA
 "Texas","Falls County","2020-05-16",NA,NA,NA,NA,-4,NA
+"Texas","Falls County","2020-05-18",NA,NA,NA,NA,-21,NA
+"Texas","Falls County","2020-05-19",NA,NA,NA,NA,-23,NA
+"Texas","Falls County","2020-05-20",NA,NA,NA,NA,-26,NA
+"Texas","Falls County","2020-05-21",NA,NA,NA,NA,-24,NA
 "Texas","Fannin County","2020-02-15",9,6,NA,NA,0,NA
 "Texas","Fannin County","2020-02-16",7,4,NA,NA,-3,NA
 "Texas","Fannin County","2020-02-17",-5,4,NA,NA,-16,4
@@ -5484,9 +5767,14 @@
 "Texas","Fannin County","2020-05-11",NA,NA,NA,NA,-27,9
 "Texas","Fannin County","2020-05-12",NA,NA,NA,NA,-26,13
 "Texas","Fannin County","2020-05-13",NA,NA,NA,NA,-22,8
-"Texas","Fannin County","2020-05-14",-1,NA,NA,NA,-24,NA
+"Texas","Fannin County","2020-05-14",-1,NA,NA,NA,-24,8
 "Texas","Fannin County","2020-05-15",-10,NA,NA,NA,-24,10
 "Texas","Fannin County","2020-05-16",-18,NA,NA,NA,-16,NA
+"Texas","Fannin County","2020-05-17",2,NA,NA,NA,-15,NA
+"Texas","Fannin County","2020-05-18",5,NA,NA,NA,-23,8
+"Texas","Fannin County","2020-05-19",-1,NA,NA,NA,-25,8
+"Texas","Fannin County","2020-05-20",3,NA,NA,NA,-24,7
+"Texas","Fannin County","2020-05-21",1,NA,NA,NA,-26,7
 "Texas","Fayette County","2020-02-15",13,8,NA,8,2,NA
 "Texas","Fayette County","2020-02-16",18,4,NA,16,-4,NA
 "Texas","Fayette County","2020-02-17",10,8,NA,16,-16,NA
@@ -5579,6 +5867,11 @@
 "Texas","Fayette County","2020-05-14",-13,NA,NA,-13,-23,NA
 "Texas","Fayette County","2020-05-15",-21,-9,NA,-6,-24,NA
 "Texas","Fayette County","2020-05-16",-32,-17,NA,-18,-13,NA
+"Texas","Fayette County","2020-05-17",-16,NA,NA,-20,-18,NA
+"Texas","Fayette County","2020-05-18",-10,NA,NA,-10,-25,NA
+"Texas","Fayette County","2020-05-19",-8,NA,NA,-12,-25,NA
+"Texas","Fayette County","2020-05-20",-3,NA,NA,-10,-23,NA
+"Texas","Fayette County","2020-05-21",-4,NA,NA,-4,-22,NA
 "Texas","Floyd County","2020-03-19",NA,NA,NA,NA,-28,NA
 "Texas","Floyd County","2020-03-26",NA,NA,NA,NA,-28,NA
 "Texas","Floyd County","2020-04-01",NA,NA,NA,NA,-32,NA
@@ -5593,6 +5886,7 @@
 "Texas","Floyd County","2020-04-23",NA,NA,NA,NA,-33,NA
 "Texas","Floyd County","2020-04-30",NA,NA,NA,NA,-27,NA
 "Texas","Floyd County","2020-05-07",NA,NA,NA,NA,-26,NA
+"Texas","Floyd County","2020-05-21",NA,NA,NA,NA,-25,NA
 "Texas","Fort Bend County","2020-02-15",4,1,23,5,0,-1
 "Texas","Fort Bend County","2020-02-16",6,-2,19,-6,0,-1
 "Texas","Fort Bend County","2020-02-17",12,5,37,-7,-20,4
@@ -5682,9 +5976,14 @@
 "Texas","Fort Bend County","2020-05-11",-22,-9,43,-6,-48,20
 "Texas","Fort Bend County","2020-05-12",-20,-6,43,0,-48,22
 "Texas","Fort Bend County","2020-05-13",-19,0,36,2,-47,21
-"Texas","Fort Bend County","2020-05-14",-20,-2,41,3,-48,NA
+"Texas","Fort Bend County","2020-05-14",-20,-2,41,3,-48,22
 "Texas","Fort Bend County","2020-05-15",-31,-12,-1,-15,-47,24
 "Texas","Fort Bend County","2020-05-16",-27,-3,-13,-11,-25,13
+"Texas","Fort Bend County","2020-05-17",-27,-13,9,-3,-24,10
+"Texas","Fort Bend County","2020-05-18",-16,-6,28,-5,-46,19
+"Texas","Fort Bend County","2020-05-19",-14,-3,39,0,-46,20
+"Texas","Fort Bend County","2020-05-20",-12,2,44,16,-46,20
+"Texas","Fort Bend County","2020-05-21",-13,0,41,6,-46,20
 "Texas","Franklin County","2020-02-15",-3,3,NA,-4,NA,NA
 "Texas","Franklin County","2020-02-16",10,2,NA,-3,NA,NA
 "Texas","Franklin County","2020-02-17",8,-5,NA,1,-16,NA
@@ -5777,6 +6076,11 @@
 "Texas","Franklin County","2020-05-14",NA,NA,NA,-14,-23,NA
 "Texas","Franklin County","2020-05-15",NA,NA,NA,-25,-25,NA
 "Texas","Franklin County","2020-05-16",NA,NA,NA,-19,NA,NA
+"Texas","Franklin County","2020-05-17",NA,NA,NA,-14,NA,NA
+"Texas","Franklin County","2020-05-18",NA,NA,NA,-13,-20,NA
+"Texas","Franklin County","2020-05-19",NA,NA,NA,-12,-23,NA
+"Texas","Franklin County","2020-05-20",NA,NA,NA,-20,-24,NA
+"Texas","Franklin County","2020-05-21",NA,NA,NA,-5,-21,NA
 "Texas","Freestone County","2020-02-15",12,8,NA,17,-4,NA
 "Texas","Freestone County","2020-02-16",13,9,NA,15,0,NA
 "Texas","Freestone County","2020-02-17",18,0,NA,13,-11,NA
@@ -5869,6 +6173,11 @@
 "Texas","Freestone County","2020-05-14",NA,NA,NA,5,-23,NA
 "Texas","Freestone County","2020-05-15",NA,NA,NA,-3,-22,NA
 "Texas","Freestone County","2020-05-16",NA,NA,NA,-32,-15,NA
+"Texas","Freestone County","2020-05-17",NA,NA,NA,-13,-11,NA
+"Texas","Freestone County","2020-05-18",NA,NA,NA,-6,-8,NA
+"Texas","Freestone County","2020-05-19",NA,NA,NA,-8,-22,NA
+"Texas","Freestone County","2020-05-20",NA,NA,NA,-8,-23,NA
+"Texas","Freestone County","2020-05-21",NA,NA,NA,3,-23,NA
 "Texas","Frio County","2020-02-15",-8,3,NA,-14,-5,NA
 "Texas","Frio County","2020-02-16",3,-4,NA,NA,-8,NA
 "Texas","Frio County","2020-02-17",-11,0,NA,-9,-19,NA
@@ -5961,6 +6270,11 @@
 "Texas","Frio County","2020-05-14",NA,NA,NA,NA,-26,NA
 "Texas","Frio County","2020-05-15",NA,NA,NA,NA,-21,NA
 "Texas","Frio County","2020-05-16",NA,NA,NA,NA,-3,NA
+"Texas","Frio County","2020-05-17",NA,NA,NA,NA,2,NA
+"Texas","Frio County","2020-05-18",NA,NA,NA,NA,-26,NA
+"Texas","Frio County","2020-05-19",NA,NA,NA,NA,-23,NA
+"Texas","Frio County","2020-05-20",NA,NA,NA,NA,-28,NA
+"Texas","Frio County","2020-05-21",NA,NA,NA,NA,-29,NA
 "Texas","Gaines County","2020-02-15",7,6,NA,NA,5,NA
 "Texas","Gaines County","2020-02-16",9,5,NA,NA,-6,NA
 "Texas","Gaines County","2020-02-17",6,1,NA,NA,-7,NA
@@ -6053,6 +6367,11 @@
 "Texas","Gaines County","2020-05-14",NA,NA,NA,NA,-23,NA
 "Texas","Gaines County","2020-05-15",NA,NA,NA,NA,-24,NA
 "Texas","Gaines County","2020-05-16",NA,NA,NA,NA,-4,NA
+"Texas","Gaines County","2020-05-17",NA,NA,NA,NA,-16,NA
+"Texas","Gaines County","2020-05-18",NA,NA,NA,NA,-13,NA
+"Texas","Gaines County","2020-05-19",NA,NA,NA,NA,-21,NA
+"Texas","Gaines County","2020-05-20",NA,NA,NA,NA,-24,NA
+"Texas","Gaines County","2020-05-21",NA,NA,NA,NA,-40,NA
 "Texas","Galveston County","2020-02-15",17,16,51,17,1,-1
 "Texas","Galveston County","2020-02-16",12,8,32,22,2,-1
 "Texas","Galveston County","2020-02-17",7,1,38,9,-18,3
@@ -6142,9 +6461,14 @@
 "Texas","Galveston County","2020-05-11",-5,4,80,59,-35,12
 "Texas","Galveston County","2020-05-12",-2,8,73,36,-36,13
 "Texas","Galveston County","2020-05-13",-2,10,69,54,-35,13
-"Texas","Galveston County","2020-05-14",-5,9,43,25,-36,NA
+"Texas","Galveston County","2020-05-14",-5,9,43,25,-36,14
 "Texas","Galveston County","2020-05-15",-17,-2,7,14,-37,16
 "Texas","Galveston County","2020-05-16",-10,14,-8,44,-22,10
+"Texas","Galveston County","2020-05-17",1,17,NA,83,-17,6
+"Texas","Galveston County","2020-05-18",1,6,77,47,-33,10
+"Texas","Galveston County","2020-05-19",4,12,85,62,-34,12
+"Texas","Galveston County","2020-05-20",4,11,80,67,-33,11
+"Texas","Galveston County","2020-05-21",4,14,78,65,-34,12
 "Texas","Garza County","2020-02-15",-2,-15,NA,NA,NA,NA
 "Texas","Garza County","2020-02-16",NA,0,NA,NA,NA,NA
 "Texas","Garza County","2020-02-17",NA,-15,NA,NA,NA,NA
@@ -6288,6 +6612,11 @@
 "Texas","Gillespie County","2020-05-14",-18,NA,NA,NA,-25,NA
 "Texas","Gillespie County","2020-05-15",-21,-4,NA,NA,-26,NA
 "Texas","Gillespie County","2020-05-16",-25,2,-44,NA,-18,NA
+"Texas","Gillespie County","2020-05-17",-7,NA,-32,NA,-25,NA
+"Texas","Gillespie County","2020-05-18",-16,NA,NA,NA,-24,NA
+"Texas","Gillespie County","2020-05-19",-11,NA,NA,NA,-24,NA
+"Texas","Gillespie County","2020-05-20",-10,NA,NA,NA,-24,NA
+"Texas","Gillespie County","2020-05-21",-6,NA,NA,NA,-24,NA
 "Texas","Goliad County","2020-02-18",NA,NA,NA,NA,4,NA
 "Texas","Goliad County","2020-02-19",NA,NA,NA,NA,4,NA
 "Texas","Goliad County","2020-02-20",NA,NA,NA,NA,0,NA
@@ -6357,6 +6686,10 @@
 "Texas","Goliad County","2020-05-13",NA,NA,NA,NA,-22,NA
 "Texas","Goliad County","2020-05-14",NA,NA,NA,NA,-24,NA
 "Texas","Goliad County","2020-05-15",NA,NA,NA,NA,-29,NA
+"Texas","Goliad County","2020-05-18",NA,NA,NA,NA,-20,NA
+"Texas","Goliad County","2020-05-19",NA,NA,NA,NA,-26,NA
+"Texas","Goliad County","2020-05-20",NA,NA,NA,NA,-16,NA
+"Texas","Goliad County","2020-05-21",NA,NA,NA,NA,-13,NA
 "Texas","Gonzales County","2020-02-15",-3,-6,NA,NA,-9,NA
 "Texas","Gonzales County","2020-02-16",-4,-7,NA,NA,-12,NA
 "Texas","Gonzales County","2020-02-17",-2,-7,NA,NA,-19,NA
@@ -6449,6 +6782,11 @@
 "Texas","Gonzales County","2020-05-14",-19,NA,NA,NA,-26,NA
 "Texas","Gonzales County","2020-05-15",-21,NA,NA,NA,-29,NA
 "Texas","Gonzales County","2020-05-16",-20,NA,-52,NA,-12,NA
+"Texas","Gonzales County","2020-05-17",NA,NA,NA,NA,-14,NA
+"Texas","Gonzales County","2020-05-18",NA,NA,NA,NA,-22,NA
+"Texas","Gonzales County","2020-05-19",NA,NA,NA,NA,-26,NA
+"Texas","Gonzales County","2020-05-20",NA,NA,NA,NA,-25,NA
+"Texas","Gonzales County","2020-05-21",-15,NA,NA,NA,-24,NA
 "Texas","Gray County","2020-02-15",1,1,NA,NA,2,NA
 "Texas","Gray County","2020-02-16",7,12,NA,NA,3,NA
 "Texas","Gray County","2020-02-17",6,10,NA,NA,-24,NA
@@ -6541,6 +6879,11 @@
 "Texas","Gray County","2020-05-14",-4,NA,NA,NA,-27,NA
 "Texas","Gray County","2020-05-15",-14,NA,NA,NA,-26,NA
 "Texas","Gray County","2020-05-16",-5,NA,NA,NA,-8,NA
+"Texas","Gray County","2020-05-17",NA,NA,NA,NA,-8,NA
+"Texas","Gray County","2020-05-18",NA,NA,NA,NA,-25,NA
+"Texas","Gray County","2020-05-19",9,NA,NA,NA,-23,NA
+"Texas","Gray County","2020-05-20",5,NA,NA,NA,-24,NA
+"Texas","Gray County","2020-05-21",-3,NA,NA,NA,-27,NA
 "Texas","Grayson County","2020-02-15",3,3,18,NA,-1,0
 "Texas","Grayson County","2020-02-16",6,3,52,NA,-1,-1
 "Texas","Grayson County","2020-02-17",6,1,75,NA,-16,3
@@ -6630,9 +6973,14 @@
 "Texas","Grayson County","2020-05-11",-4,2,84,NA,-31,10
 "Texas","Grayson County","2020-05-12",-9,-4,12,NA,-33,14
 "Texas","Grayson County","2020-05-13",2,9,85,NA,-29,10
-"Texas","Grayson County","2020-05-14",-3,9,98,NA,-30,NA
+"Texas","Grayson County","2020-05-14",-3,9,98,NA,-30,10
 "Texas","Grayson County","2020-05-15",-11,-1,62,NA,-31,12
 "Texas","Grayson County","2020-05-16",-23,-11,-19,NA,-20,10
+"Texas","Grayson County","2020-05-17",-3,8,92,NA,-15,4
+"Texas","Grayson County","2020-05-18",-2,2,86,NA,-30,9
+"Texas","Grayson County","2020-05-19",6,6,117,NA,-29,9
+"Texas","Grayson County","2020-05-20",6,6,NA,NA,-28,9
+"Texas","Grayson County","2020-05-21",4,8,114,NA,-29,9
 "Texas","Gregg County","2020-02-15",3,1,3,NA,1,0
 "Texas","Gregg County","2020-02-16",8,0,25,NA,0,-1
 "Texas","Gregg County","2020-02-17",3,-5,12,NA,-11,3
@@ -6722,9 +7070,14 @@
 "Texas","Gregg County","2020-05-11",-11,-3,15,NA,-27,9
 "Texas","Gregg County","2020-05-12",-6,4,17,NA,-26,10
 "Texas","Gregg County","2020-05-13",-5,5,47,NA,-27,10
-"Texas","Gregg County","2020-05-14",-9,3,25,NA,-28,NA
+"Texas","Gregg County","2020-05-14",-9,3,25,NA,-28,9
 "Texas","Gregg County","2020-05-15",-14,0,30,NA,-29,11
 "Texas","Gregg County","2020-05-16",-21,-3,-24,NA,-17,9
+"Texas","Gregg County","2020-05-17",-12,-1,16,NA,-15,5
+"Texas","Gregg County","2020-05-18",-7,-2,26,NA,-25,8
+"Texas","Gregg County","2020-05-19",-3,3,24,NA,-25,8
+"Texas","Gregg County","2020-05-20",-2,4,48,NA,-25,8
+"Texas","Gregg County","2020-05-21",-4,2,32,NA,-25,8
 "Texas","Grimes County","2020-02-15",6,-12,NA,NA,1,NA
 "Texas","Grimes County","2020-02-16",8,-7,NA,NA,-1,NA
 "Texas","Grimes County","2020-02-17",4,-7,NA,NA,-19,NA
@@ -6817,6 +7170,11 @@
 "Texas","Grimes County","2020-05-14",-3,NA,NA,NA,-33,NA
 "Texas","Grimes County","2020-05-15",NA,NA,NA,NA,-32,NA
 "Texas","Grimes County","2020-05-16",NA,NA,NA,NA,-27,NA
+"Texas","Grimes County","2020-05-17",NA,NA,NA,NA,-24,NA
+"Texas","Grimes County","2020-05-18",NA,NA,NA,NA,-27,NA
+"Texas","Grimes County","2020-05-19",NA,NA,NA,NA,-27,NA
+"Texas","Grimes County","2020-05-20",NA,NA,NA,NA,-27,NA
+"Texas","Grimes County","2020-05-21",NA,NA,NA,NA,-29,NA
 "Texas","Guadalupe County","2020-02-15",3,2,31,16,-3,-1
 "Texas","Guadalupe County","2020-02-16",10,3,40,19,0,-2
 "Texas","Guadalupe County","2020-02-17",9,2,20,9,-22,4
@@ -6906,9 +7264,14 @@
 "Texas","Guadalupe County","2020-05-11",-11,-7,28,-13,-37,13
 "Texas","Guadalupe County","2020-05-12",-17,-11,-19,-15,-41,18
 "Texas","Guadalupe County","2020-05-13",-8,0,36,-13,-39,16
-"Texas","Guadalupe County","2020-05-14",-12,0,NA,-15,-40,NA
+"Texas","Guadalupe County","2020-05-14",-12,0,NA,-15,-40,16
 "Texas","Guadalupe County","2020-05-15",-17,-2,37,-9,-38,16
 "Texas","Guadalupe County","2020-05-16",-19,-4,-1,-26,-22,9
+"Texas","Guadalupe County","2020-05-17",-12,-7,22,-12,-23,7
+"Texas","Guadalupe County","2020-05-18",-8,-7,26,-27,-34,12
+"Texas","Guadalupe County","2020-05-19",-9,0,23,-15,-37,14
+"Texas","Guadalupe County","2020-05-20",-3,3,23,-14,-38,15
+"Texas","Guadalupe County","2020-05-21",-6,1,NA,-19,-38,14
 "Texas","Hale County","2020-02-15",8,2,NA,NA,7,NA
 "Texas","Hale County","2020-02-16",6,10,NA,NA,0,NA
 "Texas","Hale County","2020-02-17",5,-1,NA,NA,-8,2
@@ -6998,9 +7361,14 @@
 "Texas","Hale County","2020-05-11",-8,2,NA,NA,-29,NA
 "Texas","Hale County","2020-05-12",NA,2,NA,NA,-29,9
 "Texas","Hale County","2020-05-13",-1,3,NA,NA,-32,9
-"Texas","Hale County","2020-05-14",0,5,NA,NA,-29,NA
+"Texas","Hale County","2020-05-14",0,5,NA,NA,-29,8
 "Texas","Hale County","2020-05-15",-10,-2,NA,NA,-31,NA
 "Texas","Hale County","2020-05-16",-4,16,NA,NA,-9,NA
+"Texas","Hale County","2020-05-17",-2,11,NA,NA,-18,NA
+"Texas","Hale County","2020-05-18",6,4,NA,NA,-28,NA
+"Texas","Hale County","2020-05-19",9,3,NA,NA,-28,7
+"Texas","Hale County","2020-05-20",6,9,NA,NA,-29,8
+"Texas","Hale County","2020-05-21",4,10,NA,NA,-28,6
 "Texas","Hall County","2020-02-15",NA,NA,NA,6,NA,NA
 "Texas","Hall County","2020-02-16",NA,NA,NA,2,NA,NA
 "Texas","Hall County","2020-02-17",NA,NA,NA,0,NA,NA
@@ -7080,6 +7448,9 @@
 "Texas","Hall County","2020-05-14",NA,NA,NA,-9,NA,NA
 "Texas","Hall County","2020-05-15",NA,NA,NA,2,NA,NA
 "Texas","Hall County","2020-05-16",NA,NA,NA,14,NA,NA
+"Texas","Hall County","2020-05-17",NA,NA,NA,5,NA,NA
+"Texas","Hall County","2020-05-19",NA,NA,NA,13,NA,NA
+"Texas","Hall County","2020-05-20",NA,NA,NA,11,NA,NA
 "Texas","Hamilton County","2020-02-15",0,5,NA,NA,NA,NA
 "Texas","Hamilton County","2020-02-16",11,9,NA,NA,NA,NA
 "Texas","Hamilton County","2020-02-17",22,14,NA,NA,-15,NA
@@ -7161,6 +7532,10 @@
 "Texas","Hamilton County","2020-05-13",NA,NA,NA,NA,-21,NA
 "Texas","Hamilton County","2020-05-14",NA,NA,NA,NA,-24,NA
 "Texas","Hamilton County","2020-05-15",NA,NA,NA,NA,-25,NA
+"Texas","Hamilton County","2020-05-18",NA,NA,NA,NA,-16,NA
+"Texas","Hamilton County","2020-05-19",NA,NA,NA,NA,-23,NA
+"Texas","Hamilton County","2020-05-20",NA,NA,NA,NA,-21,NA
+"Texas","Hamilton County","2020-05-21",NA,NA,NA,NA,-24,NA
 "Texas","Hardeman County","2020-02-15",NA,10,NA,-1,NA,NA
 "Texas","Hardeman County","2020-02-16",NA,-6,NA,12,NA,NA
 "Texas","Hardeman County","2020-02-17",NA,2,NA,16,NA,NA
@@ -7253,6 +7628,11 @@
 "Texas","Hardeman County","2020-05-14",NA,NA,NA,4,NA,NA
 "Texas","Hardeman County","2020-05-15",NA,NA,NA,7,NA,NA
 "Texas","Hardeman County","2020-05-16",NA,NA,NA,13,NA,NA
+"Texas","Hardeman County","2020-05-17",NA,NA,NA,-2,NA,NA
+"Texas","Hardeman County","2020-05-18",NA,NA,NA,1,NA,NA
+"Texas","Hardeman County","2020-05-19",NA,NA,NA,13,NA,NA
+"Texas","Hardeman County","2020-05-20",NA,NA,NA,22,NA,NA
+"Texas","Hardeman County","2020-05-21",NA,NA,NA,12,NA,NA
 "Texas","Hardin County","2020-02-15",0,5,NA,NA,7,NA
 "Texas","Hardin County","2020-02-16",4,4,NA,NA,6,NA
 "Texas","Hardin County","2020-02-17",-4,-1,NA,NA,-14,3
@@ -7345,6 +7725,11 @@
 "Texas","Hardin County","2020-05-14",-16,-7,NA,NA,-30,11
 "Texas","Hardin County","2020-05-15",-15,-4,NA,NA,-30,13
 "Texas","Hardin County","2020-05-16",-12,-3,NA,NA,-15,NA
+"Texas","Hardin County","2020-05-17",-8,-1,NA,NA,-14,NA
+"Texas","Hardin County","2020-05-18",-3,-2,NA,NA,-21,7
+"Texas","Hardin County","2020-05-19",-2,-3,NA,NA,-24,9
+"Texas","Hardin County","2020-05-20",0,3,NA,NA,-25,9
+"Texas","Hardin County","2020-05-21",-2,3,NA,NA,-29,9
 "Texas","Harris County","2020-02-15",3,2,13,0,2,-1
 "Texas","Harris County","2020-02-16",6,1,16,-2,0,-1
 "Texas","Harris County","2020-02-17",6,2,27,-3,-13,3
@@ -7434,9 +7819,14 @@
 "Texas","Harris County","2020-05-11",-22,-9,5,-48,-40,15
 "Texas","Harris County","2020-05-12",-20,-6,2,-47,-40,17
 "Texas","Harris County","2020-05-13",-20,-3,16,-46,-40,16
-"Texas","Harris County","2020-05-14",-21,-5,6,-48,-41,NA
+"Texas","Harris County","2020-05-14",-21,-5,6,-48,-41,17
 "Texas","Harris County","2020-05-15",-29,-11,-30,-51,-41,19
 "Texas","Harris County","2020-05-16",-24,-2,-34,-46,-25,11
+"Texas","Harris County","2020-05-17",-24,-9,-16,-52,-22,8
+"Texas","Harris County","2020-05-18",-17,-7,5,-48,-37,14
+"Texas","Harris County","2020-05-19",-16,-5,5,-46,-38,15
+"Texas","Harris County","2020-05-20",-15,-2,20,-44,-39,15
+"Texas","Harris County","2020-05-21",-16,-4,13,-45,-39,15
 "Texas","Harrison County","2020-02-15",6,2,-1,NA,-4,0
 "Texas","Harrison County","2020-02-16",11,3,23,NA,3,NA
 "Texas","Harrison County","2020-02-17",0,-4,7,NA,-18,4
@@ -7526,9 +7916,14 @@
 "Texas","Harrison County","2020-05-11",-6,7,-21,NA,-29,10
 "Texas","Harrison County","2020-05-12",1,9,-6,NA,-30,10
 "Texas","Harrison County","2020-05-13",1,15,1,NA,-28,8
-"Texas","Harrison County","2020-05-14",-5,8,-8,NA,-30,NA
+"Texas","Harrison County","2020-05-14",-5,8,-8,NA,-30,9
 "Texas","Harrison County","2020-05-15",-11,5,-6,NA,-31,11
 "Texas","Harrison County","2020-05-16",-15,7,-27,NA,-23,NA
+"Texas","Harrison County","2020-05-17",-8,9,-1,NA,-19,NA
+"Texas","Harrison County","2020-05-18",-4,7,-26,NA,-28,9
+"Texas","Harrison County","2020-05-19",2,12,0,NA,-27,9
+"Texas","Harrison County","2020-05-20",-2,21,0,NA,-28,8
+"Texas","Harrison County","2020-05-21",-1,11,5,NA,-28,8
 "Texas","Hartley County","2020-02-16",NA,-2,NA,NA,NA,NA
 "Texas","Hartley County","2020-02-17",NA,-9,NA,NA,NA,NA
 "Texas","Hartley County","2020-02-19",NA,-9,NA,NA,NA,NA
@@ -7687,9 +8082,14 @@
 "Texas","Hays County","2020-05-11",-21,-13,-13,1,-42,16
 "Texas","Hays County","2020-05-12",-35,-25,-43,-5,-46,22
 "Texas","Hays County","2020-05-13",-14,-3,NA,13,-42,17
-"Texas","Hays County","2020-05-14",-19,-8,-7,2,-44,NA
+"Texas","Hays County","2020-05-14",-19,-8,-7,2,-44,18
 "Texas","Hays County","2020-05-15",-22,-7,-15,-6,-40,17
 "Texas","Hays County","2020-05-16",-25,-7,-19,-8,-24,10
+"Texas","Hays County","2020-05-17",-20,-11,-10,NA,-23,7
+"Texas","Hays County","2020-05-18",-17,-11,-10,7,-41,15
+"Texas","Hays County","2020-05-19",-15,-8,-9,0,-43,16
+"Texas","Hays County","2020-05-20",-13,-5,NA,11,-41,16
+"Texas","Hays County","2020-05-21",-13,-4,-8,5,-43,16
 "Texas","Henderson County","2020-02-15",5,2,NA,NA,2,-1
 "Texas","Henderson County","2020-02-16",9,3,NA,NA,3,-1
 "Texas","Henderson County","2020-02-17",2,-5,NA,NA,-16,2
@@ -7779,9 +8179,14 @@
 "Texas","Henderson County","2020-05-11",3,6,NA,NA,-24,7
 "Texas","Henderson County","2020-05-12",0,9,NA,NA,-25,9
 "Texas","Henderson County","2020-05-13",6,9,NA,NA,-23,7
-"Texas","Henderson County","2020-05-14",3,8,NA,NA,-23,NA
+"Texas","Henderson County","2020-05-14",3,8,NA,NA,-23,7
 "Texas","Henderson County","2020-05-15",-2,7,NA,NA,-24,8
 "Texas","Henderson County","2020-05-16",-12,5,-31,NA,-16,8
+"Texas","Henderson County","2020-05-17",-1,12,NA,NA,-17,4
+"Texas","Henderson County","2020-05-18",2,9,NA,NA,-22,6
+"Texas","Henderson County","2020-05-19",2,11,NA,NA,-22,7
+"Texas","Henderson County","2020-05-20",11,12,NA,NA,-21,6
+"Texas","Henderson County","2020-05-21",5,9,NA,NA,-25,5
 "Texas","Hidalgo County","2020-02-15",3,1,10,3,2,-1
 "Texas","Hidalgo County","2020-02-16",7,0,10,1,-1,-1
 "Texas","Hidalgo County","2020-02-17",4,0,4,8,4,-2
@@ -7871,9 +8276,14 @@
 "Texas","Hidalgo County","2020-05-11",-23,-16,-32,-32,-35,12
 "Texas","Hidalgo County","2020-05-12",-22,-10,-29,-32,-40,15
 "Texas","Hidalgo County","2020-05-13",-22,-10,-30,-33,-40,15
-"Texas","Hidalgo County","2020-05-14",-22,-10,-31,-35,-40,NA
+"Texas","Hidalgo County","2020-05-14",-22,-10,-31,-35,-40,15
 "Texas","Hidalgo County","2020-05-15",-26,-8,-36,-36,-39,16
 "Texas","Hidalgo County","2020-05-16",-32,-11,-48,-42,-23,11
+"Texas","Hidalgo County","2020-05-17",-28,-14,-42,-49,-18,7
+"Texas","Hidalgo County","2020-05-18",-19,-13,-33,-33,-30,10
+"Texas","Hidalgo County","2020-05-19",-18,-9,-30,-29,-37,14
+"Texas","Hidalgo County","2020-05-20",-18,-9,-28,-33,-38,14
+"Texas","Hidalgo County","2020-05-21",-18,-7,-29,-30,-39,14
 "Texas","Hill County","2020-02-15",2,6,NA,8,4,NA
 "Texas","Hill County","2020-02-16",11,2,NA,10,1,NA
 "Texas","Hill County","2020-02-17",9,8,NA,13,-14,3
@@ -7966,6 +8376,11 @@
 "Texas","Hill County","2020-05-14",-8,8,NA,-19,-25,5
 "Texas","Hill County","2020-05-15",-14,5,NA,-19,-26,9
 "Texas","Hill County","2020-05-16",-26,-6,NA,-22,-17,NA
+"Texas","Hill County","2020-05-17",-5,5,NA,-17,-13,NA
+"Texas","Hill County","2020-05-18",-2,14,NA,-20,-23,7
+"Texas","Hill County","2020-05-19",-1,NA,NA,-11,-24,8
+"Texas","Hill County","2020-05-20",1,NA,NA,-10,-23,6
+"Texas","Hill County","2020-05-21",-1,NA,NA,-11,-24,6
 "Texas","Hockley County","2020-02-15",45,10,NA,NA,1,NA
 "Texas","Hockley County","2020-02-16",10,5,NA,NA,-6,NA
 "Texas","Hockley County","2020-02-17",8,-2,NA,NA,-23,NA
@@ -8058,6 +8473,11 @@
 "Texas","Hockley County","2020-05-14",-6,NA,NA,NA,-27,NA
 "Texas","Hockley County","2020-05-15",-15,NA,NA,NA,-30,NA
 "Texas","Hockley County","2020-05-16",-5,NA,NA,NA,-8,NA
+"Texas","Hockley County","2020-05-17",-1,NA,NA,NA,-13,NA
+"Texas","Hockley County","2020-05-18",0,NA,NA,NA,-26,NA
+"Texas","Hockley County","2020-05-19",1,NA,NA,NA,-28,NA
+"Texas","Hockley County","2020-05-20",4,NA,NA,NA,-27,NA
+"Texas","Hockley County","2020-05-21",-2,NA,NA,NA,-26,NA
 "Texas","Hood County","2020-02-15",9,4,NA,NA,1,0
 "Texas","Hood County","2020-02-16",8,0,NA,NA,-1,NA
 "Texas","Hood County","2020-02-17",4,-2,NA,NA,-18,3
@@ -8147,9 +8567,14 @@
 "Texas","Hood County","2020-05-11",0,6,NA,NA,-30,9
 "Texas","Hood County","2020-05-12",-2,10,NA,NA,-30,11
 "Texas","Hood County","2020-05-13",6,22,NA,NA,-29,9
-"Texas","Hood County","2020-05-14",6,20,NA,NA,-30,NA
+"Texas","Hood County","2020-05-14",6,20,NA,NA,-30,8
 "Texas","Hood County","2020-05-15",-3,11,NA,NA,-30,10
 "Texas","Hood County","2020-05-16",-12,10,-20,NA,-18,NA
+"Texas","Hood County","2020-05-17",2,12,NA,NA,-22,NA
+"Texas","Hood County","2020-05-18",0,12,NA,NA,-29,8
+"Texas","Hood County","2020-05-19",6,13,NA,NA,-28,9
+"Texas","Hood County","2020-05-20",12,28,NA,NA,-28,7
+"Texas","Hood County","2020-05-21",12,29,NA,NA,-28,8
 "Texas","Hopkins County","2020-02-15",0,9,NA,1,2,NA
 "Texas","Hopkins County","2020-02-16",4,19,NA,1,3,NA
 "Texas","Hopkins County","2020-02-17",2,-7,NA,6,-12,3
@@ -8239,9 +8664,14 @@
 "Texas","Hopkins County","2020-05-11",-1,1,NA,-14,-25,7
 "Texas","Hopkins County","2020-05-12",-4,0,NA,-23,-22,11
 "Texas","Hopkins County","2020-05-13",7,3,NA,-15,-22,6
-"Texas","Hopkins County","2020-05-14",0,-2,NA,-15,-19,NA
+"Texas","Hopkins County","2020-05-14",0,-2,NA,-15,-19,7
 "Texas","Hopkins County","2020-05-15",-10,2,NA,-14,-18,9
 "Texas","Hopkins County","2020-05-16",-10,-2,NA,-14,-7,NA
+"Texas","Hopkins County","2020-05-17",2,NA,NA,-16,-9,NA
+"Texas","Hopkins County","2020-05-18",2,4,NA,-14,-20,6
+"Texas","Hopkins County","2020-05-19",0,8,NA,-17,-19,7
+"Texas","Hopkins County","2020-05-20",9,8,NA,-12,-18,6
+"Texas","Hopkins County","2020-05-21",7,6,NA,-9,-22,6
 "Texas","Houston County","2020-02-15",3,8,NA,NA,-5,NA
 "Texas","Houston County","2020-02-16",-1,12,NA,NA,-2,NA
 "Texas","Houston County","2020-02-17",6,7,NA,NA,-16,NA
@@ -8334,6 +8764,11 @@
 "Texas","Houston County","2020-05-14",NA,NA,NA,NA,-17,NA
 "Texas","Houston County","2020-05-15",NA,NA,NA,NA,-23,NA
 "Texas","Houston County","2020-05-16",NA,NA,NA,NA,-19,NA
+"Texas","Houston County","2020-05-17",NA,NA,NA,NA,-16,NA
+"Texas","Houston County","2020-05-18",NA,NA,NA,NA,-14,NA
+"Texas","Houston County","2020-05-19",NA,NA,NA,NA,-15,NA
+"Texas","Houston County","2020-05-20",NA,NA,NA,NA,-21,NA
+"Texas","Houston County","2020-05-21",NA,NA,NA,NA,-17,NA
 "Texas","Howard County","2020-02-15",8,-4,NA,2,2,NA
 "Texas","Howard County","2020-02-16",8,1,NA,12,13,NA
 "Texas","Howard County","2020-02-17",3,-4,NA,7,-23,5
@@ -8426,6 +8861,11 @@
 "Texas","Howard County","2020-05-14",-21,0,NA,-36,-30,9
 "Texas","Howard County","2020-05-15",-29,-11,NA,-43,-31,16
 "Texas","Howard County","2020-05-16",-17,6,NA,-42,-22,NA
+"Texas","Howard County","2020-05-17",-21,-3,NA,-35,-16,NA
+"Texas","Howard County","2020-05-18",-18,-3,NA,-39,-27,11
+"Texas","Howard County","2020-05-19",-20,-4,NA,-44,-31,12
+"Texas","Howard County","2020-05-20",-22,0,NA,-34,-28,11
+"Texas","Howard County","2020-05-21",-16,4,NA,-30,-30,10
 "Texas","Hunt County","2020-02-15",1,-3,NA,3,1,-1
 "Texas","Hunt County","2020-02-16",7,3,NA,4,-1,-1
 "Texas","Hunt County","2020-02-17",5,1,NA,-1,-16,3
@@ -8515,9 +8955,14 @@
 "Texas","Hunt County","2020-05-11",-7,7,NA,-16,-31,10
 "Texas","Hunt County","2020-05-12",-8,-2,NA,-21,-33,13
 "Texas","Hunt County","2020-05-13",-3,8,NA,-15,-30,10
-"Texas","Hunt County","2020-05-14",-4,8,NA,-16,-33,NA
+"Texas","Hunt County","2020-05-14",-4,8,NA,-16,-33,10
 "Texas","Hunt County","2020-05-15",-10,4,NA,-21,-33,10
 "Texas","Hunt County","2020-05-16",-18,-2,NA,-25,-17,9
+"Texas","Hunt County","2020-05-17",0,10,NA,-20,-16,5
+"Texas","Hunt County","2020-05-18",-3,8,NA,-19,-30,9
+"Texas","Hunt County","2020-05-19",0,3,NA,-22,-31,10
+"Texas","Hunt County","2020-05-20",-1,10,NA,-14,-29,9
+"Texas","Hunt County","2020-05-21",-2,9,NA,-15,-30,9
 "Texas","Hutchinson County","2020-02-15",4,6,NA,NA,3,NA
 "Texas","Hutchinson County","2020-02-16",7,5,NA,NA,-2,NA
 "Texas","Hutchinson County","2020-02-17",2,-8,NA,NA,-31,NA
@@ -8610,6 +9055,11 @@
 "Texas","Hutchinson County","2020-05-14",-5,NA,NA,NA,-30,NA
 "Texas","Hutchinson County","2020-05-15",-2,NA,NA,NA,-31,NA
 "Texas","Hutchinson County","2020-05-16",5,NA,NA,NA,-13,NA
+"Texas","Hutchinson County","2020-05-17",NA,NA,NA,NA,-10,NA
+"Texas","Hutchinson County","2020-05-18",NA,NA,NA,NA,-26,NA
+"Texas","Hutchinson County","2020-05-19",NA,NA,NA,NA,-24,NA
+"Texas","Hutchinson County","2020-05-20",NA,NA,NA,NA,-31,NA
+"Texas","Hutchinson County","2020-05-21",3,NA,NA,NA,-28,NA
 "Texas","Jack County","2020-02-15",9,NA,NA,NA,NA,NA
 "Texas","Jack County","2020-02-17",2,NA,NA,NA,-18,NA
 "Texas","Jack County","2020-02-18",NA,NA,NA,NA,-6,NA
@@ -8683,6 +9133,10 @@
 "Texas","Jack County","2020-05-13",NA,NA,NA,NA,-20,NA
 "Texas","Jack County","2020-05-14",NA,NA,NA,NA,-18,NA
 "Texas","Jack County","2020-05-15",NA,NA,NA,NA,-20,NA
+"Texas","Jack County","2020-05-18",NA,NA,NA,NA,-14,NA
+"Texas","Jack County","2020-05-19",NA,NA,NA,NA,-26,NA
+"Texas","Jack County","2020-05-20",NA,NA,NA,NA,-27,NA
+"Texas","Jack County","2020-05-21",NA,NA,NA,NA,-26,NA
 "Texas","Jackson County","2020-02-15",-2,-1,NA,-6,NA,NA
 "Texas","Jackson County","2020-02-16",7,1,NA,1,NA,NA
 "Texas","Jackson County","2020-02-17",4,-5,NA,4,-20,NA
@@ -8775,6 +9229,11 @@
 "Texas","Jackson County","2020-05-14",NA,NA,NA,-13,-27,NA
 "Texas","Jackson County","2020-05-15",NA,NA,NA,-20,-29,NA
 "Texas","Jackson County","2020-05-16",NA,NA,NA,-30,-14,NA
+"Texas","Jackson County","2020-05-17",NA,NA,NA,-11,NA,NA
+"Texas","Jackson County","2020-05-18",NA,NA,NA,-13,-21,NA
+"Texas","Jackson County","2020-05-19",NA,NA,NA,-23,-26,NA
+"Texas","Jackson County","2020-05-20",NA,NA,NA,-25,-26,NA
+"Texas","Jackson County","2020-05-21",NA,NA,NA,-22,-23,NA
 "Texas","Jasper County","2020-02-15",1,2,NA,NA,6,NA
 "Texas","Jasper County","2020-02-16",2,-4,NA,NA,5,NA
 "Texas","Jasper County","2020-02-17",-2,-2,10,NA,-15,3
@@ -8867,6 +9326,11 @@
 "Texas","Jasper County","2020-05-14",-1,-12,22,NA,-19,7
 "Texas","Jasper County","2020-05-15",-5,-8,-10,NA,-24,NA
 "Texas","Jasper County","2020-05-16",-7,-2,-9,NA,-7,NA
+"Texas","Jasper County","2020-05-17",-3,NA,NA,NA,-12,NA
+"Texas","Jasper County","2020-05-18",8,-6,10,NA,-13,5
+"Texas","Jasper County","2020-05-19",8,-5,15,NA,-18,7
+"Texas","Jasper County","2020-05-20",7,0,15,NA,-18,6
+"Texas","Jasper County","2020-05-21",9,-2,NA,NA,-20,7
 "Texas","Jefferson County","2020-02-15",7,5,-20,6,4,0
 "Texas","Jefferson County","2020-02-16",6,2,-6,-1,3,-1
 "Texas","Jefferson County","2020-02-17",1,2,-18,1,-11,3
@@ -8956,9 +9420,14 @@
 "Texas","Jefferson County","2020-05-11",-16,-6,22,-5,-26,11
 "Texas","Jefferson County","2020-05-12",-13,-7,43,-9,-28,12
 "Texas","Jefferson County","2020-05-13",-12,-5,45,-3,-27,11
-"Texas","Jefferson County","2020-05-14",-25,-15,-15,-12,-31,NA
+"Texas","Jefferson County","2020-05-14",-25,-15,-15,-12,-31,15
 "Texas","Jefferson County","2020-05-15",-23,-7,-18,-13,-31,16
 "Texas","Jefferson County","2020-05-16",-22,-2,-18,-15,-22,11
+"Texas","Jefferson County","2020-05-17",-19,-7,28,-18,-20,7
+"Texas","Jefferson County","2020-05-18",-12,-5,26,-8,-23,9
+"Texas","Jefferson County","2020-05-19",-10,-6,39,-9,-26,11
+"Texas","Jefferson County","2020-05-20",-9,-4,39,-3,-26,10
+"Texas","Jefferson County","2020-05-21",-12,-5,NA,-7,-27,10
 "Texas","Jim Hogg County","2020-02-15",NA,3,NA,NA,NA,NA
 "Texas","Jim Hogg County","2020-02-16",NA,10,NA,NA,NA,NA
 "Texas","Jim Hogg County","2020-02-17",NA,12,NA,NA,NA,NA
@@ -9099,9 +9568,14 @@
 "Texas","Jim Wells County","2020-05-11",-10,-2,NA,NA,-28,11
 "Texas","Jim Wells County","2020-05-12",-7,-1,NA,NA,-30,12
 "Texas","Jim Wells County","2020-05-13",-8,-1,NA,NA,-29,11
-"Texas","Jim Wells County","2020-05-14",-13,-3,NA,NA,-31,NA
+"Texas","Jim Wells County","2020-05-14",-13,-3,NA,NA,-31,12
 "Texas","Jim Wells County","2020-05-15",-14,-5,NA,NA,-29,12
 "Texas","Jim Wells County","2020-05-16",-13,-7,NA,NA,-13,NA
+"Texas","Jim Wells County","2020-05-17",-11,-7,NA,NA,-16,NA
+"Texas","Jim Wells County","2020-05-18",-6,0,NA,NA,-26,9
+"Texas","Jim Wells County","2020-05-19",-7,-6,NA,NA,-29,11
+"Texas","Jim Wells County","2020-05-20",-5,-1,NA,NA,-28,9
+"Texas","Jim Wells County","2020-05-21",-7,2,NA,NA,-30,11
 "Texas","Johnson County","2020-02-15",1,-2,26,NA,1,-1
 "Texas","Johnson County","2020-02-16",10,2,58,NA,2,-1
 "Texas","Johnson County","2020-02-17",8,-1,83,NA,-19,4
@@ -9191,9 +9665,14 @@
 "Texas","Johnson County","2020-05-11",-2,-1,41,NA,-33,11
 "Texas","Johnson County","2020-05-12",-5,-2,21,NA,-33,13
 "Texas","Johnson County","2020-05-13",1,5,59,NA,-32,12
-"Texas","Johnson County","2020-05-14",-3,4,47,NA,-34,NA
+"Texas","Johnson County","2020-05-14",-3,4,47,NA,-34,11
 "Texas","Johnson County","2020-05-15",-6,3,48,NA,-33,11
 "Texas","Johnson County","2020-05-16",-22,-11,-51,NA,-21,11
+"Texas","Johnson County","2020-05-17",-1,0,28,NA,-20,5
+"Texas","Johnson County","2020-05-18",1,1,29,NA,-32,11
+"Texas","Johnson County","2020-05-19",1,2,41,NA,-32,11
+"Texas","Johnson County","2020-05-20",6,8,74,NA,-31,10
+"Texas","Johnson County","2020-05-21",2,7,51,NA,-34,10
 "Texas","Jones County","2020-02-15",0,1,NA,NA,-8,NA
 "Texas","Jones County","2020-02-16",NA,-3,NA,NA,-7,NA
 "Texas","Jones County","2020-02-17",-30,-11,NA,NA,-21,NA
@@ -9286,6 +9765,11 @@
 "Texas","Jones County","2020-05-14",NA,NA,NA,NA,-28,NA
 "Texas","Jones County","2020-05-15",NA,NA,NA,NA,-27,NA
 "Texas","Jones County","2020-05-16",NA,NA,NA,NA,-9,NA
+"Texas","Jones County","2020-05-17",NA,NA,NA,NA,-12,NA
+"Texas","Jones County","2020-05-18",NA,NA,NA,NA,-20,NA
+"Texas","Jones County","2020-05-19",NA,NA,NA,NA,-26,NA
+"Texas","Jones County","2020-05-20",NA,NA,NA,NA,-25,NA
+"Texas","Jones County","2020-05-21",NA,NA,NA,NA,-24,NA
 "Texas","Karnes County","2020-02-15",4,1,NA,NA,4,NA
 "Texas","Karnes County","2020-02-16",12,9,NA,NA,NA,NA
 "Texas","Karnes County","2020-02-17",-3,-2,NA,NA,-10,NA
@@ -9378,6 +9862,11 @@
 "Texas","Karnes County","2020-05-14",-25,NA,NA,-64,-22,NA
 "Texas","Karnes County","2020-05-15",-34,NA,NA,-65,-23,NA
 "Texas","Karnes County","2020-05-16",NA,NA,NA,NA,-18,NA
+"Texas","Karnes County","2020-05-17",NA,NA,NA,NA,-22,NA
+"Texas","Karnes County","2020-05-18",NA,NA,NA,-64,-21,NA
+"Texas","Karnes County","2020-05-19",-31,NA,NA,NA,-21,NA
+"Texas","Karnes County","2020-05-20",-30,NA,NA,-40,-20,NA
+"Texas","Karnes County","2020-05-21",-25,NA,NA,-47,-19,NA
 "Texas","Kaufman County","2020-02-15",2,6,NA,-1,3,0
 "Texas","Kaufman County","2020-02-16",8,8,NA,2,0,-1
 "Texas","Kaufman County","2020-02-17",4,8,NA,-4,-21,5
@@ -9467,9 +9956,14 @@
 "Texas","Kaufman County","2020-05-11",-7,1,NA,-17,-36,14
 "Texas","Kaufman County","2020-05-12",-10,-1,NA,-17,-37,17
 "Texas","Kaufman County","2020-05-13",-1,11,NA,-9,-35,14
-"Texas","Kaufman County","2020-05-14",-7,10,NA,-8,-37,NA
+"Texas","Kaufman County","2020-05-14",-7,10,NA,-8,-37,14
 "Texas","Kaufman County","2020-05-15",-10,5,NA,-4,-36,14
 "Texas","Kaufman County","2020-05-16",-31,-13,NA,-7,-20,13
+"Texas","Kaufman County","2020-05-17",-15,3,NA,11,-21,6
+"Texas","Kaufman County","2020-05-18",-5,3,NA,-14,-36,13
+"Texas","Kaufman County","2020-05-19",1,7,NA,-12,-35,14
+"Texas","Kaufman County","2020-05-20",7,18,NA,-11,-34,12
+"Texas","Kaufman County","2020-05-21",0,16,NA,-9,-35,13
 "Texas","Kendall County","2020-02-15",1,-3,NA,2,1,NA
 "Texas","Kendall County","2020-02-16",10,0,NA,1,-2,NA
 "Texas","Kendall County","2020-02-17",8,-5,NA,14,-20,5
@@ -9562,6 +10056,11 @@
 "Texas","Kendall County","2020-05-14",-18,-5,NA,-14,-35,NA
 "Texas","Kendall County","2020-05-15",-17,-3,NA,-14,-30,NA
 "Texas","Kendall County","2020-05-16",-19,-5,NA,-22,-16,NA
+"Texas","Kendall County","2020-05-17",-17,-16,NA,-19,-26,NA
+"Texas","Kendall County","2020-05-18",-7,-4,NA,-15,-30,NA
+"Texas","Kendall County","2020-05-19",-10,-6,NA,-20,-34,NA
+"Texas","Kendall County","2020-05-20",-7,-1,NA,-11,-31,13
+"Texas","Kendall County","2020-05-21",-10,2,NA,-3,-33,NA
 "Texas","Kerr County","2020-02-15",3,-2,5,NA,3,NA
 "Texas","Kerr County","2020-02-16",9,-5,26,NA,6,NA
 "Texas","Kerr County","2020-02-17",4,-7,14,NA,-17,4
@@ -9654,6 +10153,11 @@
 "Texas","Kerr County","2020-05-14",-3,-5,NA,NA,-23,7
 "Texas","Kerr County","2020-05-15",-13,-13,16,NA,-20,10
 "Texas","Kerr County","2020-05-16",-7,-8,32,NA,-12,NA
+"Texas","Kerr County","2020-05-17",-7,-12,47,NA,-17,NA
+"Texas","Kerr County","2020-05-18",-5,-14,17,NA,-23,7
+"Texas","Kerr County","2020-05-19",-4,-10,32,NA,-22,7
+"Texas","Kerr County","2020-05-20",-3,-5,NA,NA,-24,7
+"Texas","Kerr County","2020-05-21",0,-1,NA,NA,-22,7
 "Texas","Kimble County","2020-02-15",33,NA,NA,9,NA,NA
 "Texas","Kimble County","2020-02-16",35,NA,NA,15,NA,NA
 "Texas","Kimble County","2020-02-17",69,NA,NA,16,NA,NA
@@ -9746,6 +10250,11 @@
 "Texas","Kimble County","2020-05-14",NA,NA,NA,-12,NA,NA
 "Texas","Kimble County","2020-05-15",NA,NA,NA,-2,NA,NA
 "Texas","Kimble County","2020-05-16",NA,NA,NA,2,NA,NA
+"Texas","Kimble County","2020-05-17",NA,NA,NA,-7,NA,NA
+"Texas","Kimble County","2020-05-18",NA,NA,NA,-10,NA,NA
+"Texas","Kimble County","2020-05-19",NA,NA,NA,-10,NA,NA
+"Texas","Kimble County","2020-05-20",NA,NA,NA,-10,NA,NA
+"Texas","Kimble County","2020-05-21",NA,NA,NA,-3,NA,NA
 "Texas","Kleberg County","2020-02-15",2,-1,97,25,2,NA
 "Texas","Kleberg County","2020-02-16",8,4,42,12,2,NA
 "Texas","Kleberg County","2020-02-17",5,2,NA,1,-7,2
@@ -9835,9 +10344,14 @@
 "Texas","Kleberg County","2020-05-11",-11,3,NA,-8,-36,NA
 "Texas","Kleberg County","2020-05-12",-8,-4,NA,-19,-37,14
 "Texas","Kleberg County","2020-05-13",-9,4,NA,-23,-37,14
-"Texas","Kleberg County","2020-05-14",-18,4,NA,-20,-36,NA
+"Texas","Kleberg County","2020-05-14",-18,4,NA,-20,-36,16
 "Texas","Kleberg County","2020-05-15",-18,1,28,-19,-33,NA
 "Texas","Kleberg County","2020-05-16",-16,-4,51,-18,-21,NA
+"Texas","Kleberg County","2020-05-17",-9,-4,NA,-11,-14,NA
+"Texas","Kleberg County","2020-05-18",-9,2,NA,-16,-30,10
+"Texas","Kleberg County","2020-05-19",-6,1,NA,-10,-34,13
+"Texas","Kleberg County","2020-05-20",-8,3,NA,-13,-34,13
+"Texas","Kleberg County","2020-05-21",-17,10,NA,8,-35,14
 "Texas","La Salle County","2020-02-15",-25,2,NA,-15,NA,NA
 "Texas","La Salle County","2020-02-16",-1,-6,NA,-6,NA,NA
 "Texas","La Salle County","2020-02-17",-2,-2,NA,-4,NA,NA
@@ -9930,6 +10444,11 @@
 "Texas","La Salle County","2020-05-14",NA,NA,NA,-38,NA,NA
 "Texas","La Salle County","2020-05-15",NA,NA,NA,-37,NA,NA
 "Texas","La Salle County","2020-05-16",NA,NA,NA,-43,NA,NA
+"Texas","La Salle County","2020-05-17",NA,NA,NA,-38,NA,NA
+"Texas","La Salle County","2020-05-18",NA,NA,NA,-36,NA,NA
+"Texas","La Salle County","2020-05-19",NA,NA,NA,-35,NA,NA
+"Texas","La Salle County","2020-05-20",NA,NA,NA,-31,NA,NA
+"Texas","La Salle County","2020-05-21",NA,NA,NA,-40,NA,NA
 "Texas","Lamar County","2020-02-15",6,-4,NA,NA,2,NA
 "Texas","Lamar County","2020-02-16",15,6,NA,NA,8,NA
 "Texas","Lamar County","2020-02-17",6,2,NA,18,-12,3
@@ -10022,6 +10541,11 @@
 "Texas","Lamar County","2020-05-14",-2,9,NA,-8,-23,5
 "Texas","Lamar County","2020-05-15",-6,0,NA,-7,-24,10
 "Texas","Lamar County","2020-05-16",-15,-4,NA,-20,-9,NA
+"Texas","Lamar County","2020-05-17",7,12,NA,NA,-4,NA
+"Texas","Lamar County","2020-05-18",3,9,NA,10,-18,5
+"Texas","Lamar County","2020-05-19",6,5,NA,8,-19,5
+"Texas","Lamar County","2020-05-20",5,22,NA,11,-19,7
+"Texas","Lamar County","2020-05-21",2,16,NA,3,-23,6
 "Texas","Lamb County","2020-02-15",3,2,NA,NA,4,NA
 "Texas","Lamb County","2020-02-16",4,-1,NA,NA,NA,NA
 "Texas","Lamb County","2020-02-17",-12,2,NA,NA,-22,NA
@@ -10114,6 +10638,11 @@
 "Texas","Lamb County","2020-05-14",NA,NA,NA,NA,-25,NA
 "Texas","Lamb County","2020-05-15",NA,NA,NA,NA,-25,NA
 "Texas","Lamb County","2020-05-16",NA,NA,NA,NA,1,NA
+"Texas","Lamb County","2020-05-17",NA,NA,NA,NA,-8,NA
+"Texas","Lamb County","2020-05-18",NA,NA,NA,NA,-26,NA
+"Texas","Lamb County","2020-05-19",NA,NA,NA,NA,-24,NA
+"Texas","Lamb County","2020-05-20",NA,NA,NA,NA,-20,NA
+"Texas","Lamb County","2020-05-21",NA,NA,NA,NA,-21,NA
 "Texas","Lampasas County","2020-02-15",0,-3,NA,NA,-1,NA
 "Texas","Lampasas County","2020-02-16",9,16,NA,NA,-2,NA
 "Texas","Lampasas County","2020-02-17",8,10,NA,NA,-34,NA
@@ -10206,6 +10735,11 @@
 "Texas","Lampasas County","2020-05-14",5,NA,NA,NA,-31,NA
 "Texas","Lampasas County","2020-05-15",-2,NA,NA,NA,-26,NA
 "Texas","Lampasas County","2020-05-16",-10,NA,NA,NA,-7,NA
+"Texas","Lampasas County","2020-05-17",1,NA,NA,NA,-20,NA
+"Texas","Lampasas County","2020-05-18",1,NA,NA,NA,-31,NA
+"Texas","Lampasas County","2020-05-19",10,NA,NA,NA,-31,NA
+"Texas","Lampasas County","2020-05-20",6,NA,NA,NA,-30,NA
+"Texas","Lampasas County","2020-05-21",11,NA,NA,NA,-31,NA
 "Texas","Lavaca County","2020-02-15",9,12,NA,NA,-2,NA
 "Texas","Lavaca County","2020-02-16",5,10,NA,NA,NA,NA
 "Texas","Lavaca County","2020-02-17",2,-2,NA,NA,-21,NA
@@ -10294,6 +10828,10 @@
 "Texas","Lavaca County","2020-05-14",NA,NA,NA,NA,-24,NA
 "Texas","Lavaca County","2020-05-15",NA,NA,NA,NA,-25,NA
 "Texas","Lavaca County","2020-05-16",NA,NA,NA,NA,-17,NA
+"Texas","Lavaca County","2020-05-18",NA,NA,NA,NA,-16,NA
+"Texas","Lavaca County","2020-05-19",NA,NA,NA,NA,-21,NA
+"Texas","Lavaca County","2020-05-20",NA,NA,NA,NA,-21,NA
+"Texas","Lavaca County","2020-05-21",NA,NA,NA,NA,-21,NA
 "Texas","Lee County","2020-02-15",5,1,NA,NA,-6,NA
 "Texas","Lee County","2020-02-16",20,2,NA,NA,NA,NA
 "Texas","Lee County","2020-02-17",4,10,NA,NA,-19,NA
@@ -10385,6 +10923,10 @@
 "Texas","Lee County","2020-05-14",NA,NA,NA,NA,-23,NA
 "Texas","Lee County","2020-05-15",-28,NA,NA,NA,-25,NA
 "Texas","Lee County","2020-05-16",-28,NA,NA,NA,-15,NA
+"Texas","Lee County","2020-05-18",NA,NA,NA,NA,-19,NA
+"Texas","Lee County","2020-05-19",NA,NA,NA,NA,-24,NA
+"Texas","Lee County","2020-05-20",NA,NA,NA,NA,-23,NA
+"Texas","Lee County","2020-05-21",NA,NA,NA,NA,-22,NA
 "Texas","Leon County","2020-02-15",7,4,NA,6,NA,NA
 "Texas","Leon County","2020-02-16",7,10,NA,8,NA,NA
 "Texas","Leon County","2020-02-17",11,16,NA,12,-24,NA
@@ -10477,6 +11019,11 @@
 "Texas","Leon County","2020-05-14",NA,NA,NA,8,-27,NA
 "Texas","Leon County","2020-05-15",NA,NA,NA,6,-27,NA
 "Texas","Leon County","2020-05-16",NA,NA,NA,-13,-11,NA
+"Texas","Leon County","2020-05-17",NA,NA,NA,13,-21,NA
+"Texas","Leon County","2020-05-18",NA,NA,NA,7,-28,NA
+"Texas","Leon County","2020-05-19",NA,NA,NA,-1,-23,NA
+"Texas","Leon County","2020-05-20",NA,NA,NA,11,-28,NA
+"Texas","Leon County","2020-05-21",NA,NA,NA,13,-25,NA
 "Texas","Liberty County","2020-02-15",3,10,NA,-7,6,-1
 "Texas","Liberty County","2020-02-16",3,14,NA,2,6,-1
 "Texas","Liberty County","2020-02-17",1,5,NA,-8,-17,3
@@ -10566,9 +11113,14 @@
 "Texas","Liberty County","2020-05-11",1,9,NA,0,-29,8
 "Texas","Liberty County","2020-05-12",-5,4,NA,-2,-30,10
 "Texas","Liberty County","2020-05-13",-3,6,NA,-3,-28,10
-"Texas","Liberty County","2020-05-14",-8,1,NA,-1,-32,NA
+"Texas","Liberty County","2020-05-14",-8,1,NA,-1,-32,12
 "Texas","Liberty County","2020-05-15",-12,-4,NA,-1,-33,14
 "Texas","Liberty County","2020-05-16",-2,9,NA,-9,-19,9
+"Texas","Liberty County","2020-05-17",-2,13,NA,-4,-12,6
+"Texas","Liberty County","2020-05-18",-2,8,NA,3,-28,7
+"Texas","Liberty County","2020-05-19",-4,10,NA,5,-29,9
+"Texas","Liberty County","2020-05-20",-2,10,NA,6,-28,9
+"Texas","Liberty County","2020-05-21",-5,8,NA,12,-31,10
 "Texas","Limestone County","2020-02-15",0,4,NA,NA,-5,NA
 "Texas","Limestone County","2020-02-16",7,10,NA,NA,-3,NA
 "Texas","Limestone County","2020-02-17",-2,-11,NA,NA,-21,NA
@@ -10661,6 +11213,11 @@
 "Texas","Limestone County","2020-05-14",1,NA,NA,NA,-22,NA
 "Texas","Limestone County","2020-05-15",-6,5,NA,NA,-20,NA
 "Texas","Limestone County","2020-05-16",-23,NA,NA,NA,-11,NA
+"Texas","Limestone County","2020-05-17",NA,NA,NA,NA,-19,NA
+"Texas","Limestone County","2020-05-18",NA,NA,NA,NA,-18,NA
+"Texas","Limestone County","2020-05-19",NA,NA,NA,NA,-21,NA
+"Texas","Limestone County","2020-05-20",NA,NA,NA,NA,-24,NA
+"Texas","Limestone County","2020-05-21",NA,NA,NA,NA,-23,NA
 "Texas","Live Oak County","2020-02-15",16,6,NA,9,6,NA
 "Texas","Live Oak County","2020-02-16",23,3,NA,11,NA,NA
 "Texas","Live Oak County","2020-02-17",13,7,NA,12,-2,NA
@@ -10753,6 +11310,11 @@
 "Texas","Live Oak County","2020-05-14",NA,NA,NA,-7,-33,NA
 "Texas","Live Oak County","2020-05-15",NA,-17,NA,-3,-35,NA
 "Texas","Live Oak County","2020-05-16",NA,NA,NA,-8,-37,NA
+"Texas","Live Oak County","2020-05-17",NA,NA,NA,11,-22,NA
+"Texas","Live Oak County","2020-05-18",NA,NA,NA,-2,-32,NA
+"Texas","Live Oak County","2020-05-19",NA,NA,NA,1,-26,NA
+"Texas","Live Oak County","2020-05-20",NA,NA,NA,1,-32,NA
+"Texas","Live Oak County","2020-05-21",NA,NA,NA,12,-33,NA
 "Texas","Llano County","2020-02-15",0,6,6,NA,-2,NA
 "Texas","Llano County","2020-02-16",20,5,NA,NA,-7,NA
 "Texas","Llano County","2020-02-17",10,4,11,NA,-14,NA
@@ -10845,6 +11407,11 @@
 "Texas","Llano County","2020-05-14",NA,NA,22,NA,-18,NA
 "Texas","Llano County","2020-05-15",-6,NA,24,NA,-23,NA
 "Texas","Llano County","2020-05-16",2,NA,43,NA,-10,NA
+"Texas","Llano County","2020-05-17",NA,NA,NA,NA,-22,NA
+"Texas","Llano County","2020-05-18",NA,NA,18,NA,-16,NA
+"Texas","Llano County","2020-05-19",NA,NA,15,NA,-22,NA
+"Texas","Llano County","2020-05-20",17,NA,27,NA,-19,NA
+"Texas","Llano County","2020-05-21",NA,NA,24,NA,-19,NA
 "Texas","Loving County","2020-02-15",NA,-24,NA,NA,NA,NA
 "Texas","Loving County","2020-02-17",NA,-12,NA,NA,NA,NA
 "Texas","Loving County","2020-02-18",NA,-15,NA,NA,NA,NA
@@ -10978,9 +11545,14 @@
 "Texas","Lubbock County","2020-05-11",-13,-7,30,-22,-29,11
 "Texas","Lubbock County","2020-05-12",-3,-1,100,-11,-32,11
 "Texas","Lubbock County","2020-05-13",-10,-2,21,-22,-33,13
-"Texas","Lubbock County","2020-05-14",-6,2,76,-17,-33,NA
+"Texas","Lubbock County","2020-05-14",-6,2,76,-17,-33,11
 "Texas","Lubbock County","2020-05-15",-17,-5,33,-22,-33,14
 "Texas","Lubbock County","2020-05-16",-18,6,92,-9,-18,4
+"Texas","Lubbock County","2020-05-17",-10,1,61,-25,-16,4
+"Texas","Lubbock County","2020-05-18",-5,-3,58,-18,-26,8
+"Texas","Lubbock County","2020-05-19",1,1,86,-9,-30,10
+"Texas","Lubbock County","2020-05-20",-3,3,39,-11,-32,11
+"Texas","Lubbock County","2020-05-21",0,9,67,-5,-32,10
 "Texas","Lynn County","2020-02-17",NA,NA,NA,NA,-27,NA
 "Texas","Lynn County","2020-03-16",NA,NA,NA,NA,-22,NA
 "Texas","Lynn County","2020-03-17",NA,NA,NA,NA,-26,NA
@@ -11025,6 +11597,10 @@
 "Texas","Lynn County","2020-05-13",NA,NA,NA,NA,-33,NA
 "Texas","Lynn County","2020-05-14",NA,NA,NA,NA,-30,NA
 "Texas","Lynn County","2020-05-15",NA,NA,NA,NA,-27,NA
+"Texas","Lynn County","2020-05-18",NA,NA,NA,NA,-26,NA
+"Texas","Lynn County","2020-05-19",NA,NA,NA,NA,-27,NA
+"Texas","Lynn County","2020-05-20",NA,NA,NA,NA,-34,NA
+"Texas","Lynn County","2020-05-21",NA,NA,NA,NA,-24,NA
 "Texas","Madison County","2020-02-15",1,13,NA,NA,NA,NA
 "Texas","Madison County","2020-02-16",6,8,NA,NA,NA,NA
 "Texas","Madison County","2020-02-17",3,26,NA,NA,-20,NA
@@ -11117,6 +11693,11 @@
 "Texas","Madison County","2020-05-14",NA,-6,NA,NA,-27,NA
 "Texas","Madison County","2020-05-15",NA,-30,NA,NA,-29,NA
 "Texas","Madison County","2020-05-16",NA,-44,NA,NA,-12,NA
+"Texas","Madison County","2020-05-17",NA,-34,NA,NA,NA,NA
+"Texas","Madison County","2020-05-18",NA,-18,NA,NA,-22,NA
+"Texas","Madison County","2020-05-19",NA,NA,NA,NA,-25,NA
+"Texas","Madison County","2020-05-20",NA,NA,NA,NA,-24,NA
+"Texas","Madison County","2020-05-21",NA,3,NA,NA,-24,NA
 "Texas","Marion County","2020-02-15",-1,5,NA,NA,NA,NA
 "Texas","Marion County","2020-02-16",11,10,NA,NA,NA,NA
 "Texas","Marion County","2020-02-17",6,15,NA,NA,-1,NA
@@ -11198,6 +11779,10 @@
 "Texas","Marion County","2020-05-13",NA,NA,NA,NA,-21,NA
 "Texas","Marion County","2020-05-14",NA,NA,NA,NA,-18,NA
 "Texas","Marion County","2020-05-15",NA,NA,NA,NA,-21,NA
+"Texas","Marion County","2020-05-18",NA,NA,NA,NA,-15,NA
+"Texas","Marion County","2020-05-19",NA,NA,NA,NA,-21,NA
+"Texas","Marion County","2020-05-20",NA,NA,NA,NA,-21,NA
+"Texas","Marion County","2020-05-21",NA,NA,NA,NA,-21,NA
 "Texas","Martin County","2020-02-15",-12,1,NA,NA,NA,NA
 "Texas","Martin County","2020-02-16",NA,12,NA,NA,NA,NA
 "Texas","Martin County","2020-02-17",6,13,NA,NA,-15,NA
@@ -11279,6 +11864,10 @@
 "Texas","Martin County","2020-05-13",NA,NA,NA,NA,-28,NA
 "Texas","Martin County","2020-05-14",NA,NA,NA,NA,-28,NA
 "Texas","Martin County","2020-05-15",NA,NA,NA,NA,-33,NA
+"Texas","Martin County","2020-05-18",NA,NA,NA,NA,-24,NA
+"Texas","Martin County","2020-05-19",NA,NA,NA,NA,-27,NA
+"Texas","Martin County","2020-05-20",NA,NA,NA,NA,-29,NA
+"Texas","Martin County","2020-05-21",NA,NA,NA,NA,-28,NA
 "Texas","Matagorda County","2020-02-15",10,13,NA,NA,7,NA
 "Texas","Matagorda County","2020-02-16",3,6,NA,NA,8,NA
 "Texas","Matagorda County","2020-02-17",0,5,NA,NA,-9,3
@@ -11368,9 +11957,14 @@
 "Texas","Matagorda County","2020-05-11",-9,2,NA,NA,-28,10
 "Texas","Matagorda County","2020-05-12",-8,-8,NA,NA,-32,10
 "Texas","Matagorda County","2020-05-13",-9,-4,NA,NA,-29,10
-"Texas","Matagorda County","2020-05-14",-13,-2,NA,NA,-29,NA
+"Texas","Matagorda County","2020-05-14",-13,-2,NA,NA,-29,10
 "Texas","Matagorda County","2020-05-15",-18,1,NA,NA,-29,10
 "Texas","Matagorda County","2020-05-16",-12,13,NA,NA,-18,NA
+"Texas","Matagorda County","2020-05-17",-10,13,NA,NA,-12,NA
+"Texas","Matagorda County","2020-05-18",-8,2,NA,NA,-27,8
+"Texas","Matagorda County","2020-05-19",-5,0,NA,NA,-28,9
+"Texas","Matagorda County","2020-05-20",-7,1,NA,NA,-29,9
+"Texas","Matagorda County","2020-05-21",-9,0,NA,NA,-27,9
 "Texas","Maverick County","2020-02-15",5,3,-2,-2,0,-2
 "Texas","Maverick County","2020-02-16",8,0,3,9,-1,NA
 "Texas","Maverick County","2020-02-17",4,-1,5,9,-7,1
@@ -11460,9 +12054,14 @@
 "Texas","Maverick County","2020-05-11",-37,-20,-56,-33,-36,15
 "Texas","Maverick County","2020-05-12",-31,-8,-14,-6,-38,16
 "Texas","Maverick County","2020-05-13",-32,-7,-40,12,-37,15
-"Texas","Maverick County","2020-05-14",-30,-10,-31,13,-38,NA
+"Texas","Maverick County","2020-05-14",-30,-10,-31,13,-38,15
 "Texas","Maverick County","2020-05-15",-36,-15,-68,-10,-37,16
 "Texas","Maverick County","2020-05-16",-42,-14,-69,-42,-20,NA
+"Texas","Maverick County","2020-05-17",-42,-21,-58,-37,-18,NA
+"Texas","Maverick County","2020-05-18",-29,-19,-70,-27,-34,14
+"Texas","Maverick County","2020-05-19",-29,-12,-44,-7,-36,14
+"Texas","Maverick County","2020-05-20",-30,-7,-21,18,-37,14
+"Texas","Maverick County","2020-05-21",-27,-4,-24,23,-38,13
 "Texas","McCulloch County","2020-02-15",7,1,NA,NA,NA,NA
 "Texas","McCulloch County","2020-02-16",5,17,NA,NA,NA,NA
 "Texas","McCulloch County","2020-02-17",5,14,NA,NA,-12,NA
@@ -11544,6 +12143,10 @@
 "Texas","McCulloch County","2020-05-13",NA,NA,NA,NA,-17,NA
 "Texas","McCulloch County","2020-05-14",NA,NA,NA,NA,-15,NA
 "Texas","McCulloch County","2020-05-15",NA,NA,NA,NA,-17,NA
+"Texas","McCulloch County","2020-05-18",NA,NA,NA,NA,-15,NA
+"Texas","McCulloch County","2020-05-19",NA,NA,NA,NA,-17,NA
+"Texas","McCulloch County","2020-05-20",NA,NA,NA,NA,-23,NA
+"Texas","McCulloch County","2020-05-21",NA,NA,NA,NA,-19,NA
 "Texas","McLennan County","2020-02-15",4,6,28,3,2,-1
 "Texas","McLennan County","2020-02-16",12,7,66,16,0,-2
 "Texas","McLennan County","2020-02-17",7,7,41,7,-17,4
@@ -11633,9 +12236,14 @@
 "Texas","McLennan County","2020-05-11",-17,0,29,-10,-31,11
 "Texas","McLennan County","2020-05-12",-17,2,9,-17,-31,13
 "Texas","McLennan County","2020-05-13",-12,10,NA,-18,-32,12
-"Texas","McLennan County","2020-05-14",-15,6,74,-19,-31,NA
+"Texas","McLennan County","2020-05-14",-15,6,74,-19,-31,11
 "Texas","McLennan County","2020-05-15",-19,3,31,-16,-32,11
 "Texas","McLennan County","2020-05-16",-28,-8,-40,-24,-20,10
+"Texas","McLennan County","2020-05-17",-15,0,38,-15,-17,5
+"Texas","McLennan County","2020-05-18",-13,2,29,-12,-29,10
+"Texas","McLennan County","2020-05-19",-8,7,52,-9,-29,10
+"Texas","McLennan County","2020-05-20",-8,11,NA,-10,-30,10
+"Texas","McLennan County","2020-05-21",-11,8,67,-9,-29,10
 "Texas","McMullen County","2020-02-17",NA,NA,NA,-26,NA,NA
 "Texas","McMullen County","2020-02-18",NA,NA,NA,-23,NA,NA
 "Texas","McMullen County","2020-02-19",NA,NA,NA,-28,NA,NA
@@ -11699,6 +12307,10 @@
 "Texas","McMullen County","2020-05-14",NA,NA,NA,-60,NA,NA
 "Texas","McMullen County","2020-05-15",NA,NA,NA,-62,NA,NA
 "Texas","McMullen County","2020-05-16",NA,NA,NA,-61,NA,NA
+"Texas","McMullen County","2020-05-18",NA,NA,NA,-60,NA,NA
+"Texas","McMullen County","2020-05-19",NA,NA,NA,-66,NA,NA
+"Texas","McMullen County","2020-05-20",NA,NA,NA,-64,NA,NA
+"Texas","McMullen County","2020-05-21",NA,NA,NA,-55,NA,NA
 "Texas","Medina County","2020-02-15",4,7,NA,-2,-1,NA
 "Texas","Medina County","2020-02-16",6,0,NA,2,0,NA
 "Texas","Medina County","2020-02-17",8,4,NA,10,-26,5
@@ -11788,9 +12400,14 @@
 "Texas","Medina County","2020-05-11",-2,0,NA,-20,-37,14
 "Texas","Medina County","2020-05-12",-4,-3,NA,-24,-38,17
 "Texas","Medina County","2020-05-13",-2,0,NA,-22,-36,15
-"Texas","Medina County","2020-05-14",-4,5,NA,-27,-39,NA
+"Texas","Medina County","2020-05-14",-4,5,NA,-27,-39,16
 "Texas","Medina County","2020-05-15",-3,11,NA,-25,-37,15
 "Texas","Medina County","2020-05-16",1,9,NA,-24,-18,NA
+"Texas","Medina County","2020-05-17",11,5,NA,-29,-18,NA
+"Texas","Medina County","2020-05-18",-1,7,NA,-19,-34,12
+"Texas","Medina County","2020-05-19",0,2,NA,-18,-36,14
+"Texas","Medina County","2020-05-20",3,1,NA,-23,-36,14
+"Texas","Medina County","2020-05-21",-2,9,NA,-17,-38,13
 "Texas","Midland County","2020-02-15",2,1,37,5,0,-2
 "Texas","Midland County","2020-02-16",9,2,39,6,0,-2
 "Texas","Midland County","2020-02-17",2,0,42,2,-7,1
@@ -11880,9 +12497,14 @@
 "Texas","Midland County","2020-05-11",-26,-24,-27,-39,-24,14
 "Texas","Midland County","2020-05-12",-20,-18,-14,-36,-28,15
 "Texas","Midland County","2020-05-13",-20,-21,-11,-37,-31,17
-"Texas","Midland County","2020-05-14",-20,-16,-1,-40,-28,NA
+"Texas","Midland County","2020-05-14",-20,-16,-1,-40,-28,15
 "Texas","Midland County","2020-05-15",-29,-22,-16,-40,-31,17
 "Texas","Midland County","2020-05-16",-26,-14,-15,-37,-22,9
+"Texas","Midland County","2020-05-17",-22,-19,-22,-43,-18,8
+"Texas","Midland County","2020-05-18",-19,-19,-5,-39,-22,12
+"Texas","Midland County","2020-05-19",-17,-17,-5,-37,-27,14
+"Texas","Midland County","2020-05-20",-15,-14,-3,-36,-28,14
+"Texas","Midland County","2020-05-21",-15,-14,11,-34,-27,13
 "Texas","Milam County","2020-02-15",7,1,NA,NA,-4,NA
 "Texas","Milam County","2020-02-16",14,5,NA,NA,6,NA
 "Texas","Milam County","2020-02-17",4,7,NA,NA,-18,NA
@@ -11975,6 +12597,11 @@
 "Texas","Milam County","2020-05-14",NA,NA,NA,NA,-23,NA
 "Texas","Milam County","2020-05-15",-17,1,NA,NA,-23,NA
 "Texas","Milam County","2020-05-16",-19,NA,NA,NA,-20,NA
+"Texas","Milam County","2020-05-17",NA,NA,NA,NA,-19,NA
+"Texas","Milam County","2020-05-18",NA,NA,NA,NA,-22,NA
+"Texas","Milam County","2020-05-19",NA,NA,NA,NA,-20,NA
+"Texas","Milam County","2020-05-20",NA,NA,NA,NA,-22,NA
+"Texas","Milam County","2020-05-21",NA,NA,NA,NA,-21,NA
 "Texas","Mitchell County","2020-02-15",30,3,NA,NA,NA,NA
 "Texas","Mitchell County","2020-02-16",NA,6,-9,NA,NA,NA
 "Texas","Mitchell County","2020-02-17",NA,3,-26,NA,-10,NA
@@ -12062,6 +12689,11 @@
 "Texas","Mitchell County","2020-05-14",NA,NA,NA,NA,-20,NA
 "Texas","Mitchell County","2020-05-15",NA,NA,NA,NA,-25,NA
 "Texas","Mitchell County","2020-05-16",NA,NA,-66,NA,NA,NA
+"Texas","Mitchell County","2020-05-17",NA,NA,-68,NA,NA,NA
+"Texas","Mitchell County","2020-05-18",NA,NA,NA,NA,-6,NA
+"Texas","Mitchell County","2020-05-19",NA,NA,NA,NA,-12,NA
+"Texas","Mitchell County","2020-05-20",NA,NA,-75,NA,-20,NA
+"Texas","Mitchell County","2020-05-21",NA,NA,NA,NA,-20,NA
 "Texas","Montague County","2020-02-15",7,-9,NA,NA,0,NA
 "Texas","Montague County","2020-02-16",6,3,NA,NA,3,NA
 "Texas","Montague County","2020-02-17",2,-8,NA,NA,-18,NA
@@ -12154,6 +12786,11 @@
 "Texas","Montague County","2020-05-14",NA,NA,NA,NA,-19,NA
 "Texas","Montague County","2020-05-15",NA,NA,NA,NA,-22,NA
 "Texas","Montague County","2020-05-16",NA,NA,NA,NA,-17,NA
+"Texas","Montague County","2020-05-17",NA,NA,NA,NA,-13,NA
+"Texas","Montague County","2020-05-18",NA,NA,NA,NA,-20,NA
+"Texas","Montague County","2020-05-19",NA,NA,NA,NA,-22,NA
+"Texas","Montague County","2020-05-20",NA,NA,NA,NA,-18,NA
+"Texas","Montague County","2020-05-21",NA,NA,NA,NA,-19,NA
 "Texas","Montgomery County","2020-02-15",4,6,14,9,1,-1
 "Texas","Montgomery County","2020-02-16",6,5,15,8,0,-1
 "Texas","Montgomery County","2020-02-17",7,3,25,-6,-21,4
@@ -12243,9 +12880,14 @@
 "Texas","Montgomery County","2020-05-11",-14,-5,15,-13,-39,14
 "Texas","Montgomery County","2020-05-12",-15,-1,2,-6,-38,14
 "Texas","Montgomery County","2020-05-13",-14,0,33,-8,-38,14
-"Texas","Montgomery County","2020-05-14",-17,-2,13,-14,-39,NA
+"Texas","Montgomery County","2020-05-14",-17,-2,13,-14,-39,15
 "Texas","Montgomery County","2020-05-15",-22,-5,-11,-10,-39,16
 "Texas","Montgomery County","2020-05-16",-24,-3,-28,-20,-23,10
+"Texas","Montgomery County","2020-05-17",-19,-5,8,-10,-21,7
+"Texas","Montgomery County","2020-05-18",-10,-3,15,-14,-36,12
+"Texas","Montgomery County","2020-05-19",-9,1,16,-8,-36,12
+"Texas","Montgomery County","2020-05-20",-8,1,38,-11,-36,13
+"Texas","Montgomery County","2020-05-21",-9,2,30,-14,-37,13
 "Texas","Moore County","2020-02-15",-5,1,NA,-7,-5,NA
 "Texas","Moore County","2020-02-16",6,-3,NA,NA,-6,NA
 "Texas","Moore County","2020-02-17",-4,-4,NA,NA,-16,NA
@@ -12338,6 +12980,11 @@
 "Texas","Moore County","2020-05-14",-20,NA,NA,-17,-25,NA
 "Texas","Moore County","2020-05-15",-23,-3,NA,-18,-22,NA
 "Texas","Moore County","2020-05-16",-22,-6,NA,-14,23,NA
+"Texas","Moore County","2020-05-17",-16,NA,NA,-20,-15,NA
+"Texas","Moore County","2020-05-18",-18,-6,NA,NA,-24,NA
+"Texas","Moore County","2020-05-19",-9,NA,NA,-3,-23,NA
+"Texas","Moore County","2020-05-20",-14,NA,NA,1,-26,NA
+"Texas","Moore County","2020-05-21",-11,NA,NA,2,-22,NA
 "Texas","Morris County","2020-02-15",-1,-4,NA,NA,NA,NA
 "Texas","Morris County","2020-02-16",-3,4,NA,NA,NA,NA
 "Texas","Morris County","2020-02-17",-2,0,NA,NA,-15,NA
@@ -12423,6 +13070,10 @@
 "Texas","Morris County","2020-05-13",NA,NA,NA,NA,-25,NA
 "Texas","Morris County","2020-05-14",NA,NA,NA,NA,-26,NA
 "Texas","Morris County","2020-05-15",NA,NA,NA,NA,-26,NA
+"Texas","Morris County","2020-05-18",NA,NA,NA,NA,-23,NA
+"Texas","Morris County","2020-05-19",NA,NA,NA,NA,-28,NA
+"Texas","Morris County","2020-05-20",NA,NA,NA,NA,-28,NA
+"Texas","Morris County","2020-05-21",NA,NA,NA,NA,-26,NA
 "Texas","Nacogdoches County","2020-02-15",1,3,8,-6,1,NA
 "Texas","Nacogdoches County","2020-02-16",2,4,27,-2,4,NA
 "Texas","Nacogdoches County","2020-02-17",-1,-4,NA,-11,-12,3
@@ -12512,9 +13163,14 @@
 "Texas","Nacogdoches County","2020-05-11",-14,-12,NA,-7,-33,10
 "Texas","Nacogdoches County","2020-05-12",-16,-6,NA,-6,-35,11
 "Texas","Nacogdoches County","2020-05-13",-13,-5,NA,6,-35,10
-"Texas","Nacogdoches County","2020-05-14",-17,-13,NA,-21,-37,NA
+"Texas","Nacogdoches County","2020-05-14",-17,-13,NA,-21,-37,11
 "Texas","Nacogdoches County","2020-05-15",-21,-13,NA,-14,-38,13
 "Texas","Nacogdoches County","2020-05-16",-24,-7,-24,-30,-22,NA
+"Texas","Nacogdoches County","2020-05-17",-21,-12,NA,-21,-20,NA
+"Texas","Nacogdoches County","2020-05-18",-13,-11,NA,-21,-29,9
+"Texas","Nacogdoches County","2020-05-19",-11,-7,NA,3,-31,8
+"Texas","Nacogdoches County","2020-05-20",-13,0,NA,0,-34,9
+"Texas","Nacogdoches County","2020-05-21",-12,-9,NA,1,-35,10
 "Texas","Navarro County","2020-02-15",8,3,NA,20,-3,NA
 "Texas","Navarro County","2020-02-16",11,7,NA,23,3,NA
 "Texas","Navarro County","2020-02-17",-2,-1,NA,9,-16,4
@@ -12604,9 +13260,14 @@
 "Texas","Navarro County","2020-05-11",-20,30,NA,-3,-29,9
 "Texas","Navarro County","2020-05-12",-20,30,NA,0,-28,11
 "Texas","Navarro County","2020-05-13",-1,23,NA,NA,-28,8
-"Texas","Navarro County","2020-05-14",-5,12,NA,2,-29,NA
+"Texas","Navarro County","2020-05-14",-5,12,NA,2,-29,8
 "Texas","Navarro County","2020-05-15",-12,11,NA,-2,-30,9
 "Texas","Navarro County","2020-05-16",-26,-4,NA,-26,-19,NA
+"Texas","Navarro County","2020-05-17",-2,19,NA,-5,-15,NA
+"Texas","Navarro County","2020-05-18",-6,8,NA,-2,-27,8
+"Texas","Navarro County","2020-05-19",-2,10,NA,3,-26,8
+"Texas","Navarro County","2020-05-20",4,17,NA,4,-27,7
+"Texas","Navarro County","2020-05-21",-1,14,NA,1,-28,6
 "Texas","Newton County","2020-02-15",NA,-2,NA,NA,NA,NA
 "Texas","Newton County","2020-02-16",NA,11,NA,NA,NA,NA
 "Texas","Newton County","2020-02-17",NA,-8,NA,NA,-13,NA
@@ -12684,6 +13345,10 @@
 "Texas","Newton County","2020-05-13",NA,NA,NA,NA,-21,NA
 "Texas","Newton County","2020-05-14",NA,NA,NA,NA,-27,NA
 "Texas","Newton County","2020-05-15",NA,NA,NA,NA,-25,NA
+"Texas","Newton County","2020-05-18",NA,NA,NA,NA,-23,NA
+"Texas","Newton County","2020-05-19",NA,NA,NA,NA,-25,NA
+"Texas","Newton County","2020-05-20",NA,NA,NA,NA,-23,NA
+"Texas","Newton County","2020-05-21",NA,NA,NA,NA,-25,NA
 "Texas","Nolan County","2020-02-15",1,9,NA,0,7,NA
 "Texas","Nolan County","2020-02-16",8,9,NA,13,-2,NA
 "Texas","Nolan County","2020-02-17",0,4,NA,6,-18,NA
@@ -12776,6 +13441,11 @@
 "Texas","Nolan County","2020-05-14",-10,NA,NA,-31,-24,NA
 "Texas","Nolan County","2020-05-15",-20,NA,NA,-25,-23,NA
 "Texas","Nolan County","2020-05-16",-11,NA,NA,-22,-8,NA
+"Texas","Nolan County","2020-05-17",-14,NA,NA,-25,-11,NA
+"Texas","Nolan County","2020-05-18",-12,NA,NA,-26,-19,NA
+"Texas","Nolan County","2020-05-19",-8,NA,NA,-20,-24,NA
+"Texas","Nolan County","2020-05-20",-15,NA,NA,-16,-25,NA
+"Texas","Nolan County","2020-05-21",-7,NA,NA,-19,-25,NA
 "Texas","Nueces County","2020-02-15",8,7,62,4,0,-1
 "Texas","Nueces County","2020-02-16",15,6,39,3,-1,-1
 "Texas","Nueces County","2020-02-17",9,4,30,-5,-9,2
@@ -12865,9 +13535,14 @@
 "Texas","Nueces County","2020-05-11",-11,-6,41,-17,-31,12
 "Texas","Nueces County","2020-05-12",-9,-2,43,-17,-33,12
 "Texas","Nueces County","2020-05-13",-10,-2,58,-15,-31,12
-"Texas","Nueces County","2020-05-14",-11,-4,48,-22,-34,NA
+"Texas","Nueces County","2020-05-14",-11,-4,48,-22,-34,13
 "Texas","Nueces County","2020-05-15",-14,0,72,-16,-32,13
 "Texas","Nueces County","2020-05-16",-16,3,65,-19,-21,9
+"Texas","Nueces County","2020-05-17",-6,2,93,-12,-16,5
+"Texas","Nueces County","2020-05-18",-7,-2,56,-16,-28,10
+"Texas","Nueces County","2020-05-19",-6,0,60,-18,-32,11
+"Texas","Nueces County","2020-05-20",-6,0,66,-15,-30,10
+"Texas","Nueces County","2020-05-21",-5,0,67,-11,-32,11
 "Texas","Ochiltree County","2020-02-15",-1,-2,NA,NA,NA,NA
 "Texas","Ochiltree County","2020-02-16",-7,4,NA,NA,NA,NA
 "Texas","Ochiltree County","2020-02-17",9,-3,NA,NA,-19,NA
@@ -12949,6 +13624,10 @@
 "Texas","Ochiltree County","2020-05-13",NA,NA,NA,NA,-23,NA
 "Texas","Ochiltree County","2020-05-14",NA,NA,NA,NA,-22,NA
 "Texas","Ochiltree County","2020-05-15",NA,NA,NA,NA,-19,NA
+"Texas","Ochiltree County","2020-05-18",NA,NA,NA,NA,-21,NA
+"Texas","Ochiltree County","2020-05-19",NA,NA,NA,NA,-20,NA
+"Texas","Ochiltree County","2020-05-20",NA,NA,NA,NA,-22,NA
+"Texas","Ochiltree County","2020-05-21",NA,NA,NA,NA,-21,NA
 "Texas","Oldham County","2020-02-15",NA,NA,NA,-4,NA,NA
 "Texas","Oldham County","2020-02-16",NA,NA,NA,11,NA,NA
 "Texas","Oldham County","2020-02-17",NA,NA,NA,5,NA,NA
@@ -13041,6 +13720,11 @@
 "Texas","Oldham County","2020-05-14",NA,NA,NA,8,NA,NA
 "Texas","Oldham County","2020-05-15",NA,NA,NA,8,NA,NA
 "Texas","Oldham County","2020-05-16",NA,NA,NA,25,NA,NA
+"Texas","Oldham County","2020-05-17",NA,NA,NA,12,NA,NA
+"Texas","Oldham County","2020-05-18",NA,NA,NA,18,NA,NA
+"Texas","Oldham County","2020-05-19",NA,NA,NA,4,NA,NA
+"Texas","Oldham County","2020-05-20",NA,NA,NA,22,NA,NA
+"Texas","Oldham County","2020-05-21",NA,NA,NA,8,NA,NA
 "Texas","Orange County","2020-02-15",16,8,13,4,1,0
 "Texas","Orange County","2020-02-16",5,7,5,-2,4,0
 "Texas","Orange County","2020-02-17",-3,3,13,0,-11,2
@@ -13133,6 +13817,11 @@
 "Texas","Orange County","2020-05-14",-22,-10,-24,-36,-27,12
 "Texas","Orange County","2020-05-15",-8,4,-20,-26,-30,14
 "Texas","Orange County","2020-05-16",-8,6,-33,-30,-19,9
+"Texas","Orange County","2020-05-17",-6,2,-18,-35,-14,6
+"Texas","Orange County","2020-05-18",2,7,-14,-12,-20,7
+"Texas","Orange County","2020-05-19",3,6,10,-21,-25,9
+"Texas","Orange County","2020-05-20",1,6,5,-21,-24,8
+"Texas","Orange County","2020-05-21",-2,6,-2,-13,-24,9
 "Texas","Palo Pinto County","2020-02-15",5,2,NA,NA,0,NA
 "Texas","Palo Pinto County","2020-02-16",9,12,NA,NA,0,NA
 "Texas","Palo Pinto County","2020-02-17",7,2,NA,NA,-13,4
@@ -13225,6 +13914,11 @@
 "Texas","Palo Pinto County","2020-05-14",-3,5,NA,NA,-23,NA
 "Texas","Palo Pinto County","2020-05-15",1,5,NA,NA,-21,NA
 "Texas","Palo Pinto County","2020-05-16",-8,-1,NA,NA,-13,NA
+"Texas","Palo Pinto County","2020-05-17",3,NA,NA,NA,-10,NA
+"Texas","Palo Pinto County","2020-05-18",10,5,NA,NA,-16,6
+"Texas","Palo Pinto County","2020-05-19",8,8,NA,NA,-21,7
+"Texas","Palo Pinto County","2020-05-20",4,11,NA,NA,-19,6
+"Texas","Palo Pinto County","2020-05-21",5,16,NA,NA,-21,NA
 "Texas","Panola County","2020-02-15",0,5,NA,-16,3,NA
 "Texas","Panola County","2020-02-16",-4,5,NA,-7,-7,NA
 "Texas","Panola County","2020-02-17",-3,4,NA,-13,-16,NA
@@ -13317,6 +14011,11 @@
 "Texas","Panola County","2020-05-14",NA,NA,NA,-18,-27,NA
 "Texas","Panola County","2020-05-15",-14,NA,NA,-25,-23,NA
 "Texas","Panola County","2020-05-16",NA,NA,NA,-20,-16,NA
+"Texas","Panola County","2020-05-17",NA,NA,NA,-20,-17,NA
+"Texas","Panola County","2020-05-18",NA,NA,NA,-19,-18,NA
+"Texas","Panola County","2020-05-19",NA,NA,NA,-19,-22,NA
+"Texas","Panola County","2020-05-20",NA,NA,NA,-12,-24,NA
+"Texas","Panola County","2020-05-21",NA,NA,NA,-5,-25,NA
 "Texas","Parker County","2020-02-15",3,-3,10,-2,-1,-1
 "Texas","Parker County","2020-02-16",5,0,29,5,-2,-1
 "Texas","Parker County","2020-02-17",6,2,22,3,-17,4
@@ -13406,9 +14105,14 @@
 "Texas","Parker County","2020-05-11",-6,1,13,-19,-32,12
 "Texas","Parker County","2020-05-12",-4,5,11,-23,-34,14
 "Texas","Parker County","2020-05-13",1,7,22,-18,-32,12
-"Texas","Parker County","2020-05-14",-2,6,53,-21,-33,NA
+"Texas","Parker County","2020-05-14",-2,6,53,-21,-33,12
 "Texas","Parker County","2020-05-15",-6,4,19,-22,-32,11
 "Texas","Parker County","2020-05-16",-20,-3,-46,-26,-23,10
+"Texas","Parker County","2020-05-17",-6,5,30,-23,-19,5
+"Texas","Parker County","2020-05-18",-5,2,5,-25,-31,11
+"Texas","Parker County","2020-05-19",3,6,31,-16,-31,12
+"Texas","Parker County","2020-05-20",6,4,48,-14,-31,11
+"Texas","Parker County","2020-05-21",4,9,56,-17,-31,10
 "Texas","Parmer County","2020-02-15",NA,-6,NA,NA,NA,NA
 "Texas","Parmer County","2020-02-16",NA,-4,NA,NA,NA,NA
 "Texas","Parmer County","2020-02-17",NA,-9,NA,NA,-21,NA
@@ -13490,6 +14194,10 @@
 "Texas","Parmer County","2020-05-13",NA,NA,NA,NA,-23,NA
 "Texas","Parmer County","2020-05-14",NA,NA,NA,NA,-24,NA
 "Texas","Parmer County","2020-05-15",NA,NA,NA,NA,-21,NA
+"Texas","Parmer County","2020-05-18",NA,NA,NA,NA,-26,NA
+"Texas","Parmer County","2020-05-19",NA,NA,NA,NA,-25,NA
+"Texas","Parmer County","2020-05-20",NA,NA,NA,NA,-21,NA
+"Texas","Parmer County","2020-05-21",NA,NA,NA,NA,-23,NA
 "Texas","Pecos County","2020-02-15",0,-4,NA,-1,-5,NA
 "Texas","Pecos County","2020-02-16",7,2,NA,7,2,NA
 "Texas","Pecos County","2020-02-17",9,-1,NA,18,-24,NA
@@ -13582,6 +14290,11 @@
 "Texas","Pecos County","2020-05-14",-20,NA,NA,-12,-18,NA
 "Texas","Pecos County","2020-05-15",-25,NA,NA,-14,-21,NA
 "Texas","Pecos County","2020-05-16",-16,NA,NA,-11,-9,NA
+"Texas","Pecos County","2020-05-17",-19,NA,NA,-13,-12,NA
+"Texas","Pecos County","2020-05-18",-15,NA,NA,-21,-14,NA
+"Texas","Pecos County","2020-05-19",-13,NA,NA,-14,-14,NA
+"Texas","Pecos County","2020-05-20",-18,NA,NA,-16,-14,NA
+"Texas","Pecos County","2020-05-21",-16,NA,NA,-6,-15,NA
 "Texas","Polk County","2020-02-15",3,5,0,-16,0,NA
 "Texas","Polk County","2020-02-16",7,2,NA,NA,-2,NA
 "Texas","Polk County","2020-02-17",3,1,NA,NA,-20,4
@@ -13671,9 +14384,14 @@
 "Texas","Polk County","2020-05-11",12,17,NA,-2,-24,6
 "Texas","Polk County","2020-05-12",9,12,NA,11,-24,7
 "Texas","Polk County","2020-05-13",12,19,NA,1,-24,6
-"Texas","Polk County","2020-05-14",1,15,NA,-12,-23,NA
+"Texas","Polk County","2020-05-14",1,15,NA,-12,-23,7
 "Texas","Polk County","2020-05-15",-1,9,NA,-9,-26,8
 "Texas","Polk County","2020-05-16",-11,8,-23,-29,-17,NA
+"Texas","Polk County","2020-05-17",2,14,NA,-4,-12,NA
+"Texas","Polk County","2020-05-18",13,14,NA,-12,-22,6
+"Texas","Polk County","2020-05-19",8,10,NA,9,-23,5
+"Texas","Polk County","2020-05-20",15,24,NA,3,-23,4
+"Texas","Polk County","2020-05-21",10,20,NA,7,-24,5
 "Texas","Potter County","2020-02-15",4,2,-5,0,-4,0
 "Texas","Potter County","2020-02-16",8,3,22,4,0,-2
 "Texas","Potter County","2020-02-17",5,-2,5,4,-18,4
@@ -13763,9 +14481,14 @@
 "Texas","Potter County","2020-05-11",-15,-9,-1,-19,-33,13
 "Texas","Potter County","2020-05-12",-8,1,16,-13,-32,11
 "Texas","Potter County","2020-05-13",-10,1,36,-8,-32,12
-"Texas","Potter County","2020-05-14",-11,0,17,-11,-32,NA
+"Texas","Potter County","2020-05-14",-11,0,17,-11,-32,11
 "Texas","Potter County","2020-05-15",-15,0,30,-16,-31,11
 "Texas","Potter County","2020-05-16",-22,-1,17,-11,-19,6
+"Texas","Potter County","2020-05-17",-14,0,21,-17,-19,4
+"Texas","Potter County","2020-05-18",-6,-2,22,-19,-32,10
+"Texas","Potter County","2020-05-19",-1,1,34,-12,-30,9
+"Texas","Potter County","2020-05-20",-8,0,27,-11,-31,11
+"Texas","Potter County","2020-05-21",-9,5,28,-9,-33,10
 "Texas","Presidio County","2020-02-15",11,0,NA,NA,NA,NA
 "Texas","Presidio County","2020-02-16",NA,1,NA,NA,NA,NA
 "Texas","Presidio County","2020-02-17",NA,6,NA,NA,NA,NA
@@ -13846,6 +14569,10 @@
 "Texas","Presidio County","2020-05-13",NA,NA,NA,NA,-35,NA
 "Texas","Presidio County","2020-05-14",NA,NA,NA,NA,-27,NA
 "Texas","Presidio County","2020-05-15",NA,NA,NA,NA,-36,NA
+"Texas","Presidio County","2020-05-18",NA,NA,NA,NA,-33,NA
+"Texas","Presidio County","2020-05-19",NA,NA,NA,NA,-30,NA
+"Texas","Presidio County","2020-05-20",NA,NA,NA,NA,-30,NA
+"Texas","Presidio County","2020-05-21",NA,NA,NA,NA,-27,NA
 "Texas","Rains County","2020-02-15",-10,-18,NA,NA,NA,NA
 "Texas","Rains County","2020-02-16",16,-20,NA,NA,NA,NA
 "Texas","Rains County","2020-02-17",1,-25,NA,NA,-17,NA
@@ -13928,6 +14655,10 @@
 "Texas","Rains County","2020-05-13",NA,NA,NA,NA,-21,NA
 "Texas","Rains County","2020-05-14",NA,NA,NA,NA,-25,NA
 "Texas","Rains County","2020-05-15",NA,NA,NA,NA,-17,NA
+"Texas","Rains County","2020-05-18",NA,NA,NA,NA,-16,NA
+"Texas","Rains County","2020-05-19",NA,NA,NA,NA,-19,NA
+"Texas","Rains County","2020-05-20",NA,NA,NA,NA,-19,NA
+"Texas","Rains County","2020-05-21",NA,NA,NA,NA,-17,NA
 "Texas","Randall County","2020-02-15",2,1,-7,NA,-1,-1
 "Texas","Randall County","2020-02-16",8,2,NA,NA,-1,-2
 "Texas","Randall County","2020-02-17",8,0,NA,NA,-22,5
@@ -14017,9 +14748,14 @@
 "Texas","Randall County","2020-05-11",-10,-9,NA,NA,-37,15
 "Texas","Randall County","2020-05-12",1,4,NA,NA,-37,15
 "Texas","Randall County","2020-05-13",-1,0,NA,NA,-36,14
-"Texas","Randall County","2020-05-14",-4,2,NA,NA,-39,NA
+"Texas","Randall County","2020-05-14",-4,2,NA,NA,-39,14
 "Texas","Randall County","2020-05-15",-7,-1,NA,NA,-36,13
 "Texas","Randall County","2020-05-16",-16,1,NA,NA,-19,6
+"Texas","Randall County","2020-05-17",-9,1,NA,NA,-19,5
+"Texas","Randall County","2020-05-18",2,-1,NA,NA,-34,12
+"Texas","Randall County","2020-05-19",11,5,NA,NA,-33,12
+"Texas","Randall County","2020-05-20",2,-1,NA,NA,-35,14
+"Texas","Randall County","2020-05-21",3,5,NA,NA,-35,12
 "Texas","Reagan County","2020-02-15",NA,-10,NA,NA,NA,NA
 "Texas","Reagan County","2020-02-16",NA,6,NA,NA,NA,NA
 "Texas","Reagan County","2020-02-17",NA,-1,NA,NA,NA,NA
@@ -14108,6 +14844,10 @@
 "Texas","Reagan County","2020-05-14",NA,NA,NA,-52,NA,NA
 "Texas","Reagan County","2020-05-15",NA,NA,NA,-37,NA,NA
 "Texas","Reagan County","2020-05-16",NA,NA,NA,-60,NA,NA
+"Texas","Reagan County","2020-05-18",NA,NA,NA,-43,NA,NA
+"Texas","Reagan County","2020-05-19",NA,NA,NA,-46,NA,NA
+"Texas","Reagan County","2020-05-20",NA,NA,NA,-37,NA,NA
+"Texas","Reagan County","2020-05-21",NA,NA,NA,-48,NA,NA
 "Texas","Real County","2020-04-04",NA,-38,NA,NA,NA,NA
 "Texas","Red River County","2020-02-15",NA,-4,NA,NA,NA,NA
 "Texas","Red River County","2020-02-16",NA,2,NA,NA,NA,NA
@@ -14190,6 +14930,10 @@
 "Texas","Red River County","2020-05-13",NA,NA,NA,NA,-19,NA
 "Texas","Red River County","2020-05-14",NA,NA,NA,NA,-21,NA
 "Texas","Red River County","2020-05-15",NA,NA,NA,NA,-21,NA
+"Texas","Red River County","2020-05-18",NA,NA,NA,NA,-16,NA
+"Texas","Red River County","2020-05-19",NA,NA,NA,NA,-14,NA
+"Texas","Red River County","2020-05-20",NA,NA,NA,NA,-14,NA
+"Texas","Red River County","2020-05-21",NA,NA,NA,NA,-14,NA
 "Texas","Reeves County","2020-02-15",-13,-9,NA,10,7,NA
 "Texas","Reeves County","2020-02-16",-13,-7,NA,4,7,NA
 "Texas","Reeves County","2020-02-17",-15,-5,NA,10,-12,NA
@@ -14282,6 +15026,11 @@
 "Texas","Reeves County","2020-05-14",-41,-29,NA,-37,-25,NA
 "Texas","Reeves County","2020-05-15",-45,-28,NA,-37,-23,NA
 "Texas","Reeves County","2020-05-16",-38,-18,NA,-40,-18,NA
+"Texas","Reeves County","2020-05-17",-43,-27,NA,-42,-19,NA
+"Texas","Reeves County","2020-05-18",-44,-27,NA,-35,-21,NA
+"Texas","Reeves County","2020-05-19",-43,-32,NA,-38,-25,NA
+"Texas","Reeves County","2020-05-20",-39,-28,NA,-34,-18,NA
+"Texas","Reeves County","2020-05-21",-41,-33,NA,-38,-24,NA
 "Texas","Refugio County","2020-02-15",0,-2,NA,6,NA,NA
 "Texas","Refugio County","2020-02-16",14,16,NA,12,NA,NA
 "Texas","Refugio County","2020-02-17",10,4,NA,15,-16,NA
@@ -14374,6 +15123,11 @@
 "Texas","Refugio County","2020-05-14",NA,NA,NA,-5,-23,NA
 "Texas","Refugio County","2020-05-15",NA,NA,NA,0,-24,NA
 "Texas","Refugio County","2020-05-16",NA,NA,NA,-24,NA,NA
+"Texas","Refugio County","2020-05-17",NA,NA,NA,-6,NA,NA
+"Texas","Refugio County","2020-05-18",NA,NA,NA,-7,-23,NA
+"Texas","Refugio County","2020-05-19",NA,NA,NA,-16,-19,NA
+"Texas","Refugio County","2020-05-20",NA,NA,NA,-12,-19,NA
+"Texas","Refugio County","2020-05-21",NA,NA,NA,4,-21,NA
 "Texas","Robertson County","2020-02-15",3,-8,NA,7,-8,NA
 "Texas","Robertson County","2020-02-16",9,2,NA,3,NA,NA
 "Texas","Robertson County","2020-02-17",8,-9,NA,13,-12,NA
@@ -14466,6 +15220,11 @@
 "Texas","Robertson County","2020-05-14",NA,NA,NA,1,-23,NA
 "Texas","Robertson County","2020-05-15",NA,NA,NA,-13,-23,NA
 "Texas","Robertson County","2020-05-16",NA,NA,NA,-24,-8,NA
+"Texas","Robertson County","2020-05-17",NA,NA,NA,-9,NA,NA
+"Texas","Robertson County","2020-05-18",NA,NA,NA,-18,-18,NA
+"Texas","Robertson County","2020-05-19",NA,NA,NA,-12,-19,NA
+"Texas","Robertson County","2020-05-20",NA,NA,NA,3,-24,NA
+"Texas","Robertson County","2020-05-21",NA,NA,NA,8,-23,NA
 "Texas","Rockwall County","2020-02-15",2,4,NA,2,-1,0
 "Texas","Rockwall County","2020-02-16",9,1,NA,9,-1,-2
 "Texas","Rockwall County","2020-02-17",13,11,NA,3,-21,4
@@ -14555,9 +15314,14 @@
 "Texas","Rockwall County","2020-05-11",-10,-9,NA,-8,-43,17
 "Texas","Rockwall County","2020-05-12",-11,-8,NA,-16,-44,20
 "Texas","Rockwall County","2020-05-13",-5,-7,NA,-11,-44,18
-"Texas","Rockwall County","2020-05-14",-8,-6,NA,-7,-44,NA
+"Texas","Rockwall County","2020-05-14",-8,-6,NA,-7,-44,17
 "Texas","Rockwall County","2020-05-15",-16,-6,NA,1,-45,19
 "Texas","Rockwall County","2020-05-16",-33,-16,NA,-20,-25,14
+"Texas","Rockwall County","2020-05-17",-9,-4,NA,1,-22,NA
+"Texas","Rockwall County","2020-05-18",-3,-6,NA,-3,-42,16
+"Texas","Rockwall County","2020-05-19",-2,-3,NA,-2,-42,16
+"Texas","Rockwall County","2020-05-20",1,-4,NA,-5,-43,16
+"Texas","Rockwall County","2020-05-21",0,3,NA,2,-42,16
 "Texas","Runnels County","2020-02-15",0,7,NA,NA,NA,NA
 "Texas","Runnels County","2020-02-16",22,8,NA,NA,NA,NA
 "Texas","Runnels County","2020-02-17",14,13,NA,NA,-16,NA
@@ -14639,6 +15403,10 @@
 "Texas","Runnels County","2020-05-13",NA,NA,NA,NA,-17,NA
 "Texas","Runnels County","2020-05-14",NA,NA,NA,NA,-22,NA
 "Texas","Runnels County","2020-05-15",NA,NA,NA,NA,-21,NA
+"Texas","Runnels County","2020-05-18",NA,NA,NA,NA,-20,NA
+"Texas","Runnels County","2020-05-19",NA,NA,NA,NA,-19,NA
+"Texas","Runnels County","2020-05-20",NA,NA,NA,NA,-19,NA
+"Texas","Runnels County","2020-05-21",NA,NA,NA,NA,-20,NA
 "Texas","Rusk County","2020-02-15",4,-3,NA,NA,1,NA
 "Texas","Rusk County","2020-02-16",7,6,NA,NA,-4,NA
 "Texas","Rusk County","2020-02-17",-1,-5,NA,NA,-14,4
@@ -14728,9 +15496,14 @@
 "Texas","Rusk County","2020-05-11",3,3,NA,NA,-23,7
 "Texas","Rusk County","2020-05-12",-4,-1,NA,NA,-21,8
 "Texas","Rusk County","2020-05-13",9,11,NA,NA,-23,7
-"Texas","Rusk County","2020-05-14",2,8,NA,NA,-23,NA
+"Texas","Rusk County","2020-05-14",2,8,NA,NA,-23,7
 "Texas","Rusk County","2020-05-15",-3,2,NA,NA,-24,9
 "Texas","Rusk County","2020-05-16",-10,1,NA,NA,-4,NA
+"Texas","Rusk County","2020-05-17",-2,7,NA,NA,-14,NA
+"Texas","Rusk County","2020-05-18",0,1,NA,NA,-20,7
+"Texas","Rusk County","2020-05-19",5,9,NA,NA,-20,8
+"Texas","Rusk County","2020-05-20",3,8,NA,NA,-24,7
+"Texas","Rusk County","2020-05-21",1,17,NA,NA,-22,6
 "Texas","Sabine County","2020-02-15",NA,12,NA,NA,NA,NA
 "Texas","Sabine County","2020-02-16",NA,0,NA,NA,NA,NA
 "Texas","Sabine County","2020-02-17",NA,-2,NA,NA,-22,NA
@@ -14811,6 +15584,10 @@
 "Texas","Sabine County","2020-05-13",NA,NA,NA,NA,-15,NA
 "Texas","Sabine County","2020-05-14",NA,NA,NA,NA,-19,NA
 "Texas","Sabine County","2020-05-15",NA,NA,NA,NA,-19,NA
+"Texas","Sabine County","2020-05-18",NA,NA,NA,NA,-10,NA
+"Texas","Sabine County","2020-05-19",NA,NA,NA,NA,-25,NA
+"Texas","Sabine County","2020-05-20",NA,NA,NA,NA,-20,NA
+"Texas","Sabine County","2020-05-21",NA,NA,NA,NA,-18,NA
 "Texas","San Augustine County","2020-02-17",NA,NA,NA,NA,-18,NA
 "Texas","San Augustine County","2020-02-18",NA,NA,NA,NA,-15,NA
 "Texas","San Augustine County","2020-02-19",NA,NA,NA,NA,-2,NA
@@ -14875,6 +15652,10 @@
 "Texas","San Augustine County","2020-05-13",NA,NA,NA,NA,-22,NA
 "Texas","San Augustine County","2020-05-14",NA,NA,NA,NA,-30,NA
 "Texas","San Augustine County","2020-05-15",NA,NA,NA,NA,-29,NA
+"Texas","San Augustine County","2020-05-18",NA,NA,NA,NA,-31,NA
+"Texas","San Augustine County","2020-05-19",NA,NA,NA,NA,-29,NA
+"Texas","San Augustine County","2020-05-20",NA,NA,NA,NA,-30,NA
+"Texas","San Augustine County","2020-05-21",NA,NA,NA,NA,-33,NA
 "Texas","San Jacinto County","2020-02-15",22,1,NA,NA,1,NA
 "Texas","San Jacinto County","2020-02-16",NA,6,NA,NA,2,NA
 "Texas","San Jacinto County","2020-02-17",6,-11,NA,NA,-21,5
@@ -14967,6 +15748,11 @@
 "Texas","San Jacinto County","2020-05-14",NA,NA,NA,NA,-28,NA
 "Texas","San Jacinto County","2020-05-15",NA,NA,NA,NA,-30,NA
 "Texas","San Jacinto County","2020-05-16",NA,NA,NA,NA,-21,NA
+"Texas","San Jacinto County","2020-05-17",NA,NA,NA,NA,-22,NA
+"Texas","San Jacinto County","2020-05-18",NA,NA,NA,NA,-27,NA
+"Texas","San Jacinto County","2020-05-19",NA,NA,NA,NA,-27,NA
+"Texas","San Jacinto County","2020-05-20",NA,NA,NA,NA,-28,NA
+"Texas","San Jacinto County","2020-05-21",NA,NA,NA,NA,-29,NA
 "Texas","San Patricio County","2020-02-15",10,-2,15,5,1,-2
 "Texas","San Patricio County","2020-02-16",12,1,42,-7,1,-2
 "Texas","San Patricio County","2020-02-17",4,-2,25,9,-14,3
@@ -15056,9 +15842,14 @@
 "Texas","San Patricio County","2020-05-11",-10,-3,24,-7,-27,9
 "Texas","San Patricio County","2020-05-12",-7,-4,-2,-9,-28,12
 "Texas","San Patricio County","2020-05-13",-9,0,17,-11,-26,11
-"Texas","San Patricio County","2020-05-14",-10,-1,10,-10,-31,NA
+"Texas","San Patricio County","2020-05-14",-10,-1,10,-10,-31,12
 "Texas","San Patricio County","2020-05-15",-10,-1,16,-19,-29,11
 "Texas","San Patricio County","2020-05-16",-9,4,-4,-16,-17,8
+"Texas","San Patricio County","2020-05-17",-1,3,23,-7,-9,4
+"Texas","San Patricio County","2020-05-18",-6,0,23,-17,-25,8
+"Texas","San Patricio County","2020-05-19",-3,3,4,-17,-24,10
+"Texas","San Patricio County","2020-05-20",-4,2,28,-7,-25,10
+"Texas","San Patricio County","2020-05-21",-4,9,21,-2,-25,9
 "Texas","San Saba County","2020-02-15",5,NA,NA,NA,NA,NA
 "Texas","San Saba County","2020-02-18",-13,NA,NA,NA,NA,NA
 "Texas","San Saba County","2020-02-20",-9,NA,NA,NA,NA,NA
@@ -15176,6 +15967,11 @@
 "Texas","Scurry County","2020-05-14",NA,NA,NA,NA,-22,NA
 "Texas","Scurry County","2020-05-15",-9,NA,NA,NA,-28,NA
 "Texas","Scurry County","2020-05-16",NA,NA,NA,NA,-5,NA
+"Texas","Scurry County","2020-05-17",NA,NA,NA,NA,-9,NA
+"Texas","Scurry County","2020-05-18",NA,NA,NA,NA,-23,NA
+"Texas","Scurry County","2020-05-19",NA,NA,NA,NA,-21,NA
+"Texas","Scurry County","2020-05-20",NA,NA,NA,NA,-25,NA
+"Texas","Scurry County","2020-05-21",NA,NA,NA,NA,-23,NA
 "Texas","Shelby County","2020-02-15",5,6,NA,NA,1,NA
 "Texas","Shelby County","2020-02-16",11,14,NA,NA,2,NA
 "Texas","Shelby County","2020-02-17",-1,4,NA,NA,-18,NA
@@ -15268,6 +16064,11 @@
 "Texas","Shelby County","2020-05-14",NA,NA,NA,NA,-26,NA
 "Texas","Shelby County","2020-05-15",-6,NA,NA,NA,-28,NA
 "Texas","Shelby County","2020-05-16",NA,NA,NA,NA,-17,NA
+"Texas","Shelby County","2020-05-17",NA,NA,NA,NA,-22,NA
+"Texas","Shelby County","2020-05-18",NA,NA,NA,NA,-17,NA
+"Texas","Shelby County","2020-05-19",NA,NA,NA,NA,-20,NA
+"Texas","Shelby County","2020-05-20",NA,NA,NA,NA,-24,NA
+"Texas","Shelby County","2020-05-21",NA,NA,NA,NA,-25,NA
 "Texas","Sherman County","2020-02-15",NA,NA,NA,-3,NA,NA
 "Texas","Sherman County","2020-02-16",NA,NA,NA,13,NA,NA
 "Texas","Sherman County","2020-02-17",NA,NA,NA,-6,NA,NA
@@ -15360,6 +16161,11 @@
 "Texas","Sherman County","2020-05-14",NA,NA,NA,-3,NA,NA
 "Texas","Sherman County","2020-05-15",NA,NA,NA,8,NA,NA
 "Texas","Sherman County","2020-05-16",NA,NA,NA,-9,NA,NA
+"Texas","Sherman County","2020-05-17",NA,NA,NA,15,NA,NA
+"Texas","Sherman County","2020-05-18",NA,NA,NA,8,NA,NA
+"Texas","Sherman County","2020-05-19",NA,NA,NA,2,NA,NA
+"Texas","Sherman County","2020-05-20",NA,NA,NA,8,NA,NA
+"Texas","Sherman County","2020-05-21",NA,NA,NA,8,NA,NA
 "Texas","Smith County","2020-02-15",5,1,56,4,3,0
 "Texas","Smith County","2020-02-16",9,3,66,7,2,-1
 "Texas","Smith County","2020-02-17",6,-3,2,11,-7,2
@@ -15449,9 +16255,14 @@
 "Texas","Smith County","2020-05-11",-8,-2,10,-6,-27,10
 "Texas","Smith County","2020-05-12",-8,2,15,-1,-28,11
 "Texas","Smith County","2020-05-13",-6,2,27,-3,-28,10
-"Texas","Smith County","2020-05-14",-8,0,36,0,-28,NA
+"Texas","Smith County","2020-05-14",-8,0,36,0,-28,10
 "Texas","Smith County","2020-05-15",-13,0,3,-7,-28,11
 "Texas","Smith County","2020-05-16",-22,-4,-35,-18,-17,9
+"Texas","Smith County","2020-05-17",-13,0,3,-14,-17,6
+"Texas","Smith County","2020-05-18",-5,-1,15,-10,-26,9
+"Texas","Smith County","2020-05-19",-1,3,34,-1,-27,9
+"Texas","Smith County","2020-05-20",0,2,41,1,-27,8
+"Texas","Smith County","2020-05-21",-2,4,40,-3,-26,8
 "Texas","Somervell County","2020-02-15",-5,7,NA,NA,NA,NA
 "Texas","Somervell County","2020-02-16",35,14,NA,NA,NA,NA
 "Texas","Somervell County","2020-02-17",26,4,NA,NA,-23,NA
@@ -15533,6 +16344,10 @@
 "Texas","Somervell County","2020-05-13",NA,NA,NA,NA,-23,NA
 "Texas","Somervell County","2020-05-14",NA,NA,NA,NA,-26,NA
 "Texas","Somervell County","2020-05-15",NA,NA,NA,NA,-21,NA
+"Texas","Somervell County","2020-05-18",NA,NA,NA,NA,-23,NA
+"Texas","Somervell County","2020-05-19",NA,NA,NA,NA,-25,NA
+"Texas","Somervell County","2020-05-20",NA,NA,NA,NA,-24,NA
+"Texas","Somervell County","2020-05-21",NA,NA,NA,NA,-24,NA
 "Texas","Starr County","2020-02-15",4,-5,2,NA,6,NA
 "Texas","Starr County","2020-02-16",8,-10,26,NA,2,NA
 "Texas","Starr County","2020-02-17",9,-3,3,NA,7,-1
@@ -15622,9 +16437,14 @@
 "Texas","Starr County","2020-05-11",-26,NA,NA,NA,-34,11
 "Texas","Starr County","2020-05-12",-22,1,-9,NA,-40,13
 "Texas","Starr County","2020-05-13",-26,5,NA,NA,-40,12
-"Texas","Starr County","2020-05-14",-26,-3,-3,NA,-41,NA
+"Texas","Starr County","2020-05-14",-26,-3,-3,NA,-41,13
 "Texas","Starr County","2020-05-15",-22,NA,-7,NA,-39,14
 "Texas","Starr County","2020-05-16",-26,NA,-11,NA,-7,NA
+"Texas","Starr County","2020-05-17",-31,NA,-9,NA,-10,NA
+"Texas","Starr County","2020-05-18",-24,NA,-12,NA,-31,10
+"Texas","Starr County","2020-05-19",-22,7,-13,NA,-38,12
+"Texas","Starr County","2020-05-20",-25,6,NA,NA,-39,12
+"Texas","Starr County","2020-05-21",-20,8,NA,NA,-40,12
 "Texas","Stephens County","2020-02-15",10,NA,NA,NA,NA,NA
 "Texas","Stephens County","2020-02-16",1,NA,NA,NA,NA,NA
 "Texas","Stephens County","2020-02-17",2,NA,NA,NA,-5,NA
@@ -15706,6 +16526,10 @@
 "Texas","Stephens County","2020-05-13",NA,NA,NA,NA,-13,NA
 "Texas","Stephens County","2020-05-14",NA,NA,NA,NA,-18,NA
 "Texas","Stephens County","2020-05-15",NA,NA,NA,NA,-16,NA
+"Texas","Stephens County","2020-05-18",NA,NA,NA,NA,-14,NA
+"Texas","Stephens County","2020-05-19",NA,NA,NA,NA,-25,NA
+"Texas","Stephens County","2020-05-20",NA,NA,NA,NA,-18,NA
+"Texas","Stephens County","2020-05-21",NA,NA,NA,NA,-18,NA
 "Texas","Sutton County","2020-02-16",NA,0,NA,NA,NA,NA
 "Texas","Sutton County","2020-02-21",NA,-13,NA,NA,NA,NA
 "Texas","Sutton County","2020-02-22",NA,-12,NA,NA,NA,NA
@@ -15798,6 +16622,10 @@
 "Texas","Swisher County","2020-05-13",NA,NA,NA,NA,-29,NA
 "Texas","Swisher County","2020-05-14",NA,NA,NA,NA,-28,NA
 "Texas","Swisher County","2020-05-15",NA,NA,NA,NA,-32,NA
+"Texas","Swisher County","2020-05-18",NA,NA,NA,NA,-21,NA
+"Texas","Swisher County","2020-05-19",NA,NA,NA,NA,-28,NA
+"Texas","Swisher County","2020-05-20",NA,NA,NA,NA,-26,NA
+"Texas","Swisher County","2020-05-21",NA,NA,NA,NA,-29,NA
 "Texas","Tarrant County","2020-02-15",1,1,11,1,2,-1
 "Texas","Tarrant County","2020-02-16",10,3,48,-3,1,-1
 "Texas","Tarrant County","2020-02-17",8,2,50,2,-18,4
@@ -15887,9 +16715,14 @@
 "Texas","Tarrant County","2020-05-11",-21,-8,23,-59,-40,15
 "Texas","Tarrant County","2020-05-12",-21,-4,23,-55,-41,18
 "Texas","Tarrant County","2020-05-13",-17,3,65,-57,-40,16
-"Texas","Tarrant County","2020-05-14",-19,-1,58,-58,-41,NA
+"Texas","Tarrant County","2020-05-14",-19,-1,58,-58,-41,16
 "Texas","Tarrant County","2020-05-15",-22,-2,25,-59,-40,15
 "Texas","Tarrant County","2020-05-16",-40,-18,-59,-60,-27,14
+"Texas","Tarrant County","2020-05-17",-20,-2,20,-61,-21,7
+"Texas","Tarrant County","2020-05-18",-16,-3,24,-58,-38,14
+"Texas","Tarrant County","2020-05-19",-13,0,50,-53,-39,15
+"Texas","Tarrant County","2020-05-20",-11,4,80,-53,-38,14
+"Texas","Tarrant County","2020-05-21",-13,2,53,-55,-40,15
 "Texas","Taylor County","2020-02-15",5,2,NA,3,2,-1
 "Texas","Taylor County","2020-02-16",14,3,NA,23,2,-1
 "Texas","Taylor County","2020-02-17",7,0,NA,23,-19,5
@@ -15979,9 +16812,14 @@
 "Texas","Taylor County","2020-05-11",-11,-5,NA,13,-31,12
 "Texas","Taylor County","2020-05-12",-8,-1,NA,13,-31,12
 "Texas","Taylor County","2020-05-13",-9,-1,NA,17,-31,12
-"Texas","Taylor County","2020-05-14",-8,4,NA,19,-30,NA
+"Texas","Taylor County","2020-05-14",-8,4,NA,19,-30,11
 "Texas","Taylor County","2020-05-15",-16,-7,NA,20,-30,14
 "Texas","Taylor County","2020-05-16",-18,-1,NA,12,-14,6
+"Texas","Taylor County","2020-05-17",-9,0,NA,10,-10,5
+"Texas","Taylor County","2020-05-18",-7,-4,NA,21,-27,11
+"Texas","Taylor County","2020-05-19",-5,2,NA,25,-28,11
+"Texas","Taylor County","2020-05-20",-4,-2,NA,35,-28,11
+"Texas","Taylor County","2020-05-21",-2,7,NA,30,-26,9
 "Texas","Terry County","2020-02-15",11,14,NA,NA,NA,NA
 "Texas","Terry County","2020-02-16",25,13,NA,NA,NA,NA
 "Texas","Terry County","2020-02-17",3,10,NA,NA,-13,NA
@@ -16071,6 +16909,10 @@
 "Texas","Terry County","2020-05-14",NA,NA,NA,NA,-22,NA
 "Texas","Terry County","2020-05-15",NA,NA,NA,NA,-22,NA
 "Texas","Terry County","2020-05-16",NA,NA,NA,NA,-12,NA
+"Texas","Terry County","2020-05-18",NA,NA,NA,NA,-21,NA
+"Texas","Terry County","2020-05-19",NA,NA,NA,NA,-29,NA
+"Texas","Terry County","2020-05-20",NA,NA,NA,NA,-26,NA
+"Texas","Terry County","2020-05-21",NA,NA,NA,NA,-29,NA
 "Texas","Titus County","2020-02-15",3,4,NA,NA,2,NA
 "Texas","Titus County","2020-02-16",8,2,NA,NA,-3,NA
 "Texas","Titus County","2020-02-17",4,-9,NA,NA,-15,3
@@ -16160,9 +17002,14 @@
 "Texas","Titus County","2020-05-11",-1,15,NA,NA,-23,8
 "Texas","Titus County","2020-05-12",-4,17,NA,NA,-24,10
 "Texas","Titus County","2020-05-13",2,NA,NA,NA,-26,10
-"Texas","Titus County","2020-05-14",-1,10,NA,NA,-26,NA
+"Texas","Titus County","2020-05-14",-1,10,NA,NA,-26,9
 "Texas","Titus County","2020-05-15",-13,6,NA,NA,-25,NA
 "Texas","Titus County","2020-05-16",-20,-1,NA,NA,-11,NA
+"Texas","Titus County","2020-05-17",-6,10,NA,NA,-11,NA
+"Texas","Titus County","2020-05-18",-1,17,NA,NA,-23,7
+"Texas","Titus County","2020-05-19",-1,14,NA,NA,-25,9
+"Texas","Titus County","2020-05-20",8,18,NA,NA,-27,11
+"Texas","Titus County","2020-05-21",2,7,NA,NA,-28,10
 "Texas","Tom Green County","2020-02-15",12,0,28,NA,3,-2
 "Texas","Tom Green County","2020-02-16",13,2,NA,NA,2,-3
 "Texas","Tom Green County","2020-02-17",9,2,27,NA,-21,5
@@ -16252,9 +17099,14 @@
 "Texas","Tom Green County","2020-05-11",-16,-9,-5,NA,-29,13
 "Texas","Tom Green County","2020-05-12",-15,-4,NA,NA,-29,12
 "Texas","Tom Green County","2020-05-13",-13,-3,5,NA,-29,13
-"Texas","Tom Green County","2020-05-14",-16,1,12,NA,-29,NA
+"Texas","Tom Green County","2020-05-14",-16,1,12,NA,-29,12
 "Texas","Tom Green County","2020-05-15",-22,-7,-13,NA,-28,15
 "Texas","Tom Green County","2020-05-16",-19,0,28,NA,-14,6
+"Texas","Tom Green County","2020-05-17",-17,-2,NA,NA,-15,4
+"Texas","Tom Green County","2020-05-18",-11,-6,-3,NA,-27,12
+"Texas","Tom Green County","2020-05-19",-14,-4,12,NA,-27,12
+"Texas","Tom Green County","2020-05-20",-12,-5,-14,NA,-28,13
+"Texas","Tom Green County","2020-05-21",-12,6,-1,NA,-28,11
 "Texas","Travis County","2020-02-15",4,0,23,-3,3,-1
 "Texas","Travis County","2020-02-16",12,3,32,-2,1,-1
 "Texas","Travis County","2020-02-17",8,1,15,-8,-25,5
@@ -16344,9 +17196,14 @@
 "Texas","Travis County","2020-05-11",-37,-20,-3,-60,-54,21
 "Texas","Travis County","2020-05-12",-46,-27,-53,-64,-57,26
 "Texas","Travis County","2020-05-13",-34,-13,0,-54,-54,23
-"Texas","Travis County","2020-05-14",-37,-15,-1,-57,-56,NA
+"Texas","Travis County","2020-05-14",-37,-15,-1,-57,-56,22
 "Texas","Travis County","2020-05-15",-38,-16,-10,-58,-52,21
 "Texas","Travis County","2020-05-16",-39,-17,-7,-52,-29,12
+"Texas","Travis County","2020-05-17",-37,-20,4,-57,-29,10
+"Texas","Travis County","2020-05-18",-32,-16,-3,-59,-52,20
+"Texas","Travis County","2020-05-19",-33,-14,2,-57,-54,21
+"Texas","Travis County","2020-05-20",-32,-13,2,-53,-53,21
+"Texas","Travis County","2020-05-21",-32,-12,3,-55,-54,21
 "Texas","Trinity County","2020-02-15",-1,1,NA,NA,-12,NA
 "Texas","Trinity County","2020-02-16",2,11,NA,NA,NA,NA
 "Texas","Trinity County","2020-02-17",-11,4,NA,NA,-20,NA
@@ -16439,6 +17296,11 @@
 "Texas","Trinity County","2020-05-14",NA,NA,NA,NA,-26,NA
 "Texas","Trinity County","2020-05-15",NA,NA,NA,NA,-30,NA
 "Texas","Trinity County","2020-05-16",NA,NA,NA,NA,-22,NA
+"Texas","Trinity County","2020-05-17",NA,NA,NA,NA,-17,NA
+"Texas","Trinity County","2020-05-18",NA,NA,NA,NA,-22,NA
+"Texas","Trinity County","2020-05-19",NA,NA,NA,NA,-23,NA
+"Texas","Trinity County","2020-05-20",NA,NA,NA,NA,-28,NA
+"Texas","Trinity County","2020-05-21",NA,NA,NA,NA,-23,NA
 "Texas","Tyler County","2020-02-15",5,3,NA,NA,0,NA
 "Texas","Tyler County","2020-02-16",2,5,NA,NA,-2,NA
 "Texas","Tyler County","2020-02-17",-6,-10,NA,NA,-23,NA
@@ -16531,6 +17393,11 @@
 "Texas","Tyler County","2020-05-14",NA,NA,NA,NA,-20,NA
 "Texas","Tyler County","2020-05-15",NA,NA,NA,NA,-22,NA
 "Texas","Tyler County","2020-05-16",NA,NA,NA,NA,-11,NA
+"Texas","Tyler County","2020-05-17",NA,NA,NA,NA,-19,NA
+"Texas","Tyler County","2020-05-18",NA,NA,NA,NA,-17,NA
+"Texas","Tyler County","2020-05-19",NA,NA,NA,NA,-22,NA
+"Texas","Tyler County","2020-05-20",NA,NA,NA,NA,-20,NA
+"Texas","Tyler County","2020-05-21",NA,NA,NA,NA,-23,NA
 "Texas","Upshur County","2020-02-15",8,-2,NA,NA,3,NA
 "Texas","Upshur County","2020-02-16",12,1,NA,NA,4,NA
 "Texas","Upshur County","2020-02-17",-4,-2,NA,NA,-10,3
@@ -16623,6 +17490,11 @@
 "Texas","Upshur County","2020-05-14",10,NA,NA,NA,-27,5
 "Texas","Upshur County","2020-05-15",1,NA,NA,NA,-30,10
 "Texas","Upshur County","2020-05-16",-7,NA,NA,NA,-21,NA
+"Texas","Upshur County","2020-05-17",-4,NA,NA,NA,-20,NA
+"Texas","Upshur County","2020-05-18",6,NA,NA,NA,-27,7
+"Texas","Upshur County","2020-05-19",5,NA,NA,NA,-25,8
+"Texas","Upshur County","2020-05-20",5,NA,NA,NA,-26,7
+"Texas","Upshur County","2020-05-21",11,NA,NA,NA,-27,8
 "Texas","Upton County","2020-02-15",NA,-5,NA,NA,NA,NA
 "Texas","Upton County","2020-02-16",NA,12,NA,NA,NA,NA
 "Texas","Upton County","2020-02-17",NA,14,NA,NA,NA,NA
@@ -16767,6 +17639,11 @@
 "Texas","Uvalde County","2020-05-14",-11,NA,NA,NA,-27,NA
 "Texas","Uvalde County","2020-05-15",-11,4,NA,NA,-23,NA
 "Texas","Uvalde County","2020-05-16",7,NA,NA,NA,-8,NA
+"Texas","Uvalde County","2020-05-17",4,NA,NA,NA,-8,NA
+"Texas","Uvalde County","2020-05-18",-3,NA,NA,NA,-23,NA
+"Texas","Uvalde County","2020-05-19",-1,NA,NA,NA,-25,NA
+"Texas","Uvalde County","2020-05-20",7,NA,NA,NA,-20,NA
+"Texas","Uvalde County","2020-05-21",1,NA,NA,NA,-23,NA
 "Texas","Val Verde County","2020-02-15",1,-2,39,NA,-3,NA
 "Texas","Val Verde County","2020-02-16",6,3,20,NA,-1,NA
 "Texas","Val Verde County","2020-02-17",1,-4,24,NA,-35,7
@@ -16856,9 +17733,14 @@
 "Texas","Val Verde County","2020-05-11",-15,-20,31,NA,-31,13
 "Texas","Val Verde County","2020-05-12",-14,-11,NA,NA,-33,13
 "Texas","Val Verde County","2020-05-13",-14,-10,NA,NA,-32,14
-"Texas","Val Verde County","2020-05-14",-15,-4,NA,NA,-32,NA
+"Texas","Val Verde County","2020-05-14",-15,-4,NA,NA,-32,13
 "Texas","Val Verde County","2020-05-15",-22,-17,NA,-24,-31,16
 "Texas","Val Verde County","2020-05-16",-16,0,-23,NA,-11,NA
+"Texas","Val Verde County","2020-05-17",-18,-13,-35,NA,-13,NA
+"Texas","Val Verde County","2020-05-18",-6,-14,29,NA,-24,12
+"Texas","Val Verde County","2020-05-19",-9,-11,NA,NA,-29,11
+"Texas","Val Verde County","2020-05-20",-13,-10,NA,NA,-28,13
+"Texas","Val Verde County","2020-05-21",-7,3,NA,NA,-28,12
 "Texas","Van Zandt County","2020-02-15",2,-1,-11,1,7,NA
 "Texas","Van Zandt County","2020-02-16",12,2,13,9,4,NA
 "Texas","Van Zandt County","2020-02-17",0,-1,NA,12,-14,3
@@ -16948,9 +17830,14 @@
 "Texas","Van Zandt County","2020-05-11",-7,10,NA,-5,-27,9
 "Texas","Van Zandt County","2020-05-12",-14,6,NA,0,-27,10
 "Texas","Van Zandt County","2020-05-13",-3,17,NA,-1,-26,8
-"Texas","Van Zandt County","2020-05-14",0,18,NA,6,-25,NA
+"Texas","Van Zandt County","2020-05-14",0,18,NA,6,-25,8
 "Texas","Van Zandt County","2020-05-15",-4,15,9,-2,-27,10
 "Texas","Van Zandt County","2020-05-16",-15,10,-24,-15,-16,NA
+"Texas","Van Zandt County","2020-05-17",5,15,27,-12,-18,NA
+"Texas","Van Zandt County","2020-05-18",1,16,NA,-6,-26,8
+"Texas","Van Zandt County","2020-05-19",3,12,NA,3,-26,7
+"Texas","Van Zandt County","2020-05-20",5,19,NA,6,-25,6
+"Texas","Van Zandt County","2020-05-21",6,24,NA,7,-25,7
 "Texas","Victoria County","2020-02-15",3,3,NA,15,-4,-1
 "Texas","Victoria County","2020-02-16",6,2,NA,2,-3,-1
 "Texas","Victoria County","2020-02-17",4,2,NA,15,-17,5
@@ -17040,9 +17927,14 @@
 "Texas","Victoria County","2020-05-11",-17,-6,NA,11,-26,10
 "Texas","Victoria County","2020-05-12",-15,-7,NA,16,-27,10
 "Texas","Victoria County","2020-05-13",-11,-1,NA,-17,-27,11
-"Texas","Victoria County","2020-05-14",-14,-1,-26,-20,-27,NA
+"Texas","Victoria County","2020-05-14",-14,-1,-26,-20,-27,11
 "Texas","Victoria County","2020-05-15",-17,-1,NA,-22,-28,13
 "Texas","Victoria County","2020-05-16",-23,-3,NA,-27,-20,7
+"Texas","Victoria County","2020-05-17",-16,-7,NA,-18,-17,5
+"Texas","Victoria County","2020-05-18",-13,-3,NA,-9,-25,10
+"Texas","Victoria County","2020-05-19",-10,2,NA,1,-25,9
+"Texas","Victoria County","2020-05-20",-5,0,NA,10,-26,10
+"Texas","Victoria County","2020-05-21",-10,0,-14,4,-25,9
 "Texas","Walker County","2020-02-15",2,3,10,12,0,0
 "Texas","Walker County","2020-02-16",7,2,25,8,2,NA
 "Texas","Walker County","2020-02-17",7,-4,24,5,-15,5
@@ -17132,9 +18024,14 @@
 "Texas","Walker County","2020-05-11",-11,2,13,5,-27,9
 "Texas","Walker County","2020-05-12",-14,-3,2,-3,-30,10
 "Texas","Walker County","2020-05-13",-10,4,21,-1,-32,10
-"Texas","Walker County","2020-05-14",-12,3,10,-3,-31,NA
+"Texas","Walker County","2020-05-14",-12,3,10,-3,-31,10
 "Texas","Walker County","2020-05-15",-17,-2,-6,-4,-31,11
 "Texas","Walker County","2020-05-16",-27,-7,-44,-27,-16,NA
+"Texas","Walker County","2020-05-17",-15,-3,-5,-10,-21,NA
+"Texas","Walker County","2020-05-18",-6,-1,17,-9,-23,9
+"Texas","Walker County","2020-05-19",-8,2,-1,-4,-26,8
+"Texas","Walker County","2020-05-20",-9,4,26,7,-28,8
+"Texas","Walker County","2020-05-21",-8,5,19,1,-29,8
 "Texas","Waller County","2020-02-15",4,9,NA,27,1,NA
 "Texas","Waller County","2020-02-16",12,10,NA,28,-1,NA
 "Texas","Waller County","2020-02-17",7,12,NA,32,-10,3
@@ -17224,9 +18121,14 @@
 "Texas","Waller County","2020-05-11",-11,2,NA,6,-31,12
 "Texas","Waller County","2020-05-12",-16,5,NA,9,-32,13
 "Texas","Waller County","2020-05-13",-7,9,NA,6,-32,12
-"Texas","Waller County","2020-05-14",-13,2,NA,1,-34,NA
+"Texas","Waller County","2020-05-14",-13,2,NA,1,-34,14
 "Texas","Waller County","2020-05-15",-16,-4,NA,7,-34,15
 "Texas","Waller County","2020-05-16",-24,-8,NA,-21,-21,NA
+"Texas","Waller County","2020-05-17",-20,-3,NA,4,-22,NA
+"Texas","Waller County","2020-05-18",-12,6,NA,9,-28,11
+"Texas","Waller County","2020-05-19",-8,12,NA,11,-31,12
+"Texas","Waller County","2020-05-20",-2,16,NA,3,-31,12
+"Texas","Waller County","2020-05-21",-6,9,NA,11,-32,13
 "Texas","Ward County","2020-02-15",-2,-3,NA,36,9,NA
 "Texas","Ward County","2020-02-16",0,-1,NA,37,2,NA
 "Texas","Ward County","2020-02-17",3,-3,NA,38,-3,NA
@@ -17319,6 +18221,11 @@
 "Texas","Ward County","2020-05-14",-36,-28,NA,41,-25,NA
 "Texas","Ward County","2020-05-15",-34,-30,NA,48,-26,NA
 "Texas","Ward County","2020-05-16",NA,-27,NA,41,-19,NA
+"Texas","Ward County","2020-05-17",NA,NA,NA,30,-17,NA
+"Texas","Ward County","2020-05-18",NA,-32,NA,35,-23,NA
+"Texas","Ward County","2020-05-19",-28,-32,NA,10,-24,NA
+"Texas","Ward County","2020-05-20",-18,-28,NA,32,-22,NA
+"Texas","Ward County","2020-05-21",-34,-26,NA,7,-21,NA
 "Texas","Washington County","2020-02-15",8,1,NA,NA,-3,NA
 "Texas","Washington County","2020-02-16",13,0,NA,NA,5,NA
 "Texas","Washington County","2020-02-17",6,-2,NA,NA,-9,NA
@@ -17411,6 +18318,11 @@
 "Texas","Washington County","2020-05-14",-18,1,NA,NA,-22,NA
 "Texas","Washington County","2020-05-15",-23,0,NA,NA,-24,NA
 "Texas","Washington County","2020-05-16",-20,1,NA,NA,-1,NA
+"Texas","Washington County","2020-05-17",-14,9,NA,NA,-17,NA
+"Texas","Washington County","2020-05-18",-15,2,NA,NA,-20,NA
+"Texas","Washington County","2020-05-19",-9,-2,NA,NA,-21,NA
+"Texas","Washington County","2020-05-20",-12,11,NA,NA,-21,NA
+"Texas","Washington County","2020-05-21",-12,4,NA,NA,-22,NA
 "Texas","Webb County","2020-02-15",5,-2,-11,-1,0,-1
 "Texas","Webb County","2020-02-16",9,0,19,33,1,-1
 "Texas","Webb County","2020-02-17",3,-4,2,-2,18,-3
@@ -17500,9 +18412,14 @@
 "Texas","Webb County","2020-05-11",-32,-23,-54,-31,-24,13
 "Texas","Webb County","2020-05-12",-29,-17,-43,-33,-39,18
 "Texas","Webb County","2020-05-13",-29,-15,-47,-32,-38,18
-"Texas","Webb County","2020-05-14",-30,-17,-44,-31,-40,NA
+"Texas","Webb County","2020-05-14",-30,-17,-44,-31,-40,18
 "Texas","Webb County","2020-05-15",-30,-14,-45,-31,-37,19
 "Texas","Webb County","2020-05-16",-34,-15,-56,-32,-22,12
+"Texas","Webb County","2020-05-17",-39,-23,-59,-43,-23,10
+"Texas","Webb County","2020-05-18",-29,-20,-47,-29,-22,12
+"Texas","Webb County","2020-05-19",-26,-14,-44,-30,-38,16
+"Texas","Webb County","2020-05-20",-24,-11,-43,-26,-37,15
+"Texas","Webb County","2020-05-21",-27,-13,-39,-26,-39,17
 "Texas","Wharton County","2020-02-15",4,3,NA,-4,0,NA
 "Texas","Wharton County","2020-02-16",7,6,NA,1,3,NA
 "Texas","Wharton County","2020-02-17",6,3,NA,4,-16,3
@@ -17595,6 +18512,11 @@
 "Texas","Wharton County","2020-05-14",-8,1,NA,-8,-24,7
 "Texas","Wharton County","2020-05-15",-15,-5,NA,-12,-27,12
 "Texas","Wharton County","2020-05-16",-14,-8,NA,-40,-20,NA
+"Texas","Wharton County","2020-05-17",-3,0,NA,-25,-14,NA
+"Texas","Wharton County","2020-05-18",-4,-3,NA,-15,-22,7
+"Texas","Wharton County","2020-05-19",-5,0,NA,-4,-23,8
+"Texas","Wharton County","2020-05-20",8,15,NA,-10,-24,8
+"Texas","Wharton County","2020-05-21",-4,9,NA,-6,-25,8
 "Texas","Wheeler County","2020-03-27",-41,NA,NA,NA,NA,NA
 "Texas","Wichita County","2020-02-15",5,2,NA,-9,0,0
 "Texas","Wichita County","2020-02-16",10,3,NA,5,2,-1
@@ -17685,9 +18607,14 @@
 "Texas","Wichita County","2020-05-11",-7,-7,-11,-7,-26,9
 "Texas","Wichita County","2020-05-12",-10,-4,NA,-8,-26,10
 "Texas","Wichita County","2020-05-13",-5,2,NA,4,-26,9
-"Texas","Wichita County","2020-05-14",-7,1,NA,3,-25,NA
+"Texas","Wichita County","2020-05-14",-7,1,NA,3,-25,9
 "Texas","Wichita County","2020-05-15",-15,-10,-13,-3,-26,11
 "Texas","Wichita County","2020-05-16",-21,-7,-34,-5,-21,9
+"Texas","Wichita County","2020-05-17",-9,2,NA,-4,-16,5
+"Texas","Wichita County","2020-05-18",-2,-3,-6,0,-24,8
+"Texas","Wichita County","2020-05-19",-3,-4,NA,3,-24,8
+"Texas","Wichita County","2020-05-20",0,2,NA,10,-24,7
+"Texas","Wichita County","2020-05-21",1,5,NA,9,-24,8
 "Texas","Wilbarger County","2020-02-15",5,0,NA,-6,2,NA
 "Texas","Wilbarger County","2020-02-16",9,16,NA,NA,NA,NA
 "Texas","Wilbarger County","2020-02-17",9,12,NA,17,-22,NA
@@ -17780,6 +18707,10 @@
 "Texas","Wilbarger County","2020-05-14",NA,NA,NA,-1,-23,NA
 "Texas","Wilbarger County","2020-05-15",NA,NA,NA,-9,-25,NA
 "Texas","Wilbarger County","2020-05-16",NA,NA,NA,-22,-3,NA
+"Texas","Wilbarger County","2020-05-18",NA,NA,NA,-16,-22,NA
+"Texas","Wilbarger County","2020-05-19",NA,NA,NA,1,-22,NA
+"Texas","Wilbarger County","2020-05-20",NA,NA,NA,-12,-23,NA
+"Texas","Wilbarger County","2020-05-21",NA,NA,NA,14,-20,NA
 "Texas","Willacy County","2020-02-15",4,-2,NA,NA,-2,NA
 "Texas","Willacy County","2020-02-16",9,3,NA,NA,-4,NA
 "Texas","Willacy County","2020-02-17",8,-1,NA,NA,-19,NA
@@ -17872,6 +18803,11 @@
 "Texas","Willacy County","2020-05-14",NA,NA,NA,NA,-35,NA
 "Texas","Willacy County","2020-05-15",NA,NA,NA,NA,-35,NA
 "Texas","Willacy County","2020-05-16",NA,NA,NA,NA,-15,NA
+"Texas","Willacy County","2020-05-17",NA,NA,NA,NA,-17,NA
+"Texas","Willacy County","2020-05-18",NA,NA,NA,NA,-28,NA
+"Texas","Willacy County","2020-05-19",NA,-13,NA,NA,-33,NA
+"Texas","Willacy County","2020-05-20",NA,NA,NA,NA,-35,NA
+"Texas","Willacy County","2020-05-21",NA,-10,NA,NA,-32,NA
 "Texas","Williamson County","2020-02-15",5,2,9,-8,1,0
 "Texas","Williamson County","2020-02-16",12,1,19,-6,-1,-1
 "Texas","Williamson County","2020-02-17",17,6,31,-5,-28,5
@@ -17961,9 +18897,14 @@
 "Texas","Williamson County","2020-05-11",-26,-15,10,-23,-53,19
 "Texas","Williamson County","2020-05-12",-33,-17,-31,-34,-53,23
 "Texas","Williamson County","2020-05-13",-19,-8,23,-27,-51,21
-"Texas","Williamson County","2020-05-14",-23,-8,42,-20,-53,NA
+"Texas","Williamson County","2020-05-14",-23,-8,42,-20,-53,20
 "Texas","Williamson County","2020-05-15",-26,-4,23,-20,-50,20
 "Texas","Williamson County","2020-05-16",-31,-11,6,-18,-25,11
+"Texas","Williamson County","2020-05-17",-27,-14,13,-17,-26,9
+"Texas","Williamson County","2020-05-18",-18,-11,9,-18,-51,19
+"Texas","Williamson County","2020-05-19",-17,-5,23,-25,-51,20
+"Texas","Williamson County","2020-05-20",-15,-4,28,-23,-50,20
+"Texas","Williamson County","2020-05-21",-15,-4,50,-19,-51,19
 "Texas","Wilson County","2020-02-15",4,6,NA,NA,2,NA
 "Texas","Wilson County","2020-02-16",4,6,NA,NA,-2,NA
 "Texas","Wilson County","2020-02-17",8,0,NA,NA,-24,6
@@ -18056,6 +18997,11 @@
 "Texas","Wilson County","2020-05-14",-22,-5,NA,NA,-36,13
 "Texas","Wilson County","2020-05-15",-20,NA,NA,NA,-35,15
 "Texas","Wilson County","2020-05-16",-21,1,-1,NA,-22,NA
+"Texas","Wilson County","2020-05-17",-20,-8,NA,NA,-24,NA
+"Texas","Wilson County","2020-05-18",-7,1,NA,NA,-34,12
+"Texas","Wilson County","2020-05-19",-19,-2,NA,NA,-33,13
+"Texas","Wilson County","2020-05-20",-11,-4,NA,NA,-34,14
+"Texas","Wilson County","2020-05-21",-18,-3,NA,NA,-34,14
 "Texas","Winkler County","2020-02-15",10,-1,NA,NA,12,NA
 "Texas","Winkler County","2020-02-16",2,2,NA,NA,NA,NA
 "Texas","Winkler County","2020-02-17",-8,-5,NA,NA,-12,NA
@@ -18148,6 +19094,11 @@
 "Texas","Winkler County","2020-05-14",NA,NA,NA,-12,-21,NA
 "Texas","Winkler County","2020-05-15",NA,-38,NA,-15,-26,NA
 "Texas","Winkler County","2020-05-16",NA,NA,NA,-26,-15,NA
+"Texas","Winkler County","2020-05-17",NA,NA,NA,-25,-12,NA
+"Texas","Winkler County","2020-05-18",NA,NA,NA,-9,-17,NA
+"Texas","Winkler County","2020-05-19",NA,-41,NA,-5,-21,NA
+"Texas","Winkler County","2020-05-20",NA,NA,NA,-14,-22,NA
+"Texas","Winkler County","2020-05-21",NA,NA,NA,-23,-24,NA
 "Texas","Wise County","2020-02-15",4,-1,-8,-2,4,0
 "Texas","Wise County","2020-02-16",7,-4,NA,4,4,NA
 "Texas","Wise County","2020-02-17",2,-2,NA,3,-17,3
@@ -18240,6 +19191,11 @@
 "Texas","Wise County","2020-05-14",-7,10,NA,-5,-31,9
 "Texas","Wise County","2020-05-15",-10,-2,1,-2,-32,10
 "Texas","Wise County","2020-05-16",-24,-13,-25,-16,-18,NA
+"Texas","Wise County","2020-05-17",0,2,NA,-4,-13,NA
+"Texas","Wise County","2020-05-18",-2,-2,NA,-7,-31,10
+"Texas","Wise County","2020-05-19",3,4,NA,-5,-31,11
+"Texas","Wise County","2020-05-20",4,7,NA,2,-28,9
+"Texas","Wise County","2020-05-21",1,10,NA,-1,-30,9
 "Texas","Wood County","2020-02-15",11,2,NA,NA,1,NA
 "Texas","Wood County","2020-02-16",6,5,NA,NA,2,NA
 "Texas","Wood County","2020-02-17",0,-4,NA,NA,-14,3
@@ -18332,6 +19288,11 @@
 "Texas","Wood County","2020-05-14",3,10,NA,NA,-23,4
 "Texas","Wood County","2020-05-15",-3,11,NA,NA,-24,8
 "Texas","Wood County","2020-05-16",-13,9,NA,NA,-10,NA
+"Texas","Wood County","2020-05-17",1,15,NA,NA,-18,NA
+"Texas","Wood County","2020-05-18",16,4,NA,NA,-20,6
+"Texas","Wood County","2020-05-19",7,9,NA,NA,-21,5
+"Texas","Wood County","2020-05-20",13,9,NA,NA,-23,6
+"Texas","Wood County","2020-05-21",6,10,NA,NA,-23,5
 "Texas","Yoakum County","2020-02-15",NA,9,NA,NA,NA,NA
 "Texas","Yoakum County","2020-02-16",NA,0,NA,NA,NA,NA
 "Texas","Yoakum County","2020-02-17",3,6,NA,NA,-11,NA
@@ -18413,6 +19374,10 @@
 "Texas","Yoakum County","2020-05-13",NA,NA,NA,NA,-33,NA
 "Texas","Yoakum County","2020-05-14",NA,NA,NA,NA,-30,NA
 "Texas","Yoakum County","2020-05-15",NA,NA,NA,NA,-26,NA
+"Texas","Yoakum County","2020-05-18",NA,NA,NA,NA,-29,NA
+"Texas","Yoakum County","2020-05-19",NA,NA,NA,NA,-30,NA
+"Texas","Yoakum County","2020-05-20",NA,NA,NA,NA,-25,NA
+"Texas","Yoakum County","2020-05-21",NA,NA,NA,NA,-32,NA
 "Texas","Young County","2020-02-15",-2,10,NA,NA,-2,NA
 "Texas","Young County","2020-02-16",-2,7,NA,NA,4,NA
 "Texas","Young County","2020-02-17",4,7,NA,NA,-16,NA
@@ -18505,6 +19470,11 @@
 "Texas","Young County","2020-05-14",NA,NA,NA,NA,-15,NA
 "Texas","Young County","2020-05-15",-29,NA,NA,NA,-14,NA
 "Texas","Young County","2020-05-16",-36,NA,NA,NA,-13,NA
+"Texas","Young County","2020-05-17",NA,NA,NA,NA,-15,NA
+"Texas","Young County","2020-05-18",NA,NA,NA,NA,-18,NA
+"Texas","Young County","2020-05-19",NA,NA,NA,NA,-20,NA
+"Texas","Young County","2020-05-20",NA,NA,NA,NA,-11,NA
+"Texas","Young County","2020-05-21",NA,NA,NA,NA,-15,NA
 "Texas","Zapata County","2020-02-15",17,0,NA,NA,NA,NA
 "Texas","Zapata County","2020-02-16",33,3,NA,NA,NA,NA
 "Texas","Zapata County","2020-02-17",11,-9,NA,NA,3,NA
@@ -18586,6 +19556,10 @@
 "Texas","Zapata County","2020-05-13",NA,NA,NA,NA,-35,NA
 "Texas","Zapata County","2020-05-14",NA,NA,NA,NA,-36,NA
 "Texas","Zapata County","2020-05-15",NA,NA,NA,NA,-32,NA
+"Texas","Zapata County","2020-05-18",NA,NA,NA,NA,-26,NA
+"Texas","Zapata County","2020-05-19",NA,NA,NA,NA,-28,NA
+"Texas","Zapata County","2020-05-20",NA,NA,NA,NA,-35,NA
+"Texas","Zapata County","2020-05-21",NA,NA,NA,NA,-31,NA
 "Texas","Zavala County","2020-02-15",0,12,NA,NA,NA,NA
 "Texas","Zavala County","2020-02-16",NA,2,NA,NA,NA,NA
 "Texas","Zavala County","2020-02-17",NA,-7,NA,NA,-12,NA
@@ -18667,3 +19641,7 @@
 "Texas","Zavala County","2020-05-13",NA,NA,NA,NA,-35,NA
 "Texas","Zavala County","2020-05-14",NA,NA,NA,NA,-35,NA
 "Texas","Zavala County","2020-05-15",NA,NA,NA,NA,-30,NA
+"Texas","Zavala County","2020-05-18",NA,NA,NA,NA,-32,NA
+"Texas","Zavala County","2020-05-19",NA,NA,NA,NA,-35,NA
+"Texas","Zavala County","2020-05-20",NA,NA,NA,NA,-30,NA
+"Texas","Zavala County","2020-05-21",NA,NA,NA,NA,-32,NA
