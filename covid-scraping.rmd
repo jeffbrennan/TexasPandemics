@@ -344,10 +344,10 @@ colnames(CLAFLIN_texas) =
 ## DSHS (time series)
 
 ```{r}
-DSHS_tests = DSHS_data[[5]]
+DSHS_tests = DSHS_data[[4]]
 DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests)-2), ]
 
-colnames(DSHS_tests) = c('Date', 'Viral_Tests', 'Antibody_Tests', 'Total_Tests', 'Positive_Rate')
+colnames(DSHS_tests) = c('Date', 'Viral_Tests', 'Antibody_Tests', 'Total_Tests', 'Positive_Rate', 'Viral_Tests_New_Avg', 'Antibody_Tests_New_Avg', 'Total_Tests_New_Avg')
 
 # fix date (https://stackoverflow.com/questions/43230470/how-to-convert-excel-date-format-to-proper-date-in-r) 
 DSHS_tests$Date = as.Date(as.integer(DSHS_tests$Date), origin = '1899-12-30')
@@ -362,7 +362,7 @@ DSHS_tests$Positive_Rate = as.numeric(DSHS_tests$Positive_Rate)
 DSHS_hospitalizations = DSHS_data[[8]][, c(2:3)]
 
 # drop footnote
-DSHS_hospitalizations = DSHS_hospitalizations[1:(nrow(DSHS_hospitalizations)-1), ]
+DSHS_hospitalizations = DSHS_hospitalizations[1:(nrow(DSHS_hospitalizations)-2), ]
 
 # fix date
 DSHS_hospitalizations$Date = as.Date(DSHS_hospitalizations$Date, format = '%Y%m%d')
