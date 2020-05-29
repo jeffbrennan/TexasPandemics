@@ -345,7 +345,7 @@ colnames(CLAFLIN_texas) =
 
 ```{r}
 DSHS_tests = DSHS_data[[4]]
-DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests)-2), ]
+DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests)-3), ]
 
 colnames(DSHS_tests) = c('Date', 'Viral_Tests', 'Antibody_Tests', 'Total_Tests', 'Positive_Rate', 'Viral_Tests_New_Avg', 'Antibody_Tests_New_Avg', 'Total_Tests_New_Avg')
 
@@ -366,15 +366,15 @@ DSHS_hospitalizations = DSHS_hospitalizations[1:(nrow(DSHS_hospitalizations)-2),
 
 # fix date
 DSHS_hospitalizations$Date = as.Date(DSHS_hospitalizations$Date, format = '%Y%m%d')
+
+# set colnames
+colnames(DSHS_hospitalizations)[2] = 'Hospital_Total'
 ```
 
 
 ```{r}
 # merge tests & hospitalizations
 DSHS_state_time = merge(DSHS_tests, DSHS_hospitalizations, by = 'Date')
-
-#rename cols
-colnames(DSHS_state_time) = c('Date', 'Viral_Tests', 'Antibody_Tests', 'Tests_Total', 'Positive_Rate', 'Hospital_Total')
 
 # add descriptors
 DSHS_state_time$Source = 'DSHS'
