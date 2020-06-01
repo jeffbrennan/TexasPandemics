@@ -402,7 +402,8 @@ JHU_texas_long$Date = as.Date(as.character(JHU_texas_long$Date), format = &#39;%
 <pre class="r"><code>JHU_texas_long$Deaths = (subset(JHU_texas_long, Type == &#39;deaths&#39;)[, &#39;Value&#39;])
 JHU_texas_long = subset(JHU_texas_long, Type == &#39;cases&#39;)
 JHU_texas_long$Type = NULL
-colnames(JHU_texas_long)[colnames(JHU_texas_long) == &#39;Value&#39;] = &#39;Cases&#39;</code></pre>
+colnames(JHU_texas_long)[colnames(JHU_texas_long) == &#39;Value&#39;] = &#39;Cases_Cumulative&#39;
+colnames(JHU_texas_long)[colnames(JHU_texas_long) == &#39;Deaths&#39;] = &#39;Deaths_Cumulative&#39;</code></pre>
 <pre class="r"><code># add source col
 JHU_texas_long$Source = &#39;JHU&#39;</code></pre>
 </div>
@@ -421,7 +422,7 @@ NYT_texas$date = as.Date(NYT_texas$date)
 NYT_texas$Source = &#39;NYT&#39;
 
 # fix column names
-colnames(NYT_texas) = c(&#39;Date&#39;, &#39;County&#39;, &#39;State&#39;, &#39;FIPS&#39;, &#39;Cases&#39;, &#39;Deaths&#39;, &#39;Source&#39;)</code></pre>
+colnames(NYT_texas) = c(&#39;Date&#39;, &#39;County&#39;, &#39;State&#39;, &#39;FIPS&#39;, &#39;Cases_Cumulative&#39;, &#39;Deaths_Cumulative&#39;, &#39;Source&#39;)</code></pre>
 </div>
 <div id="usa-facts" class="section level2">
 <h2>USA Facts</h2>
@@ -464,7 +465,8 @@ US_FACTS_texas_long = US_FACTS_texas_long[order(US_FACTS_texas_long$Type), ]
 US_FACTS_texas_long$Deaths = (subset(US_FACTS_texas_long, Type == &#39;deaths&#39;)[, &#39;Value&#39;])
 US_FACTS_texas_long = subset(US_FACTS_texas_long, Type == &#39;cases&#39;)
 US_FACTS_texas_long$Type = NULL
-colnames(US_FACTS_texas_long)[colnames(US_FACTS_texas_long) == &#39;Value&#39;] = &#39;Cases&#39;</code></pre>
+colnames(US_FACTS_texas_long)[colnames(US_FACTS_texas_long) == &#39;Value&#39;] = &#39;Cases_Cumulative&#39;
+colnames(US_FACTS_texas_long)[colnames(US_FACTS_texas_long) == &#39;Deaths&#39;] = &#39;Deaths_Cumulative&#39;</code></pre>
 <pre class="r"><code># convert county to factor
 US_FACTS_texas_long$County = as.factor(US_FACTS_texas_long$County)
 US_FACTS_texas_long$Source = &#39;USA Facts&#39;</code></pre>
@@ -493,40 +495,303 @@ mobility_texas$State = as.factor(mobility_texas$State)
 mobility_texas$County = as.factor(mobility_texas$County)
 mobility_texas$Date = as.Date(mobility_texas$Date)</code></pre>
 </div>
-<div id="dshs-partial" class="section level2">
-<h2>DSHS (partial)</h2>
-<pre class="r"><code>download.file(&#39;https://www.dshs.state.tx.us/coronavirus/TexasCOVID19CaseCountData.xlsx&#39;,
-               destfile = &#39;original-sources/dshs.xlsx&#39;, mode = &#39;wb&#39;)
-
-library(readxl)    
-read_excel_allsheets = function(filename, tibble = FALSE) {
-    sheets = readxl::excel_sheets(filename)
-    x = lapply(sheets, function(X) readxl::read_excel(filename, sheet = X, skip = 1, col_names = TRUE))
-    x = lapply(x, as.data.frame)
-    return(x)
-}
-
-DSHS_data = read_excel_allsheets(&#39;original-sources/dshs.xlsx&#39;)</code></pre>
+<div id="dshs" class="section level2">
+<h2>DSHS</h2>
+<pre class="r"><code># cases
+case_url = &#39;http://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyCaseCountData.xlsx&#39;
+temp = tempfile()
+download.file(case_url, temp, mode = &#39;wb&#39;) 
+DSHS_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
-## * `` -&gt; ...5</code></pre>
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * … and 82 more problems</code></pre>
+<pre class="r"><code># fix colnames
+colnames(DSHS_cases_time) = DSHS_cases_time[2, ]
+DSHS_cases_time = DSHS_cases_time[3:(nrow(DSHS_cases_time) - 11), ]
+colnames(DSHS_cases_time)[1] = &#39;County&#39;
+
+# melt
+DSHS_cases_long = reshape::melt(DSHS_cases_time, id = c(&#39;County&#39;, &#39;Population&#39;))
+                                
+# set colnames
+colnames(DSHS_cases_long) = c(&#39;County&#39;, &#39;Population&#39;, &#39;Date&#39;, &#39;Cases_Cumulative&#39;)
+
+# fix dates
+DSHS_cases_long$Date = as.Date(gsub(&#39;Cases\r|\r|\n&#39;, &#39;&#39;, DSHS_cases_long$Date), format = &#39;%m-%d&#39;)</code></pre>
+<pre class="r"><code># deaths
+death_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyFatalityCountData.xlsx&#39;
+temp = tempfile()
+download.file(death_url, temp, mode = &#39;wb&#39;) 
+DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in C3 / R3C3: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in D3 / R3C4: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in E3 / R3C5: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in F3 / R3C6: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in G3 / R3C7: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in H3 / R3C8: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in I3 / R3C9: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in J3 / R3C10: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in K3 / R3C11: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in L3 / R3C12: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in M3 / R3C13: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in N3 / R3C14: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in O3 / R3C15: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in P3 / R3C16: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in Q3 / R3C17: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in R3 / R3C18: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in S3 / R3C19: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in T3 / R3C20: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in U3 / R3C21: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in V3 / R3C22: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in W3 / R3C23: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in X3 / R3C24: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in Y3 / R3C25: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in Z3 / R3C26: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AA3 / R3C27: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AB3 / R3C28: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AC3 / R3C29: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AD3 / R3C30: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AE3 / R3C31: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AF3 / R3C32: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AG3 / R3C33: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AH3 / R3C34: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AI3 / R3C35: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AJ3 / R3C36: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AK3 / R3C37: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AL3 / R3C38: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AM3 / R3C39: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AN3 / R3C40: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AO3 / R3C41: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AP3 / R3C42: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AQ3 / R3C43: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AR3 / R3C44: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AS3 / R3C45: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AT3 / R3C46: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AU3 / R3C47: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AV3 / R3C48: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AW3 / R3C49: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AX3 / R3C50: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AY3 / R3C51: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AZ3 / R3C52: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BA3 / R3C53: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BB3 / R3C54: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BC3 / R3C55: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BD3 / R3C56: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BE3 / R3C57: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BF3 / R3C58: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BG3 / R3C59: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BH3 / R3C60: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BI3 / R3C61: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BJ3 / R3C62: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BK3 / R3C63: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BL3 / R3C64: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BM3 / R3C65: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BN3 / R3C66: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BO3 / R3C67: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BP3 / R3C68: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BQ3 / R3C69: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BR3 / R3C70: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BS3 / R3C71: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BT3 / R3C72: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BU3 / R3C73: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BV3 / R3C74: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BW3 / R3C75: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BX3 / R3C76: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BY3 / R3C77: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BZ3 / R3C78: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in CA3 / R3C79: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in CB3 / R3C80: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in CC3 / R3C81: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in CD3 / R3C82: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in CE3 / R3C83: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in CF3 / R3C84: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in CG3 / R3C85: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in CH3 / R3C86: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in CI3 / R3C87: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in CJ3 / R3C88: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in CK3 / R3C89: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in CL3 / R3C90: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in CM3 / R3C91: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
-## * `` -&gt; ...3</code></pre>
-<pre class="r"><code>DSHS_counts_county = DSHS_data[[1]]
-colnames(DSHS_counts_county) = c(&#39;County&#39;, &#39;Cases&#39;, &#39;Deaths&#39;)
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * … and 85 more problems</code></pre>
+<pre class="r"><code># fix colnames
+colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
+DSHS_deaths_time = DSHS_deaths_time[3:(nrow(DSHS_deaths_time) - 10), ]
+colnames(DSHS_deaths_time)[1] = &#39;County&#39;
 
-# add date
-current_date = Sys.Date()
-DSHS_counts_county$Date = current_date
+# melt
+DSHS_deaths_long = reshape::melt(DSHS_deaths_time, id = c(&#39;County&#39;, &#39;Population&#39;))
+                                
+# set colnames
+colnames(DSHS_deaths_long) = c(&#39;County&#39;, &#39;Population&#39;, &#39;Date&#39;, &#39;Deaths_Cumulative&#39;)
 
-# drop total row
-DSHS_counts_county = DSHS_counts_county[-(which(DSHS_counts_county$County == &#39;Total&#39;)), ]
+# fix dates
+# DSHS_deaths_long$Date = as.Date(gsub(&#39;deaths\r\n\r\n&#39;, &#39;&#39;, as.character(DSHS_deaths_long$Date)), format = &#39;%y%m%d&#39;)
+DSHS_deaths_long$Date = as.Date(as.integer(DSHS_deaths_long$Date), origin = &#39;2020-03-03&#39;)</code></pre>
+<pre class="r"><code># testing
 
-# add source
-DSHS_counts_county$Source = &#39;DSHS&#39;</code></pre>
+test_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsOverTimebyCounty.xlsx&#39;
+temp = tempfile()
+download.file(test_url, temp, mode = &#39;wb&#39;) 
+DSHS_tests_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * … and 35 more problems</code></pre>
+<pre class="r"><code># fix colname
+colnames(DSHS_tests_time) = DSHS_tests_time[1, ]
+DSHS_tests_time = DSHS_tests_time[2:(nrow(DSHS_tests_time) - 9), ]
+colnames(DSHS_tests_time)[1] = &#39;County&#39;
+
+# melt
+DSHS_tests_long = reshape::melt(DSHS_tests_time, id = c(&#39;County&#39;))
+                                
+# set colnames
+colnames(DSHS_tests_long) = c(&#39;County&#39;, &#39;Date&#39;, &#39;Tests_Cumulative&#39;)
+
+# fix dates
+DSHS_tests_long$Date = gsub(&#39;*&#39;, &#39;&#39;, DSHS_tests_long$Date, fixed = T)
+DSHS_tests_long$Date = as.Date(gsub(&#39;Tests Through &#39;, &#39;&#39;, DSHS_tests_long$Date), format = &#39;%B%d&#39;)
+
+# replace &#39;--&#39; and &#39;-&#39; with NA
+DSHS_tests_long$Tests_Cumulative = na_if(DSHS_tests_long$Tests_Cumulative, &#39;-&#39;)
+DSHS_tests_long$Tests_Cumulative = na_if(DSHS_tests_long$Tests_Cumulative, &#39;--&#39;)
+
+DSHS_tests_long$Tests_Cumulative = as.numeric(DSHS_tests_long$Tests_Cumulative)</code></pre>
+<pre class="r"><code># active cases
+active_case_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID-19ActiveCaseDatabyCounty.xlsx&#39;
+temp = tempfile()
+download.file(active_case_url, temp, mode = &#39;wb&#39;) 
+DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...1
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * … and 50 more problems</code></pre>
+<pre class="r"><code># fix colname
+colnames(DSHS_active_cases_time) = DSHS_active_cases_time[2, ]
+DSHS_active_cases_time = DSHS_active_cases_time[3:(nrow(DSHS_active_cases_time)), 2:ncol(DSHS_active_cases_time)]
+colnames(DSHS_active_cases_time)[1] = &#39;County&#39;
+
+# melt
+DSHS_active_cases_long = reshape::melt(DSHS_active_cases_time, id = c(&#39;County&#39;))
+                                
+# set colnames
+colnames(DSHS_active_cases_long) = c(&#39;County&#39;, &#39;Date&#39;, &#39;Active_Cases_Cumulative&#39;)
+
+# fix dates
+DSHS_active_cases_long$Date = as.Date(gsub(&#39;Active\r\nCases\r\n&#39;, &#39;&#39;, DSHS_active_cases_long$Date),
+                                      format = &#39;%m-%d&#39;)</code></pre>
+<pre class="r"><code># combine DSHS sources
+DSHS_county_counts = Reduce(function(x, y) merge(x, y, by = c(&#39;County&#39;, &#39;Date&#39;), all=TRUE),
+       list(DSHS_cases_long, DSHS_deaths_long, DSHS_tests_long, DSHS_active_cases_long))
+
+# set population for all rows
+DSHS_county_counts$Population.x = NULL
+colnames(DSHS_county_counts)[colnames(DSHS_county_counts) == &#39;Population.y&#39;] = &#39;Population&#39;</code></pre>
 </div>
 </div>
 <div id="state-level" class="section level1">
@@ -634,6 +899,23 @@ colnames(CLAFLIN_texas) =
 </div>
 <div id="dshs-time-series" class="section level2">
 <h2>DSHS (time series)</h2>
+<pre class="r"><code>download.file(&#39;https://www.dshs.state.tx.us/coronavirus/TexasCOVID19CaseCountData.xlsx&#39;,
+               destfile = &#39;original-sources/dshs.xlsx&#39;, mode = &#39;wb&#39;)
+
+library(readxl)
+read_excel_allsheets = function(filename, tibble = FALSE) {
+    sheets = readxl::excel_sheets(filename)
+    x = lapply(sheets, function(X) readxl::read_excel(filename, sheet = X, skip = 1, col_names = TRUE))
+    x = lapply(x, as.data.frame)
+    return(x)
+}
+
+DSHS_data = read_excel_allsheets(&#39;original-sources/dshs.xlsx&#39;)</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5</code></pre>
 <pre class="r"><code>DSHS_tests = DSHS_data[[4]]
 DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests)-3), ]
 
@@ -777,7 +1059,7 @@ colnames(DSHS_demographics) = c(&#39;Demo_Group&#39;, &#39;Demo_Count&#39;, &#39
 <pre class="r"><code>#rbind fills mismatched cols with NA (NYT has less vars than JHU)
 merged_counts1 = rbind.fill(JHU_texas_long, NYT_texas)
 merged_counts2 = rbind.fill(merged_counts1, US_FACTS_texas_long)
-merged_counts3 = rbind.fill(merged_counts2, DSHS_counts_county)
+merged_counts3 = rbind.fill(merged_counts2, DSHS_county_counts)
 
 # add google mobility - colbind this time since other data source likely not available
 # outer join b/c google only has data on 220 counties (JHU has 254 and more dates)
@@ -793,10 +1075,37 @@ merged_counts4$State = droplevels(revalue(merged_counts4$State, c(&#39;TX&#39; =
 Metro = c(&quot;Aransas&quot;, &quot;Archer&quot;, &quot;Armstrong&quot;, &quot;Atascosa&quot;, &quot;Austin&quot;, &quot;Bandera&quot;, &quot;Bastrop&quot;, &quot;Bell&quot;, &quot;Bexar&quot;, &quot;Bowie&quot;, &quot;Brazoria&quot;, &quot;Brazos&quot;, &quot;Burleson&quot;, &quot;Caldwell&quot;, &quot;Callahan&quot;, &quot;Cameron&quot;, &quot;Carson&quot;, &quot;Chambers&quot;, &quot;Clay&quot;, &quot;Collin&quot;, &quot;Comal&quot;, &quot;Coryell&quot;, &quot;Crosby&quot;, &quot;Dallas&quot;, &quot;Denton&quot;, &quot;Ector&quot;, &quot;Ellis&quot;, &quot;El Paso&quot;, &quot;Falls&quot;, &quot;Fort Bend&quot;, &quot;Galveston&quot;, &quot;Goliad&quot;, &quot;Grayson&quot;, &quot;Gregg&quot;, &quot;Guadalupe&quot;, &quot;Hardin&quot;, &quot;Harris&quot;, &quot;Hays&quot;, &quot;Hidalgo&quot;, &quot;Hood&quot;, &quot;Hudspeth&quot;, &quot;Hunt&quot;, &quot;Irion&quot;, &quot;Jefferson&quot;, &quot;Johnson&quot;, &quot;Jones&quot;, &quot;Kaufman&quot;, &quot;Kendall&quot;, &quot;Lampasas&quot;, &quot;Liberty&quot;, &quot;Lubbock&quot;, &quot;Lynn&quot;, &quot;McLennan&quot;, &quot;Martin&quot;, &quot;Medina&quot;, &quot;Midland&quot;, &quot;Montgomery&quot;, &quot;Newton&quot;, &quot;Nueces&quot;, &quot;Oldham&quot;, &quot;Orange&quot;, &quot;Parker&quot;, &quot;Potter&quot;, &quot;Randall&quot;, &quot;Robertson&quot;, &quot;Rockwall&quot;, &quot;Rusk&quot;, &quot;San Patricio&quot;, &quot;Smith&quot;, &quot;Somervell&quot;, &quot;Tarrant&quot;, &quot;Taylor&quot;, &quot;Tom Green&quot;, &quot;Travis&quot;, &quot;Upshur&quot;, &quot;Victoria&quot;, &quot;Waller&quot;, &quot;Webb&quot;, &quot;Wichita&quot;, &quot;Williamson&quot;, &quot;Wilson&quot;, &quot;Wise&quot;)
 
 Border = c(&quot;Brewster&quot;, &quot;Brooks&quot;, &quot;Cameron&quot;, &quot;Crockett&quot;, &quot;Culberson&quot;, &quot;Dimmit&quot;, &quot;Duval&quot;, &quot;Edwards&quot;, &quot;El Paso&quot;, &quot;Frio&quot;, &quot;Hidalgo&quot;, &quot;Hudspeth&quot;, &quot;Jeff Davis&quot;, &quot;Jim Hogg&quot;, &quot;Kenedy&quot;, &quot;Kinney&quot;, &quot;La Salle&quot;, &quot;McMullen&quot;, &quot;Maverick&quot;, &quot;Pecos&quot;, &quot;Presidio&quot;, &quot;Real&quot;, &quot;Reeves&quot;, &quot;Starr&quot;, &quot;Sutton&quot;, &quot;Terrell&quot;, &quot;Uvalde&quot;, &quot;Val Verde&quot;, &quot;Webb&quot;, &quot;Willacy&quot;, &quot;Zapata&quot;, &quot;Zavala&quot;)</code></pre>
-<pre class="r"><code>merged_counts4$Metro = ifelse(merged_counts4$County %in% Metro, &#39;Metro&#39;, &#39;Nonmetro&#39;)
+<pre class="r"><code># add metro and border designations
+merged_counts4$Metro = ifelse(merged_counts4$County %in% Metro, &#39;Metro&#39;, &#39;Nonmetro&#39;)
 merged_counts4$Border = ifelse(merged_counts4$County %in% Border, &#39;Border&#39;, &#39;Nonborder&#39;)</code></pre>
-<pre class="r"><code>write.csv(merged_counts4, file=paste0(&#39;combined-datasets/county_counts_&#39;, Sys.Date(), &#39;.csv&#39;),
-          row.names = F)</code></pre>
+<pre class="r"><code># add service regions (adapted from https://www.dshs.texas.gov/chs/info/info_txco.shtm)
+service_regions = read.csv(&#39;original-sources/service_regions.csv&#39;)
+
+# drop x added to end of regions interpreted as dates
+service_regions$Health.Service.Region = as.character(service_regions$Health.Service.Region)
+service_regions$Health.Service.Region = gsub(&#39;x&#39;, &#39;&#39;, service_regions$Health.Service.Region)
+
+# set colnames
+colnames(service_regions) = c(&#39;County_Num&#39;, &#39;County&#39;, &#39;FIPS&#39;, &#39;Public_Health_Region&#39;, &#39;Health_Service_Region&#39;)
+
+# merge with data
+merged_counts5 = merge(merged_counts4, service_regions[2:5], by = &#39;County&#39;)
+
+
+# make FIPS uniform
+merged_counts5$FIPS.x = NULL
+colnames(merged_counts5)[colnames(merged_counts5) == &#39;FIPS.y&#39;] = &#39;FIPS&#39;</code></pre>
+<pre class="r"><code># TSA levels
+tsa = read.csv(&#39;original-sources/tsa_list.csv&#39;, header = F)[-1]
+tsa_long = reshape::melt(tsa, id = c(&#39;V2&#39;))
+tsa_long_complete = subset(tsa_long, value != &#39;&#39;)[, c(1,3)]
+colnames(tsa_long_complete) = c(&#39;TSA&#39;, &#39;County&#39;)
+
+
+tsa_long_complete$County = trimws(tsa_long_complete$County)
+
+merged_counts6 = merge(merged_counts5, tsa_long_complete, by = &#39;County&#39;, all = TRUE)</code></pre>
+<pre class="r"><code>write.csv(merged_counts5, file = &#39;combined-datasets/county_counts.csv&#39;, row.names = F)</code></pre>
 </div>
 <div id="state-level-1" class="section level2">
 <h2>State Level</h2>
@@ -806,12 +1115,12 @@ merged_state3 = rbind.fill(merged_state2, DSHS_day_counts)
 merged_state4 = rbind.fill(merged_state3, DSHS_demographics)</code></pre>
 <pre class="r"><code># additional postprocessing
 merged_state4$State = &#39;Texas&#39;</code></pre>
-<pre class="r"><code>write.csv(merged_state4, paste0(&#39;combined-datasets/state_tests_hosp_&#39;, Sys.Date(), &#39;.csv&#39;), row.names = F)</code></pre>
+<pre class="r"><code>write.csv(merged_state4, file = &#39;combined-datasets/state_tests_hosp.csv&#39;, row.names = F)</code></pre>
 </div>
 <div id="additional-csvs" class="section level2">
 <h2>Additional csvs</h2>
-<pre class="r"><code>write.csv(CLAFLIN_texas, paste0(&#39;combined-datasets/claflin_capacity.csv&#39;), row.names = F)
-write.csv(DSHS_demographics, paste0(&#39;combined-datasets/demographics_&#39;, Sys.Date(), &#39;.csv&#39;), row.names = F)</code></pre>
+<pre class="r"><code>write.csv(CLAFLIN_texas, &#39;combined-datasets/claflin_capacity.csv&#39;, row.names = F)
+write.csv(DSHS_demographics, &#39;combined-datasets/demographics.csv&#39;, row.names = F)</code></pre>
 </div>
 </div>
 

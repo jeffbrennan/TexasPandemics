@@ -11,6 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(plyr)
 library(data.table)
 library(readxl)
+library(dplyr)
 ```
 
 # COUNTY LEVEL
@@ -60,7 +61,8 @@ JHU_texas_long$Date = as.Date(as.character(JHU_texas_long$Date), format = '%m/%d
 JHU_texas_long$Deaths = (subset(JHU_texas_long, Type == 'deaths')[, 'Value'])
 JHU_texas_long = subset(JHU_texas_long, Type == 'cases')
 JHU_texas_long$Type = NULL
-colnames(JHU_texas_long)[colnames(JHU_texas_long) == 'Value'] = 'Cases'
+colnames(JHU_texas_long)[colnames(JHU_texas_long) == 'Value'] = 'Cases_Cumulative'
+colnames(JHU_texas_long)[colnames(JHU_texas_long) == 'Deaths'] = 'Deaths_Cumulative'
 ```
 
 ```{r}
@@ -89,7 +91,7 @@ NYT_texas$date = as.Date(NYT_texas$date)
 NYT_texas$Source = 'NYT'
 
 # fix column names
-colnames(NYT_texas) = c('Date', 'County', 'State', 'FIPS', 'Cases', 'Deaths', 'Source')
+colnames(NYT_texas) = c('Date', 'County', 'State', 'FIPS', 'Cases_Cumulative', 'Deaths_Cumulative', 'Source')
 ```
 
 ## USA Facts
@@ -146,7 +148,9 @@ US_FACTS_texas_long = US_FACTS_texas_long[order(US_FACTS_texas_long$Type), ]
 US_FACTS_texas_long$Deaths = (subset(US_FACTS_texas_long, Type == 'deaths')[, 'Value'])
 US_FACTS_texas_long = subset(US_FACTS_texas_long, Type == 'cases')
 US_FACTS_texas_long$Type = NULL
-colnames(US_FACTS_texas_long)[colnames(US_FACTS_texas_long) == 'Value'] = 'Cases'
+colnames(US_FACTS_texas_long)[colnames(US_FACTS_texas_long) == 'Value'] = 'Cases_Cumulative'
+colnames(US_FACTS_texas_long)[colnames(US_FACTS_texas_long) == 'Deaths'] = 'Deaths_Cumulative'
+
 ```
 
 ```{r}
@@ -186,37 +190,115 @@ mobility_texas$Date = as.Date(mobility_texas$Date)
 ```
 
 
-## DSHS (partial)
+## DSHS 
 
 ```{r}
-download.file('https://www.dshs.state.tx.us/coronavirus/TexasCOVID19CaseCountData.xlsx',
-               destfile = 'original-sources/dshs.xlsx', mode = 'wb')
+# cases
+case_url = 'http://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyCaseCountData.xlsx'
+temp = tempfile()
+download.file(case_url, temp, mode = 'wb') 
+DSHS_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))
 
-library(readxl)    
-read_excel_allsheets = function(filename, tibble = FALSE) {
-    sheets = readxl::excel_sheets(filename)
-    x = lapply(sheets, function(X) readxl::read_excel(filename, sheet = X, skip = 1, col_names = TRUE))
-    x = lapply(x, as.data.frame)
-    return(x)
-}
+# fix colnames
+colnames(DSHS_cases_time) = DSHS_cases_time[2, ]
+DSHS_cases_time = DSHS_cases_time[3:(nrow(DSHS_cases_time) - 11), ]
+colnames(DSHS_cases_time)[1] = 'County'
 
-DSHS_data = read_excel_allsheets('original-sources/dshs.xlsx')
+# melt
+DSHS_cases_long = reshape::melt(DSHS_cases_time, id = c('County', 'Population'))
+                                
+# set colnames
+colnames(DSHS_cases_long) = c('County', 'Population', 'Date', 'Cases_Cumulative')
+
+# fix dates
+DSHS_cases_long$Date = as.Date(gsub('Cases\r|\r|\n', '', DSHS_cases_long$Date), format = '%m-%d')
+```
+
+```{r}
+# deaths
+death_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyFatalityCountData.xlsx'
+temp = tempfile()
+download.file(death_url, temp, mode = 'wb') 
+DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))
+
+# fix colnames
+colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
+DSHS_deaths_time = DSHS_deaths_time[3:(nrow(DSHS_deaths_time) - 10), ]
+colnames(DSHS_deaths_time)[1] = 'County'
+
+# melt
+DSHS_deaths_long = reshape::melt(DSHS_deaths_time, id = c('County', 'Population'))
+                                
+# set colnames
+colnames(DSHS_deaths_long) = c('County', 'Population', 'Date', 'Deaths_Cumulative')
+
+# fix dates
+# DSHS_deaths_long$Date = as.Date(gsub('deaths\r\n\r\n', '', as.character(DSHS_deaths_long$Date)), format = '%y%m%d')
+DSHS_deaths_long$Date = as.Date(as.integer(DSHS_deaths_long$Date), origin = '2020-03-03')
+```
+
+```{r}
+# testing
+
+test_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsOverTimebyCounty.xlsx'
+temp = tempfile()
+download.file(test_url, temp, mode = 'wb') 
+DSHS_tests_time = data.frame(readxl::read_excel(temp, sheet = 1))
+
+# fix colname
+colnames(DSHS_tests_time) = DSHS_tests_time[1, ]
+DSHS_tests_time = DSHS_tests_time[2:(nrow(DSHS_tests_time) - 9), ]
+colnames(DSHS_tests_time)[1] = 'County'
+
+# melt
+DSHS_tests_long = reshape::melt(DSHS_tests_time, id = c('County'))
+                                
+# set colnames
+colnames(DSHS_tests_long) = c('County', 'Date', 'Tests_Cumulative')
+
+# fix dates
+DSHS_tests_long$Date = gsub('*', '', DSHS_tests_long$Date, fixed = T)
+DSHS_tests_long$Date = as.Date(gsub('Tests Through ', '', DSHS_tests_long$Date), format = '%B%d')
+
+# replace '--' and '-' with NA
+DSHS_tests_long$Tests_Cumulative = na_if(DSHS_tests_long$Tests_Cumulative, '-')
+DSHS_tests_long$Tests_Cumulative = na_if(DSHS_tests_long$Tests_Cumulative, '--')
+
+DSHS_tests_long$Tests_Cumulative = as.numeric(DSHS_tests_long$Tests_Cumulative)
 ```
 
 
 ```{r}
-DSHS_counts_county = DSHS_data[[1]]
-colnames(DSHS_counts_county) = c('County', 'Cases', 'Deaths')
+# active cases
+active_case_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19ActiveCaseDatabyCounty.xlsx'
+temp = tempfile()
+download.file(active_case_url, temp, mode = 'wb') 
+DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))
 
-# add date
-current_date = Sys.Date()
-DSHS_counts_county$Date = current_date
+# fix colname
+colnames(DSHS_active_cases_time) = DSHS_active_cases_time[2, ]
+DSHS_active_cases_time = DSHS_active_cases_time[3:(nrow(DSHS_active_cases_time)), 2:ncol(DSHS_active_cases_time)]
+colnames(DSHS_active_cases_time)[1] = 'County'
 
-# drop total row
-DSHS_counts_county = DSHS_counts_county[-(which(DSHS_counts_county$County == 'Total')), ]
+# melt
+DSHS_active_cases_long = reshape::melt(DSHS_active_cases_time, id = c('County'))
+                                
+# set colnames
+colnames(DSHS_active_cases_long) = c('County', 'Date', 'Active_Cases_Cumulative')
 
-# add source
-DSHS_counts_county$Source = 'DSHS'
+# fix dates
+DSHS_active_cases_long$Date = as.Date(gsub('Active\r\nCases\r\n', '', DSHS_active_cases_long$Date),
+                                      format = '%m-%d')
+```
+
+```{r}
+# combine DSHS sources
+DSHS_county_counts = Reduce(function(x, y) merge(x, y, by = c('County', 'Date'), all=TRUE),
+       list(DSHS_cases_long, DSHS_deaths_long, DSHS_tests_long, DSHS_active_cases_long))
+
+# set population for all rows
+DSHS_county_counts$Population.x = NULL
+colnames(DSHS_county_counts)[colnames(DSHS_county_counts) == 'Population.y'] = 'Population'
 ```
 
 
@@ -342,6 +424,22 @@ colnames(CLAFLIN_texas) =
 ```
 
 ## DSHS (time series)
+
+```{r}
+download.file('https://www.dshs.state.tx.us/coronavirus/TexasCOVID19CaseCountData.xlsx',
+               destfile = 'original-sources/dshs.xlsx', mode = 'wb')
+
+library(readxl)
+read_excel_allsheets = function(filename, tibble = FALSE) {
+    sheets = readxl::excel_sheets(filename)
+    x = lapply(sheets, function(X) readxl::read_excel(filename, sheet = X, skip = 1, col_names = TRUE))
+    x = lapply(x, as.data.frame)
+    return(x)
+}
+
+DSHS_data = read_excel_allsheets('original-sources/dshs.xlsx')
+```
+
 
 ```{r}
 DSHS_tests = DSHS_data[[4]]
@@ -507,7 +605,7 @@ colnames(DSHS_demographics) = c('Demo_Group', 'Demo_Count', 'Demo_PCT', 'Demogra
 #rbind fills mismatched cols with NA (NYT has less vars than JHU)
 merged_counts1 = rbind.fill(JHU_texas_long, NYT_texas)
 merged_counts2 = rbind.fill(merged_counts1, US_FACTS_texas_long)
-merged_counts3 = rbind.fill(merged_counts2, DSHS_counts_county)
+merged_counts3 = rbind.fill(merged_counts2, DSHS_county_counts)
 
 # add google mobility - colbind this time since other data source likely not available
 # outer join b/c google only has data on 220 counties (JHU has 254 and more dates)
@@ -555,13 +653,27 @@ merged_counts5 = merge(merged_counts4, service_regions[2:5], by = 'County')
 
 # make FIPS uniform
 merged_counts5$FIPS.x = NULL
+colnames(merged_counts5)[colnames(merged_counts5) == 'FIPS.y'] = 'FIPS'
+```
+
+
+```{r}
+# TSA levels
+tsa = read.csv('original-sources/tsa_list.csv', header = F)[-1]
+tsa_long = reshape::melt(tsa, id = c('V2'))
+tsa_long_complete = subset(tsa_long, value != '')[, c(1,3)]
+colnames(tsa_long_complete) = c('TSA', 'County')
+
+
+tsa_long_complete$County = trimws(tsa_long_complete$County)
+
+merged_counts6 = merge(merged_counts5, tsa_long_complete, by = 'County', all = TRUE)
 ```
 
 
 
 ```{r}
-write.csv(merged_counts5, file=paste0('combined-datasets/county_counts_', Sys.Date(), '.csv'),
-          row.names = F)
+write.csv(merged_counts6, file = 'combined-datasets/county_counts.csv', row.names = F)
 ```
 
 ## State Level
@@ -580,12 +692,12 @@ merged_state4$State = 'Texas'
 
 
 ```{r}
-write.csv(merged_state4, paste0('combined-datasets/state_tests_hosp_', Sys.Date(), '.csv'), row.names = F)
+write.csv(merged_state4, file = 'combined-datasets/state_tests_hosp.csv', row.names = F)
 ```
 
 ## Additional csvs
 
 ```{r}
-write.csv(CLAFLIN_texas, paste0('combined-datasets/claflin_capacity.csv'), row.names = F)
-write.csv(DSHS_demographics, paste0('combined-datasets/demographics_', Sys.Date(), '.csv'), row.names = F)
+write.csv(CLAFLIN_texas, 'combined-datasets/claflin_capacity.csv', row.names = F)
+write.csv(DSHS_demographics, 'combined-datasets/demographics.csv', row.names = F)
 ```
