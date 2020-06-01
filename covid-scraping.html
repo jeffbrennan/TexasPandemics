@@ -791,7 +791,9 @@ DSHS_county_counts = Reduce(function(x, y) merge(x, y, by = c(&#39;County&#39;, 
 
 # set population for all rows
 DSHS_county_counts$Population.x = NULL
-colnames(DSHS_county_counts)[colnames(DSHS_county_counts) == &#39;Population.y&#39;] = &#39;Population&#39;</code></pre>
+colnames(DSHS_county_counts)[colnames(DSHS_county_counts) == &#39;Population.y&#39;] = &#39;Population&#39;
+
+DSHS_county_counts$Source = &#39;DSHS&#39;</code></pre>
 </div>
 </div>
 <div id="state-level" class="section level1">
@@ -1105,7 +1107,7 @@ colnames(tsa_long_complete) = c(&#39;TSA&#39;, &#39;County&#39;)
 tsa_long_complete$County = trimws(tsa_long_complete$County)
 
 merged_counts6 = merge(merged_counts5, tsa_long_complete, by = &#39;County&#39;, all = TRUE)</code></pre>
-<pre class="r"><code>write.csv(merged_counts5, file = &#39;combined-datasets/county_counts.csv&#39;, row.names = F)</code></pre>
+<pre class="r"><code>write.csv(merged_counts6, file = &#39;combined-datasets/county_counts.csv&#39;, row.names = F)</code></pre>
 </div>
 <div id="state-level-1" class="section level2">
 <h2>State Level</h2>
