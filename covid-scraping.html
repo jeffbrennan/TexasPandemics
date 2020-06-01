@@ -1107,7 +1107,9 @@ colnames(tsa_long_complete) = c(&#39;TSA&#39;, &#39;County&#39;)
 tsa_long_complete$County = trimws(tsa_long_complete$County)
 
 merged_counts6 = merge(merged_counts5, tsa_long_complete, by = &#39;County&#39;, all = TRUE)</code></pre>
-<pre class="r"><code>write.csv(merged_counts6, file = &#39;combined-datasets/county_counts.csv&#39;, row.names = F)</code></pre>
+<pre class="r"><code># sort by county, date and export
+merged_counts6 = merged_counts6[order(merged_counts6$County, merged_counts6$Date), ]
+write.csv(merged_counts6, file = &#39;combined-datasets/county_counts.csv&#39;, row.names = F)</code></pre>
 </div>
 <div id="state-level-1" class="section level2">
 <h2>State Level</h2>
