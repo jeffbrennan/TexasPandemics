@@ -1,0 +1,45 @@
+"Demo_Group","Demo_Count","Demo_PCT","Demographic","Source","Type","Investigation_Type","Date"
+"<1 year",38,0.003,"Age","DSHS","Current","Case",2020-05-30
+"1-9 years",170,0.011,"Age","DSHS","Current","Case",2020-05-30
+"10-19 years",441,0.03,"Age","DSHS","Current","Case",2020-05-30
+"20-29 years",2309,0.155,"Age","DSHS","Current","Case",2020-05-30
+"30-39 years",2732,0.183,"Age","DSHS","Current","Case",2020-05-30
+"40-49 years",2798,0.187,"Age","DSHS","Current","Case",2020-05-30
+"50-59 years",2747,0.184,"Age","DSHS","Current","Case",2020-05-30
+"60-64 years",1159,0.078,"Age","DSHS","Current","Case",2020-05-30
+"65-69 years",841,0.056,"Age","DSHS","Current","Case",2020-05-30
+"70-74 years",551,0.037,"Age","DSHS","Current","Case",2020-05-30
+"75-79 years",365,0.024,"Age","DSHS","Current","Case",2020-05-30
+"80+ years",651,0.044,"Age","DSHS","Current","Case",2020-05-30
+"Unknown",123,0.008,"Age","DSHS","Current","Case",2020-05-30
+"Female",6722,0.45,"Gender","DSHS","Current","Case",2020-05-30
+"Male",7921,0.5307202680067,"Gender","DSHS","Current","Case",2020-05-30
+"Unknown",282,0.019,"Gender","DSHS","Current","Case",2020-05-30
+"Asian",498,0.033,"Race","DSHS","Current","Case",2020-05-30
+"Black",2360,0.158,"Race","DSHS","Current","Case",2020-05-30
+"Hispanic",5923,0.397,"Race","DSHS","Current","Case",2020-05-30
+"Other",96,0.006,"Race","DSHS","Current","Case",2020-05-30
+"White",4107,0.275,"Race","DSHS","Current","Case",2020-05-30
+"Unknown",1941,0.13,"Race","DSHS","Current","Case",2020-05-30
+"<1 year",0,0,"Age","DSHS","Current","Death",2020-05-30
+"1-9 years",0,0,"Age","DSHS","Current","Death",2020-05-30
+"10-19 years",2,0.004,"Age","DSHS","Current","Death",2020-05-30
+"20-29 years",11,0.022,"Age","DSHS","Current","Death",2020-05-30
+"30-39 years",9,0.018,"Age","DSHS","Current","Death",2020-05-30
+"40-49 years",21,0.043,"Age","DSHS","Current","Death",2020-05-30
+"50-59 years",54,0.109,"Age","DSHS","Current","Death",2020-05-30
+"60-64 years",45,0.091,"Age","DSHS","Current","Death",2020-05-30
+"65-69 years",58,0.117,"Age","DSHS","Current","Death",2020-05-30
+"70-74 years",47,0.095,"Age","DSHS","Current","Death",2020-05-30
+"75-79 years",45,0.091,"Age","DSHS","Current","Death",2020-05-30
+"80+ years",199,0.403,"Age","DSHS","Current","Death",2020-05-30
+"Unknown",3,0.006,"Age","DSHS","Current","Death",2020-05-30
+"Female",192,0.389,"Gender","DSHS","Current","Death",2020-05-30
+"Male",271,0.549,"Gender","DSHS","Current","Death",2020-05-30
+"Unknown",31,0.063,"Gender","DSHS","Current","Death",2020-05-30
+"Asian",6,0.012,"Race","DSHS","Current","Death",2020-05-30
+"Black",67,0.136,"Race","DSHS","Current","Death",2020-05-30
+"Hispanic",122,0.247,"Race","DSHS","Current","Death",2020-05-30
+"Other",1,0.002,"Race","DSHS","Current","Death",2020-05-30
+"White",183,0.37,"Race","DSHS","Current","Death",2020-05-30
+"Unknown",115,0.233,"Race","DSHS","Current","Death",2020-05-30
