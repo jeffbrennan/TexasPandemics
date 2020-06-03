@@ -204,6 +204,9 @@ colnames(DSHS_cases_time) = DSHS_cases_time[2, ]
 DSHS_cases_time = DSHS_cases_time[3:(nrow(DSHS_cases_time) - 11), ]
 colnames(DSHS_cases_time)[1] = 'County'
 
+#save
+write.csv(DSHS_cases_time, 'original-sources/DSHS_county_cases.csv', row.names = FALSE)
+
 # melt
 DSHS_cases_long = reshape::melt(DSHS_cases_time, id = c('County', 'Population'))
                                 
@@ -226,6 +229,9 @@ colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
 DSHS_deaths_time = DSHS_deaths_time[3:(nrow(DSHS_deaths_time) - 10), ]
 colnames(DSHS_deaths_time)[1] = 'County'
 
+#save
+write.csv(DSHS_deaths_time, 'original-sources/DSHS_county_deaths.csv', row.names = FALSE)
+
 # melt
 DSHS_deaths_long = reshape::melt(DSHS_deaths_time, id = c('County', 'Population'))
                                 
@@ -239,7 +245,6 @@ DSHS_deaths_long$Date = as.Date(as.integer(DSHS_deaths_long$Date), origin = '202
 
 ```{r}
 # testing
-
 test_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsOverTimebyCounty.xlsx'
 temp = tempfile()
 download.file(test_url, temp, mode = 'wb') 
@@ -249,6 +254,9 @@ DSHS_tests_time = data.frame(readxl::read_excel(temp, sheet = 1))
 colnames(DSHS_tests_time) = DSHS_tests_time[1, ]
 DSHS_tests_time = DSHS_tests_time[2:(nrow(DSHS_tests_time) - 9), ]
 colnames(DSHS_tests_time)[1] = 'County'
+
+#save
+write.csv(DSHS_tests_time, 'original-sources/DSHS_county_tests.csv', row.names = FALSE)
 
 # melt
 DSHS_tests_long = reshape::melt(DSHS_tests_time, id = c('County'))
@@ -279,6 +287,9 @@ DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))
 colnames(DSHS_active_cases_time) = DSHS_active_cases_time[2, ]
 DSHS_active_cases_time = DSHS_active_cases_time[3:(nrow(DSHS_active_cases_time)), 2:ncol(DSHS_active_cases_time)]
 colnames(DSHS_active_cases_time)[1] = 'County'
+
+#save
+write.csv(DSHS_active_cases_time, 'original-sources/DSHS_county_active_cases.csv', row.names = FALSE)
 
 # melt
 DSHS_active_cases_long = reshape::melt(DSHS_active_cases_time, id = c('County'))
@@ -365,16 +376,17 @@ COVID_TRACKING_texas$date = as.Date(as.character(COVID_TRACKING_texas$date), for
 
 
 # drop cols
-COVID_TRACKING_trash_cols = c('total', 'posNeg', 'lastUpdateEt', 'hash', 'pending', 'hospitalized', 'dateChecked')
-COVID_TRACKING_texas = COVID_TRACKING_texas[, !names(COVID_TRACKING_texas) %in%  COVID_TRACKING_trash_cols]
+COVID_TRACKING_trash_cols = c('total', 'posNeg', 'lastUpdateEt', 'dateModified', 'checkTimeEt', 'hash', 'pending', 'hospitalized', 'dateChecked', 'total',
+                              'posNeg',	'deathIncrease', 'hospitalizedIncrease', 'hash', 'commercialScore',	'negativeRegularScore',	'negativeScore',
+                              'positiveScore', 'score', 'grade')
+COVID_TRACKING_texas = COVID_TRACKING_texas[, !names(COVID_TRACKING_texas) %in% COVID_TRACKING_trash_cols]
 
 
 # NA values for hospital, ICU and ventilator counts 
 colnames(COVID_TRACKING_texas) = c('Date', 'State', 'Positive_Total', 'Negative_Total',
                                    'Hospital_Current', 'Hospital_Cumulative', 'ICU_Current', 'ICU_Cumulative',
                                    'Ventilator_Current', 'Ventilator_Cumulative', 'Recovered_Cumulative',
-                                   'Quality', 'Deaths_Total', 'Tests_Total', 'FIPS', 'Deaths_New', 'Hospital_New',
-                                   'Negative_New', 'Positive_New', 'Tests_New')
+                                   'Quality', 'Deaths_Total', 'FIPS', 'Positive_New', 'Negative_New', 'Tests_Total', 'Tests_New')
 
 COVID_TRACKING_texas$Source = 'Covidtracking'
 COVID_TRACKING_texas$Type = 'Longitudinal'
@@ -447,7 +459,7 @@ DSHS_data = read_excel_allsheets('original-sources/dshs.xlsx')
 DSHS_tests = DSHS_data[[4]]
 DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests)-3), ]
 
-colnames(DSHS_tests) = c('Date', 'Viral_Tests', 'Antibody_Tests', 'Total_Tests', 'Positive_Rate', 'Viral_Tests_New_Avg', 'Antibody_Tests_New_Avg', 'Total_Tests_New_Avg')
+colnames(DSHS_tests) = c('Date', 'Viral_Tests', 'Antibody_Tests', 'Tests_Total', 'Positive_Rate', 'Viral_Tests_New_Avg', 'Antibody_Tests_New_Avg', 'Total_Tests_New_Avg')
 
 # fix date (https://stackoverflow.com/questions/43230470/how-to-convert-excel-date-format-to-proper-date-in-r) 
 DSHS_tests$Date = as.Date(as.integer(DSHS_tests$Date), origin = '1899-12-30')
