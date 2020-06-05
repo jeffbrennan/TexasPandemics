@@ -16,148 +16,6 @@ library(dplyr)
 
 # COUNTY LEVEL
 
-## JHU
-
-```{r}
-JHU_cases = fread('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv')
-
-JHU_deaths = fread('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv')
-```
-
-JHU Cleaning
-
-```{r}
-JHU_cases$Type = 'cases'
-JHU_deaths$Type = 'deaths'
-
-JHU_texas_deaths = subset(JHU_deaths, Province_State == 'Texas')
-JHU_texas_cases = subset(JHU_cases, Province_State == 'Texas')
-JHU_texas_df = rbind(JHU_texas_cases, JHU_texas_deaths[, -12])
-write.csv(JHU_cases, 'original-sources/JHU.csv')
-
-JHU_texas_df$Population = rep(JHU_texas_deaths$Population, times = 2)
-```
-
-```{r}
-JHU_texas_df = JHU_texas_df[, -c(2:4, 8, 11)]
-colnames(JHU_texas_df)[3:6] = c('County', 'State', 'Lat', 'Long')
-
-# force as data frame to avoid type issue
-JHU_texas_long = as.data.frame(reshape::melt(JHU_texas_df, id = c('UID', 'FIPS', 'County', 'State', 'Lat', 'Long', 'Type', 'Population')))
-```
-
-```{r}
-colnames(JHU_texas_long)[9:10] = c('Date', 'Value')
-
-# fix types
-JHU_texas_long$Type = as.factor(JHU_texas_long$Type)
-
-# fix dates
-# JHU_texas_long$Date = gsub('X', '', JHU_texas_long$Date)
-JHU_texas_long$Date = as.Date(as.character(JHU_texas_long$Date), format = '%m/%d/%y')
-```
-
-```{r}
-JHU_texas_long$Deaths = (subset(JHU_texas_long, Type == 'deaths')[, 'Value'])
-JHU_texas_long = subset(JHU_texas_long, Type == 'cases')
-JHU_texas_long$Type = NULL
-colnames(JHU_texas_long)[colnames(JHU_texas_long) == 'Value'] = 'Cases_Cumulative'
-colnames(JHU_texas_long)[colnames(JHU_texas_long) == 'Deaths'] = 'Deaths_Cumulative'
-```
-
-```{r}
-# add source col
-JHU_texas_long$Source = 'JHU'
-```
-
-
-## NYT
-
-```{r}
-NYT_combined = fread('https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv')
-```
-
-NYT Cleaning
-
-```{r}
-# filter texas only
-NYT_texas = subset(NYT_combined, state == 'Texas')
-write.csv(NYT_texas, 'original-sources/NYT.csv', row.names = F)
-
-# convert dates to dates
-NYT_texas$date = as.Date(NYT_texas$date)
-
-# add source col
-NYT_texas$Source = 'NYT'
-
-# fix column names
-colnames(NYT_texas) = c('Date', 'County', 'State', 'FIPS', 'Cases_Cumulative', 'Deaths_Cumulative', 'Source')
-```
-
-## USA Facts
-
-```{r}
-US_FACTS_cases = fread('https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv')
-US_FACTS_deaths = fread('https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv')
-US_FACTS_pops = fread('https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_county_population_usafacts.csv')
-```
-
- USA FACTS Cleaning
-```{r}
-US_FACTS_cases$Type = 'cases'
-US_FACTS_deaths$Type = 'deaths'
-
-US_FACTS_counts = rbind(US_FACTS_cases, US_FACTS_deaths)
-US_FACTS_texas = subset(US_FACTS_counts, State == 'TX')
-write.csv(US_FACTS_texas, 'original-sources/USA_FACTS.csv', row.names = F)
-
-# # fix encoding issue with first col
-colnames(US_FACTS_texas)[1] = 'FIPS'
-colnames(US_FACTS_pops)[1] = 'FIPS'
-
-# add pop
-# US_FACTS_texas = merge(US_FACTS_texas, US_FACTS_pops[, 'population'], by = 'FIPS')
-US_FACTS_texas = merge(US_FACTS_texas, US_FACTS_pops[, c('FIPS', 'population')], by = 'FIPS')
-```
-
-```{r}
-# drop 'stateFIPS'
-US_FACTS_texas$stateFIPS = NULL
-
-# make long
-# force as dataframe to avoid memory leak? freezing 2 blocks down
-US_FACTS_texas_long = as.data.frame(reshape::melt(US_FACTS_texas, id = c('FIPS', 'County Name', 'State', 'Type', 'population')))
-```
-
-```{r}
-# fix colnames
-colnames(US_FACTS_texas_long) = c('FIPS', 'County', 'State', 'Type', 'Population', 'Date', 'Value')
-
-# drop 'County' suffix
-US_FACTS_texas_long$County = gsub(' County', '', US_FACTS_texas_long$County)
-
-# fix dates
-US_FACTS_texas_long$Date = as.Date(as.character(US_FACTS_texas_long$Date), format = '%m/%d/%y')
-```
-
-```{r}
-# append deaths
-# sort by Type
-US_FACTS_texas_long = US_FACTS_texas_long[order(US_FACTS_texas_long$Type), ]
-
-US_FACTS_texas_long$Deaths = (subset(US_FACTS_texas_long, Type == 'deaths')[, 'Value'])
-US_FACTS_texas_long = subset(US_FACTS_texas_long, Type == 'cases')
-US_FACTS_texas_long$Type = NULL
-colnames(US_FACTS_texas_long)[colnames(US_FACTS_texas_long) == 'Value'] = 'Cases_Cumulative'
-colnames(US_FACTS_texas_long)[colnames(US_FACTS_texas_long) == 'Deaths'] = 'Deaths_Cumulative'
-
-```
-
-```{r}
-# convert county to factor
-US_FACTS_texas_long$County = as.factor(US_FACTS_texas_long$County)
-US_FACTS_texas_long$Source = 'USA Facts'
-```
 
 ## Google mobility
 
@@ -215,6 +73,9 @@ colnames(DSHS_cases_long) = c('County', 'Population', 'Date', 'Cases_Cumulative'
 
 # fix dates
 DSHS_cases_long$Date = as.Date(gsub('Cases\r|\r|\n', '', DSHS_cases_long$Date), format = '%m-%d')
+
+# calculate daily cases
+
 ```
 
 ```{r}
@@ -239,8 +100,10 @@ DSHS_deaths_long = reshape::melt(DSHS_deaths_time, id = c('County', 'Population'
 colnames(DSHS_deaths_long) = c('County', 'Population', 'Date', 'Deaths_Cumulative')
 
 # fix dates
-# DSHS_deaths_long$Date = as.Date(gsub('deaths\r\n\r\n', '', as.character(DSHS_deaths_long$Date)), format = '%y%m%d')
 DSHS_deaths_long$Date = as.Date(as.integer(DSHS_deaths_long$Date), origin = '2020-03-03')
+
+
+# calculate daily deaths
 ```
 
 ```{r}
@@ -250,7 +113,7 @@ temp = tempfile()
 download.file(test_url, temp, mode = 'wb') 
 DSHS_tests_time = data.frame(readxl::read_excel(temp, sheet = 1))
 
-# fix colname
+# fix colnames
 colnames(DSHS_tests_time) = DSHS_tests_time[1, ]
 DSHS_tests_time = DSHS_tests_time[2:(nrow(DSHS_tests_time) - 9), ]
 colnames(DSHS_tests_time)[1] = 'County'
@@ -310,132 +173,44 @@ DSHS_county_counts = Reduce(function(x, y) merge(x, y, by = c('County', 'Date'),
 # set population for all rows
 DSHS_county_counts$Population.x = NULL
 colnames(DSHS_county_counts)[colnames(DSHS_county_counts) == 'Population.y'] = 'Population'
+```
 
-DSHS_county_counts$Source = 'DSHS'
+
+# TSA LEVEL
+
+## DSHS
+
+```{r}
+hosp_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx'
+temp = tempfile()
+download.file(hosp_url, temp, mode = 'wb') 
+DSHS_tsa_hosp = data.frame(readxl::read_excel(temp, sheet = 1))
+
+# fix colnames
+colnames(DSHS_tsa_hosp) = DSHS_tsa_hosp[2, ]
+DSHS_tsa_hosp = DSHS_tsa_hosp[3:(nrow(DSHS_tsa_hosp) - 1), ]
+colnames(DSHS_tsa_hosp)[1] = 'TSA'
+
+# drop . from TSA & drop TSA name
+DSHS_tsa_hosp$TSA = gsub('.', '', DSHS_tsa_hosp$TSA, fixed = TRUE)
+DSHS_tsa_hosp$`TSA Name` = NULL
+
+
+#save
+write.csv(DSHS_tsa_hosp, 'original-sources/DSHS_tsa_hosp.csv', row.names = FALSE)
+
+# melt
+DSHS_hosp_long = reshape::melt(DSHS_tsa_hosp, id = c('TSA'))
+                                
+# set colnames
+colnames(DSHS_hosp_long) = c('TSA', 'Date', 'Hospitalizations_Daily')
+
+# fix dates
+DSHS_hosp_long$Date = as.Date(as.integer(DSHS_hosp_long$Date), origin = '2020-04-07')
 ```
 
 
 # STATE LEVEL
-
-## IHME
-
-```{r}
-url = 'https://ihmecovid19storage.blob.core.windows.net/latest/ihme-covid19.zip'
-all_files = unzip('original-sources/IHME.zip', list = TRUE)
-IHME_data = read.csv(unz('original-sources/IHME.zip', all_files[2,1]))
-```
-
-Cleaning
-```{r}
-# drop imported row name
-IHME_texas = subset(IHME_data, location_name == 'Texas')[-1]
-write.csv(IHME_texas, 'original-sources/IHME.csv', row.names = F)
-
-
-# restrict to current date & observed tests etc (no real data before)
-IHME_texas_current = subset(IHME_texas, as.Date(date) < Sys.Date() & as.Date(date) >= as.Date('2020-02-08') & 
-                            mobility_data_type == 'observed' & total_tests_data_type == 'observed')
-
-# format date 
-IHME_texas_current$date = as.Date(as.character(IHME_texas_current$date), format = '%Y-%m-%d')
-
-# focus on non-calculated cols, can change later
-IHME_calc_cols = grep('upper|lower|est_|smoothed|_mean', names(IHME_texas_current))
-IHME_texas_current_raw = IHME_texas_current[, -c(IHME_calc_cols)]
-
-# drop uninformative cols 
-IHME_trash_cols = c('bedover_mean', 'icuover_mean', 'mobility_data_type', 'total_tests_data_type')
-IHME_texas_current_raw = IHME_texas_current_raw[, !(names(IHME_texas_current_raw) %in% IHME_trash_cols)]
-
-# TODO: look at methodology for colname meanings, appears that all _mean cols are projections as well - omitting for now
-# colnames(IHME_texas_current_raw) = c('State', 'Date', 'All_Bed_Mean', 'ICU_Bed_Mean', 'Ventilator_Cumulative',
-#                                      'Deaths_Cumulative', 'Admissions', 'New_ICU', 'Deaths_Total',
-#                                      'Mobility_Composite', 'Tests_Total', 'Infection_Total')
-
-# need denominator for tests and infections
-colnames(IHME_texas_current_raw) = c('State', 'Date', 'Mobility_Composite', 'Tests_Total', 'Infections_Total')
-
-IHME_texas_current_raw$Source = 'IHME'
-IHME_texas_current_raw$Type = 'Longitudinal'
-```
-
-## Covidtracking.com
-
-```{r}
-COVIDTRACKING_data = read.csv(url('https://covidtracking.com/api/v1/states/daily.csv'))
-```
-
-Cleaning
-
-```{r}
-COVID_TRACKING_texas = subset(COVIDTRACKING_data, state == 'TX')
-write.csv(COVID_TRACKING_texas, 'original-sources/COVID_TRACKING.csv', row.names = F)
-
-# format date
-COVID_TRACKING_texas$date = as.Date(as.character(COVID_TRACKING_texas$date), format = '%Y%m%d')
-
-
-# drop cols
-COVID_TRACKING_trash_cols = c('total', 'posNeg', 'lastUpdateEt', 'dateModified', 'checkTimeEt', 'hash', 'pending', 'hospitalized', 'dateChecked', 'total',
-                              'posNeg',	'deathIncrease', 'hospitalizedIncrease', 'hash', 'commercialScore',	'negativeRegularScore',	'negativeScore',
-                              'positiveScore', 'score', 'grade')
-COVID_TRACKING_texas = COVID_TRACKING_texas[, !names(COVID_TRACKING_texas) %in% COVID_TRACKING_trash_cols]
-
-
-# NA values for hospital, ICU and ventilator counts 
-colnames(COVID_TRACKING_texas) = c('Date', 'State', 'Positive_Total', 'Negative_Total',
-                                   'Hospital_Current', 'Hospital_Cumulative', 'ICU_Current', 'ICU_Cumulative',
-                                   'Ventilator_Current', 'Ventilator_Cumulative', 'Recovered_Cumulative',
-                                   'Quality', 'Deaths_Total', 'FIPS', 'Positive_New', 'Negative_New', 'Tests_Total', 'Tests_New')
-
-COVID_TRACKING_texas$Source = 'Covidtracking'
-COVID_TRACKING_texas$Type = 'Longitudinal'
-```
-
-
-## CLAFLIN
-
-```{r}
-CLAFLIN_capacity_20 = gsheet::gsheet2tbl('https://docs.google.com/spreadsheets/d/1XUVyZF3X_4m72ztFnXZFvDKn5Yys1aKgu2Zmefd7wVo/edit?fbclid=IwAR3fi4RzFRBZqolwpKY-g20BXHLyltp18rgCrzKX0LLSe_2dkCsimZan_VY#gid=1576394115')
-
-CLAFLIN_capacity_40 = gsheet::gsheet2tbl('https://docs.google.com/spreadsheets/d/1XUVyZF3X_4m72ztFnXZFvDKn5Yys1aKgu2Zmefd7wVo/edit?fbclid=IwAR3fi4RzFRBZqolwpKY-g20BXHLyltp18rgCrzKX0LLSe_2dkCsimZan_VY#gid=98841913')
-
-CLAFLIN_capacity_60 = gsheet::gsheet2tbl('https://docs.google.com/spreadsheets/d/1XUVyZF3X_4m72ztFnXZFvDKn5Yys1aKgu2Zmefd7wVo/edit?fbclid=IwAR3fi4RzFRBZqolwpKY-g20BXHLyltp18rgCrzKX0LLSe_2dkCsimZan_VY#gid=0')
-```
-
-Cleaning
-
-```{r}
-CLAFLIN_capacity_20$Infection_Rate = '20'
-CLAFLIN_capacity_40$Infection_Rate = '40'
-CLAFLIN_capacity_60$Infection_Rate = '60'
-
-CLAFLIN_combined = rbind(CLAFLIN_capacity_20, CLAFLIN_capacity_40, CLAFLIN_capacity_60)
-CLAFLIN_texas = subset(CLAFLIN_combined, State == 'TX')
-write.csv(CLAFLIN_texas, 'original-sources/CLAFIN.csv', row.names = F)
-# doesn't appear to change over time, still set for merging purposes
-CLAFLIN_texas$Date = Sys.Date() - 1
-
-CLAFLIN_texas$Source = 'CLAFLIN'
-CLAFLIN_texas$Type = 'Static'
-
-# drop projections
-CLAFLIN_calc_cols = grep('Projected|Proejcted', names(CLAFLIN_texas))
-CLAFLIN_texas = CLAFLIN_texas[, !(names(CLAFLIN_texas) %in% CLAFLIN_calc_cols)]
-
-#Rename - omit merging for now due to length of unique cols, will still output as .csv for easier analysis
-colnames(CLAFLIN_texas) = 
-    c('State', 'All_Bed_Total', 'ICU_Bed_Total', 'Hospital_Bed_Occupancy', 'ICU_Bed_Occupancy',
-    'Hospital_Bed_Available', 'Hospital_Bed_Potential',
-    'ICU_Bed_Available', 'ICU_Bed_Potential', 'Pop_Over_65_Total',
-    'Hospital_Bed_Need_6mo', 'Hospital_Bed_Need_PCT_6mo', 'Hospital_Bed_Potential_Need_PCT_6mo', 'Hospital_Bed_Total_Need_PCT_6mo',
-    'Hospital_Bed_Need_12mo', 'Hospital_Bed_Need_PCT_12mo', 'Hospital_Bed_Potential_Need_PCT_12mo', 'Hospital_Bed_Total_Need_PCT_12mo',
-    'Hospital_Bed_Need_12mo', 'Hospital_Bed_Need_PCT_12mo', 'Hospital_Bed_Potential_Need_PCT_12mo', 'Hospital_Bed_Total_Need_PCT_12mo',
-    'ICU_Bed_Need_6mo', 'ICU_Bed_Need_PCT_6mo', 'ICU_Bed_Potential_Need_PCT_6mo', 'ICU_Bed_Total_Need_PCT_6mo',
-    'ICU_Bed_Need_12mo', 'ICU_Bed_Need_PCT_12mo', 'ICU_Bed_Potential_Need_PCT_12mo', 'ICU_Bed_Total_Need_PCT_12mo',
-    'ICU_Bed_Need_12mo', 'ICU_Bed_Need_PCT_12mo', 'ICU_Bed_Potential_Need_PCT_12mo', 'ICU_Bed_Total_Need_PCT_12mo',
-    'Infection_Rate')
-```
 
 ## DSHS (time series)
 
@@ -520,29 +295,17 @@ DSHS_day_counts = data.frame(Date = Sys.Date() - 1,
 #Age
 DSHS_case_age = DSHS_data[[9]][1:(nrow(DSHS_data[[9]])-4), ]
 colnames(DSHS_case_age)[1] = 'Group'
-DSHS_case_age$Demographic = 'Age'
-DSHS_case_age$Source = 'DSHS'
-DSHS_case_age$Type = 'Current'
 DSHS_case_age$Count_Type = 'Case'
-DSHS_case_age$Date = Sys.Date()-1
 
 #Gender
 DSHS_case_gender = DSHS_data[[10]][1:(nrow(DSHS_data[[10]])-4), ]
 colnames(DSHS_case_gender)[1] = 'Group'
-DSHS_case_gender$Demographic = 'Gender'
-DSHS_case_gender$Source = 'DSHS'
-DSHS_case_gender$Type = 'Current'
 DSHS_case_gender$Count_Type = 'Case'
-DSHS_case_gender$Date = Sys.Date()-1
 
 # Race
 DSHS_case_race = DSHS_data[[11]][1:(nrow(DSHS_data[[11]])-4), ]
 colnames(DSHS_case_race)[1] = 'Group'
-DSHS_case_race$Demographic = 'Race'
-DSHS_case_race$Source = 'DSHS'
-DSHS_case_race$Type = 'Current'
 DSHS_case_race$Count_Type = 'Case'
-DSHS_case_race$Date = Sys.Date()-1
 ```
 
 ### Deaths
@@ -550,66 +313,26 @@ DSHS_case_race$Date = Sys.Date()-1
 #Age
 DSHS_death_age = DSHS_data[[12]][1:(nrow(DSHS_data[[12]])-4), ]
 colnames(DSHS_death_age)[1] = 'Group'
-DSHS_death_age$Demographic = 'Age'
-DSHS_death_age$Source = 'DSHS'
-DSHS_death_age$Type = 'Current'
 DSHS_death_age$Count_Type = 'Death'
-DSHS_death_age$Date = Sys.Date()-1
 
 #Gender
 DSHS_death_gender = DSHS_data[[13]][1:(nrow(DSHS_data[[13]])-4), ]
-DSHS_death_gender$Demographic = 'Gender'
 colnames(DSHS_death_gender)[1] = 'Group'
-DSHS_death_gender$Source = 'DSHS'
-DSHS_death_gender$Type = 'Current'
 DSHS_death_gender$Count_Type = 'Death'
-DSHS_death_gender$Date = Sys.Date()-1
 
 # Race
 DSHS_death_race = DSHS_data[[14]][1:(nrow(DSHS_data[[14]])-4), ]
-DSHS_death_race$Demographic = 'Race'
 colnames(DSHS_death_race)[1] = 'Group'
-DSHS_death_race$Source = 'DSHS'
-DSHS_death_race$Type = 'Current'
 DSHS_death_race$Count_Type = 'Death'
-DSHS_death_race$Date = Sys.Date()-1
 ```
 
 ```{r}
 # combine 
-DSHS_demographics = rbind(DSHS_case_age, DSHS_case_gender, DSHS_case_race, 
-                          DSHS_death_age, DSHS_death_gender, DSHS_death_race)
-
-# change colnames
-colnames(DSHS_demographics) = c('Demo_Group', 'Demo_Count', 'Demo_PCT', 'Demographic',
-                                'Source', 'Type', 'Investigation_Type', 'Date')
+DSHS_age = rbind(DSHS_case_age, DSHS_death_age)
+DSHS_gender = rbind(DSHS_case_gender, DSHS_death_gender)
+DSHS_race = rbind(DSHS_case_race, DSHS_death_race)
 ```
 
-
-# TBD 
-
-## KFF
-
-<!-- Omitting due to JS scraping requirements - could be done in python if considered valuable source -->
-
-```{r}
-# KFF_beds = read.csv(url('https://www.kff.org/other/state-indicator/beds-by-ownership/?currentTimeframe=0&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D'))
-```
-
-
-
-##  Our World in Data
-
-<!-- Only has US level data - omitting for now -->
-
-<!-- ```{r} -->
-<!-- OUR_WORLD_data = read.csv(url('https://covid.ourworldindata.org/data/owid-covid-data.csv')) -->
-<!-- ``` -->
-
-<!--  Cleaning -->
-<!-- ```{r} -->
-
-## Additional sources from tableau
 
 # OUTPUT 
 
@@ -617,57 +340,32 @@ colnames(DSHS_demographics) = c('Demo_Group', 'Demo_Count', 'Demo_PCT', 'Demogra
 
 ```{r}
 #rbind fills mismatched cols with NA (NYT has less vars than JHU)
-merged_counts1 = rbind.fill(JHU_texas_long, NYT_texas)
-merged_counts2 = rbind.fill(merged_counts1, US_FACTS_texas_long)
-merged_counts3 = rbind.fill(merged_counts2, DSHS_county_counts)
-
-# add google mobility - colbind this time since other data source likely not available
-# outer join b/c google only has data on 220 counties (JHU has 254 and more dates)
-merged_counts4 = as.data.frame(merge(merged_counts3, mobility_texas[, c(2:9)], by = c('County', 'Date'), all = TRUE))
+merged_counts = as.data.frame(merge(DSHS_county_counts, mobility_texas[, c(2:9)], by = c('County', 'Date'), all = TRUE))
 ```
 
 ```{r}
 # fix types
-merged_counts4$Source = as.factor(merged_counts4$Source)
-merged_counts4$County = as.factor(merged_counts4$County)
-merged_counts4$State = as.factor(merged_counts4$State)
+merged_counts$County = as.factor(merged_counts4$County)
+merged_counts$State = as.factor(merged_counts4$State)
 
 # replace TX with Texas
-merged_counts4$State = droplevels(revalue(merged_counts4$State, c('TX' = 'Texas')))
-```
-
-
-```{r}
-# declare metro and border designations
-Metro = c("Aransas", "Archer", "Armstrong", "Atascosa", "Austin", "Bandera", "Bastrop", "Bell", "Bexar", "Bowie", "Brazoria", "Brazos", "Burleson", "Caldwell", "Callahan", "Cameron", "Carson", "Chambers", "Clay", "Collin", "Comal", "Coryell", "Crosby", "Dallas", "Denton", "Ector", "Ellis", "El Paso", "Falls", "Fort Bend", "Galveston", "Goliad", "Grayson", "Gregg", "Guadalupe", "Hardin", "Harris", "Hays", "Hidalgo", "Hood", "Hudspeth", "Hunt", "Irion", "Jefferson", "Johnson", "Jones", "Kaufman", "Kendall", "Lampasas", "Liberty", "Lubbock", "Lynn", "McLennan", "Martin", "Medina", "Midland", "Montgomery", "Newton", "Nueces", "Oldham", "Orange", "Parker", "Potter", "Randall", "Robertson", "Rockwall", "Rusk", "San Patricio", "Smith", "Somervell", "Tarrant", "Taylor", "Tom Green", "Travis", "Upshur", "Victoria", "Waller", "Webb", "Wichita", "Williamson", "Wilson", "Wise")
-
-Border = c("Brewster", "Brooks", "Cameron", "Crockett", "Culberson", "Dimmit", "Duval", "Edwards", "El Paso", "Frio", "Hidalgo", "Hudspeth", "Jeff Davis", "Jim Hogg", "Kenedy", "Kinney", "La Salle", "McMullen", "Maverick", "Pecos", "Presidio", "Real", "Reeves", "Starr", "Sutton", "Terrell", "Uvalde", "Val Verde", "Webb", "Willacy", "Zapata", "Zavala")
+merged_counts$State = droplevels(revalue(merged_counts4$State, c('TX' = 'Texas')))
 ```
 
 ```{r}
-# add metro and border designations
-merged_counts4$Metro = ifelse(merged_counts4$County %in% Metro, 'Metro', 'Nonmetro')
-merged_counts4$Border = ifelse(merged_counts4$County %in% Border, 'Border', 'Nonborder')
+# add urban/rural, metro, border designations from https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls
+county_classifications = read_xlsx('original-sources/metro_classifications.xlsx', sheet = 1)[, c(1, 4:5, 8, 10:11)]
+# set colnames
+colnames(county_classifications) = c('County', 'Public_Health_Region', 'Health_Service_Region', 'Metro_Area', 'NCHS_Classification', 'Border')
 ```
+
 
 ```{r}
 # add service regions (adapted from https://www.dshs.texas.gov/chs/info/info_txco.shtm)
 service_regions = read.csv('original-sources/service_regions.csv')
 
-# drop x added to end of regions interpreted as dates
-service_regions$Health.Service.Region = as.character(service_regions$Health.Service.Region)
-service_regions$Health.Service.Region = gsub('x', '', service_regions$Health.Service.Region)
-
-# set colnames
-colnames(service_regions) = c('County_Num', 'County', 'FIPS', 'Public_Health_Region', 'Health_Service_Region')
-
 # merge with data
-merged_counts5 = merge(merged_counts4, service_regions[2:5], by = 'County')
-
-
-# make FIPS uniform
-merged_counts5$FIPS.x = NULL
-colnames(merged_counts5)[colnames(merged_counts5) == 'FIPS.y'] = 'FIPS'
+merged_counts2 = merge(merged_counts, county_classifications, by = 'County')
 ```
 
 
@@ -689,27 +387,40 @@ merged_counts6 = merge(merged_counts5, tsa_long_complete, by = 'County', all = T
 ```{r}
 # sort by county, date and export
 merged_counts6 = merged_counts6[order(merged_counts6$County, merged_counts6$Date), ]
-write.csv(merged_counts6, file = 'combined-datasets/county_counts.csv', row.names = F)
+write.csv(merged_counts6, file = 'combined-datasets/county.csv', row.names = F)
 ```
+
+## TSA Level
+
+```{r}
+write.csv(DSHS_hosp_long, file = 'combined-datasets/tsa.csv', row.names = F)
+```
+
 
 ## State Level
 
 ```{r}
-merged_state1 = rbind.fill(IHME_texas_current_raw, COVID_TRACKING_texas)
-merged_state2 = rbind.fill(merged_state1, DSHS_state_time)
-merged_state3 = rbind.fill(merged_state2, DSHS_day_counts)
-merged_state4 = rbind.fill(merged_state3, DSHS_demographics)
+merged_state = rbind.fill(DSHS_state_time, DSHS_day_counts)
 ```
 
 ```{r}
 # additional postprocessing
-merged_state4$State = 'Texas'
+merged_state$State = 'Texas'
 ```
 
 
 ```{r}
-write.csv(merged_state4, file = 'combined-datasets/state_tests_hosp.csv', row.names = F)
+write.csv(merged_state, file = 'combined-datasets/state.csv', row.names = F)
 ```
+
+### Demographics
+```{r}
+library(xlsx)
+write.xlsx(DSHS_age, file="combined-datasets/demographics.xlsx", sheetName="age", row.names=FALSE)
+write.xlsx(DSHS_gender, file="combined-datasets/demographics.xlsx", sheetName="gender", append=TRUE, row.names=FALSE)
+write.xlsx(DSHS_race, file="combined-datasets/demographics.xlsx", sheetName="race", append=TRUE, row.names=FALSE)
+```
+
 
 ## Additional csvs
 
