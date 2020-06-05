@@ -1,7 +1,6 @@
 ---
 title: 'COVID Scraping'
 author: 'Jeffrey Brennan'
-date: '5/22/2020'
 output: html_document
 ---
 
@@ -72,10 +71,17 @@ DSHS_cases_long = reshape::melt(DSHS_cases_time, id = c('County', 'Population'))
 colnames(DSHS_cases_long) = c('County', 'Population', 'Date', 'Cases_Cumulative')
 
 # fix dates
-DSHS_cases_long$Date = as.Date(gsub('Cases\r|\r|\n', '', DSHS_cases_long$Date), format = '%m-%d')
+DSHS_cases_long$Date = as.Date(gsub('Cases|\r|\r|\n', '', DSHS_cases_long$Date), format = '%m-%d')
+
+# sort
+DSHS_cases_long = DSHS_cases_long[order(DSHS_cases_long$County, DSHS_cases_long$Date), ]
 
 # calculate daily cases
-
+DSHS_cases_long$Cases_Cumulative = as.integer(as.character(DSHS_cases_long$Cases_Cumulative))
+DSHS_cases_long = 
+    DSHS_cases_long %>% 
+    group_by(County) %>% 
+     mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
 ```
 
 ```{r}
@@ -104,6 +110,11 @@ DSHS_deaths_long$Date = as.Date(as.integer(DSHS_deaths_long$Date), origin = '202
 
 
 # calculate daily deaths
+DSHS_deaths_long$Deaths_Cumulative = as.integer(as.character(DSHS_deaths_long$Deaths_Cumulative))
+DSHS_deaths_long = 
+    DSHS_deaths_long %>% 
+    group_by(County) %>%
+    mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))
 ```
 
 ```{r}
@@ -135,7 +146,13 @@ DSHS_tests_long$Date = as.Date(gsub('Tests Through ', '', DSHS_tests_long$Date),
 DSHS_tests_long$Tests_Cumulative = na_if(DSHS_tests_long$Tests_Cumulative, '-')
 DSHS_tests_long$Tests_Cumulative = na_if(DSHS_tests_long$Tests_Cumulative, '--')
 
-DSHS_tests_long$Tests_Cumulative = as.numeric(DSHS_tests_long$Tests_Cumulative)
+DSHS_tests_long$Tests_Cumulative = as.numeric(as.character(DSHS_tests_long$Tests_Cumulative))
+
+# calculate daily tests
+DSHS_tests_long = 
+    DSHS_tests_long %>% 
+    group_by(County) %>% 
+    mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative)))
 ```
 
 
@@ -163,6 +180,14 @@ colnames(DSHS_active_cases_long) = c('County', 'Date', 'Active_Cases_Cumulative'
 # fix dates
 DSHS_active_cases_long$Date = as.Date(gsub('Active\r\nCases\r\n', '', DSHS_active_cases_long$Date),
                                       format = '%m-%d')
+
+
+# calculate daily active_cases
+DSHS_active_cases_long$Active_Cases_Cumulative = as.integer(as.character(DSHS_active_cases_long$Active_Cases_Cumulative))
+DSHS_active_cases_long =  
+    DSHS_active_cases_long %>% 
+    group_by(County) %>% 
+    mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative)))
 ```
 
 ```{r}
@@ -170,9 +195,10 @@ DSHS_active_cases_long$Date = as.Date(gsub('Active\r\nCases\r\n', '', DSHS_activ
 DSHS_county_counts = Reduce(function(x, y) merge(x, y, by = c('County', 'Date'), all=TRUE),
        list(DSHS_cases_long, DSHS_deaths_long, DSHS_tests_long, DSHS_active_cases_long))
 
-# set population for all rows
+
+# drop population - will be using census data
 DSHS_county_counts$Population.x = NULL
-colnames(DSHS_county_counts)[colnames(DSHS_county_counts) == 'Population.y'] = 'Population'
+DSHS_county_counts$Population.y = NULL
 ```
 
 
@@ -216,22 +242,22 @@ DSHS_hosp_long$Date = as.Date(as.integer(DSHS_hosp_long$Date), origin = '2020-04
 
 ```{r}
 download.file('https://www.dshs.state.tx.us/coronavirus/TexasCOVID19CaseCountData.xlsx',
-               destfile = 'original-sources/dshs.xlsx', mode = 'wb')
+               destfile = 'original-sources/DSHS_state.xlsx', mode = 'wb')
 
 library(readxl)
 read_excel_allsheets = function(filename, tibble = FALSE) {
     sheets = readxl::excel_sheets(filename)
-    x = lapply(sheets, function(X) readxl::read_excel(filename, sheet = X, skip = 1, col_names = TRUE))
+    x = lapply(sheets, function(X) readxl::read_excel(filename, sheet = X, skip = 1, col_names = TRUE, na = '.'))
     x = lapply(x, as.data.frame)
     return(x)
 }
 
-DSHS_data = read_excel_allsheets('original-sources/dshs.xlsx')
+DSHS_state = read_excel_allsheets('original-sources/DSHS_state.xlsx')
 ```
 
 
 ```{r}
-DSHS_tests = DSHS_data[[4]]
+DSHS_tests = DSHS_state[[4]]
 DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests)-3), ]
 
 colnames(DSHS_tests) = c('Date', 'Viral_Tests', 'Antibody_Tests', 'Tests_Total', 'Positive_Rate', 'Viral_Tests_New_Avg', 'Antibody_Tests_New_Avg', 'Total_Tests_New_Avg')
@@ -246,7 +272,7 @@ DSHS_tests$Positive_Rate = as.numeric(DSHS_tests$Positive_Rate)
 
 ```{r}
 # drop row num
-DSHS_hospitalizations = DSHS_data[[8]][, c(2:3)]
+DSHS_hospitalizations = DSHS_state[[8]][, c(2:3)]
 
 # drop footnote
 DSHS_hospitalizations = DSHS_hospitalizations[1:(nrow(DSHS_hospitalizations)-2), ]
@@ -261,31 +287,24 @@ colnames(DSHS_hospitalizations)[2] = 'Hospital_Total'
 
 ```{r}
 # merge tests & hospitalizations
-DSHS_state_time = merge(DSHS_tests, DSHS_hospitalizations, by = 'Date')
-
-# add descriptors
-DSHS_state_time$Source = 'DSHS'
-DSHS_state_time$Type = 'Longitudinal'
+DSHS_state_time = merge(DSHS_tests, DSHS_hospitalizations, by = 'Date', all = TRUE)
 ```
 
 ## DSHS (day counts)
 
 ```{r}
 # avoids duplication of results between sheets
-DSHS_day_counts = data.frame(Date = Sys.Date() - 1,
-                             Source = 'DSHS',
-                             Type = 'Current',  # (not longitudinal)
-                             Recovered_Total = DSHS_data[[3]][1,1],
-                             Active_Total = DSHS_data[[3]][1,2],
-                             Tests_State_Lab = DSHS_data[[5]][1,2],
-                             Tests_Commercial_Lab = DSHS_data[[5]][2,2],
-                             Antibody_Tests_Positive = DSHS_data[[6]][2,2],
-                             Hospital_Bed_Total = DSHS_data[[7]][2,2],
-                             Hospital_Bed_Available = DSHS_data[[7]][3,2],
-                             ICU_Bed_Available = DSHS_data[[7]][4,2],
-                             Ventilator_Available = DSHS_data[[7]][5,2],
-                             Case_Investigations = DSHS_data[[9]][[14,2]],
-                             Death_Investigations = DSHS_data[[12]][14,2])
+DSHS_state_day = data.frame(Recovered_Total = DSHS_state[[3]][1,1],
+                            Active_Total = DSHS_state[[3]][1,2],
+                            Tests_State_Lab = DSHS_state[[5]][1,2],
+                            Tests_Commercial_Lab = DSHS_state[[5]][2,2],
+                            Antibody_Tests_Positive = DSHS_state[[6]][2,2],
+                            Hospital_Bed_Total = DSHS_state[[7]][2,2],
+                            Hospital_Bed_Available = DSHS_state[[7]][3,2],
+                            ICU_Bed_Available = DSHS_state[[7]][4,2],
+                            Ventilator_Available = DSHS_state[[7]][5,2],
+                            Case_Investigations = DSHS_state[[9]][[14,2]],
+                            Death_Investigations = DSHS_state[[12]][14,2])
 ```
 
 ## DSHS Demographics
@@ -293,17 +312,17 @@ DSHS_day_counts = data.frame(Date = Sys.Date() - 1,
 ### Cases
 ```{r}
 #Age
-DSHS_case_age = DSHS_data[[9]][1:(nrow(DSHS_data[[9]])-4), ]
+DSHS_case_age = DSHS_state[[9]][1:(nrow(DSHS_state[[9]])-4), ]
 colnames(DSHS_case_age)[1] = 'Group'
 DSHS_case_age$Count_Type = 'Case'
 
 #Gender
-DSHS_case_gender = DSHS_data[[10]][1:(nrow(DSHS_data[[10]])-4), ]
+DSHS_case_gender = DSHS_state[[10]][1:(nrow(DSHS_state[[10]])-4), ]
 colnames(DSHS_case_gender)[1] = 'Group'
 DSHS_case_gender$Count_Type = 'Case'
 
 # Race
-DSHS_case_race = DSHS_data[[11]][1:(nrow(DSHS_data[[11]])-4), ]
+DSHS_case_race = DSHS_state[[11]][1:(nrow(DSHS_state[[11]])-4), ]
 colnames(DSHS_case_race)[1] = 'Group'
 DSHS_case_race$Count_Type = 'Case'
 ```
@@ -311,17 +330,17 @@ DSHS_case_race$Count_Type = 'Case'
 ### Deaths
 ```{r}
 #Age
-DSHS_death_age = DSHS_data[[12]][1:(nrow(DSHS_data[[12]])-4), ]
+DSHS_death_age = DSHS_state[[12]][1:(nrow(DSHS_state[[12]])-4), ]
 colnames(DSHS_death_age)[1] = 'Group'
 DSHS_death_age$Count_Type = 'Death'
 
 #Gender
-DSHS_death_gender = DSHS_data[[13]][1:(nrow(DSHS_data[[13]])-4), ]
+DSHS_death_gender = DSHS_state[[13]][1:(nrow(DSHS_state[[13]])-4), ]
 colnames(DSHS_death_gender)[1] = 'Group'
 DSHS_death_gender$Count_Type = 'Death'
 
 # Race
-DSHS_death_race = DSHS_data[[14]][1:(nrow(DSHS_data[[14]])-4), ]
+DSHS_death_race = DSHS_state[[14]][1:(nrow(DSHS_state[[14]])-4), ]
 colnames(DSHS_death_race)[1] = 'Group'
 DSHS_death_race$Count_Type = 'Death'
 ```
@@ -334,40 +353,96 @@ DSHS_race = rbind(DSHS_case_race, DSHS_death_race)
 ```
 
 
-# OUTPUT 
+# CENSUS 
 
-## County Level
+## County level
 
 ```{r}
-#rbind fills mismatched cols with NA (NYT has less vars than JHU)
-merged_counts = as.data.frame(merge(DSHS_county_counts, mobility_texas[, c(2:9)], by = c('County', 'Date'), all = TRUE))
+# sourced from https://www.census.gov/data/tables/time-series/demo/popest/2010s-counties-detail.html
+county_demo = read.csv('original-sources/census/county_demo.csv')
+
+# restrict to 2018 pop estimate & drop extra cols
+county_demo_2018 = subset(county_demo[, c(5:ncol(county_demo))], YEAR == 11)
+
+# drop year
+county_demo_2018$YEAR = NULL
+
+# drop 'county' suffix
+county_demo_2018$CTYNAME = gsub(' County', '', county_demo_2018$CTYNAME)
+
+# drop agegrp = 0 (total row)
+county_demo_2018 = county_demo_2018[which(county_demo_2018$AGEGRP != 0), ]
+
+# rename cols for merging
+colnames(county_demo_2018)[1] = 'County'
+
+# TODO: further data processing
 ```
 
-```{r}
-# fix types
-merged_counts$County = as.factor(merged_counts4$County)
-merged_counts$State = as.factor(merged_counts4$State)
 
-# replace TX with Texas
-merged_counts$State = droplevels(revalue(merged_counts4$State, c('TX' = 'Texas')))
+## City level
+
+```{r}
+city_pops = read.csv('original-sources/census/city_pops.csv')
+
+# keep only 2018 estimate
+city_pops2 = city_pops[, c(3, 4, 9, 21)]
+colnames(city_pops2) = c('County', 'Place_Code', 'City', 'Population')
+
+# drop city, town, suffixes
+city_pops2$City = gsub(' city| town|', '', city_pops2$City)
+
+# drop pt suffix
+# pt indicates overlap of cities between counties
+city_pops2$City = gsub(' (pt.)', '', city_pops2$City, fixed = TRUE)
+
+colnames(city_pops2)[1] = 'County_Code'
+
+# get county fips
+county_fips = subset(city_pops2, Place_Code == 0)[-1, c(1,3)]
+colnames(county_fips) = c('County_Code', 'County')
+
+
+# replace county fips with actual names
+city_pops3 = merge(city_pops2, county_fips, by = 'County_Code')
+
+# drop county totals from list
+city_pops4 = subset(city_pops3, Place_Code != 0 & Place_Code != 99990)
+
+# drop county suffix
+city_pops4$County = gsub(' County', '', city_pops4$County)
+```
+
+# OUTPUT 
+
+## City
+
+```{r}
+write.csv(city_pops4, 'combined-datasets/city_pops.csv', row.names = F)
+```
+
+
+## County
+
+```{r}
+merged_counts = as.data.frame(merge(DSHS_county_counts, mobility_texas[, c(2:9)], by = c('County', 'Date'), all = TRUE))
+
+# fix types
+merged_counts$County = as.factor(merged_counts$County)
 ```
 
 ```{r}
 # add urban/rural, metro, border designations from https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls
 county_classifications = read_xlsx('original-sources/metro_classifications.xlsx', sheet = 1)[, c(1, 4:5, 8, 10:11)]
+
 # set colnames
 colnames(county_classifications) = c('County', 'Public_Health_Region', 'Health_Service_Region', 'Metro_Area', 'NCHS_Classification', 'Border')
 ```
 
 
 ```{r}
-# add service regions (adapted from https://www.dshs.texas.gov/chs/info/info_txco.shtm)
-service_regions = read.csv('original-sources/service_regions.csv')
-
-# merge with data
 merged_counts2 = merge(merged_counts, county_classifications, by = 'County')
 ```
-
 
 ```{r}
 # TSA levels
@@ -379,52 +454,37 @@ colnames(tsa_long_complete) = c('TSA', 'County')
 
 tsa_long_complete$County = trimws(tsa_long_complete$County)
 
-merged_counts6 = merge(merged_counts5, tsa_long_complete, by = 'County', all = TRUE)
+merged_counts3 = merge(merged_counts2, tsa_long_complete, by = 'County', all = TRUE)
+# sort by county, date and export
+merged_counts3 = merged_counts3[order(merged_counts3$County, merged_counts3$Date), ]
 ```
-
 
 
 ```{r}
-# sort by county, date and export
-merged_counts6 = merged_counts6[order(merged_counts6$County, merged_counts6$Date), ]
-write.csv(merged_counts6, file = 'combined-datasets/county.csv', row.names = F)
+write.csv(merged_counts3, file = 'combined-datasets/county.csv', row.names = F)
+write.csv(county_demo_2018, file = 'combined-datasets/county_demo.csv', row.names = F)
 ```
 
-## TSA Level
+## TSA
 
 ```{r}
 write.csv(DSHS_hosp_long, file = 'combined-datasets/tsa.csv', row.names = F)
 ```
 
 
-## State Level
+## State
 
-```{r}
-merged_state = rbind.fill(DSHS_state_time, DSHS_day_counts)
-```
-
-```{r}
-# additional postprocessing
-merged_state$State = 'Texas'
-```
-
-
-```{r}
-write.csv(merged_state, file = 'combined-datasets/state.csv', row.names = F)
-```
-
-### Demographics
 ```{r}
 library(xlsx)
+write.xlsx(DSHS_state_time, file="combined-datasets/state.xlsx", sheetName="longitudinal", row.names=FALSE)
+write.xlsx(DSHS_state_day, file="combined-datasets/state.xlsx", sheetName="current", append = TRUE, row.names=FALSE)
+```
+
+
+### Demographics
+
+```{r}
 write.xlsx(DSHS_age, file="combined-datasets/demographics.xlsx", sheetName="age", row.names=FALSE)
 write.xlsx(DSHS_gender, file="combined-datasets/demographics.xlsx", sheetName="gender", append=TRUE, row.names=FALSE)
 write.xlsx(DSHS_race, file="combined-datasets/demographics.xlsx", sheetName="race", append=TRUE, row.names=FALSE)
-```
-
-
-## Additional csvs
-
-```{r}
-write.csv(CLAFLIN_texas, 'combined-datasets/claflin_capacity.csv', row.names = F)
-write.csv(DSHS_demographics, 'combined-datasets/demographics.csv', row.names = F)
 ```

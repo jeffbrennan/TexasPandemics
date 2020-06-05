@@ -364,113 +364,12 @@ summary {
 
 <h1 class="title toc-ignore">COVID Scraping</h1>
 <h4 class="author">Jeffrey Brennan</h4>
-<h4 class="date">5/22/2020</h4>
 
 </div>
 
 
 <div id="county-level" class="section level1">
 <h1>COUNTY LEVEL</h1>
-<div id="jhu" class="section level2">
-<h2>JHU</h2>
-<pre class="r"><code>JHU_cases = fread(&#39;https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv&#39;)
-
-JHU_deaths = fread(&#39;https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv&#39;)</code></pre>
-<p>JHU Cleaning</p>
-<pre class="r"><code>JHU_cases$Type = &#39;cases&#39;
-JHU_deaths$Type = &#39;deaths&#39;
-
-JHU_texas_deaths = subset(JHU_deaths, Province_State == &#39;Texas&#39;)
-JHU_texas_cases = subset(JHU_cases, Province_State == &#39;Texas&#39;)
-JHU_texas_df = rbind(JHU_texas_cases, JHU_texas_deaths[, -12])
-write.csv(JHU_cases, &#39;original-sources/JHU.csv&#39;)
-
-JHU_texas_df$Population = rep(JHU_texas_deaths$Population, times = 2)</code></pre>
-<pre class="r"><code>JHU_texas_df = JHU_texas_df[, -c(2:4, 8, 11)]
-colnames(JHU_texas_df)[3:6] = c(&#39;County&#39;, &#39;State&#39;, &#39;Lat&#39;, &#39;Long&#39;)
-
-# force as data frame to avoid type issue
-JHU_texas_long = as.data.frame(reshape::melt(JHU_texas_df, id = c(&#39;UID&#39;, &#39;FIPS&#39;, &#39;County&#39;, &#39;State&#39;, &#39;Lat&#39;, &#39;Long&#39;, &#39;Type&#39;, &#39;Population&#39;)))</code></pre>
-<pre class="r"><code>colnames(JHU_texas_long)[9:10] = c(&#39;Date&#39;, &#39;Value&#39;)
-
-# fix types
-JHU_texas_long$Type = as.factor(JHU_texas_long$Type)
-
-# fix dates
-# JHU_texas_long$Date = gsub(&#39;X&#39;, &#39;&#39;, JHU_texas_long$Date)
-JHU_texas_long$Date = as.Date(as.character(JHU_texas_long$Date), format = &#39;%m/%d/%y&#39;)</code></pre>
-<pre class="r"><code>JHU_texas_long$Deaths = (subset(JHU_texas_long, Type == &#39;deaths&#39;)[, &#39;Value&#39;])
-JHU_texas_long = subset(JHU_texas_long, Type == &#39;cases&#39;)
-JHU_texas_long$Type = NULL
-colnames(JHU_texas_long)[colnames(JHU_texas_long) == &#39;Value&#39;] = &#39;Cases_Cumulative&#39;
-colnames(JHU_texas_long)[colnames(JHU_texas_long) == &#39;Deaths&#39;] = &#39;Deaths_Cumulative&#39;</code></pre>
-<pre class="r"><code># add source col
-JHU_texas_long$Source = &#39;JHU&#39;</code></pre>
-</div>
-<div id="nyt" class="section level2">
-<h2>NYT</h2>
-<pre class="r"><code>NYT_combined = fread(&#39;https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv&#39;)</code></pre>
-<p>NYT Cleaning</p>
-<pre class="r"><code># filter texas only
-NYT_texas = subset(NYT_combined, state == &#39;Texas&#39;)
-write.csv(NYT_texas, &#39;original-sources/NYT.csv&#39;, row.names = F)
-
-# convert dates to dates
-NYT_texas$date = as.Date(NYT_texas$date)
-
-# add source col
-NYT_texas$Source = &#39;NYT&#39;
-
-# fix column names
-colnames(NYT_texas) = c(&#39;Date&#39;, &#39;County&#39;, &#39;State&#39;, &#39;FIPS&#39;, &#39;Cases_Cumulative&#39;, &#39;Deaths_Cumulative&#39;, &#39;Source&#39;)</code></pre>
-</div>
-<div id="usa-facts" class="section level2">
-<h2>USA Facts</h2>
-<pre class="r"><code>US_FACTS_cases = fread(&#39;https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv&#39;)
-US_FACTS_deaths = fread(&#39;https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv&#39;)
-US_FACTS_pops = fread(&#39;https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_county_population_usafacts.csv&#39;)</code></pre>
-<p>USA FACTS Cleaning</p>
-<pre class="r"><code>US_FACTS_cases$Type = &#39;cases&#39;
-US_FACTS_deaths$Type = &#39;deaths&#39;
-
-US_FACTS_counts = rbind(US_FACTS_cases, US_FACTS_deaths)
-US_FACTS_texas = subset(US_FACTS_counts, State == &#39;TX&#39;)
-write.csv(US_FACTS_texas, &#39;original-sources/USA_FACTS.csv&#39;, row.names = F)
-
-# # fix encoding issue with first col
-colnames(US_FACTS_texas)[1] = &#39;FIPS&#39;
-colnames(US_FACTS_pops)[1] = &#39;FIPS&#39;
-
-# add pop
-# US_FACTS_texas = merge(US_FACTS_texas, US_FACTS_pops[, &#39;population&#39;], by = &#39;FIPS&#39;)
-US_FACTS_texas = merge(US_FACTS_texas, US_FACTS_pops[, c(&#39;FIPS&#39;, &#39;population&#39;)], by = &#39;FIPS&#39;)</code></pre>
-<pre class="r"><code># drop &#39;stateFIPS&#39;
-US_FACTS_texas$stateFIPS = NULL
-
-# make long
-# force as dataframe to avoid memory leak? freezing 2 blocks down
-US_FACTS_texas_long = as.data.frame(reshape::melt(US_FACTS_texas, id = c(&#39;FIPS&#39;, &#39;County Name&#39;, &#39;State&#39;, &#39;Type&#39;, &#39;population&#39;)))</code></pre>
-<pre class="r"><code># fix colnames
-colnames(US_FACTS_texas_long) = c(&#39;FIPS&#39;, &#39;County&#39;, &#39;State&#39;, &#39;Type&#39;, &#39;Population&#39;, &#39;Date&#39;, &#39;Value&#39;)
-
-# drop &#39;County&#39; suffix
-US_FACTS_texas_long$County = gsub(&#39; County&#39;, &#39;&#39;, US_FACTS_texas_long$County)
-
-# fix dates
-US_FACTS_texas_long$Date = as.Date(as.character(US_FACTS_texas_long$Date), format = &#39;%m/%d/%y&#39;)</code></pre>
-<pre class="r"><code># append deaths
-# sort by Type
-US_FACTS_texas_long = US_FACTS_texas_long[order(US_FACTS_texas_long$Type), ]
-
-US_FACTS_texas_long$Deaths = (subset(US_FACTS_texas_long, Type == &#39;deaths&#39;)[, &#39;Value&#39;])
-US_FACTS_texas_long = subset(US_FACTS_texas_long, Type == &#39;cases&#39;)
-US_FACTS_texas_long$Type = NULL
-colnames(US_FACTS_texas_long)[colnames(US_FACTS_texas_long) == &#39;Value&#39;] = &#39;Cases_Cumulative&#39;
-colnames(US_FACTS_texas_long)[colnames(US_FACTS_texas_long) == &#39;Deaths&#39;] = &#39;Deaths_Cumulative&#39;</code></pre>
-<pre class="r"><code># convert county to factor
-US_FACTS_texas_long$County = as.factor(US_FACTS_texas_long$County)
-US_FACTS_texas_long$Source = &#39;USA Facts&#39;</code></pre>
-</div>
 <div id="google-mobility" class="section level2">
 <h2>Google mobility</h2>
 <p>Used fread for faster import - very large file</p>
@@ -508,11 +407,14 @@ DSHS_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 83 more problems</code></pre>
+## * … and 86 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_cases_time) = DSHS_cases_time[2, ]
 DSHS_cases_time = DSHS_cases_time[3:(nrow(DSHS_cases_time) - 11), ]
 colnames(DSHS_cases_time)[1] = &#39;County&#39;
+
+#save
+write.csv(DSHS_cases_time, &#39;original-sources/DSHS_county_cases.csv&#39;, row.names = FALSE)
 
 # melt
 DSHS_cases_long = reshape::melt(DSHS_cases_time, id = c(&#39;County&#39;, &#39;Population&#39;))
@@ -521,7 +423,17 @@ DSHS_cases_long = reshape::melt(DSHS_cases_time, id = c(&#39;County&#39;, &#39;P
 colnames(DSHS_cases_long) = c(&#39;County&#39;, &#39;Population&#39;, &#39;Date&#39;, &#39;Cases_Cumulative&#39;)
 
 # fix dates
-DSHS_cases_long$Date = as.Date(gsub(&#39;Cases\r|\r|\n&#39;, &#39;&#39;, DSHS_cases_long$Date), format = &#39;%m-%d&#39;)</code></pre>
+DSHS_cases_long$Date = as.Date(gsub(&#39;Cases|\r|\r|\n&#39;, &#39;&#39;, DSHS_cases_long$Date), format = &#39;%m-%d&#39;)
+
+# sort
+DSHS_cases_long = DSHS_cases_long[order(DSHS_cases_long$County, DSHS_cases_long$Date), ]
+
+# calculate daily cases
+DSHS_cases_long$Cases_Cumulative = as.integer(as.character(DSHS_cases_long$Cases_Cumulative))
+DSHS_cases_long = 
+    DSHS_cases_long %&gt;% 
+    group_by(County) %&gt;% 
+     mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))</code></pre>
 <pre class="r"><code># deaths
 death_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyFatalityCountData.xlsx&#39;
 temp = tempfile()
@@ -533,11 +445,14 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 86 more problems</code></pre>
+## * … and 89 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
 DSHS_deaths_time = DSHS_deaths_time[3:(nrow(DSHS_deaths_time) - 10), ]
 colnames(DSHS_deaths_time)[1] = &#39;County&#39;
+
+#save
+write.csv(DSHS_deaths_time, &#39;original-sources/DSHS_county_deaths.csv&#39;, row.names = FALSE)
 
 # melt
 DSHS_deaths_long = reshape::melt(DSHS_deaths_time, id = c(&#39;County&#39;, &#39;Population&#39;))
@@ -546,10 +461,16 @@ DSHS_deaths_long = reshape::melt(DSHS_deaths_time, id = c(&#39;County&#39;, &#39
 colnames(DSHS_deaths_long) = c(&#39;County&#39;, &#39;Population&#39;, &#39;Date&#39;, &#39;Deaths_Cumulative&#39;)
 
 # fix dates
-# DSHS_deaths_long$Date = as.Date(gsub(&#39;deaths\r\n\r\n&#39;, &#39;&#39;, as.character(DSHS_deaths_long$Date)), format = &#39;%y%m%d&#39;)
-DSHS_deaths_long$Date = as.Date(as.integer(DSHS_deaths_long$Date), origin = &#39;2020-03-03&#39;)</code></pre>
-<pre class="r"><code># testing
+DSHS_deaths_long$Date = as.Date(as.integer(DSHS_deaths_long$Date), origin = &#39;2020-03-03&#39;)
 
+
+# calculate daily deaths
+DSHS_deaths_long$Deaths_Cumulative = as.integer(as.character(DSHS_deaths_long$Deaths_Cumulative))
+DSHS_deaths_long = 
+    DSHS_deaths_long %&gt;% 
+    group_by(County) %&gt;%
+    mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))</code></pre>
+<pre class="r"><code># testing
 test_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsOverTimebyCounty.xlsx&#39;
 temp = tempfile()
 download.file(test_url, temp, mode = &#39;wb&#39;) 
@@ -560,11 +481,14 @@ DSHS_tests_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 36 more problems</code></pre>
-<pre class="r"><code># fix colname
+## * … and 39 more problems</code></pre>
+<pre class="r"><code># fix colnames
 colnames(DSHS_tests_time) = DSHS_tests_time[1, ]
 DSHS_tests_time = DSHS_tests_time[2:(nrow(DSHS_tests_time) - 9), ]
 colnames(DSHS_tests_time)[1] = &#39;County&#39;
+
+#save
+write.csv(DSHS_tests_time, &#39;original-sources/DSHS_county_tests.csv&#39;, row.names = FALSE)
 
 # melt
 DSHS_tests_long = reshape::melt(DSHS_tests_time, id = c(&#39;County&#39;))
@@ -580,7 +504,13 @@ DSHS_tests_long$Date = as.Date(gsub(&#39;Tests Through &#39;, &#39;&#39;, DSHS_t
 DSHS_tests_long$Tests_Cumulative = na_if(DSHS_tests_long$Tests_Cumulative, &#39;-&#39;)
 DSHS_tests_long$Tests_Cumulative = na_if(DSHS_tests_long$Tests_Cumulative, &#39;--&#39;)
 
-DSHS_tests_long$Tests_Cumulative = as.numeric(DSHS_tests_long$Tests_Cumulative)</code></pre>
+DSHS_tests_long$Tests_Cumulative = as.numeric(as.character(DSHS_tests_long$Tests_Cumulative))
+
+# calculate daily tests
+DSHS_tests_long = 
+    DSHS_tests_long %&gt;% 
+    group_by(County) %&gt;% 
+    mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative)))</code></pre>
 <pre class="r"><code># active cases
 active_case_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID-19ActiveCaseDatabyCounty.xlsx&#39;
 temp = tempfile()
@@ -592,11 +522,14 @@ DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code><
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 51 more problems</code></pre>
+## * … and 54 more problems</code></pre>
 <pre class="r"><code># fix colname
 colnames(DSHS_active_cases_time) = DSHS_active_cases_time[2, ]
 DSHS_active_cases_time = DSHS_active_cases_time[3:(nrow(DSHS_active_cases_time)), 2:ncol(DSHS_active_cases_time)]
 colnames(DSHS_active_cases_time)[1] = &#39;County&#39;
+
+#save
+write.csv(DSHS_active_cases_time, &#39;original-sources/DSHS_county_active_cases.csv&#39;, row.names = FALSE)
 
 # melt
 DSHS_active_cases_long = reshape::melt(DSHS_active_cases_time, id = c(&#39;County&#39;))
@@ -606,153 +539,212 @@ colnames(DSHS_active_cases_long) = c(&#39;County&#39;, &#39;Date&#39;, &#39;Acti
 
 # fix dates
 DSHS_active_cases_long$Date = as.Date(gsub(&#39;Active\r\nCases\r\n&#39;, &#39;&#39;, DSHS_active_cases_long$Date),
-                                      format = &#39;%m-%d&#39;)</code></pre>
+                                      format = &#39;%m-%d&#39;)
+
+
+# calculate daily active_cases
+DSHS_active_cases_long$Active_Cases_Cumulative = as.integer(as.character(DSHS_active_cases_long$Active_Cases_Cumulative))
+DSHS_active_cases_long =  
+    DSHS_active_cases_long %&gt;% 
+    group_by(County) %&gt;% 
+    mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative)))</code></pre>
 <pre class="r"><code># combine DSHS sources
 DSHS_county_counts = Reduce(function(x, y) merge(x, y, by = c(&#39;County&#39;, &#39;Date&#39;), all=TRUE),
        list(DSHS_cases_long, DSHS_deaths_long, DSHS_tests_long, DSHS_active_cases_long))
 
-# set population for all rows
-DSHS_county_counts$Population.x = NULL
-colnames(DSHS_county_counts)[colnames(DSHS_county_counts) == &#39;Population.y&#39;] = &#39;Population&#39;
 
-DSHS_county_counts$Source = &#39;DSHS&#39;</code></pre>
+# drop population - will be using census data
+DSHS_county_counts$Population.x = NULL
+DSHS_county_counts$Population.y = NULL</code></pre>
+</div>
+</div>
+<div id="tsa-level" class="section level1">
+<h1>TSA LEVEL</h1>
+<div id="dshs-1" class="section level2">
+<h2>DSHS</h2>
+<pre class="r"><code>hosp_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx&#39;
+temp = tempfile()
+download.file(hosp_url, temp, mode = &#39;wb&#39;) 
+DSHS_tsa_hosp = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in C3 / R3C3: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in D3 / R3C4: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in E3 / R3C5: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in F3 / R3C6: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in G3 / R3C7: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in H3 / R3C8: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in I3 / R3C9: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in J3 / R3C10: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in K3 / R3C11: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in L3 / R3C12: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in M3 / R3C13: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in N3 / R3C14: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in O3 / R3C15: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in P3 / R3C16: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in Q3 / R3C17: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in R3 / R3C18: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in S3 / R3C19: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in T3 / R3C20: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in U3 / R3C21: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in V3 / R3C22: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in W3 / R3C23: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in X3 / R3C24: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in Y3 / R3C25: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in Z3 / R3C26: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AA3 / R3C27: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AB3 / R3C28: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AC3 / R3C29: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AD3 / R3C30: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AE3 / R3C31: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AF3 / R3C32: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AG3 / R3C33: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AH3 / R3C34: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AI3 / R3C35: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AJ3 / R3C36: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AK3 / R3C37: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AL3 / R3C38: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AM3 / R3C39: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AN3 / R3C40: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AO3 / R3C41: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AP3 / R3C42: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AQ3 / R3C43: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AR3 / R3C44: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AS3 / R3C45: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AT3 / R3C46: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AU3 / R3C47: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AV3 / R3C48: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AW3 / R3C49: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AX3 / R3C50: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AY3 / R3C51: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in AZ3 / R3C52: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BA3 / R3C53: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BB3 / R3C54: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BC3 / R3C55: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BD3 / R3C56: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BE3 / R3C57: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BF3 / R3C58: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BG3 / R3C59: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BH3 / R3C60: got a date</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * … and 54 more problems</code></pre>
+<pre class="r"><code># fix colnames
+colnames(DSHS_tsa_hosp) = DSHS_tsa_hosp[2, ]
+DSHS_tsa_hosp = DSHS_tsa_hosp[3:(nrow(DSHS_tsa_hosp) - 1), ]
+colnames(DSHS_tsa_hosp)[1] = &#39;TSA&#39;
+
+# drop . from TSA &amp; drop TSA name
+DSHS_tsa_hosp$TSA = gsub(&#39;.&#39;, &#39;&#39;, DSHS_tsa_hosp$TSA, fixed = TRUE)
+DSHS_tsa_hosp$`TSA Name` = NULL
+
+
+#save
+write.csv(DSHS_tsa_hosp, &#39;original-sources/DSHS_tsa_hosp.csv&#39;, row.names = FALSE)
+
+# melt
+DSHS_hosp_long = reshape::melt(DSHS_tsa_hosp, id = c(&#39;TSA&#39;))
+                                
+# set colnames
+colnames(DSHS_hosp_long) = c(&#39;TSA&#39;, &#39;Date&#39;, &#39;Hospitalizations_Daily&#39;)
+
+# fix dates
+DSHS_hosp_long$Date = as.Date(as.integer(DSHS_hosp_long$Date), origin = &#39;2020-04-07&#39;)</code></pre>
 </div>
 </div>
 <div id="state-level" class="section level1">
 <h1>STATE LEVEL</h1>
-<div id="ihme" class="section level2">
-<h2>IHME</h2>
-<pre class="r"><code>url = &#39;https://ihmecovid19storage.blob.core.windows.net/latest/ihme-covid19.zip&#39;
-all_files = unzip(&#39;original-sources/IHME.zip&#39;, list = TRUE)
-IHME_data = read.csv(unz(&#39;original-sources/IHME.zip&#39;, all_files[2,1]))</code></pre>
-<p>Cleaning</p>
-<pre class="r"><code># drop imported row name
-IHME_texas = subset(IHME_data, location_name == &#39;Texas&#39;)[-1]
-write.csv(IHME_texas, &#39;original-sources/IHME.csv&#39;, row.names = F)
-
-
-# restrict to current date &amp; observed tests etc (no real data before)
-IHME_texas_current = subset(IHME_texas, as.Date(date) &lt; Sys.Date() &amp; as.Date(date) &gt;= as.Date(&#39;2020-02-08&#39;) &amp; 
-                            mobility_data_type == &#39;observed&#39; &amp; total_tests_data_type == &#39;observed&#39;)
-
-# format date 
-IHME_texas_current$date = as.Date(as.character(IHME_texas_current$date), format = &#39;%Y-%m-%d&#39;)
-
-# focus on non-calculated cols, can change later
-IHME_calc_cols = grep(&#39;upper|lower|est_|smoothed|_mean&#39;, names(IHME_texas_current))
-IHME_texas_current_raw = IHME_texas_current[, -c(IHME_calc_cols)]
-
-# drop uninformative cols 
-IHME_trash_cols = c(&#39;bedover_mean&#39;, &#39;icuover_mean&#39;, &#39;mobility_data_type&#39;, &#39;total_tests_data_type&#39;)
-IHME_texas_current_raw = IHME_texas_current_raw[, !(names(IHME_texas_current_raw) %in% IHME_trash_cols)]
-
-# TODO: look at methodology for colname meanings, appears that all _mean cols are projections as well - omitting for now
-# colnames(IHME_texas_current_raw) = c(&#39;State&#39;, &#39;Date&#39;, &#39;All_Bed_Mean&#39;, &#39;ICU_Bed_Mean&#39;, &#39;Ventilator_Cumulative&#39;,
-#                                      &#39;Deaths_Cumulative&#39;, &#39;Admissions&#39;, &#39;New_ICU&#39;, &#39;Deaths_Total&#39;,
-#                                      &#39;Mobility_Composite&#39;, &#39;Tests_Total&#39;, &#39;Infection_Total&#39;)
-
-# need denominator for tests and infections
-colnames(IHME_texas_current_raw) = c(&#39;State&#39;, &#39;Date&#39;, &#39;Mobility_Composite&#39;, &#39;Tests_Total&#39;, &#39;Infections_Total&#39;)
-
-IHME_texas_current_raw$Source = &#39;IHME&#39;
-IHME_texas_current_raw$Type = &#39;Longitudinal&#39;</code></pre>
-</div>
-<div id="covidtracking.com" class="section level2">
-<h2>Covidtracking.com</h2>
-<pre class="r"><code>COVIDTRACKING_data = read.csv(url(&#39;https://covidtracking.com/api/v1/states/daily.csv&#39;))</code></pre>
-<p>Cleaning</p>
-<pre class="r"><code>COVID_TRACKING_texas = subset(COVIDTRACKING_data, state == &#39;TX&#39;)
-write.csv(COVID_TRACKING_texas, &#39;original-sources/COVID_TRACKING.csv&#39;, row.names = F)
-
-# format date
-COVID_TRACKING_texas$date = as.Date(as.character(COVID_TRACKING_texas$date), format = &#39;%Y%m%d&#39;)
-
-
-# drop cols
-COVID_TRACKING_trash_cols = c(&#39;total&#39;, &#39;posNeg&#39;, &#39;lastUpdateEt&#39;, &#39;hash&#39;, &#39;pending&#39;, &#39;hospitalized&#39;, &#39;dateChecked&#39;)
-COVID_TRACKING_texas = COVID_TRACKING_texas[, !names(COVID_TRACKING_texas) %in%  COVID_TRACKING_trash_cols]
-
-
-# NA values for hospital, ICU and ventilator counts 
-colnames(COVID_TRACKING_texas) = c(&#39;Date&#39;, &#39;State&#39;, &#39;Positive_Total&#39;, &#39;Negative_Total&#39;,
-                                   &#39;Hospital_Current&#39;, &#39;Hospital_Cumulative&#39;, &#39;ICU_Current&#39;, &#39;ICU_Cumulative&#39;,
-                                   &#39;Ventilator_Current&#39;, &#39;Ventilator_Cumulative&#39;, &#39;Recovered_Cumulative&#39;,
-                                   &#39;Quality&#39;, &#39;Deaths_Total&#39;, &#39;Tests_Total&#39;, &#39;FIPS&#39;, &#39;Deaths_New&#39;, &#39;Hospital_New&#39;,
-                                   &#39;Negative_New&#39;, &#39;Positive_New&#39;, &#39;Tests_New&#39;)
-
-COVID_TRACKING_texas$Source = &#39;Covidtracking&#39;
-COVID_TRACKING_texas$Type = &#39;Longitudinal&#39;</code></pre>
-</div>
-<div id="claflin" class="section level2">
-<h2>CLAFLIN</h2>
-<pre class="r"><code>CLAFLIN_capacity_20 = gsheet::gsheet2tbl(&#39;https://docs.google.com/spreadsheets/d/1XUVyZF3X_4m72ztFnXZFvDKn5Yys1aKgu2Zmefd7wVo/edit?fbclid=IwAR3fi4RzFRBZqolwpKY-g20BXHLyltp18rgCrzKX0LLSe_2dkCsimZan_VY#gid=1576394115&#39;)
-
-CLAFLIN_capacity_40 = gsheet::gsheet2tbl(&#39;https://docs.google.com/spreadsheets/d/1XUVyZF3X_4m72ztFnXZFvDKn5Yys1aKgu2Zmefd7wVo/edit?fbclid=IwAR3fi4RzFRBZqolwpKY-g20BXHLyltp18rgCrzKX0LLSe_2dkCsimZan_VY#gid=98841913&#39;)
-
-CLAFLIN_capacity_60 = gsheet::gsheet2tbl(&#39;https://docs.google.com/spreadsheets/d/1XUVyZF3X_4m72ztFnXZFvDKn5Yys1aKgu2Zmefd7wVo/edit?fbclid=IwAR3fi4RzFRBZqolwpKY-g20BXHLyltp18rgCrzKX0LLSe_2dkCsimZan_VY#gid=0&#39;)</code></pre>
-<p>Cleaning</p>
-<pre class="r"><code>CLAFLIN_capacity_20$Infection_Rate = &#39;20&#39;
-CLAFLIN_capacity_40$Infection_Rate = &#39;40&#39;
-CLAFLIN_capacity_60$Infection_Rate = &#39;60&#39;
-
-CLAFLIN_combined = rbind(CLAFLIN_capacity_20, CLAFLIN_capacity_40, CLAFLIN_capacity_60)
-CLAFLIN_texas = subset(CLAFLIN_combined, State == &#39;TX&#39;)
-write.csv(CLAFLIN_texas, &#39;original-sources/CLAFIN.csv&#39;, row.names = F)
-# doesn&#39;t appear to change over time, still set for merging purposes
-CLAFLIN_texas$Date = Sys.Date() - 1
-
-CLAFLIN_texas$Source = &#39;CLAFLIN&#39;
-CLAFLIN_texas$Type = &#39;Static&#39;
-
-# drop projections
-CLAFLIN_calc_cols = grep(&#39;Projected|Proejcted&#39;, names(CLAFLIN_texas))
-CLAFLIN_texas = CLAFLIN_texas[, !(names(CLAFLIN_texas) %in% CLAFLIN_calc_cols)]
-
-#Rename - omit merging for now due to length of unique cols, will still output as .csv for easier analysis
-colnames(CLAFLIN_texas) = 
-    c(&#39;State&#39;, &#39;All_Bed_Total&#39;, &#39;ICU_Bed_Total&#39;, &#39;Hospital_Bed_Occupancy&#39;, &#39;ICU_Bed_Occupancy&#39;,
-    &#39;Hospital_Bed_Available&#39;, &#39;Hospital_Bed_Potential&#39;,
-    &#39;ICU_Bed_Available&#39;, &#39;ICU_Bed_Potential&#39;, &#39;Pop_Over_65_Total&#39;,
-    &#39;Hospital_Bed_Need_6mo&#39;, &#39;Hospital_Bed_Need_PCT_6mo&#39;, &#39;Hospital_Bed_Potential_Need_PCT_6mo&#39;, &#39;Hospital_Bed_Total_Need_PCT_6mo&#39;,
-    &#39;Hospital_Bed_Need_12mo&#39;, &#39;Hospital_Bed_Need_PCT_12mo&#39;, &#39;Hospital_Bed_Potential_Need_PCT_12mo&#39;, &#39;Hospital_Bed_Total_Need_PCT_12mo&#39;,
-    &#39;Hospital_Bed_Need_12mo&#39;, &#39;Hospital_Bed_Need_PCT_12mo&#39;, &#39;Hospital_Bed_Potential_Need_PCT_12mo&#39;, &#39;Hospital_Bed_Total_Need_PCT_12mo&#39;,
-    &#39;ICU_Bed_Need_6mo&#39;, &#39;ICU_Bed_Need_PCT_6mo&#39;, &#39;ICU_Bed_Potential_Need_PCT_6mo&#39;, &#39;ICU_Bed_Total_Need_PCT_6mo&#39;,
-    &#39;ICU_Bed_Need_12mo&#39;, &#39;ICU_Bed_Need_PCT_12mo&#39;, &#39;ICU_Bed_Potential_Need_PCT_12mo&#39;, &#39;ICU_Bed_Total_Need_PCT_12mo&#39;,
-    &#39;ICU_Bed_Need_12mo&#39;, &#39;ICU_Bed_Need_PCT_12mo&#39;, &#39;ICU_Bed_Potential_Need_PCT_12mo&#39;, &#39;ICU_Bed_Total_Need_PCT_12mo&#39;,
-    &#39;Infection_Rate&#39;)</code></pre>
-</div>
 <div id="dshs-time-series" class="section level2">
 <h2>DSHS (time series)</h2>
 <pre class="r"><code>download.file(&#39;https://www.dshs.state.tx.us/coronavirus/TexasCOVID19CaseCountData.xlsx&#39;,
-               destfile = &#39;original-sources/dshs.xlsx&#39;, mode = &#39;wb&#39;)
+               destfile = &#39;original-sources/DSHS_state.xlsx&#39;, mode = &#39;wb&#39;)
 
 library(readxl)
 read_excel_allsheets = function(filename, tibble = FALSE) {
     sheets = readxl::excel_sheets(filename)
-    x = lapply(sheets, function(X) readxl::read_excel(filename, sheet = X, skip = 1, col_names = TRUE))
+    x = lapply(sheets, function(X) readxl::read_excel(filename, sheet = X, skip = 1, col_names = TRUE, na = &#39;.&#39;))
     x = lapply(x, as.data.frame)
     return(x)
 }
 
-DSHS_data = read_excel_allsheets(&#39;original-sources/dshs.xlsx&#39;)</code></pre>
+DSHS_state = read_excel_allsheets(&#39;original-sources/DSHS_state.xlsx&#39;)</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5</code></pre>
-<pre class="r"><code>DSHS_tests = DSHS_data[[4]]
+<pre class="r"><code>DSHS_tests = DSHS_state[[4]]
 DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests)-3), ]
 
-colnames(DSHS_tests) = c(&#39;Date&#39;, &#39;Viral_Tests&#39;, &#39;Antibody_Tests&#39;, &#39;Total_Tests&#39;, &#39;Positive_Rate&#39;, &#39;Viral_Tests_New_Avg&#39;, &#39;Antibody_Tests_New_Avg&#39;, &#39;Total_Tests_New_Avg&#39;)
+colnames(DSHS_tests) = c(&#39;Date&#39;, &#39;Viral_Tests&#39;, &#39;Antibody_Tests&#39;, &#39;Tests_Total&#39;, &#39;Positive_Rate&#39;, &#39;Viral_Tests_New_Avg&#39;, &#39;Antibody_Tests_New_Avg&#39;, &#39;Total_Tests_New_Avg&#39;)
 
 # fix date (https://stackoverflow.com/questions/43230470/how-to-convert-excel-date-format-to-proper-date-in-r) 
 DSHS_tests$Date = as.Date(as.integer(DSHS_tests$Date), origin = &#39;1899-12-30&#39;)
 
 # fix calc col type
 DSHS_tests$Positive_Rate = as.numeric(DSHS_tests$Positive_Rate)</code></pre>
-<pre><code>## Warning: NAs introduced by coercion</code></pre>
 <pre class="r"><code># drop row num
-DSHS_hospitalizations = DSHS_data[[8]][, c(2:3)]
+DSHS_hospitalizations = DSHS_state[[8]][, c(2:3)]
 
 # drop footnote
 DSHS_hospitalizations = DSHS_hospitalizations[1:(nrow(DSHS_hospitalizations)-2), ]
@@ -763,162 +755,139 @@ DSHS_hospitalizations$Date = as.Date(DSHS_hospitalizations$Date, format = &#39;%
 # set colnames
 colnames(DSHS_hospitalizations)[2] = &#39;Hospital_Total&#39;</code></pre>
 <pre class="r"><code># merge tests &amp; hospitalizations
-DSHS_state_time = merge(DSHS_tests, DSHS_hospitalizations, by = &#39;Date&#39;)
-
-# add descriptors
-DSHS_state_time$Source = &#39;DSHS&#39;
-DSHS_state_time$Type = &#39;Longitudinal&#39;</code></pre>
+DSHS_state_time = merge(DSHS_tests, DSHS_hospitalizations, by = &#39;Date&#39;, all = TRUE)</code></pre>
 </div>
 <div id="dshs-day-counts" class="section level2">
 <h2>DSHS (day counts)</h2>
 <pre class="r"><code># avoids duplication of results between sheets
-DSHS_day_counts = data.frame(Date = Sys.Date() - 1,
-                             Source = &#39;DSHS&#39;,
-                             Type = &#39;Current&#39;,  # (not longitudinal)
-                             Recovered_Total = DSHS_data[[3]][1,1],
-                             Active_Total = DSHS_data[[3]][1,2],
-                             Tests_State_Lab = DSHS_data[[5]][1,2],
-                             Tests_Commercial_Lab = DSHS_data[[5]][2,2],
-                             Antibody_Tests_Positive = DSHS_data[[6]][2,2],
-                             Hospital_Bed_Total = DSHS_data[[7]][2,2],
-                             Hospital_Bed_Available = DSHS_data[[7]][3,2],
-                             ICU_Bed_Available = DSHS_data[[7]][4,2],
-                             Ventilator_Available = DSHS_data[[7]][5,2],
-                             Case_Investigations = DSHS_data[[9]][[14,2]],
-                             Death_Investigations = DSHS_data[[12]][14,2])</code></pre>
+DSHS_state_day = data.frame(Recovered_Total = DSHS_state[[3]][1,1],
+                            Active_Total = DSHS_state[[3]][1,2],
+                            Tests_State_Lab = DSHS_state[[5]][1,2],
+                            Tests_Commercial_Lab = DSHS_state[[5]][2,2],
+                            Antibody_Tests_Positive = DSHS_state[[6]][2,2],
+                            Hospital_Bed_Total = DSHS_state[[7]][2,2],
+                            Hospital_Bed_Available = DSHS_state[[7]][3,2],
+                            ICU_Bed_Available = DSHS_state[[7]][4,2],
+                            Ventilator_Available = DSHS_state[[7]][5,2],
+                            Case_Investigations = DSHS_state[[9]][[14,2]],
+                            Death_Investigations = DSHS_state[[12]][14,2])</code></pre>
 </div>
 <div id="dshs-demographics" class="section level2">
 <h2>DSHS Demographics</h2>
 <div id="cases" class="section level3">
 <h3>Cases</h3>
 <pre class="r"><code>#Age
-DSHS_case_age = DSHS_data[[9]][1:(nrow(DSHS_data[[9]])-4), ]
+DSHS_case_age = DSHS_state[[9]][1:(nrow(DSHS_state[[9]])-4), ]
 colnames(DSHS_case_age)[1] = &#39;Group&#39;
-DSHS_case_age$Demographic = &#39;Age&#39;
-DSHS_case_age$Source = &#39;DSHS&#39;
-DSHS_case_age$Type = &#39;Current&#39;
 DSHS_case_age$Count_Type = &#39;Case&#39;
-DSHS_case_age$Date = Sys.Date()-1
 
 #Gender
-DSHS_case_gender = DSHS_data[[10]][1:(nrow(DSHS_data[[10]])-4), ]
+DSHS_case_gender = DSHS_state[[10]][1:(nrow(DSHS_state[[10]])-4), ]
 colnames(DSHS_case_gender)[1] = &#39;Group&#39;
-DSHS_case_gender$Demographic = &#39;Gender&#39;
-DSHS_case_gender$Source = &#39;DSHS&#39;
-DSHS_case_gender$Type = &#39;Current&#39;
 DSHS_case_gender$Count_Type = &#39;Case&#39;
-DSHS_case_gender$Date = Sys.Date()-1
 
 # Race
-DSHS_case_race = DSHS_data[[11]][1:(nrow(DSHS_data[[11]])-4), ]
+DSHS_case_race = DSHS_state[[11]][1:(nrow(DSHS_state[[11]])-4), ]
 colnames(DSHS_case_race)[1] = &#39;Group&#39;
-DSHS_case_race$Demographic = &#39;Race&#39;
-DSHS_case_race$Source = &#39;DSHS&#39;
-DSHS_case_race$Type = &#39;Current&#39;
-DSHS_case_race$Count_Type = &#39;Case&#39;
-DSHS_case_race$Date = Sys.Date()-1</code></pre>
+DSHS_case_race$Count_Type = &#39;Case&#39;</code></pre>
 </div>
 <div id="deaths" class="section level3">
 <h3>Deaths</h3>
 <pre class="r"><code>#Age
-DSHS_death_age = DSHS_data[[12]][1:(nrow(DSHS_data[[12]])-4), ]
+DSHS_death_age = DSHS_state[[12]][1:(nrow(DSHS_state[[12]])-4), ]
 colnames(DSHS_death_age)[1] = &#39;Group&#39;
-DSHS_death_age$Demographic = &#39;Age&#39;
-DSHS_death_age$Source = &#39;DSHS&#39;
-DSHS_death_age$Type = &#39;Current&#39;
 DSHS_death_age$Count_Type = &#39;Death&#39;
-DSHS_death_age$Date = Sys.Date()-1
 
 #Gender
-DSHS_death_gender = DSHS_data[[13]][1:(nrow(DSHS_data[[13]])-4), ]
-DSHS_death_gender$Demographic = &#39;Gender&#39;
+DSHS_death_gender = DSHS_state[[13]][1:(nrow(DSHS_state[[13]])-4), ]
 colnames(DSHS_death_gender)[1] = &#39;Group&#39;
-DSHS_death_gender$Source = &#39;DSHS&#39;
-DSHS_death_gender$Type = &#39;Current&#39;
 DSHS_death_gender$Count_Type = &#39;Death&#39;
-DSHS_death_gender$Date = Sys.Date()-1
 
 # Race
-DSHS_death_race = DSHS_data[[14]][1:(nrow(DSHS_data[[14]])-4), ]
-DSHS_death_race$Demographic = &#39;Race&#39;
+DSHS_death_race = DSHS_state[[14]][1:(nrow(DSHS_state[[14]])-4), ]
 colnames(DSHS_death_race)[1] = &#39;Group&#39;
-DSHS_death_race$Source = &#39;DSHS&#39;
-DSHS_death_race$Type = &#39;Current&#39;
-DSHS_death_race$Count_Type = &#39;Death&#39;
-DSHS_death_race$Date = Sys.Date()-1</code></pre>
+DSHS_death_race$Count_Type = &#39;Death&#39;</code></pre>
 <pre class="r"><code># combine 
-DSHS_demographics = rbind(DSHS_case_age, DSHS_case_gender, DSHS_case_race, 
-                          DSHS_death_age, DSHS_death_gender, DSHS_death_race)
+DSHS_age = rbind(DSHS_case_age, DSHS_death_age)
+DSHS_gender = rbind(DSHS_case_gender, DSHS_death_gender)
+DSHS_race = rbind(DSHS_case_race, DSHS_death_race)</code></pre>
+</div>
+</div>
+</div>
+<div id="census" class="section level1">
+<h1>CENSUS</h1>
+<div id="county-level-1" class="section level2">
+<h2>County level</h2>
+<pre class="r"><code># sourced from https://www.census.gov/data/tables/time-series/demo/popest/2010s-counties-detail.html
+county_demo = read.csv(&#39;original-sources/census/county_demo.csv&#39;)
 
-# change colnames
-colnames(DSHS_demographics) = c(&#39;Demo_Group&#39;, &#39;Demo_Count&#39;, &#39;Demo_PCT&#39;, &#39;Demographic&#39;,
-                                &#39;Source&#39;, &#39;Type&#39;, &#39;Investigation_Type&#39;, &#39;Date&#39;)</code></pre>
+# restrict to 2018 pop estimate &amp; drop extra cols
+county_demo_2018 = subset(county_demo[, c(5:ncol(county_demo))], YEAR == 11)
+
+# drop year
+county_demo_2018$YEAR = NULL
+
+# drop &#39;county&#39; suffix
+county_demo_2018$CTYNAME = gsub(&#39; County&#39;, &#39;&#39;, county_demo_2018$CTYNAME)
+
+# drop agegrp = 0 (total row)
+county_demo_2018 = county_demo_2018[which(county_demo_2018$AGEGRP != 0), ]
+
+# rename cols for merging
+colnames(county_demo_2018)[1] = &#39;County&#39;
+
+# TODO: further data processing</code></pre>
 </div>
-</div>
-</div>
-<div id="tbd" class="section level1">
-<h1>TBD</h1>
-<div id="kff" class="section level2">
-<h2>KFF</h2>
-<!-- Omitting due to JS scraping requirements - could be done in python if considered valuable source -->
-<pre class="r"><code># KFF_beds = read.csv(url(&#39;https://www.kff.org/other/state-indicator/beds-by-ownership/?currentTimeframe=0&amp;sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D&#39;))</code></pre>
-</div>
-<div id="our-world-in-data" class="section level2">
-<h2>Our World in Data</h2>
-<!-- Only has US level data - omitting for now -->
-<!-- ```{r} -->
-<!-- OUR_WORLD_data = read.csv(url('https://covid.ourworldindata.org/data/owid-covid-data.csv')) -->
-<!-- ``` -->
-<!--  Cleaning -->
-<!-- ```{r} -->
-</div>
-<div id="additional-sources-from-tableau" class="section level2">
-<h2>Additional sources from tableau</h2>
+<div id="city-level" class="section level2">
+<h2>City level</h2>
+<pre class="r"><code>city_pops = read.csv(&#39;original-sources/census/city_pops.csv&#39;)
+
+# keep only 2018 estimate
+city_pops2 = city_pops[, c(3, 4, 9, 21)]
+colnames(city_pops2) = c(&#39;County&#39;, &#39;Place_Code&#39;, &#39;City&#39;, &#39;Population&#39;)
+
+# drop city, town, suffixes
+city_pops2$City = gsub(&#39; city| town|&#39;, &#39;&#39;, city_pops2$City)
+
+# drop pt suffix
+# pt indicates overlap of cities between counties
+city_pops2$City = gsub(&#39; (pt.)&#39;, &#39;&#39;, city_pops2$City, fixed = TRUE)
+
+colnames(city_pops2)[1] = &#39;County_Code&#39;
+
+# get county fips
+county_fips = subset(city_pops2, Place_Code == 0)[-1, c(1,3)]
+colnames(county_fips) = c(&#39;County_Code&#39;, &#39;County&#39;)
+
+
+# replace county fips with actual names
+city_pops3 = merge(city_pops2, county_fips, by = &#39;County_Code&#39;)
+
+# drop county totals from list
+city_pops4 = subset(city_pops3, Place_Code != 0 &amp; Place_Code != 99990)
+
+# drop county suffix
+city_pops4$County = gsub(&#39; County&#39;, &#39;&#39;, city_pops4$County)</code></pre>
 </div>
 </div>
 <div id="output" class="section level1">
 <h1>OUTPUT</h1>
-<div id="county-level-1" class="section level2">
-<h2>County Level</h2>
-<pre class="r"><code>#rbind fills mismatched cols with NA (NYT has less vars than JHU)
-merged_counts1 = rbind.fill(JHU_texas_long, NYT_texas)
-merged_counts2 = rbind.fill(merged_counts1, US_FACTS_texas_long)
-merged_counts3 = rbind.fill(merged_counts2, DSHS_county_counts)
+<div id="city" class="section level2">
+<h2>City</h2>
+<pre class="r"><code>write.csv(city_pops4, &#39;combined-datasets/city_pops.csv&#39;, row.names = F)</code></pre>
+</div>
+<div id="county" class="section level2">
+<h2>County</h2>
+<pre class="r"><code>merged_counts = as.data.frame(merge(DSHS_county_counts, mobility_texas[, c(2:9)], by = c(&#39;County&#39;, &#39;Date&#39;), all = TRUE))
 
-# add google mobility - colbind this time since other data source likely not available
-# outer join b/c google only has data on 220 counties (JHU has 254 and more dates)
-merged_counts4 = as.data.frame(merge(merged_counts3, mobility_texas[, c(2:9)], by = c(&#39;County&#39;, &#39;Date&#39;), all = TRUE))</code></pre>
-<pre class="r"><code># fix types
-merged_counts4$Source = as.factor(merged_counts4$Source)
-merged_counts4$County = as.factor(merged_counts4$County)
-merged_counts4$State = as.factor(merged_counts4$State)
-
-# replace TX with Texas
-merged_counts4$State = droplevels(revalue(merged_counts4$State, c(&#39;TX&#39; = &#39;Texas&#39;)))</code></pre>
-<pre class="r"><code># declare metro and border designations
-Metro = c(&quot;Aransas&quot;, &quot;Archer&quot;, &quot;Armstrong&quot;, &quot;Atascosa&quot;, &quot;Austin&quot;, &quot;Bandera&quot;, &quot;Bastrop&quot;, &quot;Bell&quot;, &quot;Bexar&quot;, &quot;Bowie&quot;, &quot;Brazoria&quot;, &quot;Brazos&quot;, &quot;Burleson&quot;, &quot;Caldwell&quot;, &quot;Callahan&quot;, &quot;Cameron&quot;, &quot;Carson&quot;, &quot;Chambers&quot;, &quot;Clay&quot;, &quot;Collin&quot;, &quot;Comal&quot;, &quot;Coryell&quot;, &quot;Crosby&quot;, &quot;Dallas&quot;, &quot;Denton&quot;, &quot;Ector&quot;, &quot;Ellis&quot;, &quot;El Paso&quot;, &quot;Falls&quot;, &quot;Fort Bend&quot;, &quot;Galveston&quot;, &quot;Goliad&quot;, &quot;Grayson&quot;, &quot;Gregg&quot;, &quot;Guadalupe&quot;, &quot;Hardin&quot;, &quot;Harris&quot;, &quot;Hays&quot;, &quot;Hidalgo&quot;, &quot;Hood&quot;, &quot;Hudspeth&quot;, &quot;Hunt&quot;, &quot;Irion&quot;, &quot;Jefferson&quot;, &quot;Johnson&quot;, &quot;Jones&quot;, &quot;Kaufman&quot;, &quot;Kendall&quot;, &quot;Lampasas&quot;, &quot;Liberty&quot;, &quot;Lubbock&quot;, &quot;Lynn&quot;, &quot;McLennan&quot;, &quot;Martin&quot;, &quot;Medina&quot;, &quot;Midland&quot;, &quot;Montgomery&quot;, &quot;Newton&quot;, &quot;Nueces&quot;, &quot;Oldham&quot;, &quot;Orange&quot;, &quot;Parker&quot;, &quot;Potter&quot;, &quot;Randall&quot;, &quot;Robertson&quot;, &quot;Rockwall&quot;, &quot;Rusk&quot;, &quot;San Patricio&quot;, &quot;Smith&quot;, &quot;Somervell&quot;, &quot;Tarrant&quot;, &quot;Taylor&quot;, &quot;Tom Green&quot;, &quot;Travis&quot;, &quot;Upshur&quot;, &quot;Victoria&quot;, &quot;Waller&quot;, &quot;Webb&quot;, &quot;Wichita&quot;, &quot;Williamson&quot;, &quot;Wilson&quot;, &quot;Wise&quot;)
-
-Border = c(&quot;Brewster&quot;, &quot;Brooks&quot;, &quot;Cameron&quot;, &quot;Crockett&quot;, &quot;Culberson&quot;, &quot;Dimmit&quot;, &quot;Duval&quot;, &quot;Edwards&quot;, &quot;El Paso&quot;, &quot;Frio&quot;, &quot;Hidalgo&quot;, &quot;Hudspeth&quot;, &quot;Jeff Davis&quot;, &quot;Jim Hogg&quot;, &quot;Kenedy&quot;, &quot;Kinney&quot;, &quot;La Salle&quot;, &quot;McMullen&quot;, &quot;Maverick&quot;, &quot;Pecos&quot;, &quot;Presidio&quot;, &quot;Real&quot;, &quot;Reeves&quot;, &quot;Starr&quot;, &quot;Sutton&quot;, &quot;Terrell&quot;, &quot;Uvalde&quot;, &quot;Val Verde&quot;, &quot;Webb&quot;, &quot;Willacy&quot;, &quot;Zapata&quot;, &quot;Zavala&quot;)</code></pre>
-<pre class="r"><code># add metro and border designations
-merged_counts4$Metro = ifelse(merged_counts4$County %in% Metro, &#39;Metro&#39;, &#39;Nonmetro&#39;)
-merged_counts4$Border = ifelse(merged_counts4$County %in% Border, &#39;Border&#39;, &#39;Nonborder&#39;)</code></pre>
-<pre class="r"><code># add service regions (adapted from https://www.dshs.texas.gov/chs/info/info_txco.shtm)
-service_regions = read.csv(&#39;original-sources/service_regions.csv&#39;)
-
-# drop x added to end of regions interpreted as dates
-service_regions$Health.Service.Region = as.character(service_regions$Health.Service.Region)
-service_regions$Health.Service.Region = gsub(&#39;x&#39;, &#39;&#39;, service_regions$Health.Service.Region)
+# fix types
+merged_counts$County = as.factor(merged_counts$County)</code></pre>
+<pre class="r"><code># add urban/rural, metro, border designations from https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls
+county_classifications = read_xlsx(&#39;original-sources/metro_classifications.xlsx&#39;, sheet = 1)[, c(1, 4:5, 8, 10:11)]
 
 # set colnames
-colnames(service_regions) = c(&#39;County_Num&#39;, &#39;County&#39;, &#39;FIPS&#39;, &#39;Public_Health_Region&#39;, &#39;Health_Service_Region&#39;)
-
-# merge with data
-merged_counts5 = merge(merged_counts4, service_regions[2:5], by = &#39;County&#39;)
-
-
-# make FIPS uniform
-merged_counts5$FIPS.x = NULL
-colnames(merged_counts5)[colnames(merged_counts5) == &#39;FIPS.y&#39;] = &#39;FIPS&#39;</code></pre>
+colnames(county_classifications) = c(&#39;County&#39;, &#39;Public_Health_Region&#39;, &#39;Health_Service_Region&#39;, &#39;Metro_Area&#39;, &#39;NCHS_Classification&#39;, &#39;Border&#39;)</code></pre>
+<pre class="r"><code>merged_counts2 = merge(merged_counts, county_classifications, by = &#39;County&#39;)</code></pre>
 <pre class="r"><code># TSA levels
 tsa = read.csv(&#39;original-sources/tsa_list.csv&#39;, header = F)[-1]
 tsa_long = reshape::melt(tsa, id = c(&#39;V2&#39;))
@@ -928,25 +897,28 @@ colnames(tsa_long_complete) = c(&#39;TSA&#39;, &#39;County&#39;)
 
 tsa_long_complete$County = trimws(tsa_long_complete$County)
 
-merged_counts6 = merge(merged_counts5, tsa_long_complete, by = &#39;County&#39;, all = TRUE)</code></pre>
-<pre class="r"><code># sort by county, date and export
-merged_counts6 = merged_counts6[order(merged_counts6$County, merged_counts6$Date), ]
-write.csv(merged_counts6, file = &#39;combined-datasets/county_counts.csv&#39;, row.names = F)</code></pre>
+merged_counts3 = merge(merged_counts2, tsa_long_complete, by = &#39;County&#39;, all = TRUE)
+# sort by county, date and export
+merged_counts3 = merged_counts3[order(merged_counts3$County, merged_counts3$Date), ]</code></pre>
+<pre class="r"><code>write.csv(merged_counts3, file = &#39;combined-datasets/county.csv&#39;, row.names = F)
+write.csv(county_demo_2018, file = &#39;combined-datasets/county_demo.csv&#39;, row.names = F)</code></pre>
 </div>
-<div id="state-level-1" class="section level2">
-<h2>State Level</h2>
-<pre class="r"><code>merged_state1 = rbind.fill(IHME_texas_current_raw, COVID_TRACKING_texas)
-merged_state2 = rbind.fill(merged_state1, DSHS_state_time)
-merged_state3 = rbind.fill(merged_state2, DSHS_day_counts)
-merged_state4 = rbind.fill(merged_state3, DSHS_demographics)</code></pre>
-<pre class="r"><code># additional postprocessing
-merged_state4$State = &#39;Texas&#39;</code></pre>
-<pre class="r"><code>write.csv(merged_state4, file = &#39;combined-datasets/state_tests_hosp.csv&#39;, row.names = F)</code></pre>
+<div id="tsa" class="section level2">
+<h2>TSA</h2>
+<pre class="r"><code>write.csv(DSHS_hosp_long, file = &#39;combined-datasets/tsa.csv&#39;, row.names = F)</code></pre>
 </div>
-<div id="additional-csvs" class="section level2">
-<h2>Additional csvs</h2>
-<pre class="r"><code>write.csv(CLAFLIN_texas, &#39;combined-datasets/claflin_capacity.csv&#39;, row.names = F)
-write.csv(DSHS_demographics, &#39;combined-datasets/demographics.csv&#39;, row.names = F)</code></pre>
+<div id="state" class="section level2">
+<h2>State</h2>
+<pre class="r"><code>library(xlsx)</code></pre>
+<pre><code>## Warning: package &#39;xlsx&#39; was built under R version 3.6.3</code></pre>
+<pre class="r"><code>write.xlsx(DSHS_state_time, file=&quot;combined-datasets/state.xlsx&quot;, sheetName=&quot;longitudinal&quot;, row.names=FALSE)
+write.xlsx(DSHS_state_day, file=&quot;combined-datasets/state.xlsx&quot;, sheetName=&quot;current&quot;, append = TRUE, row.names=FALSE)</code></pre>
+<div id="demographics" class="section level3">
+<h3>Demographics</h3>
+<pre class="r"><code>write.xlsx(DSHS_age, file=&quot;combined-datasets/demographics.xlsx&quot;, sheetName=&quot;age&quot;, row.names=FALSE)
+write.xlsx(DSHS_gender, file=&quot;combined-datasets/demographics.xlsx&quot;, sheetName=&quot;gender&quot;, append=TRUE, row.names=FALSE)
+write.xlsx(DSHS_race, file=&quot;combined-datasets/demographics.xlsx&quot;, sheetName=&quot;race&quot;, append=TRUE, row.names=FALSE)</code></pre>
+</div>
 </div>
 </div>
 
