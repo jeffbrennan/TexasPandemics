@@ -13,8 +13,74 @@ library(readxl)
 library(dplyr)
 ```
 
-# COUNTY LEVEL
 
+# CENSUS 
+
+## County level
+
+```{r}
+# sourced from https://www.census.gov/data/tables/time-series/demo/popest/2010s-counties-detail.html
+county_demo = read.csv('original-sources/census/county_demo.csv')
+
+# restrict to 2018 pop estimate & drop extra cols
+county_demo_2018 = subset(county_demo[, c(5:ncol(county_demo))], YEAR == 11)
+
+# drop year
+county_demo_2018$YEAR = NULL
+
+# drop 'county' suffix
+county_demo_2018$CTYNAME = gsub(' County', '', county_demo_2018$CTYNAME)
+
+# drop agegrp = 0 (total row)
+county_demo_2018 = county_demo_2018[which(county_demo_2018$AGEGRP != 0), ]
+
+# rename cols for merging
+colnames(county_demo_2018)[1] = 'County'
+
+# add age labels
+county_demo_2018$AGEGRP = factor(county_demo_2018$AGEGRP,
+                                 labels = c('0-4', '5-9', '10-14', '15-19', '20-24', '25-29',
+                                            '30-34', '35-39', '40-44', '45-49', '50-54', '55-59',
+                                            '60-64',  '65-69', '70-74', '75-79', '80-84', '85+'))
+```
+
+
+## City level
+
+```{r}
+city_pops = read.csv('original-sources/census/city_pops.csv')
+
+# keep only 2018 estimate
+city_pops2 = city_pops[, c(3, 4, 9, 21)]
+colnames(city_pops2) = c('County', 'Place_Code', 'City', 'Population')
+
+# drop city, town, suffixes
+city_pops2$City = gsub(' city| town|', '', city_pops2$City)
+
+# drop pt suffix
+# pt indicates overlap of cities between counties
+city_pops2$City = gsub(' (pt.)', '', city_pops2$City, fixed = TRUE)
+
+colnames(city_pops2)[1] = 'County_Code'
+
+# get county fips
+county_fips = subset(city_pops2, Place_Code == 0)[-1, c(1,3)]
+colnames(county_fips) = c('County_Code', 'County')
+
+
+# replace county fips with actual names
+city_pops3 = merge(city_pops2, county_fips, by = 'County_Code')
+
+# drop county totals from list
+city_pops4 = subset(city_pops3, Place_Code != 0 & Place_Code != 99990)
+
+# drop county suffix
+city_pops4$County = gsub(' County', '', city_pops4$County)
+```
+
+
+
+# COUNTY LEVEL
 
 ## Google mobility
 
@@ -201,10 +267,65 @@ DSHS_county_counts$Population.x = NULL
 DSHS_county_counts$Population.y = NULL
 ```
 
+### merging
+
+```{r}
+merged_counts = as.data.frame(merge(DSHS_county_counts, mobility_texas[, c(2:9)], by = c('County', 'Date'), all = TRUE))
+
+# fix types
+merged_counts$County = as.factor(merged_counts$County)
+```
+
+### Classifications
+
+```{r}
+# add urban/rural, metro, border designations from https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls
+county_classifications = read_xlsx('original-sources/metro_classifications.xlsx', sheet = 1)[, c(1, 4:5, 8, 10:11)]
+
+# set colnames
+colnames(county_classifications) = c('County', 'Public_Health_Region', 'Health_Service_Region', 'Metro_Area', 'NCHS_Classification', 'Border')
+```
+
+
+```{r}
+merged_counts2 = merge(merged_counts, county_classifications, by = 'County')
+```
+
+```{r}
+# TSA levels
+tsa = read.csv('original-sources/tsa_list.csv', header = F)[-1]
+tsa_long = reshape::melt(tsa, id = c('V2', 'V3'))
+tsa_long_complete = subset(tsa_long, value != '')[, c(1, 2, 4)]
+colnames(tsa_long_complete) = c('TSA', 'TSA_Name', 'County')
+
+tsa_long_complete$County = trimws(tsa_long_complete$County)
+
+merged_counts3 = merge(merged_counts2, tsa_long_complete, by = 'County', all = TRUE)
+
+# sort by county, date
+merged_counts3 = merged_counts3[order(merged_counts3$County, merged_counts3$Date), ]
+```
+
+```{r}
+# DSHS pop
+dshs_pops = unique(DSHS_cases_long[, c(1:2)])
+colnames(dshs_pops) = c('County', 'Population_DSHS')
+
+# census pop
+census_pops = county_demo_2018[, c(1, 3)] %>% group_by(County) %>% summarize(sum(TOT_POP))
+colnames(census_pops) = c('County', 'Population_Census')
+
+# add populations
+merged_counts4 = merge(merged_counts3, dshs_pops, by = 'County')
+merged_counts5 = merge(merged_counts4, census_pops, by = 'County')
+
+merged_counts5$Population_DSHS = as.numeric(merged_counts5$Population_DSHS)
+```
+
 
 # TSA LEVEL
 
-## DSHS
+## DSHS hospitals
 
 ```{r}
 hosp_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx'
@@ -235,6 +356,27 @@ colnames(DSHS_hosp_long) = c('TSA', 'Date', 'Hospitalizations_Daily')
 DSHS_hosp_long$Date = as.Date(as.integer(DSHS_hosp_long$Date), origin = '2020-04-07')
 ```
 
+## DSHS computed
+
+```{r}
+DSHS_tsa_counts = 
+    merged_counts5 %>%
+    group_by(TSA, Date) %>%
+    mutate_if(is.numeric, funs(sum), 0)
+
+# keep only count cosl
+DSHS_tsa_counts = DSHS_tsa_counts[, c(2:10, 22:25)]
+```
+
+### merging
+
+```{r}
+DSHS_hosp_long$TSA = as.factor(DSHS_hosp_long$TSA)
+DSHS_tsa_merged = merge(DSHS_tsa_counts, DSHS_hosp_long, by = c('Date', 'TSA'), all = TRUE)
+
+DSHS_tsa_merged2 = DSHS_tsa_merged %>% distinct()
+DSHS_tsa_merged3 = subset(DSHS_tsa_merged2, Date > as.Date('2020-03-03'))
+```
 
 # STATE LEVEL
 
@@ -353,66 +495,6 @@ DSHS_race = rbind(DSHS_case_race, DSHS_death_race)
 ```
 
 
-# CENSUS 
-
-## County level
-
-```{r}
-# sourced from https://www.census.gov/data/tables/time-series/demo/popest/2010s-counties-detail.html
-county_demo = read.csv('original-sources/census/county_demo.csv')
-
-# restrict to 2018 pop estimate & drop extra cols
-county_demo_2018 = subset(county_demo[, c(5:ncol(county_demo))], YEAR == 11)
-
-# drop year
-county_demo_2018$YEAR = NULL
-
-# drop 'county' suffix
-county_demo_2018$CTYNAME = gsub(' County', '', county_demo_2018$CTYNAME)
-
-# drop agegrp = 0 (total row)
-county_demo_2018 = county_demo_2018[which(county_demo_2018$AGEGRP != 0), ]
-
-# rename cols for merging
-colnames(county_demo_2018)[1] = 'County'
-
-# TODO: further data processing
-```
-
-
-## City level
-
-```{r}
-city_pops = read.csv('original-sources/census/city_pops.csv')
-
-# keep only 2018 estimate
-city_pops2 = city_pops[, c(3, 4, 9, 21)]
-colnames(city_pops2) = c('County', 'Place_Code', 'City', 'Population')
-
-# drop city, town, suffixes
-city_pops2$City = gsub(' city| town|', '', city_pops2$City)
-
-# drop pt suffix
-# pt indicates overlap of cities between counties
-city_pops2$City = gsub(' (pt.)', '', city_pops2$City, fixed = TRUE)
-
-colnames(city_pops2)[1] = 'County_Code'
-
-# get county fips
-county_fips = subset(city_pops2, Place_Code == 0)[-1, c(1,3)]
-colnames(county_fips) = c('County_Code', 'County')
-
-
-# replace county fips with actual names
-city_pops3 = merge(city_pops2, county_fips, by = 'County_Code')
-
-# drop county totals from list
-city_pops4 = subset(city_pops3, Place_Code != 0 & Place_Code != 99990)
-
-# drop county suffix
-city_pops4$County = gsub(' County', '', city_pops4$County)
-```
-
 # OUTPUT 
 
 ## City
@@ -425,52 +507,15 @@ write.csv(city_pops4, 'combined-datasets/city_pops.csv', row.names = F)
 ## County
 
 ```{r}
-merged_counts = as.data.frame(merge(DSHS_county_counts, mobility_texas[, c(2:9)], by = c('County', 'Date'), all = TRUE))
-
-# fix types
-merged_counts$County = as.factor(merged_counts$County)
-```
-
-```{r}
-# add urban/rural, metro, border designations from https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls
-county_classifications = read_xlsx('original-sources/metro_classifications.xlsx', sheet = 1)[, c(1, 4:5, 8, 10:11)]
-
-# set colnames
-colnames(county_classifications) = c('County', 'Public_Health_Region', 'Health_Service_Region', 'Metro_Area', 'NCHS_Classification', 'Border')
-```
-
-
-```{r}
-merged_counts2 = merge(merged_counts, county_classifications, by = 'County')
-```
-
-```{r}
-# TSA levels
-tsa = read.csv('original-sources/tsa_list.csv', header = F)[-1]
-tsa_long = reshape::melt(tsa, id = c('V2'))
-tsa_long_complete = subset(tsa_long, value != '')[, c(1,3)]
-colnames(tsa_long_complete) = c('TSA', 'County')
-
-
-tsa_long_complete$County = trimws(tsa_long_complete$County)
-
-merged_counts3 = merge(merged_counts2, tsa_long_complete, by = 'County', all = TRUE)
-# sort by county, date and export
-merged_counts3 = merged_counts3[order(merged_counts3$County, merged_counts3$Date), ]
-```
-
-
-```{r}
-write.csv(merged_counts3, file = 'combined-datasets/county.csv', row.names = F)
+write.csv(merged_counts5, file = 'combined-datasets/county.csv', row.names = F)
 write.csv(county_demo_2018, file = 'combined-datasets/county_demo.csv', row.names = F)
 ```
 
 ## TSA
 
 ```{r}
-write.csv(DSHS_hosp_long, file = 'combined-datasets/tsa.csv', row.names = F)
+write.csv(DSHS_tsa_merged3, file = 'combined-datasets/tsa.csv', row.names = F)
 ```
-
 
 ## State
 
