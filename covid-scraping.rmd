@@ -364,7 +364,7 @@ DSHS_tsa_counts =
     group_by(TSA, Date) %>%
     mutate_if(is.numeric, funs(sum), 0)
 
-# keep only count cosl
+# keep only count cols
 DSHS_tsa_counts = DSHS_tsa_counts[, c(2:10, 22:25)]
 ```
 
