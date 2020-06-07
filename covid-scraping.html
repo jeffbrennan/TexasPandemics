@@ -467,7 +467,7 @@ DSHS_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 87 more problems</code></pre>
+## * ... and 88 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_cases_time) = DSHS_cases_time[2, ]
 DSHS_cases_time = DSHS_cases_time[3:(nrow(DSHS_cases_time) - 11), ]
@@ -505,7 +505,7 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 90 more problems</code></pre>
+## * ... and 91 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
 DSHS_deaths_time = DSHS_deaths_time[3:(nrow(DSHS_deaths_time) - 10), ]
@@ -582,7 +582,7 @@ DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code><
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 55 more problems</code></pre>
+## * ... and 56 more problems</code></pre>
 <pre class="r"><code># fix colname
 colnames(DSHS_active_cases_time) = DSHS_active_cases_time[2, ]
 DSHS_active_cases_time = DSHS_active_cases_time[3:(nrow(DSHS_active_cases_time)), 2:ncol(DSHS_active_cases_time)]
@@ -785,13 +785,15 @@ DSHS_tsa_hosp = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## Expecting numeric in BH3 / R3C60: got a date</code></pre>
 <pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
 ## Expecting numeric in BI3 / R3C61: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BJ3 / R3C62: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 55 more problems</code></pre>
+## * ... and 56 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_tsa_hosp) = DSHS_tsa_hosp[2, ]
 DSHS_tsa_hosp = DSHS_tsa_hosp[3:(nrow(DSHS_tsa_hosp) - 1), ]
