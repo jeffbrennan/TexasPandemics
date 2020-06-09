@@ -7,7 +7,6 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-library(plyr)
 library(data.table)
 library(readxl)
 library(dplyr)
@@ -312,12 +311,14 @@ dshs_pops = unique(DSHS_cases_long[, c(1:2)])
 colnames(dshs_pops) = c('County', 'Population_DSHS')
 
 # census pop
-census_pops = county_demo_2018[, c(1, 3)] %>% group_by(County) %>% summarize(sum(TOT_POP))
+census_pops = county_demo_2018[, c(1, 3)] %>% group_by(County) %>% dplyr::summarize(sum(TOT_POP))
 colnames(census_pops) = c('County', 'Population_Census')
+census_pops$County = as.factor(census_pops$County)
+
 
 # add populations
 merged_counts4 = merge(merged_counts3, dshs_pops, by = 'County')
-merged_counts5 = merge(merged_counts4, census_pops, by = 'County')
+merged_counts5 = merge(merged_counts4, as.data.frame(census_pops), by = 'County')
 
 merged_counts5$Population_DSHS = as.numeric(merged_counts5$Population_DSHS)
 ```
@@ -359,7 +360,7 @@ DSHS_hosp_long$Date = as.Date(as.integer(DSHS_hosp_long$Date), origin = '2020-04
 ## DSHS computed
 
 ```{r}
-DSHS_tsa_counts = 
+DSHS_tsa_counts =
     merged_counts5 %>%
     group_by(TSA, Date) %>%
     mutate_if(is.numeric, funs(sum), 0)

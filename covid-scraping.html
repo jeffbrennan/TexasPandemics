@@ -467,7 +467,7 @@ DSHS_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 90 more problems</code></pre>
+## * … and 90 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_cases_time) = DSHS_cases_time[2, ]
 DSHS_cases_time = DSHS_cases_time[3:(nrow(DSHS_cases_time) - 11), ]
@@ -505,7 +505,7 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 93 more problems</code></pre>
+## * … and 93 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
 DSHS_deaths_time = DSHS_deaths_time[3:(nrow(DSHS_deaths_time) - 10), ]
@@ -541,7 +541,7 @@ DSHS_tests_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 39 more problems</code></pre>
+## * … and 39 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_tests_time) = DSHS_tests_time[1, ]
 DSHS_tests_time = DSHS_tests_time[2:(nrow(DSHS_tests_time) - 9), ]
@@ -582,7 +582,7 @@ DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code><
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 58 more problems</code></pre>
+## * … and 58 more problems</code></pre>
 <pre class="r"><code># fix colname
 colnames(DSHS_active_cases_time) = DSHS_active_cases_time[2, ]
 DSHS_active_cases_time = DSHS_active_cases_time[3:(nrow(DSHS_active_cases_time)), 2:ncol(DSHS_active_cases_time)]
@@ -650,10 +650,12 @@ colnames(dshs_pops) = c(&#39;County&#39;, &#39;Population_DSHS&#39;)
 # census pop
 census_pops = county_demo_2018[, c(1, 3)] %&gt;% group_by(County) %&gt;% summarize(sum(TOT_POP))
 colnames(census_pops) = c(&#39;County&#39;, &#39;Population_Census&#39;)
+census_pops$County = as.factor(census_pops$County)
+
 
 # add populations
 merged_counts4 = merge(merged_counts3, dshs_pops, by = &#39;County&#39;)
-merged_counts5 = merge(merged_counts4, census_pops, by = &#39;County&#39;)
+merged_counts5 = merge(merged_counts4, as.data.frame(census_pops), by = &#39;County&#39;)
 
 merged_counts5$Population_DSHS = as.numeric(merged_counts5$Population_DSHS)</code></pre>
 </div>
@@ -797,7 +799,7 @@ DSHS_tsa_hosp = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 58 more problems</code></pre>
+## * … and 58 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_tsa_hosp) = DSHS_tsa_hosp[2, ]
 DSHS_tsa_hosp = DSHS_tsa_hosp[3:(nrow(DSHS_tsa_hosp) - 1), ]
@@ -822,7 +824,7 @@ DSHS_hosp_long$Date = as.Date(as.integer(DSHS_hosp_long$Date), origin = &#39;202
 </div>
 <div id="dshs-computed" class="section level2">
 <h2>DSHS computed</h2>
-<pre class="r"><code>DSHS_tsa_counts = 
+<pre class="r"><code>DSHS_tsa_counts =
     merged_counts5 %&gt;%
     group_by(TSA, Date) %&gt;%
     mutate_if(is.numeric, funs(sum), 0)</code></pre>
