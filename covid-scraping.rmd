@@ -534,3 +534,16 @@ write.xlsx(DSHS_age, file="combined-datasets/demographics.xlsx", sheetName="age"
 write.xlsx(DSHS_gender, file="combined-datasets/demographics.xlsx", sheetName="gender", append=TRUE, row.names=FALSE)
 write.xlsx(DSHS_race, file="combined-datasets/demographics.xlsx", sheetName="race", append=TRUE, row.names=FALSE)
 ```
+
+
+
+```{r, fig.width=15, fig.height=8}
+library(ggplot2)
+ggplot(subset(merged_counts5, Date == '2020-06-08'),
+       aes(x = County, y = Population_Census / Population_DSHS, color = NCHS_Classification)) + 
+    labs(y = 'Census / DSHS Population Ratio') +
+    geom_text(aes(label = County), size = 5) +
+    ggpubr::theme_pubr() + 
+    theme(axis.text.x = element_blank())
+```
+
