@@ -94,7 +94,7 @@ mobility_data = fread('https://www.gstatic.com/covid19/mobility/Global_Mobility_
 mobility_texas = subset(mobility_data, sub_region_1 == 'Texas')
 
 # drop cols
-mobility_texas = mobility_texas[, -c(1,2)]
+mobility_texas = mobility_texas[, -c(1,2,5,6)]
 write.csv(mobility_texas, 'original-sources/GOOGLE.csv', row.names = F)
 
 # fix colnames
