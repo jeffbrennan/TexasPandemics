@@ -6,6 +6,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "C:/Users/jeffb/Desktop/Life/personal-projects/COVID")
 
 library(data.table)
 library(readxl)
@@ -76,7 +77,6 @@ city_pops4 = subset(city_pops3, Place_Code != 0 & Place_Code != 99990)
 # drop county suffix
 city_pops4$County = gsub(' County', '', city_pops4$County)
 ```
-
 
 
 # COUNTY LEVEL
@@ -243,7 +243,7 @@ DSHS_active_cases_long = reshape::melt(DSHS_active_cases_time, id = c('County'))
 colnames(DSHS_active_cases_long) = c('County', 'Date', 'Active_Cases_Cumulative')
 
 # fix dates
-DSHS_active_cases_long$Date = as.Date(gsub('Active\r\nCases\r\n', '', DSHS_active_cases_long$Date),
+DSHS_active_cases_long$Date = as.Date(gsub('Active|Cases|\r|\n', '', DSHS_active_cases_long$Date),
                                       format = '%m-%d')
 
 
@@ -315,7 +315,6 @@ census_pops = county_demo_2018[, c(1, 3)] %>% group_by(County) %>% dplyr::summar
 colnames(census_pops) = c('County', 'Population_Census')
 census_pops$County = as.factor(census_pops$County)
 
-
 # add populations
 merged_counts4 = merge(merged_counts3, dshs_pops, by = 'County')
 merged_counts5 = merge(merged_counts4, as.data.frame(census_pops), by = 'County')
@@ -325,6 +324,37 @@ merged_counts5$Population_DSHS = as.numeric(merged_counts5$Population_DSHS)
 
 
 # TSA LEVEL
+
+## Computed
+
+```{r}
+DSHS_tsa_counts =
+    merged_counts5 %>%
+    group_by(TSA, TSA_Name, Date) %>%
+    summarize_at(vars(Cases_Cumulative, Cases_Daily,
+                      Deaths_Cumulative, Deaths_Daily,
+                      Tests_Cumulative, Tests_Daily,
+                      Active_Cases_Cumulative, Active_Cases_Daily),
+                 funs(sum))
+
+DSHS_tsa_pops = 
+  subset(merged_counts5, Date == '2020-03-04') %>%
+  group_by(TSA) %>%
+  summarize_at(vars(Population_Census, Population_DSHS),
+               funs(sum))
+
+DSHS_tsa_google = 
+  merged_counts5 %>%
+  group_by(TSA, TSA_Name, Date) %>%
+  summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
+                    Parks, Transit,
+                    Workplaces, Residential),
+               funs(mean), na.rm = TRUE)
+
+DSHS_tsa = merge(DSHS_tsa_counts, DSHS_tsa_google, by = c('TSA', 'TSA_Name', 'Date'))
+DSHS_tsa = merge(DSHS_tsa, DSHS_tsa_pops, by = 'TSA', all = TRUE)
+```
+
 
 ## DSHS hospitals
 
@@ -357,27 +387,50 @@ colnames(DSHS_hosp_long) = c('TSA', 'Date', 'Hospitalizations_Daily')
 DSHS_hosp_long$Date = as.Date(as.integer(DSHS_hosp_long$Date), origin = '2020-04-07')
 ```
 
-## DSHS computed
-
-```{r}
-DSHS_tsa_counts =
-    merged_counts5 %>%
-    group_by(TSA, Date) %>%
-    mutate_if(is.numeric, funs(sum), 0)
-
-# keep only count cols
-DSHS_tsa_counts = DSHS_tsa_counts[, c(2:10, 22:25)]
-```
 
 ### merging
 
 ```{r}
 DSHS_hosp_long$TSA = as.factor(DSHS_hosp_long$TSA)
-DSHS_tsa_merged = merge(DSHS_tsa_counts, DSHS_hosp_long, by = c('Date', 'TSA'), all = TRUE)
+DSHS_tsa_merged = merge(DSHS_tsa, DSHS_hosp_long, by = c('Date', 'TSA'), all = TRUE)
 
 DSHS_tsa_merged2 = DSHS_tsa_merged %>% distinct()
 DSHS_tsa_merged3 = subset(DSHS_tsa_merged2, Date > as.Date('2020-03-03'))
 ```
+
+
+# METRO LEVEL
+
+## computed
+
+```{r}
+DSHS_metro_counts =
+    merged_counts5 %>%
+    group_by(Metro_Area, Date) %>%
+    summarize_at(vars(Cases_Cumulative, Cases_Daily,
+                      Deaths_Cumulative, Deaths_Daily,
+                      Tests_Cumulative, Tests_Daily,
+                      Active_Cases_Cumulative, Active_Cases_Daily),
+                 funs(sum))
+
+DSHS_metro_pops = 
+  subset(merged_counts5, Date == '2020-03-04') %>%
+  group_by(Metro_Area) %>%
+  summarize_at(vars(Population_Census, Population_DSHS),
+               funs(sum))
+
+DSHS_metro_google = 
+  merged_counts5 %>%
+  group_by(Metro_Area, Date) %>%
+  summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
+                    Parks, Transit,
+                    Workplaces, Residential),
+               funs(mean), na.rm = TRUE)
+
+DSHS_metro = merge(DSHS_metro_counts, DSHS_metro_google, by = c('Metro_Area', 'Date'))
+DSHS_metro = subset(merge(DSHS_metro, DSHS_metro_pops, by = 'Metro_Area', all = TRUE), !is.na(Date))
+```
+
 
 # STATE LEVEL
 
@@ -453,6 +506,7 @@ DSHS_state_day = data.frame(Recovered_Total = DSHS_state[[3]][1,1],
 ## DSHS Demographics
 
 ### Cases
+
 ```{r}
 #Age
 DSHS_case_age = DSHS_state[[9]][1:(nrow(DSHS_state[[9]])-4), ]
@@ -471,6 +525,7 @@ DSHS_case_race$Count_Type = 'Case'
 ```
 
 ### Deaths
+
 ```{r}
 #Age
 DSHS_death_age = DSHS_state[[12]][1:(nrow(DSHS_state[[12]])-4), ]
@@ -495,6 +550,39 @@ DSHS_gender = rbind(DSHS_case_gender, DSHS_death_gender)
 DSHS_race = rbind(DSHS_case_race, DSHS_death_race)
 ```
 
+## Computed
+
+```{r}
+state_counts =
+    merged_counts5 %>%
+    group_by(Date) %>%
+    summarize_at(vars(Cases_Cumulative, Cases_Daily,
+                      Deaths_Cumulative, Deaths_Daily,
+                      Tests_Cumulative, Tests_Daily,
+                      Active_Cases_Cumulative, Active_Cases_Daily),
+                 funs(sum))
+
+state_pops = 
+  subset(merged_counts5, Date == '2020-03-04') %>%
+  group_by(Date) %>%
+  summarize_at(vars(Population_Census, Population_DSHS),
+               funs(sum))
+
+state_google = 
+  merged_counts5 %>%
+  group_by(Date) %>%
+  summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
+                    Parks, Transit,
+                    Workplaces, Residential),
+               funs(mean), na.rm = TRUE)
+
+merged_state = merge(state_counts, state_google, by = 'Date', all = TRUE)
+merged_state2 = merge(merged_state, DSHS_state_time, by = 'Date', all = TRUE)
+
+merged_state2$Population_Census = state_pops$Population_Census
+merged_state2$Population_DSHS = state_pops$Population_DSHS
+```
+
 
 # OUTPUT 
 
@@ -503,7 +591,6 @@ DSHS_race = rbind(DSHS_case_race, DSHS_death_race)
 ```{r}
 write.csv(city_pops4, 'combined-datasets/city_pops.csv', row.names = F)
 ```
-
 
 ## County
 
@@ -518,14 +605,19 @@ write.csv(county_demo_2018, file = 'combined-datasets/county_demo.csv', row.name
 write.csv(DSHS_tsa_merged3, file = 'combined-datasets/tsa.csv', row.names = F)
 ```
 
+## Metro
+
+```{r}
+write.csv(DSHS_metro, file = 'combined-datasets/metro.csv', row.names = F)
+```
+
 ## State
 
 ```{r}
 library(xlsx)
-write.xlsx(DSHS_state_time, file="combined-datasets/state.xlsx", sheetName="longitudinal", row.names=FALSE)
+write.xlsx(merged_state2, file="combined-datasets/state.xlsx", sheetName="longitudinal", row.names=FALSE)
 write.xlsx(DSHS_state_day, file="combined-datasets/state.xlsx", sheetName="current", append = TRUE, row.names=FALSE)
 ```
-
 
 ### Demographics
 
@@ -534,16 +626,3 @@ write.xlsx(DSHS_age, file="combined-datasets/demographics.xlsx", sheetName="age"
 write.xlsx(DSHS_gender, file="combined-datasets/demographics.xlsx", sheetName="gender", append=TRUE, row.names=FALSE)
 write.xlsx(DSHS_race, file="combined-datasets/demographics.xlsx", sheetName="race", append=TRUE, row.names=FALSE)
 ```
-
-
-
-```{r, fig.width=15, fig.height=8}
-library(ggplot2)
-ggplot(subset(merged_counts5, Date == '2020-06-08'),
-       aes(x = County, y = Population_Census / Population_DSHS, color = NCHS_Classification)) + 
-    labs(y = 'Census / DSHS Population Ratio') +
-    geom_text(aes(label = County), size = 5) +
-    ggpubr::theme_pubr() + 
-    theme(axis.text.x = element_blank())
-```
-
