@@ -631,7 +631,7 @@ write.xlsx(DSHS_race, file="combined-datasets/demographics.xlsx", sheetName="rac
 ```
 
 
-<!-- ## TABLEAU ONLY -->
+## TABLEAU ONLY
 
 ```{r}
 tableau_county = merged_counts4
@@ -639,4 +639,44 @@ write.csv(tableau_county, 'tableau/county.csv', row.names = FALSE)
 
 tableau_state = merged_state2[, c(1, 16:23)]
 write.csv(tableau_state, 'tableau/state_simple.csv', row.names = FALSE)
+```
+
+
+## Long format TSA & Metro
+
+```{r}
+# read in data
+county = read.csv('combined-datasets/county.csv')
+metro = read.csv('combined-datasets/metro.csv')
+tsa = read.csv('combined-datasets/tsa.csv')
+
+# combine into df
+metro_long = merge(county, metro, by = c('Metro_Area', 'Date'), all = TRUE)
+tsa_long = merge(county, tsa, by = c('TSA', 'TSA_Name', 'Date'), all = TRUE)
+
+# drop county cols and suffixes
+metro_long = metro_long[, -(grep('.x', colnames(metro_long), fixed = TRUE))]
+colnames(metro_long) = gsub('.y', '', colnames(metro_long), fixed = TRUE)
+
+# drop county cols and suffixes
+tsa_long = tsa_long[, -(grep('.x', colnames(tsa_long), fixed = TRUE))]
+colnames(tsa_long) = gsub('.y', '', colnames(tsa_long), fixed = TRUE)
+
+# output
+write.csv(metro_long, 'tableau/metro_long.csv')
+write.csv(tsa_long, 'tableau/tsa_long.csv')
+```
+
+
+```{r}
+# transform names
+colnames(metro)[3:length(colnames(metro))] = paste0('METRO_', colnames(metro)[3:length(colnames(metro))])
+colnames(tsa)[4:length(colnames(tsa))] = paste0('TSA_', colnames(tsa)[4:length(colnames(tsa))])
+
+# combine into df
+combined_df = merge(county, metro, by = c('Metro_Area', 'Date'), all = TRUE)
+combined_df2 = merge(combined_df, tsa, by = c('TSA', 'TSA_Name', 'Date'), all = TRUE)
+
+# output
+write.csv(combined_df2, 'tableau/combined.csv', row.names = FALSE)
 ```
