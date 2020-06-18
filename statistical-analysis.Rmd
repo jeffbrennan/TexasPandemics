@@ -63,7 +63,6 @@ library(reshape2)
   covid.data<-covid.data%>%mutate(Cases_Daily=ifelse(Cases_Daily<0, 0, Cases_Daily))
   return(covid.data)
 }
-
 ```
 
 
@@ -130,6 +129,8 @@ rt.df.extraction<-function(Rt.estimate.output){
   rt.df$lower<-CI.lower
   rt.df$upper<-CI.upper
   
+  rt.df$Date = as.Date(rt.df$Date)
+  
   return(rt.df)
 }
 
@@ -168,14 +169,14 @@ library(R0)
   #create the generation time 
   ##### NOTE: THIS MAY NEED MODIFICATION ONCE MORE INFORMATIONIS AVAILABLE ####
 
-    #gen.time<-generation.time("lognormal", c(4.0, 2.9))#verify these values and distribution/update as needed
-    #gen.time<-generation.time("lognormal", c(4.7,2.9)) #Nishiura
-  
-    #Tapiwa, Ganyani "Esimating the gen interval for Covid-19":
-    #gen.time<-generation.time("gamma", c(5.2, 1.72)) #Singapore
-    #gen.time<-generation.time("gamma", c(3.95, 1.51)) #Tianjin
-    gen.time<-generation.time("gamma", c(3.96, 4.75))
-  
+  #gen.time<-generation.time("lognormal", c(4.0, 2.9))#verify these values and distribution/update as needed
+  #gen.time<-generation.time("lognormal", c(4.7,2.9)) #Nishiura
+
+  #Tapiwa, Ganyani "Esimating the gen interval for Covid-19":
+  # gen.time<-generation.time("gamma", c(5.2, 1.72)) #Singapore
+  #gen.time<-generation.time("gamma", c(3.95, 1.51)) #Tianjin
+  gen.time<-generation.time("gamma", c(3.96, 4.75))
+
   #get DSHS population and census population
   pop.DSHS<-mydata$Population_DSHS[1]
 
@@ -195,65 +196,40 @@ library(R0)
   j<-as.integer(min(last.nonzero, max.date))
   
   if(is.na(minrow)){
-    rt.DSHS.df<-data.frame(Date=mydata$Date, Rt=rep("NA", j), lower=rep("NA", j), upper=rep("Na", j))
+    rt.DSHS.df<-data.frame(Date=as.Date(mydata$Date), Rt=rep(NA, j), lower=rep(NA, j), upper=rep(NA, j))
   }
   
-  #########################################################
-  # Here we error catch by returning empty vector if sum of Cases_Daily
-  # if sum of Cases_Daily <20, then generate empty data frame
-  # try a few different values other than 20
-  ################################################################
   if(sum.daily.cases<=50){
     k=length(mydata$Date)
-    rt.DSHS.df<-data.frame(Date=mydata$Date, Rt=rep("NA", k), lower=rep("NA", k), upper=rep("Na", k))
+    rt.DSHS.df<-data.frame(Date=as.Date(mydata$Date), Rt=rep(NA, k), lower=rep(NA, k), upper=rep(NA, k))
   }
   #only move forward if both previous error catch options are false
   if(is.na(minrow)==FALSE & sum.daily.cases>50){
-  #get the row number for the mindrow date
-  i<-minrow
-
-  #reduce the vector to be rows from min date (March 9 or first nonzero case) to current date
-  mydata.newest<-mydata.new[i:j]
+    #get the row number for the mindrow date
+    i<-minrow
   
-  #run estimate.R() using gen.time, total.days, pop.DSHS
-  ####################################################################################################  
-  #for the following line, we need to add an error catch (if statement)
-      #if the the estimate.R() produces an error, create an empty 
-      #data frame instead of extracting data.frame from rt.DSHS output
+    #reduce the vector to be rows from min date (March 9 or first nonzero case) to current date
+    mydata.newest<-mydata.new[i:j]
+    
+    
+    rt.DSHS<-estimate.R(mydata.newest, 
+                        gen.time, 
+                        #begin=as.integer(1), 
+                        #end=total.days, 
+                        methods=c("TD"), 
+                        pop.size=pop.DSHS,
+                        nsim=1000)
   
-  #NOTE: if previous attempt to use sum of Cases_Daily works to fix the errors, this step is not 
-  #neccessary and can be removed
-  ###################################################################################################
-  
-  rt.DSHS<-estimate.R(mydata.newest, 
-                      gen.time, 
-                      #begin=as.integer(1), 
-                      #end=total.days, 
-                      methods=c("TD"), 
-                      pop.size=pop.DSHS,
-                      nsim=1000)
-  
-  #run estimate.R() using gen.time, total.days, pop.Census
-  #rt.Census<-estimate.R(mydata.newest, 
-   #                   gen.time, 
-    #                  methods=c("TD"), 
-     #                 pop.size=pop.Census,
-      #                nsim=1000)
-  
-  # use rt extraction function to get rt estimates, upper and lower bounds in data 
-    #frame for both rt.DSHS and rt.Census
-    rt.DSHS.df<-rt.df.extraction(rt.DSHS)
-   # rt.Census.df<-rt.df.extraction(rt.Census)
+      rt.DSHS.df<-rt.df.extraction(rt.DSHS)
   }
   
-  #return list of dataframes
-  return(rt.DSHS=rt.DSHS.df)
+  rt.out = subset(rt.DSHS.df, Date > as.Date('2020-03-09'))
+  return(rt.out)
 }
 ```
 
 
 ```{r prep dataframes, include=FALSE}
-
 #run rt.data.organize function on full.dshs and tsa.dshs data
 covid.frame.list<-rt.data.organize(full.dshs, tsa.dshs)
 
@@ -263,6 +239,9 @@ TSA.daily<-covid.frame.list$TSA
 state.daily<-covid.frame.list$state
 metro.daily<-covid.frame.list$metro
 ```
+
+
+## County
 
 ```{r county rt, include=FALSE}
 #apply the covid.rt function to the county.datily data by county 
@@ -276,6 +255,8 @@ county.rt.df<-data.table::rbindlist(county.rt.output, idcol=TRUE)
 
 colnames(county.rt.df)[1] = 'County'
 ```
+
+## Metro
 
 ```{r metro rt, include=FALSE}
 #apply the covid.rt function to the metro.daily data by metro region
@@ -291,6 +272,7 @@ metro.rt.df<-data.table::rbindlist(metro.rt.output, idcol=TRUE)
 colnames(metro.rt.df)[1] = 'Metro_Area'
 ```
 
+## TSA
 
 ```{r tsa rt, include=FALSE}
 #apply the covid.rt function to the TSA.daily data by TSA region
@@ -315,7 +297,6 @@ TSA.rt.df = merge(TSA.rt.df, TSA.daily[, c('TSA', 'TSA_Name', 'Date')], by = c('
 #run covid.rt function on state level data 
 #(this will be a data frame output)
 state.rt.df<-covid.rt(state.daily)
-
 ```
 
 
@@ -517,6 +498,8 @@ state.Daily<-covid.frame.list$state
 metro.Daily<-covid.frame.list$metro
 ```
 
+## County
+
 ```{r county forecasts, output = NULL}
 #get county forecasts using covid.arima.forecast function
 
@@ -533,6 +516,8 @@ colnames(county.arima.df)[1] = 'County'
 ```
 
 
+## Metro
+
 ```{r metro forecasts}
 #get metro forecasts using covid.arima.forecast function
 #load nlme package
@@ -548,6 +533,8 @@ colnames(metro.arima.df)[1] = 'Metro_Area'
 ```
 
 
+## TSA
+
 ```{r TSA forecasts}
 #ge#load nlme package
 library(nlme)
@@ -560,16 +547,13 @@ TSA.arima.df<-data.table::rbindlist(TSA.arima.output, idcol=TRUE)
 
 
 colnames(TSA.arima.df)[1] = 'TSA'
-TSA.arima.df = merge(TSA.arima.df, TSA.daily[, c('TSA', 'TSA_Name', 'Date')], by = c('TSA', 'Date'))
+TSA.arima.df = merge(TSA.arima.df, unique(TSA.daily[, c('TSA', 'TSA_Name')]), by = c('TSA'))
 ```
 
 
 ```{r Texas forecasts}
 #get Texas forecasts using covid.arima.forecast function
 texas.arima.df<-covid.arima.forecast(state.Daily)
-
-# texas.arima.df$Level = 'State'
-# texas.arima.df$Level_Name = 'Texas'
 ```
 
 ```{r export arima results}
@@ -1055,27 +1039,4 @@ Omitted fow now, Dr. Yaseen is processing this in Tableau
 <!-- #glm.county.predict=as.factor(glm.county.predict) -->
 <!-- table(glm.tsa.predict, datatrend.tsa.test$ratio2) -->
 <!-- mean(glm.tsa.predict==datatrend.tsa.test$ratio2) -->
-<!-- ``` -->
-
-
-
-<!-- # Combined df  -->
-
-<!-- ```{r} -->
-<!-- # read in data -->
-<!-- county<-read.csv('combined-datasets/county.csv') -->
-<!-- metro <-read.csv("combined-datasets/metro.csv") -->
-<!-- tsa<-read.csv('combined-datasets/tsa.csv') -->
-
-
-<!-- # transform names -->
-<!-- colnames(metro)[3:length(colnames(metro))] = paste0('METRO_', colnames(metro)[3:length(colnames(metro))]) -->
-<!-- colnames(tsa)[4:length(colnames(tsa))] = paste0('TSA_', colnames(tsa)[4:length(colnames(tsa))]) -->
-
-<!-- # combine into df -->
-<!-- combined_df = merge(county, metro, by = c('Metro_Area', 'Date'), all = TRUE) -->
-<!-- combined_df2 = merge(combined_df, tsa, by = c('TSA', 'TSA_Name', 'Date'), all = TRUE) -->
-
-<!-- # output -->
-<!-- write.csv(combined_df2, 'combined-datasets/combined.csv') -->
 <!-- ``` -->
