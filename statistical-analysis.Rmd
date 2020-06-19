@@ -594,7 +594,7 @@ tsa_current_ratio_dat <- data.frame(TSA=subset(cumcases.TSA, Date==latestdate, s
                                     current_ratio=current_ratio, current_ratio_cat = cut(current_ratio, breaks=c(0,0.5,.9,1.1,1.5,2,4,8,max(current_ratio))))
 
 # add TSA name
-tsa_current_ratio_dat = merge(tsa_current_ratio_dat, TSA.daily[, c('TSA', 'TSA_Name')], by = 'TSA')
+tsa_current_ratio_dat = merge(tsa_current_ratio_dat, unique(TSA.daily[, c('TSA', 'TSA_Name')]), by = 'TSA')
 ```
 
 ### County level

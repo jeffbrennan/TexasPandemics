@@ -302,6 +302,8 @@ tsa_long_complete = subset(tsa_long, value != '')[, c(1, 2, 4)]
 colnames(tsa_long_complete) = c('TSA', 'TSA_Name', 'County')
 
 tsa_long_complete$County = trimws(tsa_long_complete$County)
+tsa_long_complete$TSA_Name = trimws(tsa_long_complete$TSA_Name)
+
 
 merged_counts3 = merge(merged_counts2, tsa_long_complete, by = 'County', all = TRUE)
 
