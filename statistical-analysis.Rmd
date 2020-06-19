@@ -719,278 +719,278 @@ Omitted fow now, Dr. Yaseen is processing this in Tableau
 
 ## Trends
 
-<!-- ```{r} -->
-<!-- require(ggplot2); require(tidyverse); require(lubridate); require(gridExtra) -->
-<!-- require(ggmap) -->
-<!-- require(maps) -->
-<!-- require(mapdata) -->
-<!-- require(dplyr) -->
-<!-- require(zoo) -->
-<!-- require("Kendall") -->
-<!-- require(gridExtra) -->
-<!-- library(tibble) -->
-<!-- library(plyr) -->
-<!-- library(randomForest) -->
-<!-- ``` -->
+```{r}
+require(ggplot2); require(tidyverse); require(lubridate); require(gridExtra)
+require(ggmap)
+require(maps)
+require(mapdata)
+require(dplyr)
+require(zoo)
+require("Kendall")
+require(gridExtra)
+library(tibble)
+library(plyr)
+library(randomForest)
+```
 
 
-<!-- ```{r} -->
-<!-- # read files -->
-<!-- ## inflie dataset with county, date, case_daily and google mobility variables -->
-<!-- county <- read.csv(file = 'combined-datasets/county.csv') -->
-<!-- ## inflie dataset including agegroup and race -->
-<!-- county_demo=read.csv(file = 'combined-datasets/county_demo.csv') -->
-<!-- ##infile dateset with population by county -->
-<!-- county_cases=read.csv(file ='original-sources/DSHS_county_cases.csv') -->
-<!-- tsa = read.csv('original-sources/tsa_list.csv', header = F)[-1] -->
-<!-- newcases.tsa=read.csv(file ='combined-datasets/tsa.csv') -->
-<!-- ``` -->
+```{r}
+# read files
+## inflie dataset with county, date, case_daily and google mobility variables
+county <- read.csv(file = 'combined-datasets/county.csv')
+## inflie dataset including agegroup and race
+county_demo=read.csv(file = 'combined-datasets/county_demo.csv')
+##infile dateset with population by county
+county_cases=read.csv(file ='original-sources/DSHS_county_cases.csv')
+tsa = read.csv('original-sources/tsa_list.csv', header = F)[-1]
+newcases.tsa=read.csv(file ='combined-datasets/tsa.csv')
+```
 
-<!-- ```{r} -->
-<!-- #combine files and prepare each variables  -->
-<!-- # dataset1 newcasesdata---county, date, case_daily and google mobility variables into newcasesdata -->
-<!-- newcasesdata=subset(county[, c(1:2,4,11:16)]) #extract county, date, case_daily and google mobility variables into newcasesdata -->
-<!-- newcasesdata_case=subset(newcasesdata[,c(1:3)])  #county,data,casedaily -->
-<!-- newcasesdata_morbility=subset(newcasesdata[,c(1,4:9)]) #google morbility -->
+```{r}
+#combine files and prepare each variables
+# dataset1 newcasesdata---county, date, case_daily and google mobility variables into newcasesdata
+newcasesdata=subset(county[, c(1:2,4,11:16)]) #extract county, date, case_daily and google mobility variables into newcasesdata
+newcasesdata_case=subset(newcasesdata[,c(1:3)])  #county,data,casedaily
+newcasesdata_morbility=subset(newcasesdata[,c(1,4:9)]) #google morbility
 
-<!-- #dataset 2 basic population variables by county from census -->
-<!-- county_agerace=subset(county_demo[, c(1:3,8:9,52:53)]) #county, year, agegp, census, black male, black femal, hispanic male, hispanic female. This file was ordered by county, year, age group, so we need to sum up each variables by county as the whole census population for following computation -->
-<!-- county_agerace$black=(county_agerace$BA_MALE+county_agerace$BA_FEMALE)##new variable- black_census=black_male+black_female -->
-<!-- county_agerace$hispanic=(county_agerace$H_MALE+county_agerace$H_FEMALE) #new variable-hispanic_census=hispanic_male+hiapanic_female -->
+#dataset 2 basic population variables by county from census
+county_agerace=subset(county_demo[, c(1:3,8:9,52:53)]) #county, year, agegp, census, black male, black femal, hispanic male, hispanic female. This file was ordered by county, year, age group, so we need to sum up each variables by county as the whole census population for following computation
+county_agerace$black=(county_agerace$BA_MALE+county_agerace$BA_FEMALE)##new variable- black_census=black_male+black_female
+county_agerace$hispanic=(county_agerace$H_MALE+county_agerace$H_FEMALE) #new variable-hispanic_census=hispanic_male+hiapanic_female
 
-<!--   #2.1  build age dataset  -->
-<!-- county_age_long=subset(county_agerace[,c(1:3)])    #select age group and population variable -->
-<!-- county_age_wide=spread(county_age_long, AGEGRP,TOT_POP) #convert longdata to wide data of age_group, colname is age group,and rowname is county name -->
+  #2.1  build age dataset
+county_age_long=subset(county_agerace[,c(1:3)])    #select age group and population variable
+county_age_wide=spread(county_age_long, AGEGRP,TOT_POP) #convert longdata to wide data of age_group, colname is age group,and rowname is county name
 
-<!--   #2.2 build matrix for race information -->
-<!-- county_race= matrix(nrow = nrow(county_age_wide),ncol = 4) -->
-<!-- colnames(county_race)=c('County','Census','black_census','hispanic_census') -->
-<!-- county_race=data.frame(county_race) -->
-<!--   county_race$County=county_age_wide$County     #county variable -->
-<!--   county_race$County=county_cases$County -->
-<!--   county_race$Census=tapply(county_agerace[,3], county_agerace$County, FUN=sum) -->
-<!--   county_race$black_census=tapply(county_agerace[,8], county_agerace$County, FUN=sum) -->
-<!--   county_race$hispanic_census=tapply(county_agerace[,9], county_agerace$County, FUN=sum)    #this county_race dataset has variables county, census, black_census, hispanic_census -->
-<!--   county_race$black_per=county_race$black_census/county_race$Census*100   #new variable black_per -->
-<!--   county_race$hispanic_per=county_race$hispanic_census/county_race$Census*100   #new variable hispanic_per -->
-<!--   #up to here, county_race has county,census,black_census, hispanic_census, black_per, hispanic_per -->
+  #2.2 build matrix for race information
+county_race= matrix(nrow = nrow(county_age_wide),ncol = 4)
+colnames(county_race)=c('County','Census','black_census','hispanic_census')
+county_race=data.frame(county_race)
+  county_race$County=county_age_wide$County     #county variable
+  county_race$County=county_cases$County
+  county_race$Census=tapply(county_agerace[,3], county_agerace$County, FUN=sum)
+  county_race$black_census=tapply(county_agerace[,8], county_agerace$County, FUN=sum)
+  county_race$hispanic_census=tapply(county_agerace[,9], county_agerace$County, FUN=sum)    #this county_race dataset has variables county, census, black_census, hispanic_census
+  county_race$black_per=county_race$black_census/county_race$Census*100   #new variable black_per
+  county_race$hispanic_per=county_race$hispanic_census/county_race$Census*100   #new variable hispanic_per
+  #up to here, county_race has county,census,black_census, hispanic_census, black_per, hispanic_per
 
-<!-- county_race_per=county_race[,c(1:2,5:6)]    #county_race has county, census, black_per, hispanic_per -->
-<!-- county_modelvariables=merge(county_race_per, county_age_wide, by = 'County') #this is all the variables used for following modeling, including county, census, black_per, hispanic_per,age groups -->
-<!-- county_newcases=merge(county_modelvariables,newcasesdata, by ='County')   #this is the final conbined dataset with all the county -->
-
-
-<!-- #the following are prepared for dataset 3 -->
-<!-- # TSA levels of model variables -->
-<!-- tsa_long = reshape::melt(tsa, id = c('V2', 'V3')) -->
-<!-- tsa_long_complete = subset(tsa_long, value != '')[, c(1, 2, 4)] -->
-<!-- colnames(tsa_long_complete) = c('TSA', 'TSA_Name', 'County') -->
-<!-- tsa_long_complete$County = trimws(tsa_long_complete$County) -->
-<!-- tsa_merge= merge(county_modelvariables, tsa_long_complete, by = 'County', all = TRUE)    -->
-<!-- tsa_merge=tsa_merge[,c(1:23)] # merged dataset has county,census, black_per, hispanic_per, agegroups, tsa -->
-<!-- tsa_merge$County=as.character(tsa_merge$County) -->
-<!-- tsa_merge2=merge(county_race, tsa_long_complete, by = 'County', all = TRUE)   #county,census, black_census,hispanic_census, black_per,hispanic_per, agegroups tsa -->
+county_race_per=county_race[,c(1:2,5:6)]    #county_race has county, census, black_per, hispanic_per
+county_modelvariables=merge(county_race_per, county_age_wide, by = 'County') #this is all the variables used for following modeling, including county, census, black_per, hispanic_per,age groups
+county_newcases=merge(county_modelvariables,newcasesdata, by ='County')   #this is the final conbined dataset with all the county
 
 
-<!-- #dataset 3  build tsa matrix including alll the varibales same as county_modelvariables, computated by tsa : county, census, black_per, hispanic_per,age groups -->
-<!-- tsa_modelvariable=tsa_merge[,c(23,2:22)] -->
-<!-- tsa_modelvariable= matrix(nrow = 22,ncol = 22)     -->
-<!-- tsa_modelvariable=data.frame(tsa_modelvariable) -->
-<!--   colnames(tsa_modelvariable)=colnames(county_modelvariables) #county, census, black_per, hispanic_per,age groups -->
-<!--   tsa_modelvariable$County =c("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V")#county --tsa -->
-<!--   tsa_modelvariable[,2]=tapply(tsa_merge[,2], tsa_merge$TSA, FUN=sum)    #census by tsa -->
-<!--   tsa_modelvariable[,5]=tapply(tsa_merge[,5], tsa_merge$TSA, FUN=sum)    #5-22 are age groups by tsa -->
-<!--   tsa_modelvariable[,6]=tapply(tsa_merge[,6], tsa_merge$TSA, FUN=sum) -->
-<!--   tsa_modelvariable[,7]=tapply(tsa_merge[,7], tsa_merge$TSA, FUN=sum) -->
-<!--   tsa_modelvariable[,8]=tapply(tsa_merge[,8], tsa_merge$TSA, FUN=sum) -->
-<!--   tsa_modelvariable[,9]=tapply(tsa_merge[,9], tsa_merge$TSA, FUN=sum) -->
-<!--   tsa_modelvariable[,10]=tapply(tsa_merge[,10], tsa_merge$TSA, FUN=sum) -->
-<!--   tsa_modelvariable[,11]=tapply(tsa_merge[,11], tsa_merge$TSA, FUN=sum) -->
-<!--   tsa_modelvariable[,12]=tapply(tsa_merge[,12], tsa_merge$TSA, FUN=sum) -->
-<!--   tsa_modelvariable[,13]=tapply(tsa_merge[,13], tsa_merge$TSA, FUN=sum) -->
-<!--   tsa_modelvariable[,14]=tapply(tsa_merge[,14], tsa_merge$TSA, FUN=sum) -->
-<!--   tsa_modelvariable[,15]=tapply(tsa_merge[,15], tsa_merge$TSA, FUN=sum) -->
-<!--   tsa_modelvariable[,16]=tapply(tsa_merge[,16], tsa_merge$TSA, FUN=sum) -->
-<!--   tsa_modelvariable[,17]=tapply(tsa_merge[,17], tsa_merge$TSA, FUN=sum) -->
-<!--   tsa_modelvariable[,18]=tapply(tsa_merge[,18], tsa_merge$TSA, FUN=sum) -->
-<!--   tsa_modelvariable[,19]=tapply(tsa_merge[,19], tsa_merge$TSA, FUN=sum) -->
-<!--   tsa_modelvariable[,20]=tapply(tsa_merge[,20], tsa_merge$TSA, FUN=sum) -->
-<!--   tsa_modelvariable[,21]=tapply(tsa_merge[,21], tsa_merge$TSA, FUN=sum) -->
-<!--   tsa_modelvariable[,22]=tapply(tsa_merge[,22], tsa_merge$TSA, FUN=sum)   -->
-<!--   tsa_modelvariable[,3]=tapply(tsa_merge2[,3], tsa_merge2$TSA, FUN=sum)  #black_census by tsa -->
-<!--   tsa_modelvariable[,4]=tapply(tsa_merge2[,4], tsa_merge2$TSA, FUN=sum)  #hispanic_census by tsa -->
-<!--   tsa_modelvariable[,3]=tsa_modelvariable[,3]/tsa_modelvariable$Census*100   #black_per -->
-<!--   tsa_modelvariable[,4]=tsa_modelvariable[,4]/tsa_modelvariable$Census*100   #hispanic_per -->
-<!-- tsa_modelvariable$County= paste0("tsa",tsa_modelvariable$County)  #change variables name , add tsa to each one -->
+#the following are prepared for dataset 3
+# TSA levels of model variables
+tsa_long = reshape::melt(tsa, id = c('V2', 'V3'))
+tsa_long_complete = subset(tsa_long, value != '')[, c(1, 2, 4)]
+colnames(tsa_long_complete) = c('TSA', 'TSA_Name', 'County')
+tsa_long_complete$County = trimws(tsa_long_complete$County)
+tsa_merge= merge(county_modelvariables, tsa_long_complete, by = 'County', all = TRUE)
+tsa_merge=tsa_merge[,c(1:23)] # merged dataset has county,census, black_per, hispanic_per, agegroups, tsa
+tsa_merge$County=as.character(tsa_merge$County)
+tsa_merge2=merge(county_race, tsa_long_complete, by = 'County', all = TRUE)   #county,census, black_census,hispanic_census, black_per,hispanic_per, agegroups tsa
 
 
-<!-- # dataset4 merge newcasesdata with tsa -->
-<!-- tsa_newcasesdata=newcases.tsa[,c(2,1,5,12:17)]     -->
-<!-- colnames(tsa_newcasesdata)=colnames(newcasesdata)  #county, date, case_daily,retail_recreation, grocery_pharmacy, parks, transit, workplaces, residential, tsa -->
-<!-- tsa_newcasesdata$County= as.character(tsa_newcasesdata$County)   -->
-<!-- tsa_newcasesdata$Date=as.Date(tsa_newcasesdata$Date)  -->
-<!-- tsa_newcasesdata$County= paste0("tsa",tsa_newcasesdata$County) -->
-
-<!-- # dataset 5 combing all modelvaribles used for the following function , including county and tsa. both dataset have same column. -->
-<!-- #           combing all newcasesdata used for the  following function , including county and tsa. both dataset have same column. -->
-<!-- #model_variables=dplyr::bind_rows(county_modelvariables,tsa_modelvariable)   #final data1 -->
-<!-- #newcasesdata$County=as.character(newcasesdata$County) -->
-<!-- #newcasesdata$Date=as.Date(newcasesdata$Date) -->
-<!-- #newcasesdata=dplyr::bind_rows(newcasesdata,tsa_newcasesdata)   #final data2 -->
-
-<!-- ``` -->
-
-
-<!-- ### county  -->
-<!-- ```{r} -->
-<!-- # create data with 4-week (28 days) windows---county -->
-<!-- # TODO: check "provided 9398 variables to replace 21 variables" -->
-<!-- newcasesdata$Date=as.Date(newcasesdata$Date) -->
-<!-- newcasesdata_case=newcasesdata[,c(1:3)] -->
-<!-- newcasesdata_case_wide= spread(newcasesdata_case, County,Cases_Daily)    #convert long data to wide data of county -->
-<!-- newcases=newcasesdata_case_wide %>% subset(Date>="2020-04-10")     #generate newcases matrix:county, date, cases_daily----county -->
-<!-- newcases1=newcases[,-1]       -->
-
-<!-- datatrend.dat <- matrix(nrow=254*(nrow(newcases)-27), ncol=41) -->
-<!-- datatrend.dat <- data.frame(datatrend.dat) -->
-<!--   colnames(datatrend.dat) <- c(1:14, "ratio","MKteststat","MKpvalue","Spearteststat","Spearpvalue","Population","black_per","hispanic_per","age0_4","age10_14","age15_19","age20_24","age25_29","age30_34","age35_39","age40_44","age45_49","age5_9","age50_54","age55_59","age60_64","age65_69","age70_74","age75_79","age80_84","age85up","County") -->
-<!--   datatrend.dat$County=rep(colnames(newcases1),nrow(newcases)-27) -->
-<!-- #datatrend.dat$Population= ifelse(datatrend.dat$County == county_modelvariables$County, county_modelvariables$Census, NA) -->
-<!--   datatrend.dat[,c(20:40)]=ifelse(datatrend.dat$County ==county_modelvariables$County, county_modelvariables[,c(2:22)], NA)  #value population,black_per, hispanic_per and each group by county -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- # num.cycles is the number of 4-week windows within each TSA longitudinal data, after April 1, 2020. -->
-<!-- num.cycles <- nrow(newcases)-27 -->
-<!-- for(i in 1:num.cycles){ -->
-<!--   for(j in 2:255){ -->
-<!--     datatrend.dat[(i+(j-1)*num.cycles),1:14] <- newcases[i:(i+13), j] -->
-<!--     # The "outcome" here is the ratio of total new cases -->
-<!--     # in the following two weeks to the total new cases -->
-<!--     # in the previous two weeks (percentage increase/decrease) -->
-<!--     datatrend.dat[(i+(j-1)*num.cycles),15] <- sum(newcases[(i+14):(i+27),j])/sum(newcases[i:(i+13), j]) -->
-<!--   } -->
-<!-- } -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- # remove data that seems wrong (ratio of cases is negative). These are from row 4, tsa D -->
-<!-- datatrend.dat <- subset(datatrend.dat, ratio>0) -->
-<!-- for(i in 1:nrow(datatrend.dat)){ -->
-<!--   tmp <- MannKendall(datatrend.dat[i,1:14]) -->
-<!--   datatrend.dat[i,16:17] <- c(tmp$tau, tmp$sl) -->
-<!--   tmp <- cor.test(1:14, as.numeric(datatrend.dat[i,1:14]), method="spearman") -->
-<!--   datatrend.dat[i,18:19] <- c(tmp$estimate, tmp$p.value) -->
-<!-- } -->
-
-<!-- #The following are to generate ratio2 to get bionary raio. ratio 3 to get three groups of ratio -->
-<!-- datatrend.dat$ratio2=ifelse(datatrend.dat$ratio>1,1,0)       #ratio 2:ratio>1,1;ratio<=1,0 -->
-<!-- datatrend.dat$ratio2=as.factor(datatrend.dat$ratio2)          # ratio2 : categorial -->
-
-<!-- datatrend.dat$ratio3="" -->
-<!-- for (i in 1:length(datatrend.dat$ratio)){ -->
-<!-- if(datatrend.dat$ratio[i]<0.7){ -->
-<!--   datatrend.dat$ratio3[i]=0 -->
-<!-- } else if(datatrend.dat$ratio[i]>=0.7 & datatrend.dat$ratio[i]<1.3){ -->
-<!--   datatrend.dat$ratio3[i]=1 -->
-<!-- } else{ -->
-<!--   datatrend.dat$ratio3[i]=2 -->
-<!-- } -->
-<!-- } -->
-<!-- datatrend.dat$ratio3=as.factor(datatrend.dat$ratio3)    #ratio3: three groups of ratio;  -->
-<!-- ``` -->
+#dataset 3  build tsa matrix including alll the varibales same as county_modelvariables, computated by tsa : county, census, black_per, hispanic_per,age groups
+tsa_modelvariable=tsa_merge[,c(23,2:22)]
+tsa_modelvariable= matrix(nrow = 22,ncol = 22)
+tsa_modelvariable=data.frame(tsa_modelvariable)
+  colnames(tsa_modelvariable)=colnames(county_modelvariables) #county, census, black_per, hispanic_per,age groups
+  tsa_modelvariable$County =c("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V")#county --tsa
+  tsa_modelvariable[,2]=tapply(tsa_merge[,2], tsa_merge$TSA, FUN=sum)    #census by tsa
+  tsa_modelvariable[,5]=tapply(tsa_merge[,5], tsa_merge$TSA, FUN=sum)    #5-22 are age groups by tsa
+  tsa_modelvariable[,6]=tapply(tsa_merge[,6], tsa_merge$TSA, FUN=sum)
+  tsa_modelvariable[,7]=tapply(tsa_merge[,7], tsa_merge$TSA, FUN=sum)
+  tsa_modelvariable[,8]=tapply(tsa_merge[,8], tsa_merge$TSA, FUN=sum)
+  tsa_modelvariable[,9]=tapply(tsa_merge[,9], tsa_merge$TSA, FUN=sum)
+  tsa_modelvariable[,10]=tapply(tsa_merge[,10], tsa_merge$TSA, FUN=sum)
+  tsa_modelvariable[,11]=tapply(tsa_merge[,11], tsa_merge$TSA, FUN=sum)
+  tsa_modelvariable[,12]=tapply(tsa_merge[,12], tsa_merge$TSA, FUN=sum)
+  tsa_modelvariable[,13]=tapply(tsa_merge[,13], tsa_merge$TSA, FUN=sum)
+  tsa_modelvariable[,14]=tapply(tsa_merge[,14], tsa_merge$TSA, FUN=sum)
+  tsa_modelvariable[,15]=tapply(tsa_merge[,15], tsa_merge$TSA, FUN=sum)
+  tsa_modelvariable[,16]=tapply(tsa_merge[,16], tsa_merge$TSA, FUN=sum)
+  tsa_modelvariable[,17]=tapply(tsa_merge[,17], tsa_merge$TSA, FUN=sum)
+  tsa_modelvariable[,18]=tapply(tsa_merge[,18], tsa_merge$TSA, FUN=sum)
+  tsa_modelvariable[,19]=tapply(tsa_merge[,19], tsa_merge$TSA, FUN=sum)
+  tsa_modelvariable[,20]=tapply(tsa_merge[,20], tsa_merge$TSA, FUN=sum)
+  tsa_modelvariable[,21]=tapply(tsa_merge[,21], tsa_merge$TSA, FUN=sum)
+  tsa_modelvariable[,22]=tapply(tsa_merge[,22], tsa_merge$TSA, FUN=sum)
+  tsa_modelvariable[,3]=tapply(tsa_merge2[,3], tsa_merge2$TSA, FUN=sum)  #black_census by tsa
+  tsa_modelvariable[,4]=tapply(tsa_merge2[,4], tsa_merge2$TSA, FUN=sum)  #hispanic_census by tsa
+  tsa_modelvariable[,3]=tsa_modelvariable[,3]/tsa_modelvariable$Census*100   #black_per
+  tsa_modelvariable[,4]=tsa_modelvariable[,4]/tsa_modelvariable$Census*100   #hispanic_per
+tsa_modelvariable$County= paste0("tsa",tsa_modelvariable$County)  #change variables name , add tsa to each one
 
 
-<!-- ### tsa -->
-<!-- ```{r} -->
-<!-- # TODO: check "provided 814 variables to replace 21 variables" -->
-<!-- # create data with 4-week (28 days) windows---county -->
-<!-- tsa_newcasesdata$Date=as.Date(tsa_newcasesdata$Date) -->
-<!-- tsa_newcasesdata_case=tsa_newcasesdata[,c(1:3)] -->
-<!-- tsa_newcasesdata_case_wide= spread(tsa_newcasesdata_case, County,Cases_Daily)    #convert long data to wide data of tsa -->
-<!-- tsa_newcases=tsa_newcasesdata_case_wide %>% subset(Date>="2020-04-10")     #generate newcases matrix:county, date, cases_daily----tsa -->
-<!-- tsa_newcases1=tsa_newcases[,-1]       -->
+# dataset4 merge newcasesdata with tsa
+tsa_newcasesdata=newcases.tsa[,c(2,1,5,12:17)]
+colnames(tsa_newcasesdata)=colnames(newcasesdata)  #county, date, case_daily,retail_recreation, grocery_pharmacy, parks, transit, workplaces, residential, tsa
+tsa_newcasesdata$County= as.character(tsa_newcasesdata$County)
+tsa_newcasesdata$Date=as.Date(tsa_newcasesdata$Date)
+tsa_newcasesdata$County= paste0("tsa",tsa_newcasesdata$County)
 
-<!-- tsa_newcasesdata_retail=tsa_newcasesdata[,c(1:2,4)] -->
-<!-- tsa_newcasesdata_retail_wide= spread(tsa_newcasesdata_retail, County,Retail_Recreation)    #convert long data to wide data of tsa -->
-<!-- tsa_retail=tsa_newcasesdata_retail_wide %>% subset(Date>="2020-04-10")     #generate newcases matrix:county, date, Retail_Recreation----tsa -->
+# dataset 5 combing all modelvaribles used for the following function , including county and tsa. both dataset have same column.
+#           combing all newcasesdata used for the  following function , including county and tsa. both dataset have same column.
+#model_variables=dplyr::bind_rows(county_modelvariables,tsa_modelvariable)   #final data1
+#newcasesdata$County=as.character(newcasesdata$County)
+#newcasesdata$Date=as.Date(newcasesdata$Date)
+#newcasesdata=dplyr::bind_rows(newcasesdata,tsa_newcasesdata)   #final data2
 
-<!-- tsa_newcasesdata_grocery=tsa_newcasesdata[,c(1:2,5)] -->
-<!-- tsa_newcasesdata_grocery_wide= spread(tsa_newcasesdata_grocery, County,Grocery_Pharmacy)    #convert long data to wide data of tsa -->
-<!-- tsa_grocery=tsa_newcasesdata_grocery_wide %>% subset(Date>="2020-04-10")     #generate newcases matrix:county, date, Grocery_Pharmacy----tsa -->
-
-<!-- tsa_newcasesdata_park=tsa_newcasesdata[,c(1:2,6)] -->
-<!-- tsa_newcasesdata_park_wide= spread(tsa_newcasesdata_park, County,Parks)    #convert long data to wide data of tsa -->
-<!-- tsa_park=tsa_newcasesdata_park_wide %>% subset(Date>="2020-04-10")     #generate newcases matrix:county, date, Grocery_Pharmacy----tsa -->
-
-<!-- tsa_newcasesdata_transit=tsa_newcasesdata[,c(1:2,7)] -->
-<!-- tsa_newcasesdata_transit_wide= spread(tsa_newcasesdata_transit, County, Transit)    #convert long data to wide data of tsa -->
-<!-- tsa_transit=tsa_newcasesdata_transit_wide %>% subset(Date>="2020-04-10")     #generate newcases matrix:county, date, Grocery_Pharmacy----tsa -->
-
-<!-- tsa_newcasesdata_workplace=tsa_newcasesdata[,c(1:2,8)] -->
-<!-- tsa_newcasesdata_workplace_wide= spread(tsa_newcasesdata_workplace, County, Workplaces)    #convert long data to wide data of tsa -->
-<!-- tsa_workplace=tsa_newcasesdata_workplace_wide %>% subset(Date>="2020-04-10")     #generate newcases matrix:county, date, rkplace------tsa -->
-
-<!-- tsa_newcasesdata_Residential=tsa_newcasesdata[,c(1:2,9)] -->
-<!-- tsa_newcasesdata_Residential_wide= spread(tsa_newcasesdata_Residential, County,Residential)    #convert long data to wide data of tsa -->
-<!-- tsa_Residential=tsa_newcasesdata_Residential_wide %>% subset(Date>="2020-04-10")     #generate newcases matrix:county, date, Residential----tsa -->
-
-<!-- tsa_datatrend.dat <- matrix(nrow=22*(nrow(tsa_newcases)-27), ncol=47) -->
-<!-- tsa_datatrend.dat <- data.frame(tsa_datatrend.dat) -->
-<!--   colnames(tsa_datatrend.dat) <- c(1:14, "ratio","MKteststat","MKpvalue","Spearteststat","Spearpvalue","Retail_Recreation","Grocery_Pharmacy","Parks","Transit","Workplaces","Residential","Population","black_per","hispanic_per","age0_4","age10_14","age15_19","age20_24","age25_29","age30_34","age35_39","age40_44","age45_49","age5_9","age50_54","age55_59","age60_64","age65_69","age70_74","age75_79","age80_84","age85up","County") -->
-<!--   tsa_datatrend.dat$County=rep(colnames(tsa_newcases1),nrow(tsa_newcases)-27) -->
-<!-- #datatrend.dat$Population= ifelse(datatrend.dat$County == county_modelvariables$County, county_modelvariables$Census, NA) -->
-<!--   tsa_datatrend.dat[,c(26:46)]=ifelse(tsa_datatrend.dat$County ==tsa_modelvariable$County, tsa_modelvariable[,c(2:22)], NA)  #value, population,black_per, hispanic_per and each group by county -->
-<!-- ``` -->
+```
 
 
-<!-- ```{r} -->
-<!-- tsa_num.cycles <- nrow(tsa_newcases)-27 -->
-<!-- for(i in 1:tsa_num.cycles){ -->
-<!--   for(j in 2:23){ -->
-<!--     tsa_datatrend.dat[(i+(j-1)*tsa_num.cycles),1:14] <- tsa_newcases[i:(i+13), j] -->
-<!--     # The "outcome" here is the ratio of total new cases -->
-<!--     # in the following two weeks to the total new cases -->
-<!--     # in the previous two weeks (percentage increase/decrease) -->
-<!--     tsa_datatrend.dat[(i+(j-1)*tsa_num.cycles),15] <- sum(tsa_newcases[(i+14):(i+27),j])/sum(tsa_newcases[i:(i+13), j]) -->
-<!--     tsa_datatrend.dat[(i+(j-1)*tsa_num.cycles),20] =rollmean(tsa_retail[i:(i+13), j], k=14, align="right") -->
-<!--     tsa_datatrend.dat[(i+(j-1)*tsa_num.cycles),21] =rollmean(tsa_grocery[i:(i+13), j], k=14, align="right") -->
-<!--     tsa_datatrend.dat[(i+(j-1)*tsa_num.cycles),22] =rollmean(tsa_park[i:(i+13), j], k=14, align="right") -->
-<!--     tsa_datatrend.dat[(i+(j-1)*tsa_num.cycles),23] =rollmean(tsa_transit[i:(i+13), j], k=14, align="right") -->
-<!--     tsa_datatrend.dat[(i+(j-1)*tsa_num.cycles),24] =rollmean(tsa_workplace[i:(i+13), j], k=14, align="right") -->
-<!--     tsa_datatrend.dat[(i+(j-1)*tsa_num.cycles),25] =rollmean(tsa_Residential[i:(i+13), j], k=14, align="right") -->
-<!--   } -->
-<!-- } -->
-<!-- ``` -->
+### county
+```{r}
+# create data with 4-week (28 days) windows---county
+# TODO: check "provided 9398 variables to replace 21 variables"
+newcasesdata$Date=as.Date(newcasesdata$Date)
+newcasesdata_case=newcasesdata[,c(1:3)]
+newcasesdata_case_wide= spread(newcasesdata_case, County,Cases_Daily)    #convert long data to wide data of county
+newcases=newcasesdata_case_wide %>% subset(Date>="2020-04-10")     #generate newcases matrix:county, date, cases_daily----county
+newcases1=newcases[,-1]
+
+datatrend.dat <- matrix(nrow=254*(nrow(newcases)-27), ncol=41)
+datatrend.dat <- data.frame(datatrend.dat)
+  colnames(datatrend.dat) <- c(1:14, "ratio","MKteststat","MKpvalue","Spearteststat","Spearpvalue","Population","black_per","hispanic_per","age0_4","age10_14","age15_19","age20_24","age25_29","age30_34","age35_39","age40_44","age45_49","age5_9","age50_54","age55_59","age60_64","age65_69","age70_74","age75_79","age80_84","age85up","County")
+  datatrend.dat$County=rep(colnames(newcases1),nrow(newcases)-27)
+#datatrend.dat$Population= ifelse(datatrend.dat$County == county_modelvariables$County, county_modelvariables$Census, NA)
+  datatrend.dat[,c(20:40)]=ifelse(datatrend.dat$County ==county_modelvariables$County, county_modelvariables[,c(2:22)], NA)  #value population,black_per, hispanic_per and each group by county
+```
+
+```{r}
+# num.cycles is the number of 4-week windows within each TSA longitudinal data, after April 1, 2020.
+num.cycles <- nrow(newcases)-27
+for(i in 1:num.cycles){
+  for(j in 2:255){
+    datatrend.dat[(i+(j-1)*num.cycles),1:14] <- newcases[i:(i+13), j]
+    # The "outcome" here is the ratio of total new cases
+    # in the following two weeks to the total new cases
+    # in the previous two weeks (percentage increase/decrease)
+    datatrend.dat[(i+(j-1)*num.cycles),15] <- sum(newcases[(i+14):(i+27),j])/sum(newcases[i:(i+13), j])
+  }
+}
+```
+
+```{r}
+# remove data that seems wrong (ratio of cases is negative). These are from row 4, tsa D
+datatrend.dat <- subset(datatrend.dat, ratio>0)
+for(i in 1:nrow(datatrend.dat)){
+  tmp <- MannKendall(datatrend.dat[i,1:14])
+  datatrend.dat[i,16:17] <- c(tmp$tau, tmp$sl)
+  tmp <- cor.test(1:14, as.numeric(datatrend.dat[i,1:14]), method="spearman")
+  datatrend.dat[i,18:19] <- c(tmp$estimate, tmp$p.value)
+}
+
+#The following are to generate ratio2 to get bionary raio. ratio 3 to get three groups of ratio
+datatrend.dat$ratio2=ifelse(datatrend.dat$ratio>1,1,0)       #ratio 2:ratio>1,1;ratio<=1,0
+datatrend.dat$ratio2=as.factor(datatrend.dat$ratio2)          # ratio2 : categorial
+
+datatrend.dat$ratio3=""
+for (i in 1:length(datatrend.dat$ratio)){
+if(datatrend.dat$ratio[i]<0.7){
+  datatrend.dat$ratio3[i]=0
+} else if(datatrend.dat$ratio[i]>=0.7 & datatrend.dat$ratio[i]<1.3){
+  datatrend.dat$ratio3[i]=1
+} else{
+  datatrend.dat$ratio3[i]=2
+}
+}
+datatrend.dat$ratio3=as.factor(datatrend.dat$ratio3)    #ratio3: three groups of ratio;
+```
 
 
-<!-- ```{r} -->
-<!-- # remove data that seems wrong (ratio of cases is negative). These are from row 4, tsa D -->
-<!-- #TODO: remove warnings and see if processing time is faster 'Cannot compute exact p-value with ties" -->
-<!-- tsa_datatrend.dat <- subset(tsa_datatrend.dat, ratio>0) -->
-<!-- for(i in 1:nrow(tsa_datatrend.dat)){ -->
-<!--   tmp <- MannKendall(tsa_datatrend.dat[i,1:14]) -->
-<!--   tsa_datatrend.dat[i,16:17] <- c(tmp$tau, tmp$sl) -->
-<!--   tmp <- cor.test(1:14, as.numeric(tsa_datatrend.dat[i,1:14]), method="spearman") -->
-<!--   tsa_datatrend.dat[i,18:19] <- c(tmp$estimate, tmp$p.value) -->
-<!-- } -->
+### tsa
+```{r}
+# TODO: check "provided 814 variables to replace 21 variables"
+# create data with 4-week (28 days) windows---county
+tsa_newcasesdata$Date=as.Date(tsa_newcasesdata$Date)
+tsa_newcasesdata_case=tsa_newcasesdata[,c(1:3)]
+tsa_newcasesdata_case_wide= spread(tsa_newcasesdata_case, County,Cases_Daily)    #convert long data to wide data of tsa
+tsa_newcases=tsa_newcasesdata_case_wide %>% subset(Date>="2020-04-10")     #generate newcases matrix:county, date, cases_daily----tsa
+tsa_newcases1=tsa_newcases[,-1]
 
-<!-- #The following are to generate ratio2 to get bionary raio. ratio 3 to get three groups of ratio -->
-<!-- tsa_datatrend.dat$ratio2=ifelse(tsa_datatrend.dat$ratio>1,1,0)       #ratio 2:ratio>1,1;ratio<=1,0 -->
-<!-- tsa_datatrend.dat$ratio2=as.factor(tsa_datatrend.dat$ratio2)          # ratio2 : categorial -->
+tsa_newcasesdata_retail=tsa_newcasesdata[,c(1:2,4)]
+tsa_newcasesdata_retail_wide= spread(tsa_newcasesdata_retail, County,Retail_Recreation)    #convert long data to wide data of tsa
+tsa_retail=tsa_newcasesdata_retail_wide %>% subset(Date>="2020-04-10")     #generate newcases matrix:county, date, Retail_Recreation----tsa
 
-<!-- tsa_datatrend.dat$ratio3="" -->
-<!-- for (i in 1:length(tsa_datatrend.dat$ratio)){ -->
-<!-- if(tsa_datatrend.dat$ratio[i]<0.7){ -->
-<!--   tsa_datatrend.dat$ratio3[i]=0 -->
-<!-- } else if(tsa_datatrend.dat$ratio[i]>=0.7 & tsa_datatrend.dat$ratio[i]<1.3){ -->
-<!--   tsa_datatrend.dat$ratio3[i]=1 -->
-<!-- } else{ -->
-<!--   tsa_datatrend.dat$ratio3[i]=2 -->
-<!-- } -->
-<!-- } -->
-<!-- tsa_datatrend.dat$ratio3=as.factor(tsa_datatrend.dat$ratio3)    #ratio3 three groups of ratio;  -->
-<!-- ``` -->
+tsa_newcasesdata_grocery=tsa_newcasesdata[,c(1:2,5)]
+tsa_newcasesdata_grocery_wide= spread(tsa_newcasesdata_grocery, County,Grocery_Pharmacy)    #convert long data to wide data of tsa
+tsa_grocery=tsa_newcasesdata_grocery_wide %>% subset(Date>="2020-04-10")     #generate newcases matrix:county, date, Grocery_Pharmacy----tsa
+
+tsa_newcasesdata_park=tsa_newcasesdata[,c(1:2,6)]
+tsa_newcasesdata_park_wide= spread(tsa_newcasesdata_park, County,Parks)    #convert long data to wide data of tsa
+tsa_park=tsa_newcasesdata_park_wide %>% subset(Date>="2020-04-10")     #generate newcases matrix:county, date, Grocery_Pharmacy----tsa
+
+tsa_newcasesdata_transit=tsa_newcasesdata[,c(1:2,7)]
+tsa_newcasesdata_transit_wide= spread(tsa_newcasesdata_transit, County, Transit)    #convert long data to wide data of tsa
+tsa_transit=tsa_newcasesdata_transit_wide %>% subset(Date>="2020-04-10")     #generate newcases matrix:county, date, Grocery_Pharmacy----tsa
+
+tsa_newcasesdata_workplace=tsa_newcasesdata[,c(1:2,8)]
+tsa_newcasesdata_workplace_wide= spread(tsa_newcasesdata_workplace, County, Workplaces)    #convert long data to wide data of tsa
+tsa_workplace=tsa_newcasesdata_workplace_wide %>% subset(Date>="2020-04-10")     #generate newcases matrix:county, date, rkplace------tsa
+
+tsa_newcasesdata_Residential=tsa_newcasesdata[,c(1:2,9)]
+tsa_newcasesdata_Residential_wide= spread(tsa_newcasesdata_Residential, County,Residential)    #convert long data to wide data of tsa
+tsa_Residential=tsa_newcasesdata_Residential_wide %>% subset(Date>="2020-04-10")     #generate newcases matrix:county, date, Residential----tsa
+
+tsa_datatrend.dat <- matrix(nrow=22*(nrow(tsa_newcases)-27), ncol=47)
+tsa_datatrend.dat <- data.frame(tsa_datatrend.dat)
+  colnames(tsa_datatrend.dat) <- c(1:14, "ratio","MKteststat","MKpvalue","Spearteststat","Spearpvalue","Retail_Recreation","Grocery_Pharmacy","Parks","Transit","Workplaces","Residential","Population","black_per","hispanic_per","age0_4","age10_14","age15_19","age20_24","age25_29","age30_34","age35_39","age40_44","age45_49","age5_9","age50_54","age55_59","age60_64","age65_69","age70_74","age75_79","age80_84","age85up","County")
+  tsa_datatrend.dat$County=rep(colnames(tsa_newcases1),nrow(tsa_newcases)-27)
+#datatrend.dat$Population= ifelse(datatrend.dat$County == county_modelvariables$County, county_modelvariables$Census, NA)
+  tsa_datatrend.dat[,c(26:46)]=ifelse(tsa_datatrend.dat$County ==tsa_modelvariable$County, tsa_modelvariable[,c(2:22)], NA)  #value, population,black_per, hispanic_per and each group by county
+```
+
+
+```{r}
+tsa_num.cycles <- nrow(tsa_newcases)-27
+for(i in 1:tsa_num.cycles){
+  for(j in 2:23){
+    tsa_datatrend.dat[(i+(j-1)*tsa_num.cycles),1:14] <- tsa_newcases[i:(i+13), j]
+    # The "outcome" here is the ratio of total new cases
+    # in the following two weeks to the total new cases
+    # in the previous two weeks (percentage increase/decrease)
+    tsa_datatrend.dat[(i+(j-1)*tsa_num.cycles),15] <- sum(tsa_newcases[(i+14):(i+27),j])/sum(tsa_newcases[i:(i+13), j])
+    tsa_datatrend.dat[(i+(j-1)*tsa_num.cycles),20] =rollmean(tsa_retail[i:(i+13), j], k=14, align="right")
+    tsa_datatrend.dat[(i+(j-1)*tsa_num.cycles),21] =rollmean(tsa_grocery[i:(i+13), j], k=14, align="right")
+    tsa_datatrend.dat[(i+(j-1)*tsa_num.cycles),22] =rollmean(tsa_park[i:(i+13), j], k=14, align="right")
+    tsa_datatrend.dat[(i+(j-1)*tsa_num.cycles),23] =rollmean(tsa_transit[i:(i+13), j], k=14, align="right")
+    tsa_datatrend.dat[(i+(j-1)*tsa_num.cycles),24] =rollmean(tsa_workplace[i:(i+13), j], k=14, align="right")
+    tsa_datatrend.dat[(i+(j-1)*tsa_num.cycles),25] =rollmean(tsa_Residential[i:(i+13), j], k=14, align="right")
+  }
+}
+```
+
+
+```{r}
+# remove data that seems wrong (ratio of cases is negative). These are from row 4, tsa D
+#TODO: remove warnings and see if processing time is faster 'Cannot compute exact p-value with ties"
+tsa_datatrend.dat <- subset(tsa_datatrend.dat, ratio>0)
+for(i in 1:nrow(tsa_datatrend.dat)){
+  tmp <- MannKendall(tsa_datatrend.dat[i,1:14])
+  tsa_datatrend.dat[i,16:17] <- c(tmp$tau, tmp$sl)
+  tmp <- cor.test(1:14, as.numeric(tsa_datatrend.dat[i,1:14]), method="spearman")
+  tsa_datatrend.dat[i,18:19] <- c(tmp$estimate, tmp$p.value)
+}
+
+#The following are to generate ratio2 to get bionary raio. ratio 3 to get three groups of ratio
+tsa_datatrend.dat$ratio2=ifelse(tsa_datatrend.dat$ratio>1,1,0)       #ratio 2:ratio>1,1;ratio<=1,0
+tsa_datatrend.dat$ratio2=as.factor(tsa_datatrend.dat$ratio2)          # ratio2 : categorial
+
+tsa_datatrend.dat$ratio3=""
+for (i in 1:length(tsa_datatrend.dat$ratio)){
+if(tsa_datatrend.dat$ratio[i]<0.7){
+  tsa_datatrend.dat$ratio3[i]=0
+} else if(tsa_datatrend.dat$ratio[i]>=0.7 & tsa_datatrend.dat$ratio[i]<1.3){
+  tsa_datatrend.dat$ratio3[i]=1
+} else{
+  tsa_datatrend.dat$ratio3[i]=2
+}
+}
+tsa_datatrend.dat$ratio3=as.factor(tsa_datatrend.dat$ratio3)    #ratio3 three groups of ratio;
+```
 
 
 ### TODO: format dataframes and output
@@ -998,45 +998,45 @@ Omitted fow now, Dr. Yaseen is processing this in Tableau
 
 # MACHINE LEARNING
 ## TODO: save output
-<!-- ## County -->
-<!-- ```{r} -->
-<!-- set.seed(1) -->
-<!-- train= sample(1:dim(datatrend.dat)[1],dim(datatrend.dat)[1]/2)  -->
-<!-- test=-train -->
-<!-- datatrend.county.train=datatrend.dat[train,]    #traiing set -->
-<!-- datatrend.county.test=datatrend.dat[test,]     #testing set -->
+## County
+```{r}
+set.seed(1)
+train= sample(1:dim(datatrend.dat)[1],dim(datatrend.dat)[1]/2)
+test=-train
+datatrend.county.train=datatrend.dat[train,]    #traiing set
+datatrend.county.test=datatrend.dat[test,]     #testing set
 
-<!-- #logistic -->
-<!-- glm.county.fit=glm(ratio2 ~ MKteststat+ MKpvalue+ Spearteststat+ Spearpvalue +Population + black_per +hispanic_per + age0_4 + age10_14 +age15_19+age20_24+  age25_29 + age30_34 + age35_39 + age40_44 + age45_49  +  age5_9+  age50_54+  age55_59 + age60_64 + age65_69+ age70_74+ age75_79+ age80_84 +  age85up, data=datatrend.county.train,family=binomial)     #fit logistic model -->
-<!-- summary(glm.county.fit)    #summany of logistics model -->
-<!-- glm.county.probs=predict(glm.county.fit, datatrend.county.test, type="response")     #predict  -->
-<!-- glm.county.predict=rep("0",3399) -->
-<!-- glm.county.predict[glm.county.probs > 0.5]="1"      #round-off -->
-<!-- #glm.county.predict=as.factor(glm.county.predict) -->
-<!-- table(glm.county.predict, datatrend.county.test$ratio2) -->
-<!-- mean(glm.county.predict==datatrend.county.test$ratio2) -->
+#logistic
+glm.county.fit=glm(ratio2 ~ MKteststat+ MKpvalue+ Spearteststat+ Spearpvalue +Population + black_per +hispanic_per + age0_4 + age10_14 +age15_19+age20_24+  age25_29 + age30_34 + age35_39 + age40_44 + age45_49  +  age5_9+  age50_54+  age55_59 + age60_64 + age65_69+ age70_74+ age75_79+ age80_84 +  age85up, data=datatrend.county.train,family=binomial)     #fit logistic model
+summary(glm.county.fit)    #summany of logistics model
+glm.county.probs=predict(glm.county.fit, datatrend.county.test, type="response")     #predict
+glm.county.predict=rep("0",3399)
+glm.county.predict[glm.county.probs > 0.5]="1"      #round-off
+#glm.county.predict=as.factor(glm.county.predict)
+table(glm.county.predict, datatrend.county.test$ratio2)
+mean(glm.county.predict==datatrend.county.test$ratio2)
 
-<!-- #random forest -->
-<!-- #rf.county.train=randomForest(ratio ~ MKteststat+ MKpvalue+ Spearteststat+ Spearpvalue +Population + black_per +hispanic_per + age0_4 + age10_14 +age15_19+age20_24+  age25_29 + age30_34 + age35_39 + age40_44 + age45_49  +  age5_9+  age50_54+  age55_59 + age60_64 + age65_69+ age70_74+ age75_79+ age80_84 +  age85up, data=datatrend.county.train, mtry=5, importance =TRUE) -->
-<!-- #yhat.rf.county = predict(rf.county.train, newdata=datatrend.dat.rf[-train ,]) -->
-<!-- #mean((yhat.rf.county-datatrend.county.test)^2) -->
-<!-- ``` -->
+#random forest
+#rf.county.train=randomForest(ratio ~ MKteststat+ MKpvalue+ Spearteststat+ Spearpvalue +Population + black_per +hispanic_per + age0_4 + age10_14 +age15_19+age20_24+  age25_29 + age30_34 + age35_39 + age40_44 + age45_49  +  age5_9+  age50_54+  age55_59 + age60_64 + age65_69+ age70_74+ age75_79+ age80_84 +  age85up, data=datatrend.county.train, mtry=5, importance =TRUE)
+#yhat.rf.county = predict(rf.county.train, newdata=datatrend.dat.rf[-train ,])
+#mean((yhat.rf.county-datatrend.county.test)^2)
+```
 
-<!-- ## TSA -->
-<!-- ```{r} -->
-<!-- set.seed(1) -->
-<!-- train= sample(1:dim(tsa_datatrend.dat)[1],dim(tsa_datatrend.dat)[1]/2)  -->
-<!-- test=-train -->
-<!-- datatrend.tsa.train=tsa_datatrend.dat[train,]    #traiing set -->
-<!-- datatrend.tsa.test=tsa_datatrend.dat[test,]     #testing set -->
+## TSA
+```{r}
+set.seed(1)
+train= sample(1:dim(tsa_datatrend.dat)[1],dim(tsa_datatrend.dat)[1]/2)
+test=-train
+datatrend.tsa.train=tsa_datatrend.dat[train,]    #traiing set
+datatrend.tsa.test=tsa_datatrend.dat[test,]     #testing set
 
-<!-- #logistic -->
-<!-- glm.tsa.fit=glm(ratio2 ~ MKteststat+ MKpvalue+ Spearteststat+ Spearpvalue +Population + black_per +hispanic_per + Retail_Recreation+ Grocery_Pharmacy   +  Parks  +  Transit +Workplaces+ Residential+age0_4 + age10_14 +age15_19+age20_24+  age25_29 + age30_34 + age35_39 + age40_44 + age45_49  +  age5_9+  age50_54+  age55_59 + age60_64 + age65_69+ age70_74+ age75_79+ age80_84 +  age85up, data=datatrend.tsa.train ,family=binomial)     #fit logistic model -->
-<!-- summary(glm.tsa.fit)    #summany of logistics model -->
-<!-- glm.tsa.probs=predict(glm.tsa.fit,datatrend.tsa.test,type="response")     #predict  -->
-<!-- glm.tsa.predict=rep("0",401) -->
-<!-- glm.tsa.predict[glm.tsa.probs > 0.5]="1"      #round-off -->
-<!-- #glm.county.predict=as.factor(glm.county.predict) -->
-<!-- table(glm.tsa.predict, datatrend.tsa.test$ratio2) -->
-<!-- mean(glm.tsa.predict==datatrend.tsa.test$ratio2) -->
-<!-- ``` -->
+#logistic
+glm.tsa.fit=glm(ratio2 ~ MKteststat+ MKpvalue+ Spearteststat+ Spearpvalue +Population + black_per +hispanic_per + Retail_Recreation+ Grocery_Pharmacy   +  Parks  +  Transit +Workplaces+ Residential+age0_4 + age10_14 +age15_19+age20_24+  age25_29 + age30_34 + age35_39 + age40_44 + age45_49  +  age5_9+  age50_54+  age55_59 + age60_64 + age65_69+ age70_74+ age75_79+ age80_84 +  age85up, data=datatrend.tsa.train ,family=binomial)     #fit logistic model
+summary(glm.tsa.fit)    #summany of logistics model
+glm.tsa.probs=predict(glm.tsa.fit,datatrend.tsa.test,type="response")     #predict
+glm.tsa.predict=rep("0",401)
+glm.tsa.predict[glm.tsa.probs > 0.5]="1"      #round-off
+#glm.county.predict=as.factor(glm.county.predict)
+table(glm.tsa.predict, datatrend.tsa.test$ratio2)
+mean(glm.tsa.predict==datatrend.tsa.test$ratio2)
+```
