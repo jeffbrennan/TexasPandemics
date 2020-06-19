@@ -664,9 +664,11 @@ colnames(metro_long) = gsub('.y', '', colnames(metro_long), fixed = TRUE)
 tsa_long = tsa_long[, -(grep('.x', colnames(tsa_long), fixed = TRUE))]
 colnames(tsa_long) = gsub('.y', '', colnames(tsa_long), fixed = TRUE)
 
+tsa_long$TSA_Combined = paste0(tsa_long$TSA, ' - ', tsa_long$TSA_Name)
+
 # output
-write.csv(metro_long, 'tableau/metro_long.csv')
-write.csv(tsa_long, 'tableau/tsa_long.csv')
+write.csv(metro_long, 'tableau/metro_long.csv', row.names = FALSE)
+write.csv(tsa_long, 'tableau/tsa_long.csv', row.names = FALSE)
 ```
 
 
@@ -677,6 +679,9 @@ colnames(tsa)[4:length(colnames(tsa))] = paste0('TSA_', colnames(tsa)[4:length(c
 
 # combine into df
 combined_df = merge(county, metro, by = c('Metro_Area', 'Date'), all = TRUE)
+
+tsa$TSA_Combined = paste0(tsa$TSA, ' - ', tsa$TSA_Name)
+
 combined_df2 = merge(combined_df, tsa, by = c('TSA', 'TSA_Name', 'Date'), all = TRUE)
 
 # output

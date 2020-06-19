@@ -1,4 +1,4 @@
-"Level_Name","Date","Data_Type","cases_percentdiff","tests_percentdiff","cases_percentdiff_spline","cases_percentdiff_spline_lower","cases_percentdiff_spline_upper","tests_percentdiff_spline","tests_percentdiff_spline_lower","tests_percentdiff_spline_upper"
+"Level","Date","Data_Type","cases_percentdiff","tests_percentdiff","cases_percentdiff_spline","cases_percentdiff_spline_lower","cases_percentdiff_spline_upper","tests_percentdiff_spline","tests_percentdiff_spline_lower","tests_percentdiff_spline_upper"
 "Anderson",2020-04-22,"Raw",0,0,-146.229752816887,-1969.03106348814,1676.57155785436,20.3482235754282,-496.315111480601,537.011558631458
 "Anderson",2020-04-23,"Raw",-100,25,-149.180441851084,-1871.02976660882,1572.66888290666,22.4083214678643,-459.459235126648,504.275878062376
 "Anderson",2020-04-24,"Raw",-50,166.666666666667,-152.093781792387,-1777.56855430053,1473.38099071576,24.4633345445906,-424.603269078373,473.529938167554

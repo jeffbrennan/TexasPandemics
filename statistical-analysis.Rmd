@@ -325,14 +325,14 @@ write.csv(state.rt.df, file="statistical-output/rt/state_rt.csv", row.names=FALS
 ## grouping
 
 ```{r}
-colnames(county.rt.df)[1] = 'Level_Name'
-colnames(metro.rt.df)[1] = 'Level_Name'
-colnames(TSA.rt.df)[1] = 'Level_Name'
+colnames(county.rt.df)[1] = 'Level'
+colnames(metro.rt.df)[1] = 'Level'
+colnames(TSA.rt.df)[1] = 'Level'
 
-state.rt.df$Level_Name = 'Texas'
+state.rt.df$Level = 'Texas'
 
 combined.rt.df = rbind(county.rt.df, metro.rt.df, TSA.rt.df, state.rt.df)
-write.csv(combined.rt.df, 'statistical-output/rt/combined_rt.csv', row.names = FALSE)
+write.csv(combined.rt.df, 'statistical-output/rt/stacked_rt.csv', row.names = FALSE)
 ```
 
 
@@ -589,14 +589,14 @@ write.csv(metro.arima.df, 'statistical-output/time-series/metro_timeseries.csv',
 ## grouping
 
 ```{r}
-colnames(county.arima.df)[1] = 'Level_Name'
-colnames(metro.arima.df)[1] = 'Level_Name'
-colnames(TSA.arima.df)[1] = 'Level_Name'
+colnames(county.arima.df)[1] = 'Level'
+colnames(metro.arima.df)[1] = 'Level'
+colnames(TSA.arima.df)[1] = 'Level'
 
-texas.arima.df$Level_Name = 'Texas'
+texas.arima.df$Level = 'Texas'
 
 combined.arima.df = rbind(county.arima.df, metro.arima.df, TSA.arima.df, texas.arima.df)
-write.csv(combined.arima.df, 'statistical-output/time-series/combined_timeseries.csv', row.names = FALSE)
+write.csv(combined.arima.df, 'statistical-output/time-series/stacked_timeseries.csv', row.names = FALSE)
 ```
 
 
@@ -712,14 +712,14 @@ write.csv(metro_current_ratio_dat,'statistical-output/standard-stats/case-ratios
 ### grouping
 
 ```{r}
-colnames(county_current_ratio_dat)[1] = 'Level_Name'
-colnames(metro_current_ratio_dat)[1] = 'Level_Name'
-colnames(tsa_current_ratio_dat)[1] = 'Level_Name'
+colnames(county_current_ratio_dat)[1] = 'Level'
+colnames(metro_current_ratio_dat)[1] = 'Level'
+colnames(tsa_current_ratio_dat)[1] = 'Level'
 
-state_current_ratio_dat$Level_Name = 'Texas'
+state_current_ratio_dat$Level = 'Texas'
 
 combined_current_ratio_dat = rbind(county_current_ratio_dat, metro_current_ratio_dat, tsa_current_ratio_dat, state_current_ratio_dat)
-write.csv(combined_current_ratio_dat, 'statistical-output/standard-stats/case-ratios/combined_case_ratio.csv', row.names = FALSE)
+write.csv(combined_current_ratio_dat, 'statistical-output/standard-stats/case-ratios/stacked_case_ratio.csv', row.names = FALSE)
 ```
 
 
@@ -896,14 +896,14 @@ write.csv(county.case.test.df, 'statistical-output/standard-stats/pct-change/cou
 ### grouping
 
 ```{r}
-colnames(county.case.test.df)[1] = 'Level_Name'
-colnames(metro.case.test.df)[1] = 'Level_Name'
-colnames(tsa.case.test.df)[1] = 'Level_Name'
+colnames(county.case.test.df)[1] = 'Level'
+colnames(metro.case.test.df)[1] = 'Level'
+colnames(tsa.case.test.df)[1] = 'Level'
 
-state.case.test.df$Level_Name = 'Texas'
+state.case.test.df$Level = 'Texas'
 
 combined.case.test.df = rbind(county.case.test.df, metro.case.test.df, tsa.case.test.df, state.case.test.df)
-write.csv(combined.case.test.df, 'statistical-output/standard-stats/pct-change/combined_pct_change.csv', row.names = FALSE)
+write.csv(combined.case.test.df, 'statistical-output/standard-stats/pct-change/stacked_pct_change.csv', row.names = FALSE)
 ```
 
 

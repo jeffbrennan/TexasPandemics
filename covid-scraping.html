@@ -467,7 +467,7 @@ DSHS_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 101 more problems</code></pre>
+## * … and 101 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_cases_time) = DSHS_cases_time[2, ]
 DSHS_cases_time = DSHS_cases_time[3:(nrow(DSHS_cases_time) - 11), ]
@@ -505,7 +505,7 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 104 more problems</code></pre>
+## * … and 104 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
 DSHS_deaths_time = DSHS_deaths_time[3:(nrow(DSHS_deaths_time) - 10), ]
@@ -541,7 +541,7 @@ DSHS_tests_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 54 more problems</code></pre>
+## * … and 54 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_tests_time) = DSHS_tests_time[1, ]
 DSHS_tests_time = DSHS_tests_time[2:(nrow(DSHS_tests_time) - 9), ]
@@ -582,7 +582,7 @@ DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code><
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 69 more problems</code></pre>
+## * … and 69 more problems</code></pre>
 <pre class="r"><code># fix colname
 colnames(DSHS_active_cases_time) = DSHS_active_cases_time[2, ]
 DSHS_active_cases_time = DSHS_active_cases_time[3:(nrow(DSHS_active_cases_time)), 2:ncol(DSHS_active_cases_time)]
@@ -865,7 +865,7 @@ DSHS_tsa_hosp = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 69 more problems</code></pre>
+## * … and 69 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_tsa_hosp) = DSHS_tsa_hosp[2, ]
 DSHS_tsa_hosp = DSHS_tsa_hosp[3:(nrow(DSHS_tsa_hosp) - 1), ]
@@ -1119,15 +1119,20 @@ colnames(metro_long) = gsub(&#39;.y&#39;, &#39;&#39;, colnames(metro_long), fixe
 tsa_long = tsa_long[, -(grep(&#39;.x&#39;, colnames(tsa_long), fixed = TRUE))]
 colnames(tsa_long) = gsub(&#39;.y&#39;, &#39;&#39;, colnames(tsa_long), fixed = TRUE)
 
+tsa_long$TSA_Combined = paste0(tsa_long$TSA, &#39; - &#39;, tsa_long$TSA_Name)
+
 # output
-write.csv(metro_long, &#39;tableau/metro_long.csv&#39;)
-write.csv(tsa_long, &#39;tableau/tsa_long.csv&#39;)</code></pre>
+write.csv(metro_long, &#39;tableau/metro_long.csv&#39;, row.names = FALSE)
+write.csv(tsa_long, &#39;tableau/tsa_long.csv&#39;, row.names = FALSE)</code></pre>
 <pre class="r"><code># transform names
 colnames(metro)[3:length(colnames(metro))] = paste0(&#39;METRO_&#39;, colnames(metro)[3:length(colnames(metro))])
 colnames(tsa)[4:length(colnames(tsa))] = paste0(&#39;TSA_&#39;, colnames(tsa)[4:length(colnames(tsa))])
 
 # combine into df
 combined_df = merge(county, metro, by = c(&#39;Metro_Area&#39;, &#39;Date&#39;), all = TRUE)
+
+tsa$TSA_Combined = paste0(tsa$TSA, &#39; - &#39;, tsa$TSA_Name)
+
 combined_df2 = merge(combined_df, tsa, by = c(&#39;TSA&#39;, &#39;TSA_Name&#39;, &#39;Date&#39;), all = TRUE)
 
 # output
