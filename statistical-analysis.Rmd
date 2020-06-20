@@ -169,12 +169,12 @@ library(R0)
   #create the generation time 
   ##### NOTE: THIS MAY NEED MODIFICATION ONCE MORE INFORMATIONIS AVAILABLE ####
 
-  #gen.time<-generation.time("lognormal", c(4.0, 2.9))#verify these values and distribution/update as needed
-  #gen.time<-generation.time("lognormal", c(4.7,2.9)) #Nishiura
+  # gen.time<-generation.time("lognormal", c(4.0, 2.9))#verify these values and distribution/update as needed
+  # gen.time<-generation.time("lognormal", c(4.7,2.9)) #Nishiura
 
   #Tapiwa, Ganyani "Esimating the gen interval for Covid-19":
   # gen.time<-generation.time("gamma", c(5.2, 1.72)) #Singapore
-  #gen.time<-generation.time("gamma", c(3.95, 1.51)) #Tianjin
+  # gen.time<-generation.time("gamma", c(3.95, 1.51)) #Tianjin
   gen.time<-generation.time("gamma", c(3.96, 4.75))
 
   #get DSHS population and census population
@@ -445,10 +445,6 @@ ts.data.organize<-function(mycounty, mytsa){
 ```
 
 ```{r ts arima function}
-
-library(forecast)
-library(ggplot2) 
-
 library(astsa)
 library(forecast)
 library(zoo)
@@ -461,45 +457,44 @@ covid.arima.forecast<-function(mydata)
   maxdate<-max(mydata$Date)
   mindate <-min(mydata$Date)
   prediction.period<-10 #this can be changed as desired
-  
   if(max(mydata$Cases_Daily>=5, na.rm = TRUE))
   {
-    
-    #for the time series, you need a start day, which is the year, and the day number - 
+    #for the time series, you need a start day, which is the year, and the day number -
     #we need to double check how this works exactly
     my.timeseries<-ts(mydata$Cases_Daily)
-    
     #d=0 restricts first differencing to 0 so that daily cases aren't differenced
     #get a fit model using the best ARIMA from auto.arima
     arima.fit<-forecast::auto.arima(my.timeseries, d=0)
-    
     #use predict() on the fit model
     # prediction.period is how many more days to forecast
-    # 10 day forecast
-    arima.forecast<-forecast::forecast(arima.fit, h = prediction.period) 
-    
+    # 10 day forecast, CI for lower and upper has confidence level 70% set by level =c(70,70)
+    arima.forecast<-forecast::forecast(arima.fit, h = prediction.period, level=c(70,70))
     #auto correlation function
     # diagnostics
-    acf<-ggAcf(my.timeseries, lag.max=30)
-    pacf<-ggPacf(my.timeseries, lag.max=30)
-    grid.arrange(acf, pacf, nrow=2)
-    ggsave(paste0('statistical-output/time-series/diagnostics/', mydata$Level[1],'/', mydata$Level_Name[1], '.png'))
-     
-    #return a dataframe of the arima model(Daily cases by date) 
+  
+    # omit diagnostics for performance
+
+    # acf<-ggAcf(my.timeseries, lag.max=30)
+    # pacf<-ggPacf(my.timeseries, lag.max=30)
+    
+    # grid.arrange(acf, pacf, nrow=2)
+    # ggsave(paste0('statistical-output/time-series/diagnostics/', mydata$Level[1],'/', mydata$Level_Name[1], '.png'))
+    #return a dataframe of the arima model(Daily cases by date)
     #and forecasted values ***NOT SURE HOW THIS WILL WORK***
     arima.out<-data.frame(Date = seq(mindate, maxdate + 10, by = 'days'),
                           Cases_Daily = c(my.timeseries, arima.forecast[['mean']]),
                           CI_Lower = c(rep(NA, times = length(my.timeseries)), arima.forecast[['lower']][, 2]),
-                          CI_Upper = c(rep(NA, times = length(my.timeseries)), arima.forecast[['upper']][, 2]))
-
+                          CI_Upper = c(rep(NA, times = length(my.timeseries)),
+                                       arima.forecast[['upper']][, 2]))
     } else {
-      
     arima.out<-data.frame(Date = seq(mindate, maxdate + 10, by = 'days'),
                           Cases_Daily = c(mydata$Cases_Daily, rep(NA, times = 10)),
                           CI_Lower = rep(NA, times = length(mydata$Date) + 10),
                           CI_Upper =  rep(NA, times = length(mydata$Date) + 10)
                           )
-  }
+    }
+  #replace CI lower limit with 0 if negative
+  arima.out$CI_Lower<-ifelse(arima.out$CI_Lower>=0,arima.out$CI_Lower, 0)
   return(arima.out)
 }
 
@@ -562,7 +557,6 @@ TSA.arima.output<-nlme::gapply(TSA.Daily, FUN = covid.arima.forecast, groups=TSA
 #load data.table package
 library(data.table)
 TSA.arima.df<-data.table::rbindlist(TSA.arima.output, idcol=TRUE)
-
 
 colnames(TSA.arima.df)[1] = 'TSA'
 TSA.arima.df = merge(TSA.arima.df, unique(TSA.daily[, c('TSA', 'TSA_Name')]), by = c('TSA'))
@@ -750,8 +744,8 @@ create.case.test <-   function(level, dat, region){
   dat$Date = ymd(dat$Date)
   dat$Date2 <- as.numeric(ymd(dat$Date))
   
-  dat$cases_avg14 = rollmean(dat$Cases_Daily, k=14, fill = NA, align = 'right')
-  dat$tests_avg14 = rollmean(dat$Tests_Daily, k=14, fill = NA, align = 'right')
+  dat$cases_avg14 = rollmean(dat$Cases_Daily, k=14, fill = NA, align = 'right', na.rm = TRUE)
+  dat$tests_avg14 = rollmean(dat$Tests_Daily, k=14, fill = NA, align = 'right', na.rm = TRUE)
     
   slopedata.tests <-data.frame(subset(dat, select=c(Date, Date2, Cases_Daily, Tests_Daily, cases_avg14, tests_avg14))) %>%
     subset(ymd(Date)>=ymd(first.test.date))
@@ -768,7 +762,7 @@ create.case.test <-   function(level, dat, region){
     
   {
     slopedata.tests$newtestsY <- 100*(as.vector(slopedata.tests$Tests_Daily / tests_start)-1)
-    slopedata.tests$newcasesY <- 100*(as.vector(slopedata.tests$Cases_Daily/ cases_start)-1)
+    slopedata.tests$newcasesY <- 100*(as.vector(slopedata.tests$Cases_Daily / cases_start)-1)
   
     
     cases.gam <- gam(newcasesY~s(Date2,bs="cs", k=5), data=slopedata.tests)
@@ -885,8 +879,43 @@ for(i in 2:length(countylist)){
 }
 
 # assess missingness
-sum(is.na(county.case.test.df$cases_percentdiff_spline)) / nrow(county.case.test.df)
+missing_vals = sum(is.na(county.case.test.df$cases_percentdiff)) + sum(is.na(county.case.test.df$tests_percentdiff))
+recorded_vals =  sum(!is.na(county.case.test.df$cases_percentdiff)) + sum(!is.na(county.case.test.df$tests_percentdiff))
 
+# 11.88% w/ 2020-05-01
+# 12.71% w/ 2020-04-22
+# 12% w/ 2020-05-15
+missing_vals / (missing_vals + recorded_vals)
+
+# # nrow(missing_vals)
+# # 
+# # TODO: delete after testing
+#   region = 'Bailey'
+#   dat = subset(county, County == region)
+# 
+#   first.test.date <- ymd("2020-04-22")
+#   dat$Date = ymd(dat$Date)
+#   dat$Date2 <- as.numeric(ymd(dat$Date))
+# 
+#   dat$cases_avg14 = rollmean(dat$Cases_Daily, k=14, fill = NA, align = 'right', na.rm = TRUE)
+#   dat$tests_avg14 = rollmean(dat$Tests_Daily, k=14, fill = NA, align = 'right', na.rm = TRUE)
+# 
+#   slopedata.tests <-data.frame(subset(dat, select=c(Date, Date2, Cases_Daily, Tests_Daily, cases_avg14, tests_avg14))) %>%
+#     subset(ymd(Date)>=ymd(first.test.date))
+# 
+#   tests_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=Tests_Daily))
+#   cases_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=Cases_Daily))
+# 
+#   # mean_cases = mean(slopedata.tests$Cases_Daily, na.rm = TRUE)
+#   # mean_tests = mean(slopedata.tests$Tests_Daily, na.rm = TRUE)
+# 
+#   tmpdata <- data.frame(Date2=slopedata.tests$Date2)
+#  cases_avg_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=cases_avg14))
+#     tests_avg_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=tests_avg14))
+# 
+#     slopedata.tests$newcasesY <- 100*(as.vector(slopedata.tests$cases_avg14 / cases_avg_start)-1)
+#     slopedata.tests$newtestsY <- 100*(as.vector(slopedata.tests$tests_avg14 / tests_avg_start)-1)
+# 
 
 # save
 write.csv(county.case.test.df, 'statistical-output/standard-stats/pct-change/county_pct_change.csv',
