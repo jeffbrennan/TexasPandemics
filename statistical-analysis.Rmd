@@ -887,36 +887,6 @@ recorded_vals =  sum(!is.na(county.case.test.df$cases_percentdiff)) + sum(!is.na
 # 12% w/ 2020-05-15
 missing_vals / (missing_vals + recorded_vals)
 
-# # nrow(missing_vals)
-# # 
-# # TODO: delete after testing
-#   region = 'Bailey'
-#   dat = subset(county, County == region)
-# 
-#   first.test.date <- ymd("2020-04-22")
-#   dat$Date = ymd(dat$Date)
-#   dat$Date2 <- as.numeric(ymd(dat$Date))
-# 
-#   dat$cases_avg14 = rollmean(dat$Cases_Daily, k=14, fill = NA, align = 'right', na.rm = TRUE)
-#   dat$tests_avg14 = rollmean(dat$Tests_Daily, k=14, fill = NA, align = 'right', na.rm = TRUE)
-# 
-#   slopedata.tests <-data.frame(subset(dat, select=c(Date, Date2, Cases_Daily, Tests_Daily, cases_avg14, tests_avg14))) %>%
-#     subset(ymd(Date)>=ymd(first.test.date))
-# 
-#   tests_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=Tests_Daily))
-#   cases_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=Cases_Daily))
-# 
-#   # mean_cases = mean(slopedata.tests$Cases_Daily, na.rm = TRUE)
-#   # mean_tests = mean(slopedata.tests$Tests_Daily, na.rm = TRUE)
-# 
-#   tmpdata <- data.frame(Date2=slopedata.tests$Date2)
-#  cases_avg_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=cases_avg14))
-#     tests_avg_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=tests_avg14))
-# 
-#     slopedata.tests$newcasesY <- 100*(as.vector(slopedata.tests$cases_avg14 / cases_avg_start)-1)
-#     slopedata.tests$newtestsY <- 100*(as.vector(slopedata.tests$tests_avg14 / tests_avg_start)-1)
-# 
-
 # save
 write.csv(county.case.test.df, 'statistical-output/standard-stats/pct-change/county_pct_change.csv',
           row.names = FALSE)
