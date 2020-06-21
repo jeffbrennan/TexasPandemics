@@ -1,7 +1,7 @@
 "Level","current_ratio","current_ratio_cat"
-"Anderson",NA,NA
+"Anderson",53.1764705882353,NA
 "Andrews",NA,NA
-"Angelina",0.74025974025974,"(0.5,0.9]"
+"Angelina",0.986111111111111,"(0.9,1.1]"
 "Aransas",NA,NA
 "Archer",NA,NA
 "Armstrong",NA,NA
@@ -9,125 +9,125 @@
 "Austin",NA,NA
 "Bailey",NA,NA
 "Bandera",NA,NA
-"Bastrop",1.16279069767442,"(1.1,1.5]"
+"Bastrop",1.09302325581395,"(0.9,1.1]"
 "Baylor",NA,NA
-"Bee",0.153846153846154,"(0,0.5]"
-"Bell",1.37323943661972,"(1.1,1.5]"
-"Bexar",2.08029197080292,"(2,4]"
+"Bee",NA,NA
+"Bell",1.33962264150943,"(1.1,1.5]"
+"Bexar",2.2439585730725,"(2,4]"
 "Blanco",NA,NA
 "Borden",NA,NA
 "Bosque",NA,NA
-"Bowie",0.409090909090909,"(0,0.5]"
+"Bowie",0.482758620689655,"(0,0.5]"
 "Brazoria",NA,NA
-"Brazos",2.16292134831461,"(2,4]"
+"Brazos",2.83333333333333,"(2,4]"
 "Brewster",NA,NA
 "Briscoe",NA,NA
 "Brooks",NA,NA
 "Brown",NA,NA
-"Burleson",1.18181818181818,"(1.1,1.5]"
-"Burnet",NA,NA
-"Caldwell",8.46153846153846,NA
+"Burleson",NA,NA
+"Burnet",1.9,"(1.5,2]"
+"Caldwell",5.94736842105263,"(4,8]"
 "Calhoun",NA,NA
 "Callahan",NA,NA
-"Cameron",1.78947368421053,"(1.5,2]"
-"Camp",1,"(0.9,1.1]"
+"Cameron",1.71100917431193,"(1.5,2]"
+"Camp",0.357142857142857,"(0,0.5]"
 "Carson",NA,NA
 "Cass",NA,NA
 "Castro",NA,NA
-"Chambers",1.6,"(1.5,2]"
+"Chambers",1.60714285714286,"(1.5,2]"
 "Cherokee",NA,NA
 "Childress",NA,NA
 "Clay",NA,NA
 "Cochran",NA,NA
 "Coke",NA,NA
 "Coleman",NA,NA
-"Collin",3.58461538461538,"(2,4]"
+"Collin",2.2303664921466,"(2,4]"
 "Collingsworth",NA,NA
 "Colorado",NA,NA
-"Comal",2.78571428571429,"(2,4]"
+"Comal",2.61764705882353,"(2,4]"
 "Comanche",NA,NA
 "Concho",NA,NA
 "Cooke",NA,NA
-"Coryell",0.6,"(0.5,0.9]"
+"Coryell",NA,NA
 "Cottle",NA,NA
 "Crane",NA,NA
 "Crockett",NA,NA
 "Crosby",NA,NA
 "Culberson",NA,NA
 "Dallam",NA,NA
-"Dallas",1.18718967229394,"(1.1,1.5]"
+"Dallas",1.20205479452055,"(1.1,1.5]"
 "Dawson",NA,NA
-"Deaf Smith",1.03448275862069,"(0.9,1.1]"
+"Deaf Smith",0.583333333333333,"(0.5,0.9]"
 "Delta",NA,NA
-"Denton",1.95505617977528,"(1.5,2]"
-"DeWitt",NA,NA
+"Denton",1.66818181818182,"(1.5,2]"
+"DeWitt",0.9,"(0.5,0.9]"
 "Dickens",NA,NA
 "Dimmit",NA,NA
 "Donley",NA,NA
 "Duval",NA,NA
 "Eastland",NA,NA
-"Ector",1.73809523809524,"(1.5,2]"
+"Ector",1.70588235294118,"(1.5,2]"
 "Edwards",NA,NA
-"El Paso",1.00207468879668,"(0.9,1.1]"
-"Ellis",0.960526315789474,"(0.9,1.1]"
-"Erath",NA,NA
+"El Paso",1.1008064516129,"(1.1,1.5]"
+"Ellis",0.738095238095238,"(0.5,0.9]"
+"Erath",0.8,"(0.5,0.9]"
 "Falls",NA,NA
-"Fannin",1.3,"(1.1,1.5]"
+"Fannin",1,"(0.9,1.1]"
 "Fayette",NA,NA
 "Fisher",NA,NA
 "Floyd",NA,NA
 "Foard",NA,NA
-"Fort Bend",1.40972222222222,"(1.1,1.5]"
+"Fort Bend",2.17427385892116,"(2,4]"
 "Franklin",NA,NA
 "Freestone",NA,NA
-"Frio",3.64705882352941,"(2,4]"
+"Frio",2.75,"(2,4]"
 "Gaines",NA,NA
-"Galveston",2.02403846153846,"(2,4]"
+"Galveston",1.83076923076923,"(1.5,2]"
 "Garza",NA,NA
 "Gillespie",NA,NA
 "Glasscock",NA,NA
 "Goliad",NA,NA
-"Gonzales",4.6,"(4,8]"
+"Gonzales",3,"(2,4]"
 "Gray",NA,NA
-"Grayson",1.97619047619048,"(1.5,2]"
-"Gregg",1.25,"(1.1,1.5]"
-"Grimes",0.409090909090909,"(0,0.5]"
-"Guadalupe",8,"(4,8]"
-"Hale",2.875,"(2,4]"
+"Grayson",0.950819672131147,"(0.9,1.1]"
+"Gregg",1.28571428571429,"(1.1,1.5]"
+"Grimes",0.529411764705882,"(0.5,0.9]"
+"Guadalupe",8.11111111111111,NA
+"Hale",3.6875,"(2,4]"
 "Hall",NA,NA
 "Hamilton",NA,NA
 "Hansford",NA,NA
 "Hardeman",NA,NA
 "Hardin",NA,NA
-"Harris",1.18885448916409,"(1.1,1.5]"
-"Harrison",0.0909090909090909,"(0,0.5]"
+"Harris",1.57962633451957,"(1.5,2]"
+"Harrison",0.25,"(0,0.5]"
 "Hartley",NA,NA
 "Haskell",NA,NA
-"Hays",4.62433862433862,"(4,8]"
+"Hays",3.04861111111111,"(2,4]"
 "Hemphill",NA,NA
-"Henderson",NA,NA
-"Hidalgo",2.29613733905579,"(2,4]"
+"Henderson",1.41666666666667,"(1.1,1.5]"
+"Hidalgo",2.04513888888889,"(2,4]"
 "Hill",NA,NA
 "Hockley",NA,NA
 "Hood",NA,NA
-"Hopkins",0.538461538461538,"(0.5,0.9]"
+"Hopkins",0.583333333333333,"(0.5,0.9]"
 "Houston",NA,NA
 "Howard",NA,NA
 "Hudspeth",NA,NA
-"Hunt",1.16071428571429,"(1.1,1.5]"
+"Hunt",0.859154929577465,"(0.5,0.9]"
 "Hutchinson",NA,NA
 "Irion",NA,NA
 "Jack",NA,NA
 "Jackson",NA,NA
 "Jasper",NA,NA
 "Jeff Davis",NA,NA
-"Jefferson",0.216828478964401,"(0,0.5]"
+"Jefferson",0.252442996742671,"(0,0.5]"
 "Jim Hogg",NA,NA
 "Jim Wells",NA,NA
-"Johnson",0.625,"(0.5,0.9]"
+"Johnson",0.523809523809524,"(0.5,0.9]"
 "Jones",NA,NA
 "Karnes",NA,NA
-"Kaufman",0.538461538461538,"(0.5,0.9]"
+"Kaufman",0.491803278688525,"(0,0.5]"
 "Kendall",NA,NA
 "Kenedy",NA,NA
 "Kent",NA,NA
@@ -142,90 +142,90 @@
 "Lamb",NA,NA
 "Lampasas",NA,NA
 "Lavaca",NA,NA
-"Lee",1.2,"(1.1,1.5]"
+"Lee",1.3,"(1.1,1.5]"
 "Leon",NA,NA
-"Liberty",2.4,"(2,4]"
+"Liberty",2.8,"(2,4]"
 "Limestone",NA,NA
 "Lipscomb",NA,NA
 "Live Oak",NA,NA
 "Llano",NA,NA
 "Loving",NA,NA
-"Lubbock",4.94285714285714,"(4,8]"
-"Lynn",NA,NA
+"Lubbock",5,"(4,8]"
+"Lynn",0.181818181818182,"(0,0.5]"
 "Madison",0.6,"(0.5,0.9]"
 "Marion",NA,NA
 "Martin",NA,NA
 "Mason",NA,NA
 "Matagorda",NA,NA
-"Maverick",2.85,"(2,4]"
+"Maverick",2,"(1.5,2]"
 "McCulloch",NA,NA
-"McLennan",3.8,"(2,4]"
+"McLennan",4.19230769230769,"(4,8]"
 "McMullen",NA,NA
-"Medina",0.169014084507042,"(0,0.5]"
+"Medina",NA,NA
 "Menard",NA,NA
-"Midland",1.9375,"(1.5,2]"
+"Midland",2.6304347826087,"(2,4]"
 "Milam",NA,NA
 "Mills",NA,NA
 "Mitchell",NA,NA
 "Montague",NA,NA
-"Montgomery",1.99305555555556,"(1.5,2]"
-"Moore",0.3,"(0,0.5]"
+"Montgomery",1.53092783505155,"(1.5,2]"
+"Moore",0.19047619047619,"(0,0.5]"
 "Morris",NA,NA
 "Motley",NA,NA
-"Nacogdoches",1.5,"(1.1,1.5]"
-"Navarro",1.6,"(1.5,2]"
+"Nacogdoches",0.826086956521739,"(0.5,0.9]"
+"Navarro",1.57142857142857,"(1.5,2]"
 "Newton",NA,NA
 "Nolan",NA,NA
-"Nueces",4.68571428571429,"(4,8]"
+"Nueces",4.51063829787234,"(4,8]"
 "Ochiltree",NA,NA
 "Oldham",NA,NA
 "Orange",NA,NA
 "Palo Pinto",NA,NA
 "Panola",NA,NA
-"Parker",0.608695652173913,"(0.5,0.9]"
-"Parmer",1.91304347826087,"(1.5,2]"
+"Parker",0.6,"(0.5,0.9]"
+"Parmer",1.12903225806452,"(1.1,1.5]"
 "Pecos",NA,NA
 "Polk",NA,NA
-"Potter",0.129032258064516,"(0,0.5]"
+"Potter",1.19354838709677,"(1.1,1.5]"
 "Presidio",NA,NA
 "Rains",NA,NA
-"Randall",0.958333333333333,"(0.9,1.1]"
+"Randall",1.18181818181818,"(1.1,1.5]"
 "Reagan",NA,NA
 "Real",NA,NA
-"Red River",0.538461538461538,"(0.5,0.9]"
+"Red River",0.4,"(0,0.5]"
 "Reeves",NA,NA
 "Refugio",NA,NA
 "Roberts",NA,NA
 "Robertson",NA,NA
-"Rockwall",1.13636363636364,"(1.1,1.5]"
+"Rockwall",1.14285714285714,"(1.1,1.5]"
 "Runnels",NA,NA
 "Rusk",NA,NA
 "Sabine",NA,NA
-"San Augustine",2.81818181818182,"(2,4]"
+"San Augustine",3.2,"(2,4]"
 "San Jacinto",NA,NA
 "San Patricio",NA,NA
 "San Saba",NA,NA
 "Schleicher",NA,NA
 "Scurry",NA,NA
 "Shackelford",NA,NA
-"Shelby",1.15384615384615,"(1.1,1.5]"
+"Shelby",1.85714285714286,"(1.5,2]"
 "Sherman",NA,NA
-"Smith",2.64285714285714,"(2,4]"
+"Smith",1.4375,"(1.1,1.5]"
 "Somervell",NA,NA
-"Starr",2.61363636363636,"(2,4]"
+"Starr",2.34615384615385,"(2,4]"
 "Stephens",NA,NA
 "Sterling",NA,NA
 "Stonewall",NA,NA
 "Sutton",NA,NA
 "Swisher",NA,NA
-"Tarrant",1.3267429760666,"(1.1,1.5]"
+"Tarrant",1.06696035242291,"(0.9,1.1]"
 "Taylor",NA,NA
 "Terrell",NA,NA
 "Terry",NA,NA
 "Throckmorton",NA,NA
-"Titus",0.942028985507246,"(0.9,1.1]"
-"Tom Green",4.1,"(4,8]"
-"Travis",1.11390532544379,"(1.1,1.5]"
+"Titus",0.305882352941176,"(0,0.5]"
+"Tom Green",4.88235294117647,"(4,8]"
+"Travis",1.39255014326648,"(1.1,1.5]"
 "Trinity",NA,NA
 "Tyler",NA,NA
 "Upshur",NA,NA
@@ -233,48 +233,48 @@
 "Uvalde",NA,NA
 "Val Verde",NA,NA
 "Van Zandt",NA,NA
-"Victoria",4.07142857142857,"(4,8]"
-"Walker",0.88,"(0.5,0.9]"
-"Waller",0.56,"(0.5,0.9]"
+"Victoria",1.62962962962963,"(1.5,2]"
+"Walker",1.75,"(1.5,2]"
+"Waller",1.23529411764706,"(1.1,1.5]"
 "Ward",NA,NA
-"Washington",0.6,"(0.5,0.9]"
-"Webb",2.2183908045977,"(2,4]"
-"Wharton",1.5625,"(1.5,2]"
+"Washington",0.5,"(0,0.5]"
+"Webb",2.45679012345679,"(2,4]"
+"Wharton",1.35294117647059,"(1.1,1.5]"
 "Wheeler",NA,NA
-"Wichita",NA,NA
+"Wichita",5.83333333333333,"(4,8]"
 "Wilbarger",NA,NA
-"Willacy",0.884615384615385,"(0.5,0.9]"
-"Williamson",2.5748031496063,"(2,4]"
+"Willacy",1.47368421052632,"(1.1,1.5]"
+"Williamson",2.29054054054054,"(2,4]"
 "Wilson",NA,NA
 "Winkler",NA,NA
 "Wise",NA,NA
-"Wood",1.72727272727273,"(1.5,2]"
+"Wood",NA,NA
 "Yoakum",NA,NA
 "Young",NA,NA
 "Zapata",NA,NA
 "Zavala",NA,NA
-"Non-Metro",2.59318181818182,"(2,2.59]"
-"Metro",1.55028157683025,"(1.5,2]"
-"A - Panhandle",0.418316831683168,"(0,0.5]"
-"B - B",4.22222222222222,"(4,8]"
-"C - North Texas",4.42857142857143,"(4,8]"
-"D - Big Country",Inf,"(8,Inf]"
-"E - Greater Dallas-Fort Worth",1.33205689277899,"(1.1,1.5]"
-"F - Northeast Texas",0.851428571428571,"(0.5,0.9]"
-"G - Piney Woods",7.82098765432099,"(4,8]"
-"H - Deep East Texas",1.06140350877193,"(0.9,1.1]"
-"I - Greater El Paso",0.989795918367347,"(0.9,1.1]"
-"J - Texas 'J'",2.06779661016949,"(2,4]"
-"K - Concho Valley",3.51851851851852,"(2,4]"
-"L - Central Texas",1.44242424242424,"(1.1,1.5]"
-"M - Heart of Texas",2.87179487179487,"(2,4]"
-"N - Brazos Valley",1.69921875,"(1.5,2]"
-"O - Greater Austin",2.01679104477612,"(2,4]"
-"P - Greater San Antonio",2.05684995340168,"(2,4]"
-"Q - Greater Houston",1.25737940964723,"(1.1,1.5]"
-"R - East Texas Gulf Coast",2.04945054945055,"(2,4]"
-"S - Golden Crescent",2.8,"(2,4]"
-"T - Seven Flags",2.35555555555556,"(2,4]"
-"U - Coastal Bend",3.31147540983607,"(2,4]"
-"V - Lower Rio Grande Valley",2.05476673427992,"(2,4]"
-"Texas",1.62633628905279,"(1.5,1.63]"
+"Non-Metro",2.44665271966527,"(2,2.45]"
+"Metro",1.68535906798818,"(1.5,2]"
+"A - Panhandle",0.9,"(0.5,0.9]"
+"B - B",3.87769784172662,"(2,4]"
+"C - North Texas",3.21739130434783,"(2,4]"
+"D - Big Country",27.5,"(8,27.5]"
+"E - Greater Dallas-Fort Worth",1.19645531702446,"(1.1,1.5]"
+"F - Northeast Texas",0.597826086956522,"(0.5,0.9]"
+"G - Piney Woods",6.68085106382979,"(4,8]"
+"H - Deep East Texas",1.23893805309735,"(1.1,1.5]"
+"I - Greater El Paso",1.08514851485149,"(0.9,1.1]"
+"J - Texas 'J'",2.30708661417323,"(2,4]"
+"K - Concho Valley",3.96,"(2,4]"
+"L - Central Texas",1.42222222222222,"(1.1,1.5]"
+"M - Heart of Texas",3.02439024390244,"(2,4]"
+"N - Brazos Valley",2.20535714285714,"(2,4]"
+"O - Greater Austin",1.96238757154538,"(1.5,2]"
+"P - Greater San Antonio",2.4930966469428,"(2,4]"
+"Q - Greater Houston",1.6342877854295,"(1.5,2]"
+"R - East Texas Gulf Coast",2.18494055482166,"(2,4]"
+"S - Golden Crescent",2.30612244897959,"(2,4]"
+"T - Seven Flags",2.63095238095238,"(2,4]"
+"U - Coastal Bend",3.72058823529412,"(2,4]"
+"V - Lower Rio Grande Valley",1.92720970537262,"(1.5,2]"
+"Texas",1.7437790977685,"(1.5,1.74]"
