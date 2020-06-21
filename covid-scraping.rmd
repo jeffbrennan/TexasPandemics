@@ -329,6 +329,12 @@ merged_counts4$Population_DSHS = as.numeric(merged_counts4$Population_DSHS)
 ```
 
 
+```{r}
+# add TSA combination
+merged_counts4$TSA_Combined = paste0(merged_counts4$TSA, ' - ', merged_counts4$TSA_Name)
+```
+
+
 # TSA LEVEL
 
 ## Computed
