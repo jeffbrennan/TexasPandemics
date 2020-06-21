@@ -2410,38 +2410,8 @@ recorded_vals =  sum(!is.na(county.case.test.df$cases_percentdiff)) + sum(!is.na
 # 12.71% w/ 2020-04-22
 # 12% w/ 2020-05-15
 missing_vals / (missing_vals + recorded_vals)</code></pre>
-<pre><code>## [1] 0.1270853</code></pre>
-<pre class="r"><code># # nrow(missing_vals)
-# # 
-# # TODO: delete after testing
-#   region = &#39;Bailey&#39;
-#   dat = subset(county, County == region)
-# 
-#   first.test.date &lt;- ymd(&quot;2020-04-22&quot;)
-#   dat$Date = ymd(dat$Date)
-#   dat$Date2 &lt;- as.numeric(ymd(dat$Date))
-# 
-#   dat$cases_avg14 = rollmean(dat$Cases_Daily, k=14, fill = NA, align = &#39;right&#39;, na.rm = TRUE)
-#   dat$tests_avg14 = rollmean(dat$Tests_Daily, k=14, fill = NA, align = &#39;right&#39;, na.rm = TRUE)
-# 
-#   slopedata.tests &lt;-data.frame(subset(dat, select=c(Date, Date2, Cases_Daily, Tests_Daily, cases_avg14, tests_avg14))) %&gt;%
-#     subset(ymd(Date)&gt;=ymd(first.test.date))
-# 
-#   tests_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=Tests_Daily))
-#   cases_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=Cases_Daily))
-# 
-#   # mean_cases = mean(slopedata.tests$Cases_Daily, na.rm = TRUE)
-#   # mean_tests = mean(slopedata.tests$Tests_Daily, na.rm = TRUE)
-# 
-#   tmpdata &lt;- data.frame(Date2=slopedata.tests$Date2)
-#  cases_avg_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=cases_avg14))
-#     tests_avg_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=tests_avg14))
-# 
-#     slopedata.tests$newcasesY &lt;- 100*(as.vector(slopedata.tests$cases_avg14 / cases_avg_start)-1)
-#     slopedata.tests$newtestsY &lt;- 100*(as.vector(slopedata.tests$tests_avg14 / tests_avg_start)-1)
-# 
-
-# save
+<pre><code>## [1] 0.1262139</code></pre>
+<pre class="r"><code># save
 write.csv(county.case.test.df, &#39;statistical-output/standard-stats/pct-change/county_pct_change.csv&#39;,
           row.names = FALSE)</code></pre>
 </div>
