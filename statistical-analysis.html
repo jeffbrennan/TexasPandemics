@@ -1639,186 +1639,189 @@ summary {
 </div>
 
 
+<pre class="r"><code>set.seed(1)</code></pre>
+<pre class="r"><code># Data manipulation &amp; cleaning
+library(tidyverse)
+library(reshape2)
+library(nlme)        # gapply
+library(lubridate)   # date cleaning
+
+# Viz
+library(gridExtra)
+library(ggmap)
+library(maps)
+library(mapdata)
+
+# Modeling &amp; stats
+library(mgcv)       # gam
+library(R0)
+library(Kendall)    # Mann-Kendall
+
+# Time series &amp; forecasting
+library(forecast)
+library(zoo)
+library(astsa)
+library(fpp2)</code></pre>
 <div id="rt-analysis" class="section level1">
 <h1>RT ANALYSIS</h1>
-<pre class="r"><code>####THIS CHUNK WILL NEED TO BE ADJUSTED TO READ FROM GITHUB DATA###
-#THIS CHUNK MAKES MORE SENSE TO MOVE AFTER FUNCTIONS ARE GENERATED
-#IT IS LOCATED HERE FOR VISIBILITY ONLY, ONCE MOVED TO GITHUB, RELOCATE TO A MORE LOGICAL
-#LOCATION IN THE CODE AS DESIRED
-getwd()</code></pre>
-<pre><code>## [1] &quot;C:/Users/jeffb/Desktop/Life/personal-projects/COVID&quot;</code></pre>
 <pre class="r"><code>#read in full DSHS data with county and TSA information
-full.dshs&lt;-read.csv(&quot;combined-datasets/county.csv&quot;)#change path as needed
-tsa.dshs&lt;-read.csv(&quot;combined-datasets/tsa.csv&quot;)#change path as needed</code></pre>
-<pre class="r"><code>rt.data.clean&lt;-function(covid.data)#note: mydata will be either full.dshs or tsa.dshs data
-  {
-
-library(dplyr)
-library(tidyr)
-library(reshape2)
-  #check the variable types of covid.data 
-  #(comment out when running, this is for testing only)
-    #str(covid.data)
+# TOOD: rename
+full.dshs &lt;- read.csv(&quot;combined-datasets/county.csv&quot;)#change path as needed
+tsa.dshs &lt;- read.csv(&quot;combined-datasets/tsa.csv&quot;)#change path as needed</code></pre>
+<pre class="r"><code>rt.data.clean&lt;-function(covid.data) {
   
-  #keep variables from this list if they are in the data set
-      #(county, date, population, TSA_Name, cases_daily, Population_DSHS, Population_Census)
-  covid.data&lt;-covid.data[,names(covid.data)%in% 
-                           c(&quot;County&quot;, #name of texas county 
-                             &quot;Date&quot;, #date of data recorded
-                             &quot;TSA_Name&quot;, #name of texas TSA group for county
-                             &quot;TSA&quot;,
-                             &quot;Metro_Area&quot;, #indicateor of metro/nonmetro county
-                             &quot;Cases_Daily&quot;, #daily new cases
-                             &quot;Population_DSHS&quot;)] #population for county per Census estimates
-                                                  #Note: Census data is from 2010, these values are projections 
-                                                        #from that Census as provided by the Census Bureau
-  #change Date variable to date format
-  covid.data$Date&lt;-as.Date(covid.data$Date)
-  #change cases_daily to numeric - if not already numeric
-  covid.data$Cases_Daily&lt;-as.numeric(covid.data$Cases_Daily)
-  #change any cases_daily below zero to zero
-  #NOTE: We shouldn&#39;te actually have cases_daily below zero, 
-   #these are a result of data problems related to how cases are counted
-   #we will have to address this in our data as this will cause 
-   #potential issues with rt estimates
-  covid.data&lt;-covid.data%&gt;%mutate(Cases_Daily=ifelse(Cases_Daily&lt;0, 0, Cases_Daily))
+  # select relevant metadata &amp; DSHS population estimates
+  rt.cols &lt;- c(&quot;County&quot;, &quot;Date&quot;, &quot;TSA_Name&quot;, &quot;TSA&quot;,
+               &quot;Metro_Area&quot;, &quot;Cases_Daily&quot;, &quot;Population_DSHS&quot;)
+  
+  covid.data &lt;- covid.data[, names(covid.data) %in% rt.cols]
+             
+  # set correct types
+  covid.data$Date &lt;- as.Date(covid.data$Date)
+  covid.data$Cases_Daily &lt;- as.numeric(covid.data$Cases_Daily)
+  
+  # TODO: decide on how to handle drops in cumulative counts -&gt; negative daily cases
+  covid.data &lt;- covid.data %&gt;% 
+    mutate(Cases_Daily = ifelse(Cases_Daily &lt; 0, 0, Cases_Daily))
+  
   return(covid.data)
 }</code></pre>
-<pre class="r"><code>#separate county, metro, TSA and State data into separate Data frames
-rt.data.organize&lt;-function(mycounty, mytsa){
-  library(dplyr)
-  library(tidyr)
-  #call the rt.data.clean function on mydata
-  cleaned.county&lt;-rt.data.clean(mycounty)
-  cleaned.tsa&lt;-rt.data.clean(mytsa)
+<pre class="r"><code>#separate county, metro, TSA and state data into separate dataframes
+rt.data.organize &lt;- function(mycounty, mytsa){
+  
+  ### COUNTY ###
+  cleaned.county &lt;- rt.data.clean(mycounty)
+  county.df &lt;- cleaned.county%&gt;%dplyr::select(-TSA_Name, -Metro_Area)
+  
+  ### TSA ###
+  TSA.df &lt;- rt.data.clean(mytsa)
 
-  #create metro.df by mutating by grouping by Metro
-  metro.temp&lt;-cleaned.county%&gt;%
-    group_by(Metro_Area,Date)%&gt;%
-    mutate(metro_cases_daily=sum(Cases_Daily, na.rm=TRUE))%&gt;%#generate variable of state daily cases
-    mutate(metro_pop_DSHS=sum(Population_DSHS, na.rm=TRUE))%&gt;%#generate state population_DSHS variable
-    dplyr::select(Date,Metro_Area, metro_cases_daily, metro_pop_DSHS)%&gt;%#select only variables of interest
-    distinct()#keep only distinct rows (this will drop repeated rows, now that we have only state level va
-  metro.df&lt;-data.frame(Date=metro.temp$Date,
-                       Metro_Area=metro.temp$Metro_Area,
-                       Cases_Daily=metro.temp$metro_cases_daily,
-                       Population_DSHS=metro.temp$metro_pop_DSHS)
-  #Drop TSA_Name from county data frame
-  county.df&lt;-cleaned.county%&gt;%dplyr::select(-TSA_Name, -Metro_Area)
+  ### METRO ###
+  # calculate daily cases and population at metro level, drop repeated rows
+  metro.temp &lt;- cleaned.county %&gt;%
+    group_by(Metro_Area,Date) %&gt;%
+    mutate(metro_cases_daily=sum(Cases_Daily, na.rm=TRUE)) %&gt;%
+    mutate(metro_pop_DSHS=sum(Population_DSHS, na.rm=TRUE)) %&gt;%
+    dplyr::select(Date, Metro_Area, metro_cases_daily, metro_pop_DSHS) %&gt;%
+    distinct()
   
-   #create TSA.df, use rt.data.clean function
-  TSA.df&lt;-rt.data.clean(mytsa)
   
-  #create state.df
-  #at the state level we want daily new cases, and population variables from DSHS and Census data
-  state.temp&lt;-cleaned.tsa%&gt;%
-    group_by(Date)%&gt;%
-    mutate(state_cases_daily=sum(Cases_Daily, na.rm=TRUE))%&gt;%#generate variable of state daily cases
-    mutate(state_pop_DSHS=sum(Population_DSHS, na.rm=TRUE))%&gt;%#generate state population_DSHS variable
-    dplyr::select(Date,state_cases_daily, state_pop_DSHS)%&gt;%#select only variables of interest
-    distinct()#keep only distinct rows (this will drop repeated rows, now that we have only state level vars)
-  state.df&lt;-data.frame(Date=state.temp$Date, 
-                       Cases_Daily=state.temp$state_cases_daily,
-                       Population_DSHS=state.temp$state_pop_DSHS)
-  #return a list of the three dataframes generated
- return(list(county=county.df, TSA=TSA.df, state=state.df, metro=metro.df))
+  metro.df &lt;- data.frame(Date = metro.temp$Date,
+                         Metro_Area = metro.temp$Metro_Area,
+                         Cases_Daily = metro.temp$metro_cases_daily,
+                         Population_DSHS = metro.temp$metro_pop_DSHS)
+  
+  
+  ### STATE ###
+  # calculate daily cases and population at state level, drop repeated rows
+  state.temp &lt;- TSA.df %&gt;%
+    group_by(Date) %&gt;%
+    mutate(state_cases_daily=sum(Cases_Daily, na.rm=TRUE)) %&gt;%
+    mutate(state_pop_DSHS=sum(Population_DSHS, na.rm=TRUE)) %&gt;%
+    dplyr::select(Date, state_cases_daily, state_pop_DSHS) %&gt;%
+    distinct()
+  
+  
+  state.df &lt;- data.frame(Date = state.temp$Date, 
+                         Cases_Daily = state.temp$state_cases_daily,
+                         Population_DSHS = state.temp$state_pop_DSHS)
+
+  ### OUTPUT ###
+  rt.df.out &lt;- list(county=county.df, TSA=TSA.df, state=state.df, metro=metro.df)
+  return(rt.df.out)
 }</code></pre>
-<pre class="r"><code>rt.df.extraction&lt;-function(Rt.estimate.output){
+<pre class="r"><code>rt.df.extraction &lt;- function(Rt.estimate.output) {
 
-   #first convert named vector back to dataframe
-  #reorder and rename columns from the R0.estimate output
-  rt.df&lt;-setNames(stack(Rt.estimate.output$estimates$TD$R)[2:1], c(&#39;Date&#39;, &#39;Rt&#39;))
- 
-  #extract the upper and lower limits of the Rt 95% confidence intervals, these will be lists
-  CI.lower.list&lt;-Rt.estimate.output$estimates$TD$conf.int$lower
-  CI.upper.list&lt;-Rt.estimate.output$estimates$TD$conf.int$upper
+  # extract r0 estimate values into dataframe
+  rt.df &lt;- setNames(stack(Rt.estimate.output$estimates$TD$R)[2:1], c(&#39;Date&#39;, &#39;Rt&#39;))
+  rt.df$Date &lt;- as.Date(rt.df$Date)
+
+  # get 95% CI
+  CI.lower.list &lt;- Rt.estimate.output$estimates$TD$conf.int$lower
+  CI.upper.list &lt;- Rt.estimate.output$estimates$TD$conf.int$upper
 
   #use unlist function to format as vector
   CI.lower &lt;- unlist(CI.lower.list, recursive = TRUE, use.names = TRUE)
   CI.upper &lt;- unlist(CI.upper.list, recursive = TRUE, use.names = TRUE)
 
-  #add the upper and lower bounds to the dataframe
-  rt.df$lower&lt;-CI.lower
-  rt.df$upper&lt;-CI.upper
-  
-  rt.df$Date = as.Date(rt.df$Date)
+  rt.df$lower &lt;- CI.lower
+  rt.df$upper &lt;- CI.upper
   
   return(rt.df)
 }</code></pre>
-<pre class="r"><code>#############################
-#Remove this code later, for testing purposes only
-#creating test county
-#testcounty.df&lt;-county.daily%&gt;%subset(County==&quot;Archer&quot;)
-#testcounty.rt&lt;-covid.rt(testcounty.df)
-  #mydata&lt;-testcounty.df
-
-#Test the covid.function on TSA subset
-#  #TSA.G&lt;-TSA.daily%&gt;%subset(TSA_Name==&quot;Panhandle RAC&quot;)
-
-###############################
-#Function to generate Rt estimates, need to read in data frame and population size
-covid.rt&lt;-function(mydata){
-library(R0)
-  #change na values to 0
-  mydata&lt;-mydata%&gt;%replace(is.na(.),0)
-  #create a variable that is the sum of Cases_Daily
-  sum.daily.cases&lt;-sum(mydata$Cases_Daily)
+<pre class="r"><code>#Function to generate Rt estimates, need to read in data frame and population size
+covid.rt &lt;- function(mydata) {
   
-  #create a vector of new cases
-  mydata.new&lt;-pull(mydata, Cases_Daily)
-  #create a vector of dates
-  date.vector&lt;-pull(mydata, Date)
-  #create a named numerical vector using the date.vector as names of new cases
-    #Note: this is needed to run R0 package function estimate.R()
-  names(mydata.new)&lt;-c(date.vector)
+  ### DECLARE VALS ###
   
-  #create the generation time 
-  ##### NOTE: THIS MAY NEED MODIFICATION ONCE MORE INFORMATIONIS AVAILABLE ####
+  #set generation time
+  #Tapiwa, Ganyani &quot;Esimating the gen interval for Covid-19&quot;:
 
-  # gen.time&lt;-generation.time(&quot;lognormal&quot;, c(4.0, 2.9))#verify these values and distribution/update as needed
+  # LOGNORMAL OPS
+  # gen.time&lt;-generation.time(&quot;lognormal&quot;, c(4.0, 2.9))
   # gen.time&lt;-generation.time(&quot;lognormal&quot;, c(4.7,2.9)) #Nishiura
 
-  #Tapiwa, Ganyani &quot;Esimating the gen interval for Covid-19&quot;:
+  # GAMMA OPS
   # gen.time&lt;-generation.time(&quot;gamma&quot;, c(5.2, 1.72)) #Singapore
   # gen.time&lt;-generation.time(&quot;gamma&quot;, c(3.95, 1.51)) #Tianjin
-  gen.time&lt;-generation.time(&quot;gamma&quot;, c(3.96, 4.75))
+  gen.time &lt;- generation.time(&quot;gamma&quot;, c(3.96, 4.75))
 
-  #get DSHS population and census population
-  pop.DSHS&lt;-mydata$Population_DSHS[1]
-
+  
+  # TODO: consider removing this and handling na cases directly
+  #change na values to 0
+  mydata &lt;- mydata %&gt;% replace(is.na(.),0)
+  sum.daily.cases &lt;- sum(mydata$Cases_Daily)
+  pop.DSHS &lt;- mydata$Population_DSHS[1]
+  
+  # get cases and dates as vectors
+  mydata.new &lt;- pull(mydata, Cases_Daily)
+  date.vector &lt;- pull(mydata, Date)
+  
+  #create a named numerical vector using the date.vector as names of new cases
+  #Note: this is needed to run R0 package function estimate.R()
+  names(mydata.new) &lt;- c(date.vector)
+  
   #Find min.date, max.date and row number of max.date
-  min.date&lt;-min(mydata$Date)
-  max.date&lt;-max(mydata$Date)
-  # str(mydata)
+  min.date &lt;- min(mydata$Date)
+  max.date &lt;- max(mydata$Date)
 
   #get row number of March 9 and first nonzero entry
   #find max row between the two (this will be beginning of rt data used)
-  march9.row&lt;-which(mydata$Date==&quot;2020-03-09&quot;)
-  first.nonzero&lt;-min(which(mydata$Cases_Daily&gt;0))
-  last.nonzero&lt;-max(which(mydata$Cases_Daily&gt;0))
-  minrow&lt;-max(march9.row,first.nonzero)
+  march9.row &lt;- which(mydata$Date==&quot;2020-03-09&quot;)
+  first.nonzero &lt;- min(which(mydata$Cases_Daily&gt;0))
+  last.nonzero &lt;- max(which(mydata$Cases_Daily&gt;0))
+  minrow &lt;- max(march9.row,first.nonzero)
+
   
+  # TODO: refactor this
+  ### ERROR CATCHING ###
   #Set last row that will be used, either todays date or last nonzero row
-  j&lt;-as.integer(min(last.nonzero, max.date))
+  j &lt;- as.integer(min(last.nonzero, max.date))
   
   if(is.na(minrow)){
-    rt.DSHS.df&lt;-data.frame(Date=as.Date(mydata$Date), Rt=rep(NA, j), lower=rep(NA, j), upper=rep(NA, j))
+    rt.DSHS.df &lt;- data.frame(Date = as.Date(mydata$Date),
+                             Rt = rep(NA, j),
+                             lower = rep(NA, j),
+                             upper = rep(NA, j))
   }
   
   if(sum.daily.cases&lt;=50){
-    k=length(mydata$Date)
-    rt.DSHS.df&lt;-data.frame(Date=as.Date(mydata$Date), Rt=rep(NA, k), lower=rep(NA, k), upper=rep(NA, k))
+    k &lt;- length(mydata$Date)
+    rt.DSHS.df &lt;- data.frame(Date = as.Date(mydata$Date),
+                             Rt = rep(NA, k),
+                             lower = rep(NA, k),
+                             upper = rep(NA, k))
   }
+  
+  ### R0 ESTIMATION ###
   #only move forward if both previous error catch options are false
-  if(is.na(minrow)==FALSE &amp; sum.daily.cases&gt;50){
+  if(is.na(minrow) == FALSE &amp; sum.daily.cases &gt; 50) {
     #get the row number for the mindrow date
-    i&lt;-minrow
+    i &lt;- minrow
   
     #reduce the vector to be rows from min date (March 9 or first nonzero case) to current date
-    mydata.newest&lt;-mydata.new[i:j]
-    
-    
-    rt.DSHS&lt;-estimate.R(mydata.newest, 
+    mydata.newest &lt;- mydata.new[i:j]
+    rt.DSHS &lt;- estimate.R(mydata.newest, 
                         gen.time, 
                         #begin=as.integer(1), 
                         #end=total.days, 
@@ -1826,7 +1829,7 @@ library(R0)
                         pop.size=pop.DSHS,
                         nsim=1000)
   
-      rt.DSHS.df&lt;-rt.df.extraction(rt.DSHS)
+    rt.DSHS.df &lt;- rt.df.extraction(rt.DSHS)
   }
   
   rt.out = subset(rt.DSHS.df, Date &gt; as.Date(&#39;2020-03-09&#39;))
@@ -1834,306 +1837,836 @@ library(R0)
 }</code></pre>
 <div id="county" class="section level2">
 <h2>County</h2>
+<pre class="r"><code>#apply the covid.rt function to the county.datily data by county 
+county.rt.output &lt;- nlme::gapply(county.daily, FUN = covid.rt, groups = county.daily$County)</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-01` = 1, `2020-04-02` = 0, `2020-04-03` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-01` = 1, `2020-04-02` = 0, `2020-04-03` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-26` = 1, `2020-03-27` = 0, `2020-03-28` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-26` = 1, `2020-03-27` = 0, `2020-03-28` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 2, `2020-03-26` = 0, `2020-03-27` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 2, `2020-03-26` = 0, `2020-03-27` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-05-05` = 1, `2020-05-06` = 1, `2020-05-07` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-05-05` = 1, `2020-05-06` = 1, `2020-05-07` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 1, `2020-03-26` = 1, `2020-03-27` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 1, `2020-03-26` = 1, `2020-03-27` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 1, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 1, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 3, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 3, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in min(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to min;
+## returning Inf</code></pre>
+<pre><code>## Warning in max(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to max;
+## returning -Inf</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): NAs introduced by coercion to integer range</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-18` = 1, `2020-03-19` = 0, `2020-03-20` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-18` = 1, `2020-03-19` = 0, `2020-03-20` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 2, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 2, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-18` = 1, `2020-03-19` = 0, `2020-03-20` =
+## 1, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-18` = 1, `2020-03-19` = 0, `2020-03-20` =
+## 1, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-21` = 1, `2020-03-22` = 0, `2020-03-23` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-21` = 1, `2020-03-22` = 0, `2020-03-23` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-28` = 1, `2020-03-29` = 0, `2020-03-30` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-28` = 1, `2020-03-29` = 0, `2020-03-30` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 1, `2020-03-25` = 0, `2020-03-26` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 1, `2020-03-25` = 0, `2020-03-26` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-28` = 1, `2020-03-29` = 0, `2020-03-30` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-28` = 1, `2020-03-29` = 0, `2020-03-30` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-26` = 2, `2020-03-27` = 0, `2020-03-28` =
+## 1, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-26` = 2, `2020-03-27` = 0, `2020-03-28` =
+## 1, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-20` = 1, `2020-03-21` = 0, `2020-03-22` =
+## 5, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-20` = 1, `2020-03-21` = 0, `2020-03-22` =
+## 5, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-01` = 1, `2020-04-02` = 0, `2020-04-03` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-01` = 1, `2020-04-02` = 0, `2020-04-03` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-21` = 1, `2020-03-22` = 0, `2020-03-23` =
+## 1, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-21` = 1, `2020-03-22` = 0, `2020-03-23` =
+## 1, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-21` = 1, `2020-03-22` = 0, `2020-03-23` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-21` = 1, `2020-03-22` = 0, `2020-03-23` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-27` = 1, `2020-03-28` = 0, `2020-03-29` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-27` = 1, `2020-03-28` = 0, `2020-03-29` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-09` = 1, `2020-03-10` = 2, `2020-03-11` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-09` = 1, `2020-03-10` = 2, `2020-03-11` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-01` = 2, `2020-04-02` = 0, `2020-04-03` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-01` = 2, `2020-04-02` = 0, `2020-04-03` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-22` = 3, `2020-03-23` = 0, `2020-03-24` =
+## 1, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-22` = 3, `2020-03-23` = 0, `2020-03-24` =
+## 1, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 1, `2020-03-25` = 0, `2020-03-26` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 1, `2020-03-25` = 0, `2020-03-26` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-06` = 1, `2020-04-07` = 0, `2020-04-08` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-06` = 1, `2020-04-07` = 0, `2020-04-08` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-11` = 2, `2020-03-12` = 1, `2020-03-13` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-11` = 2, `2020-03-12` = 1, `2020-03-13` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-21` = 1, `2020-03-22` = 0, `2020-03-23` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-21` = 1, `2020-03-22` = 0, `2020-03-23` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-17` = 1, `2020-03-18` = 3, `2020-03-19` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-17` = 1, `2020-03-18` = 3, `2020-03-19` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-29` = 1, `2020-03-30` = 2, `2020-03-31` =
+## 4, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-29` = 1, `2020-03-30` = 2, `2020-03-31` =
+## 4, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in min(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to min;
+## returning Inf</code></pre>
+<pre><code>## Warning in max(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to max;
+## returning -Inf</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): NAs introduced by coercion to integer range</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 1, `2020-03-16` = 0, `2020-03-17` =
+## 2, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 1, `2020-03-16` = 0, `2020-03-17` =
+## 2, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-20` = 2, `2020-03-21` = 0, `2020-03-22` =
+## 1, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-20` = 2, `2020-03-21` = 0, `2020-03-22` =
+## 1, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-20` = 1, `2020-03-21` = 0, `2020-03-22` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-20` = 1, `2020-03-21` = 0, `2020-03-22` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 1, `2020-03-25` = 0, `2020-03-26` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 1, `2020-03-25` = 0, `2020-03-26` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in min(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to min;
+## returning Inf</code></pre>
+<pre><code>## Warning in max(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to max;
+## returning -Inf</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): NAs introduced by coercion to integer range</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-09` = 5, `2020-03-10` = 0, `2020-03-11` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-09` = 5, `2020-03-10` = 0, `2020-03-11` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-08` = 1, `2020-04-09` = 0, `2020-04-10` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-08` = 1, `2020-04-09` = 0, `2020-04-10` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 1, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 1, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-01` = 1, `2020-04-02` = 0, `2020-04-03` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-01` = 1, `2020-04-02` = 0, `2020-04-03` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-01` = 1, `2020-04-02` = 0, `2020-04-03` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-01` = 1, `2020-04-02` = 0, `2020-04-03` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 1, `2020-03-25` = 1, `2020-03-26` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 1, `2020-03-25` = 1, `2020-03-26` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-10` = 1, `2020-03-11` = 0, `2020-03-12` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-10` = 1, `2020-03-11` = 0, `2020-03-12` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 2, `2020-03-25` = 0, `2020-03-26` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 2, `2020-03-25` = 0, `2020-03-26` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 4, `2020-03-26` = 4, `2020-03-27` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 4, `2020-03-26` = 4, `2020-03-27` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-27` = 1, `2020-03-28` = 0, `2020-03-29` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-27` = 1, `2020-03-28` = 0, `2020-03-29` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 2, `2020-03-26` = 0, `2020-03-27` =
+## 2, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 2, `2020-03-26` = 0, `2020-03-27` =
+## 2, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-09` = 1, `2020-03-10` = 0, `2020-03-11` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-09` = 1, `2020-03-10` = 0, `2020-03-11` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-27` = 1, `2020-03-28` = 0, `2020-03-29` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-27` = 1, `2020-03-28` = 0, `2020-03-29` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 1, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 1, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-01` = 1, `2020-04-02` = 0, `2020-04-03` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-01` = 1, `2020-04-02` = 0, `2020-04-03` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-23` = 2, `2020-03-24` = 0, `2020-03-25` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-23` = 2, `2020-03-24` = 0, `2020-03-25` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-19` = 1, `2020-04-20` = 0, `2020-04-21` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-19` = 1, `2020-04-20` = 0, `2020-04-21` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 1, `2020-03-25` = 0, `2020-03-26` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 1, `2020-03-25` = 0, `2020-03-26` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-04` = 2, `2020-04-05` = 0, `2020-04-06` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-04` = 2, `2020-04-05` = 0, `2020-04-06` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in min(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to min;
+## returning Inf</code></pre>
+<pre><code>## Warning in max(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to max;
+## returning -Inf</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): NAs introduced by coercion to integer range</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 3, `2020-03-26` = 4, `2020-03-27` =
+## 1, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 3, `2020-03-26` = 4, `2020-03-27` =
+## 1, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-19` = 2, `2020-03-20` = 0, `2020-03-21` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-19` = 2, `2020-03-20` = 0, `2020-03-21` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-08` = 1, `2020-04-09` = 0, `2020-04-10` =
+## 1, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-08` = 1, `2020-04-09` = 0, `2020-04-10` =
+## 1, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 2, `2020-03-25` = 0, `2020-03-26` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 2, `2020-03-25` = 0, `2020-03-26` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in min(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to min;
+## returning Inf</code></pre>
+<pre><code>## Warning in max(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to max;
+## returning -Inf</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): NAs introduced by coercion to integer range</code></pre>
+<pre><code>## Warning in min(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to min;
+## returning Inf</code></pre>
+<pre><code>## Warning in max(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to max;
+## returning -Inf</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): NAs introduced by coercion to integer range</code></pre>
+<pre><code>## Warning in min(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to min;
+## returning Inf</code></pre>
+<pre><code>## Warning in max(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to max;
+## returning -Inf</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): NAs introduced by coercion to integer range</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 1, `2020-03-25` = 0, `2020-03-26` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 1, `2020-03-25` = 0, `2020-03-26` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 1, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 1, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-02` = 1, `2020-04-03` = 1, `2020-04-04` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-02` = 1, `2020-04-03` = 1, `2020-04-04` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 1, `2020-03-26` = 0, `2020-03-27` =
+## 1, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 1, `2020-03-26` = 0, `2020-03-27` =
+## 1, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in min(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to min;
+## returning Inf</code></pre>
+<pre><code>## Warning in max(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to max;
+## returning -Inf</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): NAs introduced by coercion to integer range</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-20` = 1, `2020-03-21` = 1, `2020-03-22` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-20` = 1, `2020-03-21` = 1, `2020-03-22` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 1, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 1, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 1, `2020-03-26` = 0, `2020-03-27` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 1, `2020-03-26` = 0, `2020-03-27` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-19` = 6, `2020-03-20` = 1, `2020-03-21` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-19` = 6, `2020-03-20` = 1, `2020-03-21` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in min(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to min;
+## returning Inf</code></pre>
+<pre><code>## Warning in max(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to max;
+## returning -Inf</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): NAs introduced by coercion to integer range</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-17` = 1, `2020-03-18` = 0, `2020-03-19` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-17` = 1, `2020-03-18` = 0, `2020-03-19` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in min(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to min;
+## returning Inf</code></pre>
+<pre><code>## Warning in max(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to max;
+## returning -Inf</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): NAs introduced by coercion to integer range</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-21` = 1, `2020-03-22` = 0, `2020-03-23` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-21` = 1, `2020-03-22` = 0, `2020-03-23` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 2, `2020-03-26` = 0, `2020-03-27` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 2, `2020-03-26` = 0, `2020-03-27` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-12` = 1, `2020-03-13` = 0, `2020-03-14` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-12` = 1, `2020-03-13` = 0, `2020-03-14` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-30` = 1, `2020-03-31` = 0, `2020-04-01` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-30` = 1, `2020-03-31` = 0, `2020-04-01` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-26` = 1, `2020-03-27` = 0, `2020-03-28` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-26` = 1, `2020-03-27` = 0, `2020-03-28` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-27` = 1, `2020-03-28` = 0, `2020-03-29` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-27` = 1, `2020-03-28` = 0, `2020-03-29` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-22` = 1, `2020-03-23` = 0, `2020-03-24` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-22` = 1, `2020-03-23` = 0, `2020-03-24` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-24` = 1, `2020-04-25` = 4, `2020-04-26` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-24` = 1, `2020-04-25` = 4, `2020-04-26` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 1, `2020-03-26` = 0, `2020-03-27` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 1, `2020-03-26` = 0, `2020-03-27` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-02` = 3, `2020-04-03` = 1, `2020-04-04` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-02` = 3, `2020-04-03` = 1, `2020-04-04` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-23` = 1, `2020-03-24` = 0, `2020-03-25` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-23` = 1, `2020-03-24` = 0, `2020-03-25` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-19` = 1, `2020-04-20` = 0, `2020-04-21` =
+## 1, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-19` = 1, `2020-04-20` = 0, `2020-04-21` =
+## 1, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-06` = 1, `2020-04-07` = 0, `2020-04-08` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-06` = 1, `2020-04-07` = 0, `2020-04-08` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-29` = 1, `2020-03-30` = 0, `2020-03-31` =
+## 3, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-29` = 1, `2020-03-30` = 0, `2020-03-31` =
+## 3, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-21` = 2, `2020-03-22` = 0, `2020-03-23` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-21` = 2, `2020-03-22` = 0, `2020-03-23` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-28` = 3, `2020-03-29` = 0, `2020-03-30` =
+## 3, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-28` = 3, `2020-03-29` = 0, `2020-03-30` =
+## 3, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-16` = 1, `2020-04-17` = 0, `2020-04-18` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-16` = 1, `2020-04-17` = 0, `2020-04-18` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-26` = 2, `2020-03-27` = 1, `2020-03-28` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-26` = 2, `2020-03-27` = 1, `2020-03-28` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-18` = 1, `2020-03-19` = 0, `2020-03-20` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-18` = 1, `2020-03-19` = 0, `2020-03-20` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-01` = 1, `2020-04-02` = 0, `2020-04-03` =
+## 3, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-01` = 1, `2020-04-02` = 0, `2020-04-03` =
+## 3, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-26` = 1, `2020-03-27` = 0, `2020-03-28` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-26` = 1, `2020-03-27` = 0, `2020-03-28` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-27` = 1, `2020-03-28` = 0, `2020-03-29` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-27` = 1, `2020-03-28` = 0, `2020-03-29` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 3, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 3, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-27` = 2, `2020-03-28` = 0, `2020-03-29` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-27` = 2, `2020-03-28` = 0, `2020-03-29` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in min(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to min;
+## returning Inf</code></pre>
+<pre><code>## Warning in max(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to max;
+## returning -Inf</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): NAs introduced by coercion to integer range</code></pre>
+<pre><code>## Warning in min(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to min;
+## returning Inf</code></pre>
+<pre><code>## Warning in max(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to max;
+## returning -Inf</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): NAs introduced by coercion to integer range</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-11` = 1, `2020-03-12` = 0, `2020-03-13` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-11` = 1, `2020-03-12` = 0, `2020-03-13` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-27` = 1, `2020-03-28` = 1, `2020-03-29` =
+## 5, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-27` = 1, `2020-03-28` = 1, `2020-03-29` =
+## 5, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in min(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to min;
+## returning Inf</code></pre>
+<pre><code>## Warning in max(which(mydata$Cases_Daily &gt; 0)): no non-missing arguments to max;
+## returning -Inf</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): NAs introduced by coercion to integer range</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-03` = 1, `2020-04-04` = 0, `2020-04-05` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-03` = 1, `2020-04-04` = 0, `2020-04-05` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 1, `2020-03-25` = 0, `2020-03-26` =
+## 1, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 1, `2020-03-25` = 0, `2020-03-26` =
+## 1, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 2, `2020-03-16` = 0, `2020-03-17` =
+## 1, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 2, `2020-03-16` = 0, `2020-03-17` =
+## 1, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-26` = 1, `2020-03-27` = 1, `2020-03-28` =
+## 2, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-26` = 1, `2020-03-27` = 1, `2020-03-28` =
+## 2, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 1, `2020-03-25` = 0, `2020-03-26` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 1, `2020-03-25` = 0, `2020-03-26` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-26` = 3, `2020-03-27` = 0, `2020-03-28` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-26` = 3, `2020-03-27` = 0, `2020-03-28` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 1, `2020-03-26` = 2, `2020-03-27` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 1, `2020-03-26` = 2, `2020-03-27` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-29` = 3, `2020-03-30` = 0, `2020-03-31` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-29` = 3, `2020-03-30` = 0, `2020-03-31` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-28` = 5, `2020-03-29` = 0, `2020-03-30` =
+## 3, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-28` = 5, `2020-03-29` = 0, `2020-03-30` =
+## 3, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-17` = 1, `2020-03-18` = 0, `2020-03-19` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-17` = 1, `2020-03-18` = 0, `2020-03-19` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 3, `2020-03-26` = 0, `2020-03-27` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 3, `2020-03-26` = 0, `2020-03-27` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-20` = 1, `2020-03-21` = 2, `2020-03-22` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-20` = 1, `2020-03-21` = 2, `2020-03-22` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-27` = 1, `2020-03-28` = 0, `2020-03-29` =
+## 1, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-27` = 1, `2020-03-28` = 0, `2020-03-29` =
+## 1, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-19` = 2, `2020-03-20` = 6, `2020-03-21` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-19` = 2, `2020-03-20` = 6, `2020-03-21` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 1, `2020-03-26` = 0, `2020-03-27` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-25` = 1, `2020-03-26` = 0, `2020-03-27` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-30` = 1, `2020-03-31` = 0, `2020-04-01` =
+## 2, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-30` = 1, `2020-03-31` = 0, `2020-04-01` =
+## 2, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-01` = 1, `2020-04-02` = 0, `2020-04-03` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-04-01` = 1, `2020-04-02` = 0, `2020-04-03` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre class="r"><code>#convert list of dataframes to single dataframe with county as id col
+county.rt.df &lt;- data.table::rbindlist(county.rt.output, idcol = TRUE)
+colnames(county.rt.df)[1] = &#39;County&#39;</code></pre>
 </div>
 <div id="metro" class="section level2">
 <h2>Metro</h2>
-</div>
-<div id="tsa" class="section level2">
-<h2>TSA</h2>
-<pre class="r"><code>#run covid.rt function on state level data 
-#(this will be a data frame output)
-state.rt.df&lt;-covid.rt(state.daily)</code></pre>
+<pre class="r"><code>#apply the covid.rt function to the metro.daily data by metro region
+metro.rt.output &lt;- nlme::gapply(metro.daily, FUN=covid.rt, groups=metro.daily$Metro_Area)</code></pre>
 <pre><code>## Warning in est.R0.TD(epid = c(`2020-03-09` = 7, `2020-03-10` = 3, `2020-03-11` =
 ## 3, : Simulations may take several minutes.</code></pre>
 <pre><code>## Warning in est.R0.TD(epid = c(`2020-03-09` = 7, `2020-03-10` = 3, `2020-03-11` =
 ## 3, : Using initial incidence as initial number of cases.</code></pre>
-<pre class="r"><code>########## KABLE TABLES CAN BE COMMENTED OUT WHEN RUN IN GIT ##############
-# library(kableExtra)
-# county.rt.df[1:25,]%&gt;%kable(caption=&quot;Texas County Level RT Estimates&quot;)%&gt;%kable_styling(full_width=FALSE)
-# metro.rt.df[1:25,]%&gt;%kable(caption=&quot;Texas Metro Level RT Estimates&quot;)%&gt;%kable_styling(full_width=FALSE)
-# TSA.rt.df[1:25,]%&gt;%kable(caption=&quot;Texas TSA RT Estimates&quot;)%&gt;%kable_styling(full_width = FALSE)
-# state.rt.df[1:25,]%&gt;%kable(caption=&quot;Texas State RT Estimates&quot;)%&gt;%kable_styling(full_width=FALSE)
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 2, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 2, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre class="r"><code>#convert list of data frames to single data frame with metro as id col
+metro.rt.df &lt;- data.table::rbindlist(metro.rt.output, idcol=TRUE)
+colnames(metro.rt.df)[1] = &#39;Metro_Area&#39;</code></pre>
+</div>
+<div id="tsa" class="section level2">
+<h2>TSA</h2>
+<pre class="r"><code>#apply the covid.rt function to the TSA.daily data by TSA region
+TSA.rt.output &lt;- nlme::gapply(TSA.daily, FUN=covid.rt, groups=TSA.daily$TSA)</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-21` = 4, `2020-03-22` = 0, `2020-03-23` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-21` = 4, `2020-03-22` = 0, `2020-03-23` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-20` = 2, `2020-03-21` = 3, `2020-03-22` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-20` = 2, `2020-03-21` = 3, `2020-03-22` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-20` = 1, `2020-03-21` = 2, `2020-03-22` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-20` = 1, `2020-03-21` = 2, `2020-03-22` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-21` = 1, `2020-03-22` = 0, `2020-03-23` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-21` = 1, `2020-03-22` = 0, `2020-03-23` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-09` = 1, `2020-03-10` = 2, `2020-03-11` =
+## 3, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-09` = 1, `2020-03-10` = 2, `2020-03-11` =
+## 3, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-18` = 1, `2020-03-19` = 0, `2020-03-20` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-18` = 1, `2020-03-19` = 0, `2020-03-20` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-10` = 1, `2020-03-11` = 0, `2020-03-12` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-10` = 1, `2020-03-11` = 0, `2020-03-12` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-26` = 2, `2020-03-27` = 0, `2020-03-28` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-26` = 2, `2020-03-27` = 0, `2020-03-28` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 1, `2020-03-16` = 0, `2020-03-17` =
+## 2, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 1, `2020-03-16` = 0, `2020-03-17` =
+## 2, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-20` = 1, `2020-03-21` = 1, `2020-03-22` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-20` = 1, `2020-03-21` = 1, `2020-03-22` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 1, `2020-03-25` = 0, `2020-03-26` =
+## 1, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-24` = 1, `2020-03-25` = 0, `2020-03-26` =
+## 1, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 1, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 1, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-19` = 6, `2020-03-20` = 1, `2020-03-21` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-19` = 6, `2020-03-20` = 1, `2020-03-21` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-18` = 1, `2020-03-19` = 0, `2020-03-20` =
+## 1, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-18` = 1, `2020-03-19` = 0, `2020-03-20` =
+## 1, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 3, `2020-03-16` = 0, `2020-03-17` =
+## 1, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 3, `2020-03-16` = 0, `2020-03-17` =
+## 1, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 3, `2020-03-16` = 0, `2020-03-17` =
+## 1, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 3, `2020-03-16` = 0, `2020-03-17` =
+## 1, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-09` = 6, `2020-03-10` = 0, `2020-03-11` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-09` = 6, `2020-03-10` = 0, `2020-03-11` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 3, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 3, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 1, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-15` = 1, `2020-03-16` = 0, `2020-03-17` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-17` = 1, `2020-03-18` = 0, `2020-03-19` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-17` = 1, `2020-03-18` = 0, `2020-03-19` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-22` = 1, `2020-03-23` = 0, `2020-03-24` =
+## 0, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-22` = 1, `2020-03-23` = 0, `2020-03-24` =
+## 0, : Using initial incidence as initial number of cases.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-20` = 1, `2020-03-21` = 0, `2020-03-22` =
+## 5, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-20` = 1, `2020-03-21` = 0, `2020-03-22` =
+## 5, : Using initial incidence as initial number of cases.</code></pre>
+<pre class="r"><code>#convert list of data frames to single data frame with TSA as variable
+TSA.rt.df &lt;- data.table::rbindlist(TSA.rt.output, idcol=TRUE)
 
-#NOTE: FILE DESTINATION WILL NEED TO BE UPDATED FOR EACH OF THESE TO 
-  #MATCH DIRECTORY IN YOUR WORKING DIRECTORY
+# add TSA_Name &amp; fix dates
+colnames(TSA.rt.df)[1] &lt;- &#39;TSA&#39;
+TSA.rt.df$Date &lt;- as.Date(TSA.rt.df$Date)
+TSA.rt.df &lt;- merge(TSA.rt.df, TSA.daily[, c(&#39;TSA&#39;, &#39;TSA_Name&#39;, &#39;Date&#39;)], by = c(&#39;TSA&#39;, &#39;Date&#39;))
 
-write.csv(county.rt.df, file=&quot;statistical-output/rt/county_rt.csv&quot;, row.names=FALSE)
-write.csv(metro.rt.df, file=&quot;statistical-output/rt/metro_rt.csv&quot;, row.names=FALSE)
-write.csv(TSA.rt.df, file=&quot;statistical-output/rt/tsa_rt.csv&quot;, row.names=FALSE)
-write.csv(state.rt.df, file=&quot;statistical-output/rt/state_rt.csv&quot;, row.names=FALSE)</code></pre>
+# combine TSA 
+TSA.rt.df$TSA &lt;- paste0(TSA.rt.df$TSA, &#39; - &#39;, TSA.rt.df$TSA_Name)
+TSA.rt.df$TSA_Name &lt;- NULL</code></pre>
+</div>
+<div id="state" class="section level2">
+<h2>State</h2>
+<pre class="r"><code>state.rt.df &lt;- covid.rt(state.daily)</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-09` = 7, `2020-03-10` = 3, `2020-03-11` =
+## 3, : Simulations may take several minutes.</code></pre>
+<pre><code>## Warning in est.R0.TD(epid = c(`2020-03-09` = 7, `2020-03-10` = 3, `2020-03-11` =
+## 3, : Using initial incidence as initial number of cases.</code></pre>
+</div>
+<div id="export" class="section level2">
+<h2>export</h2>
+<pre class="r"><code>write.csv(county.rt.df,&quot;statistical-output/rt/county_rt.csv&quot;, row.names = FALSE)
+write.csv(metro.rt.df, &quot;statistical-output/rt/metro_rt.csv&quot;, row.names = FALSE)
+write.csv(TSA.rt.df, &quot;statistical-output/rt/tsa_rt.csv&quot;, row.names = FALSE)
+write.csv(state.rt.df, &quot;statistical-output/rt/state_rt.csv&quot;, row.names = FALSE)</code></pre>
 </div>
 <div id="grouping" class="section level2">
 <h2>grouping</h2>
-<pre class="r"><code>colnames(county.rt.df)[1] = &#39;Level&#39;
-colnames(metro.rt.df)[1] = &#39;Level&#39;
-colnames(TSA.rt.df)[1] = &#39;Level&#39;
+<pre class="r"><code>colnames(county.rt.df)[1] &lt;- &#39;Level&#39;
+colnames(metro.rt.df)[1] &lt;- &#39;Level&#39;
+colnames(TSA.rt.df)[1] &lt;- &#39;Level&#39;
 
-state.rt.df$Level = &#39;Texas&#39;
+state.rt.df$Level &lt;- &#39;Texas&#39;
 
-combined.rt.df = rbind(county.rt.df, metro.rt.df, TSA.rt.df, state.rt.df)
+combined.rt.df &lt;- rbind(county.rt.df, metro.rt.df, TSA.rt.df, state.rt.df)
 write.csv(combined.rt.df, &#39;statistical-output/rt/stacked_rt.csv&#39;, row.names = FALSE)</code></pre>
 </div>
 </div>
 <div id="time-series" class="section level1">
 <h1>TIME SERIES</h1>
 <pre class="r"><code>#ts.rt.data.clean function will clean data, dropping unwanted variables
-#note: mydata will be either full.dshs or tsa.dshs data
 ts.data.clean&lt;-function(covid.data) {
+
+  ts_cols &lt;- c(&quot;County&quot;, &quot;Date&quot;, &quot;TSA&quot;, &quot;TSA_Name&quot;,
+               &quot;Metro_Area&quot;, &quot;Cases_Daily&quot;, &quot;Cases_Cumulative&quot;,
+               &quot;Population_DSHS&quot;)
   
-  library(dplyr)
-  library(tidyr)
-  library(reshape2)
-  # str(covid.data)
-  #keep variables from this list if they are in the data set
-      #(county, date, population, TSA_Name, Cases_Daily, Population_DSHS, Population_Census)
-  covid.data&lt;-covid.data[,names(covid.data)%in% 
-                           c(&quot;County&quot;, #name of texas county 
-                             &quot;Date&quot;, #date of data recorded
-                             &quot;TSA&quot;,
-                             &quot;TSA_Name&quot;, #name of texas TSA group for county
-                             &quot;Metro_Area&quot;, #indicateor of metro/nonmetro county
-                             &quot;Cases_Daily&quot;, #daily new cases
-                             &quot;Cases_Cumulative&quot;,
-                             &quot;Population_DSHS&quot;)] #population for county per DSHS data
-                                                  #Note: Census data is from 2010, these values are projections 
-                                                        #from that Census as provided by the Census Bureau
-  #change Date variable to date format
-  covid.data$Date&lt;-as.Date(covid.data$Date)
-  #change Cases_Daily to numeric - if not already numeric
-  covid.data$Cases_Daily&lt;-as.numeric(covid.data$Cases_Daily)
+  covid.data &lt;- covid.data[, names(covid.data) %in% ts_cols]
+  
+  # set correct types
+  covid.data$Date &lt;- as.Date(covid.data$Date)
+  covid.data$Cases_Daily &lt;- as.numeric(covid.data$Cases_Daily)
+  
   #change any Cases_Daily below zero to zero
-  covid.data&lt;-covid.data%&gt;%mutate(Cases_Daily=ifelse(Cases_Daily&lt;0, 0, Cases_Daily))
+  covid.data &lt;- covid.data %&gt;% mutate(Cases_Daily = ifelse(Cases_Daily &lt; 0, 0, Cases_Daily))
   return(covid.data)
   
 }</code></pre>
 <pre class="r"><code>#separate county, metro, TSA and State data into separate Data frames
 ts.data.organize&lt;-function(mycounty, mytsa){
-  library(dplyr)
-  library(tidyr)
-  
+
   ### COUNTY ###
-  
-  #call the ts.data.clean function on mydata
-  cleaned.county&lt;-ts.data.clean(mycounty)
-  
-  # drop NA dates
-  cleaned.county&lt;-subset(cleaned.county, !is.na(Date) &amp; Date&gt;=as.Date(&#39;2020-03-04&#39;))
+  # clean county vals and restrict to first date of collection
+  cleaned.county &lt;- ts.data.clean(mycounty)
+  cleaned.county &lt;- subset(cleaned.county, !is.na(Date) &amp; Date &gt;= as.Date(&#39;2020-03-04&#39;))
 
-  #Drop TSA_Name from county data frame
-  county.df&lt;-cleaned.county%&gt;%dplyr::select(-TSA_Name, -Metro_Area)
-  county.df$Level = &#39;County&#39;
-  colnames(county.df)[1] = &#39;Level_Name&#39;
+  # Set column names
+  county.df &lt;- cleaned.county%&gt;%dplyr::select(-TSA_Name, -Metro_Area)
+  county.df$Level &lt;- &#39;County&#39;
+  colnames(county.df)[1] &lt;- &#39;Level_Name&#39;
+  
+  
   ### METRO ###
-
-  #create metro.df by mutating by grouping by Metro
-  metro.temp&lt;-cleaned.county%&gt;%
-    group_by(Metro_Area,Date)%&gt;%
-    mutate(metro_Cases_Daily=sum(Cases_Daily, na.rm=TRUE))%&gt;%#generate variable of state daily cases
-    mutate(metro_Cases_Cumulative=sum(Cases_Cumulative, na.rm=TRUE))%&gt;%#generate variable of state daily cases
-    mutate(metro_pop_DSHS=sum(Population_DSHS, na.rm=TRUE))%&gt;%#generate state population_DSHS variable
-    dplyr::select(Date,Metro_Area, metro_Cases_Daily, metro_Cases_Cumulative, metro_pop_DSHS)%&gt;%#select only variables of interest
-    distinct()#keep only distinct rows (this will drop repeated rows, now that we have only state level va
+  metro.temp&lt;-cleaned.county %&gt;%
+    group_by(Metro_Area, Date) %&gt;%
+    mutate(metro_Cases_Daily = sum(Cases_Daily, na.rm = TRUE)) %&gt;%
+    mutate(metro_Cases_Cumulative = sum(Cases_Cumulative, na.rm=TRUE)) %&gt;%
+    mutate(metro_pop_DSHS = sum(Population_DSHS, na.rm=TRUE)) %&gt;%
+    dplyr::select(Date, Metro_Area, metro_Cases_Daily, metro_Cases_Cumulative, metro_pop_DSHS) %&gt;%
+    distinct()
     
-  metro.df&lt;-data.frame(Date=metro.temp$Date,
-                       Level = &#39;metro&#39;,
-                       Level_Name=metro.temp$Metro_Area,
-                       Cases_Daily=metro.temp$metro_Cases_Daily,
-                       Cases_Cumulative = metro.temp$metro_Cases_Cumulative,
-                       Population_DSHS=metro.temp$metro_pop_DSHS)
+  metro.df &lt;- data.frame(Date = metro.temp$Date,
+                         Level = &#39;metro&#39;,
+                         Level_Name = metro.temp$Metro_Area,
+                         Cases_Daily = metro.temp$metro_Cases_Daily,
+                         Cases_Cumulative = metro.temp$metro_Cases_Cumulative,
+                         Population_DSHS = metro.temp$metro_pop_DSHS)
   
-    
   # drop NA dates
-  metro.df&lt;-subset(metro.df, !is.na(Date) &amp; Date&gt;=as.Date(&#39;2020-03-04&#39;))
+  metro.df &lt;- subset(metro.df, !is.na(Date) &amp; Date&gt;=as.Date(&#39;2020-03-04&#39;))
+  
   
   ### TSA ###
-  TSA.df&lt;-ts.data.clean(mytsa)
-  TSA.df&lt;-subset(TSA.df, Date&gt;=as.Date(&#39;2020-03-04&#39;))
+  TSA.df &lt;- ts.data.clean(mytsa)
+  TSA.df &lt;- subset(TSA.df, !is.na(Date) &amp; Date &gt;= as.Date(&#39;2020-03-04&#39;))
   
-  TSA.df$Level = &#39;TSA&#39;
-  colnames(TSA.df)[2] = &#39;Level_Name&#39;
+  TSA.df$Level &lt;- &#39;TSA&#39;
+  colnames(TSA.df)[2] &lt;- &#39;Level_Name&#39;
+  
+  
   ### STATE ###
-  
-  #create state.df
-  #at the state level we want daily new cases, and population variables from DSHS and Census data
-  state.temp&lt;-TSA.df%&gt;%
-    group_by(Date)%&gt;%
-    mutate(state_Cases_Daily=sum(Cases_Daily, na.rm=TRUE))%&gt;%#generate variable of state daily cases
-    mutate(state_Cases_Cumulative=sum(Cases_Cumulative, na.rm=TRUE))%&gt;%#generate variable of state Cumulative cases
-    mutate(state_pop_DSHS=sum(Population_DSHS, na.rm=TRUE))%&gt;%#generate state population_DSHS variable
-    dplyr::select(Date,state_Cases_Daily, state_Cases_Cumulative, state_pop_DSHS)%&gt;%#select only variables of interest
-    distinct()#keep only distinct rows (this will drop repeated rows, now that we have only state level vars)
+  state.temp&lt;-TSA.df %&gt;%
+    group_by(Date) %&gt;%
+    mutate(state_Cases_Daily = sum(Cases_Daily, na.rm = TRUE)) %&gt;%
+    mutate(state_Cases_Cumulative = sum(Cases_Cumulative, na.rm = TRUE)) %&gt;%
+    mutate(state_pop_DSHS = sum(Population_DSHS, na.rm = TRUE)) %&gt;%
+    dplyr::select(Date, state_Cases_Daily, state_Cases_Cumulative, state_pop_DSHS) %&gt;%
+    distinct()
     
-  state.df&lt;-data.frame(Date=state.temp$Date,
-                       Level = &#39;State&#39;,
-                       Level_Name = &#39;Texas&#39;,
-                       Cases_Daily=state.temp$state_Cases_Daily,
-                       Cases_Cumulative=state.temp$state_Cases_Cumulative, 
-                       Population_DSHS=state.temp$state_pop_DSHS)
+  state.df &lt;- data.frame(Date=state.temp$Date,
+                         Level = &#39;State&#39;,
+                         Level_Name = &#39;Texas&#39;,
+                         Cases_Daily=state.temp$state_Cases_Daily,
+                         Cases_Cumulative=state.temp$state_Cases_Cumulative, 
+                         Population_DSHS=state.temp$state_pop_DSHS)
   
-  state.df&lt;- subset(state.df, Date&gt;=as.Date(&#39;2020-03-04&#39;))
+  state.df &lt;- subset(state.df, Date&gt;=as.Date(&#39;2020-03-04&#39;))
   
-  #return a list of the three dataframes generated
-  return(list(county=county.df, TSA=TSA.df, state=state.df, metro=metro.df))
+  
+  ### OUTPUT ###
+  ts.df.out &lt;- list(county=county.df, TSA=TSA.df, state=state.df, metro=metro.df)
+  return(ts.df.out)
 }</code></pre>
-<pre class="r"><code>library(astsa)</code></pre>
-<pre><code>## Warning: package &#39;astsa&#39; was built under R version 3.6.3</code></pre>
-<pre class="r"><code>library(forecast)</code></pre>
-<pre><code>## Warning: package &#39;forecast&#39; was built under R version 3.6.3</code></pre>
-<pre><code>## Registered S3 method overwritten by &#39;xts&#39;:
-##   method     from
-##   as.zoo.xts zoo</code></pre>
-<pre><code>## Registered S3 method overwritten by &#39;quantmod&#39;:
-##   method            from
-##   as.zoo.data.frame zoo</code></pre>
-<pre><code>## 
-## Attaching package: &#39;forecast&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:astsa&#39;:
-## 
-##     gas</code></pre>
-<pre><code>## The following object is masked from &#39;package:nlme&#39;:
-## 
-##     getResponse</code></pre>
-<pre class="r"><code>library(zoo)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;zoo&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     as.Date, as.Date.numeric</code></pre>
-<pre class="r"><code>library(ggplot2)
-library(fpp2)</code></pre>
-<pre><code>## Warning: package &#39;fpp2&#39; was built under R version 3.6.3</code></pre>
-<pre><code>## Loading required package: fma</code></pre>
-<pre><code>## Warning: package &#39;fma&#39; was built under R version 3.6.3</code></pre>
-<pre><code>## 
-## Attaching package: &#39;fma&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:astsa&#39;:
-## 
-##     chicken, sales</code></pre>
-<pre><code>## The following objects are masked from &#39;package:MASS&#39;:
-## 
-##     cement, housing, petrol</code></pre>
-<pre><code>## Loading required package: expsmooth</code></pre>
-<pre><code>## Warning: package &#39;expsmooth&#39; was built under R version 3.6.3</code></pre>
-<pre><code>## 
-## Attaching package: &#39;fpp2&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:astsa&#39;:
-## 
-##     oil</code></pre>
-<pre class="r"><code>library(gridExtra)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;gridExtra&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
-## 
-##     combine</code></pre>
-<pre class="r"><code>covid.arima.forecast&lt;-function(mydata)
+<pre class="r"><code># Compute forecast (UPDATE PREDICTION PERIOD [days] AS NEEDED)
+covid.arima.forecast&lt;-function(mydata, prediction.period = 10)
 {
-  maxdate&lt;-max(mydata$Date)
-  mindate &lt;-min(mydata$Date)
-  prediction.period&lt;-10 #this can be changed as desired
+  maxdate &lt;- max(mydata$Date)
+  mindate &lt;- min(mydata$Date)
   if(max(mydata$Cases_Daily&gt;=5, na.rm = TRUE))
   {
-    #for the time series, you need a start day, which is the year, and the day number -
-    #we need to double check how this works exactly
-    my.timeseries&lt;-ts(mydata$Cases_Daily)
-    #d=0 restricts first differencing to 0 so that daily cases aren&#39;t differenced
-    #get a fit model using the best ARIMA from auto.arima
-    arima.fit&lt;-forecast::auto.arima(my.timeseries, d=0)
-    #use predict() on the fit model
-    # prediction.period is how many more days to forecast
-    # 10 day forecast, CI for lower and upper has confidence level 70% set by level =c(70,70)
-    arima.forecast&lt;-forecast::forecast(arima.fit, h = prediction.period, level=c(70,70))
-    #auto correlation function
-    # diagnostics
-  
-    # omit diagnostics for performance
-
-    # acf&lt;-ggAcf(my.timeseries, lag.max=30)
-    # pacf&lt;-ggPacf(my.timeseries, lag.max=30)
+    # arima requires cases to be a timeseries vector
+    my.timeseries &lt;- ts(mydata$Cases_Daily)
     
-    # grid.arrange(acf, pacf, nrow=2)
-    # ggsave(paste0(&#39;statistical-output/time-series/diagnostics/&#39;, mydata$Level[1],&#39;/&#39;, mydata$Level_Name[1], &#39;.png&#39;))
+    #d=0 restricts first differencing to 0 so that daily cases aren&#39;t differenced
+    arima.fit &lt;- forecast::auto.arima(my.timeseries, d = 0)
+    
+    # 10 day forecast, CI for lower and upper has confidence level 70% set by level =c(70,70)
+    arima.forecast &lt;- forecast::forecast(arima.fit, h = prediction.period, level=c(70,70))
+
     #return a dataframe of the arima model(Daily cases by date)
-    #and forecasted values ***NOT SURE HOW THIS WILL WORK***
-    arima.out&lt;-data.frame(Date = seq(mindate, maxdate + 10, by = &#39;days&#39;),
+    arima.out &lt;- data.frame(Date = seq(mindate, maxdate + prediction.period, by = &#39;days&#39;),
                           Cases_Daily = c(my.timeseries, arima.forecast[[&#39;mean&#39;]]),
-                          CI_Lower = c(rep(NA, times = length(my.timeseries)), arima.forecast[[&#39;lower&#39;]][, 2]),
+                          CI_Lower = c(rep(NA, times = length(my.timeseries)),
+                                       arima.forecast[[&#39;lower&#39;]][, 2]),
                           CI_Upper = c(rep(NA, times = length(my.timeseries)),
                                        arima.forecast[[&#39;upper&#39;]][, 2]))
     } else {
-    arima.out&lt;-data.frame(Date = seq(mindate, maxdate + 10, by = &#39;days&#39;),
-                          Cases_Daily = c(mydata$Cases_Daily, rep(NA, times = 10)),
-                          CI_Lower = rep(NA, times = length(mydata$Date) + 10),
-                          CI_Upper =  rep(NA, times = length(mydata$Date) + 10)
-                          )
+    # insufficient data catch: return NA values for predictions 
+    arima.out &lt;- data.frame(Date = seq(mindate, maxdate + prediction.period, by = &#39;days&#39;),
+                          Cases_Daily = c(mydata$Cases_Daily, rep(NA, times = prediction.period)),
+                          CI_Lower = rep(NA, times = length(mydata$Date) + prediction.period),
+                          CI_Upper =  rep(NA, times = length(mydata$Date) + prediction.period))
     }
+  
   #replace CI lower limit with 0 if negative
-  arima.out$CI_Lower&lt;-ifelse(arima.out$CI_Lower&gt;=0,arima.out$CI_Lower, 0)
+  arima.out$CI_Lower &lt;- ifelse(arima.out$CI_Lower&gt;=0,arima.out$CI_Lower, 0)
+  
   return(arima.out)
 }</code></pre>
 <div id="county-1" class="section level2">
 <h2>County</h2>
-<pre class="r"><code>#get county forecasts using covid.arima.forecast function
+<pre class="r"><code># apply arima across all counties
+county.arima.output &lt;- nlme::gapply(county.Daily,
+                                    FUN = covid.arima.forecast,
+                                    groups = county.Daily$Level_Name)
 
-#load nlme package
-library(nlme)
-#apply the covid.arima.forecast function to the county.Daily dataframe by county
-#note that the output will be a list of dataframes
-county.arima.output&lt;-nlme::gapply(county.Daily, FUN = covid.arima.forecast, groups=county.Daily$Level_Name)
-#load data.table package
-library(data.table)
-county.arima.df&lt;-data.table::rbindlist(county.arima.output, idcol=TRUE)
-
-colnames(county.arima.df)[1] = &#39;County&#39;</code></pre>
+# bind list of dataframes to one dataframe
+county.arima.df &lt;- data.table::rbindlist(county.arima.output, idcol = TRUE)
+colnames(county.arima.df)[1] &lt;- &#39;County&#39;</code></pre>
 </div>
 <div id="metro-1" class="section level2">
 <h2>Metro</h2>
-<pre class="r"><code>#get metro forecasts using covid.arima.forecast function
-#load nlme package
-library(nlme)
-#apply the covid.arima.forecast function to the metro.Daily dataframe by metro
-#note that the output will be a list of dataframes
-metro.arima.output&lt;-nlme::gapply(metro.Daily, FUN = covid.arima.forecast, groups=metro.Daily$Level_Name)
-#load data.table package
-library(data.table)
-metro.arima.df&lt;-data.table::rbindlist(metro.arima.output, idcol=TRUE)
+<pre class="r"><code># apply arima across both metro values
+metro.arima.output &lt;- nlme::gapply(metro.Daily,
+                                   FUN = covid.arima.forecast,
+                                   groups = metro.Daily$Level_Name)
 
-colnames(metro.arima.df)[1] = &#39;Metro_Area&#39;</code></pre>
+# bind list of dataframes to one dataframe
+metro.arima.df &lt;- data.table::rbindlist(metro.arima.output, idcol = TRUE)
+colnames(metro.arima.df)[1] &lt;- &#39;Metro_Area&#39;</code></pre>
 </div>
 <div id="tsa-1" class="section level2">
 <h2>TSA</h2>
-<pre class="r"><code>#ge#load nlme package
-library(nlme)
-#apply the covid.arima.forecast function to the TSA.Daily dataframe by TSA
-#note that the output will be a list of dataframes
-TSA.arima.output&lt;-nlme::gapply(TSA.Daily, FUN = covid.arima.forecast, groups=TSA.Daily$Level_Name)
-#load data.table package
-library(data.table)
-TSA.arima.df&lt;-data.table::rbindlist(TSA.arima.output, idcol=TRUE)
+<pre class="r"><code>TSA.arima.output &lt;- nlme::gapply(TSA.Daily,
+                               FUN = covid.arima.forecast,
+                               groups = TSA.Daily$Level_Name)
 
-colnames(TSA.arima.df)[1] = &#39;TSA&#39;
-TSA.arima.df = merge(TSA.arima.df, unique(TSA.daily[, c(&#39;TSA&#39;, &#39;TSA_Name&#39;)]), by = c(&#39;TSA&#39;))
+TSA.arima.df &lt;- data.table::rbindlist(TSA.arima.output, idcol=TRUE)
+
+colnames(TSA.arima.df)[1] &lt;- &#39;TSA&#39;
+TSA.arima.df &lt;- merge(TSA.arima.df, unique(TSA.daily[, c(&#39;TSA&#39;, &#39;TSA_Name&#39;)]), by = c(&#39;TSA&#39;))
 
 # combine TSA 
-TSA.arima.df$TSA = paste0(TSA.arima.df$TSA, &#39; - &#39;, TSA.arima.df$TSA_Name)
-TSA.arima.df$TSA_Name = NULL</code></pre>
-<pre class="r"><code>#get Texas forecasts using covid.arima.forecast function
-texas.arima.df&lt;-covid.arima.forecast(state.Daily)</code></pre>
-<pre class="r"><code>#export arima results into .csv files
-write.csv(texas.arima.df, &#39;statistical-output/time-series/state_timeseries.csv&#39;, row.names = F)
-write.csv(TSA.arima.df, &#39;statistical-output/time-series/tsa_timeseries.csv&#39;, row.names = F)
-write.csv(county.arima.df, &#39;statistical-output/time-series/county_timeseries.csv&#39;, row.names = F)
-write.csv(metro.arima.df, &#39;statistical-output/time-series/metro_timeseries.csv&#39;, row.names = F)</code></pre>
+TSA.arima.df$TSA &lt;- paste0(TSA.arima.df$TSA, &#39; - &#39;, TSA.arima.df$TSA_Name)
+TSA.arima.df$TSA_Name &lt;- NULL</code></pre>
+</div>
+<div id="state-1" class="section level2">
+<h2>State</h2>
+<pre class="r"><code>texas.arima.df &lt;- covid.arima.forecast(state.Daily)</code></pre>
+</div>
+<div id="export-1" class="section level2">
+<h2>export</h2>
+<pre class="r"><code>write.csv(texas.arima.df, &#39;statistical-output/time-series/state_timeseries.csv&#39;, row.names = FALSE)
+write.csv(TSA.arima.df, &#39;statistical-output/time-series/tsa_timeseries.csv&#39;, row.names = FALSE)
+write.csv(county.arima.df, &#39;statistical-output/time-series/county_timeseries.csv&#39;, row.names = FALSE)
+write.csv(metro.arima.df, &#39;statistical-output/time-series/metro_timeseries.csv&#39;, row.names = FALSE)</code></pre>
 </div>
 <div id="grouping-1" class="section level2">
 <h2>grouping</h2>
-<pre class="r"><code>colnames(county.arima.df)[1] = &#39;Level&#39;
-colnames(metro.arima.df)[1] = &#39;Level&#39;
-colnames(TSA.arima.df)[1] = &#39;Level&#39;
+<pre class="r"><code>colnames(county.arima.df)[1] &lt;- &#39;Level&#39;
+colnames(metro.arima.df)[1] &lt;- &#39;Level&#39;
+colnames(TSA.arima.df)[1] &lt;- &#39;Level&#39;
 
-texas.arima.df$Level = &#39;Texas&#39;
+texas.arima.df$Level &lt;- &#39;Texas&#39;
 
-combined.arima.df = rbind(county.arima.df, metro.arima.df, TSA.arima.df, texas.arima.df)
-write.csv(combined.arima.df, &#39;statistical-output/time-series/stacked_timeseries.csv&#39;, row.names = FALSE)</code></pre>
+combined.arima.df &lt;- rbind(county.arima.df, metro.arima.df, TSA.arima.df, texas.arima.df)
+write.csv(combined.arima.df, &#39;statistical-output/time-series/stacked_timeseries.csv&#39;,
+          row.names = FALSE)</code></pre>
 </div>
 </div>
 <div id="standard-statistical-tests" class="section level1">
@@ -2142,22 +2675,13 @@ write.csv(combined.arima.df, &#39;statistical-output/time-series/stacked_timeser
 <h2>CASE RATIOS</h2>
 <div id="tsa-2" class="section level3">
 <h3>TSA</h3>
-<pre class="r"><code>library(lubridate)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;lubridate&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:data.table&#39;:
-## 
-##     hour, isoweek, mday, minute, month, quarter, second, wday, week,
-##     yday, year</code></pre>
-<pre><code>## The following object is masked from &#39;package:base&#39;:
-## 
-##     date</code></pre>
-<pre class="r"><code>cumcases.TSA &lt;- TSA.Daily %&gt;% dplyr::select(Date,Level_Name, Cases_Cumulative)
+<pre class="r"><code>#TODO: update all varnames
+cumcases.TSA &lt;- TSA.Daily %&gt;% dplyr::select(Date,Level_Name, Cases_Cumulative)
 cumcases.TSA$Date &lt;- ymd(cumcases.TSA$Date)
 
 latestdate &lt;- max(cumcases.TSA$Date)
 earliestdate &lt;- latestdate - 14
-middate &lt;- latestdate-7
+middate &lt;- latestdate - 7
 
 week2 &lt;- subset(cumcases.TSA, Date==latestdate, select=Cases_Cumulative) - 
   subset(cumcases.TSA, Date==middate, select=Cases_Cumulative)
@@ -2172,31 +2696,42 @@ tsa_current_ratio_dat &lt;- data.frame(TSA=subset(cumcases.TSA, Date==latestdate
                                     current_ratio=current_ratio, current_ratio_cat = cut(current_ratio, breaks=c(0,0.5,.9,1.1,1.5,2,4,8,max(current_ratio))))
 
 # add TSA name
-tsa_current_ratio_dat = merge(tsa_current_ratio_dat, unique(TSA.daily[, c(&#39;TSA&#39;, &#39;TSA_Name&#39;)]), by = &#39;TSA&#39;)
-
+tsa_current_ratio_dat &lt;- merge(tsa_current_ratio_dat, unique(TSA.daily[, c(&#39;TSA&#39;, &#39;TSA_Name&#39;)]), by = &#39;TSA&#39;)
 
 # combine TSA name
-tsa_current_ratio_dat$TSA = paste0(tsa_current_ratio_dat$TSA, &#39; - &#39;, tsa_current_ratio_dat$TSA_Name)
-tsa_current_ratio_dat$TSA_Name = NULL</code></pre>
+tsa_current_ratio_dat$TSA &lt;- paste0(tsa_current_ratio_dat$TSA, &#39; - &#39;, tsa_current_ratio_dat$TSA_Name)
+tsa_current_ratio_dat$TSA_Name &lt;- NULL</code></pre>
 </div>
 <div id="county-2" class="section level3">
 <h3>County</h3>
-<pre class="r"><code>cumcases.county &lt;- county.Daily %&gt;% dplyr::select(Date,Level_Name, Cases_Cumulative)
+<pre class="r"><code># declare vals
+cumcases.county &lt;- county.Daily %&gt;% dplyr::select(Date,Level_Name, Cases_Cumulative)
 cumcases.county$Date &lt;- ymd(cumcases.county$Date)
 
 latestdate &lt;- max(cumcases.county$Date, na.rm=T)
 earliestdate &lt;- latestdate - 14
 middate &lt;- latestdate-7
 
+# calc cumulative case ratios from 2 weeks ago and last week
 week2 &lt;- subset(cumcases.county, Date==latestdate, select=Cases_Cumulative) - 
-  subset(cumcases.county, Date==middate, select=Cases_Cumulative)
+         subset(cumcases.county, Date==middate, select=Cases_Cumulative)
+
 week1 &lt;- subset(cumcases.county, Date==middate, select=Cases_Cumulative) - 
-  subset(cumcases.county, Date==earliestdate, select=Cases_Cumulative)
+         subset(cumcases.county, Date==earliestdate, select=Cases_Cumulative)
 
 current_ratio &lt;- (week2/week1)[,1]
+
+# add contingencies 
 current_ratio[week1&lt;10] &lt;- NA
 current_ratio[current_ratio&lt;0] &lt;- NA
-county_current_ratio_dat &lt;- data.frame(County=subset(cumcases.county, Date==latestdate, select=Level_Name)[,1], current_ratio=current_ratio, current_ratio_cat = cut(current_ratio, breaks=c(0,0.5,.9,1.1,1.5,2,4,8,max(current_ratio))))</code></pre>
+
+# output
+# TODO: investigate select vs subset(...)[, &#39;Level_Name&#39;]
+county_current_ratio_dat &lt;- 
+  data.frame(County=subset(cumcases.county, Date==latestdate, select=Level_Name)[,1],
+             current_ratio=current_ratio,
+             current_ratio_cat = cut(current_ratio,
+                                     breaks=c(0,0.5,.9,1.1,1.5,2,4,8,max(current_ratio))))</code></pre>
 </div>
 <div id="metro-2" class="section level3">
 <h3>Metro</h3>
@@ -2208,105 +2743,116 @@ earliestdate &lt;- latestdate - 14
 middate &lt;- latestdate-7
 
 week2 &lt;- subset(cumcases.metro, Date==latestdate, select=Cases_Cumulative) - 
-  subset(cumcases.metro, Date==middate, select=Cases_Cumulative)
+         subset(cumcases.metro, Date==middate, select=Cases_Cumulative)
 week1 &lt;- subset(cumcases.metro, Date==middate, select=Cases_Cumulative) - 
-  subset(cumcases.metro, Date==earliestdate, select=Cases_Cumulative)
+         subset(cumcases.metro, Date==earliestdate, select=Cases_Cumulative)
 
 current_ratio &lt;- (week2/week1)[,1]
 current_ratio[current_ratio&lt;0] &lt;- NA
-metro_current_ratio_dat &lt;- data.frame(Metro_Area=subset(cumcases.metro, Date==latestdate, select=Level_Name)[,1], current_ratio=current_ratio, current_ratio_cat = cut(current_ratio, breaks=c(0,0.5,.9,1.1,1.5,2,4,8,max(current_ratio))))</code></pre>
+
+metro_current_ratio_dat &lt;-
+  data.frame(Metro_Area=subset(cumcases.metro, Date==latestdate, select=Level_Name)[,1],
+             current_ratio=current_ratio,
+             current_ratio_cat = cut(current_ratio,
+                                     breaks=c(0,0.5,.9,1.1,1.5,2,4,8,max(current_ratio))))</code></pre>
 </div>
 <div id="texas" class="section level3">
 <h3>Texas</h3>
 <pre class="r"><code>cumcases.state &lt;- state.Daily %&gt;% dplyr::select(Date, Cases_Cumulative)
 cumcases.state$Date &lt;- ymd(cumcases.state$Date)
 
-latestdate &lt;- max(cumcases.state$Date, na.rm=T)
+latestdate &lt;- max(cumcases.state$Date, na.rm = TRUE)
 earliestdate &lt;- latestdate - 14
 middate &lt;- latestdate-7
 
-week2 &lt;- subset(cumcases.state, Date==latestdate, select=Cases_Cumulative) - 
-  subset(cumcases.state, Date==middate, select=Cases_Cumulative)
-week1 &lt;- subset(cumcases.state, Date==middate, select=Cases_Cumulative) - 
-  subset(cumcases.state, Date==earliestdate, select=Cases_Cumulative)
+week2 &lt;- subset(cumcases.state, Date == latestdate, select = Cases_Cumulative) - 
+         subset(cumcases.state, Date == middate, select = Cases_Cumulative)
+
+week1 &lt;- subset(cumcases.state, Date == middate, select = Cases_Cumulative) - 
+         subset(cumcases.state, Date == earliestdate, select = Cases_Cumulative)
 
 current_ratio &lt;- (week2/week1)[,1]
 current_ratio[current_ratio&lt;0] &lt;- NA
-state_current_ratio_dat &lt;- data.frame(current_ratio=current_ratio, current_ratio_cat = cut(current_ratio, breaks=c(0,0.5,.9,1.1,1.5,2,4,8,max(current_ratio))))</code></pre>
+
+state_current_ratio_dat &lt;- 
+  data.frame(current_ratio=current_ratio,
+             current_ratio_cat = cut(current_ratio,
+                                     breaks=c(0,0.5,.9,1.1,1.5,2,4,8,max(current_ratio))))</code></pre>
 </div>
-<div id="export" class="section level3">
+<div id="export-2" class="section level3">
 <h3>export</h3>
-<pre class="r"><code>#export arima results into .csv files
-write.csv(state_current_ratio_dat, &#39;statistical-output/standard-stats/case-ratios/state_case_ratio.csv&#39;, row.names = F)
+<pre class="r"><code>write.csv(state_current_ratio_dat, &#39;statistical-output/standard-stats/case-ratios/state_case_ratio.csv&#39;, row.names = F)
 write.csv(tsa_current_ratio_dat,&#39;statistical-output/standard-stats/case-ratios/tsa_case_ratio.csv&#39;, row.names = F)
 write.csv(county_current_ratio_dat, &#39;statistical-output/standard-stats/case-ratios/county_case_ratio.csv&#39;, row.names = F)
 write.csv(metro_current_ratio_dat,&#39;statistical-output/standard-stats/case-ratios/metro_case_ratio.csv&#39;, row.names = F)</code></pre>
 </div>
 <div id="grouping-2" class="section level3">
 <h3>grouping</h3>
-<pre class="r"><code>colnames(county_current_ratio_dat)[1] = &#39;Level&#39;
-colnames(metro_current_ratio_dat)[1] = &#39;Level&#39;
-colnames(tsa_current_ratio_dat)[1] = &#39;Level&#39;
+<pre class="r"><code>colnames(county_current_ratio_dat)[1] &lt;- &#39;Level&#39;
+colnames(metro_current_ratio_dat)[1] &lt;- &#39;Level&#39;
+colnames(tsa_current_ratio_dat)[1] &lt;- &#39;Level&#39;
 
-state_current_ratio_dat$Level = &#39;Texas&#39;
+state_current_ratio_dat$Level &lt;- &#39;Texas&#39;
 
-combined_current_ratio_dat = rbind(county_current_ratio_dat, metro_current_ratio_dat, tsa_current_ratio_dat, state_current_ratio_dat)
-write.csv(combined_current_ratio_dat, &#39;statistical-output/standard-stats/case-ratios/stacked_case_ratio.csv&#39;, row.names = FALSE)</code></pre>
+combined_current_ratio_dat &lt;- rbind(county_current_ratio_dat, metro_current_ratio_dat,
+                                   tsa_current_ratio_dat, state_current_ratio_dat)
+
+write.csv(combined_current_ratio_dat, &#39;statistical-output/standard-stats/case-ratios/stacked_case_ratio.csv&#39;,
+          row.names &lt;- FALSE)</code></pre>
 </div>
 </div>
 <div id="change" class="section level2">
 <h2>% CHANGE</h2>
-<pre class="r"><code>require(mgcv)</code></pre>
-<pre><code>## Loading required package: mgcv</code></pre>
-<pre><code>## This is mgcv 1.8-31. For overview type &#39;help(&quot;mgcv-package&quot;)&#39;.</code></pre>
 <pre class="r"><code>create.case.test &lt;-   function(level, dat, region){
   # creates the % difference in cases and tests and smooth line with CIs 
   # level: either &quot;TSA&quot;, &quot;county&quot;, or &quot;metro&quot;. Note that &quot;county&quot; won&#39;t work for many counties unless have enough cases.
   # dat: dataset (e.g. &quot;county&quot;, &quot;metro&quot;, &quot;tsa&quot;)
   # region: the region within the dataset (county, metro region, or tsa)
   
-  if(level==&quot;TSA&quot;){
+  if(level == &quot;TSA&quot;){
     dat &lt;- subset(dat, TSA==region)
   }
-  if(level==&quot;county&quot;){
+  if(level == &quot;county&quot;){
     dat &lt;- subset(dat, County == region)
   }
-  if(level==&quot;metro&quot;){
+  if(level == &quot;metro&quot;){
     dat &lt;- subset(dat, Metro_Area==region)
   }
   
-  # first test Date (to calculate the percentage increase since that Date)
+  # restrict data to first test date (for % test increase)
   first.test.date &lt;- ymd(&quot;2020-04-22&quot;)
-  dat$Date = ymd(dat$Date)
+  dat$Date &lt;- ymd(dat$Date)
   dat$Date2 &lt;- as.numeric(ymd(dat$Date))
   
-  dat$cases_avg14 = rollmean(dat$Cases_Daily, k=14, fill = NA, align = &#39;right&#39;, na.rm = TRUE)
-  dat$tests_avg14 = rollmean(dat$Tests_Daily, k=14, fill = NA, align = &#39;right&#39;, na.rm = TRUE)
-    
-  slopedata.tests &lt;-data.frame(subset(dat, select=c(Date, Date2, Cases_Daily, Tests_Daily, cases_avg14, tests_avg14))) %&gt;%
-    subset(ymd(Date)&gt;=ymd(first.test.date))
+  # get 14 day rolling avg for instances where initial cases or tests are 0
+  dat$cases_avg14 &lt;- rollmean(dat$Cases_Daily, k=14, fill = NA, align = &#39;right&#39;, na.rm = TRUE)
+  dat$tests_avg14 &lt;- rollmean(dat$Tests_Daily, k=14, fill = NA, align = &#39;right&#39;, na.rm = TRUE)
   
-  tests_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=Tests_Daily))
-  cases_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=Cases_Daily))
-                           
-  # mean_cases = mean(slopedata.tests$Cases_Daily, na.rm = TRUE)
-  # mean_tests = mean(slopedata.tests$Tests_Daily, na.rm = TRUE)
+  # restrict new df to first.test.date forward  
+  slopedata.tests &lt;- data.frame(subset(dat, select=c(Date, Date2, Cases_Daily,
+                                                     Tests_Daily, cases_avg14, tests_avg14))) %&gt;%
+    subset(ymd(Date) &gt;= ymd(first.test.date))
   
+  tests_start &lt;- as.numeric(subset(slopedata.tests, Date==first.test.date, select=Tests_Daily))
+  cases_start &lt;- as.numeric(subset(slopedata.tests, Date==first.test.date, select=Cases_Daily))
+  
+  # numeric date for gam                         
   tmpdata &lt;- data.frame(Date2=slopedata.tests$Date2)
 
-  if (cases_start != 0 &amp; tests_start != 0) 
+  if (cases_start != 0 &amp; tests_start != 0) {
     
-  {
-    slopedata.tests$newtestsY &lt;- 100*(as.vector(slopedata.tests$Tests_Daily / tests_start)-1)
-    slopedata.tests$newcasesY &lt;- 100*(as.vector(slopedata.tests$Cases_Daily / cases_start)-1)
-  
+    # Calc splines if cases and tests will produce non Inf values
+    slopedata.tests$newtestsY &lt;- 100*(as.vector(slopedata.tests$Tests_Daily / tests_start) - 1)
+    slopedata.tests$newcasesY &lt;- 100*(as.vector(slopedata.tests$Cases_Daily / cases_start) - 1)
     
+    # fit and predict w/ gam for spline vals
     cases.gam &lt;- gam(newcasesY~s(Date2,bs=&quot;cs&quot;, k=5), data=slopedata.tests)
     tests.gam &lt;- gam(newtestsY~s(Date2,bs=&quot;cs&quot;,k=5), data=slopedata.tests)
     
     cases.fit &lt;- predict(cases.gam, tmpdata, se.fit=TRUE)
     tests.fit &lt;- predict(tests.gam, tmpdata, se.fit=TRUE)
     
+    # Use 95% CI for splines
     tmp.df &lt;- data.frame(Date = slopedata.tests$Date,
                          Data_Type = &#39;Raw&#39;,
                          cases_percentdiff = slopedata.tests$newcasesY,
@@ -2319,11 +2865,12 @@ write.csv(combined_current_ratio_dat, &#39;statistical-output/standard-stats/cas
                          tests_percentdiff_spline_upper = tests.fit$fit+1.96*tests.fit$se)    
   } else {
     
-    cases_avg_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=cases_avg14))
-    tests_avg_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=tests_avg14))
+    # only calc % increase for regions w/ sparse cases
+    cases_avg_start &lt;- as.numeric(subset(slopedata.tests, Date==first.test.date, select=cases_avg14))
+    tests_avg_start &lt;- as.numeric(subset(slopedata.tests, Date==first.test.date, select=tests_avg14))
 
-    slopedata.tests$newcasesY &lt;- 100*(as.vector(slopedata.tests$cases_avg14 / cases_avg_start)-1)
-    slopedata.tests$newtestsY &lt;- 100*(as.vector(slopedata.tests$tests_avg14 / tests_avg_start)-1)
+    slopedata.tests$newcasesY &lt;- 100*(as.vector(slopedata.tests$cases_avg14 / cases_avg_start) - 1)
+    slopedata.tests$newtestsY &lt;- 100*(as.vector(slopedata.tests$tests_avg14 / tests_avg_start) - 1)
     
     tmp.df &lt;- data.frame(Date = slopedata.tests$Date,
                          Data_Type = &#39;14-Day Average&#39;,
@@ -2339,18 +2886,19 @@ write.csv(combined_current_ratio_dat, &#39;statistical-output/standard-stats/cas
   
   return(tmp.df)  
 }</code></pre>
-<div id="state" class="section level3">
+<div id="state-2" class="section level3">
 <h3>State</h3>
-<pre class="r"><code># Create state-level data
-state = readxl::read_xlsx(&#39;combined-datasets/state.xlsx&#39;, sheet=1)
+<pre class="r"><code>state &lt;- readxl::read_xlsx(&#39;combined-datasets/state.xlsx&#39;, sheet=1)
 state.case.test.df &lt;- create.case.test(level=&quot;state&quot;, state, NA)
 write.csv(state.case.test.df, &#39;statistical-output/standard-stats/pct-change/state_pct_change.csv&#39;,
           row.names = FALSE)</code></pre>
 </div>
 <div id="tsa-3" class="section level3">
 <h3>TSA</h3>
-<pre class="r"><code>tsa = read.csv(&#39;combined-datasets/tsa.csv&#39;)
+<pre class="r"><code>tsa &lt;- read.csv(&#39;combined-datasets/tsa.csv&#39;)
+
 # Create tsa-level data (can optimize this code in the future, but it runs pretty quickly already)
+# TODO: convert to gapply -&gt; rbindlist
 tsalist &lt;- unique(tsa$TSA)
 tmp &lt;- create.case.test(level=&quot;TSA&quot;, tsa,tsalist[1])
 tsa.case.test.df &lt;- data.frame(TSA=rep(tsalist[1], nrow(tmp)), 
@@ -2374,12 +2922,13 @@ write.csv(tsa.case.test.df, &#39;statistical-output/standard-stats/pct-change/ts
 </div>
 <div id="metro-3" class="section level3">
 <h3>Metro</h3>
-<pre class="r"><code>Metro = read.csv(&#39;combined-datasets/metro.csv&#39;)
-# Create metro-level data
-# Cannot run for Metro data since the testing data is not there. Please add the Tests_Daily to the metro dataset
+<pre class="r"><code>Metro &lt;- read.csv(&#39;combined-datasets/metro.csv&#39;)
+
 metrolist &lt;- unique(Metro$Metro_Area)
+
 tmp &lt;- create.case.test(level=&quot;metro&quot;, Metro,metrolist[1])
 metro.case.test.df &lt;- data.frame(Metro_Area=rep(metrolist[1], nrow(tmp)), tmp)
+
 tmp &lt;- create.case.test(level=&quot;metro&quot;, Metro,metrolist[2])
 metro.case.test.df &lt;- rbind(metro.case.test.df, data.frame(Metro_Area=rep(metrolist[2], nrow(tmp)), tmp))
 
@@ -2388,43 +2937,40 @@ write.csv(metro.case.test.df, &#39;statistical-output/standard-stats/pct-change/
 </div>
 <div id="county-3" class="section level3">
 <h3>County</h3>
-<pre class="r"><code>county = read.csv(&#39;combined-datasets/county.csv&#39;)
-
-# Create county-level data
-# Not run since county level is too sparse. We could consider running for larger counties.
+<pre class="r"><code>county &lt;- read.csv(&#39;combined-datasets/county.csv&#39;)
 countylist &lt;- unique(county$County)
+
 tmp &lt;- create.case.test(level=&quot;county&quot;, county,countylist[1])
 county.case.test.df &lt;- data.frame(County=rep(countylist[1], nrow(tmp)), tmp)
-for(i in 2:length(countylist)){
-  # print(as.character(countylist[i]))
+
+for(i in 2:length(countylist)) {
   tmp &lt;- create.case.test(level=&quot;county&quot;, county,countylist[i])
   county.case.test.df &lt;- rbind(county.case.test.df, data.frame(County=rep(countylist[i], nrow(tmp)), tmp))
-
 }
 
-# assess missingness
-missing_vals = sum(is.na(county.case.test.df$cases_percentdiff)) + sum(is.na(county.case.test.df$tests_percentdiff))
-recorded_vals =  sum(!is.na(county.case.test.df$cases_percentdiff)) + sum(!is.na(county.case.test.df$tests_percentdiff))
+# assess missing vals
+missing_vals &lt;- sum(is.na(county.case.test.df$cases_percentdiff)) + sum(is.na(county.case.test.df$tests_percentdiff))
+recorded_vals &lt;- sum(!is.na(county.case.test.df$cases_percentdiff)) + sum(!is.na(county.case.test.df$tests_percentdiff))
 
 # 11.88% w/ 2020-05-01
 # 12.71% w/ 2020-04-22
 # 12% w/ 2020-05-15
 missing_vals / (missing_vals + recorded_vals)</code></pre>
 <pre><code>## [1] 0.1262139</code></pre>
-<pre class="r"><code># save
-write.csv(county.case.test.df, &#39;statistical-output/standard-stats/pct-change/county_pct_change.csv&#39;,
+<pre class="r"><code>write.csv(county.case.test.df, &#39;statistical-output/standard-stats/pct-change/county_pct_change.csv&#39;,
           row.names = FALSE)</code></pre>
 </div>
 <div id="grouping-3" class="section level3">
 <h3>grouping</h3>
-<pre class="r"><code>colnames(county.case.test.df)[1] = &#39;Level&#39;
-colnames(metro.case.test.df)[1] = &#39;Level&#39;
-colnames(tsa.case.test.df)[1] = &#39;Level&#39;
+<pre class="r"><code>colnames(county.case.test.df)[1] &lt;- &#39;Level&#39;
+colnames(metro.case.test.df)[1] &lt;- &#39;Level&#39;
+colnames(tsa.case.test.df)[1] &lt;- &#39;Level&#39;
 
-state.case.test.df$Level = &#39;Texas&#39;
+state.case.test.df$Level &lt;- &#39;Texas&#39;
 
-combined.case.test.df = rbind(county.case.test.df, metro.case.test.df, tsa.case.test.df, state.case.test.df)
-write.csv(combined.case.test.df, &#39;statistical-output/standard-stats/pct-change/stacked_pct_change.csv&#39;, row.names = FALSE)</code></pre>
+combined.case.test.df &lt;- rbind(county.case.test.df, metro.case.test.df, tsa.case.test.df, state.case.test.df)
+write.csv(combined.case.test.df, &#39;statistical-output/standard-stats/pct-change/stacked_pct_change.csv&#39;,
+          row.names = FALSE)</code></pre>
 </div>
 </div>
 <div id="rolling-average" class="section level2">
@@ -2461,19 +3007,7 @@ write.csv(combined.case.test.df, &#39;statistical-output/standard-stats/pct-chan
 </div>
 <div id="trends" class="section level2">
 <h2>Trends</h2>
-<!-- ```{r} -->
-<!-- require(ggplot2); require(tidyverse); require(lubridate); require(gridExtra) -->
-<!-- require(ggmap) -->
-<!-- require(maps) -->
-<!-- require(mapdata) -->
-<!-- require(dplyr) -->
-<!-- require(zoo) -->
-<!-- require("Kendall") -->
-<!-- require(gridExtra) -->
-<!-- library(tibble) -->
-<!-- library(plyr) -->
-<!-- library(randomForest) -->
-<!-- ``` -->
+<p>Requires substantial cleaning &amp; consideration for visualization - omitting until dashboard version 2</p>
 <!-- ```{r} -->
 <!-- # read files -->
 <!-- ## inflie dataset with county, date, case_daily and google mobility variables -->
