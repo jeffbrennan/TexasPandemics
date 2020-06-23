@@ -13,6 +13,14 @@ library(readxl)
 library(dplyr)
 ```
 
+# COVIDTRACKING 
+
+```{r}
+# TOOD: investigate 
+# https://covidtracking.com/race
+```
+
+
 
 # CENSUS 
 
