@@ -467,7 +467,7 @@ DSHS_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 103 more problems</code></pre>
+## * … and 104 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_cases_time) = DSHS_cases_time[2, ]
 DSHS_cases_time = DSHS_cases_time[3:(nrow(DSHS_cases_time) - 11), ]
@@ -505,7 +505,7 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 106 more problems</code></pre>
+## * … and 107 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
 DSHS_deaths_time = DSHS_deaths_time[3:(nrow(DSHS_deaths_time) - 10), ]
@@ -541,7 +541,7 @@ DSHS_tests_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 56 more problems</code></pre>
+## * … and 57 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_tests_time) = DSHS_tests_time[1, ]
 DSHS_tests_time = DSHS_tests_time[2:(nrow(DSHS_tests_time) - 9), ]
@@ -582,7 +582,7 @@ DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code><
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 71 more problems</code></pre>
+## * … and 72 more problems</code></pre>
 <pre class="r"><code># fix colname
 colnames(DSHS_active_cases_time) = DSHS_active_cases_time[2, ]
 DSHS_active_cases_time = DSHS_active_cases_time[3:(nrow(DSHS_active_cases_time)), 2:ncol(DSHS_active_cases_time)]
@@ -865,13 +865,15 @@ DSHS_tsa_hosp = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## Expecting numeric in BX3 / R3C76: got a date</code></pre>
 <pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
 ## Expecting numeric in BY3 / R3C77: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in BZ3 / R3C78: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 71 more problems</code></pre>
+## * … and 72 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_tsa_hosp) = DSHS_tsa_hosp[2, ]
 DSHS_tsa_hosp = DSHS_tsa_hosp[3:(nrow(DSHS_tsa_hosp) - 1), ]
@@ -950,6 +952,11 @@ read_excel_allsheets = function(filename, tibble = FALSE) {
 }
 
 DSHS_state = read_excel_allsheets(&#39;original-sources/DSHS_state.xlsx&#39;)</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5</code></pre>
 <pre class="r"><code>DSHS_tests = DSHS_state[[4]]
 DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests)-3), ]
 
@@ -1098,8 +1105,8 @@ write.xlsx(DSHS_race, file=&quot;combined-datasets/demographics.xlsx&quot;, shee
 <pre class="r"><code>tableau_county = merged_counts4
 write.csv(tableau_county, &#39;tableau/county.csv&#39;, row.names = FALSE)
 
-tableau_state = merged_state2[, c(1, 16:23)]
-write.csv(tableau_state, &#39;tableau/state_simple.csv&#39;, row.names = FALSE)</code></pre>
+# tableau_state = merged_state2[, c(1, 16:23)]
+# write.csv(tableau_state, &#39;tableau/state_simple.csv&#39;, row.names = FALSE)</code></pre>
 </div>
 <div id="long-format-tsa-metro" class="section level2">
 <h2>Long format TSA &amp; Metro</h2>
@@ -1123,8 +1130,8 @@ colnames(tsa_long) = gsub(&#39;.y&#39;, &#39;&#39;, colnames(tsa_long), fixed = 
 tsa_long$TSA_Combined = paste0(tsa_long$TSA, &#39; - &#39;, tsa_long$TSA_Name)
 
 # output
-write.csv(metro_long, &#39;tableau/metro_long.csv&#39;, row.names = FALSE)
-write.csv(tsa_long, &#39;tableau/tsa_long.csv&#39;, row.names = FALSE)</code></pre>
+# write.csv(metro_long, &#39;tableau/metro_long.csv&#39;, row.names = FALSE)
+# write.csv(tsa_long, &#39;tableau/tsa_long.csv&#39;, row.names = FALSE)</code></pre>
 <pre class="r"><code># transform names
 colnames(metro)[3:length(colnames(metro))] = paste0(&#39;METRO_&#39;, colnames(metro)[3:length(colnames(metro))])
 colnames(tsa)[4:length(colnames(tsa))] = paste0(&#39;TSA_&#39;, colnames(tsa)[4:length(colnames(tsa))])
@@ -1137,7 +1144,7 @@ tsa$TSA_Combined = paste0(tsa$TSA, &#39; - &#39;, tsa$TSA_Name)
 combined_df2 = merge(combined_df, tsa, by = c(&#39;TSA&#39;, &#39;TSA_Name&#39;, &#39;Date&#39;), all = TRUE)
 
 # output
-write.csv(combined_df2, &#39;tableau/combined.csv&#39;, row.names = FALSE)</code></pre>
+# write.csv(combined_df2, &#39;tableau/combined.csv&#39;, row.names = FALSE)</code></pre>
 </div>
 </div>
 

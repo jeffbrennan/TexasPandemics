@@ -645,8 +645,8 @@ write.xlsx(DSHS_race, file="combined-datasets/demographics.xlsx", sheetName="rac
 tableau_county = merged_counts4
 write.csv(tableau_county, 'tableau/county.csv', row.names = FALSE)
 
-tableau_state = merged_state2[, c(1, 16:23)]
-write.csv(tableau_state, 'tableau/state_simple.csv', row.names = FALSE)
+# tableau_state = merged_state2[, c(1, 16:23)]
+# write.csv(tableau_state, 'tableau/state_simple.csv', row.names = FALSE)
 ```
 
 
@@ -673,8 +673,8 @@ colnames(tsa_long) = gsub('.y', '', colnames(tsa_long), fixed = TRUE)
 tsa_long$TSA_Combined = paste0(tsa_long$TSA, ' - ', tsa_long$TSA_Name)
 
 # output
-write.csv(metro_long, 'tableau/metro_long.csv', row.names = FALSE)
-write.csv(tsa_long, 'tableau/tsa_long.csv', row.names = FALSE)
+# write.csv(metro_long, 'tableau/metro_long.csv', row.names = FALSE)
+# write.csv(tsa_long, 'tableau/tsa_long.csv', row.names = FALSE)
 ```
 
 
@@ -691,5 +691,5 @@ tsa$TSA_Combined = paste0(tsa$TSA, ' - ', tsa$TSA_Name)
 combined_df2 = merge(combined_df, tsa, by = c('TSA', 'TSA_Name', 'Date'), all = TRUE)
 
 # output
-write.csv(combined_df2, 'tableau/combined.csv', row.names = FALSE)
+# write.csv(combined_df2, 'tableau/combined.csv', row.names = FALSE)
 ```
