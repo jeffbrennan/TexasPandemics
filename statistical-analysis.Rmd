@@ -537,21 +537,21 @@ metro.Daily <- covid.frame.list$metro
 county.arima.output.1 <- nlme::gapply(county.Daily,
                                     FUN = covid.arima.forecast,
                                     groups = county.Daily$Level_Name,
-                                    mindate = as.Date('2020-05-01'))
+                                    mindate = as.Date('2020-03-04'))
 
 # bind list of dataframes to one dataframe
 county.arima.df.1 <- data.table::rbindlist(county.arima.output.1, idcol = TRUE)
 colnames(county.arima.df.1)[1] <- 'County'
 
-county.arima.output.2 <- nlme::gapply(county.Daily,
-                                    FUN = covid.arima.forecast,
-                                    groups = county.Daily$Level_Name,
-                                    mindate = as.Date('2020-06-03'))
-
-
-# bind list of dataframes to one dataframe
-county.arima.df.2 <- data.table::rbindlist(county.arima.output.2, idcol = TRUE)
-colnames(county.arima.df.2)[1] <- 'County'
+# county.arima.output.2 <- nlme::gapply(county.Daily,
+#                                     FUN = covid.arima.forecast,
+#                                     groups = county.Daily$Level_Name,
+#                                     mindate = as.Date('2020-06-03'))
+# 
+# 
+# # bind list of dataframes to one dataframe
+# county.arima.df.2 <- data.table::rbindlist(county.arima.output.2, idcol = TRUE)
+# colnames(county.arima.df.2)[1] <- 'County'
 ```
 
 ## Metro
@@ -561,31 +561,31 @@ colnames(county.arima.df.2)[1] <- 'County'
 metro.arima.output.1 <- nlme::gapply(metro.Daily,
                                    FUN = covid.arima.forecast,
                                    groups = metro.Daily$Level_Name,
-                                   mindate = as.Date('2020-05-01'))
+                                   mindate = as.Date('2020-03-04'))
 
 # bind list of dataframes to one dataframe
 metro.arima.df.1 <- data.table::rbindlist(metro.arima.output.1, idcol = TRUE)
 colnames(metro.arima.df.1)[1] <- 'Metro_Area'
-
-metro.arima.output.2 <- nlme::gapply(metro.Daily,
-                                   FUN = covid.arima.forecast,
-                                   groups = metro.Daily$Level_Name,
-                                   mindate = as.Date('2020-06-03'))
-
-# bind list of dataframes to one dataframe
-metro.arima.df.2 <- data.table::rbindlist(metro.arima.output.2, idcol = TRUE)
-colnames(metro.arima.df.2)[1] <- 'Metro_Area'
+# 
+# metro.arima.output.2 <- nlme::gapply(metro.Daily,
+#                                    FUN = covid.arima.forecast,
+#                                    groups = metro.Daily$Level_Name,
+#                                    mindate = as.Date('2020-06-03'))
+# 
+# # bind list of dataframes to one dataframe
+# metro.arima.df.2 <- data.table::rbindlist(metro.arima.output.2, idcol = TRUE)
+# colnames(metro.arima.df.2)[1] <- 'Metro_Area'
 ```
 
 
 ## TSA
 
 ```{r TSA forecasts}
-# May 1st
+# All data
 TSA.arima.output.1 <- nlme::gapply(TSA.Daily,
                                    FUN = covid.arima.forecast,
                                    groups = TSA.Daily$Level_Name,
-                                   mindate = as.Date('2020-05-01'))
+                                   mindate = as.Date('2020-03-04'))
 
 TSA.arima.df.1 <- data.table::rbindlist(TSA.arima.output.1, idcol=TRUE)
 
@@ -596,41 +596,41 @@ TSA.arima.df.1 <- merge(TSA.arima.df.1, unique(TSA.daily[, c('TSA', 'TSA_Name')]
 TSA.arima.df.1$TSA <- paste0(TSA.arima.df.1$TSA, ' - ', TSA.arima.df.1$TSA_Name)
 TSA.arima.df.1$TSA_Name <- NULL
 
-# Phase 3
-TSA.arima.output.2 <- nlme::gapply(TSA.Daily,
-                                   FUN = covid.arima.forecast,
-                                   groups = TSA.Daily$Level_Name,
-                                   mindate = as.Date('2020-06-03'))
-
-TSA.arima.df.2 <- data.table::rbindlist(TSA.arima.output.2, idcol=TRUE)
-
-colnames(TSA.arima.df.2)[1] <- 'TSA'
-TSA.arima.df.2 <- merge(TSA.arima.df.2, unique(TSA.daily[, c('TSA', 'TSA_Name')]), by = c('TSA'))
-
-# combine TSA 
-TSA.arima.df.2$TSA <- paste0(TSA.arima.df.2$TSA, ' - ', TSA.arima.df.2$TSA_Name)
-TSA.arima.df.2$TSA_Name <- NULL
+# # Phase 3
+# TSA.arima.output.2 <- nlme::gapply(TSA.Daily,
+#                                    FUN = covid.arima.forecast,
+#                                    groups = TSA.Daily$Level_Name,
+#                                    mindate = as.Date('2020-06-03'))
+# 
+# TSA.arima.df.2 <- data.table::rbindlist(TSA.arima.output.2, idcol=TRUE)
+# 
+# colnames(TSA.arima.df.2)[1] <- 'TSA'
+# TSA.arima.df.2 <- merge(TSA.arima.df.2, unique(TSA.daily[, c('TSA', 'TSA_Name')]), by = c('TSA'))
+# 
+# # combine TSA 
+# TSA.arima.df.2$TSA <- paste0(TSA.arima.df.2$TSA, ' - ', TSA.arima.df.2$TSA_Name)
+# TSA.arima.df.2$TSA_Name <- NULL
 ```
 
 ## State
 
 ```{r Texas forecasts, results='hide'}
-texas.arima.df.1 <- covid.arima.forecast(state.Daily, mindate = as.Date('2020-05-01'))
-texas.arima.df.2 <- covid.arima.forecast(state.Daily, mindate = as.Date('2020-06-03'))
+texas.arima.df.1 <- covid.arima.forecast(state.Daily, mindate = as.Date('2020-03-04'))
+# texas.arima.df.2 <- covid.arima.forecast(state.Daily, mindate = as.Date('2020-06-03'))
 ```
 
 ## export
 
 ```{r export arima results}
-write.csv(texas.arima.df.1, 'statistical-output/time-series/state_timeseries_05_01.csv', row.names = FALSE)
-write.csv(TSA.arima.df.1, 'statistical-output/time-series/tsa_timeseries_05_01.csv', row.names = FALSE)
-write.csv(county.arima.df.1, 'statistical-output/time-series/county_timeseries_05_01.csv', row.names = FALSE)
-write.csv(metro.arima.df.1, 'statistical-output/time-series/metro_timeseries_05_01.csv', row.names = FALSE)
+write.csv(texas.arima.df.1, 'statistical-output/time-series/state_timeseries.csv', row.names = FALSE)
+write.csv(TSA.arima.df.1, 'statistical-output/time-series/tsa_timeseries.csv', row.names = FALSE)
+write.csv(county.arima.df.1, 'statistical-output/time-series/county_timeseries.csv', row.names = FALSE)
+write.csv(metro.arima.df.1, 'statistical-output/time-series/metro_timeseries.csv', row.names = FALSE)
 
-write.csv(texas.arima.df.2, 'statistical-output/time-series/state_timeseries_06_03.csv', row.names = FALSE)
-write.csv(TSA.arima.df.2, 'statistical-output/time-series/tsa_timeseries_06_03.csv', row.names = FALSE)
-write.csv(county.arima.df.2, 'statistical-output/time-series/county_timeseries_06_03.csv', row.names = FALSE)
-write.csv(metro.arima.df.2, 'statistical-output/time-series/metro_timeseries_06_03.csv', row.names = FALSE)
+# write.csv(texas.arima.df.2, 'statistical-output/time-series/state_timeseries_06_03.csv', row.names = FALSE)
+# write.csv(TSA.arima.df.2, 'statistical-output/time-series/tsa_timeseries_06_03.csv', row.names = FALSE)
+# write.csv(county.arima.df.2, 'statistical-output/time-series/county_timeseries_06_03.csv', row.names = FALSE)
+# write.csv(metro.arima.df.2, 'statistical-output/time-series/metro_timeseries_06_03.csv', row.names = FALSE)
 ```
 
 ## grouping
@@ -641,24 +641,24 @@ colnames(metro.arima.df.1)[1] <- 'Level'
 colnames(TSA.arima.df.1)[1] <- 'Level'
 texas.arima.df.1$Level <- 'Texas'
 
-colnames(county.arima.df.2)[1] <- 'Level'
-colnames(metro.arima.df.2)[1] <- 'Level'
-colnames(TSA.arima.df.2)[1] <- 'Level'
-texas.arima.df.2$Level <- 'Texas'
+# colnames(county.arima.df.2)[1] <- 'Level'
+# colnames(metro.arima.df.2)[1] <- 'Level'
+# colnames(TSA.arima.df.2)[1] <- 'Level'
+# texas.arima.df.2$Level <- 'Texas'
 
 combined.arima.df.1 <- rbind(county.arima.df.1, metro.arima.df.1, TSA.arima.df.1, texas.arima.df.1)
-write.csv(combined.arima.df.1, 'statistical-output/time-series/stacked_timeseries_05_01.csv',
+write.csv(combined.arima.df.1, 'statistical-output/time-series/stacked_timeseries.csv',
           row.names = FALSE)
 
-write.csv(combined.arima.df.1, 'tableau/stacked_timeseries_05_01.csv',
+write.csv(combined.arima.df.1, 'tableau/stacked_timeseries.csv',
           row.names = FALSE)
-
-combined.arima.df.2 <- rbind(county.arima.df.2, metro.arima.df.2, TSA.arima.df.2, texas.arima.df.2)
-write.csv(combined.arima.df.2, 'statistical-output/time-series/stacked_timeseries_06_03.csv',
-          row.names = FALSE)
-
-write.csv(combined.arima.df.2, 'tableau/stacked_timeseries_06_03.csv',
-          row.names = FALSE)
+# 
+# combined.arima.df.2 <- rbind(county.arima.df.2, metro.arima.df.2, TSA.arima.df.2, texas.arima.df.2)
+# write.csv(combined.arima.df.2, 'statistical-output/time-series/stacked_timeseries_06_03.csv',
+#           row.names = FALSE)
+# 
+# write.csv(combined.arima.df.2, 'tableau/stacked_timeseries_06_03.csv',
+#           row.names = FALSE)
 
 ```
 
