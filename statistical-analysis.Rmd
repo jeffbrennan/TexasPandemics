@@ -314,6 +314,8 @@ state.rt.df$Level <- 'Texas'
 
 combined.rt.df <- rbind(county.rt.df, metro.rt.df, TSA.rt.df, state.rt.df)
 write.csv(combined.rt.df, 'statistical-output/rt/stacked_rt.csv', row.names = FALSE)
+write.csv(combined.rt.df, 'tableau/stacked_rt.csv', row.names = FALSE)
+
 ```
 
 
@@ -412,38 +414,105 @@ ts.data.organize<-function(mycounty, mytsa){
 
 ```{r ts arima function}
 # Compute forecast (UPDATE PREDICTION PERIOD [days] AS NEEDED)
-covid.arima.forecast<-function(mydata, prediction.period = 10)
+covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
 {
   maxdate <- max(mydata$Date)
-  mindate <- min(mydata$Date)
-  if(max(mydata$Cases_Daily>=5, na.rm = TRUE))
+  # mindate <- as.Date('2020-05-01')
+  pred_start_label = format(mindate, format = '%m_%d')
+  
+  mydata = subset(mydata, Date >= mindate)
+  model.length <- as.numeric(length(mydata$Date) + prediction.period)
+
+  if(max(mydata$Cases_Daily>=100, na.rm = TRUE))
   {
     # arima requires cases to be a timeseries vector
-    my.timeseries <- ts(mydata$Cases_Daily)
+    my.timeseries <- ts(rollmean(mydata$Cases_Daily, k=7, na.pad = TRUE, align = 'right'))
     
     #d=0 restricts first differencing to 0 so that daily cases aren't differenced
-    arima.fit <- forecast::auto.arima(my.timeseries, d = 0)
+    arima.fit <- forecast::auto.arima(my.timeseries)
+  
     
+    # obtain diagnostic plots for ideal arima (p,d,q) selection 
+    acf <- ggAcf(my.timeseries, lag.max=30)
+    pacf <- ggPacf(my.timeseries, lag.max=30)
+    ts.diagnostics <- grid.arrange(acf, pacf, nrow=2)
+    ggsave(paste0('statistical-output/time-series/diagnostics/',
+                  mydata$Level[1],'/', mydata$Level_Name[1], pred_start_label, '.png'),
+           plot = ts.diagnostics)
+
+    
+    # TODO: fix plot output                 
+    # 
+    # png(file = "myplot.png")
+    # checkresiduals(arima.fit)
+    # #turn off the device
+    # dev.off()
+    # ggsave(paste0('statistical-output/time-series/diagnostics/',
+    #               mydata$Level[1],'/', 'residuals_', mydata$Level_Name[1], '.png'),
+    #        plot = arima.resid.diagnostics)
+    # 
+    
+    # save parameters from arima autofit
+    p<- arima.fit$arma[1]          # autoregressive order 
+    q<- arima.fit$arma[2]          # moving average order 
+    sp<- arima.fit$arma[3]         # seasonal autoregressive order 
+    sq<- arima.fit$arma[4]         # seasonal moving average order 
+    period<- arima.fit$arma[5]     # period of data (note: 1 is for non seasonal data)
+    d<-arima.fit$arma[6]           # differencing order from model
+    sd<- arima.fit$arma[7]         # seasonal differencing order 
+
     # 10 day forecast, CI for lower and upper has confidence level 70% set by level =c(70,70)
     arima.forecast <- forecast::forecast(arima.fit, h = prediction.period, level=c(70,70))
 
     #return a dataframe of the arima model(Daily cases by date)
     arima.out <- data.frame(Date = seq(mindate, maxdate + prediction.period, by = 'days'),
-                          Cases_Daily = c(my.timeseries, arima.forecast[['mean']]),
-                          CI_Lower = c(rep(NA, times = length(my.timeseries)),
-                                       arima.forecast[['lower']][, 2]),
-                          CI_Upper = c(rep(NA, times = length(my.timeseries)),
-                                       arima.forecast[['upper']][, 2]))
+                            Cases_Daily = c(my.timeseries, arima.forecast[['mean']]),
+                            CI_Lower = c(rep(NA, times = length(my.timeseries)),
+                                         arima.forecast[['lower']][, 2]),
+                            CI_Upper = c(rep(NA, times = length(my.timeseries)),
+                                         arima.forecast[['upper']][, 2]),
+                            Order_AutoReg = c(rep(p, times = model.length)),
+                            Order_Moving_Avg = c(rep(q, times = model.length)),
+                            Order_Seasonal_Autoreg = c(rep(sp, times = model.length)),
+                            Order_Seasonal_Moving_Avg = c(rep(sq, times = model.length)),
+                            Period = c(rep(period, times= model.length)),
+                            Differencing = c(rep(d, times= model.length)),
+                            Differencing_Seasonal = c(rep(sd, times= model.length)))
+
+      # save prediction plot for preliminary review
+      arima.plot <- ggplot(arima.out, aes(x=Date, y = Cases_Daily))+
+                    geom_ribbon(aes(ymin = CI_Lower, ymax = CI_Upper), fill = "red", alpha = 0.5, size = 0.1)+
+                    geom_line(color = "black", size = 1)+
+                    labs(y = 'Daily Cases (7-Day Moving Average)', x = 'Date',
+                         title = mydata$Level_Name[1]) +
+                    # geom_line(aes(x=as.POSIXct(Date), y=CI.Lower), color="grey", size=0.1) +
+                    # geom_line(aes(x=as.POSIXct(Date),y=CI.Upper), color="grey", size=0.1)
+                    scale_x_date(limits = c(mindate, maxdate + prediction.period),
+                                 date_labels = '%b-%d', date_breaks = '1 week') + 
+                    ggpubr::theme_pubr() +
+                    theme(axis.text.x = element_text(angle = -90))
+      
+      ggsave(plot = arima.plot, paste0('statistical-output/time-series/plots/',
+                                       mydata$Level[1],'/', mydata$Level_Name[1], pred_start_label, '.png'))    
+    
     } else {
     # insufficient data catch: return NA values for predictions 
     arima.out <- data.frame(Date = seq(mindate, maxdate + prediction.period, by = 'days'),
-                          Cases_Daily = c(mydata$Cases_Daily, rep(NA, times = prediction.period)),
-                          CI_Lower = rep(NA, times = length(mydata$Date) + prediction.period),
-                          CI_Upper =  rep(NA, times = length(mydata$Date) + prediction.period))
+                            Cases_Daily = c(mydata$Cases_Daily, rep(NA, times = prediction.period)),
+                            CI_Lower = rep(NA, times = model.length),
+                            CI_Upper =  rep(NA, times = model.length),
+                            Order_AutoReg = c(rep(NA, times = model.length)),
+                            Order_Moving_Avg = c(rep(NA, times = model.length)),
+                            Order_Seasonal_Autoreg = c(rep(NA, times = model.length)),
+                            Order_Seasonal_Moving_Avg = c(rep(NA, times = model.length)),
+                            Period = c(rep(NA, times= model.length)),
+                            Differencing = c(rep(NA, times= model.length)),
+                            Differencing_Seasonal = c(rep(NA, times= model.length)))
     }
   
   #replace CI lower limit with 0 if negative
   arima.out$CI_Lower <- ifelse(arima.out$CI_Lower>=0,arima.out$CI_Lower, 0)
+  
   
   return(arima.out)
 }
@@ -465,74 +534,132 @@ metro.Daily <- covid.frame.list$metro
 
 ```{r county forecasts, output = NULL}
 # apply arima across all counties
-county.arima.output <- nlme::gapply(county.Daily,
+county.arima.output.1 <- nlme::gapply(county.Daily,
                                     FUN = covid.arima.forecast,
-                                    groups = county.Daily$Level_Name)
+                                    groups = county.Daily$Level_Name,
+                                    mindate = as.Date('2020-05-01'))
 
 # bind list of dataframes to one dataframe
-county.arima.df <- data.table::rbindlist(county.arima.output, idcol = TRUE)
-colnames(county.arima.df)[1] <- 'County'
-```
+county.arima.df.1 <- data.table::rbindlist(county.arima.output.1, idcol = TRUE)
+colnames(county.arima.df.1)[1] <- 'County'
 
+county.arima.output.2 <- nlme::gapply(county.Daily,
+                                    FUN = covid.arima.forecast,
+                                    groups = county.Daily$Level_Name,
+                                    mindate = as.Date('2020-06-03'))
+
+
+# bind list of dataframes to one dataframe
+county.arima.df.2 <- data.table::rbindlist(county.arima.output.2, idcol = TRUE)
+colnames(county.arima.df.2)[1] <- 'County'
+```
 
 ## Metro
 
 ```{r metro forecasts}
 # apply arima across both metro values
-metro.arima.output <- nlme::gapply(metro.Daily,
+metro.arima.output.1 <- nlme::gapply(metro.Daily,
                                    FUN = covid.arima.forecast,
-                                   groups = metro.Daily$Level_Name)
+                                   groups = metro.Daily$Level_Name,
+                                   mindate = as.Date('2020-05-01'))
 
 # bind list of dataframes to one dataframe
-metro.arima.df <- data.table::rbindlist(metro.arima.output, idcol = TRUE)
-colnames(metro.arima.df)[1] <- 'Metro_Area'
+metro.arima.df.1 <- data.table::rbindlist(metro.arima.output.1, idcol = TRUE)
+colnames(metro.arima.df.1)[1] <- 'Metro_Area'
+
+metro.arima.output.2 <- nlme::gapply(metro.Daily,
+                                   FUN = covid.arima.forecast,
+                                   groups = metro.Daily$Level_Name,
+                                   mindate = as.Date('2020-06-03'))
+
+# bind list of dataframes to one dataframe
+metro.arima.df.2 <- data.table::rbindlist(metro.arima.output.2, idcol = TRUE)
+colnames(metro.arima.df.2)[1] <- 'Metro_Area'
 ```
 
 
 ## TSA
 
 ```{r TSA forecasts}
-TSA.arima.output <- nlme::gapply(TSA.Daily,
-                               FUN = covid.arima.forecast,
-                               groups = TSA.Daily$Level_Name)
+# May 1st
+TSA.arima.output.1 <- nlme::gapply(TSA.Daily,
+                                   FUN = covid.arima.forecast,
+                                   groups = TSA.Daily$Level_Name,
+                                   mindate = as.Date('2020-05-01'))
 
-TSA.arima.df <- data.table::rbindlist(TSA.arima.output, idcol=TRUE)
+TSA.arima.df.1 <- data.table::rbindlist(TSA.arima.output.1, idcol=TRUE)
 
-colnames(TSA.arima.df)[1] <- 'TSA'
-TSA.arima.df <- merge(TSA.arima.df, unique(TSA.daily[, c('TSA', 'TSA_Name')]), by = c('TSA'))
+colnames(TSA.arima.df.1)[1] <- 'TSA'
+TSA.arima.df.1 <- merge(TSA.arima.df.1, unique(TSA.daily[, c('TSA', 'TSA_Name')]), by = c('TSA'))
 
 # combine TSA 
-TSA.arima.df$TSA <- paste0(TSA.arima.df$TSA, ' - ', TSA.arima.df$TSA_Name)
-TSA.arima.df$TSA_Name <- NULL
+TSA.arima.df.1$TSA <- paste0(TSA.arima.df.1$TSA, ' - ', TSA.arima.df.1$TSA_Name)
+TSA.arima.df.1$TSA_Name <- NULL
+
+# Phase 3
+TSA.arima.output.2 <- nlme::gapply(TSA.Daily,
+                                   FUN = covid.arima.forecast,
+                                   groups = TSA.Daily$Level_Name,
+                                   mindate = as.Date('2020-06-03'))
+
+TSA.arima.df.2 <- data.table::rbindlist(TSA.arima.output.2, idcol=TRUE)
+
+colnames(TSA.arima.df.2)[1] <- 'TSA'
+TSA.arima.df.2 <- merge(TSA.arima.df.2, unique(TSA.daily[, c('TSA', 'TSA_Name')]), by = c('TSA'))
+
+# combine TSA 
+TSA.arima.df.2$TSA <- paste0(TSA.arima.df.2$TSA, ' - ', TSA.arima.df.2$TSA_Name)
+TSA.arima.df.2$TSA_Name <- NULL
 ```
 
 ## State
 
-```{r Texas forecasts}
-texas.arima.df <- covid.arima.forecast(state.Daily)
+```{r Texas forecasts, results='hide'}
+texas.arima.df.1 <- covid.arima.forecast(state.Daily, mindate = as.Date('2020-05-01'))
+texas.arima.df.2 <- covid.arima.forecast(state.Daily, mindate = as.Date('2020-06-03'))
 ```
 
 ## export
 
 ```{r export arima results}
-write.csv(texas.arima.df, 'statistical-output/time-series/state_timeseries.csv', row.names = FALSE)
-write.csv(TSA.arima.df, 'statistical-output/time-series/tsa_timeseries.csv', row.names = FALSE)
-write.csv(county.arima.df, 'statistical-output/time-series/county_timeseries.csv', row.names = FALSE)
-write.csv(metro.arima.df, 'statistical-output/time-series/metro_timeseries.csv', row.names = FALSE)
+write.csv(texas.arima.df.1, 'statistical-output/time-series/state_timeseries_05_01.csv', row.names = FALSE)
+write.csv(TSA.arima.df.1, 'statistical-output/time-series/tsa_timeseries_05_01.csv', row.names = FALSE)
+write.csv(county.arima.df.1, 'statistical-output/time-series/county_timeseries_05_01.csv', row.names = FALSE)
+write.csv(metro.arima.df.1, 'statistical-output/time-series/metro_timeseries_05_01.csv', row.names = FALSE)
+
+write.csv(texas.arima.df.2, 'statistical-output/time-series/state_timeseries_06_03.csv', row.names = FALSE)
+write.csv(TSA.arima.df.2, 'statistical-output/time-series/tsa_timeseries_06_03.csv', row.names = FALSE)
+write.csv(county.arima.df.2, 'statistical-output/time-series/county_timeseries_06_03.csv', row.names = FALSE)
+write.csv(metro.arima.df.2, 'statistical-output/time-series/metro_timeseries_06_03.csv', row.names = FALSE)
 ```
 
 ## grouping
 
 ```{r}
-colnames(county.arima.df)[1] <- 'Level'
-colnames(metro.arima.df)[1] <- 'Level'
-colnames(TSA.arima.df)[1] <- 'Level'
+colnames(county.arima.df.1)[1] <- 'Level'
+colnames(metro.arima.df.1)[1] <- 'Level'
+colnames(TSA.arima.df.1)[1] <- 'Level'
+texas.arima.df.1$Level <- 'Texas'
 
-texas.arima.df$Level <- 'Texas'
+colnames(county.arima.df.2)[1] <- 'Level'
+colnames(metro.arima.df.2)[1] <- 'Level'
+colnames(TSA.arima.df.2)[1] <- 'Level'
+texas.arima.df.2$Level <- 'Texas'
 
-combined.arima.df <- rbind(county.arima.df, metro.arima.df, TSA.arima.df, texas.arima.df)
-write.csv(combined.arima.df, 'statistical-output/time-series/stacked_timeseries.csv',
+combined.arima.df.1 <- rbind(county.arima.df.1, metro.arima.df.1, TSA.arima.df.1, texas.arima.df.1)
+write.csv(combined.arima.df.1, 'statistical-output/time-series/stacked_timeseries_05_01.csv',
           row.names = FALSE)
+
+write.csv(combined.arima.df.1, 'tableau/stacked_timeseries_05_01.csv',
+          row.names = FALSE)
+
+combined.arima.df.2 <- rbind(county.arima.df.2, metro.arima.df.2, TSA.arima.df.2, texas.arima.df.2)
+write.csv(combined.arima.df.2, 'statistical-output/time-series/stacked_timeseries_06_03.csv',
+          row.names = FALSE)
+
+write.csv(combined.arima.df.2, 'tableau/stacked_timeseries_06_03.csv',
+          row.names = FALSE)
+
 ```
 
 
@@ -662,6 +789,13 @@ write.csv(state_current_ratio_dat, 'statistical-output/standard-stats/case-ratio
 write.csv(tsa_current_ratio_dat,'statistical-output/standard-stats/case-ratios/tsa_case_ratio.csv', row.names = F)
 write.csv(county_current_ratio_dat, 'statistical-output/standard-stats/case-ratios/county_case_ratio.csv', row.names = F)
 write.csv(metro_current_ratio_dat,'statistical-output/standard-stats/case-ratios/metro_case_ratio.csv', row.names = F)
+
+
+write.csv(state_current_ratio_dat, 'tableau/case-ratios/state_case_ratio.csv', row.names = F)
+write.csv(tsa_current_ratio_dat,'tableau/case-ratios/tsa_case_ratio.csv', row.names = F)
+write.csv(county_current_ratio_dat, 'tableau/case-ratios/county_case_ratio.csv', row.names = F)
+write.csv(metro_current_ratio_dat,'tableau/case-ratios/metro_case_ratio.csv', row.names = F)
+
 ```
 
 
@@ -679,6 +813,9 @@ combined_current_ratio_dat <- rbind(county_current_ratio_dat, metro_current_rati
 
 write.csv(combined_current_ratio_dat, 'statistical-output/standard-stats/case-ratios/stacked_case_ratio.csv',
           row.names <- FALSE)
+
+# write.csv(combined_current_ratio_dat, 'tableau/stacked_case_ratio.csv',
+#           row.names <- FALSE)
 ```
 
 
@@ -866,6 +1003,9 @@ state.case.test.df$Level <- 'Texas'
 
 combined.case.test.df <- rbind(county.case.test.df, metro.case.test.df, tsa.case.test.df, state.case.test.df)
 write.csv(combined.case.test.df, 'statistical-output/standard-stats/pct-change/stacked_pct_change.csv',
+          row.names = FALSE)
+
+write.csv(combined.case.test.df, 'tableau/stacked_pct_change.csv',
           row.names = FALSE)
 ```
 
