@@ -466,6 +466,7 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
 
     #return a dataframe of the arima model(Daily cases by date)
     arima.out <- data.frame(Date = seq(mindate, maxdate + prediction.period, by = 'days'),
+                            Cases_Raw = c(mydata$Cases_Daily, rep(NA, times = prediction.period)),
                             Cases_Daily = c(my.timeseries, arima.forecast[['mean']]),
                             CI_Lower = c(rep(NA, times = length(my.timeseries)),
                                          arima.forecast[['lower']][, 2]),
@@ -498,7 +499,8 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
     } else {
     # insufficient data catch: return NA values for predictions 
     arima.out <- data.frame(Date = seq(mindate, maxdate + prediction.period, by = 'days'),
-                            Cases_Daily = c(mydata$Cases_Daily, rep(NA, times = prediction.period)),
+                            Cases_Raw = c(mydata$Cases_Daily, rep(NA, times = prediction.period)),
+                            Cases_Daily = rep(NA, times = model.length),
                             CI_Lower = rep(NA, times = model.length),
                             CI_Upper =  rep(NA, times = model.length),
                             Order_AutoReg = c(rep(NA, times = model.length)),
