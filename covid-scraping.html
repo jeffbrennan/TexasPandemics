@@ -368,6 +368,11 @@ summary {
 </div>
 
 
+<div id="covidtracking" class="section level1">
+<h1>COVIDTRACKING</h1>
+<pre class="r"><code># TOOD: investigate 
+# https://covidtracking.com/race</code></pre>
+</div>
 <div id="census" class="section level1">
 <h1>CENSUS</h1>
 <div id="county-level" class="section level2">
@@ -467,7 +472,7 @@ DSHS_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * … and 104 more problems</code></pre>
+## * ... and 105 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_cases_time) = DSHS_cases_time[2, ]
 DSHS_cases_time = DSHS_cases_time[3:(nrow(DSHS_cases_time) - 11), ]
@@ -505,7 +510,7 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * … and 107 more problems</code></pre>
+## * ... and 108 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
 DSHS_deaths_time = DSHS_deaths_time[3:(nrow(DSHS_deaths_time) - 10), ]
@@ -541,7 +546,7 @@ DSHS_tests_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * … and 57 more problems</code></pre>
+## * ... and 58 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_tests_time) = DSHS_tests_time[1, ]
 DSHS_tests_time = DSHS_tests_time[2:(nrow(DSHS_tests_time) - 9), ]
@@ -582,7 +587,7 @@ DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code><
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * … and 72 more problems</code></pre>
+## * ... and 73 more problems</code></pre>
 <pre class="r"><code># fix colname
 colnames(DSHS_active_cases_time) = DSHS_active_cases_time[2, ]
 DSHS_active_cases_time = DSHS_active_cases_time[3:(nrow(DSHS_active_cases_time)), 2:ncol(DSHS_active_cases_time)]
@@ -867,13 +872,15 @@ DSHS_tsa_hosp = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## Expecting numeric in BY3 / R3C77: got a date</code></pre>
 <pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
 ## Expecting numeric in BZ3 / R3C78: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in CA3 / R3C79: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * … and 72 more problems</code></pre>
+## * ... and 73 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_tsa_hosp) = DSHS_tsa_hosp[2, ]
 DSHS_tsa_hosp = DSHS_tsa_hosp[3:(nrow(DSHS_tsa_hosp) - 1), ]
