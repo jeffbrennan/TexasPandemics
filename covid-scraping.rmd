@@ -21,7 +21,6 @@ library(dplyr)
 ```
 
 
-
 # CENSUS 
 
 ## County level
@@ -196,6 +195,10 @@ test_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsOverT
 temp = tempfile()
 download.file(test_url, temp, mode = 'wb') 
 DSHS_tests_time = data.frame(readxl::read_excel(temp, sheet = 1))
+
+# TEMP FIX drop first duplicated date column
+dupe_dates = which(DSHS_tests_time[1, ] == 'Tests Through June 23')
+DSHS_tests_time = DSHS_tests_time[, -dupe_dates[1]]
 
 # fix colnames
 colnames(DSHS_tests_time) = DSHS_tests_time[1, ]
