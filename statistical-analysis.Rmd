@@ -78,7 +78,7 @@ rt.data.organize <- function(mycounty, mytsa){
   
   ### COUNTY ###
   cleaned.county <- rt.data.clean(mycounty)
-  county.df <- cleaned.county%>%dplyr::select(-TSA_Name, -Metro_Area)
+  county.df <- cleaned.county%>%dplyr::select(-TSA_Name, -Metro_Area, -TSA)
   
   ### TSA ###
   TSA.df <- rt.data.clean(mytsa)
@@ -140,7 +140,6 @@ rt.df.extraction <- function(Rt.estimate.output) {
   
   return(rt.df)
 }
-
 ```
 
 
@@ -187,52 +186,37 @@ covid.rt <- function(mydata) {
   march9.row <- which(mydata$Date=="2020-03-09")
   first.nonzero <- min(which(mydata$Cases_Daily>0))
   last.nonzero <- max(which(mydata$Cases_Daily>0))
-  minrow <- max(march9.row,first.nonzero)
+  minrow <- max(march9.row, first.nonzero)
 
-  
-  # TODO: refactor this
-  ### ERROR CATCHING ###
-  #Set last row that will be used, either todays date or last nonzero row
-  j <- as.integer(min(last.nonzero, max.date))
-  
-  if(is.na(minrow)){
-    rt.DSHS.df <- data.frame(Date = as.Date(mydata$Date),
-                             Rt = rep(NA, j),
-                             lower = rep(NA, j),
-                             upper = rep(NA, j))
-  }
-  
-  if(sum.daily.cases<=50){
-    k <- length(mydata$Date)
-    rt.DSHS.df <- data.frame(Date = as.Date(mydata$Date),
-                             Rt = rep(NA, k),
-                             lower = rep(NA, k),
-                             upper = rep(NA, k))
-  }
-  
   ### R0 ESTIMATION ###
-  #only move forward if both previous error catch options are false
-  if(is.na(minrow) == FALSE & sum.daily.cases > 50) {
-    #get the row number for the mindrow date
+  if(!is.na(minrow) & sum.daily.cases > 50) {
+    
+    # declare limits for rt estimation (first nonzero date & last nonzero date)
     i <- minrow
-  
+    j <- as.integer(min(last.nonzero, max.date))
+
     #reduce the vector to be rows from min date (March 9 or first nonzero case) to current date
     mydata.newest <- mydata.new[i:j]
     rt.DSHS <- estimate.R(mydata.newest, 
                         gen.time, 
-                        #begin=as.integer(1), 
-                        #end=total.days, 
+                        begin=as.integer(1),
+                        end=length(mydata.newest),
                         methods=c("TD"), 
                         pop.size=pop.DSHS,
                         nsim=1000)
   
     rt.DSHS.df <- rt.df.extraction(rt.DSHS)
+    
+  } else {
+    # error catch small regions & na values for minrow
+    rt.DSHS.df <- data.frame(Date = as.Date(mydata$Date),
+                             Rt = rep(NA, length(mydata$Date)),
+                             lower = rep(NA, length(mydata$Date)),
+                             upper = rep(NA, length(mydata$Date)))
   }
   
-  rt.out = subset(rt.DSHS.df, Date > as.Date('2020-03-09'))
-  return(rt.out)
+  return(rt.DSHS.df)
 }
-
 ```
 
 
@@ -256,6 +240,12 @@ county.rt.output <- nlme::gapply(county.daily, FUN = covid.rt, groups = county.d
 #convert list of dataframes to single dataframe with county as id col
 county.rt.df <- data.table::rbindlist(county.rt.output, idcol = TRUE)
 colnames(county.rt.df)[1] = 'County'
+
+# Convert Rt=0 to be NA
+county.rt.df <- county.rt.df %>%
+  mutate(lower = replace(lower, Rt == 0, NA)) %>%
+  mutate(upper = replace(upper, Rt == 0, NA)) %>%
+  mutate(Rt = replace(Rt,Rt == 0, NA))
 ```
 
 ## Metro
@@ -267,6 +257,12 @@ metro.rt.output <- nlme::gapply(metro.daily, FUN=covid.rt, groups=metro.daily$Me
 #convert list of data frames to single data frame with metro as id col
 metro.rt.df <- data.table::rbindlist(metro.rt.output, idcol=TRUE)
 colnames(metro.rt.df)[1] = 'Metro_Area'
+
+# Convert Rt=0 to be NA
+metro.rt.df <- metro.rt.df %>%
+  mutate(lower = replace(lower, Rt == 0, NA)) %>%
+  mutate(upper = replace(upper, Rt == 0, NA)) %>%
+  mutate(Rt = replace(Rt,Rt == 0, NA))
 ```
 
 ## TSA
@@ -286,12 +282,24 @@ TSA.rt.df <- merge(TSA.rt.df, TSA.daily[, c('TSA', 'TSA_Name', 'Date')], by = c(
 # combine TSA 
 TSA.rt.df$TSA <- paste0(TSA.rt.df$TSA, ' - ', TSA.rt.df$TSA_Name)
 TSA.rt.df$TSA_Name <- NULL
+
+# Convert Rt=0 to be NA
+TSA.rt.df <- TSA.rt.df %>%
+  mutate(lower = replace(lower, Rt == 0, NA)) %>%
+  mutate(upper = replace(upper, Rt == 0, NA)) %>%
+  mutate(Rt = replace(Rt,Rt == 0, NA))
 ```
 
 ## State
 
 ```{r state rt}
 state.rt.df <- covid.rt(state.daily)
+
+# Convert Rt=0 to be NA
+state.rt.df <- state.rt.df %>%
+  mutate(lower = replace(lower, Rt == 0, NA)) %>%
+  mutate(upper = replace(upper, Rt == 0, NA)) %>%
+  mutate(Rt = replace(Rt,Rt == 0, NA))
 ```
 
 ## export
@@ -315,7 +323,6 @@ state.rt.df$Level <- 'Texas'
 combined.rt.df <- rbind(county.rt.df, metro.rt.df, TSA.rt.df, state.rt.df)
 write.csv(combined.rt.df, 'statistical-output/rt/stacked_rt.csv', row.names = FALSE)
 write.csv(combined.rt.df, 'tableau/stacked_rt.csv', row.names = FALSE)
-
 ```
 
 
@@ -338,8 +345,8 @@ ts.data.clean<-function(covid.data) {
   #change any Cases_Daily below zero to zero
   covid.data <- covid.data %>% mutate(Cases_Daily = ifelse(Cases_Daily < 0, 0, Cases_Daily))
   return(covid.data)
-  
 }
+
 ```
 
 
