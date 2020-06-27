@@ -472,7 +472,7 @@ DSHS_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * … and 107 more problems</code></pre>
+## * ... and 108 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_cases_time) = DSHS_cases_time[2, ]
 DSHS_cases_time = DSHS_cases_time[3:(nrow(DSHS_cases_time) - 11), ]
@@ -510,7 +510,7 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * … and 110 more problems</code></pre>
+## * ... and 111 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
 DSHS_deaths_time = DSHS_deaths_time[3:(nrow(DSHS_deaths_time) - 10), ]
@@ -546,7 +546,7 @@ DSHS_tests_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * … and 60 more problems</code></pre>
+## * ... and 61 more problems</code></pre>
 <pre class="r"><code># TEMP FIX drop first duplicated date column
 dupe_dates = which(DSHS_tests_time[1, ] == &#39;Tests Through June 23&#39;)
 DSHS_tests_time = DSHS_tests_time[, -dupe_dates[1]]
@@ -591,7 +591,7 @@ DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code><
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * … and 75 more problems</code></pre>
+## * ... and 76 more problems</code></pre>
 <pre class="r"><code># fix colname
 colnames(DSHS_active_cases_time) = DSHS_active_cases_time[2, ]
 DSHS_active_cases_time = DSHS_active_cases_time[3:(nrow(DSHS_active_cases_time)), 2:ncol(DSHS_active_cases_time)]
@@ -882,13 +882,15 @@ DSHS_tsa_hosp = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## Expecting numeric in CB3 / R3C80: got a date</code></pre>
 <pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
 ## Expecting numeric in CC3 / R3C81: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in CD3 / R3C82: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * … and 75 more problems</code></pre>
+## * ... and 76 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_tsa_hosp) = DSHS_tsa_hosp[2, ]
 DSHS_tsa_hosp = DSHS_tsa_hosp[3:(nrow(DSHS_tsa_hosp) - 1), ]
@@ -920,9 +922,34 @@ DSHS_tsa_merged3 = subset(DSHS_tsa_merged2, Date &gt; as.Date(&#39;2020-03-03&#3
 </div>
 </div>
 </div>
+<div id="phr-level" class="section level1">
+<h1>PHR LEVEL</h1>
+<div id="computed-1" class="section level2">
+<h2>computed</h2>
+<pre class="r"><code># TODO</code></pre>
+</div>
+<div id="dshs-1" class="section level2">
+<h2>DSHS</h2>
+<pre class="r"><code># note: overwritten daily
+# TODO: add to repository in sep folder for longitudinal database
+
+download.file(&#39;https://dshs.texas.gov/coronavirus/COVID-19OutbreaksinLong-termCareFacilities.xlsx&#39;,
+               destfile = &#39;original-sources/DSHS_fac_totals.xlsx&#39;, mode = &#39;wb&#39;)
+
+# DSHS_alf_counts = read_excel_allsheets(url(&#39;https://dshs.texas.gov/coronavirus/COVID-19OutbreaksinLong-termCareFacilities.xlsx&#39;))
+
+# write.xlsx(DSHS_alf_counts, &#39;original-sources/DSHS_alf_counts.xlsx&#39;)</code></pre>
+<pre class="r"><code># DSHS_alf = read.xlsx(url(&#39;https://dshs.texas.gov/coronavirus/COVID-19inALFsoverTimebyRegion.xlsx&#39;))
+
+# write.xlsx(DSHS_alf, &#39;original-sources/DSHS_alf.xlsx&#39;)</code></pre>
+<pre class="r"><code># DSHS_nursing = read.xlsx(url(&#39;https://dshs.texas.gov/coronavirus/COVID-19inNursingHomesoverTimebyRegion.xlsx&#39;))
+
+# write.xlsx(DSHS_nursing, &#39;original-sources/DSHS_nursing.xlsx&#39;)</code></pre>
+</div>
+</div>
 <div id="metro-level" class="section level1">
 <h1>METRO LEVEL</h1>
-<div id="computed-1" class="section level2">
+<div id="computed-2" class="section level2">
 <h2>computed</h2>
 <pre class="r"><code>DSHS_metro_counts =
     merged_counts4 %&gt;%
@@ -967,11 +994,6 @@ read_excel_allsheets = function(filename, tibble = FALSE) {
 }
 
 DSHS_state = read_excel_allsheets(&#39;original-sources/DSHS_state.xlsx&#39;)</code></pre>
-<pre><code>## New names:
-## * `` -&gt; ...2
-## * `` -&gt; ...3
-## * `` -&gt; ...4
-## * `` -&gt; ...5</code></pre>
 <pre class="r"><code>DSHS_tests = DSHS_state[[4]]
 DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests)-3), ]
 
@@ -1052,7 +1074,7 @@ DSHS_gender = rbind(DSHS_case_gender, DSHS_death_gender)
 DSHS_race = rbind(DSHS_case_race, DSHS_death_race)</code></pre>
 </div>
 </div>
-<div id="computed-2" class="section level2">
+<div id="computed-3" class="section level2">
 <h2>Computed</h2>
 <pre class="r"><code>state_counts =
     merged_counts4 %&gt;%

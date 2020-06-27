@@ -421,6 +421,41 @@ DSHS_tsa_merged2 = DSHS_tsa_merged %>% distinct()
 DSHS_tsa_merged3 = subset(DSHS_tsa_merged2, Date > as.Date('2020-03-03'))
 ```
 
+# PHR LEVEL
+
+## computed
+
+```{r}
+# TODO
+```
+
+## DSHS
+
+```{r}
+# note: overwritten daily
+# TODO: add to repository in sep folder for longitudinal database
+
+download.file('https://dshs.texas.gov/coronavirus/COVID-19OutbreaksinLong-termCareFacilities.xlsx',
+               destfile = 'original-sources/DSHS_fac_totals.xlsx', mode = 'wb')
+
+# DSHS_alf_counts = read_excel_allsheets(url('https://dshs.texas.gov/coronavirus/COVID-19OutbreaksinLong-termCareFacilities.xlsx'))
+
+# write.xlsx(DSHS_alf_counts, 'original-sources/DSHS_alf_counts.xlsx')
+```
+
+```{r}
+# DSHS_alf = read.xlsx(url('https://dshs.texas.gov/coronavirus/COVID-19inALFsoverTimebyRegion.xlsx'))
+
+# write.xlsx(DSHS_alf, 'original-sources/DSHS_alf.xlsx')
+```
+
+
+```{r}
+# DSHS_nursing = read.xlsx(url('https://dshs.texas.gov/coronavirus/COVID-19inNursingHomesoverTimebyRegion.xlsx'))
+
+# write.xlsx(DSHS_nursing, 'original-sources/DSHS_nursing.xlsx')
+```
+
 
 # METRO LEVEL
 
