@@ -45,8 +45,8 @@ library(fpp2)
 ```{r Read in data}
 #read in full DSHS data with county and TSA information
 # TOOD: rename
-full.dshs <- read.csv("combined-datasets/county.csv")#change path as needed
-tsa.dshs <- read.csv("combined-datasets/tsa.csv")#change path as needed
+full.dshs <- read.csv("combined-datasets/county.csv")
+tsa.dshs <- read.csv("combined-datasets/tsa.csv")
 ```
 
 ```{r rt data clean}
@@ -138,6 +138,11 @@ rt.df.extraction <- function(Rt.estimate.output) {
   rt.df$lower <- CI.lower
   rt.df$upper <- CI.upper
   
+  rt.df <- rt.df %>%
+    mutate(lower = replace(lower, Rt == 0, NA)) %>%
+    mutate(upper = replace(upper, Rt == 0, NA)) %>%
+    mutate(Rt = replace(Rt, Rt == 0, NA))
+  
   return(rt.df)
 }
 ```
@@ -161,7 +166,7 @@ covid.rt <- function(mydata) {
   # gen.time<-generation.time("gamma", c(5.2, 1.72)) #Singapore
   # gen.time<-generation.time("gamma", c(3.95, 1.51)) #Tianjin
   gen.time <- generation.time("gamma", c(3.96, 4.75))
-
+  print(as.character(mydata[1,1]))
   
   # TODO: consider removing this and handling na cases directly
   #change na values to 0
@@ -189,7 +194,8 @@ covid.rt <- function(mydata) {
   minrow <- max(march9.row, first.nonzero)
 
   ### R0 ESTIMATION ###
-  if(!is.na(minrow) & sum.daily.cases > 50) {
+  # TODO: establish better criteria for sum of daily cases
+  if(!is.na(minrow) & sum.daily.cases > 75) {
     
     # declare limits for rt estimation (first nonzero date & last nonzero date)
     i <- minrow
@@ -240,12 +246,6 @@ county.rt.output <- nlme::gapply(county.daily, FUN = covid.rt, groups = county.d
 #convert list of dataframes to single dataframe with county as id col
 county.rt.df <- data.table::rbindlist(county.rt.output, idcol = TRUE)
 colnames(county.rt.df)[1] = 'County'
-
-# Convert Rt=0 to be NA
-county.rt.df <- county.rt.df %>%
-  mutate(lower = replace(lower, Rt == 0, NA)) %>%
-  mutate(upper = replace(upper, Rt == 0, NA)) %>%
-  mutate(Rt = replace(Rt,Rt == 0, NA))
 ```
 
 ## Metro
@@ -257,12 +257,6 @@ metro.rt.output <- nlme::gapply(metro.daily, FUN=covid.rt, groups=metro.daily$Me
 #convert list of data frames to single data frame with metro as id col
 metro.rt.df <- data.table::rbindlist(metro.rt.output, idcol=TRUE)
 colnames(metro.rt.df)[1] = 'Metro_Area'
-
-# Convert Rt=0 to be NA
-metro.rt.df <- metro.rt.df %>%
-  mutate(lower = replace(lower, Rt == 0, NA)) %>%
-  mutate(upper = replace(upper, Rt == 0, NA)) %>%
-  mutate(Rt = replace(Rt,Rt == 0, NA))
 ```
 
 ## TSA
@@ -282,24 +276,12 @@ TSA.rt.df <- merge(TSA.rt.df, TSA.daily[, c('TSA', 'TSA_Name', 'Date')], by = c(
 # combine TSA 
 TSA.rt.df$TSA <- paste0(TSA.rt.df$TSA, ' - ', TSA.rt.df$TSA_Name)
 TSA.rt.df$TSA_Name <- NULL
-
-# Convert Rt=0 to be NA
-TSA.rt.df <- TSA.rt.df %>%
-  mutate(lower = replace(lower, Rt == 0, NA)) %>%
-  mutate(upper = replace(upper, Rt == 0, NA)) %>%
-  mutate(Rt = replace(Rt,Rt == 0, NA))
 ```
 
 ## State
 
 ```{r state rt}
 state.rt.df <- covid.rt(state.daily)
-
-# Convert Rt=0 to be NA
-state.rt.df <- state.rt.df %>%
-  mutate(lower = replace(lower, Rt == 0, NA)) %>%
-  mutate(upper = replace(upper, Rt == 0, NA)) %>%
-  mutate(Rt = replace(Rt,Rt == 0, NA))
 ```
 
 ## export
