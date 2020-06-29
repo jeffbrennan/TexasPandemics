@@ -478,7 +478,7 @@ DSHS_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 109 more problems</code></pre>
+## * ... and 110 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_cases_time) = DSHS_cases_time[2, ]
 DSHS_cases_time = DSHS_cases_time[3:(nrow(DSHS_cases_time) - 11), ]
@@ -516,7 +516,7 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 112 more problems</code></pre>
+## * ... and 113 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
 DSHS_deaths_time = DSHS_deaths_time[3:(nrow(DSHS_deaths_time) - 10), ]
@@ -551,7 +551,7 @@ DSHS_tests_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 62 more problems</code></pre>
+## * ... and 63 more problems</code></pre>
 <pre class="r"><code># TEMP FIX drop first duplicated date column
 dupe_dates = which(DSHS_tests_time[1, ] == &#39;Tests Through June 23&#39;)
 DSHS_tests_time = DSHS_tests_time[, -dupe_dates[1]]
@@ -596,7 +596,7 @@ DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code><
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 77 more problems</code></pre>
+## * ... and 78 more problems</code></pre>
 <pre class="r"><code># fix colname
 colnames(DSHS_active_cases_time) = DSHS_active_cases_time[2, ]
 DSHS_active_cases_time = DSHS_active_cases_time[3:(nrow(DSHS_active_cases_time)), 2:ncol(DSHS_active_cases_time)]
@@ -880,13 +880,15 @@ DSHS_tsa_hosp = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## Expecting numeric in CD3 / R3C82: got a date</code></pre>
 <pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
 ## Expecting numeric in CE3 / R3C83: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in CF3 / R3C84: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 77 more problems</code></pre>
+## * ... and 78 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_tsa_hosp) = DSHS_tsa_hosp[2, ]
 DSHS_tsa_hosp = DSHS_tsa_hosp[3:(nrow(DSHS_tsa_hosp) - 1), ]
@@ -959,7 +961,6 @@ download.file(&#39;https://dshs.texas.gov/coronavirus/COVID-19OutbreaksinLong-te
                mode = &#39;wb&#39;)
               
 DSHS_fac_totals = read_excel_allsheets(&#39;original-sources/DSHS_fac_totals.xlsx&#39;)
-
 
 # make df </code></pre>
 </div>
@@ -1074,62 +1075,520 @@ DSHS_state_day = data.frame(Recovered_Total = DSHS_state[[3]][1,1],
 <div id="dshs-demographics" class="section level2">
 <h2>DSHS Demographics</h2>
 <pre class="r"><code># read in all files
-# demo.list &lt;- paste0(&#39;original-sources/historical/demo/&#39;,
-#                     list.files(path = &#39;original-sources/historical/demo&#39;,
-#                         pattern = &#39;*.xlsx&#39;))
-# DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)
-# DSHS_case_gender &lt;- lapply(demo.list, read_excel, sheet = 10)
-# DSHS_case_race &lt;- lapply(demo.list, read_excel, sheet = 11)
-# DSHS_death_age &lt;- lapply(demo.list, read_excel, sheet = 12)
-# DSHS_case_gender &lt;- lapply(demo.list, read_excel, sheet = 13)
-# DSHS_case_race &lt;- lapply(demo.list, read_excel, sheet = 13)
+current_year =  substr(Sys.Date(), 1, 4)
+demo.list &lt;- paste0(&#39;original-sources/historical/demo/&#39;,
+                    list.files(path = &#39;original-sources/historical/demo&#39;,
+                               pattern = &#39;*.xlsx&#39;))
 
+DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3</code></pre>
+<pre class="r"><code>DSHS_case_gender &lt;- lapply(demo.list, read_excel, sheet = 10)</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3</code></pre>
+<pre class="r"><code>DSHS_case_race &lt;- lapply(demo.list, read_excel, sheet = 11)</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3</code></pre>
+<pre class="r"><code>DSHS_death_age &lt;- lapply(demo.list, read_excel, sheet = 12)</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3</code></pre>
+<pre class="r"><code>DSHS_death_gender &lt;- lapply(demo.list, read_excel, sheet = 13)</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3</code></pre>
+<pre class="r"><code>DSHS_death_race &lt;- lapply(demo.list, read_excel, sheet = 14)</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3</code></pre>
+<pre class="r"><code>DSHS_demo_clean = function(df, count_type) { 
+  matches = str_extract_all(colnames(df)[1], &#39;\\d*\\/\\d*&#39;)[[1]]
+  date = matches[length(matches)]  # gets last instance of / (handle race/ethnicity first)
+  df = df[2:(nrow(df) - 4), ]
+  df[, &#39;Date&#39;] = as.Date(paste0(&#39;2020/&#39;, date))
+  colnames(df) = c(&#39;Group&#39;, paste0(count_type, &#39;_Cumulative&#39;),
+                   paste0(count_type, &#39;_PCT&#39;), &#39;Date&#39;)
+  return(df)
+  }
 
-# clean all
-# for (i in 1:length(DSHS_case_age)) {
-#   DSHS_case_age[[i]] = DSHS_case_age[[i]][1:(nrow(DSHS_case_age[[i]])-4), ]
-#   
-# }
+DSHS_case_age = lapply(DSHS_case_age, DSHS_demo_clean, count_type = &#39;Cases&#39;)
+DSHS_case_gender = lapply(DSHS_case_gender, DSHS_demo_clean, count_type = &#39;Cases&#39;)
+DSHS_case_race = lapply(DSHS_case_race, DSHS_demo_clean, count_type = &#39;Cases&#39;)
+DSHS_death_age = lapply(DSHS_death_age, DSHS_demo_clean, count_type = &#39;Deaths&#39;)
+DSHS_death_gender = lapply(DSHS_death_gender, DSHS_demo_clean, count_type = &#39;Deaths&#39;)
+DSHS_death_race = lapply(DSHS_death_race, DSHS_demo_clean, count_type = &#39;Deaths&#39;)
 
-# rbind all</code></pre>
-<div id="cases" class="section level3">
-<h3>Cases</h3>
-<pre class="r"><code>#Age
-DSHS_case_age = DSHS_state[[9]][1:(nrow(DSHS_state[[9]])-4), ]
-colnames(DSHS_case_age)[1] = &#39;Group&#39;
-DSHS_case_age$Count_Type = &#39;Case&#39;
+# combine list of dataframes into one df
+DSHS_case_age_df = data.table::rbindlist(DSHS_case_age)
+DSHS_case_gender_df = data.table::rbindlist(DSHS_case_gender)
+DSHS_case_race_df = data.table::rbindlist(DSHS_case_race)
+DSHS_death_age_df = data.table::rbindlist(DSHS_death_age)
+DSHS_death_gender_df = data.table::rbindlist(DSHS_death_gender)
+DSHS_death_race_df = data.table::rbindlist(DSHS_death_race)
 
-#Gender
-DSHS_case_gender = DSHS_state[[10]][1:(nrow(DSHS_state[[10]])-4), ]
-colnames(DSHS_case_gender)[1] = &#39;Group&#39;
-DSHS_case_gender$Count_Type = &#39;Case&#39;
+# combine case and death cols
+DSHS_age_df = merge(DSHS_case_age_df, DSHS_death_age_df, by = c(&#39;Date&#39;, &#39;Group&#39;))
+DSHS_gender_df = merge(DSHS_case_gender_df, DSHS_death_gender_df, by = c(&#39;Date&#39;, &#39;Group&#39;))
+DSHS_race_df = merge(DSHS_case_race_df, DSHS_death_race_df, by = c(&#39;Date&#39;, &#39;Group&#39;))
 
-# Race
-DSHS_case_race = DSHS_state[[11]][1:(nrow(DSHS_state[[11]])-4), ]
-colnames(DSHS_case_race)[1] = &#39;Group&#39;
-DSHS_case_race$Count_Type = &#39;Case&#39;</code></pre>
-</div>
-<div id="deaths" class="section level3">
-<h3>Deaths</h3>
-<pre class="r"><code>#Age
-DSHS_death_age = DSHS_state[[12]][1:(nrow(DSHS_state[[12]])-4), ]
-colnames(DSHS_death_age)[1] = &#39;Group&#39;
-DSHS_death_age$Count_Type = &#39;Death&#39;
-
-#Gender
-DSHS_death_gender = DSHS_state[[13]][1:(nrow(DSHS_state[[13]])-4), ]
-colnames(DSHS_death_gender)[1] = &#39;Group&#39;
-DSHS_death_gender$Count_Type = &#39;Death&#39;
-
-# Race
-DSHS_death_race = DSHS_state[[14]][1:(nrow(DSHS_state[[14]])-4), ]
-colnames(DSHS_death_race)[1] = &#39;Group&#39;
-DSHS_death_race$Count_Type = &#39;Death&#39;</code></pre>
-<pre class="r"><code># combine 
-DSHS_age = rbind(DSHS_case_age, DSHS_death_age)
-DSHS_gender = rbind(DSHS_case_gender, DSHS_death_gender)
-DSHS_race = rbind(DSHS_case_race, DSHS_death_race)</code></pre>
-</div>
+# fix types
+DSHS_age_df[, 3:6] &lt;- lapply(DSHS_age_df[, 3:6], as.numeric)
+DSHS_gender_df[, 3:6] &lt;- lapply(DSHS_gender_df[, 3:6], as.numeric)
+DSHS_race_df[, 3:6] &lt;- lapply(DSHS_race_df[, 3:6], as.numeric)</code></pre>
+<pre><code>## Warning in lapply(DSHS_race_df[, 3:6], as.numeric): NAs introduced by coercion</code></pre>
 </div>
 <div id="computed-3" class="section level2">
 <h2>Computed</h2>
@@ -1189,13 +1648,13 @@ write.csv(county_demo_2018, file = &#39;combined-datasets/county_demo.csv&#39;, 
 write.xlsx(DSHS_state_day, file=&quot;combined-datasets/state.xlsx&quot;, sheetName=&quot;current&quot;, append = TRUE, row.names=FALSE)</code></pre>
 <div id="demographics" class="section level3">
 <h3>Demographics</h3>
-<pre class="r"><code>write.xlsx(DSHS_age, file=&quot;combined-datasets/demographics.xlsx&quot;,
+<pre class="r"><code>write.xlsx(DSHS_age_df, file=&quot;combined-datasets/demographics.xlsx&quot;,
            sheetName = &quot;age&quot;, row.names=FALSE)
 
-write.xlsx(DSHS_gender, file=&quot;combined-datasets/demographics.xlsx&quot;,
+write.xlsx(DSHS_gender_df, file=&quot;combined-datasets/demographics.xlsx&quot;,
            sheetName = &quot;gender&quot;, append=TRUE, row.names=FALSE)
 
-write.xlsx(DSHS_race, file=&quot;combined-datasets/demographics.xlsx&quot;,
+write.xlsx(DSHS_race_df, file=&quot;combined-datasets/demographics.xlsx&quot;,
            sheetName = &quot;race&quot;, append=TRUE, row.names=FALSE)</code></pre>
 </div>
 </div>

@@ -11,6 +11,7 @@ knitr::opts_knit$set(root.dir = "C:/Users/jeffb/Desktop/Life/personal-projects/C
 library(data.table)
 library(readxl)
 library(dplyr)
+library(stringr)
 ```
 
 ```{r helper functions}
@@ -464,7 +465,6 @@ download.file('https://dshs.texas.gov/coronavirus/COVID-19OutbreaksinLong-termCa
               
 DSHS_fac_totals = read_excel_allsheets('original-sources/DSHS_fac_totals.xlsx')
 
-
 # make df 
 
 
@@ -601,74 +601,52 @@ DSHS_state_day = data.frame(Recovered_Total = DSHS_state[[3]][1,1],
 
 ```{r}
 # read in all files
-# demo.list <- paste0('original-sources/historical/demo/',
-#                     list.files(path = 'original-sources/historical/demo',
-#                         pattern = '*.xlsx'))
-# DSHS_case_age <- lapply(demo.list, read_excel, sheet = 9)
-# DSHS_case_gender <- lapply(demo.list, read_excel, sheet = 10)
-# DSHS_case_race <- lapply(demo.list, read_excel, sheet = 11)
-# DSHS_death_age <- lapply(demo.list, read_excel, sheet = 12)
-# DSHS_case_gender <- lapply(demo.list, read_excel, sheet = 13)
-# DSHS_case_race <- lapply(demo.list, read_excel, sheet = 13)
+current_year =  substr(Sys.Date(), 1, 4)
+demo.list <- paste0('original-sources/historical/demo/',
+                    list.files(path = 'original-sources/historical/demo',
+                               pattern = '*.xlsx'))
 
+DSHS_case_age <- lapply(demo.list, read_excel, sheet = 9)
+DSHS_case_gender <- lapply(demo.list, read_excel, sheet = 10)
+DSHS_case_race <- lapply(demo.list, read_excel, sheet = 11)
+DSHS_death_age <- lapply(demo.list, read_excel, sheet = 12)
+DSHS_death_gender <- lapply(demo.list, read_excel, sheet = 13)
+DSHS_death_race <- lapply(demo.list, read_excel, sheet = 14)
 
-# clean all
-# for (i in 1:length(DSHS_case_age)) {
-#   DSHS_case_age[[i]] = DSHS_case_age[[i]][1:(nrow(DSHS_case_age[[i]])-4), ]
-#   
-# }
+DSHS_demo_clean = function(df, count_type) { 
+  matches = str_extract_all(colnames(df)[1], '\\d*\\/\\d*')[[1]]
+  date = matches[length(matches)]  # gets last instance of / (handle race/ethnicity first)
+  df = df[2:(nrow(df) - 4), ]
+  df[, 'Date'] = as.Date(paste0('2020/', date))
+  colnames(df) = c('Group', paste0(count_type, '_Cumulative'),
+                   paste0(count_type, '_PCT'), 'Date')
+  return(df)
+  }
 
-# rbind all
+DSHS_case_age = lapply(DSHS_case_age, DSHS_demo_clean, count_type = 'Cases')
+DSHS_case_gender = lapply(DSHS_case_gender, DSHS_demo_clean, count_type = 'Cases')
+DSHS_case_race = lapply(DSHS_case_race, DSHS_demo_clean, count_type = 'Cases')
+DSHS_death_age = lapply(DSHS_death_age, DSHS_demo_clean, count_type = 'Deaths')
+DSHS_death_gender = lapply(DSHS_death_gender, DSHS_demo_clean, count_type = 'Deaths')
+DSHS_death_race = lapply(DSHS_death_race, DSHS_demo_clean, count_type = 'Deaths')
 
-```
+# combine list of dataframes into one df
+DSHS_case_age_df = data.table::rbindlist(DSHS_case_age)
+DSHS_case_gender_df = data.table::rbindlist(DSHS_case_gender)
+DSHS_case_race_df = data.table::rbindlist(DSHS_case_race)
+DSHS_death_age_df = data.table::rbindlist(DSHS_death_age)
+DSHS_death_gender_df = data.table::rbindlist(DSHS_death_gender)
+DSHS_death_race_df = data.table::rbindlist(DSHS_death_race)
 
-```{r}
-```
+# combine case and death cols
+DSHS_age_df = merge(DSHS_case_age_df, DSHS_death_age_df, by = c('Date', 'Group'))
+DSHS_gender_df = merge(DSHS_case_gender_df, DSHS_death_gender_df, by = c('Date', 'Group'))
+DSHS_race_df = merge(DSHS_case_race_df, DSHS_death_race_df, by = c('Date', 'Group'))
 
-
-### Cases
-
-```{r}
-#Age
-DSHS_case_age = DSHS_state[[9]][1:(nrow(DSHS_state[[9]])-4), ]
-colnames(DSHS_case_age)[1] = 'Group'
-DSHS_case_age$Count_Type = 'Case'
-
-#Gender
-DSHS_case_gender = DSHS_state[[10]][1:(nrow(DSHS_state[[10]])-4), ]
-colnames(DSHS_case_gender)[1] = 'Group'
-DSHS_case_gender$Count_Type = 'Case'
-
-# Race
-DSHS_case_race = DSHS_state[[11]][1:(nrow(DSHS_state[[11]])-4), ]
-colnames(DSHS_case_race)[1] = 'Group'
-DSHS_case_race$Count_Type = 'Case'
-```
-
-### Deaths
-
-```{r}
-#Age
-DSHS_death_age = DSHS_state[[12]][1:(nrow(DSHS_state[[12]])-4), ]
-colnames(DSHS_death_age)[1] = 'Group'
-DSHS_death_age$Count_Type = 'Death'
-
-#Gender
-DSHS_death_gender = DSHS_state[[13]][1:(nrow(DSHS_state[[13]])-4), ]
-colnames(DSHS_death_gender)[1] = 'Group'
-DSHS_death_gender$Count_Type = 'Death'
-
-# Race
-DSHS_death_race = DSHS_state[[14]][1:(nrow(DSHS_state[[14]])-4), ]
-colnames(DSHS_death_race)[1] = 'Group'
-DSHS_death_race$Count_Type = 'Death'
-```
-
-```{r}
-# combine 
-DSHS_age = rbind(DSHS_case_age, DSHS_death_age)
-DSHS_gender = rbind(DSHS_case_gender, DSHS_death_gender)
-DSHS_race = rbind(DSHS_case_race, DSHS_death_race)
+# fix types
+DSHS_age_df[, 3:6] <- lapply(DSHS_age_df[, 3:6], as.numeric)
+DSHS_gender_df[, 3:6] <- lapply(DSHS_gender_df[, 3:6], as.numeric)
+DSHS_race_df[, 3:6] <- lapply(DSHS_race_df[, 3:6], as.numeric)
 ```
 
 ## Computed
@@ -742,13 +720,13 @@ write.xlsx(DSHS_state_day, file="combined-datasets/state.xlsx", sheetName="curre
 ### Demographics
 
 ```{r}
-write.xlsx(DSHS_age, file="combined-datasets/demographics.xlsx",
+write.xlsx(DSHS_age_df, file="combined-datasets/demographics.xlsx",
            sheetName = "age", row.names=FALSE)
 
-write.xlsx(DSHS_gender, file="combined-datasets/demographics.xlsx",
+write.xlsx(DSHS_gender_df, file="combined-datasets/demographics.xlsx",
            sheetName = "gender", append=TRUE, row.names=FALSE)
 
-write.xlsx(DSHS_race, file="combined-datasets/demographics.xlsx",
+write.xlsx(DSHS_race_df, file="combined-datasets/demographics.xlsx",
            sheetName = "race", append=TRUE, row.names=FALSE)
 ```
 
