@@ -8,7 +8,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(root.dir = "C:/Users/jeffb/Desktop/Life/personal-projects/COVID")
+#knitr::opts_knit$set(root.dir = "C:/Users/jeffb/Desktop/Life/personal-projects/COVID")
 ```
 
 ```{r}
@@ -47,13 +47,14 @@ library(fpp2)
 # TOOD: rename
 full.dshs <- read.csv("combined-datasets/county.csv")
 tsa.dshs <- read.csv("combined-datasets/tsa.csv")
+phr.df <- read.csv("combined-datasets/phr.csv")
 ```
 
 ```{r rt data clean}
 rt.data.clean<-function(covid.data) {
   
   # select relevant metadata & DSHS population estimates
-  rt.cols <- c("County", "Date", "TSA_Name", "TSA",
+  rt.cols <- c("County", "Date", "TSA_Name", "TSA", "PHR", "PHR_Name",
                "Metro_Area", "Cases_Daily", "Population_DSHS")
   
   covid.data <- covid.data[, names(covid.data) %in% rt.cols]
@@ -74,7 +75,7 @@ rt.data.clean<-function(covid.data) {
 
 ```{r rt separate dataframe}
 #separate county, metro, TSA and state data into separate dataframes
-rt.data.organize <- function(mycounty, mytsa){
+rt.data.organize <- function(mycounty, mytsa, myphr){
   
   ### COUNTY ###
   cleaned.county <- rt.data.clean(mycounty)
@@ -83,6 +84,8 @@ rt.data.organize <- function(mycounty, mytsa){
   ### TSA ###
   TSA.df <- rt.data.clean(mytsa)
 
+  ### PHR ###
+  PHR.df <- rt.data.clean(myphr)
   ### METRO ###
   # calculate daily cases and population at metro level, drop repeated rows
   metro.temp <- cleaned.county %>%
@@ -114,7 +117,7 @@ rt.data.organize <- function(mycounty, mytsa){
                          Population_DSHS = state.temp$state_pop_DSHS)
 
   ### OUTPUT ###
-  rt.df.out <- list(county=county.df, TSA=TSA.df, state=state.df, metro=metro.df)
+  rt.df.out <- list(county=county.df, TSA=TSA.df, state=state.df, metro=metro.df, phr = PHR.df)
   return(rt.df.out)
 }
 
@@ -166,7 +169,7 @@ covid.rt <- function(mydata) {
   # gen.time<-generation.time("gamma", c(5.2, 1.72)) #Singapore
   # gen.time<-generation.time("gamma", c(3.95, 1.51)) #Tianjin
   gen.time <- generation.time("gamma", c(3.96, 4.75))
-  print(as.character(mydata[1,1]))
+  # print(as.character(mydata[1,1]))
   
   # TODO: consider removing this and handling na cases directly
   #change na values to 0
@@ -227,13 +230,14 @@ covid.rt <- function(mydata) {
 
 
 ```{r prep dataframes, include=FALSE}
-covid.frame.list <- rt.data.organize(full.dshs, tsa.dshs)
+covid.frame.list <- rt.data.organize(full.dshs, tsa.dshs, phr.df)
 
 #extract data frames from the list
 county.daily <- covid.frame.list$county
 TSA.daily <- covid.frame.list$TSA
 state.daily <- covid.frame.list$state
 metro.daily <- covid.frame.list$metro
+phr.daily <- covid.frame.list$phr
 ```
 
 
@@ -278,6 +282,25 @@ TSA.rt.df$TSA <- paste0(TSA.rt.df$TSA, ' - ', TSA.rt.df$TSA_Name)
 TSA.rt.df$TSA_Name <- NULL
 ```
 
+## PHR
+
+```{r}
+phr.rt.output <- nlme::gapply(phr.daily, FUN=covid.rt, groups=phr.daily$PHR)
+
+#convert list of data frames to single data frame with phr as id col
+phr.rt.df <- data.table::rbindlist(phr.rt.output, idcol=TRUE)
+
+# add PHR_Name & fix dates
+colnames(phr.rt.df)[1] <- 'PHR'
+phr.rt.df$Date <- as.Date(phr.rt.df$Date)
+phr.rt.df <- merge(phr.rt.df, phr.daily[, c('PHR', 'PHR_Name', 'Date')], by = c('PHR', 'Date'))
+
+# combine phr 
+phr.rt.df$PHR <- paste0(phr.rt.df$PHR, ' - ', phr.rt.df$PHR_Name)
+phr.rt.df$PHR_Name <- NULL
+```
+
+
 ## State
 
 ```{r state rt}
@@ -290,6 +313,7 @@ state.rt.df <- covid.rt(state.daily)
 write.csv(county.rt.df,"statistical-output/rt/county_rt.csv", row.names = FALSE)
 write.csv(metro.rt.df, "statistical-output/rt/metro_rt.csv", row.names = FALSE)
 write.csv(TSA.rt.df, "statistical-output/rt/tsa_rt.csv", row.names = FALSE)
+write.csv(phr.rt.df, "statistical-output/rt/phr_rt.csv", row.names = FALSE)
 write.csv(state.rt.df, "statistical-output/rt/state_rt.csv", row.names = FALSE)
 ```
 
@@ -299,10 +323,10 @@ write.csv(state.rt.df, "statistical-output/rt/state_rt.csv", row.names = FALSE)
 colnames(county.rt.df)[1] <- 'Level'
 colnames(metro.rt.df)[1] <- 'Level'
 colnames(TSA.rt.df)[1] <- 'Level'
-
+colnames(phr.rt.df)[1] <- 'Level'
 state.rt.df$Level <- 'Texas'
 
-combined.rt.df <- rbind(county.rt.df, metro.rt.df, TSA.rt.df, state.rt.df)
+combined.rt.df <- rbind(county.rt.df, metro.rt.df, TSA.rt.df, state.rt.df, phr.rt.df)
 write.csv(combined.rt.df, 'statistical-output/rt/stacked_rt.csv', row.names = FALSE)
 write.csv(combined.rt.df, 'tableau/stacked_rt.csv', row.names = FALSE)
 ```
@@ -314,7 +338,7 @@ write.csv(combined.rt.df, 'tableau/stacked_rt.csv', row.names = FALSE)
 #ts.rt.data.clean function will clean data, dropping unwanted variables
 ts.data.clean<-function(covid.data) {
 
-  ts_cols <- c("County", "Date", "TSA", "TSA_Name",
+  ts_cols <- c("County", "Date", "TSA", "TSA_Name", "PHR", "PHR_Name",
                "Metro_Area", "Cases_Daily", "Cases_Cumulative",
                "Population_DSHS")
   
@@ -334,7 +358,7 @@ ts.data.clean<-function(covid.data) {
 
 ```{r ts separate dataframe function}
 #separate county, metro, TSA and State data into separate Data frames
-ts.data.organize<-function(mycounty, mytsa){
+ts.data.organize<-function(mycounty, mytsa, myphr){
 
   ### COUNTY ###
   # clean county vals and restrict to first date of collection
@@ -344,8 +368,9 @@ ts.data.organize<-function(mycounty, mytsa){
   # Set column names
   county.df <- cleaned.county%>%dplyr::select(-TSA_Name, -Metro_Area)
   county.df$Level <- 'County'
-  colnames(county.df)[1] <- 'Level_Name'
-  
+
+  # PHR 
+  PHR.df <- ts.data.clean(myphr)
   
   ### METRO ###
   metro.temp<-cleaned.county %>%
@@ -395,7 +420,7 @@ ts.data.organize<-function(mycounty, mytsa){
   
   
   ### OUTPUT ###
-  ts.df.out <- list(county=county.df, TSA=TSA.df, state=state.df, metro=metro.df)
+  ts.df.out <- list(county=county.df, TSA=TSA.df, state=state.df, metro=metro.df, phr = PHR.df)
   return(ts.df.out)
 }
 
@@ -415,9 +440,15 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
   if(max(mydata$Cases_Daily>=100, na.rm = TRUE))
   {
     # arima requires cases to be a timeseries vector
-    my.timeseries <- ts(rollmean(mydata$Cases_Daily, k=7, na.pad = TRUE, align = 'right'))
+    #convert daily cases to time series
+    my.timeseries<-ts(mydata$Cases_Daily)
+    #my.timeseries <- rollmeanr(my.timeseries, k=7, na.pad=TRUE, align = 'right')
     
+    #load package(pracma)
+    library(pracma)
+    my.timeseries<-movavg(my.timeseries,7,"s")
     #d=0 restricts first differencing to 0 so that daily cases aren't differenced
+    
     arima.fit <- forecast::auto.arima(my.timeseries)
   
     
@@ -444,11 +475,12 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
     # save parameters from arima autofit
     p<- arima.fit$arma[1]          # autoregressive order 
     q<- arima.fit$arma[2]          # moving average order 
-    sp<- arima.fit$arma[3]         # seasonal autoregressive order 
-    sq<- arima.fit$arma[4]         # seasonal moving average order 
-    period<- arima.fit$arma[5]     # period of data (note: 1 is for non seasonal data)
     d<-arima.fit$arma[6]           # differencing order from model
-    sd<- arima.fit$arma[7]         # seasonal differencing order 
+    
+    # sp<- arima.fit$arma[3]         # seasonal autoregressive order 
+    # sq<- arima.fit$arma[4]         # seasonal moving average order 
+    # period<- arima.fit$arma[5]     # period of data (note: 1 is for non seasonal data)
+    # sd<- arima.fit$arma[7]         # seasonal differencing order 
 
     # 10 day forecast, CI for lower and upper has confidence level 70% set by level =c(70,70)
     arima.forecast <- forecast::forecast(arima.fit, h = prediction.period, level=c(70,70))
@@ -463,12 +495,8 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
                                          arima.forecast[['upper']][, 2]),
                             Order_AutoReg = c(rep(p, times = model.length)),
                             Order_Moving_Avg = c(rep(q, times = model.length)),
-                            Order_Seasonal_Autoreg = c(rep(sp, times = model.length)),
-                            Order_Seasonal_Moving_Avg = c(rep(sq, times = model.length)),
-                            Period = c(rep(period, times= model.length)),
-                            Differencing = c(rep(d, times= model.length)),
-                            Differencing_Seasonal = c(rep(sd, times= model.length)))
-
+                            Differencing = c(rep(d, times = model.length)))
+    
       # save prediction plot for preliminary review
       arima.plot <- ggplot(arima.out, aes(x=Date, y = Cases_Daily))+
                     geom_ribbon(aes(ymin = CI_Lower, ymax = CI_Upper), fill = "red", alpha = 0.5, size = 0.1)+
@@ -494,11 +522,7 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
                             CI_Upper =  rep(NA, times = model.length),
                             Order_AutoReg = c(rep(NA, times = model.length)),
                             Order_Moving_Avg = c(rep(NA, times = model.length)),
-                            Order_Seasonal_Autoreg = c(rep(NA, times = model.length)),
-                            Order_Seasonal_Moving_Avg = c(rep(NA, times = model.length)),
-                            Period = c(rep(NA, times= model.length)),
-                            Differencing = c(rep(NA, times= model.length)),
-                            Differencing_Seasonal = c(rep(NA, times= model.length)))
+                            Differencing = c(rep(NA, times= model.length)))
     }
   
   #replace CI lower limit with 0 if negative
@@ -512,13 +536,14 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
 
 ```{r ts Get cleaned dataframes, include=FALSE}
 #run ts.data.organize function on full.dshs and tsa.dshs data
-covid.frame.list <- ts.data.organize(full.dshs, tsa.dshs)
+covid.frame.list <- ts.data.organize(full.dshs, tsa.dshs, phr.df)
 
 #extract data frames from the list
 county.Daily <- covid.frame.list$county
 TSA.Daily <- covid.frame.list$TSA
 state.Daily <- covid.frame.list$state
 metro.Daily <- covid.frame.list$metro
+PHR.Daily <- covid.frame.list$phr
 ```
 
 ## County
@@ -527,7 +552,7 @@ metro.Daily <- covid.frame.list$metro
 # apply arima across all counties
 county.arima.output.1 <- nlme::gapply(county.Daily,
                                     FUN = covid.arima.forecast,
-                                    groups = county.Daily$Level_Name,
+                                    groups = county.Daily$County,
                                     mindate = as.Date('2020-03-04'))
 
 # bind list of dataframes to one dataframe
@@ -603,12 +628,75 @@ TSA.arima.df.1$TSA_Name <- NULL
 # TSA.arima.df.2$TSA_Name <- NULL
 ```
 
+
+## PHR
+
+```{r}
+PHR.arima.output <- nlme::gapply(PHR.Daily,
+                                 FUN = covid.arima.forecast,
+                                 groups = PHR.Daily$PHR,
+                                 mindate = as.Date('2020-03-04'))
+
+PHR.arima.df <- data.table::rbindlist(PHR.arima.output, idcol=TRUE)
+
+colnames(PHR.arima.df)[1] <- 'PHR'
+PHR.arima.df <- merge(PHR.arima.df, unique(PHR.Daily[, c('PHR', 'PHR_Name')]), by = c('PHR'))
+
+# combine PHR 
+PHR.arima.df$PHR <- paste0(PHR.arima.df$PHR, ' - ', PHR.arima.df$PHR_Name)
+PHR.arima.df$PHR_Name <- NULL
+```
+
+
 ## State
 
 ```{r Texas forecasts, results='hide'}
 texas.arima.df.1 <- covid.arima.forecast(state.Daily, mindate = as.Date('2020-03-04'))
 # texas.arima.df.2 <- covid.arima.forecast(state.Daily, mindate = as.Date('2020-06-03'))
 ```
+
+<!-- ## TimeSeriesPlots -->
+
+
+```{r TSA and Texas plots}
+#Create plot function, forecast.data is the dataframe containing true data
+# and the forecast data. days.forecast is the number of days that are forecast
+# in the dataframe (here we are forecasting 10 days, so it should be 10 unless we
+# change this at some point down the road)
+forecast.plot<-function(forecast.data, plot.title, y.label){
+    mindate<-as.POSIXct("2020-03-04")
+    maxdate<-as.POSIXct(max(forecast.data$Date))
+  ts.plot<-ggplot(aes(x=as.POSIXct(Date), y=Cases_Daily), data=forecast.data)+
+    geom_ribbon(aes(ymin=CI_Lower, ymax=CI_Upper), fill="grey50", size=0.1)+
+    geom_line(color="blue", size=1)+
+    geom_line(aes(x=as.POSIXct(Date), y=CI_Lower), color="grey", size=0.1)+
+    geom_line(aes(x=as.POSIXct(Date),y=CI_Upper), color="grey", size=0.1)+
+    scale_x_datetime(limits = c(mindate, maxdate))+
+    xlab("Date")+
+    ylab(y.label)+
+    #Can use the following title if we are running using nlme for data frame
+    #ggtitle(paste(forecast.data$.id,": TS Daily Cases + 10 Day Forcast",sep=""))
+    ggtitle(plot.title)
+ts.plot
+}
+```
+
+```{r Arima select forecast plots }
+
+######### View Output Table & Graph for TSA Q ##########
+library(kableExtra)
+#subset TSA Q arima data
+TSA_Q.arima.df<-TSA.arima.df.1%>%subset(TSA.arima.df.1$TSA=="Q - Greater Houston")
+#apply the plot function to TSA Q arima data frame
+TSA_Q.arima.df%>%kable(caption="Greater Houston ARIMA - Daily Cases")%>%kable_styling(full_width=FALSE)
+#nlme::gapply(TSA.arima.df, FUN = forecast.plot, groups=TSA.daily$Level_Name)
+forecast.plot(TSA_Q.arima.df, "TSA Q - Greater Houston Daily Cases", "Daily Cases")
+
+######### View Output Table & Graph for Texas ##########
+texas.arima.df.1%>%kable(caption="Texas Arima - Daily Cases")%>%kable_styling(full_width=FALSE)
+forecast.plot(texas.arima.df.1, "Texas Daily Cases", "Daily Cases")
+```
+
 
 ## export
 
@@ -617,6 +705,7 @@ write.csv(texas.arima.df.1, 'statistical-output/time-series/state_timeseries.csv
 write.csv(TSA.arima.df.1, 'statistical-output/time-series/tsa_timeseries.csv', row.names = FALSE)
 write.csv(county.arima.df.1, 'statistical-output/time-series/county_timeseries.csv', row.names = FALSE)
 write.csv(metro.arima.df.1, 'statistical-output/time-series/metro_timeseries.csv', row.names = FALSE)
+write.csv(PHR.arima.df, 'statistical-output/time-series/phr_timeseries.csv', row.names = FALSE)
 
 # write.csv(texas.arima.df.2, 'statistical-output/time-series/state_timeseries_06_03.csv', row.names = FALSE)
 # write.csv(TSA.arima.df.2, 'statistical-output/time-series/tsa_timeseries_06_03.csv', row.names = FALSE)
@@ -631,13 +720,13 @@ colnames(county.arima.df.1)[1] <- 'Level'
 colnames(metro.arima.df.1)[1] <- 'Level'
 colnames(TSA.arima.df.1)[1] <- 'Level'
 texas.arima.df.1$Level <- 'Texas'
-
+colnames(PHR.arima.df)[1] <- 'Level'
 # colnames(county.arima.df.2)[1] <- 'Level'
 # colnames(metro.arima.df.2)[1] <- 'Level'
 # colnames(TSA.arima.df.2)[1] <- 'Level'
 # texas.arima.df.2$Level <- 'Texas'
 
-combined.arima.df.1 <- rbind(county.arima.df.1, metro.arima.df.1, TSA.arima.df.1, texas.arima.df.1)
+combined.arima.df.1 <- rbind(county.arima.df.1, metro.arima.df.1, TSA.arima.df.1, texas.arima.df.1, PHR.arima.df)
 write.csv(combined.arima.df.1, 'statistical-output/time-series/stacked_timeseries.csv',
           row.names = FALSE)
 
@@ -690,11 +779,42 @@ tsa_current_ratio_dat$TSA <- paste0(tsa_current_ratio_dat$TSA, ' - ', tsa_curren
 tsa_current_ratio_dat$TSA_Name <- NULL
 ```
 
+### PHR
+
+```{r}
+cumcases.PHR <- PHR.Daily %>% dplyr::select(Date, PHR, Cases_Cumulative)
+cumcases.PHR$Date <- ymd(cumcases.PHR$Date)
+
+latestdate <- max(cumcases.PHR$Date)
+earliestdate <- latestdate - 14
+middate <- latestdate - 7
+
+week2 <- subset(cumcases.PHR, Date==latestdate, select=Cases_Cumulative) - 
+  subset(cumcases.PHR, Date==middate, select=Cases_Cumulative)
+
+week1 <- subset(cumcases.PHR, Date==middate, select=Cases_Cumulative) - 
+  subset(cumcases.PHR, Date==earliestdate, select=Cases_Cumulative)
+
+current_ratio <- (week2/week1)[,1]
+#current_ratio[week1<10] <- NA
+current_ratio[current_ratio<0] <- NA
+phr_current_ratio_dat <- data.frame(PHR=subset(cumcases.PHR, Date==latestdate, select=PHR)[,1],
+                                    current_ratio=current_ratio, current_ratio_cat = cut(current_ratio, breaks=c(0,0.5,.9,1.1,1.5,2,4,8,max(current_ratio))))
+
+# add PHR name
+phr_current_ratio_dat <- merge(phr_current_ratio_dat, unique(PHR.Daily[, c('PHR', 'PHR_Name')]), by = 'PHR')
+
+# combine PHR name
+phr_current_ratio_dat$PHR <- paste0(phr_current_ratio_dat$PHR, ' - ', phr_current_ratio_dat$PHR_Name)
+phr_current_ratio_dat$PHR_Name <- NULL
+```
+
+
 ### County
 
 ```{r}
 # declare vals
-cumcases.county <- county.Daily %>% dplyr::select(Date,Level_Name, Cases_Cumulative)
+cumcases.county <- county.Daily %>% dplyr::select(Date,County, Cases_Cumulative)
 cumcases.county$Date <- ymd(cumcases.county$Date)
 
 latestdate <- max(cumcases.county$Date, na.rm=T)
@@ -715,9 +835,9 @@ current_ratio[week1<10] <- NA
 current_ratio[current_ratio<0] <- NA
 
 # output
-# TODO: investigate select vs subset(...)[, 'Level_Name']
+# TODO: investigate select vs subset(...)[, 'County']
 county_current_ratio_dat <- 
-  data.frame(County=subset(cumcases.county, Date==latestdate, select=Level_Name)[,1],
+  data.frame(County=subset(cumcases.county, Date==latestdate, select=County)[,1],
              current_ratio=current_ratio,
              current_ratio_cat = cut(current_ratio,
                                      breaks=c(0,0.5,.9,1.1,1.5,2,4,8,max(current_ratio))))
@@ -748,7 +868,7 @@ metro_current_ratio_dat <-
                                      breaks=c(0,0.5,.9,1.1,1.5,2,4,8,max(current_ratio))))
 ```
 
-### Texas
+### State
 
 ```{r}
 cumcases.state <- state.Daily %>% dplyr::select(Date, Cases_Cumulative)
@@ -780,13 +900,13 @@ write.csv(state_current_ratio_dat, 'statistical-output/standard-stats/case-ratio
 write.csv(tsa_current_ratio_dat,'statistical-output/standard-stats/case-ratios/tsa_case_ratio.csv', row.names = F)
 write.csv(county_current_ratio_dat, 'statistical-output/standard-stats/case-ratios/county_case_ratio.csv', row.names = F)
 write.csv(metro_current_ratio_dat,'statistical-output/standard-stats/case-ratios/metro_case_ratio.csv', row.names = F)
-
+write.csv(phr_current_ratio_dat,'statistical-output/standard-stats/case-ratios/phr_case_ratio.csv', row.names = F)
 
 write.csv(state_current_ratio_dat, 'tableau/case-ratios/state_case_ratio.csv', row.names = F)
 write.csv(tsa_current_ratio_dat,'tableau/case-ratios/tsa_case_ratio.csv', row.names = F)
 write.csv(county_current_ratio_dat, 'tableau/case-ratios/county_case_ratio.csv', row.names = F)
 write.csv(metro_current_ratio_dat,'tableau/case-ratios/metro_case_ratio.csv', row.names = F)
-
+write.csv(phr_current_ratio_dat,'tableau/case-ratios/phr_case_ratio.csv', row.names = F)
 ```
 
 
@@ -796,11 +916,11 @@ write.csv(metro_current_ratio_dat,'tableau/case-ratios/metro_case_ratio.csv', ro
 colnames(county_current_ratio_dat)[1] <- 'Level'
 colnames(metro_current_ratio_dat)[1] <- 'Level'
 colnames(tsa_current_ratio_dat)[1] <- 'Level'
-
+colnames(phr_current_ratio_dat)[1] <- 'Level'
 state_current_ratio_dat$Level <- 'Texas'
 
 combined_current_ratio_dat <- rbind(county_current_ratio_dat, metro_current_ratio_dat,
-                                   tsa_current_ratio_dat, state_current_ratio_dat)
+                                   tsa_current_ratio_dat, state_current_ratio_dat, phr_current_ratio_dat)
 
 write.csv(combined_current_ratio_dat, 'statistical-output/standard-stats/case-ratios/stacked_case_ratio.csv',
           row.names <- FALSE)
@@ -822,13 +942,16 @@ create.case.test <-   function(level, dat, region){
   if(level == "TSA"){
     dat <- subset(dat, TSA==region)
   }
+   if(level == "PHR"){
+    dat <- subset(dat, PHR==region)
+  }
   if(level == "county"){
     dat <- subset(dat, County == region)
   }
   if(level == "metro"){
     dat <- subset(dat, Metro_Area==region)
   }
-  
+
   # restrict data to first test date (for % test increase)
   first.test.date <- ymd("2020-04-22")
   dat$Date <- ymd(dat$Date)
@@ -938,6 +1061,36 @@ write.csv(tsa.case.test.df, 'statistical-output/standard-stats/pct-change/tsa_pc
 ```
 
 
+### PHR
+
+```{r}
+phr <- read.csv('combined-datasets/phr.csv')
+
+# Create phr-level data (can optimize this code in the future, but it runs pretty quickly already)
+# TODO: convert to gapply -> rbindlist
+phrlist <- unique(phr$PHR)
+tmp <- create.case.test(level="PHR", phr,phrlist[1])
+phr.case.test.df <- data.frame(PHR=rep(phrlist[1], nrow(tmp)), 
+                               PHR_Name=rep(unique(phr$PHR_Name[1])),
+                               tmp)
+
+for(i in c(2:length(phrlist))){
+  tmp <- create.case.test(level="PHR", phr,phrlist[i])
+  phr.case.test.df <- rbind(phr.case.test.df, data.frame(PHR=rep(phrlist[i], nrow(tmp)), 
+                                                         PHR_Name=rep(unique(phr$PHR_Name[i])),
+                                                         tmp))
+}
+
+
+## combine phr name
+phr.case.test.df$PHR = paste0(phr.case.test.df$PHR, ' - ', phr.case.test.df$PHR_Name)
+phr.case.test.df$PHR_Name = NULL
+
+write.csv(phr.case.test.df, 'statistical-output/standard-stats/pct-change/phr_pct_change.csv',
+          row.names = FALSE)
+```
+
+
 ### Metro
 
 ```{r}
@@ -989,10 +1142,12 @@ write.csv(county.case.test.df, 'statistical-output/standard-stats/pct-change/cou
 colnames(county.case.test.df)[1] <- 'Level'
 colnames(metro.case.test.df)[1] <- 'Level'
 colnames(tsa.case.test.df)[1] <- 'Level'
+colnames(phr.case.test.df)[1] <- 'Level'
 
 state.case.test.df$Level <- 'Texas'
 
-combined.case.test.df <- rbind(county.case.test.df, metro.case.test.df, tsa.case.test.df, state.case.test.df)
+combined.case.test.df <- rbind(county.case.test.df, metro.case.test.df,
+                               tsa.case.test.df, state.case.test.df, phr.case.test.df)
 write.csv(combined.case.test.df, 'statistical-output/standard-stats/pct-change/stacked_pct_change.csv',
           row.names = FALSE)
 
