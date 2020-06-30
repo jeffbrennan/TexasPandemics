@@ -368,9 +368,12 @@ ts.data.organize<-function(mycounty, mytsa, myphr){
   # Set column names
   county.df <- cleaned.county%>%dplyr::select(-TSA_Name, -Metro_Area)
   county.df$Level <- 'County'
-
+  colnames(county.df)[2] = 'Level_Name'
+  
   # PHR 
   PHR.df <- ts.data.clean(myphr)
+  PHR.df$Level = 'PHR'
+  colnames(PHR.df)[3] = 'Level_Name' 
   
   ### METRO ###
   metro.temp<-cleaned.county %>%
@@ -451,7 +454,6 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
     
     arima.fit <- forecast::auto.arima(my.timeseries)
   
-    
     # obtain diagnostic plots for ideal arima (p,d,q) selection 
     acf <- ggAcf(my.timeseries, lag.max=30)
     pacf <- ggPacf(my.timeseries, lag.max=30)
@@ -461,27 +463,12 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
            plot = ts.diagnostics)
 
     
-    # TODO: fix plot output                 
-    # 
-    # png(file = "myplot.png")
-    # checkresiduals(arima.fit)
-    # #turn off the device
-    # dev.off()
-    # ggsave(paste0('statistical-output/time-series/diagnostics/',
-    #               mydata$Level[1],'/', 'residuals_', mydata$Level_Name[1], '.png'),
-    #        plot = arima.resid.diagnostics)
-    # 
     
     # save parameters from arima autofit
     p<- arima.fit$arma[1]          # autoregressive order 
     q<- arima.fit$arma[2]          # moving average order 
     d<-arima.fit$arma[6]           # differencing order from model
-    
-    # sp<- arima.fit$arma[3]         # seasonal autoregressive order 
-    # sq<- arima.fit$arma[4]         # seasonal moving average order 
-    # period<- arima.fit$arma[5]     # period of data (note: 1 is for non seasonal data)
-    # sd<- arima.fit$arma[7]         # seasonal differencing order 
-
+  
     # 10 day forecast, CI for lower and upper has confidence level 70% set by level =c(70,70)
     arima.forecast <- forecast::forecast(arima.fit, h = prediction.period, level=c(70,70))
 
@@ -503,8 +490,6 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
                     geom_line(color = "black", size = 1)+
                     labs(y = 'Daily Cases (7-Day Moving Average)', x = 'Date',
                          title = mydata$Level_Name[1]) +
-                    # geom_line(aes(x=as.POSIXct(Date), y=CI.Lower), color="grey", size=0.1) +
-                    # geom_line(aes(x=as.POSIXct(Date),y=CI.Upper), color="grey", size=0.1)
                     scale_x_date(limits = c(mindate, maxdate + prediction.period),
                                  date_labels = '%b-%d', date_breaks = '1 week') + 
                     ggpubr::theme_pubr() +
@@ -552,7 +537,7 @@ PHR.Daily <- covid.frame.list$phr
 # apply arima across all counties
 county.arima.output.1 <- nlme::gapply(county.Daily,
                                     FUN = covid.arima.forecast,
-                                    groups = county.Daily$County,
+                                    groups = county.Daily$Level_Name,
                                     mindate = as.Date('2020-03-04'))
 
 # bind list of dataframes to one dataframe
@@ -611,21 +596,6 @@ TSA.arima.df.1 <- merge(TSA.arima.df.1, unique(TSA.daily[, c('TSA', 'TSA_Name')]
 # combine TSA 
 TSA.arima.df.1$TSA <- paste0(TSA.arima.df.1$TSA, ' - ', TSA.arima.df.1$TSA_Name)
 TSA.arima.df.1$TSA_Name <- NULL
-
-# # Phase 3
-# TSA.arima.output.2 <- nlme::gapply(TSA.Daily,
-#                                    FUN = covid.arima.forecast,
-#                                    groups = TSA.Daily$Level_Name,
-#                                    mindate = as.Date('2020-06-03'))
-# 
-# TSA.arima.df.2 <- data.table::rbindlist(TSA.arima.output.2, idcol=TRUE)
-# 
-# colnames(TSA.arima.df.2)[1] <- 'TSA'
-# TSA.arima.df.2 <- merge(TSA.arima.df.2, unique(TSA.daily[, c('TSA', 'TSA_Name')]), by = c('TSA'))
-# 
-# # combine TSA 
-# TSA.arima.df.2$TSA <- paste0(TSA.arima.df.2$TSA, ' - ', TSA.arima.df.2$TSA_Name)
-# TSA.arima.df.2$TSA_Name <- NULL
 ```
 
 
@@ -634,17 +604,17 @@ TSA.arima.df.1$TSA_Name <- NULL
 ```{r}
 PHR.arima.output <- nlme::gapply(PHR.Daily,
                                  FUN = covid.arima.forecast,
-                                 groups = PHR.Daily$PHR,
+                                 groups = PHR.Daily$Level_Name,
                                  mindate = as.Date('2020-03-04'))
 
 PHR.arima.df <- data.table::rbindlist(PHR.arima.output, idcol=TRUE)
 
 colnames(PHR.arima.df)[1] <- 'PHR'
-PHR.arima.df <- merge(PHR.arima.df, unique(PHR.Daily[, c('PHR', 'PHR_Name')]), by = c('PHR'))
+PHR.arima.df <- merge(PHR.arima.df, unique(PHR.Daily[, c('PHR', 'Level_Name')]), by = c('PHR'))
 
 # combine PHR 
-PHR.arima.df$PHR <- paste0(PHR.arima.df$PHR, ' - ', PHR.arima.df$PHR_Name)
-PHR.arima.df$PHR_Name <- NULL
+PHR.arima.df$PHR <- paste0(PHR.arima.df$PHR, ' - ', PHR.arima.df$Level_Name)
+PHR.arima.df$Level_Name <- NULL
 ```
 
 

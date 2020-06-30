@@ -6,60 +6,60 @@
 "Archer",NA,NA
 "Armstrong",NA,NA
 "Atascosa",0.714285714285714,"(0.5,0.9]"
-"Austin",2,"(1.5,2]"
-"Bailey",0.204081632653061,"(0,0.5]"
+"Austin",1.5,"(1.1,1.5]"
+"Bailey",0.134615384615385,"(0,0.5]"
 "Bandera",NA,NA
-"Bastrop",1.71111111111111,"(1.5,2]"
+"Bastrop",1.11764705882353,"(1.1,1.5]"
 "Baylor",NA,NA
 "Bee",NA,NA
 "Bell",1.58549222797927,"(1.5,2]"
-"Bexar",1.57373929590866,"(1.5,2]"
-"Blanco",NA,NA
+"Bexar",1.31177179590197,"(1.1,1.5]"
+"Blanco",0.454545454545455,"(0,0.5]"
 "Borden",NA,NA
 "Bosque",NA,NA
-"Bowie",0.666666666666667,"(0.5,0.9]"
-"Brazoria",0.493166287015945,"(0,0.5]"
-"Brazos",1.11486486486486,"(1.1,1.5]"
-"Brewster",3.58823529411765,"(2,4]"
+"Bowie",1.07142857142857,"(0.9,1.1]"
+"Brazoria",0.506681514476615,"(0.5,0.9]"
+"Brazos",1.31065759637188,"(1.1,1.5]"
+"Brewster",1.64285714285714,"(1.5,2]"
 "Briscoe",NA,NA
 "Brooks",NA,NA
 "Brown",NA,NA
-"Burleson",1.35714285714286,"(1.1,1.5]"
-"Burnet",2.05555555555556,"(2,4]"
-"Caldwell",1.31884057971015,"(1.1,1.5]"
+"Burleson",0.842105263157895,"(0.5,0.9]"
+"Burnet",1.48148148148148,"(1.1,1.5]"
+"Caldwell",1.34177215189873,"(1.1,1.5]"
 "Calhoun",NA,NA
 "Callahan",NA,NA
 "Cameron",1.56127450980392,"(1.5,2]"
 "Camp",NA,NA
 "Carson",NA,NA
 "Cass",NA,NA
-"Castro",NA,NA
-"Chambers",2.32,"(2,4]"
-"Cherokee",2.92307692307692,"(2,4]"
+"Castro",1,"(0.9,1.1]"
+"Chambers",2.46808510638298,"(2,4]"
+"Cherokee",4.84615384615385,"(4,8]"
 "Childress",NA,NA
 "Clay",NA,NA
 "Cochran",NA,NA
 "Coke",NA,NA
 "Coleman",NA,NA
-"Collin",0.88929889298893,"(0.5,0.9]"
+"Collin",0.971223021582734,"(0.9,1.1]"
 "Collingsworth",NA,NA
-"Colorado",1.45454545454545,"(1.1,1.5]"
+"Colorado",1.52380952380952,"(1.5,2]"
 "Comal",1.5702479338843,"(1.5,2]"
 "Comanche",NA,NA
 "Concho",NA,NA
 "Cooke",NA,NA
-"Coryell",1.7,"(1.5,2]"
+"Coryell",1,"(0.9,1.1]"
 "Cottle",NA,NA
-"Crane",0.285714285714286,"(0,0.5]"
+"Crane",0.2,"(0,0.5]"
 "Crockett",NA,NA
 "Crosby",NA,NA
 "Culberson",NA,NA
-"Dallam",2.5,"(2,4]"
-"Dallas",1.25967291583566,"(1.1,1.5]"
+"Dallam",1.1304347826087,"(1.1,1.5]"
+"Dallas",1.27057022579411,"(1.1,1.5]"
 "Dawson",NA,NA
-"Deaf Smith",2.57142857142857,"(2,4]"
+"Deaf Smith",1.5,"(1.1,1.5]"
 "Delta",NA,NA
-"Denton",1.31218274111675,"(1.1,1.5]"
+"Denton",1.18735362997658,"(1.1,1.5]"
 "DeWitt",NA,NA
 "Dickens",NA,NA
 "Dimmit",NA,NA
@@ -68,30 +68,30 @@
 "Eastland",NA,NA
 "Ector",2.08045977011494,"(2,4]"
 "Edwards",NA,NA
-"El Paso",1.7217125382263,"(1.5,2]"
+"El Paso",1.85669781931464,"(1.5,2]"
 "Ellis",3.24193548387097,"(2,4]"
 "Erath",NA,NA
 "Falls",NA,NA
 "Fannin",1.54545454545455,"(1.5,2]"
-"Fayette",1.25,"(1.1,1.5]"
+"Fayette",0.909090909090909,"(0.9,1.1]"
 "Fisher",NA,NA
 "Floyd",NA,NA
 "Foard",NA,NA
-"Fort Bend",1.35159010600707,"(1.1,1.5]"
+"Fort Bend",0.945906432748538,"(0.9,1.1]"
 "Franklin",NA,NA
 "Freestone",NA,NA
 "Frio",0.65,"(0.5,0.9]"
 "Gaines",NA,NA
-"Galveston",1.89579524680073,"(1.5,2]"
+"Galveston",1.72549019607843,"(1.5,2]"
 "Garza",NA,NA
 "Gillespie",1.45454545454545,"(1.1,1.5]"
 "Glasscock",NA,NA
 "Goliad",NA,NA
 "Gonzales",0.673469387755102,"(0.5,0.9]"
 "Gray",NA,NA
-"Grayson",0.604938271604938,"(0.5,0.9]"
+"Grayson",0.6,"(0.5,0.9]"
 "Gregg",1.25925925925926,"(1.1,1.5]"
-"Grimes",1.59259259259259,"(1.5,2]"
+"Grimes",1.79310344827586,"(1.5,2]"
 "Guadalupe",2.07236842105263,"(2,4]"
 "Hale",1.77777777777778,"(1.5,2]"
 "Hall",NA,NA
@@ -99,15 +99,15 @@
 "Hansford",NA,NA
 "Hardeman",NA,NA
 "Hardin",1.73076923076923,"(1.5,2]"
-"Harris",1.9249883882954,"(1.5,2]"
+"Harris",1.92350877192982,"(1.5,2]"
 "Harrison",NA,NA
 "Hartley",NA,NA
 "Haskell",NA,NA
-"Hays",0.920855614973262,"(0.9,1.1]"
+"Hays",0.842967244701349,"(0.5,0.9]"
 "Hemphill",NA,NA
 "Henderson",1.17647058823529,"(1.1,1.5]"
-"Hidalgo",2.26825127334465,"(2,4]"
-"Hill",0.916666666666667,"(0.9,1.1]"
+"Hidalgo",2.51173708920188,"(2,4]"
+"Hill",1.30769230769231,"(1.1,1.5]"
 "Hockley",NA,NA
 "Hood",NA,NA
 "Hopkins",NA,NA
@@ -121,9 +121,9 @@
 "Jackson",NA,NA
 "Jasper",NA,NA
 "Jeff Davis",NA,NA
-"Jefferson",1.50632911392405,"(1.5,2]"
+"Jefferson",1.62251655629139,"(1.5,2]"
 "Jim Hogg",NA,NA
-"Jim Wells",NA,NA
+"Jim Wells",5.625,"(4,8]"
 "Johnson",5.36363636363636,"(4,8]"
 "Jones",NA,NA
 "Karnes",0.7,"(0.5,0.9]"
@@ -139,27 +139,27 @@
 "Knox",NA,NA
 "La Salle",NA,NA
 "Lamar",1.5,"(1.1,1.5]"
-"Lamb",0.636363636363636,"(0.5,0.9]"
+"Lamb",0.384615384615385,"(0,0.5]"
 "Lampasas",NA,NA
 "Lavaca",0.603174603174603,"(0.5,0.9]"
-"Lee",0.5,"(0,0.5]"
+"Lee",0.277777777777778,"(0,0.5]"
 "Leon",NA,NA
-"Liberty",1.55,"(1.5,2]"
+"Liberty",1.71186440677966,"(1.5,2]"
 "Limestone",NA,NA
 "Lipscomb",NA,NA
 "Live Oak",NA,NA
 "Llano",NA,NA
 "Loving",NA,NA
-"Lubbock",1.57823129251701,"(1.5,2]"
+"Lubbock",1.55723542116631,"(1.5,2]"
 "Lynn",NA,NA
 "Madison",NA,NA
 "Marion",NA,NA
 "Martin",NA,NA
 "Mason",NA,NA
-"Matagorda",1.48275862068966,"(1.1,1.5]"
+"Matagorda",1.6551724137931,"(1.5,2]"
 "Maverick",1.7962962962963,"(1.5,2]"
 "McCulloch",NA,NA
-"McLennan",2.71724137931034,"(2,4]"
+"McLennan",2.04188481675393,"(2,4]"
 "McMullen",NA,NA
 "Medina",0.137931034482759,"(0,0.5]"
 "Menard",NA,NA
@@ -172,22 +172,22 @@
 "Moore",NA,NA
 "Morris",NA,NA
 "Motley",NA,NA
-"Nacogdoches",1.71428571428571,"(1.5,2]"
+"Nacogdoches",1.59090909090909,"(1.5,2]"
 "Navarro",1.96969696969697,"(1.5,2]"
 "Newton",NA,NA
 "Nolan",NA,NA
-"Nueces",4.32950191570881,"(4,8]"
+"Nueces",4.31649831649832,"(4,8]"
 "Ochiltree",NA,NA
 "Oldham",NA,NA
 "Orange",1.48648648648649,"(1.1,1.5]"
 "Palo Pinto",NA,NA
 "Panola",NA,NA
 "Parker",10.9166666666667,NA
-"Parmer",0.942857142857143,"(0.9,1.1]"
+"Parmer",0.789473684210526,"(0.5,0.9]"
 "Pecos",NA,NA
 "Polk",3.1,"(2,4]"
 "Potter",0.972972972972973,"(0.9,1.1]"
-"Presidio",NA,NA
+"Presidio",0.181818181818182,"(0,0.5]"
 "Rains",NA,NA
 "Randall",2.08333333333333,"(2,4]"
 "Reagan",NA,NA
@@ -196,55 +196,55 @@
 "Reeves",NA,NA
 "Refugio",NA,NA
 "Roberts",NA,NA
-"Robertson",0.8,"(0.5,0.9]"
+"Robertson",0.923076923076923,"(0.9,1.1]"
 "Rockwall",4.29166666666667,"(4,8]"
 "Runnels",NA,NA
-"Rusk",0.0777777777777778,"(0,0.5]"
+"Rusk",0.131147540983607,"(0,0.5]"
 "Sabine",NA,NA
 "San Augustine",0.5,"(0,0.5]"
 "San Jacinto",NA,NA
 "San Patricio",1.72,"(1.5,2]"
 "San Saba",NA,NA
-"Schleicher",0.181818181818182,"(0,0.5]"
+"Schleicher",0.272727272727273,"(0,0.5]"
 "Scurry",NA,NA
 "Shackelford",NA,NA
-"Shelby",0.84,"(0.5,0.9]"
+"Shelby",0.875,"(0.5,0.9]"
 "Sherman",NA,NA
 "Smith",2.30434782608696,"(2,4]"
 "Somervell",NA,NA
-"Starr",1.90909090909091,"(1.5,2]"
+"Starr",1.16,"(1.1,1.5]"
 "Stephens",NA,NA
 "Sterling",NA,NA
 "Stonewall",NA,NA
 "Sutton",NA,NA
 "Swisher",NA,NA
-"Tarrant",2.04451510333863,"(2,4]"
-"Taylor",2.37037037037037,"(2,4]"
+"Tarrant",1.55521283158544,"(1.5,2]"
+"Taylor",1.85294117647059,"(1.5,2]"
 "Terrell",NA,NA
 "Terry",NA,NA
 "Throckmorton",NA,NA
-"Titus",0.931034482758621,"(0.9,1.1]"
-"Tom Green",1,"(0.9,1.1]"
-"Travis",1.70635559131134,"(1.5,2]"
+"Titus",1.42857142857143,"(1.1,1.5]"
+"Tom Green",1.02325581395349,"(0.9,1.1]"
+"Travis",1.35195195195195,"(1.1,1.5]"
 "Trinity",NA,NA
 "Tyler",NA,NA
 "Upshur",NA,NA
 "Upton",NA,NA
-"Uvalde",2.75,"(2,4]"
+"Uvalde",2.91666666666667,"(2,4]"
 "Val Verde",1.28947368421053,"(1.1,1.5]"
 "Van Zandt",NA,NA
 "Victoria",5.69047619047619,"(4,8]"
-"Walker",1.34146341463415,"(1.1,1.5]"
-"Waller",1.59090909090909,"(1.5,2]"
+"Walker",2.02941176470588,"(2,4]"
+"Waller",1.45833333333333,"(1.1,1.5]"
 "Ward",NA,NA
-"Washington",2.90909090909091,"(2,4]"
-"Webb",1.94974874371859,"(1.5,2]"
-"Wharton",2.95833333333333,"(2,4]"
+"Washington",1.76470588235294,"(1.5,2]"
+"Webb",2.07874015748031,"(2,4]"
+"Wharton",3.08333333333333,"(2,4]"
 "Wheeler",NA,NA
 "Wichita",1.87142857142857,"(1.5,2]"
 "Wilbarger",NA,NA
-"Willacy",1.61290322580645,"(1.5,2]"
-"Williamson",1.63466666666667,"(1.5,2]"
+"Willacy",1.70588235294118,"(1.5,2]"
+"Williamson",1.57505773672055,"(1.5,2]"
 "Wilson",0.7,"(0.5,0.9]"
 "Winkler",NA,NA
 "Wise",NA,NA
