@@ -66,34 +66,33 @@ county_demo_2018$AGEGRP = factor(county_demo_2018$AGEGRP,
 ## City level
 
 ```{r}
-city_pops = read.csv('original-sources/census/city_pops.csv')
-
 # keep only 2018 estimate
-city_pops2 = city_pops[, c(3, 4, 9, 21)]
-colnames(city_pops2) = c('County', 'Place_Code', 'City', 'Population')
+city_pops = read.csv('original-sources/census/city_pops.csv')[, c(3, 4, 9, 21)]
+
+colnames(city_pops) = c('County', 'Place_Code', 'City', 'Population')
 
 # drop city, town, suffixes
-city_pops2$City = gsub(' city| town|', '', city_pops2$City)
+city_pops$City = gsub(' city| town|', '', city_pops$City)
 
 # drop pt suffix
 # pt indicates overlap of cities between counties
-city_pops2$City = gsub(' (pt.)', '', city_pops2$City, fixed = TRUE)
+city_pops$City = gsub(' (pt.)', '', city_pops$City, fixed = TRUE)
 
-colnames(city_pops2)[1] = 'County_Code'
+colnames(city_pops)[1] = 'County_Code'
 
 # get county fips
-county_fips = subset(city_pops2, Place_Code == 0)[-1, c(1,3)]
+county_fips = subset(city_pops, Place_Code == 0)[-1, c(1,3)]
 colnames(county_fips) = c('County_Code', 'County')
 
 
 # replace county fips with actual names
-city_pops3 = merge(city_pops2, county_fips, by = 'County_Code')
+merged_city = merge(city_pops, county_fips, by = 'County_Code')
 
 # drop county totals from list
-city_pops4 = subset(city_pops3, Place_Code != 0 & Place_Code != 99990)
+merged_city = subset(merged_city, Place_Code != 0 & Place_Code != 99990)
 
 # drop county suffix
-city_pops4$County = gsub(' County', '', city_pops4$County)
+merged_city$County = gsub(' County', '', merged_city$County)
 ```
 
 
@@ -112,19 +111,22 @@ mobility_data = fread('https://www.gstatic.com/covid19/mobility/Global_Mobility_
 mobility_texas = subset(mobility_data, sub_region_1 == 'Texas')
 
 # drop cols
-mobility_texas = mobility_texas[, -c(1,2,5,6)]
+mobility_texas = mobility_texas[, -c(1,2,3,5,6)]
 write.csv(mobility_texas, 'original-sources/GOOGLE.csv', row.names = F)
 
 # fix colnames
 # values represent percent change from baseline
-colnames(mobility_texas) = c('State', 'County', 'Date', 'Retail_Recreation', 'Grocery_Pharmacy', 'Parks', 'Transit', 'Workplaces', 'Residential')
+colnames(mobility_texas) = c('County', 'Date', 'Retail_Recreation', 'Grocery_Pharmacy',
+                             'Parks', 'Transit', 'Workplaces', 'Residential')
 
 # Add name for blank county cells & drop 'county' suffix
 mobility_texas$County = sub('^$', 'Unallocated', mobility_texas$County)
 mobility_texas$County = gsub(' County', '', mobility_texas$County)
 
+# drop blank cells
+mobility_texas = subset(mobility_texas, County != 'Unallocated')
+
 #fix types
-mobility_texas$State = as.factor(mobility_texas$State)
 mobility_texas$County = as.factor(mobility_texas$County)
 mobility_texas$Date = as.Date(mobility_texas$Date)
 ```
@@ -239,6 +241,9 @@ DSHS_tests_long =
     DSHS_tests_long %>% 
     group_by(County) %>% 
     mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative)))
+
+# drop unmergable counties 
+DSHS_tests_long = subset(DSHS_tests_long, County != 'Unknown' & County != 'Pending Assignments')
 ```
 
 
@@ -278,7 +283,7 @@ DSHS_active_cases_long =
 
 ```{r}
 # combine DSHS sources
-DSHS_county_counts = Reduce(function(x, y) merge(x, y, by = c('County', 'Date'), all=TRUE),
+DSHS_county_counts = Reduce(function(x, y) merge(x, y, by = c('Date', 'County'), all=TRUE),
        list(DSHS_cases_long, DSHS_deaths_long, DSHS_tests_long, DSHS_active_cases_long))
 
 
@@ -287,28 +292,27 @@ DSHS_county_counts$Population.x = NULL
 DSHS_county_counts$Population.y = NULL
 ```
 
-### merging
-
-```{r}
-merged_counts = as.data.frame(merge(DSHS_county_counts, mobility_texas[, c(2:9)], by = c('County', 'Date'), all = TRUE))
-
-# fix types
-merged_counts$County = as.factor(merged_counts$County)
-```
-
 ### Classifications
 
 ```{r}
 # add metro and PHR designations from https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls]\
-county_classifications = read_xlsx('original-sources/metro_classifications.xlsx', sheet = 1)[, c(1, 5, 8)]
+county_classifications = read_xlsx('original-sources/county_classifications.xlsx', sheet = 1)[1:254, c(1, 5, 8)]
 
 # set colnames
 colnames(county_classifications) = c('County', 'PHR', 'Metro_Area')
+
+# add PHR names from https://dshs.texas.gov/regions/default.shtm
+PHR_helper = data.frame(PHR = unique(county_classifications$PHR))
+PHR_helper$PHR_Name = c('Tyler PHR', 'El Paso PHR', 'Harlingen PHR', 
+                        'Arlington PHR', 'Lubbock PHR', 'San Antonio PHR',
+                        'Houston PHR', 'Temple PHR')
+
+county_classifications = merge(county_classifications, PHR_helper, by = 'PHR')
 ```
 
 
 ```{r}
-merged_counts2 = merge(merged_counts, county_classifications, by = 'County')
+# merged_counts2 = merge(merged_counts, county_classifications, by = 'County')
 ```
 
 ```{r}
@@ -322,28 +326,35 @@ tsa_long_complete$County = trimws(tsa_long_complete$County)
 tsa_long_complete$TSA_Name = trimws(tsa_long_complete$TSA_Name)
 
 
-merged_counts3 = merge(merged_counts2, tsa_long_complete, by = 'County', all = TRUE)
+# merged_counts3 = merge(merged_counts2, tsa_long_complete, by = 'County', all = TRUE)
 
 # sort by county, date
-merged_counts3 = merged_counts3[order(merged_counts3$County, merged_counts3$Date), ]
+# merged_counts3 = merged_counts3[order(merged_counts3$County, merged_counts3$Date), ]
 ```
+
+## merge
 
 ```{r}
 # DSHS pop
 dshs_pops = unique(DSHS_cases_long[, c(1:2)])
 colnames(dshs_pops) = c('County', 'Population_DSHS')
 
-# add populations
-merged_counts4 = merge(merged_counts3, dshs_pops, by = 'County')
-merged_counts4$Population_DSHS = as.numeric(merged_counts4$Population_DSHS)
+merged_dshs = Reduce(function(x, y) merge(x, y, by = 'County', all = TRUE),
+                       list(DSHS_county_counts, tsa_long_complete, dshs_pops, county_classifications))
+
+# add TSA & PHR combination
+merged_dshs$TSA_Combined = paste0(merged_dshs$TSA, ' - ', merged_dshs$TSA_Name)
+merged_dshs$PHR_Combined = paste0(merged_dshs$PHR, ' - ', merged_dshs$PHR_Name)
+
+merged_county = as.data.frame(merge(merged_dshs, mobility_texas, by = c('Date', 'County'), all = TRUE))
+
+# fix types
+merged_county$County = as.factor(merged_county$County)
+merged_county$Population_DSHS = as.numeric(merged_county$Population_DSHS)
+
+# keep only relevant dates
+merged_county = subset(merged_county, Date >= as.Date('2020-03-04'))
 ```
-
-
-```{r}
-# add TSA combination
-merged_counts4$TSA_Combined = paste0(merged_counts4$TSA, ' - ', merged_counts4$TSA_Name)
-```
-
 
 # TSA LEVEL
 
@@ -351,8 +362,8 @@ merged_counts4$TSA_Combined = paste0(merged_counts4$TSA, ' - ', merged_counts4$T
 
 ```{r}
 DSHS_tsa_counts =
-    merged_counts4 %>%
-    group_by(TSA, TSA_Name, Date) %>%
+    merged_county %>%
+    group_by(Date, TSA, TSA_Name) %>% 
     summarize_at(vars(Cases_Cumulative, Cases_Daily,
                       Deaths_Cumulative, Deaths_Daily,
                       Tests_Cumulative, Tests_Daily,
@@ -360,20 +371,20 @@ DSHS_tsa_counts =
                  funs(sum))
 
 DSHS_tsa_pops = 
-  subset(merged_counts4, Date == '2020-03-04') %>%
+  subset(merged_county, Date == '2020-03-04') %>%
   group_by(TSA) %>%
   summarize_at(vars(Population_DSHS),
                funs(sum))
 
 DSHS_tsa_google = 
-  merged_counts4 %>%
-  group_by(TSA, TSA_Name, Date) %>%
+  merged_county %>%
+  group_by(Date, TSA, TSA_Name) %>%
   summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
                     Parks, Transit,
                     Workplaces, Residential),
                funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)
 
-DSHS_tsa = merge(DSHS_tsa_counts, DSHS_tsa_google, by = c('TSA', 'TSA_Name', 'Date'))
+DSHS_tsa = merge(DSHS_tsa_counts, DSHS_tsa_google, by = c('Date', 'TSA', 'TSA_Name'))
 DSHS_tsa = merge(DSHS_tsa, DSHS_tsa_pops, by = 'TSA', all = TRUE)
 ```
 
@@ -410,14 +421,11 @@ DSHS_hosp_long$Date = as.Date(as.integer(DSHS_hosp_long$Date), origin = '2020-04
 ```
 
 
-### merging
+## merge
 
 ```{r}
 DSHS_hosp_long$TSA = as.factor(DSHS_hosp_long$TSA)
-DSHS_tsa_merged = merge(DSHS_tsa, DSHS_hosp_long, by = c('Date', 'TSA'), all = TRUE)
-
-DSHS_tsa_merged2 = DSHS_tsa_merged %>% distinct()
-DSHS_tsa_merged3 = subset(DSHS_tsa_merged2, Date > as.Date('2020-03-03'))
+DSHS_tsa_merged = merge(DSHS_tsa, DSHS_hosp_long, by = c('Date', 'TSA'), all = TRUE) %>% distinct()
 ```
 
 # PHR LEVEL
@@ -426,8 +434,8 @@ DSHS_tsa_merged3 = subset(DSHS_tsa_merged2, Date > as.Date('2020-03-03'))
 
 ```{r}
 DSHS_phr_counts =
-    merged_counts4 %>%
-    group_by(PHR, Date) %>%
+    merged_county %>%
+    group_by(Date, PHR, PHR_Name) %>%
     summarize_at(vars(Cases_Cumulative, Cases_Daily,
                       Deaths_Cumulative, Deaths_Daily,
                       Tests_Cumulative, Tests_Daily,
@@ -435,38 +443,50 @@ DSHS_phr_counts =
                  funs(sum))
 
 DSHS_phr_pops = 
-  subset(merged_counts4, Date == '2020-03-04') %>%
+  subset(merged_county, Date == '2020-03-04') %>%
   group_by(PHR) %>%
   summarize_at(vars(Population_DSHS),
                funs(sum))
 
 DSHS_phr_google = 
-  merged_counts4 %>%
-  group_by(PHR, Date) %>%
+  merged_county %>%
+  group_by(Date, PHR) %>%
   summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
                     Parks, Transit,
                     Workplaces, Residential),
                funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)
 
-DSHS_phr = merge(DSHS_phr_counts, DSHS_phr_google, by = c('PHR', 'Date'))
-DSHS_phr = merge(DSHS_phr, DSHS_phr_pops, by = 'PHR', all = TRUE)
+DSHS_phr = merge(DSHS_phr_counts, DSHS_phr_google, by = c('Date', 'PHR'))
+DSHS_phr = merge(DSHS_phr, DSHS_phr_pops, by = c('PHR'), all = TRUE)
 ```
 
 ## fac totals
 
 ```{r}
-# note: overwritten daily
-download.file('https://dshs.texas.gov/coronavirus/COVID-19OutbreaksinLong-termCareFacilities.xlsx',
-               destfile = 'original-sources/DSHS_fac_totals.xlsx', mode = 'wb')
 
-download.file('https://dshs.texas.gov/coronavirus/COVID-19OutbreaksinLong-termCareFacilities.xlsx',
-               destfile = paste0('original-sources/historical/nursing/DSHS_fac_totals_', Sys.Date(), '.xlsx'),
-               mode = 'wb')
-              
-DSHS_fac_totals = read_excel_allsheets('original-sources/DSHS_fac_totals.xlsx')
+# Duplicate of longitudinal data
+
+# # note: overwritten daily
+# download.file('https://dshs.texas.gov/coronavirus/COVID-19OutbreaksinLong-termCareFacilities.xlsx',
+#                destfile = 'original-sources/DSHS_fac_totals.xlsx', mode = 'wb')
+# 
+# download.file('https://dshs.texas.gov/coronavirus/COVID-19OutbreaksinLong-termCareFacilities.xlsx',
+#                destfile = paste0('original-sources/historical/nursing/DSHS_fac_totals_', Sys.Date(), '.xlsx'),
+#                mode = 'wb')
+#               
+# DSHS_fac_totals = read_excel_allsheets('original-sources/DSHS_fac_totals.xlsx')
 
 # make df 
 
+# colnames(DSHS_fac_totals[[1]]) = c('PHR', 'Facility_Total','Resident_Cases',
+#                             'Resident_Deaths', 'Resident_Recoveries')
+# DSHS_fac_totals[[1]][, 'Facility_Type'] = 'Nursing Home'
+# 
+# colnames(DSHS_fac_totals[[2]]) = c('PHR', 'Facility_Total','Resident_Cases',
+#                             'Resident_Deaths', 'Resident_Recoveries')
+# DSHS_fac_totals[[2]][, 'Facility_Type'] = 'Assisted Living'
+# 
+# DSHS_fac_totals_df = rbindlist(DSHS_fac_totals)
 
 
 ```
@@ -474,25 +494,57 @@ DSHS_fac_totals = read_excel_allsheets('original-sources/DSHS_fac_totals.xlsx')
 ## alf
 
 ```{r}
-download.file('https://dshs.texas.gov/coronavirus/COVID-19OutbreaksinLong-termCareFacilities.xlsx',
+download.file('https://dshs.texas.gov/coronavirus/COVID-19inALFsoverTimebyRegion.xlsx',
                destfile = 'original-sources/DSHS_alf.xlsx', mode = 'wb')
 
 DSHS_alf = read_excel_allsheets('original-sources/DSHS_alf.xlsx')
+
+Clean_Facility = function(df, count_type) { 
+  df = df[1:8, ]
+  colnames(df)[1] = 'PHR'
+  df_long = reshape::melt(df, id = 'PHR')
+  
+  colnames(df_long) = c('PHR', 'Date', count_type)
+  df_long$Date = as.Date(as.integer(df_long$Date), origin = '2020-05-14')
+  
+  return(df_long)
+  }
+
+alf_fac_totals = Clean_Facility(DSHS_alf[[1]], 'ALF_Total')
+alf_cases = Clean_Facility(DSHS_alf[[2]], 'ALF_Cases')
+alf_deaths = Clean_Facility(DSHS_alf[[3]], 'ALF_Deaths')
+alf_recoveries = Clean_Facility(DSHS_alf[[4]], 'ALF_Recoveries')
+
+alf_df = Reduce(function(x, y) merge(x, y, by = c('Date', 'PHR'), all = TRUE),
+                list(alf_fac_totals, alf_cases, alf_deaths, alf_recoveries))
 ```
 
 ## nursing
 
 ```{r}
-download.file('https://dshs.texas.gov/coronavirus/COVID-19OutbreaksinLong-termCareFacilities.xlsx',
+download.file('https://dshs.texas.gov/coronavirus/COVID-19inNursingHomesoverTimebyRegion.xlsx',
                destfile = 'original-sources/DSHS_nursing.xlsx', mode = 'wb')
 
 DSHS_nursing = read_excel_allsheets('original-sources/DSHS_nursing.xlsx')
+
+nursing_fac_totals = Clean_Facility(DSHS_nursing[[1]], 'Nursing_Total')
+nursing_cases = Clean_Facility(DSHS_nursing[[2]], 'Nursing_Cases')
+nursing_deaths = Clean_Facility(DSHS_nursing[[3]], 'Nursing_Deaths')
+nursing_recoveries = Clean_Facility(DSHS_nursing[[4]], 'Nursing_Recoveries')
+
+nursing_df = Reduce(function(x, y) merge(x, y, by = c('Date', 'PHR'), all = TRUE),
+                list(nursing_fac_totals, nursing_cases, nursing_deaths, nursing_recoveries))
 ```
 
 ## merge
 
 ```{r}
-# phr_out = merge(PHR_computed, DSHS_fac_totals, DSHS_nursing, DSHS_alf, by = c('Date', 'PHR'))
+phr_df = Reduce(function(x, y) merge(x, y, by = c('Date', 'PHR'), all = TRUE),
+                list(DSHS_phr, alf_df, nursing_df))
+
+# address error when knitting despite str(phr_df indicating all calc columns are numeric)
+phr_df$Nursing_Cases = as.numeric(phr_df$Nursing_Cases)
+phr_df$Nursing_Recoveries = as.numeric(phr_df$Nursing_Recoveries)
 ```
 
 # METRO LEVEL
@@ -501,8 +553,8 @@ DSHS_nursing = read_excel_allsheets('original-sources/DSHS_nursing.xlsx')
 
 ```{r}
 DSHS_metro_counts =
-    merged_counts4 %>%
-    group_by(Metro_Area, Date) %>%
+    merged_county %>%
+    group_by(Date, Metro_Area) %>%
     summarize_at(vars(Cases_Cumulative, Cases_Daily,
                       Deaths_Cumulative, Deaths_Daily,
                       Tests_Cumulative, Tests_Daily,
@@ -510,21 +562,21 @@ DSHS_metro_counts =
                  funs(sum))
 
 DSHS_metro_pops = 
-  subset(merged_counts4, Date == '2020-03-04') %>%
+  subset(merged_county, Date == '2020-03-04') %>%
   group_by(Metro_Area) %>%
   summarize_at(vars(Population_DSHS),
                funs(sum))
 
 DSHS_metro_google = 
-  merged_counts4 %>%
-  group_by(Metro_Area, Date) %>%
+  merged_county %>%
+  group_by(Date, Metro_Area) %>%
   summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
                     Parks, Transit,
                     Workplaces, Residential),
                funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)
 
-DSHS_metro = merge(DSHS_metro_counts, DSHS_metro_google, by = c('Metro_Area', 'Date'))
-DSHS_metro = subset(merge(DSHS_metro, DSHS_metro_pops, by = 'Metro_Area', all = TRUE), !is.na(Date))
+DSHS_metro = subset(merge(DSHS_metro_counts, DSHS_metro_pops, by = 'Metro_Area', all = TRUE), !is.na(Date))
+DSHS_metro = merge(DSHS_metro, DSHS_metro_google, by = c('Date', 'Metro_Area'))
 ```
 
 
@@ -653,7 +705,7 @@ DSHS_race_df[, 3:6] <- lapply(DSHS_race_df[, 3:6], as.numeric)
 
 ```{r}
 state_counts =
-    merged_counts4 %>%
+    merged_county %>%
     group_by(Date) %>%
     summarize_at(vars(Cases_Cumulative, Cases_Daily,
                       Deaths_Cumulative, Deaths_Daily,
@@ -662,23 +714,35 @@ state_counts =
                  funs(sum))
 
 state_pops = 
-  subset(merged_counts4, Date == '2020-03-04') %>%
+  subset(merged_county, Date == '2020-03-04') %>%
   group_by(Date) %>%
   summarize_at(vars(Population_DSHS),
                funs(sum))
 
 state_google = 
-  merged_counts4 %>%
+  merged_county %>%
   group_by(Date) %>%
   summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
                     Parks, Transit,
                     Workplaces, Residential),
                funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)
 
-merged_state = merge(state_counts, state_google, by = 'Date', all = TRUE)
-merged_state2 = merge(merged_state, DSHS_state_time, by = 'Date', all = TRUE)
+state_facilities = 
+  phr_df %>%
+  group_by(Date) %>%
+  summarize_at(vars(ALF_Total, ALF_Cases, ALF_Deaths, ALF_Recoveries,
+                    Nursing_Total, Nursing_Cases, Nursing_Deaths, Nursing_Recoveries),
+               funs(sum))
+```
 
-merged_state2$Population_DSHS = state_pops$Population_DSHS
+
+## merge
+
+```{r}
+merged_state = Reduce(function(x, y) merge(x, y, by = c('Date'), all=TRUE),
+       list(state_counts, state_google, DSHS_state_time, state_facilities))
+
+merged_state$Population_DSHS = state_pops$Population_DSHS
 ```
 
 
@@ -687,21 +751,29 @@ merged_state2$Population_DSHS = state_pops$Population_DSHS
 ## City
 
 ```{r}
-write.csv(city_pops4, 'combined-datasets/city_pops.csv', row.names = F)
-```
+write.csv(merged_city, 'combined-datasets/city_pops.csv', row.names = F)
+``` 
 
 ## County
 
 ```{r}
-write.csv(merged_counts4, file = 'combined-datasets/county.csv', row.names = F)
+write.csv(merged_county, file = 'combined-datasets/county.csv', row.names = F)
 write.csv(county_demo_2018, file = 'combined-datasets/county_demo.csv', row.names = F)
 ```
 
 ## TSA
 
 ```{r}
-write.csv(DSHS_tsa_merged3, file = 'combined-datasets/tsa.csv', row.names = F)
+write.csv(DSHS_tsa_merged, file = 'combined-datasets/tsa.csv', row.names = F)
 ```
+
+## PHR 
+
+```{r}
+write.csv(phr_df, file = 'combined-datasets/phr.csv', row.names = F)
+write.csv(phr_df, file = 'tableau/phr.csv', row.names = F)
+```
+
 
 ## Metro
 
@@ -713,7 +785,7 @@ write.csv(DSHS_metro, file = 'combined-datasets/metro.csv', row.names = F)
 
 ```{r}
 library(xlsx)
-write.xlsx(merged_state2, file="combined-datasets/state.xlsx", sheetName="longitudinal", row.names=FALSE)
+write.xlsx(merged_state, file="combined-datasets/state.xlsx", sheetName="longitudinal", row.names=FALSE)
 write.xlsx(DSHS_state_day, file="combined-datasets/state.xlsx", sheetName="current", append = TRUE, row.names=FALSE)
 ```
 
@@ -734,7 +806,7 @@ write.xlsx(DSHS_race_df, file="combined-datasets/demographics.xlsx",
 ## TABLEAU ONLY
 
 ```{r}
-tableau_county = merged_counts4
+tableau_county = merged_county
 write.csv(tableau_county, 'tableau/county.csv', row.names = FALSE)
 
 # tableau_state = merged_state2[, c(1, 16:23)]
@@ -751,8 +823,8 @@ metro = read.csv('combined-datasets/metro.csv')
 tsa = read.csv('combined-datasets/tsa.csv')
 
 # combine into df
-metro_long = merge(county, metro, by = c('Metro_Area', 'Date'), all = TRUE)
-tsa_long = merge(county, tsa, by = c('TSA', 'TSA_Name', 'Date'), all = TRUE)
+metro_long = merge(county, metro, by = c('Date', 'Metro_Area'), all = TRUE)
+tsa_long = merge(county, tsa, by = c('Date', 'TSA', 'TSA_Name'), all = TRUE)
 
 # drop county cols and suffixes
 metro_long = metro_long[, -(grep('.x', colnames(metro_long), fixed = TRUE))]
@@ -776,11 +848,11 @@ colnames(metro)[3:length(colnames(metro))] = paste0('METRO_', colnames(metro)[3:
 colnames(tsa)[4:length(colnames(tsa))] = paste0('TSA_', colnames(tsa)[4:length(colnames(tsa))])
 
 # combine into df
-combined_df = merge(county, metro, by = c('Metro_Area', 'Date'), all = TRUE)
+combined_df = merge(county, metro, by = c('Date', 'Metro_Area'), all = TRUE)
 
 tsa$TSA_Combined = paste0(tsa$TSA, ' - ', tsa$TSA_Name)
 
-combined_df2 = merge(combined_df, tsa, by = c('TSA', 'TSA_Name', 'Date'), all = TRUE)
+combined_df2 = merge(combined_df, tsa, by = c('Date', 'TSA', 'TSA_Name'), all = TRUE)
 
 # output
 # write.csv(combined_df2, 'tableau/combined.csv', row.names = FALSE)

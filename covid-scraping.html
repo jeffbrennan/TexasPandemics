@@ -409,34 +409,33 @@ county_demo_2018$AGEGRP = factor(county_demo_2018$AGEGRP,
 </div>
 <div id="city-level" class="section level2">
 <h2>City level</h2>
-<pre class="r"><code>city_pops = read.csv(&#39;original-sources/census/city_pops.csv&#39;)
+<pre class="r"><code># keep only 2018 estimate
+city_pops = read.csv(&#39;original-sources/census/city_pops.csv&#39;)[, c(3, 4, 9, 21)]
 
-# keep only 2018 estimate
-city_pops2 = city_pops[, c(3, 4, 9, 21)]
-colnames(city_pops2) = c(&#39;County&#39;, &#39;Place_Code&#39;, &#39;City&#39;, &#39;Population&#39;)
+colnames(city_pops) = c(&#39;County&#39;, &#39;Place_Code&#39;, &#39;City&#39;, &#39;Population&#39;)
 
 # drop city, town, suffixes
-city_pops2$City = gsub(&#39; city| town|&#39;, &#39;&#39;, city_pops2$City)
+city_pops$City = gsub(&#39; city| town|&#39;, &#39;&#39;, city_pops$City)
 
 # drop pt suffix
 # pt indicates overlap of cities between counties
-city_pops2$City = gsub(&#39; (pt.)&#39;, &#39;&#39;, city_pops2$City, fixed = TRUE)
+city_pops$City = gsub(&#39; (pt.)&#39;, &#39;&#39;, city_pops$City, fixed = TRUE)
 
-colnames(city_pops2)[1] = &#39;County_Code&#39;
+colnames(city_pops)[1] = &#39;County_Code&#39;
 
 # get county fips
-county_fips = subset(city_pops2, Place_Code == 0)[-1, c(1,3)]
+county_fips = subset(city_pops, Place_Code == 0)[-1, c(1,3)]
 colnames(county_fips) = c(&#39;County_Code&#39;, &#39;County&#39;)
 
 
 # replace county fips with actual names
-city_pops3 = merge(city_pops2, county_fips, by = &#39;County_Code&#39;)
+merged_city = merge(city_pops, county_fips, by = &#39;County_Code&#39;)
 
 # drop county totals from list
-city_pops4 = subset(city_pops3, Place_Code != 0 &amp; Place_Code != 99990)
+merged_city = subset(merged_city, Place_Code != 0 &amp; Place_Code != 99990)
 
 # drop county suffix
-city_pops4$County = gsub(&#39; County&#39;, &#39;&#39;, city_pops4$County)</code></pre>
+merged_city$County = gsub(&#39; County&#39;, &#39;&#39;, merged_city$County)</code></pre>
 </div>
 </div>
 <div id="county-level-1" class="section level1">
@@ -449,19 +448,22 @@ city_pops4$County = gsub(&#39; County&#39;, &#39;&#39;, city_pops4$County)</code
 mobility_texas = subset(mobility_data, sub_region_1 == &#39;Texas&#39;)
 
 # drop cols
-mobility_texas = mobility_texas[, -c(1,2,5,6)]
+mobility_texas = mobility_texas[, -c(1,2,3,5,6)]
 write.csv(mobility_texas, &#39;original-sources/GOOGLE.csv&#39;, row.names = F)
 
 # fix colnames
 # values represent percent change from baseline
-colnames(mobility_texas) = c(&#39;State&#39;, &#39;County&#39;, &#39;Date&#39;, &#39;Retail_Recreation&#39;, &#39;Grocery_Pharmacy&#39;, &#39;Parks&#39;, &#39;Transit&#39;, &#39;Workplaces&#39;, &#39;Residential&#39;)
+colnames(mobility_texas) = c(&#39;County&#39;, &#39;Date&#39;, &#39;Retail_Recreation&#39;, &#39;Grocery_Pharmacy&#39;,
+                             &#39;Parks&#39;, &#39;Transit&#39;, &#39;Workplaces&#39;, &#39;Residential&#39;)
 
 # Add name for blank county cells &amp; drop &#39;county&#39; suffix
 mobility_texas$County = sub(&#39;^$&#39;, &#39;Unallocated&#39;, mobility_texas$County)
 mobility_texas$County = gsub(&#39; County&#39;, &#39;&#39;, mobility_texas$County)
 
+# drop blank cells
+mobility_texas = subset(mobility_texas, County != &#39;Unallocated&#39;)
+
 #fix types
-mobility_texas$State = as.factor(mobility_texas$State)
 mobility_texas$County = as.factor(mobility_texas$County)
 mobility_texas$Date = as.Date(mobility_texas$Date)</code></pre>
 </div>
@@ -478,7 +480,7 @@ DSHS_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 110 more problems</code></pre>
+## * … and 111 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_cases_time) = DSHS_cases_time[2, ]
 DSHS_cases_time = DSHS_cases_time[3:(nrow(DSHS_cases_time) - 11), ]
@@ -516,7 +518,7 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 113 more problems</code></pre>
+## * … and 114 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
 DSHS_deaths_time = DSHS_deaths_time[3:(nrow(DSHS_deaths_time) - 10), ]
@@ -551,7 +553,7 @@ DSHS_tests_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 63 more problems</code></pre>
+## * … and 64 more problems</code></pre>
 <pre class="r"><code># TEMP FIX drop first duplicated date column
 dupe_dates = which(DSHS_tests_time[1, ] == &#39;Tests Through June 23&#39;)
 DSHS_tests_time = DSHS_tests_time[, -dupe_dates[1]]
@@ -584,7 +586,10 @@ DSHS_tests_long$Tests_Cumulative = as.numeric(as.character(DSHS_tests_long$Tests
 DSHS_tests_long = 
     DSHS_tests_long %&gt;% 
     group_by(County) %&gt;% 
-    mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative)))</code></pre>
+    mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative)))
+
+# drop unmergable counties 
+DSHS_tests_long = subset(DSHS_tests_long, County != &#39;Unknown&#39; &amp; County != &#39;Pending Assignments&#39;)</code></pre>
 <pre class="r"><code># active cases
 active_case_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID-19ActiveCaseDatabyCounty.xlsx&#39;
 temp = tempfile()
@@ -596,7 +601,7 @@ DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code><
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 78 more problems</code></pre>
+## * … and 79 more problems</code></pre>
 <pre class="r"><code># fix colname
 colnames(DSHS_active_cases_time) = DSHS_active_cases_time[2, ]
 DSHS_active_cases_time = DSHS_active_cases_time[3:(nrow(DSHS_active_cases_time)), 2:ncol(DSHS_active_cases_time)]
@@ -623,28 +628,29 @@ DSHS_active_cases_long =
     group_by(County) %&gt;% 
     mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative)))</code></pre>
 <pre class="r"><code># combine DSHS sources
-DSHS_county_counts = Reduce(function(x, y) merge(x, y, by = c(&#39;County&#39;, &#39;Date&#39;), all=TRUE),
+DSHS_county_counts = Reduce(function(x, y) merge(x, y, by = c(&#39;Date&#39;, &#39;County&#39;), all=TRUE),
        list(DSHS_cases_long, DSHS_deaths_long, DSHS_tests_long, DSHS_active_cases_long))
 
 
 # drop population - will be using census data
 DSHS_county_counts$Population.x = NULL
 DSHS_county_counts$Population.y = NULL</code></pre>
-<div id="merging" class="section level3">
-<h3>merging</h3>
-<pre class="r"><code>merged_counts = as.data.frame(merge(DSHS_county_counts, mobility_texas[, c(2:9)], by = c(&#39;County&#39;, &#39;Date&#39;), all = TRUE))
-
-# fix types
-merged_counts$County = as.factor(merged_counts$County)</code></pre>
-</div>
 <div id="classifications" class="section level3">
 <h3>Classifications</h3>
 <pre class="r"><code># add metro and PHR designations from https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls]\
-county_classifications = read_xlsx(&#39;original-sources/metro_classifications.xlsx&#39;, sheet = 1)[, c(1, 5, 8)]
+county_classifications = read_xlsx(&#39;original-sources/county_classifications.xlsx&#39;, sheet = 1)[1:254, c(1, 5, 8)]
 
 # set colnames
-colnames(county_classifications) = c(&#39;County&#39;, &#39;PHR&#39;, &#39;Metro_Area&#39;)</code></pre>
-<pre class="r"><code>merged_counts2 = merge(merged_counts, county_classifications, by = &#39;County&#39;)</code></pre>
+colnames(county_classifications) = c(&#39;County&#39;, &#39;PHR&#39;, &#39;Metro_Area&#39;)
+
+# add PHR names from https://dshs.texas.gov/regions/default.shtm
+PHR_helper = data.frame(PHR = unique(county_classifications$PHR))
+PHR_helper$PHR_Name = c(&#39;Tyler PHR&#39;, &#39;El Paso PHR&#39;, &#39;Harlingen PHR&#39;, 
+                        &#39;Arlington PHR&#39;, &#39;Lubbock PHR&#39;, &#39;San Antonio PHR&#39;,
+                        &#39;Houston PHR&#39;, &#39;Temple PHR&#39;)
+
+county_classifications = merge(county_classifications, PHR_helper, by = &#39;PHR&#39;)</code></pre>
+<pre class="r"><code># merged_counts2 = merge(merged_counts, county_classifications, by = &#39;County&#39;)</code></pre>
 <pre class="r"><code># TSA levels
 tsa = read.csv(&#39;original-sources/tsa_list.csv&#39;, header = F)[-1]
 tsa_long = reshape::melt(tsa, id = c(&#39;V2&#39;, &#39;V3&#39;))
@@ -655,20 +661,33 @@ tsa_long_complete$County = trimws(tsa_long_complete$County)
 tsa_long_complete$TSA_Name = trimws(tsa_long_complete$TSA_Name)
 
 
-merged_counts3 = merge(merged_counts2, tsa_long_complete, by = &#39;County&#39;, all = TRUE)
+# merged_counts3 = merge(merged_counts2, tsa_long_complete, by = &#39;County&#39;, all = TRUE)
 
 # sort by county, date
-merged_counts3 = merged_counts3[order(merged_counts3$County, merged_counts3$Date), ]</code></pre>
+# merged_counts3 = merged_counts3[order(merged_counts3$County, merged_counts3$Date), ]</code></pre>
+</div>
+</div>
+<div id="merge" class="section level2">
+<h2>merge</h2>
 <pre class="r"><code># DSHS pop
 dshs_pops = unique(DSHS_cases_long[, c(1:2)])
 colnames(dshs_pops) = c(&#39;County&#39;, &#39;Population_DSHS&#39;)
 
-# add populations
-merged_counts4 = merge(merged_counts3, dshs_pops, by = &#39;County&#39;)
-merged_counts4$Population_DSHS = as.numeric(merged_counts4$Population_DSHS)</code></pre>
-<pre class="r"><code># add TSA combination
-merged_counts4$TSA_Combined = paste0(merged_counts4$TSA, &#39; - &#39;, merged_counts4$TSA_Name)</code></pre>
-</div>
+merged_dshs = Reduce(function(x, y) merge(x, y, by = &#39;County&#39;, all = TRUE),
+                       list(DSHS_county_counts, tsa_long_complete, dshs_pops, county_classifications))
+
+# add TSA &amp; PHR combination
+merged_dshs$TSA_Combined = paste0(merged_dshs$TSA, &#39; - &#39;, merged_dshs$TSA_Name)
+merged_dshs$PHR_Combined = paste0(merged_dshs$PHR, &#39; - &#39;, merged_dshs$PHR_Name)
+
+merged_county = as.data.frame(merge(merged_dshs, mobility_texas, by = c(&#39;Date&#39;, &#39;County&#39;), all = TRUE))
+
+# fix types
+merged_county$County = as.factor(merged_county$County)
+merged_county$Population_DSHS = as.numeric(merged_county$Population_DSHS)
+
+# keep only relevant dates
+merged_county = subset(merged_county, Date &gt;= as.Date(&#39;2020-03-04&#39;))</code></pre>
 </div>
 </div>
 <div id="tsa-level" class="section level1">
@@ -676,8 +695,8 @@ merged_counts4$TSA_Combined = paste0(merged_counts4$TSA, &#39; - &#39;, merged_c
 <div id="computed" class="section level2">
 <h2>Computed</h2>
 <pre class="r"><code>DSHS_tsa_counts =
-    merged_counts4 %&gt;%
-    group_by(TSA, TSA_Name, Date) %&gt;%
+    merged_county %&gt;%
+    group_by(Date, TSA, TSA_Name) %&gt;% 
     summarize_at(vars(Cases_Cumulative, Cases_Daily,
                       Deaths_Cumulative, Deaths_Daily,
                       Tests_Cumulative, Tests_Daily,
@@ -696,20 +715,20 @@ merged_counts4$TSA_Combined = paste0(merged_counts4$TSA, &#39; - &#39;, merged_c
 ##   list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))
 ## This warning is displayed once per session.</code></pre>
 <pre class="r"><code>DSHS_tsa_pops = 
-  subset(merged_counts4, Date == &#39;2020-03-04&#39;) %&gt;%
+  subset(merged_county, Date == &#39;2020-03-04&#39;) %&gt;%
   group_by(TSA) %&gt;%
   summarize_at(vars(Population_DSHS),
                funs(sum))
 
 DSHS_tsa_google = 
-  merged_counts4 %&gt;%
-  group_by(TSA, TSA_Name, Date) %&gt;%
+  merged_county %&gt;%
+  group_by(Date, TSA, TSA_Name) %&gt;%
   summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
                     Parks, Transit,
                     Workplaces, Residential),
                funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)
 
-DSHS_tsa = merge(DSHS_tsa_counts, DSHS_tsa_google, by = c(&#39;TSA&#39;, &#39;TSA_Name&#39;, &#39;Date&#39;))
+DSHS_tsa = merge(DSHS_tsa_counts, DSHS_tsa_google, by = c(&#39;Date&#39;, &#39;TSA&#39;, &#39;TSA_Name&#39;))
 DSHS_tsa = merge(DSHS_tsa, DSHS_tsa_pops, by = &#39;TSA&#39;, all = TRUE)</code></pre>
 </div>
 <div id="dshs-hospitals" class="section level2">
@@ -882,13 +901,15 @@ DSHS_tsa_hosp = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## Expecting numeric in CE3 / R3C83: got a date</code></pre>
 <pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
 ## Expecting numeric in CF3 / R3C84: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in CG3 / R3C85: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 78 more problems</code></pre>
+## * … and 79 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_tsa_hosp) = DSHS_tsa_hosp[2, ]
 DSHS_tsa_hosp = DSHS_tsa_hosp[3:(nrow(DSHS_tsa_hosp) - 1), ]
@@ -910,14 +931,11 @@ colnames(DSHS_hosp_long) = c(&#39;TSA&#39;, &#39;Date&#39;, &#39;Hospitalization
 
 # fix dates
 DSHS_hosp_long$Date = as.Date(as.integer(DSHS_hosp_long$Date), origin = &#39;2020-04-07&#39;)</code></pre>
-<div id="merging-1" class="section level3">
-<h3>merging</h3>
-<pre class="r"><code>DSHS_hosp_long$TSA = as.factor(DSHS_hosp_long$TSA)
-DSHS_tsa_merged = merge(DSHS_tsa, DSHS_hosp_long, by = c(&#39;Date&#39;, &#39;TSA&#39;), all = TRUE)
-
-DSHS_tsa_merged2 = DSHS_tsa_merged %&gt;% distinct()
-DSHS_tsa_merged3 = subset(DSHS_tsa_merged2, Date &gt; as.Date(&#39;2020-03-03&#39;))</code></pre>
 </div>
+<div id="merge-1" class="section level2">
+<h2>merge</h2>
+<pre class="r"><code>DSHS_hosp_long$TSA = as.factor(DSHS_hosp_long$TSA)
+DSHS_tsa_merged = merge(DSHS_tsa, DSHS_hosp_long, by = c(&#39;Date&#39;, &#39;TSA&#39;), all = TRUE) %&gt;% distinct()</code></pre>
 </div>
 </div>
 <div id="phr-level" class="section level1">
@@ -925,8 +943,8 @@ DSHS_tsa_merged3 = subset(DSHS_tsa_merged2, Date &gt; as.Date(&#39;2020-03-03&#3
 <div id="computed-1" class="section level2">
 <h2>computed</h2>
 <pre class="r"><code>DSHS_phr_counts =
-    merged_counts4 %&gt;%
-    group_by(PHR, Date) %&gt;%
+    merged_county %&gt;%
+    group_by(Date, PHR, PHR_Name) %&gt;%
     summarize_at(vars(Cases_Cumulative, Cases_Daily,
                       Deaths_Cumulative, Deaths_Daily,
                       Tests_Cumulative, Tests_Daily,
@@ -934,53 +952,99 @@ DSHS_tsa_merged3 = subset(DSHS_tsa_merged2, Date &gt; as.Date(&#39;2020-03-03&#3
                  funs(sum))
 
 DSHS_phr_pops = 
-  subset(merged_counts4, Date == &#39;2020-03-04&#39;) %&gt;%
+  subset(merged_county, Date == &#39;2020-03-04&#39;) %&gt;%
   group_by(PHR) %&gt;%
   summarize_at(vars(Population_DSHS),
                funs(sum))
 
 DSHS_phr_google = 
-  merged_counts4 %&gt;%
-  group_by(PHR, Date) %&gt;%
+  merged_county %&gt;%
+  group_by(Date, PHR) %&gt;%
   summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
                     Parks, Transit,
                     Workplaces, Residential),
                funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)
 
-DSHS_phr = merge(DSHS_phr_counts, DSHS_phr_google, by = c(&#39;PHR&#39;, &#39;Date&#39;))
-DSHS_phr = merge(DSHS_phr, DSHS_phr_pops, by = &#39;PHR&#39;, all = TRUE)</code></pre>
+DSHS_phr = merge(DSHS_phr_counts, DSHS_phr_google, by = c(&#39;Date&#39;, &#39;PHR&#39;))
+DSHS_phr = merge(DSHS_phr, DSHS_phr_pops, by = c(&#39;PHR&#39;), all = TRUE)</code></pre>
 </div>
 <div id="fac-totals" class="section level2">
 <h2>fac totals</h2>
-<pre class="r"><code># note: overwritten daily
-download.file(&#39;https://dshs.texas.gov/coronavirus/COVID-19OutbreaksinLong-termCareFacilities.xlsx&#39;,
-               destfile = &#39;original-sources/DSHS_fac_totals.xlsx&#39;, mode = &#39;wb&#39;)
+<pre class="r"><code># Duplicate of longitudinal data
 
-download.file(&#39;https://dshs.texas.gov/coronavirus/COVID-19OutbreaksinLong-termCareFacilities.xlsx&#39;,
-               destfile = paste0(&#39;original-sources/historical/nursing/DSHS_fac_totals_&#39;, Sys.Date(), &#39;.xlsx&#39;),
-               mode = &#39;wb&#39;)
-              
-DSHS_fac_totals = read_excel_allsheets(&#39;original-sources/DSHS_fac_totals.xlsx&#39;)
+# # note: overwritten daily
+# download.file(&#39;https://dshs.texas.gov/coronavirus/COVID-19OutbreaksinLong-termCareFacilities.xlsx&#39;,
+#                destfile = &#39;original-sources/DSHS_fac_totals.xlsx&#39;, mode = &#39;wb&#39;)
+# 
+# download.file(&#39;https://dshs.texas.gov/coronavirus/COVID-19OutbreaksinLong-termCareFacilities.xlsx&#39;,
+#                destfile = paste0(&#39;original-sources/historical/nursing/DSHS_fac_totals_&#39;, Sys.Date(), &#39;.xlsx&#39;),
+#                mode = &#39;wb&#39;)
+#               
+# DSHS_fac_totals = read_excel_allsheets(&#39;original-sources/DSHS_fac_totals.xlsx&#39;)
 
-# make df </code></pre>
+# make df 
+
+# colnames(DSHS_fac_totals[[1]]) = c(&#39;PHR&#39;, &#39;Facility_Total&#39;,&#39;Resident_Cases&#39;,
+#                             &#39;Resident_Deaths&#39;, &#39;Resident_Recoveries&#39;)
+# DSHS_fac_totals[[1]][, &#39;Facility_Type&#39;] = &#39;Nursing Home&#39;
+# 
+# colnames(DSHS_fac_totals[[2]]) = c(&#39;PHR&#39;, &#39;Facility_Total&#39;,&#39;Resident_Cases&#39;,
+#                             &#39;Resident_Deaths&#39;, &#39;Resident_Recoveries&#39;)
+# DSHS_fac_totals[[2]][, &#39;Facility_Type&#39;] = &#39;Assisted Living&#39;
+# 
+# DSHS_fac_totals_df = rbindlist(DSHS_fac_totals)</code></pre>
 </div>
 <div id="alf" class="section level2">
 <h2>alf</h2>
-<pre class="r"><code>download.file(&#39;https://dshs.texas.gov/coronavirus/COVID-19OutbreaksinLong-termCareFacilities.xlsx&#39;,
+<pre class="r"><code>download.file(&#39;https://dshs.texas.gov/coronavirus/COVID-19inALFsoverTimebyRegion.xlsx&#39;,
                destfile = &#39;original-sources/DSHS_alf.xlsx&#39;, mode = &#39;wb&#39;)
 
-DSHS_alf = read_excel_allsheets(&#39;original-sources/DSHS_alf.xlsx&#39;)</code></pre>
+DSHS_alf = read_excel_allsheets(&#39;original-sources/DSHS_alf.xlsx&#39;)
+
+Clean_Facility = function(df, count_type) { 
+  df = df[1:8, ]
+  colnames(df)[1] = &#39;PHR&#39;
+  df_long = reshape::melt(df, id = &#39;PHR&#39;)
+  
+  colnames(df_long) = c(&#39;PHR&#39;, &#39;Date&#39;, count_type)
+  df_long$Date = as.Date(as.integer(df_long$Date), origin = &#39;2020-05-14&#39;)
+  
+  return(df_long)
+  }
+
+alf_fac_totals = Clean_Facility(DSHS_alf[[1]], &#39;ALF_Total&#39;)
+alf_cases = Clean_Facility(DSHS_alf[[2]], &#39;ALF_Cases&#39;)
+alf_deaths = Clean_Facility(DSHS_alf[[3]], &#39;ALF_Deaths&#39;)
+alf_recoveries = Clean_Facility(DSHS_alf[[4]], &#39;ALF_Recoveries&#39;)
+
+alf_df = Reduce(function(x, y) merge(x, y, by = c(&#39;Date&#39;, &#39;PHR&#39;), all = TRUE),
+                list(alf_fac_totals, alf_cases, alf_deaths, alf_recoveries))</code></pre>
 </div>
 <div id="nursing" class="section level2">
 <h2>nursing</h2>
-<pre class="r"><code>download.file(&#39;https://dshs.texas.gov/coronavirus/COVID-19OutbreaksinLong-termCareFacilities.xlsx&#39;,
+<pre class="r"><code>download.file(&#39;https://dshs.texas.gov/coronavirus/COVID-19inNursingHomesoverTimebyRegion.xlsx&#39;,
                destfile = &#39;original-sources/DSHS_nursing.xlsx&#39;, mode = &#39;wb&#39;)
 
-DSHS_nursing = read_excel_allsheets(&#39;original-sources/DSHS_nursing.xlsx&#39;)</code></pre>
+DSHS_nursing = read_excel_allsheets(&#39;original-sources/DSHS_nursing.xlsx&#39;)
+
+nursing_fac_totals = Clean_Facility(DSHS_nursing[[1]], &#39;Nursing_Total&#39;)
+nursing_cases = Clean_Facility(DSHS_nursing[[2]], &#39;Nursing_Cases&#39;)
+nursing_deaths = Clean_Facility(DSHS_nursing[[3]], &#39;Nursing_Deaths&#39;)
+nursing_recoveries = Clean_Facility(DSHS_nursing[[4]], &#39;Nursing_Recoveries&#39;)
+
+nursing_df = Reduce(function(x, y) merge(x, y, by = c(&#39;Date&#39;, &#39;PHR&#39;), all = TRUE),
+                list(nursing_fac_totals, nursing_cases, nursing_deaths, nursing_recoveries))</code></pre>
 </div>
-<div id="merge" class="section level2">
+<div id="merge-2" class="section level2">
 <h2>merge</h2>
-<pre class="r"><code># phr_out = merge(PHR_computed, DSHS_fac_totals, DSHS_nursing, DSHS_alf, by = c(&#39;Date&#39;, &#39;PHR&#39;))</code></pre>
+<pre class="r"><code>phr_df = Reduce(function(x, y) merge(x, y, by = c(&#39;Date&#39;, &#39;PHR&#39;), all = TRUE),
+                list(DSHS_phr, alf_df, nursing_df))
+
+# address error when knitting despite str(phr_df indicating all calc columns are numeric)
+phr_df$Nursing_Cases = as.numeric(phr_df$Nursing_Cases)</code></pre>
+<pre><code>## Warning: NAs introduced by coercion</code></pre>
+<pre class="r"><code>phr_df$Nursing_Recoveries = as.numeric(phr_df$Nursing_Recoveries)</code></pre>
+<pre><code>## Warning: NAs introduced by coercion</code></pre>
 </div>
 </div>
 <div id="metro-level" class="section level1">
@@ -988,8 +1052,8 @@ DSHS_nursing = read_excel_allsheets(&#39;original-sources/DSHS_nursing.xlsx&#39;
 <div id="computed-2" class="section level2">
 <h2>computed</h2>
 <pre class="r"><code>DSHS_metro_counts =
-    merged_counts4 %&gt;%
-    group_by(Metro_Area, Date) %&gt;%
+    merged_county %&gt;%
+    group_by(Date, Metro_Area) %&gt;%
     summarize_at(vars(Cases_Cumulative, Cases_Daily,
                       Deaths_Cumulative, Deaths_Daily,
                       Tests_Cumulative, Tests_Daily,
@@ -997,21 +1061,21 @@ DSHS_nursing = read_excel_allsheets(&#39;original-sources/DSHS_nursing.xlsx&#39;
                  funs(sum))
 
 DSHS_metro_pops = 
-  subset(merged_counts4, Date == &#39;2020-03-04&#39;) %&gt;%
+  subset(merged_county, Date == &#39;2020-03-04&#39;) %&gt;%
   group_by(Metro_Area) %&gt;%
   summarize_at(vars(Population_DSHS),
                funs(sum))
 
 DSHS_metro_google = 
-  merged_counts4 %&gt;%
-  group_by(Metro_Area, Date) %&gt;%
+  merged_county %&gt;%
+  group_by(Date, Metro_Area) %&gt;%
   summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
                     Parks, Transit,
                     Workplaces, Residential),
                funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)
 
-DSHS_metro = merge(DSHS_metro_counts, DSHS_metro_google, by = c(&#39;Metro_Area&#39;, &#39;Date&#39;))
-DSHS_metro = subset(merge(DSHS_metro, DSHS_metro_pops, by = &#39;Metro_Area&#39;, all = TRUE), !is.na(Date))</code></pre>
+DSHS_metro = subset(merge(DSHS_metro_counts, DSHS_metro_pops, by = &#39;Metro_Area&#39;, all = TRUE), !is.na(Date))
+DSHS_metro = merge(DSHS_metro, DSHS_metro_google, by = c(&#39;Date&#39;, &#39;Metro_Area&#39;))</code></pre>
 </div>
 </div>
 <div id="state-level" class="section level1">
@@ -1028,11 +1092,6 @@ download.file(state_url, paste0(&#39;original-sources/historical/demo/dshs_&#39;
               mode = &#39;wb&#39;) 
 
 DSHS_state = read_excel_allsheets(&#39;original-sources/DSHS_state.xlsx&#39;)</code></pre>
-<pre><code>## New names:
-## * `` -&gt; ...2
-## * `` -&gt; ...3
-## * `` -&gt; ...4
-## * `` -&gt; ...5</code></pre>
 <pre class="r"><code>DSHS_tests = DSHS_state[[4]]
 DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests) - 3), ]
 
@@ -1082,6 +1141,12 @@ demo.list &lt;- paste0(&#39;original-sources/historical/demo/&#39;,
 
 DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -1237,9 +1302,21 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_case_race &lt;- lapply(demo.list, read_excel, sheet = 11)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -1395,9 +1472,21 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_gender &lt;- lapply(demo.list, read_excel, sheet = 13)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -1553,6 +1642,12 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_demo_clean = function(df, count_type) { 
   matches = str_extract_all(colnames(df)[1], &#39;\\d*\\/\\d*&#39;)[[1]]
@@ -1593,7 +1688,7 @@ DSHS_race_df[, 3:6] &lt;- lapply(DSHS_race_df[, 3:6], as.numeric)</code></pre>
 <div id="computed-3" class="section level2">
 <h2>Computed</h2>
 <pre class="r"><code>state_counts =
-    merged_counts4 %&gt;%
+    merged_county %&gt;%
     group_by(Date) %&gt;%
     summarize_at(vars(Cases_Cumulative, Cases_Daily,
                       Deaths_Cumulative, Deaths_Daily,
@@ -1602,39 +1697,53 @@ DSHS_race_df[, 3:6] &lt;- lapply(DSHS_race_df[, 3:6], as.numeric)</code></pre>
                  funs(sum))
 
 state_pops = 
-  subset(merged_counts4, Date == &#39;2020-03-04&#39;) %&gt;%
+  subset(merged_county, Date == &#39;2020-03-04&#39;) %&gt;%
   group_by(Date) %&gt;%
   summarize_at(vars(Population_DSHS),
                funs(sum))
 
 state_google = 
-  merged_counts4 %&gt;%
+  merged_county %&gt;%
   group_by(Date) %&gt;%
   summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
                     Parks, Transit,
                     Workplaces, Residential),
                funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)
 
-merged_state = merge(state_counts, state_google, by = &#39;Date&#39;, all = TRUE)
-merged_state2 = merge(merged_state, DSHS_state_time, by = &#39;Date&#39;, all = TRUE)
+state_facilities = 
+  phr_df %&gt;%
+  group_by(Date) %&gt;%
+  summarize_at(vars(ALF_Total, ALF_Cases, ALF_Deaths, ALF_Recoveries,
+                    Nursing_Total, Nursing_Cases, Nursing_Deaths, Nursing_Recoveries),
+               funs(sum))</code></pre>
+</div>
+<div id="merge-3" class="section level2">
+<h2>merge</h2>
+<pre class="r"><code>merged_state = Reduce(function(x, y) merge(x, y, by = c(&#39;Date&#39;), all=TRUE),
+       list(state_counts, state_google, DSHS_state_time, state_facilities))
 
-merged_state2$Population_DSHS = state_pops$Population_DSHS</code></pre>
+merged_state$Population_DSHS = state_pops$Population_DSHS</code></pre>
 </div>
 </div>
 <div id="output" class="section level1">
 <h1>OUTPUT</h1>
 <div id="city" class="section level2">
 <h2>City</h2>
-<pre class="r"><code>write.csv(city_pops4, &#39;combined-datasets/city_pops.csv&#39;, row.names = F)</code></pre>
+<pre class="r"><code>write.csv(merged_city, &#39;combined-datasets/city_pops.csv&#39;, row.names = F)</code></pre>
 </div>
 <div id="county" class="section level2">
 <h2>County</h2>
-<pre class="r"><code>write.csv(merged_counts4, file = &#39;combined-datasets/county.csv&#39;, row.names = F)
+<pre class="r"><code>write.csv(merged_county, file = &#39;combined-datasets/county.csv&#39;, row.names = F)
 write.csv(county_demo_2018, file = &#39;combined-datasets/county_demo.csv&#39;, row.names = F)</code></pre>
 </div>
 <div id="tsa" class="section level2">
 <h2>TSA</h2>
-<pre class="r"><code>write.csv(DSHS_tsa_merged3, file = &#39;combined-datasets/tsa.csv&#39;, row.names = F)</code></pre>
+<pre class="r"><code>write.csv(DSHS_tsa_merged, file = &#39;combined-datasets/tsa.csv&#39;, row.names = F)</code></pre>
+</div>
+<div id="phr" class="section level2">
+<h2>PHR</h2>
+<pre class="r"><code>write.csv(phr_df, file = &#39;combined-datasets/phr.csv&#39;, row.names = F)
+write.csv(phr_df, file = &#39;tableau/phr.csv&#39;, row.names = F)</code></pre>
 </div>
 <div id="metro" class="section level2">
 <h2>Metro</h2>
@@ -1644,7 +1753,7 @@ write.csv(county_demo_2018, file = &#39;combined-datasets/county_demo.csv&#39;, 
 <h2>State</h2>
 <pre class="r"><code>library(xlsx)</code></pre>
 <pre><code>## Warning: package &#39;xlsx&#39; was built under R version 3.6.3</code></pre>
-<pre class="r"><code>write.xlsx(merged_state2, file=&quot;combined-datasets/state.xlsx&quot;, sheetName=&quot;longitudinal&quot;, row.names=FALSE)
+<pre class="r"><code>write.xlsx(merged_state, file=&quot;combined-datasets/state.xlsx&quot;, sheetName=&quot;longitudinal&quot;, row.names=FALSE)
 write.xlsx(DSHS_state_day, file=&quot;combined-datasets/state.xlsx&quot;, sheetName=&quot;current&quot;, append = TRUE, row.names=FALSE)</code></pre>
 <div id="demographics" class="section level3">
 <h3>Demographics</h3>
@@ -1660,7 +1769,7 @@ write.xlsx(DSHS_race_df, file=&quot;combined-datasets/demographics.xlsx&quot;,
 </div>
 <div id="tableau-only" class="section level2">
 <h2>TABLEAU ONLY</h2>
-<pre class="r"><code>tableau_county = merged_counts4
+<pre class="r"><code>tableau_county = merged_county
 write.csv(tableau_county, &#39;tableau/county.csv&#39;, row.names = FALSE)
 
 # tableau_state = merged_state2[, c(1, 16:23)]
@@ -1674,8 +1783,8 @@ metro = read.csv(&#39;combined-datasets/metro.csv&#39;)
 tsa = read.csv(&#39;combined-datasets/tsa.csv&#39;)
 
 # combine into df
-metro_long = merge(county, metro, by = c(&#39;Metro_Area&#39;, &#39;Date&#39;), all = TRUE)
-tsa_long = merge(county, tsa, by = c(&#39;TSA&#39;, &#39;TSA_Name&#39;, &#39;Date&#39;), all = TRUE)
+metro_long = merge(county, metro, by = c(&#39;Date&#39;, &#39;Metro_Area&#39;), all = TRUE)
+tsa_long = merge(county, tsa, by = c(&#39;Date&#39;, &#39;TSA&#39;, &#39;TSA_Name&#39;), all = TRUE)
 
 # drop county cols and suffixes
 metro_long = metro_long[, -(grep(&#39;.x&#39;, colnames(metro_long), fixed = TRUE))]
@@ -1695,11 +1804,11 @@ colnames(metro)[3:length(colnames(metro))] = paste0(&#39;METRO_&#39;, colnames(m
 colnames(tsa)[4:length(colnames(tsa))] = paste0(&#39;TSA_&#39;, colnames(tsa)[4:length(colnames(tsa))])
 
 # combine into df
-combined_df = merge(county, metro, by = c(&#39;Metro_Area&#39;, &#39;Date&#39;), all = TRUE)
+combined_df = merge(county, metro, by = c(&#39;Date&#39;, &#39;Metro_Area&#39;), all = TRUE)
 
 tsa$TSA_Combined = paste0(tsa$TSA, &#39; - &#39;, tsa$TSA_Name)
 
-combined_df2 = merge(combined_df, tsa, by = c(&#39;TSA&#39;, &#39;TSA_Name&#39;, &#39;Date&#39;), all = TRUE)
+combined_df2 = merge(combined_df, tsa, by = c(&#39;Date&#39;, &#39;TSA&#39;, &#39;TSA_Name&#39;), all = TRUE)
 
 # output
 # write.csv(combined_df2, &#39;tableau/combined.csv&#39;, row.names = FALSE)</code></pre>
