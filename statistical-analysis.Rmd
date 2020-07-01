@@ -8,7 +8,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-#knitr::opts_knit$set(root.dir = "C:/Users/jeffb/Desktop/Life/personal-projects/COVID")
+
 ```
 
 ```{r}
