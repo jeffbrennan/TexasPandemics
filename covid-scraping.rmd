@@ -388,7 +388,6 @@ DSHS_tsa = merge(DSHS_tsa_counts, DSHS_tsa_google, by = c('Date', 'TSA', 'TSA_Na
 DSHS_tsa = merge(DSHS_tsa, DSHS_tsa_pops, by = 'TSA', all = TRUE)
 ```
 
-
 ## DSHS hospitals
 
 ```{r}
@@ -406,7 +405,6 @@ colnames(DSHS_tsa_hosp)[1] = 'TSA'
 DSHS_tsa_hosp$TSA = gsub('.', '', DSHS_tsa_hosp$TSA, fixed = TRUE)
 DSHS_tsa_hosp$`TSA Name` = NULL
 
-
 #save
 write.csv(DSHS_tsa_hosp, 'original-sources/DSHS_tsa_hosp.csv', row.names = FALSE)
 
@@ -416,16 +414,32 @@ DSHS_hosp_long = reshape::melt(DSHS_tsa_hosp, id = c('TSA'))
 # set colnames
 colnames(DSHS_hosp_long) = c('TSA', 'Date', 'Hospitalizations_Daily')
 
-# fix dates
+# fix types
 DSHS_hosp_long$Date = as.Date(as.integer(DSHS_hosp_long$Date), origin = '2020-04-07')
+DSHS_hosp_long$TSA = as.factor(DSHS_hosp_long$TSA)
+```
+
+## DSHS dashboard
+
+```{r}
+library(jsonlite)
+DSHS_json_hosp_tsa = fromJSON("https://services5.arcgis.com/ACaLB9ifngzawspq/arcgis/rest/services/DSHS_COVID_Hospital_Data/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outSR=102100&resultOffset=0&resultRecordCount=25&resultType=standard&cacheHint=true")[['features']][['attributes']]
+
+DSHS_json_hosp_tsa = DSHS_json_hosp_tsa[, c(2,5:9)]
+
+colnames(DSHS_json_hosp_tsa) = c('TSA', 'Hospital_Beds_Staffed', 'Hospital_Beds_Available',
+                            'ICU_Beds_Available', 'Ventilators_Available', 'Current_Cases')
+
+DSHS_json_hosp_tsa$Date = Sys.Date()
 ```
 
 
 ## merge
 
 ```{r}
-DSHS_hosp_long$TSA = as.factor(DSHS_hosp_long$TSA)
-DSHS_tsa_merged = merge(DSHS_tsa, DSHS_hosp_long, by = c('Date', 'TSA'), all = TRUE) %>% distinct()
+merged_tsa = Reduce(function(x, y) merge(x, y, by = c('Date', 'TSA'), all = TRUE),
+                    list(DSHS_tsa, DSHS_hosp_long, DSHS_json_hosp_tsa)) %>%
+             distinct()
 ```
 
 # PHR LEVEL
@@ -764,7 +778,7 @@ write.csv(county_demo_2018, file = 'combined-datasets/county_demo.csv', row.name
 ## TSA
 
 ```{r}
-write.csv(DSHS_tsa_merged, file = 'combined-datasets/tsa.csv', row.names = F)
+write.csv(merged_tsa, file = 'combined-datasets/tsa.csv', row.names = F)
 ```
 
 ## PHR 
