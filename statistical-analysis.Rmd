@@ -169,7 +169,7 @@ covid.rt <- function(mydata) {
   # gen.time<-generation.time("gamma", c(5.2, 1.72)) #Singapore
   # gen.time<-generation.time("gamma", c(3.95, 1.51)) #Tianjin
   gen.time <- generation.time("gamma", c(3.96, 4.75))
-  # print(as.character(mydata[1,1]))
+  print(as.character(mydata[1,2]))
   
   # TODO: consider removing this and handling na cases directly
   #change na values to 0
@@ -197,8 +197,9 @@ covid.rt <- function(mydata) {
   minrow <- max(march9.row, first.nonzero)
 
   ### R0 ESTIMATION ###
-  # TODO: establish better criteria for sum of daily cases
-  if(!is.na(minrow) & sum.daily.cases > 75) {
+  # TODO: establish better criteria for # of required daily cases
+  # mean daily cases; average last x number of days; % of region pop etc.
+  if(!is.na(minrow) & sum.daily.cases > 100) {
     
     # declare limits for rt estimation (first nonzero date & last nonzero date)
     i <- minrow
@@ -393,7 +394,6 @@ ts.data.organize<-function(mycounty, mytsa, myphr){
   
   # drop NA dates
   metro.df <- subset(metro.df, !is.na(Date) & Date>=as.Date('2020-03-04'))
-  
   
   ### TSA ###
   TSA.df <- ts.data.clean(mytsa)
@@ -608,15 +608,15 @@ PHR.arima.output <- nlme::gapply(PHR.Daily,
                                  mindate = as.Date('2020-03-04'))
 
 PHR.arima.df <- data.table::rbindlist(PHR.arima.output, idcol=TRUE)
+colnames(PHR.arima.df)[1] <- 'Level_Name'
 
-colnames(PHR.arima.df)[1] <- 'PHR'
-PHR.arima.df <- merge(PHR.arima.df, unique(PHR.Daily[, c('PHR', 'Level_Name')]), by = c('PHR'))
+PHR.arima.df <- merge(PHR.arima.df, unique(PHR.Daily[, c('PHR', 'Level_Name')]), by = c('Level_Name'))
 
 # combine PHR 
-PHR.arima.df$PHR <- paste0(PHR.arima.df$PHR, ' - ', PHR.arima.df$Level_Name)
-PHR.arima.df$Level_Name <- NULL
+PHR.arima.df$Level_Name <- paste0(PHR.arima.df$PHR, ' - ', PHR.arima.df$Level_Name)
+PHR.arima.df$PHR <- NULL
+colnames(PHR.arima.df)[1] <- 'PHR'
 ```
-
 
 ## State
 
@@ -752,7 +752,7 @@ tsa_current_ratio_dat$TSA_Name <- NULL
 ### PHR
 
 ```{r}
-cumcases.PHR <- PHR.Daily %>% dplyr::select(Date, PHR, Cases_Cumulative)
+cumcases.PHR <- PHR.Daily %>% dplyr::select(Date, Level_Name, Cases_Cumulative)
 cumcases.PHR$Date <- ymd(cumcases.PHR$Date)
 
 latestdate <- max(cumcases.PHR$Date)
@@ -768,15 +768,17 @@ week1 <- subset(cumcases.PHR, Date==middate, select=Cases_Cumulative) -
 current_ratio <- (week2/week1)[,1]
 #current_ratio[week1<10] <- NA
 current_ratio[current_ratio<0] <- NA
-phr_current_ratio_dat <- data.frame(PHR=subset(cumcases.PHR, Date==latestdate, select=PHR)[,1],
+phr_current_ratio_dat <- data.frame(Level_Name=subset(cumcases.PHR, Date==latestdate, select=Level_Name)[,1],
                                     current_ratio=current_ratio, current_ratio_cat = cut(current_ratio, breaks=c(0,0.5,.9,1.1,1.5,2,4,8,max(current_ratio))))
 
 # add PHR name
-phr_current_ratio_dat <- merge(phr_current_ratio_dat, unique(PHR.Daily[, c('PHR', 'PHR_Name')]), by = 'PHR')
+phr_current_ratio_dat <- merge(phr_current_ratio_dat, unique(PHR.Daily[, c('PHR', 'Level_Name')]), by = 'Level_Name')
 
 # combine PHR name
-phr_current_ratio_dat$PHR <- paste0(phr_current_ratio_dat$PHR, ' - ', phr_current_ratio_dat$PHR_Name)
-phr_current_ratio_dat$PHR_Name <- NULL
+phr_current_ratio_dat$Level_Name <- paste0(phr_current_ratio_dat$PHR, ' - ', phr_current_ratio_dat$Level_Name)
+phr_current_ratio_dat$PHR <- NULL
+
+colnames(phr_current_ratio_dat)[1] <- 'PHR'
 ```
 
 
@@ -784,7 +786,7 @@ phr_current_ratio_dat$PHR_Name <- NULL
 
 ```{r}
 # declare vals
-cumcases.county <- county.Daily %>% dplyr::select(Date,County, Cases_Cumulative)
+cumcases.county <- county.Daily %>% dplyr::select(Date, Level_Name, Cases_Cumulative)
 cumcases.county$Date <- ymd(cumcases.county$Date)
 
 latestdate <- max(cumcases.county$Date, na.rm=T)
@@ -807,7 +809,7 @@ current_ratio[current_ratio<0] <- NA
 # output
 # TODO: investigate select vs subset(...)[, 'County']
 county_current_ratio_dat <- 
-  data.frame(County=subset(cumcases.county, Date==latestdate, select=County)[,1],
+  data.frame(County=subset(cumcases.county, Date==latestdate, select=Level_Name)[,1],
              current_ratio=current_ratio,
              current_ratio_cat = cut(current_ratio,
                                      breaks=c(0,0.5,.9,1.1,1.5,2,4,8,max(current_ratio))))
@@ -893,7 +895,7 @@ combined_current_ratio_dat <- rbind(county_current_ratio_dat, metro_current_rati
                                    tsa_current_ratio_dat, state_current_ratio_dat, phr_current_ratio_dat)
 
 write.csv(combined_current_ratio_dat, 'statistical-output/standard-stats/case-ratios/stacked_case_ratio.csv',
-          row.names <- FALSE)
+          row.names = FALSE)
 
 # write.csv(combined_current_ratio_dat, 'tableau/stacked_case_ratio.csv',
 #           row.names <- FALSE)
