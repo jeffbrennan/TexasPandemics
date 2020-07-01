@@ -8,6 +8,10 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+<<<<<<< HEAD
+=======
+
+>>>>>>> f23de511f4bc50a9720e8c3ef1a4233811278ef0
 ```
 
 ```{r}
