@@ -480,7 +480,7 @@ DSHS_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * … and 111 more problems</code></pre>
+## * ... and 112 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_cases_time) = DSHS_cases_time[2, ]
 DSHS_cases_time = DSHS_cases_time[3:(nrow(DSHS_cases_time) - 11), ]
@@ -518,7 +518,7 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * … and 114 more problems</code></pre>
+## * ... and 115 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
 DSHS_deaths_time = DSHS_deaths_time[3:(nrow(DSHS_deaths_time) - 10), ]
@@ -553,7 +553,7 @@ DSHS_tests_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * … and 64 more problems</code></pre>
+## * ... and 65 more problems</code></pre>
 <pre class="r"><code># TEMP FIX drop first duplicated date column
 dupe_dates = which(DSHS_tests_time[1, ] == &#39;Tests Through June 23&#39;)
 DSHS_tests_time = DSHS_tests_time[, -dupe_dates[1]]
@@ -601,7 +601,7 @@ DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code><
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * … and 79 more problems</code></pre>
+## * ... and 80 more problems</code></pre>
 <pre class="r"><code># fix colname
 colnames(DSHS_active_cases_time) = DSHS_active_cases_time[2, ]
 DSHS_active_cases_time = DSHS_active_cases_time[3:(nrow(DSHS_active_cases_time)), 2:ncol(DSHS_active_cases_time)]
@@ -737,179 +737,13 @@ DSHS_tsa = merge(DSHS_tsa, DSHS_tsa_pops, by = &#39;TSA&#39;, all = TRUE)</code>
 temp = tempfile()
 download.file(hosp_url, temp, mode = &#39;wb&#39;) 
 DSHS_tsa_hosp = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in C3 / R3C3: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in D3 / R3C4: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in E3 / R3C5: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in F3 / R3C6: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in G3 / R3C7: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in H3 / R3C8: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in I3 / R3C9: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in J3 / R3C10: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in K3 / R3C11: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in L3 / R3C12: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in M3 / R3C13: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in N3 / R3C14: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in O3 / R3C15: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in P3 / R3C16: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in Q3 / R3C17: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in R3 / R3C18: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in S3 / R3C19: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in T3 / R3C20: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in U3 / R3C21: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in V3 / R3C22: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in W3 / R3C23: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in X3 / R3C24: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in Y3 / R3C25: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in Z3 / R3C26: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AA3 / R3C27: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AB3 / R3C28: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AC3 / R3C29: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AD3 / R3C30: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AE3 / R3C31: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AF3 / R3C32: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AG3 / R3C33: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AH3 / R3C34: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AI3 / R3C35: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AJ3 / R3C36: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AK3 / R3C37: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AL3 / R3C38: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AM3 / R3C39: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AN3 / R3C40: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AO3 / R3C41: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AP3 / R3C42: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AQ3 / R3C43: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AR3 / R3C44: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AS3 / R3C45: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AT3 / R3C46: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AU3 / R3C47: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AV3 / R3C48: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AW3 / R3C49: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AX3 / R3C50: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AY3 / R3C51: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in AZ3 / R3C52: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BA3 / R3C53: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BB3 / R3C54: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BC3 / R3C55: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BD3 / R3C56: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BE3 / R3C57: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BF3 / R3C58: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BG3 / R3C59: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BH3 / R3C60: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BI3 / R3C61: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BJ3 / R3C62: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BK3 / R3C63: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BL3 / R3C64: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BM3 / R3C65: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BN3 / R3C66: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BO3 / R3C67: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BP3 / R3C68: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BQ3 / R3C69: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BR3 / R3C70: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BS3 / R3C71: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BT3 / R3C72: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BU3 / R3C73: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BV3 / R3C74: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BW3 / R3C75: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BX3 / R3C76: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BY3 / R3C77: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in BZ3 / R3C78: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in CA3 / R3C79: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in CB3 / R3C80: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in CC3 / R3C81: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in CD3 / R3C82: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in CE3 / R3C83: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in CF3 / R3C84: got a date</code></pre>
-<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
-## Expecting numeric in CG3 / R3C85: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * … and 79 more problems</code></pre>
+## * ... and 80 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_tsa_hosp) = DSHS_tsa_hosp[2, ]
 DSHS_tsa_hosp = DSHS_tsa_hosp[3:(nrow(DSHS_tsa_hosp) - 1), ]
@@ -1041,10 +875,8 @@ nursing_df = Reduce(function(x, y) merge(x, y, by = c(&#39;Date&#39;, &#39;PHR&#
                 list(DSHS_phr, alf_df, nursing_df))
 
 # address error when knitting despite str(phr_df indicating all calc columns are numeric)
-phr_df$Nursing_Cases = as.numeric(phr_df$Nursing_Cases)</code></pre>
-<pre><code>## Warning: NAs introduced by coercion</code></pre>
-<pre class="r"><code>phr_df$Nursing_Recoveries = as.numeric(phr_df$Nursing_Recoveries)</code></pre>
-<pre><code>## Warning: NAs introduced by coercion</code></pre>
+phr_df$Nursing_Cases = as.numeric(phr_df$Nursing_Cases)
+phr_df$Nursing_Recoveries = as.numeric(phr_df$Nursing_Recoveries)</code></pre>
 </div>
 </div>
 <div id="metro-level" class="section level1">
