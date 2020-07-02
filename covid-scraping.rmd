@@ -134,8 +134,9 @@ mobility_texas$Date = as.Date(mobility_texas$Date)
 
 ## DSHS 
 
+### cases
+
 ```{r}
-# cases
 case_url = 'http://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyCaseCountData.xlsx'
 temp = tempfile()
 download.file(case_url, temp, mode = 'wb') 
@@ -169,8 +170,9 @@ DSHS_cases_long =
      mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
 ```
 
+### deaths
+
 ```{r}
-# deaths
 death_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyFatalityCountData.xlsx'
 temp = tempfile()
 download.file(death_url, temp, mode = 'wb') 
@@ -201,8 +203,9 @@ DSHS_deaths_long =
     mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))
 ```
 
+### testing
+
 ```{r}
-# testing
 test_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsOverTimebyCounty.xlsx'
 temp = tempfile()
 download.file(test_url, temp, mode = 'wb') 
@@ -246,9 +249,9 @@ DSHS_tests_long =
 DSHS_tests_long = subset(DSHS_tests_long, County != 'Unknown' & County != 'Pending Assignments')
 ```
 
+### active cases
 
 ```{r}
-# active cases
 active_case_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19ActiveCaseDatabyCounty.xlsx'
 temp = tempfile()
 download.file(active_case_url, temp, mode = 'wb') 
@@ -272,6 +275,10 @@ colnames(DSHS_active_cases_long) = c('County', 'Date', 'Active_Cases_Cumulative'
 DSHS_active_cases_long$Date = as.Date(gsub('Active|Cases|\r|\n', '', DSHS_active_cases_long$Date),
                                       format = '%m-%d')
 
+# manually fix last date (mistakenly coded by DSHS as 07-30)
+if (Sys.Date() < as.Date('2020-07-30')) {
+  DSHS_active_cases_long$Date[DSHS_active_cases_long$Date == as.Date('2020-07-30')] = as.Date('2020-06-30')
+  }
 
 # calculate daily active_cases
 DSHS_active_cases_long$Active_Cases_Cumulative = as.integer(as.character(DSHS_active_cases_long$Active_Cases_Cumulative))
@@ -292,7 +299,7 @@ DSHS_county_counts$Population.x = NULL
 DSHS_county_counts$Population.y = NULL
 ```
 
-### Classifications
+## Classifications
 
 ```{r}
 # add metro and PHR designations from https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls]\

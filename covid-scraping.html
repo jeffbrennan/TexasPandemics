@@ -469,8 +469,9 @@ mobility_texas$Date = as.Date(mobility_texas$Date)</code></pre>
 </div>
 <div id="dshs" class="section level2">
 <h2>DSHS</h2>
-<pre class="r"><code># cases
-case_url = &#39;http://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyCaseCountData.xlsx&#39;
+<div id="cases" class="section level3">
+<h3>cases</h3>
+<pre class="r"><code>case_url = &#39;http://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyCaseCountData.xlsx&#39;
 temp = tempfile()
 download.file(case_url, temp, mode = &#39;wb&#39;) 
 DSHS_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
@@ -480,7 +481,7 @@ DSHS_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 112 more problems</code></pre>
+## * … and 113 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_cases_time) = DSHS_cases_time[2, ]
 DSHS_cases_time = DSHS_cases_time[3:(nrow(DSHS_cases_time) - 11), ]
@@ -507,8 +508,10 @@ DSHS_cases_long =
     DSHS_cases_long %&gt;% 
     group_by(County) %&gt;% 
      mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))</code></pre>
-<pre class="r"><code># deaths
-death_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyFatalityCountData.xlsx&#39;
+</div>
+<div id="deaths" class="section level3">
+<h3>deaths</h3>
+<pre class="r"><code>death_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyFatalityCountData.xlsx&#39;
 temp = tempfile()
 download.file(death_url, temp, mode = &#39;wb&#39;) 
 DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
@@ -518,7 +521,7 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 115 more problems</code></pre>
+## * … and 116 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
 DSHS_deaths_time = DSHS_deaths_time[3:(nrow(DSHS_deaths_time) - 10), ]
@@ -542,8 +545,10 @@ DSHS_deaths_long =
     DSHS_deaths_long %&gt;% 
     group_by(County) %&gt;%
     mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))</code></pre>
-<pre class="r"><code># testing
-test_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsOverTimebyCounty.xlsx&#39;
+</div>
+<div id="testing" class="section level3">
+<h3>testing</h3>
+<pre class="r"><code>test_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsOverTimebyCounty.xlsx&#39;
 temp = tempfile()
 download.file(test_url, temp, mode = &#39;wb&#39;) 
 DSHS_tests_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
@@ -553,7 +558,7 @@ DSHS_tests_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 65 more problems</code></pre>
+## * … and 66 more problems</code></pre>
 <pre class="r"><code># TEMP FIX drop first duplicated date column
 dupe_dates = which(DSHS_tests_time[1, ] == &#39;Tests Through June 23&#39;)
 DSHS_tests_time = DSHS_tests_time[, -dupe_dates[1]]
@@ -590,8 +595,10 @@ DSHS_tests_long =
 
 # drop unmergable counties 
 DSHS_tests_long = subset(DSHS_tests_long, County != &#39;Unknown&#39; &amp; County != &#39;Pending Assignments&#39;)</code></pre>
-<pre class="r"><code># active cases
-active_case_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID-19ActiveCaseDatabyCounty.xlsx&#39;
+</div>
+<div id="active-cases" class="section level3">
+<h3>active cases</h3>
+<pre class="r"><code>active_case_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID-19ActiveCaseDatabyCounty.xlsx&#39;
 temp = tempfile()
 download.file(active_case_url, temp, mode = &#39;wb&#39;) 
 DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
@@ -601,7 +608,7 @@ DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code><
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 80 more problems</code></pre>
+## * … and 81 more problems</code></pre>
 <pre class="r"><code># fix colname
 colnames(DSHS_active_cases_time) = DSHS_active_cases_time[2, ]
 DSHS_active_cases_time = DSHS_active_cases_time[3:(nrow(DSHS_active_cases_time)), 2:ncol(DSHS_active_cases_time)]
@@ -620,6 +627,10 @@ colnames(DSHS_active_cases_long) = c(&#39;County&#39;, &#39;Date&#39;, &#39;Acti
 DSHS_active_cases_long$Date = as.Date(gsub(&#39;Active|Cases|\r|\n&#39;, &#39;&#39;, DSHS_active_cases_long$Date),
                                       format = &#39;%m-%d&#39;)
 
+# manually fix last date (mistakenly coded by DSHS as 07-30)
+if (Sys.Date() &lt; as.Date(&#39;2020-07-30&#39;)) {
+  DSHS_active_cases_long$Date[DSHS_active_cases_long$Date == as.Date(&#39;2020-07-30&#39;)] = as.Date(&#39;2020-06-30&#39;)
+  }
 
 # calculate daily active_cases
 DSHS_active_cases_long$Active_Cases_Cumulative = as.integer(as.character(DSHS_active_cases_long$Active_Cases_Cumulative))
@@ -635,8 +646,10 @@ DSHS_county_counts = Reduce(function(x, y) merge(x, y, by = c(&#39;Date&#39;, &#
 # drop population - will be using census data
 DSHS_county_counts$Population.x = NULL
 DSHS_county_counts$Population.y = NULL</code></pre>
-<div id="classifications" class="section level3">
-<h3>Classifications</h3>
+</div>
+</div>
+<div id="classifications" class="section level2">
+<h2>Classifications</h2>
 <pre class="r"><code># add metro and PHR designations from https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls]\
 county_classifications = read_xlsx(&#39;original-sources/county_classifications.xlsx&#39;, sheet = 1)[1:254, c(1, 5, 8)]
 
@@ -665,7 +678,6 @@ tsa_long_complete$TSA_Name = trimws(tsa_long_complete$TSA_Name)
 
 # sort by county, date
 # merged_counts3 = merged_counts3[order(merged_counts3$County, merged_counts3$Date), ]</code></pre>
-</div>
 </div>
 <div id="merge" class="section level2">
 <h2>merge</h2>
@@ -743,7 +755,7 @@ DSHS_tsa_hosp = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 80 more problems</code></pre>
+## * … and 81 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_tsa_hosp) = DSHS_tsa_hosp[2, ]
 DSHS_tsa_hosp = DSHS_tsa_hosp[3:(nrow(DSHS_tsa_hosp) - 1), ]
@@ -752,7 +764,6 @@ colnames(DSHS_tsa_hosp)[1] = &#39;TSA&#39;
 # drop . from TSA &amp; drop TSA name
 DSHS_tsa_hosp$TSA = gsub(&#39;.&#39;, &#39;&#39;, DSHS_tsa_hosp$TSA, fixed = TRUE)
 DSHS_tsa_hosp$`TSA Name` = NULL
-
 
 #save
 write.csv(DSHS_tsa_hosp, &#39;original-sources/DSHS_tsa_hosp.csv&#39;, row.names = FALSE)
@@ -763,13 +774,27 @@ DSHS_hosp_long = reshape::melt(DSHS_tsa_hosp, id = c(&#39;TSA&#39;))
 # set colnames
 colnames(DSHS_hosp_long) = c(&#39;TSA&#39;, &#39;Date&#39;, &#39;Hospitalizations_Daily&#39;)
 
-# fix dates
-DSHS_hosp_long$Date = as.Date(as.integer(DSHS_hosp_long$Date), origin = &#39;2020-04-07&#39;)</code></pre>
+# fix types
+DSHS_hosp_long$Date = as.Date(as.integer(DSHS_hosp_long$Date), origin = &#39;2020-04-07&#39;)
+DSHS_hosp_long$TSA = as.factor(DSHS_hosp_long$TSA)</code></pre>
+</div>
+<div id="dshs-dashboard" class="section level2">
+<h2>DSHS dashboard</h2>
+<pre class="r"><code>library(jsonlite)
+DSHS_json_hosp_tsa = fromJSON(&quot;https://services5.arcgis.com/ACaLB9ifngzawspq/arcgis/rest/services/DSHS_COVID_Hospital_Data/FeatureServer/0/query?f=json&amp;where=1%3D1&amp;returnGeometry=false&amp;spatialRel=esriSpatialRelIntersects&amp;outFields=*&amp;outSR=102100&amp;resultOffset=0&amp;resultRecordCount=25&amp;resultType=standard&amp;cacheHint=true&quot;)[[&#39;features&#39;]][[&#39;attributes&#39;]]
+
+DSHS_json_hosp_tsa = DSHS_json_hosp_tsa[, c(2,5:9)]
+
+colnames(DSHS_json_hosp_tsa) = c(&#39;TSA&#39;, &#39;Hospital_Beds_Staffed&#39;, &#39;Hospital_Beds_Available&#39;,
+                            &#39;ICU_Beds_Available&#39;, &#39;Ventilators_Available&#39;, &#39;Current_Cases&#39;)
+
+DSHS_json_hosp_tsa$Date = Sys.Date()</code></pre>
 </div>
 <div id="merge-1" class="section level2">
 <h2>merge</h2>
-<pre class="r"><code>DSHS_hosp_long$TSA = as.factor(DSHS_hosp_long$TSA)
-DSHS_tsa_merged = merge(DSHS_tsa, DSHS_hosp_long, by = c(&#39;Date&#39;, &#39;TSA&#39;), all = TRUE) %&gt;% distinct()</code></pre>
+<pre class="r"><code>merged_tsa = Reduce(function(x, y) merge(x, y, by = c(&#39;Date&#39;, &#39;TSA&#39;), all = TRUE),
+                    list(DSHS_tsa, DSHS_hosp_long, DSHS_json_hosp_tsa)) %&gt;%
+             distinct()</code></pre>
 </div>
 </div>
 <div id="phr-level" class="section level1">
@@ -924,6 +949,11 @@ download.file(state_url, paste0(&#39;original-sources/historical/demo/dshs_&#39;
               mode = &#39;wb&#39;) 
 
 DSHS_state = read_excel_allsheets(&#39;original-sources/DSHS_state.xlsx&#39;)</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5</code></pre>
 <pre class="r"><code>DSHS_tests = DSHS_state[[4]]
 DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests) - 3), ]
 
@@ -973,6 +1003,9 @@ demo.list &lt;- paste0(&#39;original-sources/historical/demo/&#39;,
 
 DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -1140,9 +1173,15 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_case_race &lt;- lapply(demo.list, read_excel, sheet = 11)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -1310,6 +1349,9 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_gender &lt;- lapply(demo.list, read_excel, sheet = 13)</code></pre>
 <pre><code>## New names:
@@ -1395,9 +1437,15 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_race &lt;- lapply(demo.list, read_excel, sheet = 14)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -1570,7 +1618,7 @@ write.csv(county_demo_2018, file = &#39;combined-datasets/county_demo.csv&#39;, 
 </div>
 <div id="tsa" class="section level2">
 <h2>TSA</h2>
-<pre class="r"><code>write.csv(DSHS_tsa_merged, file = &#39;combined-datasets/tsa.csv&#39;, row.names = F)</code></pre>
+<pre class="r"><code>write.csv(merged_tsa, file = &#39;combined-datasets/tsa.csv&#39;, row.names = F)</code></pre>
 </div>
 <div id="phr" class="section level2">
 <h2>PHR</h2>
