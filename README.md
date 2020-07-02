@@ -30,7 +30,7 @@ Scraping of various COVID sources to be used in UTHealth COVID dashboard focused
 
 ### TSA Level
 
-#### tsa.csv: Daily Hospitalizations
+#### tsa.csv: Daily Hospitalizations & Bed Availability
 
 - [DSHS](https://www.dshs.state.tx.us/coronavirus)
 
@@ -54,4 +54,5 @@ Texas subsets of unmodified datasets
 ---
 
 ## Visualizations 
-forthcoming...
+
+[Dashboard](TexasPandemic.org)

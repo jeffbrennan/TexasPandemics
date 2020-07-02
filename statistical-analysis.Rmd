@@ -355,7 +355,12 @@ colnames(TSA.rt.df)[1] <- 'Level'
 colnames(phr.rt.df)[1] <- 'Level'
 state.rt.df$Level <- 'Texas'
 
-combined.rt.df <- rbind(county.rt.df, metro.rt.df, TSA.rt.df, state.rt.df, phr.rt.df)
+combined.rt.df <- rbind(subset(county.rt.df, Date != max(Date)),
+                        subset(metro.rt.df, Date != max(Date)),
+                        subset(TSA.rt.df, Date != max(Date)),
+                        subset(state.rt.df, Date != max(Date)),
+                        subset(phr.rt.df, Date != max(Date)))
+
 write.csv(combined.rt.df, 'statistical-output/rt/stacked_rt.csv', row.names = FALSE)
 write.csv(combined.rt.df, 'tableau/stacked_rt.csv', row.names = FALSE)
 ```
