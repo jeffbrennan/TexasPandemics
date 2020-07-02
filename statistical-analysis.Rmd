@@ -8,10 +8,6 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-<<<<<<< HEAD
-=======
-
->>>>>>> f23de511f4bc50a9720e8c3ef1a4233811278ef0
 ```
 
 ```{r}
@@ -453,8 +449,7 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
     # arima requires cases to be a timeseries vector
     #convert daily cases to time series
     my.timeseries<-ts(mydata$Cases_Daily)
-    #my.timeseries <- rollmeanr(my.timeseries, k=7, na.pad=TRUE, align = 'right')
-    
+    print(mydata[1,2])
     #load package(pracma)
     library(pracma)
     my.timeseries<-movavg(my.timeseries,7,"s")
