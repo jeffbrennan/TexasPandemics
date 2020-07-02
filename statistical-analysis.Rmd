@@ -8,10 +8,6 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-<<<<<<< HEAD
-=======
-
->>>>>>> f23de511f4bc50a9720e8c3ef1a4233811278ef0
 ```
 
 ```{r}
@@ -180,8 +176,16 @@ covid.rt <- function(mydata) {
   sum.daily.cases <- sum(mydata$Cases_Daily)
   pop.DSHS <- mydata$Population_DSHS[1]
   
-  # get cases and dates as vectors
-  mydata.new <- pull(mydata, Cases_Daily)
+  #Get 7 day moving average of daily cases
+  mydata$MA_7day<-rollmean(mydata$Cases_Daily, k=7, na.pad=TRUE, align='right')
+  #change na values to 0
+  mydata<-mydata%>%replace(is.na(.),0)
+
+  #create a vector of new cases 7 day moving average
+  mydata.new<-pull(mydata, MA_7day)
+  #mydata.new <- pull(mydata, Cases_Daily)
+  
+  # get dates as vectors
   date.vector <- pull(mydata, Date)
   
   #create a named numerical vector using the date.vector as names of new cases
@@ -192,12 +196,13 @@ covid.rt <- function(mydata) {
   min.date <- min(mydata$Date)
   max.date <- max(mydata$Date)
 
-  #get row number of March 9 and first nonzero entry
+  #get row number of March 15 and first nonzero entry
+  #NOTE: for 7 day moving average start March 15, for daily start March 9
   #find max row between the two (this will be beginning of rt data used)
-  march9.row <- which(mydata$Date=="2020-03-09")
+  march15.row <- which(mydata$Date=="2020-03-15")
   first.nonzero <- min(which(mydata$Cases_Daily>0))
   last.nonzero <- max(which(mydata$Cases_Daily>0))
-  minrow <- max(march9.row, first.nonzero)
+  minrow <- max(march15.row, first.nonzero)
 
   ### R0 ESTIMATION ###
   # TODO: establish better criteria for # of required daily cases
@@ -231,6 +236,8 @@ covid.rt <- function(mydata) {
   return(rt.DSHS.df)
 }
 ```
+
+
 
 
 ```{r prep dataframes, include=FALSE}
@@ -269,6 +276,21 @@ colnames(metro.rt.df)[1] = 'Metro_Area'
 
 ## TSA
 
+```{r TSA rt plot function}
+# plot with shaded confidence intervals
+rt.plot<-function(rt.data, caption){
+  library(ggplot2)
+    caption<-rt.data$TSA[1]
+  plot<-ggplot(rt.data, aes(Date, Rt))+
+    geom_ribbon(aes(ymin=lower, ymax=upper), fill="light grey")+
+    geom_point(color="blue", size=0.2)+
+    labs(title=caption)
+  plot
+}
+
+```
+
+
 ```{r tsa rt}
 #apply the covid.rt function to the TSA.daily data by TSA region
 TSA.rt.output <- nlme::gapply(TSA.daily, FUN=covid.rt, groups=TSA.daily$TSA)
@@ -284,6 +306,9 @@ TSA.rt.df <- merge(TSA.rt.df, TSA.daily[, c('TSA', 'TSA_Name', 'Date')], by = c(
 # combine TSA 
 TSA.rt.df$TSA <- paste0(TSA.rt.df$TSA, ' - ', TSA.rt.df$TSA_Name)
 TSA.rt.df$TSA_Name <- NULL
+
+#plot Rt by TSA
+nlme::gapply(TSA.rt.df, FUN=rt.plot, groups=TSA.rt.df$TSA)
 ```
 
 ## PHR
