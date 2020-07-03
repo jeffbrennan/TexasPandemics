@@ -435,9 +435,30 @@ DSHS_json_hosp_tsa = fromJSON("https://services5.arcgis.com/ACaLB9ifngzawspq/arc
 DSHS_json_hosp_tsa = DSHS_json_hosp_tsa[, c(2,5:9)]
 
 colnames(DSHS_json_hosp_tsa) = c('TSA', 'Hospital_Beds_Staffed', 'Hospital_Beds_Available',
-                            'ICU_Beds_Available', 'Ventilators_Available', 'Current_Cases')
+                                 'ICU_Beds_Available', 'Ventilators_Available', 'Current_Cases')
 
-DSHS_json_hosp_tsa$Date = Sys.Date()
+DSHS_json_hosp_tsa$Date = format(Sys.Date(), '%m/%d/%y')
+
+# add computed cols 
+DSHS_json_hosp_tsa = DSHS_json_hosp_tsa %>% 
+                    mutate(Hospital_Beds_Taken = Hospital_Beds_Staffed - Hospital_Beds_Available - Current_Cases)
+
+# export todays file
+write.csv(DSHS_json_hosp_tsa, paste0('original-sources/historical/hosp/tsa_hosp_', Sys.Date(), '.csv'),
+          row.names = FALSE)
+
+# read in all files
+hosp_list <- paste0('original-sources/historical/hosp/',
+                    list.files(path = 'original-sources/historical/hosp',
+                               pattern = '*.csv'))
+
+
+tsa_all_hosp = lapply(hosp_list, read.csv, fileEncoding = 'UTF-8-BOM')
+tsa_combined_hosp = rbindlist(tsa_all_hosp, fill = TRUE)
+
+tsa_combined_hosp$Date = as.Date(tsa_combined_hosp$Date, format = '%m/%d/%y')
+# save 
+write.csv(tsa_combined_hosp, 'original-sources/DSHS_tsa_hosp_detail.csv', row.names = FALSE)
 ```
 
 
@@ -445,8 +466,7 @@ DSHS_json_hosp_tsa$Date = Sys.Date()
 
 ```{r}
 merged_tsa = Reduce(function(x, y) merge(x, y, by = c('Date', 'TSA'), all = TRUE),
-                    list(DSHS_tsa, DSHS_hosp_long, DSHS_json_hosp_tsa)) %>%
-             distinct()
+                    list(DSHS_tsa, DSHS_hosp_long, tsa_combined_hosp))
 ```
 
 # PHR LEVEL
