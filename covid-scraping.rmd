@@ -774,6 +774,14 @@ state_facilities =
   summarize_at(vars(ALF_Total, ALF_Cases, ALF_Deaths, ALF_Recoveries,
                     Nursing_Total, Nursing_Cases, Nursing_Deaths, Nursing_Recoveries),
                funs(sum))
+
+state_hosp_detail = 
+  merged_tsa %>% 
+  group_by(Date) %>%
+  summarize_at(vars(Hospital_Beds_Staffed, Hospital_Beds_Taken,
+                    Current_Cases, Hospital_Beds_Available, ICU_Beds_Available,
+                    Ventilators_Available),
+               funs(sum))
 ```
 
 
@@ -781,7 +789,7 @@ state_facilities =
 
 ```{r}
 merged_state = Reduce(function(x, y) merge(x, y, by = c('Date'), all=TRUE),
-       list(state_counts, state_google, DSHS_state_time, state_facilities))
+       list(state_counts, state_google, DSHS_state_time, state_facilities, state_hosp_detail))
 
 merged_state$Population_DSHS = state_pops$Population_DSHS
 ```
@@ -806,6 +814,7 @@ write.csv(county_demo_2018, file = 'combined-datasets/county_demo.csv', row.name
 
 ```{r}
 write.csv(merged_tsa, file = 'combined-datasets/tsa.csv', row.names = F)
+write.csv(merged_tsa, file = 'tableau/tsa.csv', row.names = F)
 ```
 
 ## PHR 
