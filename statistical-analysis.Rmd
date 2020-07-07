@@ -511,10 +511,10 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
                             CI_Lower = c(rep(NA, times = length(my.timeseries)),
                                          arima.forecast[['lower']][, 2]),
                             CI_Upper = c(rep(NA, times = length(my.timeseries)),
-                                         arima.forecast[['upper']][, 2]),
-                            Order_AutoReg = c(rep(p, times = model.length)),
-                            Order_Moving_Avg = c(rep(q, times = model.length)),
-                            Differencing = c(rep(d, times = model.length)))
+                                         arima.forecast[['upper']][, 2]))
+                            # Order_AutoReg = c(rep(p, times = model.length)),
+                            # Order_Moving_Avg = c(rep(q, times = model.length)),
+                            # Differencing = c(rep(d, times = model.length)))
     
       # save prediction plot for preliminary review
       arima.plot <- ggplot(arima.out, aes(x=Date, y = Cases_Daily))+
@@ -536,10 +536,10 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
                             Cases_Raw = c(mydata$Cases_Daily, rep(NA, times = prediction.period)),
                             Cases_Daily = rep(NA, times = model.length),
                             CI_Lower = rep(NA, times = model.length),
-                            CI_Upper =  rep(NA, times = model.length),
-                            Order_AutoReg = c(rep(NA, times = model.length)),
-                            Order_Moving_Avg = c(rep(NA, times = model.length)),
-                            Differencing = c(rep(NA, times= model.length)))
+                            CI_Upper =  rep(NA, times = model.length))
+                            # Order_AutoReg = c(rep(NA, times = model.length)),
+                            # Order_Moving_Avg = c(rep(NA, times = model.length)),
+                            # Differencing = c(rep(NA, times= model.length)))
     }
   
   #replace CI lower limit with 0 if negative

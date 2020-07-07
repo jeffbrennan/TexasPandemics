@@ -24,10 +24,10 @@ read_excel_allsheets = function(filename, tibble = FALSE) {
 ```
 
 
-# COVIDTRACKING 
+# TODO 
 
 ```{r}
-# TOOD: investigate 
+# TODO: investigate 
 # https://covidtracking.com/race
 ```
 
@@ -813,8 +813,15 @@ write.csv(county_demo_2018, file = 'combined-datasets/county_demo.csv', row.name
 ## TSA
 
 ```{r}
+
+merged_tsa$TSA_Combined = paste0(merged_tsa$TSA, ' - ', merged_tsa$TSA_Name)
+
 write.csv(merged_tsa, file = 'combined-datasets/tsa.csv', row.names = F)
-write.csv(merged_tsa, file = 'tableau/tsa.csv', row.names = F)
+
+
+hosp_tsa = merged_tsa[, c(1:3, 18:26)]
+
+write.csv(merged_tsa, file = 'tableau/hospitalizations_tsa.csv', row.names = F)
 ```
 
 ## PHR 

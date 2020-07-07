@@ -374,9 +374,9 @@ summary {
     x = lapply(x, as.data.frame)
     return(x)
 }</code></pre>
-<div id="covidtracking" class="section level1">
-<h1>COVIDTRACKING</h1>
-<pre class="r"><code># TOOD: investigate 
+<div id="todo" class="section level1">
+<h1>TODO</h1>
+<pre class="r"><code># TODO: investigate 
 # https://covidtracking.com/race</code></pre>
 </div>
 <div id="census" class="section level1">
@@ -481,7 +481,7 @@ DSHS_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 118 more problems</code></pre>
+## * … and 118 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_cases_time) = DSHS_cases_time[2, ]
 DSHS_cases_time = DSHS_cases_time[3:(nrow(DSHS_cases_time) - 11), ]
@@ -521,7 +521,7 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 121 more problems</code></pre>
+## * … and 121 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
 DSHS_deaths_time = DSHS_deaths_time[3:(nrow(DSHS_deaths_time) - 10), ]
@@ -558,7 +558,7 @@ DSHS_tests_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 71 more problems</code></pre>
+## * … and 71 more problems</code></pre>
 <pre class="r"><code># TEMP FIX drop first duplicated date column
 dupe_dates = which(DSHS_tests_time[1, ] == &#39;Tests Through June 23&#39;)
 DSHS_tests_time = DSHS_tests_time[, -dupe_dates[1]]
@@ -608,7 +608,7 @@ DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code><
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 86 more problems</code></pre>
+## * … and 86 more problems</code></pre>
 <pre class="r"><code># fix colname
 colnames(DSHS_active_cases_time) = DSHS_active_cases_time[2, ]
 DSHS_active_cases_time = DSHS_active_cases_time[3:(nrow(DSHS_active_cases_time)), 2:ncol(DSHS_active_cases_time)]
@@ -755,7 +755,7 @@ DSHS_tsa_hosp = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 86 more problems</code></pre>
+## * … and 86 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_tsa_hosp) = DSHS_tsa_hosp[2, ]
 DSHS_tsa_hosp = DSHS_tsa_hosp[3:(nrow(DSHS_tsa_hosp) - 1), ]
@@ -1126,9 +1126,15 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_case_gender &lt;- lapply(demo.list, read_excel, sheet = 10)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -1338,9 +1344,15 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_age &lt;- lapply(demo.list, read_excel, sheet = 12)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -1550,9 +1562,15 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_race &lt;- lapply(demo.list, read_excel, sheet = 14)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -1754,8 +1772,14 @@ write.csv(county_demo_2018, file = &#39;combined-datasets/county_demo.csv&#39;, 
 </div>
 <div id="tsa" class="section level2">
 <h2>TSA</h2>
-<pre class="r"><code>write.csv(merged_tsa, file = &#39;combined-datasets/tsa.csv&#39;, row.names = F)
-write.csv(merged_tsa, file = &#39;tableau/tsa.csv&#39;, row.names = F)</code></pre>
+<pre class="r"><code>merged_tsa$TSA_Combined = paste0(merged_tsa$TSA, &#39; - &#39;, merged_tsa$TSA_Name)
+
+write.csv(merged_tsa, file = &#39;combined-datasets/tsa.csv&#39;, row.names = F)
+
+
+hosp_tsa = merged_tsa[, c(1:3, 18:26)]
+
+write.csv(merged_tsa, file = &#39;tableau/hospitalizations_tsa.csv&#39;, row.names = F)</code></pre>
 </div>
 <div id="phr" class="section level2">
 <h2>PHR</h2>
