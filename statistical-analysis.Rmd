@@ -39,6 +39,10 @@ library(astsa)
 library(fpp2)
 ```
 
+# TODO
+
+- combine time series predictions into one generalized function & improve filenames/paths
+
 # RT ANALYSIS
 
 ```{r Read in data}
@@ -706,6 +710,50 @@ texas.arima.df.1%>%kable(caption="Texas Arima - Daily Cases")%>%kable_styling(fu
 forecast.plot(texas.arima.df.1, "Texas Daily Cases", "Daily Cases")
 ```
 
+## export
+
+```{r export arima results}
+write.csv(texas.arima.df.1, 'statistical-output/time-series/state_case_timeseries.csv', row.names = FALSE)
+write.csv(TSA.arima.df.1, 'statistical-output/time-series/tsa_case_timeseries.csv', row.names = FALSE)
+write.csv(county.arima.df.1, 'statistical-output/time-series/county_case_timeseries.csv', row.names = FALSE)
+write.csv(metro.arima.df.1, 'statistical-output/time-series/metro_case_timeseries.csv', row.names = FALSE)
+write.csv(PHR.arima.df, 'statistical-output/time-series/phr_case_timeseries.csv', row.names = FALSE)
+
+# write.csv(texas.arima.df.2, 'statistical-output/time-series/state_timeseries_06_03.csv', row.names = FALSE)
+# write.csv(TSA.arima.df.2, 'statistical-output/time-series/tsa_timeseries_06_03.csv', row.names = FALSE)
+# write.csv(county.arima.df.2, 'statistical-output/time-series/county_timeseries_06_03.csv', row.names = FALSE)
+# write.csv(metro.arima.df.2, 'statistical-output/time-series/metro_timeseries_06_03.csv', row.names = FALSE)
+```
+
+## grouping
+
+```{r}
+colnames(county.arima.df.1)[1] <- 'Level'
+colnames(metro.arima.df.1)[1] <- 'Level'
+colnames(TSA.arima.df.1)[1] <- 'Level'
+texas.arima.df.1$Level <- 'Texas'
+colnames(PHR.arima.df)[1] <- 'Level'
+# colnames(county.arima.df.2)[1] <- 'Level'
+# colnames(metro.arima.df.2)[1] <- 'Level'
+# colnames(TSA.arima.df.2)[1] <- 'Level'
+# texas.arima.df.2$Level <- 'Texas'
+
+combined.arima.df.1 <- rbind(county.arima.df.1, metro.arima.df.1, TSA.arima.df.1, texas.arima.df.1, PHR.arima.df)
+write.csv(combined.arima.df.1, 'statistical-output/time-series/stacked_case_timeseries.csv',
+          row.names = FALSE)
+
+write.csv(combined.arima.df.1, 'tableau/stacked_case_timeseries.csv',
+          row.names = FALSE)
+# 
+# combined.arima.df.2 <- rbind(county.arima.df.2, metro.arima.df.2, TSA.arima.df.2, texas.arima.df.2)
+# write.csv(combined.arima.df.2, 'statistical-output/time-series/stacked_timeseries_06_03.csv',
+#           row.names = FALSE)
+# 
+# write.csv(combined.arima.df.2, 'tableau/stacked_timeseries_06_03.csv',
+#           row.names = FALSE)
+
+```
+
 # Hospitalization Time Series
 ```{r hospitalization arima function}
 # Compute forecast (UPDATE PREDICTION PERIOD [days] AS NEEDED)
@@ -759,10 +807,10 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
                             CI_Lower = c(rep(NA, times = length(my.timeseries)),
                                          arima.forecast[['lower']][, 2]),
                             CI_Upper = c(rep(NA, times = length(my.timeseries)),
-                                         arima.forecast[['upper']][, 2]),
-                            Order_AutoReg = c(rep(p, times = model.length)),
-                            Order_Moving_Avg = c(rep(q, times = model.length)),
-                            Differencing = c(rep(d, times = model.length)))
+                                         arima.forecast[['upper']][, 2]))
+                            # Order_AutoReg = c(rep(p, times = model.length)),
+                            # Order_Moving_Avg = c(rep(q, times = model.length)),
+                            # Differencing = c(rep(d, times = model.length)))
     
       # save prediction plot for preliminary review
       arima.plot <- ggplot(arima.out, aes(x=Date, y = Hospitalizations_Daily))+
@@ -784,10 +832,10 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
                             Cases_Raw = c(mydata$Hospitalizations_Daily, rep(NA, times = prediction.period)),
                             Hospitalizations_Daily = rep(NA, times = model.length),
                             CI_Lower = rep(NA, times = model.length),
-                            CI_Upper =  rep(NA, times = model.length),
-                            Order_AutoReg = c(rep(NA, times = model.length)),
-                            Order_Moving_Avg = c(rep(NA, times = model.length)),
-                            Differencing = c(rep(NA, times= model.length)))
+                            CI_Upper =  rep(NA, times = model.length))
+                            # Order_AutoReg = c(rep(NA, times = model.length)),
+                            # Order_Moving_Avg = c(rep(NA, times = model.length)),
+                            # Differencing = c(rep(NA, times= model.length)))
     }
   
   #replace CI lower limit with 0 if negative
@@ -827,11 +875,26 @@ texas.arima.df.1 <- covid.arima.forecast(state.Daily, mindate = as.Date('2020-03
 
 ## Hospitalization Write to CSV
 ```{r Hospitalizations to csv}
-tsa.hosp.arima<-write.csv(TSA.arima.df.1, "statistical-output/tsa_hosp_arima.csv", row.names=FALSE)
-texas.hosp.arima<-write.csv(texas.arima.df.1, "statistical-output/texas_hosp_arima.csv", row.names=FALSE)
+tsa.hosp.arima<-write.csv(TSA.arima.df.1, "statistical-output/tsa_hosp_timeseries.csv", row.names=FALSE)
+texas.hosp.arima<-write.csv(texas.arima.df.1, "statistical-output/state_hosp_timeseries.csv", row.names=FALSE)
 ```
 
-## Hospitilazation Forecast Plots
+## Stacking
+```{r}
+TSA_hosp_out = TSA.arima.df.1
+colnames(TSA_hosp_out)[1] = 'Level'
+texas.arima.df.1$Level = 'Texas'
+
+combined.arima.df.1 <- rbind(TSA_hosp_out, texas.arima.df.1)
+write.csv(combined.arima.df.1, 'statistical-output/time-series/stacked_hosp_timeseries.csv',
+          row.names = FALSE)
+
+write.csv(combined.arima.df.1, 'tableau/stacked_hosp_timeseries.csv',
+          row.names = FALSE)
+```
+
+
+## Hospitalization Forecast Plots
 
 ```{r TSA and Texas plots Hosp}
 #Create plot function, forecast.data is the dataframe containing true data
@@ -871,49 +934,7 @@ forecast.plot(TSA_Q.arima.df, "TSA Q - Greater Houston Daily Hosp", "Daily Hosp"
 texas.arima.df.1%>%kable(caption="Texas Arima - Daily Hosp")%>%kable_styling(full_width=FALSE)
 forecast.plot(texas.arima.df.1, "Texas Daily Hospitalizations", "Daily Hosp")
 ```
-## export
 
-```{r export arima results}
-write.csv(texas.arima.df.1, 'statistical-output/time-series/state_timeseries.csv', row.names = FALSE)
-write.csv(TSA.arima.df.1, 'statistical-output/time-series/tsa_timeseries.csv', row.names = FALSE)
-write.csv(county.arima.df.1, 'statistical-output/time-series/county_timeseries.csv', row.names = FALSE)
-write.csv(metro.arima.df.1, 'statistical-output/time-series/metro_timeseries.csv', row.names = FALSE)
-write.csv(PHR.arima.df, 'statistical-output/time-series/phr_timeseries.csv', row.names = FALSE)
-
-# write.csv(texas.arima.df.2, 'statistical-output/time-series/state_timeseries_06_03.csv', row.names = FALSE)
-# write.csv(TSA.arima.df.2, 'statistical-output/time-series/tsa_timeseries_06_03.csv', row.names = FALSE)
-# write.csv(county.arima.df.2, 'statistical-output/time-series/county_timeseries_06_03.csv', row.names = FALSE)
-# write.csv(metro.arima.df.2, 'statistical-output/time-series/metro_timeseries_06_03.csv', row.names = FALSE)
-```
-
-## grouping
-
-```{r}
-colnames(county.arima.df.1)[1] <- 'Level'
-colnames(metro.arima.df.1)[1] <- 'Level'
-colnames(TSA.arima.df.1)[1] <- 'Level'
-texas.arima.df.1$Level <- 'Texas'
-colnames(PHR.arima.df)[1] <- 'Level'
-# colnames(county.arima.df.2)[1] <- 'Level'
-# colnames(metro.arima.df.2)[1] <- 'Level'
-# colnames(TSA.arima.df.2)[1] <- 'Level'
-# texas.arima.df.2$Level <- 'Texas'
-
-combined.arima.df.1 <- rbind(county.arima.df.1, metro.arima.df.1, TSA.arima.df.1, texas.arima.df.1, PHR.arima.df)
-write.csv(combined.arima.df.1, 'statistical-output/time-series/stacked_timeseries.csv',
-          row.names = FALSE)
-
-write.csv(combined.arima.df.1, 'tableau/stacked_timeseries.csv',
-          row.names = FALSE)
-# 
-# combined.arima.df.2 <- rbind(county.arima.df.2, metro.arima.df.2, TSA.arima.df.2, texas.arima.df.2)
-# write.csv(combined.arima.df.2, 'statistical-output/time-series/stacked_timeseries_06_03.csv',
-#           row.names = FALSE)
-# 
-# write.csv(combined.arima.df.2, 'tableau/stacked_timeseries_06_03.csv',
-#           row.names = FALSE)
-
-```
 
 
 # STANDARD STATISTICAL TESTS
