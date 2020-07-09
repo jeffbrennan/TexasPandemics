@@ -374,7 +374,7 @@ ts.data.clean<-function(covid.data) {
 
   ts_cols <- c("County", "Date", "TSA", "TSA_Name", "PHR", "PHR_Name",
                "Metro_Area", "Cases_Daily", "Cases_Cumulative",
-               "Population_DSHS")
+               "Population_DSHS", "Hospitalizations_Daily")
   
   covid.data <- covid.data[, names(covid.data) %in% ts_cols]
   
@@ -391,6 +391,7 @@ ts.data.clean<-function(covid.data) {
 
 
 ```{r ts separate dataframe function}
+
 #separate county, metro, TSA and State data into separate Data frames
 ts.data.organize<-function(mycounty, mytsa, myphr){
 
@@ -403,6 +404,10 @@ ts.data.organize<-function(mycounty, mytsa, myphr){
   county.df <- cleaned.county%>%dplyr::select(-TSA_Name, -Metro_Area)
   county.df$Level <- 'County'
   colnames(county.df)[2] = 'Level_Name'
+  
+  #change hospitalizations to numeric
+  mytsa$Hospitalizations_Daily<-as.numeric(mytsa$Hospitalizations_Daily)
+  
   
   # PHR 
   PHR.df <- ts.data.clean(myphr)
@@ -442,7 +447,8 @@ ts.data.organize<-function(mycounty, mytsa, myphr){
     mutate(state_Cases_Daily = sum(Cases_Daily, na.rm = TRUE)) %>%
     mutate(state_Cases_Cumulative = sum(Cases_Cumulative, na.rm = TRUE)) %>%
     mutate(state_pop_DSHS = sum(Population_DSHS, na.rm = TRUE)) %>%
-    dplyr::select(Date, state_Cases_Daily, state_Cases_Cumulative, state_pop_DSHS) %>%
+    mutate(state_hosp = sum(Hospitalizations_Daily, na.rm=TRUE))%>%
+    dplyr::select(Date, state_Cases_Daily, state_Cases_Cumulative, state_pop_DSHS, state_hosp) %>%
     distinct()
     
   state.df <- data.frame(Date=state.temp$Date,
@@ -450,7 +456,8 @@ ts.data.organize<-function(mycounty, mytsa, myphr){
                          Level_Name = 'Texas',
                          Cases_Daily=state.temp$state_Cases_Daily,
                          Cases_Cumulative=state.temp$state_Cases_Cumulative, 
-                         Population_DSHS=state.temp$state_pop_DSHS)
+                         Population_DSHS=state.temp$state_pop_DSHS,
+                         Hospitalizations_Daily=state.temp$state_hosp)
   
   state.df <- subset(state.df, Date>=as.Date('2020-03-04'))
   
@@ -699,7 +706,171 @@ texas.arima.df.1%>%kable(caption="Texas Arima - Daily Cases")%>%kable_styling(fu
 forecast.plot(texas.arima.df.1, "Texas Daily Cases", "Daily Cases")
 ```
 
+# Hospitalization Time Series
+```{r hospitalization arima function}
+# Compute forecast (UPDATE PREDICTION PERIOD [days] AS NEEDED)
+covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
+{
+  maxdate <- max(mydata$Date)
+  # mindate <- as.Date('2020-05-01')
+  pred_start_label = format(mindate, format = '%m_%d')
+  
+  mydata = subset(mydata, Date >= mindate)
+  model.length <- as.numeric(length(mydata$Date) + prediction.period)
 
+  if(max(mydata$Hospitalizations_Daily>=100, na.rm = TRUE))
+  {
+
+    
+    # arima requires cases to be a timeseries vector
+    #convert daily cases to time series
+    my.timeseries<-ts(mydata$Hospitalizations_Daily)
+    #my.timeseries <- rollmeanr(my.timeseries, k=7, na.pad=TRUE, align = 'right')
+    
+    #load package(pracma)
+    library(pracma)
+    my.timeseries<-movavg(my.timeseries,7,"s")
+    #d=0 restricts first differencing to 0 so that daily cases aren't differenced
+    
+    arima.fit <- forecast::auto.arima(my.timeseries)
+  
+    # obtain diagnostic plots for ideal arima (p,d,q) selection 
+    acf <- ggAcf(my.timeseries, lag.max=30)
+    pacf <- ggPacf(my.timeseries, lag.max=30)
+    ts.diagnostics <- grid.arrange(acf, pacf, nrow=2)
+    ggsave(paste0('statistical-output/time-series/diagnostics/',
+                  mydata$Level[1],'/', mydata$Level_Name[1], pred_start_label, '.png'),
+           plot = ts.diagnostics)
+
+    
+    
+    # save parameters from arima autofit
+    p<- arima.fit$arma[1]          # autoregressive order 
+    q<- arima.fit$arma[2]          # moving average order 
+    d<-arima.fit$arma[6]           # differencing order from model
+  
+    # 10 day forecast, CI for lower and upper has confidence level 70% set by level =c(70,70)
+    arima.forecast <- forecast::forecast(arima.fit, h = prediction.period, level=c(70,70))
+
+    #return a dataframe of the arima model(Daily cases by date)
+    arima.out <- data.frame(Date = seq(mindate, maxdate + prediction.period, by = 'days'),
+                            Cases_Raw = c(mydata$Hospitalizations_Daily, rep(NA, times = prediction.period)),
+                            Hospitalizations_Daily = c(my.timeseries, arima.forecast[['mean']]),
+                            CI_Lower = c(rep(NA, times = length(my.timeseries)),
+                                         arima.forecast[['lower']][, 2]),
+                            CI_Upper = c(rep(NA, times = length(my.timeseries)),
+                                         arima.forecast[['upper']][, 2]),
+                            Order_AutoReg = c(rep(p, times = model.length)),
+                            Order_Moving_Avg = c(rep(q, times = model.length)),
+                            Differencing = c(rep(d, times = model.length)))
+    
+      # save prediction plot for preliminary review
+      arima.plot <- ggplot(arima.out, aes(x=Date, y = Hospitalizations_Daily))+
+                    geom_ribbon(aes(ymin = CI_Lower, ymax = CI_Upper), fill = "red", alpha = 0.5, size = 0.1)+
+                    geom_line(color = "black", size = 1)+
+                    labs(y = 'Daily Cases (7-Day Moving Average)', x = 'Date',
+                         title = mydata$Level_Name[1]) +
+                    scale_x_date(limits = c(mindate, maxdate + prediction.period),
+                                 date_labels = '%b-%d', date_breaks = '1 week') + 
+                    ggpubr::theme_pubr() +
+                    theme(axis.text.x = element_text(angle = -90))
+      
+      ggsave(plot = arima.plot, paste0('statistical-output/time-series/plots/',
+                                       mydata$Level[1],'/', mydata$Level_Name[1], pred_start_label, '.png'))    
+    
+    } else {
+    # insufficient data catch: return NA values for predictions 
+    arima.out <- data.frame(Date = seq(mindate, maxdate + prediction.period, by = 'days'),
+                            Cases_Raw = c(mydata$Hospitalizations_Daily, rep(NA, times = prediction.period)),
+                            Hospitalizations_Daily = rep(NA, times = model.length),
+                            CI_Lower = rep(NA, times = model.length),
+                            CI_Upper =  rep(NA, times = model.length),
+                            Order_AutoReg = c(rep(NA, times = model.length)),
+                            Order_Moving_Avg = c(rep(NA, times = model.length)),
+                            Differencing = c(rep(NA, times= model.length)))
+    }
+  
+  #replace CI lower limit with 0 if negative
+  arima.out$CI_Lower <- ifelse(arima.out$CI_Lower>=0,arima.out$CI_Lower, 0)
+  
+  
+  return(arima.out)
+}
+
+```
+
+## TSA - Hospitalization
+
+```{r TSA Hosp forecasts}
+# All data
+TSA.arima.output.1 <- nlme::gapply(TSA.Daily,
+                                   FUN = covid.arima.forecast,
+                                   groups = TSA.Daily$Level_Name,
+                                   mindate = as.Date('2020-03-04'))
+
+TSA.arima.df.1 <- data.table::rbindlist(TSA.arima.output.1, idcol=TRUE)
+
+colnames(TSA.arima.df.1)[1] <- 'TSA'
+TSA.arima.df.1 <- merge(TSA.arima.df.1, unique(TSA.daily[, c('TSA', 'TSA_Name')]), by = c('TSA'))
+
+# combine TSA 
+TSA.arima.df.1$TSA <- paste0(TSA.arima.df.1$TSA, ' - ', TSA.arima.df.1$TSA_Name)
+TSA.arima.df.1$TSA_Name <- NULL
+```
+
+## State - hospitalization
+
+```{r Texas Hosp forecasts, results='hide'}
+texas.arima.df.1 <- covid.arima.forecast(state.Daily, mindate = as.Date('2020-03-04'))
+# texas.arima.df.2 <- covid.arima.forecast(state.Daily, mindate = as.Date('2020-06-03'))
+```
+
+## Hospitalization Write to CSV
+```{r Hospitalizations to csv}
+tsa.hosp.arima<-write.csv(TSA.arima.df.1, "statistical-output/tsa_hosp_arima.csv", row.names=FALSE)
+texas.hosp.arima<-write.csv(texas.arima.df.1, "statistical-output/texas_hosp_arima.csv", row.names=FALSE)
+```
+
+## Hospitilazation Forecast Plots
+
+```{r TSA and Texas plots Hosp}
+#Create plot function, forecast.data is the dataframe containing true data
+# and the forecast data. days.forecast is the number of days that are forecast
+# in the dataframe (here we are forecasting 10 days, so it should be 10 unless we
+# change this at some point down the road)
+forecast.plot<-function(forecast.data, plot.title, y.label){
+    mindate<-as.POSIXct("2020-03-04")
+    maxdate<-as.POSIXct(max(forecast.data$Date))
+  ts.plot<-ggplot(aes(x=as.POSIXct(Date), y=Hospitalizations_Daily), data=forecast.data)+
+    geom_ribbon(aes(ymin=CI_Lower, ymax=CI_Upper), fill="grey50", size=0.1)+
+    geom_line(color="blue", size=1)+
+    geom_line(aes(x=as.POSIXct(Date), y=CI_Lower), color="grey", size=0.1)+
+    geom_line(aes(x=as.POSIXct(Date),y=CI_Upper), color="grey", size=0.1)+
+    scale_x_datetime(limits = c(mindate, maxdate))+
+    xlab("Date")+
+    ylab(y.label)+
+    #Can use the following title if we are running using nlme for data frame
+    #ggtitle(paste(forecast.data$.id,": TS Daily Cases + 10 Day Forcast",sep=""))
+    ggtitle(plot.title)
+ts.plot
+}
+```
+
+```{r Arima Hosp Forecast Plots }
+
+######### View Output Table & Graph for TSA Q ##########
+library(kableExtra)
+#subset TSA Q arima data
+TSA_Q.arima.df<-TSA.arima.df.1%>%subset(TSA.arima.df.1$TSA=="Q - Greater Houston")
+#apply the plot function to TSA Q arima data frame
+TSA_Q.arima.df%>%kable(caption="Greater Houston ARIMA - Daily Hosp")%>%kable_styling(full_width=FALSE)
+#nlme::gapply(TSA.arima.df, FUN = forecast.plot, groups=TSA.daily$Level_Name)
+forecast.plot(TSA_Q.arima.df, "TSA Q - Greater Houston Daily Hosp", "Daily Hosp")
+
+######### View Output Table & Graph for Texas ##########
+texas.arima.df.1%>%kable(caption="Texas Arima - Daily Hosp")%>%kable_styling(full_width=FALSE)
+forecast.plot(texas.arima.df.1, "Texas Daily Hospitalizations", "Daily Hosp")
+```
 ## export
 
 ```{r export arima results}
