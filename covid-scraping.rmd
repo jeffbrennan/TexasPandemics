@@ -426,6 +426,15 @@ DSHS_hosp_long$Date = as.Date(as.integer(DSHS_hosp_long$Date), origin = '2020-04
 DSHS_hosp_long$TSA = as.factor(DSHS_hosp_long$TSA)
 ```
 
+
+## hospital capacity
+
+```{r}
+hosp_cap_url = 'https://dshs.texas.gov/coronavirus/TexasHospitalCapacityoverTimebyTSA.xlsx'
+download.file(hosp_cap_url, mode = 'wb',
+              destfile = paste0('original-sources/historical/hosp_cap/hosp_cap_', Sys.Date(), '.xlsx'))
+```
+
 ## DSHS dashboard
 
 ```{r}
