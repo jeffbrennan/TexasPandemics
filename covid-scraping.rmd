@@ -324,19 +324,13 @@ county_classifications = merge(county_classifications, PHR_helper, by = 'PHR')
 
 ```{r}
 # TSA levels
-tsa = read.csv('original-sources/tsa_list.csv', header = F)[-1]
-tsa_long = reshape::melt(tsa, id = c('V2', 'V3'))
-tsa_long_complete = subset(tsa_long, value != '')[, c(1, 2, 4)]
-colnames(tsa_long_complete) = c('TSA', 'TSA_Name', 'County')
+tsa_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx'
+download.file(tsa_url, 'original-sources/DSHS_tsa_hosp.xlsx', mode = 'wb') 
 
-tsa_long_complete$County = trimws(tsa_long_complete$County)
-tsa_long_complete$TSA_Name = trimws(tsa_long_complete$TSA_Name)
+tsa_names = readxl::read_xlsx('original-sources/DSHS_tsa_hosp.xlsx')[3:24, 1:2]
+colnames(tsa_names) = c('TSA', 'TSA_Name')
 
-
-# merged_counts3 = merge(merged_counts2, tsa_long_complete, by = 'County', all = TRUE)
-
-# sort by county, date
-# merged_counts3 = merged_counts3[order(merged_counts3$County, merged_counts3$Date), ]
+tsa_names$TSA = gsub('.', '', tsa_names$TSA, fixed = TRUE)
 ```
 
 ## merge
@@ -347,7 +341,7 @@ dshs_pops = unique(DSHS_cases_long[, c(1:2)])
 colnames(dshs_pops) = c('County', 'Population_DSHS')
 
 merged_dshs = Reduce(function(x, y) merge(x, y, by = 'County', all = TRUE),
-                       list(DSHS_county_counts, tsa_long_complete, dshs_pops, county_classifications))
+                       list(DSHS_county_counts, tsa_names, dshs_pops, county_classifications))
 
 # add TSA & PHR combination
 merged_dshs$TSA_Combined = paste0(merged_dshs$TSA, ' - ', merged_dshs$TSA_Name)
@@ -750,9 +744,6 @@ DSHS_demo_clean = function(df, count_type) {
   total_check = which(df[, 'Group'] == 'Total')
   if (length(total_check) != 0) {df = df[-which(df[, 'Group'] == 'Total'), ]}
 
-  case_var = df[, 2]
-  case_pct_var = df[, 3]
-    
   # ensure values are numeric and drop coerced NAs (eg. Gender 7/8)
   df = df %>%
     mutate_at(vars(!!as.name(paste0(count_type, '_Cumulative')),
@@ -770,12 +761,29 @@ DSHS_death_gender = lapply(DSHS_death_gender, DSHS_demo_clean, count_type = 'Dea
 DSHS_death_race = lapply(DSHS_death_race, DSHS_demo_clean, count_type = 'Deaths')
 
 # combine list of dataframes into one df
-DSHS_case_age_df = data.table::rbindlist(DSHS_case_age)
-DSHS_case_gender_df = data.table::rbindlist(DSHS_case_gender)
-DSHS_case_race_df = data.table::rbindlist(DSHS_case_race)
-DSHS_death_age_df = data.table::rbindlist(DSHS_death_age)
-DSHS_death_gender_df = data.table::rbindlist(DSHS_death_gender)
-DSHS_death_race_df = data.table::rbindlist(DSHS_death_race)
+DSHS_case_age_df = data.table::rbindlist(DSHS_case_age) %>%
+  group_by(Group) %>% 
+  mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
+
+DSHS_case_gender_df = data.table::rbindlist(DSHS_case_gender) %>%
+  group_by(Group) %>% 
+  mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
+
+DSHS_case_race_df = data.table::rbindlist(DSHS_case_race) %>%
+  group_by(Group) %>% 
+  mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
+
+DSHS_death_age_df = data.table::rbindlist(DSHS_death_age) %>%
+  group_by(Group) %>% 
+  mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))
+
+DSHS_death_gender_df = data.table::rbindlist(DSHS_death_gender) %>%
+  group_by(Group) %>% 
+  mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))
+
+DSHS_death_race_df = data.table::rbindlist(DSHS_death_race) %>%
+  group_by(Group) %>% 
+  mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))
 
 # combine case and death cols
 DSHS_age_df = merge(DSHS_case_age_df, DSHS_death_age_df, by = c('Date', 'Group'))
@@ -853,6 +861,7 @@ write.csv(merged_city, 'combined-datasets/city_pops.csv', row.names = F)
 
 ```{r}
 write.csv(merged_county, file = 'combined-datasets/county.csv', row.names = F)
+write.csv(merged_county, 'tableau/county.csv', row.names = FALSE)
 write.csv(county_demo_2018, file = 'combined-datasets/county_demo.csv', row.names = F)
 ```
 
@@ -893,57 +902,6 @@ openxlsx::write.xlsx(state_out, file = "combined-datasets/state.xlsx", row.names
 ```{r}
 demo_out = list("age" = DSHS_age_df, "gender" = DSHS_gender_df, "race" = DSHS_race_df)
 openxlsx::write.xlsx(demo_out, file = "combined-datasets/demographics.xlsx", row.names = FALSE)
+
+openxlsx::write.xlsx(demo_out, file = "tableau/demographics.xlsx", row.names = FALSE)
 ```
-
-
-## TABLEAU ONLY
-
-```{r}
-tableau_county = merged_county
-write.csv(tableau_county, 'tableau/county.csv', row.names = FALSE)
-```
-
-
-<!-- ## Long format TSA & Metro -->
-
-<!-- ```{r} -->
-<!-- # read in data -->
-<!-- county = read.csv('combined-datasets/county.csv') -->
-<!-- metro = read.csv('combined-datasets/metro.csv') -->
-<!-- tsa = read.csv('combined-datasets/tsa.csv') -->
-
-<!-- # combine into df -->
-<!-- metro_long = merge(county, metro, by = c('Date', 'Metro_Area'), all = TRUE) -->
-<!-- tsa_long = merge(county, tsa, by = c('Date', 'TSA', 'TSA_Name'), all = TRUE) -->
-
-<!-- # drop county cols and suffixes -->
-<!-- metro_long = metro_long[, -(grep('.x', colnames(metro_long), fixed = TRUE))] -->
-<!-- colnames(metro_long) = gsub('.y', '', colnames(metro_long), fixed = TRUE) -->
-
-<!-- # drop county cols and suffixes -->
-<!-- tsa_long = tsa_long[, -(grep('.x', colnames(tsa_long), fixed = TRUE))] -->
-<!-- colnames(tsa_long) = gsub('.y', '', colnames(tsa_long), fixed = TRUE) -->
-
-<!-- tsa_long$TSA_Combined = paste0(tsa_long$TSA, ' - ', tsa_long$TSA_Name) -->
-
-<!-- # output -->
-<!-- # write.csv(metro_long, 'tableau/metro_long.csv', row.names = FALSE) -->
-<!-- # write.csv(tsa_long, 'tableau/tsa_long.csv', row.names = FALSE) -->
-<!-- ``` -->
-
-
-<!-- ```{r} -->
-<!-- # transform names -->
-<!-- colnames(metro)[3:length(colnames(metro))] = paste0('METRO_', colnames(metro)[3:length(colnames(metro))]) -->
-<!-- colnames(tsa)[4:length(colnames(tsa))] = paste0('TSA_', colnames(tsa)[4:length(colnames(tsa))]) -->
-
-<!-- # combine into df -->
-<!-- combined_df = merge(county, metro, by = c('Date', 'Metro_Area'), all = TRUE) -->
-
-<!-- tsa$TSA_Combined = paste0(tsa$TSA, ' - ', tsa$TSA_Name) -->
-
-<!-- combined_df2 = merge(combined_df, tsa, by = c('Date', 'TSA', 'TSA_Name'), all = TRUE) -->
-
-<!-- # output -->
-<!-- # write.csv(combined_df2, 'tableau/combined.csv', row.names = FALSE) -->
-<!-- ``` -->
