@@ -327,10 +327,21 @@ county_classifications = merge(county_classifications, PHR_helper, by = 'PHR')
 tsa_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx'
 download.file(tsa_url, 'original-sources/DSHS_tsa_hosp.xlsx', mode = 'wb') 
 
-tsa_names = readxl::read_xlsx('original-sources/DSHS_tsa_hosp.xlsx')[3:24, 1:2]
-colnames(tsa_names) = c('TSA', 'TSA_Name')
+DSHS_tsa_names = readxl::read_xlsx('original-sources/DSHS_tsa_hosp.xlsx')[3:24, 1:2]
+colnames(DSHS_tsa_names) = c('TSA', 'TSA_Name')
 
-tsa_names$TSA = gsub('.', '', tsa_names$TSA, fixed = TRUE)
+DSHS_tsa_names$TSA = gsub('.', '', DSHS_tsa_names$TSA, fixed = TRUE)
+
+tsa = read.csv('original-sources/tsa_list.csv', header = F)[-1]
+tsa_long = reshape::melt(tsa, id = c('V2', 'V3'))
+tsa_long_complete = subset(tsa_long, value != '')[, c(1, 2, 4)]
+colnames(tsa_long_complete) = c('TSA', 'TSA_Name', 'County')
+
+tsa_long_complete$County = trimws(tsa_long_complete$County)
+tsa_long_complete$TSA_Name = NULL
+
+
+tsa_long_complete = merge(tsa_long_complete, DSHS_tsa_names, by = 'TSA') %>% unique()
 ```
 
 ## merge
@@ -341,7 +352,7 @@ dshs_pops = unique(DSHS_cases_long[, c(1:2)])
 colnames(dshs_pops) = c('County', 'Population_DSHS')
 
 merged_dshs = Reduce(function(x, y) merge(x, y, by = 'County', all = TRUE),
-                       list(DSHS_county_counts, tsa_names, dshs_pops, county_classifications))
+                       list(DSHS_county_counts, tsa_long_complete, dshs_pops, county_classifications))
 
 # add TSA & PHR combination
 merged_dshs$TSA_Combined = paste0(merged_dshs$TSA, ' - ', merged_dshs$TSA_Name)
