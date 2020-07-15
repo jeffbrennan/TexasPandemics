@@ -359,6 +359,12 @@ colnames(TSA.rt.df)[1] <- 'Level'
 colnames(phr.rt.df)[1] <- 'Level'
 state.rt.df$Level <- 'Texas'
 
+county.rt.df$Level_Type = 'County'
+metro.rt.df$Level_Type = 'metro'
+TSA.rt.df$Level_Type = 'TSA'
+phr.rt.df$Level_Type = 'PHR'
+state.rt.df$Level_Type = 'State'
+
 combined.rt.df <- rbind(subset(county.rt.df, Date != max(Date)),
                         subset(metro.rt.df, Date != max(Date)),
                         subset(TSA.rt.df, Date != max(Date)),
@@ -733,10 +739,13 @@ colnames(metro.arima.df.1)[1] <- 'Level'
 colnames(TSA.arima.df.1)[1] <- 'Level'
 texas.arima.df.1$Level <- 'Texas'
 colnames(PHR.arima.df)[1] <- 'Level'
-# colnames(county.arima.df.2)[1] <- 'Level'
-# colnames(metro.arima.df.2)[1] <- 'Level'
-# colnames(TSA.arima.df.2)[1] <- 'Level'
-# texas.arima.df.2$Level <- 'Texas'
+
+county.arima.df.1$Level_Type = 'County'
+metro.arima.df.1$Level_Type = 'metro'
+TSA.arima.df.1$Level_Type = 'TSA'
+PHR.arima.df$Level_Type = 'PHR'
+texas.arima.df.1$Level_Type = 'State'
+
 
 combined.arima.df.1 <- rbind(county.arima.df.1, metro.arima.df.1, TSA.arima.df.1, texas.arima.df.1, PHR.arima.df)
 write.csv(combined.arima.df.1, 'statistical-output/time-series/stacked_case_timeseries.csv',
@@ -884,6 +893,10 @@ texas.hosp.arima<-write.csv(texas.arima.df.1, "statistical-output/time-series/st
 TSA_hosp_out = TSA.arima.df.1
 colnames(TSA_hosp_out)[1] = 'Level'
 texas.arima.df.1$Level = 'Texas'
+
+
+TSA_hosp_out$Level_Type = 'TSA'
+texas.arima.df.1$Level_Type = 'State'
 
 combined.arima.df.1 <- rbind(TSA_hosp_out, texas.arima.df.1)
 write.csv(combined.arima.df.1, 'statistical-output/time-series/stacked_hosp_timeseries.csv',
@@ -1112,6 +1125,13 @@ colnames(tsa_current_ratio_dat)[1] <- 'Level'
 colnames(phr_current_ratio_dat)[1] <- 'Level'
 state_current_ratio_dat$Level <- 'Texas'
 
+
+county_current_ratio_dat$Level_Type = 'County'
+metro_current_ratio_dat$Level_Type = 'metro'
+tsa_current_ratio_dat$Level_Type = 'TSA'
+phr_current_ratio_dat$Level_Type = 'PHR'
+state_current_ratio_dat$Level_Type = 'State'
+
 combined_current_ratio_dat <- rbind(county_current_ratio_dat, metro_current_ratio_dat,
                                    tsa_current_ratio_dat, state_current_ratio_dat, phr_current_ratio_dat)
 
@@ -1336,8 +1356,13 @@ colnames(county.case.test.df)[1] <- 'Level'
 colnames(metro.case.test.df)[1] <- 'Level'
 colnames(tsa.case.test.df)[1] <- 'Level'
 colnames(phr.case.test.df)[1] <- 'Level'
-
 state.case.test.df$Level <- 'Texas'
+
+county.case.test.df$Level_Type = 'County'
+metro.case.test.df$Level_Type = 'metro'
+tsa.case.test.df$Level_Type = 'TSA'
+phr.case.test.df$Level_Type = 'PHR'
+state.case.test.df$Level_Type = 'State'
 
 combined.case.test.df <- rbind(county.case.test.df, metro.case.test.df,
                                tsa.case.test.df, state.case.test.df, phr.case.test.df)
@@ -1346,6 +1371,20 @@ write.csv(combined.case.test.df, 'statistical-output/standard-stats/pct-change/s
 
 write.csv(combined.case.test.df, 'tableau/stacked_pct_change.csv',
           row.names = FALSE)
+```
+
+
+# STACK COMBINATIONS
+
+```{r}
+combined_current_ratio_dat$Date = max(combined.case.test.df$Date)
+colnames(combined.arima.df.1)[5:6] = c('TS_CI_Lower', 'TS_CI_Upper')
+colnames(combined.rt.df)[4:5] = c('RT_CI_Lower', 'RT_CI_Upper')
+
+stacked_all = Reduce(function(x, y) merge(x, y, by = c('Level_Type', 'Level', 'Date'), all=TRUE),
+       list(combined.case.test.df, combined_current_ratio_dat, combined.arima.df.1, combined.rt.df))
+
+write.csv(stacked_all, 'tableau/stacked_all.csv', row.names = FALSE)
 ```
 
 
