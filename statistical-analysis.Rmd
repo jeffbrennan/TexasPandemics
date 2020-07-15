@@ -1108,11 +1108,11 @@ write.csv(county_current_ratio_dat, 'statistical-output/standard-stats/case-rati
 write.csv(metro_current_ratio_dat,'statistical-output/standard-stats/case-ratios/metro_case_ratio.csv', row.names = F)
 write.csv(phr_current_ratio_dat,'statistical-output/standard-stats/case-ratios/phr_case_ratio.csv', row.names = F)
 
-write.csv(state_current_ratio_dat, 'tableau/case-ratios/state_case_ratio.csv', row.names = F)
-write.csv(tsa_current_ratio_dat,'tableau/case-ratios/tsa_case_ratio.csv', row.names = F)
-write.csv(county_current_ratio_dat, 'tableau/case-ratios/county_case_ratio.csv', row.names = F)
-write.csv(metro_current_ratio_dat,'tableau/case-ratios/metro_case_ratio.csv', row.names = F)
-write.csv(phr_current_ratio_dat,'tableau/case-ratios/phr_case_ratio.csv', row.names = F)
+# write.csv(state_current_ratio_dat, 'tableau/case-ratios/state_case_ratio.csv', row.names = F)
+# write.csv(tsa_current_ratio_dat,'tableau/case-ratios/tsa_case_ratio.csv', row.names = F)
+# write.csv(county_current_ratio_dat, 'tableau/case-ratios/county_case_ratio.csv', row.names = F)
+# write.csv(metro_current_ratio_dat,'tableau/case-ratios/metro_case_ratio.csv', row.names = F)
+# write.csv(phr_current_ratio_dat,'tableau/case-ratios/phr_case_ratio.csv', row.names = F)
 ```
 
 
@@ -1138,8 +1138,8 @@ combined_current_ratio_dat <- rbind(county_current_ratio_dat, metro_current_rati
 write.csv(combined_current_ratio_dat, 'statistical-output/standard-stats/case-ratios/stacked_case_ratio.csv',
           row.names = FALSE)
 
-# write.csv(combined_current_ratio_dat, 'tableau/stacked_case_ratio.csv',
-#           row.names <- FALSE)
+write.csv(combined_current_ratio_dat, 'tableau/stacked_case_ratio.csv',
+          row.names = FALSE)
 ```
 
 
