@@ -665,19 +665,31 @@ PHR_helper$PHR_Name = c(&#39;Tyler PHR&#39;, &#39;El Paso PHR&#39;, &#39;Harling
 county_classifications = merge(county_classifications, PHR_helper, by = &#39;PHR&#39;)</code></pre>
 <pre class="r"><code># merged_counts2 = merge(merged_counts, county_classifications, by = &#39;County&#39;)</code></pre>
 <pre class="r"><code># TSA levels
+tsa_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx&#39;
+download.file(tsa_url, &#39;original-sources/DSHS_tsa_hosp.xlsx&#39;, mode = &#39;wb&#39;) 
+
+DSHS_tsa_names = readxl::read_xlsx(&#39;original-sources/DSHS_tsa_hosp.xlsx&#39;)[3:24, 1:2]</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...</code></pre>
+<pre class="r"><code>colnames(DSHS_tsa_names) = c(&#39;TSA&#39;, &#39;TSA_Name&#39;)
+
+DSHS_tsa_names$TSA = gsub(&#39;.&#39;, &#39;&#39;, DSHS_tsa_names$TSA, fixed = TRUE)
+
 tsa = read.csv(&#39;original-sources/tsa_list.csv&#39;, header = F)[-1]
 tsa_long = reshape::melt(tsa, id = c(&#39;V2&#39;, &#39;V3&#39;))
 tsa_long_complete = subset(tsa_long, value != &#39;&#39;)[, c(1, 2, 4)]
 colnames(tsa_long_complete) = c(&#39;TSA&#39;, &#39;TSA_Name&#39;, &#39;County&#39;)
 
 tsa_long_complete$County = trimws(tsa_long_complete$County)
-tsa_long_complete$TSA_Name = trimws(tsa_long_complete$TSA_Name)
+tsa_long_complete$TSA_Name = NULL
 
 
-# merged_counts3 = merge(merged_counts2, tsa_long_complete, by = &#39;County&#39;, all = TRUE)
-
-# sort by county, date
-# merged_counts3 = merged_counts3[order(merged_counts3$County, merged_counts3$Date), ]</code></pre>
+tsa_long_complete = merge(tsa_long_complete, DSHS_tsa_names, by = &#39;TSA&#39;) %&gt;% unique()</code></pre>
 </div>
 <div id="merge" class="section level2">
 <h2>merge</h2>
@@ -1040,6 +1052,11 @@ download.file(state_url, paste0(&#39;original-sources/historical/demo/dshs_&#39;
                                 format(date_out, &#39;%m_%d&#39;), &#39;.xlsx&#39;), mode = &#39;wb&#39;)
 
 DSHS_state = read_excel_allsheets(&#39;original-sources/DSHS_state.xlsx&#39;)</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5</code></pre>
 <pre class="r"><code>DSHS_tests = DSHS_state[[4]]
 DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests) - 3), ]
 
@@ -1089,6 +1106,9 @@ demo.list &lt;- paste0(&#39;original-sources/historical/demo/&#39;,
 
 DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -1340,9 +1360,15 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_case_race &lt;- lapply(demo.list, read_excel, sheet = 11)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -1594,9 +1620,15 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_gender &lt;- lapply(demo.list, read_excel, sheet = 13)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -1848,6 +1880,9 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_demo_clean = function(df, count_type) { 
   matches = str_extract_all(colnames(df)[1], &#39;\\d*\\/\\d*&#39;)[[1]]
@@ -1861,9 +1896,6 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
   total_check = which(df[, &#39;Group&#39;] == &#39;Total&#39;)
   if (length(total_check) != 0) {df = df[-which(df[, &#39;Group&#39;] == &#39;Total&#39;), ]}
 
-  case_var = df[, 2]
-  case_pct_var = df[, 3]
-    
   # ensure values are numeric and drop coerced NAs (eg. Gender 7/8)
   df = df %&gt;%
     mutate_at(vars(!!as.name(paste0(count_type, &#39;_Cumulative&#39;)),
@@ -1897,12 +1929,29 @@ DSHS_case_gender = lapply(DSHS_case_gender, DSHS_demo_clean, count_type = &#39;C
 
 ## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion</code></pre>
 <pre class="r"><code># combine list of dataframes into one df
-DSHS_case_age_df = data.table::rbindlist(DSHS_case_age)
-DSHS_case_gender_df = data.table::rbindlist(DSHS_case_gender)
-DSHS_case_race_df = data.table::rbindlist(DSHS_case_race)
-DSHS_death_age_df = data.table::rbindlist(DSHS_death_age)
-DSHS_death_gender_df = data.table::rbindlist(DSHS_death_gender)
-DSHS_death_race_df = data.table::rbindlist(DSHS_death_race)
+DSHS_case_age_df = data.table::rbindlist(DSHS_case_age) %&gt;%
+  group_by(Group) %&gt;% 
+  mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
+
+DSHS_case_gender_df = data.table::rbindlist(DSHS_case_gender) %&gt;%
+  group_by(Group) %&gt;% 
+  mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
+
+DSHS_case_race_df = data.table::rbindlist(DSHS_case_race) %&gt;%
+  group_by(Group) %&gt;% 
+  mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
+
+DSHS_death_age_df = data.table::rbindlist(DSHS_death_age) %&gt;%
+  group_by(Group) %&gt;% 
+  mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))
+
+DSHS_death_gender_df = data.table::rbindlist(DSHS_death_gender) %&gt;%
+  group_by(Group) %&gt;% 
+  mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))
+
+DSHS_death_race_df = data.table::rbindlist(DSHS_death_race) %&gt;%
+  group_by(Group) %&gt;% 
+  mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))
 
 # combine case and death cols
 DSHS_age_df = merge(DSHS_case_age_df, DSHS_death_age_df, by = c(&#39;Date&#39;, &#39;Group&#39;))
@@ -1971,6 +2020,7 @@ merged_state$Population_DSHS = state_pops$Population_DSHS</code></pre>
 <div id="county" class="section level2">
 <h2>County</h2>
 <pre class="r"><code>write.csv(merged_county, file = &#39;combined-datasets/county.csv&#39;, row.names = F)
+write.csv(merged_county, &#39;tableau/county.csv&#39;, row.names = FALSE)
 write.csv(county_demo_2018, file = &#39;combined-datasets/county_demo.csv&#39;, row.names = F)</code></pre>
 </div>
 <div id="tsa" class="section level2">
@@ -1999,44 +2049,10 @@ openxlsx::write.xlsx(state_out, file = &quot;combined-datasets/state.xlsx&quot;,
 <div id="demographics" class="section level3">
 <h3>Demographics</h3>
 <pre class="r"><code>demo_out = list(&quot;age&quot; = DSHS_age_df, &quot;gender&quot; = DSHS_gender_df, &quot;race&quot; = DSHS_race_df)
-openxlsx::write.xlsx(demo_out, file = &quot;combined-datasets/demographics.xlsx&quot;, row.names = FALSE)</code></pre>
+openxlsx::write.xlsx(demo_out, file = &quot;combined-datasets/demographics.xlsx&quot;, row.names = FALSE)
+
+openxlsx::write.xlsx(demo_out, file = &quot;tableau/demographics.xlsx&quot;, row.names = FALSE)</code></pre>
 </div>
-</div>
-<div id="tableau-only" class="section level2">
-<h2>TABLEAU ONLY</h2>
-<pre class="r"><code>tableau_county = merged_county
-write.csv(tableau_county, &#39;tableau/county.csv&#39;, row.names = FALSE)</code></pre>
-<!-- ## Long format TSA & Metro -->
-<!-- ```{r} -->
-<!-- # read in data -->
-<!-- county = read.csv('combined-datasets/county.csv') -->
-<!-- metro = read.csv('combined-datasets/metro.csv') -->
-<!-- tsa = read.csv('combined-datasets/tsa.csv') -->
-<!-- # combine into df -->
-<!-- metro_long = merge(county, metro, by = c('Date', 'Metro_Area'), all = TRUE) -->
-<!-- tsa_long = merge(county, tsa, by = c('Date', 'TSA', 'TSA_Name'), all = TRUE) -->
-<!-- # drop county cols and suffixes -->
-<!-- metro_long = metro_long[, -(grep('.x', colnames(metro_long), fixed = TRUE))] -->
-<!-- colnames(metro_long) = gsub('.y', '', colnames(metro_long), fixed = TRUE) -->
-<!-- # drop county cols and suffixes -->
-<!-- tsa_long = tsa_long[, -(grep('.x', colnames(tsa_long), fixed = TRUE))] -->
-<!-- colnames(tsa_long) = gsub('.y', '', colnames(tsa_long), fixed = TRUE) -->
-<!-- tsa_long$TSA_Combined = paste0(tsa_long$TSA, ' - ', tsa_long$TSA_Name) -->
-<!-- # output -->
-<!-- # write.csv(metro_long, 'tableau/metro_long.csv', row.names = FALSE) -->
-<!-- # write.csv(tsa_long, 'tableau/tsa_long.csv', row.names = FALSE) -->
-<!-- ``` -->
-<!-- ```{r} -->
-<!-- # transform names -->
-<!-- colnames(metro)[3:length(colnames(metro))] = paste0('METRO_', colnames(metro)[3:length(colnames(metro))]) -->
-<!-- colnames(tsa)[4:length(colnames(tsa))] = paste0('TSA_', colnames(tsa)[4:length(colnames(tsa))]) -->
-<!-- # combine into df -->
-<!-- combined_df = merge(county, metro, by = c('Date', 'Metro_Area'), all = TRUE) -->
-<!-- tsa$TSA_Combined = paste0(tsa$TSA, ' - ', tsa$TSA_Name) -->
-<!-- combined_df2 = merge(combined_df, tsa, by = c('Date', 'TSA', 'TSA_Name'), all = TRUE) -->
-<!-- # output -->
-<!-- # write.csv(combined_df2, 'tableau/combined.csv', row.names = FALSE) -->
-<!-- ``` -->
 </div>
 </div>
 
