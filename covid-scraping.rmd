@@ -662,15 +662,15 @@ DSHS_metro = merge(DSHS_metro, DSHS_metro_google, by = c('Date', 'Metro_Area'))
 state_url = 'https://www.dshs.state.tx.us/coronavirus/TexasCOVID19CaseCountData.xlsx'
 
 download.file(state_url, destfile = 'original-sources/DSHS_state.xlsx', mode = 'wb')
+dshs_header = colnames(read_excel('original-sources/DSHS_state.xlsx', sheet = 9))[1]
+
+current_year =  substr(Sys.Date(), 1, 4)
+dshs_date = paste0(current_year, '/',  str_extract_all(dshs_header, '\\d*\\/\\d*')[[1]])
+date_out = format(as.Date(dshs_date), '%Y_%m_%d')
 
 # save state level file to historical database for longitudinal demo
-date_out = ifelse((Sys.time() < as.POSIXct(paste0(Sys.Date(), '20:00'), tz = 'America/Chicago')),
-                   Sys.Date() - 1,
-                   Sys.Date())
-date_out = as.Date(date_out, origin = '1970-1-1')
-
 download.file(state_url, paste0('original-sources/historical/demo/dshs_',
-                                format(date_out, '%m_%d'), '.xlsx'), mode = 'wb')
+                                date_out, '.xlsx'), mode = 'wb')
 
 DSHS_state = read_excel_allsheets('original-sources/DSHS_state.xlsx')
 ```
@@ -731,7 +731,6 @@ DSHS_state_day = data.frame(Recovered_Total = DSHS_state[[3]][1,1],
 
 ```{r}
 # read in all files
-current_year =  substr(Sys.Date(), 1, 4)
 demo.list <- paste0('original-sources/historical/demo/',
                     list.files(path = 'original-sources/historical/demo',
                                pattern = '*.xlsx'))
@@ -913,6 +912,5 @@ openxlsx::write.xlsx(state_out, file = "combined-datasets/state.xlsx", row.names
 ```{r}
 demo_out = list("age" = DSHS_age_df, "gender" = DSHS_gender_df, "race" = DSHS_race_df)
 openxlsx::write.xlsx(demo_out, file = "combined-datasets/demographics.xlsx", row.names = FALSE)
-
 openxlsx::write.xlsx(demo_out, file = "tableau/demographics.xlsx", row.names = FALSE)
 ```
