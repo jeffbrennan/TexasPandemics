@@ -816,7 +816,7 @@ state_counts =
                       Deaths_Cumulative, Deaths_Daily,
                       Tests_Cumulative, Tests_Daily,
                       Active_Cases_Cumulative, Active_Cases_Daily),
-                 funs(sum))
+                 funs(sum(., na.rm = TRUE)))
 
 state_pops = 
   subset(merged_county, Date == '2020-03-04') %>%
@@ -870,6 +870,8 @@ write.csv(merged_city, 'combined-datasets/city_pops.csv', row.names = F)
 ## County
 
 ```{r}
+merged_county = merged_county %>% filter(!is.na(County))
+
 write.csv(merged_county, file = 'combined-datasets/county.csv', row.names = F)
 write.csv(merged_county, 'tableau/county.csv', row.names = FALSE)
 write.csv(county_demo_2018, file = 'combined-datasets/county_demo.csv', row.names = F)
@@ -878,6 +880,8 @@ write.csv(county_demo_2018, file = 'combined-datasets/county_demo.csv', row.name
 ## TSA
 
 ```{r}
+merged_tsa = merged_tsa %>% filter(!is.na(TSA))
+
 merged_tsa$TSA_Combined = paste0(merged_tsa$TSA, ' - ', merged_tsa$TSA_Name)
 write.csv(merged_tsa, file = 'combined-datasets/tsa.csv', row.names = F)
 
@@ -888,6 +892,8 @@ write.csv(hosp_tsa, file = 'tableau/hospitalizations_tsa.csv', row.names = F)
 ## PHR 
 
 ```{r}
+phr_df = phr_df %>% filter(!is.na(PHR))
+
 write.csv(phr_df, file = 'combined-datasets/phr.csv', row.names = F)
 write.csv(phr_df, file = 'tableau/phr.csv', row.names = F)
 ```
@@ -896,6 +902,7 @@ write.csv(phr_df, file = 'tableau/phr.csv', row.names = F)
 ## Metro
 
 ```{r}
+DSHS_metro = DSHS_metro %>% filter(!is.na(Metro_Area))
 write.csv(DSHS_metro, file = 'combined-datasets/metro.csv', row.names = F)
 ```
 
@@ -907,7 +914,7 @@ state_out = list("longitudinal" = merged_state, "current" = DSHS_state_day)
 openxlsx::write.xlsx(state_out, file = "combined-datasets/state.xlsx", row.names = FALSE)
 ```
 
-### Demographics
+## Demographics
 
 ```{r}
 demo_out = list("age" = DSHS_age_df, "gender" = DSHS_gender_df, "race" = DSHS_race_df)

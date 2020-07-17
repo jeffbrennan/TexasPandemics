@@ -481,7 +481,7 @@ DSHS_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ...</code></pre>
+## * … and 128 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_cases_time) = DSHS_cases_time[2, ]
 DSHS_cases_time = DSHS_cases_time[3:(nrow(DSHS_cases_time) - 11), ]
@@ -521,7 +521,7 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ...</code></pre>
+## * … and 131 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
 DSHS_deaths_time = DSHS_deaths_time[3:(nrow(DSHS_deaths_time) - 10), ]
@@ -558,7 +558,7 @@ DSHS_tests_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ...</code></pre>
+## * … and 81 more problems</code></pre>
 <pre class="r"><code># TEMP FIX drop first duplicated date column
 dupe_dates = which(DSHS_tests_time[1, ] == &#39;Tests Through June 23&#39;)
 DSHS_tests_time = DSHS_tests_time[, -dupe_dates[1]]
@@ -608,7 +608,7 @@ DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code><
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ...</code></pre>
+## * … and 96 more problems</code></pre>
 <pre class="r"><code># fix colname
 colnames(DSHS_active_cases_time) = DSHS_active_cases_time[2, ]
 DSHS_active_cases_time = DSHS_active_cases_time[3:(nrow(DSHS_active_cases_time)), 2:ncol(DSHS_active_cases_time)]
@@ -675,7 +675,7 @@ DSHS_tsa_names = readxl::read_xlsx(&#39;original-sources/DSHS_tsa_hosp.xlsx&#39;
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ...</code></pre>
+## * … and 92 more problems</code></pre>
 <pre class="r"><code>colnames(DSHS_tsa_names) = c(&#39;TSA&#39;, &#39;TSA_Name&#39;)
 
 DSHS_tsa_names$TSA = gsub(&#39;.&#39;, &#39;&#39;, DSHS_tsa_names$TSA, fixed = TRUE)
@@ -726,7 +726,9 @@ merged_county = subset(merged_county, Date &gt;= as.Date(&#39;2020-03-04&#39;))<
                       Tests_Cumulative, Tests_Daily,
                       Active_Cases_Cumulative, Active_Cases_Daily),
                  funs(sum))</code></pre>
-<pre><code>## Warning: `funs()` is deprecated as of dplyr 0.8.0.
+<pre><code>## Warning: Factor `TSA` contains implicit NA, consider using
+## `forcats::fct_explicit_na`</code></pre>
+<pre><code>## Warning: funs() is soft deprecated as of dplyr 0.8.0
 ## Please use a list of either functions or lambdas: 
 ## 
 ##   # Simple named list: 
@@ -737,8 +739,7 @@ merged_county = subset(merged_county, Date &gt;= as.Date(&#39;2020-03-04&#39;))<
 ## 
 ##   # Using lambdas
 ##   list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
+## This warning is displayed once per session.</code></pre>
 <pre class="r"><code>DSHS_tsa_pops = 
   subset(merged_county, Date == &#39;2020-03-04&#39;) %&gt;%
   group_by(TSA) %&gt;%
@@ -751,9 +752,10 @@ DSHS_tsa_google =
   summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
                     Parks, Transit,
                     Workplaces, Residential),
-               funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)
-
-DSHS_tsa = merge(DSHS_tsa_counts, DSHS_tsa_google, by = c(&#39;Date&#39;, &#39;TSA&#39;, &#39;TSA_Name&#39;))
+               funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)</code></pre>
+<pre><code>## Warning: Factor `TSA` contains implicit NA, consider using
+## `forcats::fct_explicit_na`</code></pre>
+<pre class="r"><code>DSHS_tsa = merge(DSHS_tsa_counts, DSHS_tsa_google, by = c(&#39;Date&#39;, &#39;TSA&#39;, &#39;TSA_Name&#39;))
 DSHS_tsa = merge(DSHS_tsa, DSHS_tsa_pops, by = &#39;TSA&#39;, all = TRUE)</code></pre>
 </div>
 <div id="dshs-hospitals" class="section level2">
@@ -767,21 +769,21 @@ DSHS_tsa_hosp = read_excel_allsheets(&#39;original-sources/DSHS_tsa_hosp.xlsx&#3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ...
+## * … and 92 more problems
 ## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ...
+## * … and 92 more problems
 ## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ...</code></pre>
+## * … and 92 more problems</code></pre>
 <pre class="r"><code>DSHS_hosp_clean = function(df, var_name) { 
   colnames(df) = df[1, ]
   df = df[2:23, ]
@@ -809,28 +811,28 @@ DSHS_tsa_hosp_cap = read_excel_allsheets(&#39;original-sources/DSHS_tsa_hosp_cap
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ...
+## * … and 92 more problems
 ## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ...
+## * … and 92 more problems
 ## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ...
-## New names:
+## * … and 92 more problems</code></pre>
+<pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ...</code></pre>
+## * … and 81 more problems</code></pre>
 <pre class="r"><code>hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[1]], &#39;Beds_Available_Total&#39;)
 hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[2]], &#39;Beds_Available_ICU&#39;)
 hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[3]], &#39;Beds_Occupied_Total&#39;)
@@ -1041,22 +1043,25 @@ DSHS_metro = merge(DSHS_metro, DSHS_metro_google, by = c(&#39;Date&#39;, &#39;Me
 <pre class="r"><code>state_url = &#39;https://www.dshs.state.tx.us/coronavirus/TexasCOVID19CaseCountData.xlsx&#39;
 
 download.file(state_url, destfile = &#39;original-sources/DSHS_state.xlsx&#39;, mode = &#39;wb&#39;)
+dshs_header = colnames(read_excel(&#39;original-sources/DSHS_state.xlsx&#39;, sheet = 9))[1]</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3</code></pre>
+<pre class="r"><code>current_year =  substr(Sys.Date(), 1, 4)
+dshs_date = paste0(current_year, &#39;/&#39;,  str_extract_all(dshs_header, &#39;\\d*\\/\\d*&#39;)[[1]])
+date_out = format(as.Date(dshs_date), &#39;%Y_%m_%d&#39;)
 
 # save state level file to historical database for longitudinal demo
-date_out = ifelse((Sys.time() &lt; as.POSIXct(paste0(Sys.Date(), &#39;20:00&#39;), tz = &#39;America/Chicago&#39;)),
-                   Sys.Date() - 1,
-                   Sys.Date())
-date_out = as.Date(date_out, origin = &#39;1970-1-1&#39;)
-
 download.file(state_url, paste0(&#39;original-sources/historical/demo/dshs_&#39;,
-                                format(date_out, &#39;%m_%d&#39;), &#39;.xlsx&#39;), mode = &#39;wb&#39;)
+                                date_out, &#39;.xlsx&#39;), mode = &#39;wb&#39;)
 
 DSHS_state = read_excel_allsheets(&#39;original-sources/DSHS_state.xlsx&#39;)</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
-## * `` -&gt; ...5</code></pre>
+## * `` -&gt; ...5
+## * `` -&gt; ...6</code></pre>
 <pre class="r"><code>DSHS_tests = DSHS_state[[4]]
 DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests) - 3), ]
 
@@ -1099,13 +1104,15 @@ DSHS_state_day = data.frame(Recovered_Total = DSHS_state[[3]][1,1],
 <div id="dshs-demographics" class="section level2">
 <h2>DSHS Demographics</h2>
 <pre class="r"><code># read in all files
-current_year =  substr(Sys.Date(), 1, 4)
 demo.list &lt;- paste0(&#39;original-sources/historical/demo/&#39;,
                     list.files(path = &#39;original-sources/historical/demo&#39;,
                                pattern = &#39;*.xlsx&#39;))
 
 DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -1369,9 +1376,15 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_case_race &lt;- lapply(demo.list, read_excel, sheet = 11)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -1635,9 +1648,15 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_gender &lt;- lapply(demo.list, read_excel, sheet = 13)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -1901,6 +1920,9 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_demo_clean = function(df, count_type) { 
   matches = str_extract_all(colnames(df)[1], &#39;\\d*\\/\\d*&#39;)[[1]]
@@ -1925,27 +1947,27 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 
 DSHS_case_age = lapply(DSHS_case_age, DSHS_demo_clean, count_type = &#39;Cases&#39;)
 DSHS_case_gender = lapply(DSHS_case_gender, DSHS_demo_clean, count_type = &#39;Cases&#39;)</code></pre>
-<pre><code>## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
+<pre><code>## Warning: NAs introduced by coercion
 
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion</code></pre>
+## Warning: NAs introduced by coercion</code></pre>
 <pre class="r"><code>DSHS_case_race = lapply(DSHS_case_race, DSHS_demo_clean, count_type = &#39;Cases&#39;)</code></pre>
-<pre><code>## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
+<pre><code>## Warning: NAs introduced by coercion
 
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
+## Warning: NAs introduced by coercion
 
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion</code></pre>
+## Warning: NAs introduced by coercion</code></pre>
 <pre class="r"><code>DSHS_death_age = lapply(DSHS_death_age, DSHS_demo_clean, count_type = &#39;Deaths&#39;)</code></pre>
-<pre><code>## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
+<pre><code>## Warning: NAs introduced by coercion
 
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion</code></pre>
+## Warning: NAs introduced by coercion</code></pre>
 <pre class="r"><code>DSHS_death_gender = lapply(DSHS_death_gender, DSHS_demo_clean, count_type = &#39;Deaths&#39;)</code></pre>
-<pre><code>## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
+<pre><code>## Warning: NAs introduced by coercion
 
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion</code></pre>
+## Warning: NAs introduced by coercion</code></pre>
 <pre class="r"><code>DSHS_death_race = lapply(DSHS_death_race, DSHS_demo_clean, count_type = &#39;Deaths&#39;)</code></pre>
-<pre><code>## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
+<pre><code>## Warning: NAs introduced by coercion
 
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion</code></pre>
+## Warning: NAs introduced by coercion</code></pre>
 <pre class="r"><code># combine list of dataframes into one df
 DSHS_case_age_df = data.table::rbindlist(DSHS_case_age) %&gt;%
   group_by(Group) %&gt;% 
@@ -1990,7 +2012,7 @@ DSHS_race_df[, 3:6] &lt;- lapply(DSHS_race_df[, 3:6], as.numeric)</code></pre>
                       Deaths_Cumulative, Deaths_Daily,
                       Tests_Cumulative, Tests_Daily,
                       Active_Cases_Cumulative, Active_Cases_Daily),
-                 funs(sum))
+                 funs(sum(., na.rm = TRUE)))
 
 state_pops = 
   subset(merged_county, Date == &#39;2020-03-04&#39;) %&gt;%
@@ -2037,13 +2059,17 @@ merged_state$Population_DSHS = state_pops$Population_DSHS</code></pre>
 </div>
 <div id="county" class="section level2">
 <h2>County</h2>
-<pre class="r"><code>write.csv(merged_county, file = &#39;combined-datasets/county.csv&#39;, row.names = F)
+<pre class="r"><code>merged_county = merged_county %&gt;% filter(!is.na(County))
+
+write.csv(merged_county, file = &#39;combined-datasets/county.csv&#39;, row.names = F)
 write.csv(merged_county, &#39;tableau/county.csv&#39;, row.names = FALSE)
 write.csv(county_demo_2018, file = &#39;combined-datasets/county_demo.csv&#39;, row.names = F)</code></pre>
 </div>
 <div id="tsa" class="section level2">
 <h2>TSA</h2>
-<pre class="r"><code>merged_tsa$TSA_Combined = paste0(merged_tsa$TSA, &#39; - &#39;, merged_tsa$TSA_Name)
+<pre class="r"><code>merged_tsa = merged_tsa %&gt;% filter(!is.na(TSA))
+
+merged_tsa$TSA_Combined = paste0(merged_tsa$TSA, &#39; - &#39;, merged_tsa$TSA_Name)
 write.csv(merged_tsa, file = &#39;combined-datasets/tsa.csv&#39;, row.names = F)
 
 hosp_tsa = merged_tsa[, c(1:3, 18:26)]
@@ -2051,26 +2077,27 @@ write.csv(hosp_tsa, file = &#39;tableau/hospitalizations_tsa.csv&#39;, row.names
 </div>
 <div id="phr" class="section level2">
 <h2>PHR</h2>
-<pre class="r"><code>write.csv(phr_df, file = &#39;combined-datasets/phr.csv&#39;, row.names = F)
+<pre class="r"><code>phr_df = phr_df %&gt;% filter(!is.na(PHR))
+
+write.csv(phr_df, file = &#39;combined-datasets/phr.csv&#39;, row.names = F)
 write.csv(phr_df, file = &#39;tableau/phr.csv&#39;, row.names = F)</code></pre>
 </div>
 <div id="metro" class="section level2">
 <h2>Metro</h2>
-<pre class="r"><code>write.csv(DSHS_metro, file = &#39;combined-datasets/metro.csv&#39;, row.names = F)</code></pre>
+<pre class="r"><code>DSHS_metro = DSHS_metro %&gt;% filter(!is.na(Metro_Area))
+write.csv(DSHS_metro, file = &#39;combined-datasets/metro.csv&#39;, row.names = F)</code></pre>
 </div>
 <div id="state" class="section level2">
 <h2>State</h2>
-<pre class="r"><code>library(openxlsx)</code></pre>
-<pre><code>## Warning: package &#39;openxlsx&#39; was built under R version 4.0.2</code></pre>
-<pre class="r"><code>state_out = list(&quot;longitudinal&quot; = merged_state, &quot;current&quot; = DSHS_state_day)
+<pre class="r"><code>library(openxlsx)
+state_out = list(&quot;longitudinal&quot; = merged_state, &quot;current&quot; = DSHS_state_day)
 openxlsx::write.xlsx(state_out, file = &quot;combined-datasets/state.xlsx&quot;, row.names = FALSE)</code></pre>
-<div id="demographics" class="section level3">
-<h3>Demographics</h3>
+</div>
+<div id="demographics" class="section level2">
+<h2>Demographics</h2>
 <pre class="r"><code>demo_out = list(&quot;age&quot; = DSHS_age_df, &quot;gender&quot; = DSHS_gender_df, &quot;race&quot; = DSHS_race_df)
 openxlsx::write.xlsx(demo_out, file = &quot;combined-datasets/demographics.xlsx&quot;, row.names = FALSE)
-
 openxlsx::write.xlsx(demo_out, file = &quot;tableau/demographics.xlsx&quot;, row.names = FALSE)</code></pre>
-</div>
 </div>
 </div>
 
