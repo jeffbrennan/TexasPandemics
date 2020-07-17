@@ -705,7 +705,7 @@ ts.plot
 ######### View Output Table & Graph for TSA Q ##########
 library(kableExtra)
 #subset TSA Q arima data
-TSA_Q.arima.df<-TSA.arima.df.1%>%subset(TSA.arima.df.1$TSA=="Q - Greater Houston")
+TSA_Q.arima.df<-TSA.arima.df.1%>%subset(TSA.arima.df.1$TSA== "Q - Houston")
 #apply the plot function to TSA Q arima data frame
 TSA_Q.arima.df%>%kable(caption="Greater Houston ARIMA - Daily Cases")%>%kable_styling(full_width=FALSE)
 #nlme::gapply(TSA.arima.df, FUN = forecast.plot, groups=TSA.daily$Level_Name)
@@ -937,7 +937,7 @@ ts.plot
 ######### View Output Table & Graph for TSA Q ##########
 library(kableExtra)
 #subset TSA Q arima data
-TSA_Q.arima.df<-TSA.arima.df.1%>%subset(TSA.arima.df.1$TSA=="Q - Greater Houston")
+TSA_Q.arima.df<-TSA.arima.df.1%>%subset(TSA.arima.df.1$TSA == "Q - Houston")
 #apply the plot function to TSA Q arima data frame
 TSA_Q.arima.df%>%kable(caption="Greater Houston ARIMA - Daily Hosp")%>%kable_styling(full_width=FALSE)
 #nlme::gapply(TSA.arima.df, FUN = forecast.plot, groups=TSA.daily$Level_Name)
@@ -956,7 +956,7 @@ forecast.plot(texas.arima.df.1, "Texas Daily Hospitalizations", "Daily Hosp")
 
 ```{r}
 #TODO: update all varnames
-cumcases.TSA <- TSA.Daily %>% dplyr::select(Date,Level_Name, Cases_Cumulative)
+cumcases.TSA <- TSA.Daily %>% dplyr::select(Date,Level_Name, Cases_Cumulative) %>% filter(!is.na(Level_Name))
 cumcases.TSA$Date <- ymd(cumcases.TSA$Date)
 
 latestdate <- max(cumcases.TSA$Date)
@@ -986,7 +986,7 @@ tsa_current_ratio_dat$TSA_Name <- NULL
 ### PHR
 
 ```{r}
-cumcases.PHR <- PHR.Daily %>% dplyr::select(Date, Level_Name, Cases_Cumulative)
+cumcases.PHR <- PHR.Daily %>% dplyr::select(Date, Level_Name, Cases_Cumulative) %>% filter(!is.na(Level_Name))
 cumcases.PHR$Date <- ymd(cumcases.PHR$Date)
 
 latestdate <- max(cumcases.PHR$Date)
@@ -1020,7 +1020,7 @@ colnames(phr_current_ratio_dat)[1] <- 'PHR'
 
 ```{r}
 # declare vals
-cumcases.county <- county.Daily %>% dplyr::select(Date, Level_Name, Cases_Cumulative)
+cumcases.county <- county.Daily %>% dplyr::select(Date, Level_Name, Cases_Cumulative) %>% filter(!is.na(Level_Name))
 cumcases.county$Date <- ymd(cumcases.county$Date)
 
 latestdate <- max(cumcases.county$Date, na.rm=T)
@@ -1052,7 +1052,7 @@ county_current_ratio_dat <-
 ### Metro
 
 ```{r}
-cumcases.metro <- metro.Daily %>% dplyr::select(Date, Level_Name, Cases_Cumulative)
+cumcases.metro <- metro.Daily %>% dplyr::select(Date, Level_Name, Cases_Cumulative) %>% filter(!is.na(Level_Name))
 cumcases.metro$Date <- ymd(cumcases.metro$Date)
 
 latestdate <- max(cumcases.metro$Date, na.rm=T)
@@ -1239,7 +1239,7 @@ create.case.test <-   function(level, dat, region){
 
 ```{r}
 state <- readxl::read_xlsx('combined-datasets/state.xlsx', sheet=1)
-state.case.test.df <- create.case.test(level="state", state, NA)
+state.case.test.df <- create.case.test(level="State", state, NA)
 write.csv(state.case.test.df, 'statistical-output/standard-stats/pct-change/state_pct_change.csv',
           row.names = FALSE)
 ```
