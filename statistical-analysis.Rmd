@@ -493,7 +493,7 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
   if(max(mydata$Cases_Daily>=100, na.rm = TRUE))
   {
     # arima requires cases to be a timeseries vector
-    #convert daily cases to time series
+    # convert daily cases to time series
     my.timeseries<-ts(mydata$Cases_Daily)
     print(mydata[1,2])
     #load package(pracma)
