@@ -921,3 +921,19 @@ demo_out = list("age" = DSHS_age_df, "gender" = DSHS_gender_df, "race" = DSHS_ra
 openxlsx::write.xlsx(demo_out, file = "combined-datasets/demographics.xlsx", row.names = FALSE)
 openxlsx::write.xlsx(demo_out, file = "tableau/demographics.xlsx", row.names = FALSE)
 ```
+
+### stacked
+
+```{r}
+age_stacked = DSHS_age_df
+race_stacked = DSHS_race_df
+gender_stacked = DSHS_gender_df
+
+age_stacked$Group_Type = 'Age'
+race_stacked$Group_Type = 'Race'
+gender_stacked$Group_Type = 'Gender'
+
+demo_stacked = rbind(age_stacked, gender_stacked, race_stacked)
+write.csv(demo_stacked, file = 'tableau/demographics_stacked.csv', row.names = FALSE)
+```
+

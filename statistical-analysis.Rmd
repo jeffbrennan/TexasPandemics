@@ -481,17 +481,17 @@ ts.data.organize<-function(mycounty, mytsa, myphr){
 
 ```{r ts arima function}
 # Compute forecast (UPDATE PREDICTION PERIOD [days] AS NEEDED)
-covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
-{
+covid.arima.forecast<-function(mydata, prediction.period = 10, mindate) {
   maxdate <- max(mydata$Date)
   # mindate <- as.Date('2020-05-01')
   pred_start_label = format(mindate, format = '%m_%d')
   
   mydata = subset(mydata, Date >= mindate)
   model.length <- as.numeric(length(mydata$Date) + prediction.period)
-
-  if(max(mydata$Cases_Daily>=100, na.rm = TRUE))
-  {
+  
+  case_avg_date = as.Date('2020-05-01')
+  
+  if(max(mydata$Cases_Daily>=100, na.rm = TRUE)) {
     # arima requires cases to be a timeseries vector
     # convert daily cases to time series
     my.timeseries<-ts(mydata$Cases_Daily)
@@ -560,7 +560,7 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
     }
   
   #replace CI lower limit with 0 if negative
-  arima.out$CI_Lower <- ifelse(arima.out$CI_Lower>=0,arima.out$CI_Lower, 0)
+  arima.out$CI_Lower <- ifelse(arima.out$CI_Lower>=0 ,arima.out$CI_Lower, 0)
   
   
   return(arima.out)
@@ -579,6 +579,50 @@ state.Daily <- covid.frame.list$state
 metro.Daily <- covid.frame.list$metro
 PHR.Daily <- covid.frame.list$phr
 ```
+
+
+County diangostics
+```{r}
+mydata = county.Daily
+maxdate = max(mydata$Date)
+case_features = subset(mydata, Date >= maxdate-14) %>%
+  group_by(Level_Name) %>%
+  mutate(criteria1 = mean(Cases_Daily)) %>% 
+  mutate(criteria2 = mean(Cases_Cumulative)) %>% 
+  mutate(criteria3 = (mean(Cases_Cumulative) / Population_DSHS)) %>%
+  dplyr::select(Level_Name, Date, criteria1, criteria2, criteria3, PHR, TSA)
+
+criteria1_vals = subset(case_features, Date == maxdate) %>% 
+  group_by(Date) %>% 
+  do(data.frame(t(quantile(.$criteria1, probs = c(0.4, 0.5, 0.6, 0.7, 0.8)))))
+
+criteria1_features = merge(criteria1_vals, case_features, by = 'Date')
+
+ggplot(subset(criteria1_features, Date == maxdate), aes(y = Level_Name, x = criteria1)) + 
+  geom_point() + 
+  geom_vline(xintercept = criteria1_features$X40[1], color = 'red') +
+  geom_vline(xintercept = criteria1_features$X50.[1], color = 'orange') + 
+  geom_vline(xintercept = criteria1_features$X60.[1], color = 'green') + 
+  geom_vline(xintercept = criteria1_features$X70.[1], color = 'blue') + 
+  geom_vline(xintercept = criteria1_features$X80.[1], color = 'purple') + 
+  labs(title = paste0('mean(Cases_Daily) by county quantile (Data from: ', maxdate-14, ')'),
+       subtitle = paste0('40%: ', round(criteria1_features$X40.[1], 2), ' | ',
+                         '50%: ', round(criteria1_features$X50.[1], 2), ' | ',
+                         '60%: ', round(criteria1_features$X60.[1], 2), ' |',
+                         '70%: ', round(criteria1_features$X70.[1], 2), ' | ',
+                         '80%: ', round(criteria1_features$X80.[1], 2)),
+       x = '', y ='') +
+  facet_wrap(~TSA, scales = 'free') +
+  ggpubr::theme_pubr(border = TRUE) +
+  theme(axis.text.y = element_text(size = 5)) + 
+  theme(axis.text.x = element_text(size = 6))
+ggsave('statistical-output/time-series/diagnostics/threshold1.png', width = 10, height = 10, dpi = 600)
+
+criteria_results = case_criteria %>% group_by(Level_Name) %>%
+  summarize_at(vars(criteria1, criteria2, criteria3), funs(sum))
+```
+
+
 
 ## County
 
@@ -811,7 +855,7 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
 
     #return a dataframe of the arima model(Daily cases by date)
     arima.out <- data.frame(Date = seq(mindate, maxdate + prediction.period, by = 'days'),
-                            Cases_Raw = c(mydata$Hospitalizations_Total, rep(NA, times = prediction.period)),
+                            # Cases_Raw = c(mydata$Hospitalizations_Total, rep(NA, times = prediction.period)),
                             Hospitalizations_Total = c(my.timeseries, arima.forecast[['mean']]),
                             CI_Lower = c(rep(NA, times = length(my.timeseries)),
                                          arima.forecast[['lower']][, 2]),
@@ -1135,6 +1179,14 @@ state_current_ratio_dat$Level_Type = 'State'
 combined_current_ratio_dat <- rbind(county_current_ratio_dat, metro_current_ratio_dat,
                                    tsa_current_ratio_dat, state_current_ratio_dat, phr_current_ratio_dat)
 
+combined_current_ratio_dat = combined_current_ratio_dat %>% 
+  mutate(County = ifelse(Level_Type == 'County', as.character(Level), '')) %>% 
+  mutate(TSA = ifelse(Level_Type == 'TSA', as.character(Level), '')) %>% 
+  mutate(PHR = ifelse(Level_Type == 'PHR', as.character(Level), '')) %>% 
+  mutate(Metro = ifelse(Level_Type == 'Metro', as.character(Level), '')) %>% 
+  mutate(State = ifelse(Level_Type == 'State', as.character(Level), ''))
+
+
 write.csv(combined_current_ratio_dat, 'statistical-output/standard-stats/case-ratios/stacked_case_ratio.csv',
           row.names = FALSE)
 
@@ -1384,7 +1436,7 @@ colnames(combined.rt.df)[4:5] = c('RT_CI_Lower', 'RT_CI_Upper')
 stacked_all = Reduce(function(x, y) merge(x, y, by = c('Level_Type', 'Level', 'Date'), all=TRUE),
        list(combined.case.test.df, combined_current_ratio_dat, combined.arima.df.1, combined.rt.df))
 
-write.csv(stacked_all, 'tableau/stacked_all.csv', row.names = FALSE)
+write.csv(stacked_all, 'tableau/stacked_critical_trends.csv', row.names = FALSE)
 ```
 
 
