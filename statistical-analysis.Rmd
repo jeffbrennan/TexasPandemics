@@ -4,6 +4,8 @@ author: "Hongyin Lai, Yuan Li, Tara Prezioso, Alison Rector, Jeffrey Brennan, Sw
 output:
   html_document:
     df_print: paged
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ```{r setup, include=FALSE}
@@ -618,8 +620,8 @@ ggplot(subset(criteria1_features, Date == maxdate), aes(y = Level_Name, x = crit
   theme(axis.text.x = element_text(size = 6))
 ggsave('statistical-output/time-series/diagnostics/threshold1.png', width = 10, height = 10, dpi = 600)
 
-criteria_results = case_criteria %>% group_by(Level_Name) %>%
-  summarize_at(vars(criteria1, criteria2, criteria3), funs(sum))
+# TODO: add other criteria
+
 ```
 
 
@@ -882,7 +884,7 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
     } else {
     # insufficient data catch: return NA values for predictions 
     arima.out <- data.frame(Date = seq(mindate, maxdate + prediction.period, by = 'days'),
-                            Cases_Raw = c(mydata$Hospitalizations_Total, rep(NA, times = prediction.period)),
+                            # Cases_Raw = c(mydata$Hospitalizations_Total, rep(NA, times = prediction.period)),
                             Hospitalizations_Total = rep(NA, times = model.length),
                             CI_Lower = rep(NA, times = model.length),
                             CI_Upper =  rep(NA, times = model.length))
@@ -904,49 +906,49 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
 
 ```{r TSA Hosp forecasts}
 # All data
-TSA.arima.output.1 <- nlme::gapply(TSA.Daily,
+TSA.hosp.arima.output.1 <- nlme::gapply(TSA.Daily,
                                    FUN = covid.arima.forecast,
                                    groups = TSA.Daily$Level_Name,
                                    mindate = as.Date('2020-03-04'))
 
-TSA.arima.df.1 <- data.table::rbindlist(TSA.arima.output.1, idcol=TRUE)
+TSA.hosp.arima.df.1 <- data.table::rbindlist(TSA.hosp.arima.output.1, idcol=TRUE)
 
-colnames(TSA.arima.df.1)[1] <- 'TSA'
-TSA.arima.df.1 <- merge(TSA.arima.df.1, unique(TSA.daily[, c('TSA', 'TSA_Name')]), by = c('TSA'))
+colnames(TSA.hosp.arima.df.1)[1] <- 'TSA'
+TSA.hosp.arima.df.1 <- merge(TSA.hosp.arima.df.1, unique(TSA.daily[, c('TSA', 'TSA_Name')]), by = c('TSA'))
 
 # combine TSA 
-TSA.arima.df.1$TSA <- paste0(TSA.arima.df.1$TSA, ' - ', TSA.arima.df.1$TSA_Name)
-TSA.arima.df.1$TSA_Name <- NULL
+TSA.hosp.arima.df.1$TSA <- paste0(TSA.hosp.arima.df.1$TSA, ' - ', TSA.hosp.arima.df.1$TSA_Name)
+TSA.hosp.arima.df.1$TSA_Name <- NULL
 ```
 
 ## State - hospitalization
 
 ```{r Texas Hosp forecasts, results='hide'}
-texas.arima.df.1 <- covid.arima.forecast(state.Daily, mindate = as.Date('2020-03-04'))
-# texas.arima.df.2 <- covid.arima.forecast(state.Daily, mindate = as.Date('2020-06-03'))
+texas.hosp.arima.df.1 <- covid.arima.forecast(state.Daily, mindate = as.Date('2020-03-04'))
+# texas.hosp.arima.df.2 <- covid.arima.forecast(state.Daily, mindate = as.Date('2020-06-03'))
 ```
 
 ## Hospitalization Write to CSV
 ```{r Hospitalizations to csv}
-tsa.hosp.arima<-write.csv(TSA.arima.df.1, "statistical-output/time-series/tsa_hosp_timeseries.csv", row.names=FALSE)
-texas.hosp.arima<-write.csv(texas.arima.df.1, "statistical-output/time-series/state_hosp_timeseries.csv", row.names=FALSE)
+tsa.hosp.arima<-write.csv(TSA.hosp.arima.df.1, "statistical-output/time-series/tsa_hosp_timeseries.csv", row.names=FALSE)
+texas.hosp.arima<-write.csv(texas.hosp.arima.df.1, "statistical-output/time-series/state_hosp_timeseries.csv", row.names=FALSE)
 ```
 
 ## Stacking
 ```{r}
-TSA_hosp_out = TSA.arima.df.1
+TSA_hosp_out = TSA.hosp.arima.df.1
 colnames(TSA_hosp_out)[1] = 'Level'
-texas.arima.df.1$Level = 'Texas'
+texas.hosp.arima.df.1$Level = 'Texas'
 
 
 TSA_hosp_out$Level_Type = 'TSA'
-texas.arima.df.1$Level_Type = 'State'
+texas.hosp.arima.df.1$Level_Type = 'State'
 
-combined.arima.df.1 <- rbind(TSA_hosp_out, texas.arima.df.1)
-write.csv(combined.arima.df.1, 'statistical-output/time-series/stacked_hosp_timeseries.csv',
+combined.hosp.arima.df.1 <- rbind(TSA_hosp_out, texas.hosp.arima.df.1)
+write.csv(combined.hosp.arima.df.1, 'statistical-output/time-series/stacked_hosp_timeseries.csv',
           row.names = FALSE)
 
-write.csv(combined.arima.df.1, 'tableau/stacked_hosp_timeseries.csv',
+write.csv(combined.hosp.arima.df.1, 'tableau/stacked_hosp_timeseries.csv',
           row.names = FALSE)
 ```
 
@@ -981,15 +983,15 @@ ts.plot
 ######### View Output Table & Graph for TSA Q ##########
 library(kableExtra)
 #subset TSA Q arima data
-TSA_Q.arima.df<-TSA.arima.df.1%>%subset(TSA.arima.df.1$TSA == "Q - Houston")
+TSA_Q.arima.df<-TSA.hosp.arima.df.1%>%subset(TSA.hosp.arima.df.1$TSA == "Q - Houston")
 #apply the plot function to TSA Q arima data frame
 TSA_Q.arima.df%>%kable(caption="Greater Houston ARIMA - Daily Hosp")%>%kable_styling(full_width=FALSE)
-#nlme::gapply(TSA.arima.df, FUN = forecast.plot, groups=TSA.daily$Level_Name)
+#nlme::gapply(TSA.hosp.arima.df, FUN = forecast.plot, groups=TSA.daily$Level_Name)
 forecast.plot(TSA_Q.arima.df, "TSA Q - Greater Houston Daily Hosp", "Daily Hosp")
 
 ######### View Output Table & Graph for Texas ##########
-texas.arima.df.1%>%kable(caption="Texas Arima - Daily Hosp")%>%kable_styling(full_width=FALSE)
-forecast.plot(texas.arima.df.1, "Texas Daily Hospitalizations", "Daily Hosp")
+texas.hosp.arima.df.1%>%kable(caption="Texas Arima - Daily Hosp")%>%kable_styling(full_width=FALSE)
+forecast.plot(texas.hosp.arima.df.1, "Texas Daily Hospitalizations", "Daily Hosp")
 ```
 
 # STANDARD STATISTICAL TESTS
@@ -1179,7 +1181,7 @@ state_current_ratio_dat$Level_Type = 'State'
 combined_current_ratio_dat <- rbind(county_current_ratio_dat, metro_current_ratio_dat,
                                    tsa_current_ratio_dat, state_current_ratio_dat, phr_current_ratio_dat)
 
-combined_current_ratio_dat = combined_current_ratio_dat %>% 
+stacked_ratio_out = combined_current_ratio_dat %>% 
   mutate(County = ifelse(Level_Type == 'County', as.character(Level), '')) %>% 
   mutate(TSA = ifelse(Level_Type == 'TSA', as.character(Level), '')) %>% 
   mutate(PHR = ifelse(Level_Type == 'PHR', as.character(Level), '')) %>% 
@@ -1187,7 +1189,7 @@ combined_current_ratio_dat = combined_current_ratio_dat %>%
   mutate(State = ifelse(Level_Type == 'State', as.character(Level), ''))
 
 
-write.csv(combined_current_ratio_dat, 'statistical-output/standard-stats/case-ratios/stacked_case_ratio.csv',
+write.csv(stacked_ratio_out, 'statistical-output/standard-stats/case-ratios/stacked_case_ratio.csv',
           row.names = FALSE)
 
 # write.csv(combined_current_ratio_dat, 'tableau/stacked_case_ratio.csv',
@@ -1434,7 +1436,8 @@ colnames(combined.arima.df.1)[5:6] = c('TS_CI_Lower', 'TS_CI_Upper')
 colnames(combined.rt.df)[4:5] = c('RT_CI_Lower', 'RT_CI_Upper')
 
 stacked_all = Reduce(function(x, y) merge(x, y, by = c('Level_Type', 'Level', 'Date'), all=TRUE),
-       list(combined.case.test.df, combined_current_ratio_dat, combined.arima.df.1, combined.rt.df))
+       list(combined.case.test.df, combined_current_ratio_dat, 
+            combined.arima.df.1, combined.rt.df, combined.hosp.arima.df.1))
 
 write.csv(stacked_all, 'tableau/stacked_critical_trends.csv', row.names = FALSE)
 ```
