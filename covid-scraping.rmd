@@ -580,7 +580,7 @@ Clean_Facility = function(df, count_type) {
   
   colnames(df_long) = c('PHR', 'Date', count_type)
   df_long$Date = as.Date(as.integer(df_long$Date), origin = '2020-05-14')
-  
+  df_long[, 3] = as.numeric(df_long[, 3])
   return(df_long)
   }
 
