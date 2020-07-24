@@ -1052,8 +1052,8 @@ DSHS_metro = merge(DSHS_metro, DSHS_metro_google, by = c(&#39;Date&#39;, &#39;Me
 </div>
 <div id="state-level" class="section level1">
 <h1>STATE LEVEL</h1>
-<div id="hhs-hospitalization" class="section level2">
-<h2>HHS hospitalization</h2>
+<div id="hhs-facility-reporting" class="section level2">
+<h2>HHS facility reporting</h2>
 <pre class="r"><code>library(rjson)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;rjson&#39;</code></pre>
@@ -1062,7 +1062,6 @@ DSHS_metro = merge(DSHS_metro, DSHS_metro_google, by = c(&#39;Date&#39;, &#39;Me
 ##     fromJSON, toJSON</code></pre>
 <pre class="r"><code>library(openxlsx)
 # read in files
-hhs_hosp_raw = read.csv(url(&#39;https://opendata.arcgis.com/datasets/1d5b20ddfada4ef88ae51b35c5c881f7_0.csv&#39;))
 hhs_fac_reporting_raw = read.csv(url(&#39;https://opendata.arcgis.com/datasets/7841114f71fa4c56aab1f09e58833c09_0.csv&#39;))
 
 # get modified date for file naming from fac reporting json
@@ -1073,7 +1072,7 @@ get_hhs_date = rjson::fromJSON(file=&#39;https://opendata.arcgis.com/api/v3/data
 date_out = as.Date(format(as.POSIXct(get_hhs_date/1000, origin=&quot;1970-01-01&quot;), &#39;%Y-%m-%d&#39;))
 
 # combine csv for archival
-openxlsx::write.xlsx(list(&#39;1&#39; = hhs_hosp_raw, &#39;2&#39; = hhs_fac_reporting_raw),
+openxlsx::write.xlsx(list(&#39;1&#39; = hhs_fac_reporting_raw),
                 file = paste0(&#39;original-sources/historical/hhs/hhs_data_&#39;, date_out, &#39;.xlsx&#39;))
 
 # read in archival sources
@@ -1081,7 +1080,7 @@ hhs_list &lt;- paste0(&#39;original-sources/historical/hhs/&#39;,
                     list.files(path = &#39;original-sources/historical/hhs&#39;,
                                pattern = &#39;*.xlsx&#39;))
 
-HHS_clean = function(df, date) { 
+HHS_fac_clean = function(df, date) { 
   clean_df = df %&gt;% 
     filter(state_name == &#39;Texas&#39;) %&gt;% 
     select(-c(&#39;ï..OBJECTID&#39;, &#39;Shape__Area&#39;, &#39;Shape__Length&#39;, &#39;state_fips&#39;,
@@ -1095,15 +1094,46 @@ HHS_clean = function(df, date) {
   return(clean_df)
   }
 
-# read all historical sheets
-# clean files
-# combine files together using rbind
-HHS_hosp &lt;- data.table::rbindlist(lapply(lapply(hhs_list, read.xlsx, sheet = 1), HHS_clean, date=date_out))
-HHS_fac_reporting &lt;- data.table::rbindlist(lapply(lapply(hhs_list, read.xlsx, sheet = 2), HHS_clean, date=date_out))
 
+HHS_fac_reporting &lt;- data.table::rbindlist(lapply(lapply(hhs_list, read.xlsx, sheet = 1),
+                                                  HHS_fac_clean, date=date_out))</code></pre>
+</div>
+<div id="hhs-hospitalization" class="section level2">
+<h2>HHS hospitalization</h2>
+<pre class="r"><code>HHS_hosp_clean = function(df, data_type) { 
+  clean_df = df %&gt;% 
+    filter(state == &#39;TX&#39;) %&gt;% 
+    select(-c(&#39;state&#39;))
+  
+  colnames(clean_df)[c(3:4, 6:7)] = paste0(data_type, colnames(clean_df[c(3:4, 6:7)]))
+  colnames(clean_df) = paste0(&#39;HHS_&#39;, colnames(clean_df))
+  
+  clean_df$Date = as.Date(clean_df$HHS_collection_date)
+  clean_df$HHS_collection_date = NULL
 
-# merge together for combination with other state data
-hhs_df = merge(HHS_hosp, HHS_fac_reporting, by = &#39;Date&#39;, all=TRUE)</code></pre>
+  return(clean_df)
+}
+# timeseries files 
+HHS_all_inpatient = 
+  HHS_hosp_clean(
+    read.csv(url(&#39;https://healthdata.gov/sites/default/files/reported_inpatient_all_20200720_0537.csv&#39;)),
+    &#39;All.Inpatient.&#39;)
+
+HHS_covid_inpatient = 
+  HHS_hosp_clean(
+    read.csv(url(&#39;https://healthdata.gov/sites/default/files/inpatient_covid_final_20200720_0537.csv&#39;)),
+    &#39;COVID.Inpatient.&#39;)
+
+HHS_all_icu = 
+  HHS_hosp_clean(
+    read.csv(url(&#39;https://healthdata.gov/sites/default/files/icu_final_20200720_0537.csv&#39;)),
+    &#39;All.ICU.&#39;)</code></pre>
+<div id="merge-3" class="section level3">
+<h3>merge</h3>
+<pre class="r"><code># merge together for combination with other state data
+hhs_df = Reduce(function(x, y) merge(x, y, by = &#39;Date&#39;, all = TRUE),
+                list(HHS_all_inpatient, HHS_covid_inpatient, HHS_all_icu, HHS_fac_reporting))</code></pre>
+</div>
 </div>
 <div id="dshs-time-series" class="section level2">
 <h2>DSHS (time series)</h2>
@@ -2236,7 +2266,7 @@ state_hosp_detail =
                     Ventilators_Available),
                funs(sum))</code></pre>
 </div>
-<div id="merge-3" class="section level2">
+<div id="merge-4" class="section level2">
 <h2>merge</h2>
 <pre class="r"><code>merged_state = Reduce(function(x, y) merge(x, y, by = c(&#39;Date&#39;), all=TRUE),
        list(state_counts, state_google, DSHS_state_time, state_facilities, state_hosp_detail, hhs_df))

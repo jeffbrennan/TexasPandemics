@@ -656,13 +656,12 @@ DSHS_metro = merge(DSHS_metro, DSHS_metro_google, by = c('Date', 'Metro_Area'))
 
 # STATE LEVEL
 
-## HHS hospitalization
+## HHS facility reporting
 
 ```{r}
 library(rjson)
 library(openxlsx)
 # read in files
-hhs_hosp_raw = read.csv(url('https://opendata.arcgis.com/datasets/1d5b20ddfada4ef88ae51b35c5c881f7_0.csv'))
 hhs_fac_reporting_raw = read.csv(url('https://opendata.arcgis.com/datasets/7841114f71fa4c56aab1f09e58833c09_0.csv'))
 
 # get modified date for file naming from fac reporting json
@@ -673,7 +672,7 @@ get_hhs_date = rjson::fromJSON(file='https://opendata.arcgis.com/api/v3/datasets
 date_out = as.Date(format(as.POSIXct(get_hhs_date/1000, origin="1970-01-01"), '%Y-%m-%d'))
 
 # combine csv for archival
-openxlsx::write.xlsx(list('1' = hhs_hosp_raw, '2' = hhs_fac_reporting_raw),
+openxlsx::write.xlsx(list('1' = hhs_fac_reporting_raw),
                 file = paste0('original-sources/historical/hhs/hhs_data_', date_out, '.xlsx'))
 
 # read in archival sources
@@ -681,7 +680,7 @@ hhs_list <- paste0('original-sources/historical/hhs/',
                     list.files(path = 'original-sources/historical/hhs',
                                pattern = '*.xlsx'))
 
-HHS_clean = function(df, date) { 
+HHS_fac_clean = function(df, date) { 
   clean_df = df %>% 
     filter(state_name == 'Texas') %>% 
     select(-c('ï..OBJECTID', 'Shape__Area', 'Shape__Length', 'state_fips',
@@ -695,15 +694,52 @@ HHS_clean = function(df, date) {
   return(clean_df)
   }
 
-# read all historical sheets
-# clean files
-# combine files together using rbind
-HHS_hosp <- data.table::rbindlist(lapply(lapply(hhs_list, read.xlsx, sheet = 1), HHS_clean, date=date_out))
-HHS_fac_reporting <- data.table::rbindlist(lapply(lapply(hhs_list, read.xlsx, sheet = 2), HHS_clean, date=date_out))
+
+HHS_fac_reporting <- data.table::rbindlist(lapply(lapply(hhs_list, read.xlsx, sheet = 1),
+                                                  HHS_fac_clean, date=date_out))
+```
+
+## HHS hospitalization
+
+```{r}
+HHS_hosp_clean = function(df, data_type) { 
+  clean_df = df %>% 
+    filter(state == 'TX') %>% 
+    select(-c('state'))
+  
+  colnames(clean_df)[c(3:4, 6:7)] = paste0(data_type, colnames(clean_df[c(3:4, 6:7)]))
+  colnames(clean_df) = paste0('HHS_', colnames(clean_df))
+  
+  clean_df$Date = as.Date(clean_df$HHS_collection_date)
+  clean_df$HHS_collection_date = NULL
+
+  return(clean_df)
+}
+# timeseries files 
+HHS_all_inpatient = 
+  HHS_hosp_clean(
+    read.csv(url('https://healthdata.gov/sites/default/files/reported_inpatient_all_20200720_0537.csv')),
+    'All.Inpatient.')
+
+HHS_covid_inpatient = 
+  HHS_hosp_clean(
+    read.csv(url('https://healthdata.gov/sites/default/files/inpatient_covid_final_20200720_0537.csv')),
+    'COVID.Inpatient.')
+
+HHS_all_icu = 
+  HHS_hosp_clean(
+    read.csv(url('https://healthdata.gov/sites/default/files/icu_final_20200720_0537.csv')),
+    'All.ICU.')
+```
 
 
+### merge
+
+```{r}
 # merge together for combination with other state data
-hhs_df = merge(HHS_hosp, HHS_fac_reporting, by = 'Date', all=TRUE)
+hhs_df = Reduce(function(x, y) merge(x, y, by = 'Date', all = TRUE),
+                list(HHS_all_inpatient, HHS_covid_inpatient, HHS_all_icu, HHS_fac_reporting))
+
 ```
 
 
