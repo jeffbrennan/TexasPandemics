@@ -582,50 +582,6 @@ metro.Daily <- covid.frame.list$metro
 PHR.Daily <- covid.frame.list$phr
 ```
 
-
-County diangostics
-```{r}
-mydata = county.Daily
-maxdate = max(mydata$Date)
-case_features = subset(mydata, Date >= maxdate-14) %>%
-  group_by(Level_Name) %>%
-  mutate(criteria1 = mean(Cases_Daily)) %>% 
-  mutate(criteria2 = mean(Cases_Cumulative)) %>% 
-  mutate(criteria3 = (mean(Cases_Cumulative) / Population_DSHS)) %>%
-  dplyr::select(Level_Name, Date, criteria1, criteria2, criteria3, PHR, TSA)
-
-criteria1_vals = subset(case_features, Date == maxdate) %>% 
-  group_by(Date) %>% 
-  do(data.frame(t(quantile(.$criteria1, probs = c(0.4, 0.5, 0.6, 0.7, 0.8)))))
-
-criteria1_features = merge(criteria1_vals, case_features, by = 'Date')
-
-ggplot(subset(criteria1_features, Date == maxdate), aes(y = Level_Name, x = criteria1)) + 
-  geom_point() + 
-  geom_vline(xintercept = criteria1_features$X40[1], color = 'red') +
-  geom_vline(xintercept = criteria1_features$X50.[1], color = 'orange') + 
-  geom_vline(xintercept = criteria1_features$X60.[1], color = 'green') + 
-  geom_vline(xintercept = criteria1_features$X70.[1], color = 'blue') + 
-  geom_vline(xintercept = criteria1_features$X80.[1], color = 'purple') + 
-  labs(title = paste0('mean(Cases_Daily) by county quantile (Data from: ', maxdate-14, ')'),
-       subtitle = paste0('40%: ', round(criteria1_features$X40.[1], 2), ' | ',
-                         '50%: ', round(criteria1_features$X50.[1], 2), ' | ',
-                         '60%: ', round(criteria1_features$X60.[1], 2), ' |',
-                         '70%: ', round(criteria1_features$X70.[1], 2), ' | ',
-                         '80%: ', round(criteria1_features$X80.[1], 2)),
-       x = '', y ='') +
-  facet_wrap(~TSA, scales = 'free') +
-  ggpubr::theme_pubr(border = TRUE) +
-  theme(axis.text.y = element_text(size = 5)) + 
-  theme(axis.text.x = element_text(size = 6))
-ggsave('statistical-output/time-series/diagnostics/threshold1.png', width = 10, height = 10, dpi = 600)
-
-# TODO: add other criteria
-
-```
-
-
-
 ## County
 
 ```{r county forecasts, output = NULL}

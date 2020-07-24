@@ -358,7 +358,8 @@ merged_dshs = Reduce(function(x, y) merge(x, y, by = 'County', all = TRUE),
 merged_dshs$TSA_Combined = paste0(merged_dshs$TSA, ' - ', merged_dshs$TSA_Name)
 merged_dshs$PHR_Combined = paste0(merged_dshs$PHR, ' - ', merged_dshs$PHR_Name)
 
-merged_county = as.data.frame(merge(merged_dshs, mobility_texas, by = c('Date', 'County'), all = TRUE))
+merged_county = as.data.frame(merge(merged_dshs, mobility_texas, by = c('Date', 'County'), all = TRUE)) %>% 
+  filter(!is.na(County))
 
 # fix types
 merged_county$County = as.factor(merged_county$County)
@@ -499,7 +500,8 @@ merged_tsa = merged_tsa %>%
   mutate_at(vars(Beds_Available_Total, Ventilators_Available, Beds_Available_ICU,
                  Beds_Occupied_Total, Beds_Occupied_ICU, Hospitalizations_Total,
                  Hospitalizations_General, Hospitalizations_ICU),
-            funs(as.numeric))
+            funs(as.numeric)) %>%
+  filter(!is.na(TSA))
 ```
 
 # PHR LEVEL

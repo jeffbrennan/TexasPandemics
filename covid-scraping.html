@@ -704,7 +704,8 @@ merged_dshs = Reduce(function(x, y) merge(x, y, by = &#39;County&#39;, all = TRU
 merged_dshs$TSA_Combined = paste0(merged_dshs$TSA, &#39; - &#39;, merged_dshs$TSA_Name)
 merged_dshs$PHR_Combined = paste0(merged_dshs$PHR, &#39; - &#39;, merged_dshs$PHR_Name)
 
-merged_county = as.data.frame(merge(merged_dshs, mobility_texas, by = c(&#39;Date&#39;, &#39;County&#39;), all = TRUE))
+merged_county = as.data.frame(merge(merged_dshs, mobility_texas, by = c(&#39;Date&#39;, &#39;County&#39;), all = TRUE)) %&gt;% 
+  filter(!is.na(County))
 
 # fix types
 merged_county$County = as.factor(merged_county$County)
@@ -726,8 +727,6 @@ merged_county = subset(merged_county, Date &gt;= as.Date(&#39;2020-03-04&#39;))<
                       Tests_Cumulative, Tests_Daily,
                       Active_Cases_Cumulative, Active_Cases_Daily),
                  funs(sum))</code></pre>
-<pre><code>## Warning: Factor `TSA` contains implicit NA, consider using
-## `forcats::fct_explicit_na`</code></pre>
 <pre><code>## Warning: funs() is soft deprecated as of dplyr 0.8.0
 ## Please use a list of either functions or lambdas: 
 ## 
@@ -752,10 +751,9 @@ DSHS_tsa_google =
   summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
                     Parks, Transit,
                     Workplaces, Residential),
-               funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)</code></pre>
-<pre><code>## Warning: Factor `TSA` contains implicit NA, consider using
-## `forcats::fct_explicit_na`</code></pre>
-<pre class="r"><code>DSHS_tsa = merge(DSHS_tsa_counts, DSHS_tsa_google, by = c(&#39;Date&#39;, &#39;TSA&#39;, &#39;TSA_Name&#39;))
+               funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)
+
+DSHS_tsa = merge(DSHS_tsa_counts, DSHS_tsa_google, by = c(&#39;Date&#39;, &#39;TSA&#39;, &#39;TSA_Name&#39;))
 DSHS_tsa = merge(DSHS_tsa, DSHS_tsa_pops, by = &#39;TSA&#39;, all = TRUE)</code></pre>
 </div>
 <div id="dshs-hospitals" class="section level2">
@@ -895,7 +893,8 @@ merged_tsa = merged_tsa %&gt;%
   mutate_at(vars(Beds_Available_Total, Ventilators_Available, Beds_Available_ICU,
                  Beds_Occupied_Total, Beds_Occupied_ICU, Hospitalizations_Total,
                  Hospitalizations_General, Hospitalizations_ICU),
-            funs(as.numeric))</code></pre>
+            funs(as.numeric)) %&gt;%
+  filter(!is.na(TSA))</code></pre>
 </div>
 </div>
 <div id="phr-level" class="section level1">
@@ -2315,6 +2314,8 @@ write.csv(DSHS_metro, file = &#39;combined-datasets/metro.csv&#39;, row.names = 
 <pre class="r"><code>library(openxlsx)
 state_out = list(&quot;longitudinal&quot; = merged_state, &quot;current&quot; = DSHS_state_day)
 openxlsx::write.xlsx(state_out, file = &quot;combined-datasets/state.xlsx&quot;, row.names = FALSE)</code></pre>
+<pre><code>## Warning in file.create(to[okay]): cannot create file &#39;combined-datasets/
+## state.xlsx&#39;, reason &#39;Permission denied&#39;</code></pre>
 </div>
 <div id="demographics" class="section level2">
 <h2>Demographics</h2>
