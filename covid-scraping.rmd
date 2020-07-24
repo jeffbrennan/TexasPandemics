@@ -656,6 +656,58 @@ DSHS_metro = merge(DSHS_metro, DSHS_metro_google, by = c('Date', 'Metro_Area'))
 
 # STATE LEVEL
 
+## HHS hospitalization
+
+```{r}
+library(rjson)
+library(openxlsx)
+# read in files
+hhs_hosp_raw = read.csv(url('https://opendata.arcgis.com/datasets/1d5b20ddfada4ef88ae51b35c5c881f7_0.csv'))
+hhs_fac_reporting_raw = read.csv(url('https://opendata.arcgis.com/datasets/7841114f71fa4c56aab1f09e58833c09_0.csv'))
+
+# get modified date for file naming from fac reporting json
+get_hhs_date = rjson::fromJSON(file='https://opendata.arcgis.com/api/v3/datasets?filter%5Bslug%5D=HHSGOV%3A%3Apercentage-of-facilities-reporting-by-state-1')[['data']][[1]][['attributes']][['modified']]
+
+#convert 13 digit unix date code to R date
+# TODO: check if this updates daily & matches updates to data values
+date_out = as.Date(format(as.POSIXct(get_hhs_date/1000, origin="1970-01-01"), '%Y-%m-%d'))
+
+# combine csv for archival
+openxlsx::write.xlsx(list('1' = hhs_hosp_raw, '2' = hhs_fac_reporting_raw),
+                file = paste0('original-sources/historical/hhs/hhs_data_', date_out, '.xlsx'))
+
+# read in archival sources
+hhs_list <- paste0('original-sources/historical/hhs/',
+                    list.files(path = 'original-sources/historical/hhs',
+                               pattern = '*.xlsx'))
+
+HHS_clean = function(df, date) { 
+  clean_df = df %>% 
+    filter(state_name == 'Texas') %>% 
+    select(-c('ï..OBJECTID', 'Shape__Area', 'Shape__Length', 'state_fips',
+              'state_abbr', 'hhs_region', 'state_name'))
+  
+  colnames(clean_df) = paste0('HHS_', colnames(clean_df))
+  
+  # drop date from colnames (will likely change over time)
+  colnames(clean_df) = gsub('_*\\d', '', colnames(clean_df))
+  clean_df$Date = date
+  return(clean_df)
+  }
+
+# read all historical sheets
+# clean files
+# combine files together using rbind
+HHS_hosp <- data.table::rbindlist(lapply(lapply(hhs_list, read.xlsx, sheet = 1), HHS_clean, date=date_out))
+HHS_fac_reporting <- data.table::rbindlist(lapply(lapply(hhs_list, read.xlsx, sheet = 2), HHS_clean, date=date_out))
+
+
+# merge together for combination with other state data
+hhs_df = merge(HHS_hosp, HHS_fac_reporting, by = 'Date', all=TRUE)
+```
+
+
+
 ## DSHS (time series)
 
 ```{r}
@@ -853,7 +905,7 @@ state_hosp_detail =
 
 ```{r}
 merged_state = Reduce(function(x, y) merge(x, y, by = c('Date'), all=TRUE),
-       list(state_counts, state_google, DSHS_state_time, state_facilities, state_hosp_detail))
+       list(state_counts, state_google, DSHS_state_time, state_facilities, state_hosp_detail, hhs_df))
 
 merged_state$Population_DSHS = state_pops$Population_DSHS
 ```
