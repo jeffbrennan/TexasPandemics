@@ -481,7 +481,7 @@ DSHS_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 136 more problems</code></pre>
+## * ... and 137 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_cases_time) = DSHS_cases_time[2, ]
 DSHS_cases_time = DSHS_cases_time[3:(nrow(DSHS_cases_time) - 11), ]
@@ -521,7 +521,7 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 139 more problems</code></pre>
+## * ... and 140 more problems</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
 DSHS_deaths_time = DSHS_deaths_time[3:(nrow(DSHS_deaths_time) - 10), ]
@@ -558,7 +558,7 @@ DSHS_tests_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 89 more problems</code></pre>
+## * ... and 90 more problems</code></pre>
 <pre class="r"><code># TEMP FIX drop first duplicated date column
 dupe_dates = which(DSHS_tests_time[1, ] == &#39;Tests Through June 23&#39;)
 DSHS_tests_time = DSHS_tests_time[, -dupe_dates[1]]
@@ -608,7 +608,7 @@ DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code><
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 104 more problems</code></pre>
+## * ... and 105 more problems</code></pre>
 <pre class="r"><code># fix colname
 colnames(DSHS_active_cases_time) = DSHS_active_cases_time[2, ]
 DSHS_active_cases_time = DSHS_active_cases_time[3:(nrow(DSHS_active_cases_time)), 2:ncol(DSHS_active_cases_time)]
@@ -675,7 +675,7 @@ DSHS_tsa_names = readxl::read_xlsx(&#39;original-sources/DSHS_tsa_hosp.xlsx&#39;
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 100 more problems</code></pre>
+## * ... and 101 more problems</code></pre>
 <pre class="r"><code>colnames(DSHS_tsa_names) = c(&#39;TSA&#39;, &#39;TSA_Name&#39;)
 
 DSHS_tsa_names$TSA = gsub(&#39;.&#39;, &#39;&#39;, DSHS_tsa_names$TSA, fixed = TRUE)
@@ -767,21 +767,21 @@ DSHS_tsa_hosp = read_excel_allsheets(&#39;original-sources/DSHS_tsa_hosp.xlsx&#3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 100 more problems
+## * ... and 101 more problems
 ## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 100 more problems
+## * ... and 101 more problems
 ## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 100 more problems</code></pre>
+## * ... and 101 more problems</code></pre>
 <pre class="r"><code>DSHS_hosp_clean = function(df, var_name) { 
   colnames(df) = df[1, ]
   df = df[2:23, ]
@@ -809,28 +809,28 @@ DSHS_tsa_hosp_cap = read_excel_allsheets(&#39;original-sources/DSHS_tsa_hosp_cap
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 100 more problems
+## * ... and 101 more problems
 ## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 100 more problems
+## * ... and 101 more problems
 ## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 100 more problems</code></pre>
+## * ... and 101 more problems</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ... and 89 more problems</code></pre>
+## * ... and 90 more problems</code></pre>
 <pre class="r"><code>hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[1]], &#39;Beds_Available_Total&#39;)
 hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[2]], &#39;Beds_Available_ICU&#39;)
 hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[3]], &#39;Beds_Occupied_Total&#39;)
@@ -1363,9 +1363,15 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_case_gender &lt;- lapply(demo.list, read_excel, sheet = 10)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -1683,9 +1689,15 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_age &lt;- lapply(demo.list, read_excel, sheet = 12)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -2003,9 +2015,15 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_race &lt;- lapply(demo.list, read_excel, sheet = 14)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
