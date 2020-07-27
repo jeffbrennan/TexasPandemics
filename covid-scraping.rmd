@@ -279,11 +279,12 @@ if (Sys.Date() < as.Date('2020-07-30')) {
   DSHS_active_cases_long$Date[DSHS_active_cases_long$Date == as.Date('2020-07-30')] = as.Date('2020-06-30')
   }
 
-# calculate daily active_cases
-DSHS_active_cases_long$Active_Cases_Cumulative = as.integer(as.character(DSHS_active_cases_long$Active_Cases_Cumulative))
+# calculate daily active_cases & drop duplicate dates (07-24 DSHS duplicated)
 DSHS_active_cases_long =  
     DSHS_active_cases_long %>% 
     group_by(County) %>% 
+    unique() %>%
+    mutate(Active_Cases_Cumulative = as.integer(as.character(Active_Cases_Cumulative))) %>%
     mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative)))
 ```
 
