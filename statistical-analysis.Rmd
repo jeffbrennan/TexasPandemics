@@ -159,7 +159,7 @@ rt.df.extraction <- function(Rt.estimate.output) {
 
 ```{r rt calculation}
 #Function to generate Rt estimates, need to read in data frame and population size
-covid.rt <- function(mydata) {
+covid.rt <- function(mydata, threshold) {
   
   ### DECLARE VALS ###
   
@@ -179,7 +179,10 @@ covid.rt <- function(mydata) {
   # TODO: consider removing this and handling na cases directly
   #change na values to 0
   mydata <- mydata %>% replace(is.na(.),0)
-  sum.daily.cases <- sum(mydata$Cases_Daily)
+  recent_case_avg = mydata %>% filter(Date > as.Date('2020-06-01')) %>%
+    summarize(mean(Cases_Daily, na.rm = TRUE)) %>% 
+    unlist()
+  
   pop.DSHS <- mydata$Population_DSHS[1]
   
   #Get 7 day moving average of daily cases
@@ -213,8 +216,9 @@ covid.rt <- function(mydata) {
   ### R0 ESTIMATION ###
   # TODO: establish better criteria for # of required daily cases
   # mean daily cases; average last x number of days; % of region pop etc.
-  if(!is.na(minrow) & sum.daily.cases > 100) {
-    
+  
+  if(!is.na(minrow) & recent_case_avg > threshold) {
+     
     # declare limits for rt estimation (first nonzero date & last nonzero date)
     i <- minrow
     j <- as.integer(min(last.nonzero, max.date))
@@ -255,14 +259,23 @@ TSA.daily <- covid.frame.list$TSA
 state.daily <- covid.frame.list$state
 metro.daily <- covid.frame.list$metro
 phr.daily <- covid.frame.list$phr
-```
 
+
+case_quant = county.daily %>% filter(Date >= as.Date('2020-06-01')) %>%
+  group_by(County) %>%
+  mutate(mean_cases = mean(Cases_Daily, na.rm = TRUE)) %>%
+  dplyr::select(mean_cases) %>%
+  ungroup() %>%
+  summarize(case_quant = quantile(mean_cases, c(0.4, 0.5, 0.6, 0.7, 0.8))[4]) %>% 
+  unlist()
+```
 
 ## County
 
 ```{r county rt}
 #apply the covid.rt function to the county.datily data by county 
-county.rt.output <- nlme::gapply(county.daily, FUN = covid.rt, groups = county.daily$County)
+county.rt.output <- nlme::gapply(county.daily, FUN = covid.rt,
+                                 groups = county.daily$County, threshold = case_quant)
 
 #convert list of dataframes to single dataframe with county as id col
 county.rt.df <- data.table::rbindlist(county.rt.output, idcol = TRUE)
@@ -273,7 +286,8 @@ colnames(county.rt.df)[1] = 'County'
 
 ```{r metro rt}
 #apply the covid.rt function to the metro.daily data by metro region
-metro.rt.output <- nlme::gapply(metro.daily, FUN=covid.rt, groups=metro.daily$Metro_Area)
+metro.rt.output <- nlme::gapply(metro.daily, FUN=covid.rt, groups=metro.daily$Metro_Area,
+                                threshold = case_quant)
 
 #convert list of data frames to single data frame with metro as id col
 metro.rt.df <- data.table::rbindlist(metro.rt.output, idcol=TRUE)
@@ -299,7 +313,8 @@ rt.plot<-function(rt.data, caption){
 
 ```{r tsa rt}
 #apply the covid.rt function to the TSA.daily data by TSA region
-TSA.rt.output <- nlme::gapply(TSA.daily, FUN=covid.rt, groups=TSA.daily$TSA)
+TSA.rt.output <- nlme::gapply(TSA.daily, FUN=covid.rt, groups=TSA.daily$TSA,
+                              threshold = case_quant)
 
 #convert list of data frames to single data frame with TSA as variable
 TSA.rt.df <- data.table::rbindlist(TSA.rt.output, idcol=TRUE)
@@ -320,7 +335,8 @@ nlme::gapply(TSA.rt.df, FUN=rt.plot, groups=TSA.rt.df$TSA)
 ## PHR
 
 ```{r}
-phr.rt.output <- nlme::gapply(phr.daily, FUN=covid.rt, groups=phr.daily$PHR)
+phr.rt.output <- nlme::gapply(phr.daily, FUN=covid.rt, groups=phr.daily$PHR,
+                              threshold = case_quant)
 
 #convert list of data frames to single data frame with phr as id col
 phr.rt.df <- data.table::rbindlist(phr.rt.output, idcol=TRUE)
@@ -339,7 +355,7 @@ phr.rt.df$PHR_Name <- NULL
 ## State
 
 ```{r state rt}
-state.rt.df <- covid.rt(state.daily)
+state.rt.df <- covid.rt(state.daily, threshold = case_quant)
 ```
 
 ## export
@@ -483,7 +499,7 @@ ts.data.organize<-function(mycounty, mytsa, myphr){
 
 ```{r ts arima function}
 # Compute forecast (UPDATE PREDICTION PERIOD [days] AS NEEDED)
-covid.arima.forecast<-function(mydata, prediction.period = 10, mindate) {
+covid.arima.forecast<-function(mydata, prediction.period = 10, mindate, threshold) {
   maxdate <- max(mydata$Date)
   # mindate <- as.Date('2020-05-01')
   pred_start_label = format(mindate, format = '%m_%d')
@@ -493,7 +509,11 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate) {
   
   case_avg_date = as.Date('2020-05-01')
   
-  if(max(mydata$Cases_Daily>=100, na.rm = TRUE)) {
+  recent_case_avg = mydata %>% filter(Date > as.Date('2020-06-01')) %>%
+    summarize(mean(Cases_Daily, na.rm = TRUE)) %>% 
+    unlist()
+
+  if(recent_case_avg >= threshold) {
     # arima requires cases to be a timeseries vector
     # convert daily cases to time series
     my.timeseries<-ts(mydata$Cases_Daily)
@@ -504,14 +524,16 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate) {
     #d=0 restricts first differencing to 0 so that daily cases aren't differenced
     
     arima.fit <- forecast::auto.arima(my.timeseries)
-  
-    # obtain diagnostic plots for ideal arima (p,d,q) selection 
-    acf <- ggAcf(my.timeseries, lag.max=30)
-    pacf <- ggPacf(my.timeseries, lag.max=30)
-    ts.diagnostics <- grid.arrange(acf, pacf, nrow=2)
-    ggsave(paste0('statistical-output/time-series/diagnostics/',
-                  mydata$Level[1],'/', mydata$Level_Name[1], pred_start_label, '.png'),
-           plot = ts.diagnostics)
+
+    # omitted for performance
+    # TODO: replace with p,d,q dataframe
+    # # obtain diagnostic plots for ideal arima (p,d,q) selection 
+    # acf <- ggAcf(my.timeseries, lag.max=30)
+    # pacf <- ggPacf(my.timeseries, lag.max=30)
+    # ts.diagnostics <- grid.arrange(acf, pacf, nrow=2)
+    # ggsave(paste0('statistical-output/time-series/diagnostics/',
+    #               mydata$Level[1],'/', mydata$Level_Name[1], pred_start_label, '.png'),
+    #        plot = ts.diagnostics)
 
     
     
@@ -589,7 +611,8 @@ PHR.Daily <- covid.frame.list$phr
 county.arima.output.1 <- nlme::gapply(county.Daily,
                                     FUN = covid.arima.forecast,
                                     groups = county.Daily$Level_Name,
-                                    mindate = as.Date('2020-03-04'))
+                                    mindate = as.Date('2020-03-04'),
+                                    threshold = case_quant)
 
 # bind list of dataframes to one dataframe
 county.arima.df.1 <- data.table::rbindlist(county.arima.output.1, idcol = TRUE)
@@ -613,7 +636,8 @@ colnames(county.arima.df.1)[1] <- 'County'
 metro.arima.output.1 <- nlme::gapply(metro.Daily,
                                    FUN = covid.arima.forecast,
                                    groups = metro.Daily$Level_Name,
-                                   mindate = as.Date('2020-03-04'))
+                                   mindate = as.Date('2020-03-04'),
+                                   threshold = case_quant)
 
 # bind list of dataframes to one dataframe
 metro.arima.df.1 <- data.table::rbindlist(metro.arima.output.1, idcol = TRUE)
@@ -637,7 +661,8 @@ colnames(metro.arima.df.1)[1] <- 'Metro_Area'
 TSA.arima.output.1 <- nlme::gapply(TSA.Daily,
                                    FUN = covid.arima.forecast,
                                    groups = TSA.Daily$Level_Name,
-                                   mindate = as.Date('2020-03-04'))
+                                   mindate = as.Date('2020-03-04'),
+                                   threshold = case_quant)
 
 TSA.arima.df.1 <- data.table::rbindlist(TSA.arima.output.1, idcol=TRUE)
 
@@ -656,7 +681,8 @@ TSA.arima.df.1$TSA_Name <- NULL
 PHR.arima.output <- nlme::gapply(PHR.Daily,
                                  FUN = covid.arima.forecast,
                                  groups = PHR.Daily$Level_Name,
-                                 mindate = as.Date('2020-03-04'))
+                                 mindate = as.Date('2020-03-04'),
+                                 threshold = case_quant)
 
 PHR.arima.df <- data.table::rbindlist(PHR.arima.output, idcol=TRUE)
 colnames(PHR.arima.df)[1] <- 'Level_Name'
@@ -672,7 +698,9 @@ colnames(PHR.arima.df)[1] <- 'PHR'
 ## State
 
 ```{r Texas forecasts, results='hide'}
-texas.arima.df.1 <- covid.arima.forecast(state.Daily, mindate = as.Date('2020-03-04'))
+texas.arima.df.1 <- covid.arima.forecast(state.Daily,
+                                         mindate = as.Date('2020-03-04'),
+                                         threshold = case_quant)
 # texas.arima.df.2 <- covid.arima.forecast(state.Daily, mindate = as.Date('2020-06-03'))
 ```
 
