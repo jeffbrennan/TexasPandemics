@@ -373,7 +373,13 @@ summary {
     x = lapply(sheets, function(X) readxl::read_excel(filename, sheet = X, skip = 1, col_names = TRUE, na = &#39;.&#39;))
     x = lapply(x, as.data.frame)
     return(x)
-}</code></pre>
+}
+
+date_out = ifelse((Sys.time() &lt; as.POSIXct(paste0(Sys.Date(), &#39;20:00&#39;), tz = &#39;America/Chicago&#39;)),
+                   Sys.Date() - 1,
+                   Sys.Date())
+
+date_out = as.Date(date_out, origin = &#39;1970-1-1&#39;)</code></pre>
 <div id="todo" class="section level1">
 <h1>TODO</h1>
 <pre class="r"><code># TODO: investigate 
@@ -409,13 +415,13 @@ county_demo_2018$AGEGRP = factor(county_demo_2018$AGEGRP,
 </div>
 <div id="city-level" class="section level2">
 <h2>City level</h2>
-<pre class="r"><code># keep only 2018 estimate
-city_pops = read.csv(&#39;original-sources/census/city_pops.csv&#39;)[, c(3, 4, 9, 21)]
+<pre class="r"><code># keep only 2019 estimate
+city_pops = read.csv(&#39;original-sources/census/city_pops.csv&#39;)[, c(3, 4, 9, 22)]
 
 colnames(city_pops) = c(&#39;County&#39;, &#39;Place_Code&#39;, &#39;City&#39;, &#39;Population&#39;)
 
 # drop city, town, suffixes
-city_pops$City = gsub(&#39; city| town|&#39;, &#39;&#39;, city_pops$City)
+city_pops$City = gsub(&#39; city| town| village&#39;, &#39;&#39;, city_pops$City)
 
 # drop pt suffix
 # pt indicates overlap of cities between counties
@@ -427,15 +433,15 @@ colnames(city_pops)[1] = &#39;County_Code&#39;
 county_fips = subset(city_pops, Place_Code == 0)[-1, c(1,3)]
 colnames(county_fips) = c(&#39;County_Code&#39;, &#39;County&#39;)
 
-
 # replace county fips with actual names
 merged_city = merge(city_pops, county_fips, by = &#39;County_Code&#39;)
 
 # drop county totals from list
-merged_city = subset(merged_city, Place_Code != 0 &amp; Place_Code != 99990)
+merged_city = subset(merged_city, Place_Code != 0 &amp; Place_Code != 99990)[, 2:4]
+colnames(merged_city)[1] = &#39;FIPS&#39;
 
-# drop county suffix
-merged_city$County = gsub(&#39; County&#39;, &#39;&#39;, merged_city$County)</code></pre>
+# # drop county suffix
+# merged_city$County = gsub(&#39; County&#39;, &#39;&#39;, merged_city$County)</code></pre>
 </div>
 </div>
 <div id="county-level-1" class="section level1">
@@ -505,9 +511,12 @@ DSHS_cases_long = DSHS_cases_long[order(DSHS_cases_long$County, DSHS_cases_long$
 # calculate daily cases
 DSHS_cases_long$Cases_Cumulative = as.integer(as.character(DSHS_cases_long$Cases_Cumulative))
 DSHS_cases_long = 
-    DSHS_cases_long %&gt;% 
-    group_by(County) %&gt;% 
-     mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))</code></pre>
+  DSHS_cases_long %&gt;% 
+  group_by(County) %&gt;% 
+  tidyr::complete(Date = seq.Date(min(Date), date_out, by=&quot;day&quot;)) %&gt;%
+  tidyr::fill(Cases_Cumulative, .direction = &quot;down&quot;) %&gt;%
+  tidyr::fill(Population, .direction = &quot;down&quot;) %&gt;%
+  mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))</code></pre>
 </div>
 <div id="deaths" class="section level3">
 <h3>deaths</h3>
@@ -819,12 +828,17 @@ colnames(DSHS_deaths_long) = c(&#39;County&#39;, &#39;Population&#39;, &#39;Date
 # fix dates
 DSHS_deaths_long$Date = as.Date(as.integer(DSHS_deaths_long$Date), origin = &#39;2020-03-06&#39;)
 
-# calculate daily deaths
+seq(max(DSHS_deaths_long$Date)+1, date_out, &#39;day&#39;)</code></pre>
+<pre><code>## [1] &quot;2020-07-25&quot; &quot;2020-07-26&quot; &quot;2020-07-27&quot;</code></pre>
+<pre class="r"><code># calculate daily deaths
 DSHS_deaths_long$Deaths_Cumulative = as.integer(as.character(DSHS_deaths_long$Deaths_Cumulative))
 DSHS_deaths_long = 
-    DSHS_deaths_long %&gt;% 
-    group_by(County) %&gt;%
-    mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))</code></pre>
+  DSHS_deaths_long %&gt;%
+  group_by(County) %&gt;%
+  tidyr::complete(Date = seq.Date(min(Date), date_out, by=&quot;day&quot;)) %&gt;%
+  tidyr::fill(Deaths_Cumulative, .direction = &quot;down&quot;) %&gt;%
+  tidyr::fill(Population, .direction = &quot;down&quot;) %&gt;%
+  mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))</code></pre>
 </div>
 <div id="testing" class="section level3">
 <h3>testing</h3>
@@ -871,6 +885,8 @@ DSHS_tests_long$Tests_Cumulative = as.numeric(as.character(DSHS_tests_long$Tests
 DSHS_tests_long = 
     DSHS_tests_long %&gt;% 
     group_by(County) %&gt;% 
+    tidyr::complete(Date = seq.Date(min(Date), date_out, by=&quot;day&quot;)) %&gt;%
+    tidyr::fill(Tests_Cumulative, .direction = &quot;down&quot;) %&gt;%
     mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative)))
 
 # drop unmergable counties 
@@ -918,6 +934,8 @@ DSHS_active_cases_long =
     group_by(County) %&gt;% 
     unique() %&gt;%
     mutate(Active_Cases_Cumulative = as.integer(as.character(Active_Cases_Cumulative))) %&gt;%
+    tidyr::complete(Date = seq.Date(min(Date), date_out, by=&quot;day&quot;)) %&gt;%
+    tidyr::fill(Active_Cases_Cumulative, .direction = &quot;down&quot;) %&gt;%
     mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative)))</code></pre>
 <pre class="r"><code># combine DSHS sources
 DSHS_county_counts = Reduce(function(x, y) merge(x, y, by = c(&#39;Date&#39;, &#39;County&#39;), all=TRUE),
@@ -975,7 +993,7 @@ tsa_long_complete = merge(tsa_long_complete, DSHS_tsa_names, by = &#39;TSA&#39;)
 <div id="merge" class="section level2">
 <h2>merge</h2>
 <pre class="r"><code># DSHS pop
-dshs_pops = unique(DSHS_cases_long[, c(1:2)])
+dshs_pops = unique(DSHS_cases_long[, c(1, 3)])
 colnames(dshs_pops) = c(&#39;County&#39;, &#39;Population_DSHS&#39;)
 
 merged_dshs = Reduce(function(x, y) merge(x, y, by = &#39;County&#39;, all = TRUE),
@@ -1130,13 +1148,6 @@ DSHS_json_hosp_tsa = DSHS_json_hosp_tsa[, c(2,5:9)]
 
 colnames(DSHS_json_hosp_tsa) = c(&#39;TSA&#39;, &#39;Hospital_Beds_Staffed&#39;, &#39;Hospital_Beds_Available&#39;,
                                  &#39;ICU_Beds_Available&#39;, &#39;Ventilators_Available&#39;, &#39;Current_Cases&#39;)
-
-date_out = ifelse((Sys.time() &lt; as.POSIXct(paste0(Sys.Date(), &#39;20:00&#39;), tz = &#39;America/Chicago&#39;)),
-                   Sys.Date() - 1,
-                   Sys.Date())
-
-date_out = as.Date(date_out, origin = &#39;1970-1-1&#39;)
-
 DSHS_json_hosp_tsa$Date = format(date_out, &#39;%m/%d/%y&#39;)
 
 # add computed cols
@@ -2659,7 +2670,7 @@ merged_state$Population_DSHS = state_pops$Population_DSHS</code></pre>
 <h1>OUTPUT</h1>
 <div id="city" class="section level2">
 <h2>City</h2>
-<pre class="r"><code>write.csv(merged_city, &#39;combined-datasets/city_pops.csv&#39;, row.names = F)</code></pre>
+<pre class="r"><code>write.csv(merged_city, &#39;tableau/city_pops.csv&#39;, row.names = F)</code></pre>
 </div>
 <div id="county" class="section level2">
 <h2>County</h2>
