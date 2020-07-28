@@ -17,7 +17,6 @@ library(ggpubr)
 ```{r}
 
 Plot_Threshold = function(df, criteria_name, plot_label) { 
-  cat(plot_label)
   criteria_vals = subset(df, Date == maxdate) %>% 
     group_by(Date) %>% 
     do(data.frame(t(quantile(unlist(df[, criteria_name]), probs = c(0.4, 0.5, 0.6, 0.7, 0.8)))))
