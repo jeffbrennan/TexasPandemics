@@ -1176,6 +1176,8 @@ stacked_ratio_out = combined_current_ratio_dat %>%
 write.csv(stacked_ratio_out, 'statistical-output/standard-stats/case-ratios/stacked_case_ratio.csv',
           row.names = FALSE)
 
+write.csv(stacked_ratio_out, 'tableau/stacked_case_ratio.csv',
+          row.names = FALSE)
 # write.csv(combined_current_ratio_dat, 'tableau/stacked_case_ratio.csv',
 #           row.names = FALSE)
 ```
@@ -1348,7 +1350,7 @@ write.csv(phr.case.test.df, 'statistical-output/standard-stats/pct-change/phr_pc
 Metro <- read.csv('combined-datasets/metro.csv')
 
 metrolist <- unique(Metro$Metro_Area)
-
+ 
 tmp <- create.case.test(level="metro", Metro,metrolist[1])
 metro.case.test.df <- data.frame(Metro_Area=rep(metrolist[1], nrow(tmp)), tmp)
 
