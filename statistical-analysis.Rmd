@@ -1169,7 +1169,7 @@ stacked_ratio_out = combined_current_ratio_dat %>%
   mutate(County = ifelse(Level_Type == 'County', as.character(Level), '')) %>% 
   mutate(TSA = ifelse(Level_Type == 'TSA', as.character(Level), '')) %>% 
   mutate(PHR = ifelse(Level_Type == 'PHR', as.character(Level), '')) %>% 
-  mutate(Metro = ifelse(Level_Type == 'Metro', as.character(Level), '')) %>% 
+  mutate(`Metro Area` = ifelse(Level_Type == 'Metro', as.character(Level), '')) %>% 
   mutate(State = ifelse(Level_Type == 'State', as.character(Level), ''))
 
 
