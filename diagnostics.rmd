@@ -72,8 +72,9 @@ state = openxlsx::read.xlsx('combined-datasets/state.xlsx', sheet = 1)
 
 state_compare = state %>%
   mutate(Date = openxlsx::convertToDate(Date)) %>%
-  select(c(Date, grep('Hospitalizations_|Beds_', colnames(state)),
-           HHS_Inpatient.Beds.Occupied.Estimated, HHS_Inpatient.Beds.Occupied.by.COVID.19.Patients.Estimated,
+  dplyr::select(c(Date, grep('Hospitalizations_|Beds_', colnames(state)),
+           HHS_Inpatient.Beds.Occupied.Estimated,
+           HHS_Inpatient.Beds.Occupied.by.COVID.19.Patients.Estimated,
            HHS_ICU.Beds.Occupied.Estimated)) %>% 
   na.omit()
 
@@ -106,7 +107,7 @@ ggplot(state_compare, aes(x = Date)) +
   theme_pubr()
 
 
-ggplot(state, aes(x = Date, y = )) + 
+ggplot(state_compare, aes(x = Date)) + 
   geom_point(aes(y = Beds_Occupied_ICU, color = 'DSHS'), size = 2) + 
   geom_point(aes(y = HHS_ICU.Beds.Occupied.Estimated, color = 'HHS Estimate'), size = 2) + 
   labs(y = 'Beds', title = 'ICU Beds Occupied',
@@ -114,7 +115,5 @@ ggplot(state, aes(x = Date, y = )) +
                          'HHS: Estimated number of ICU beds occupied for the given state and date')) + 
   scale_color_manual('', values = c('blue', 'red'), labels = c('DSHS', 'HHS Estimate')) + 
   theme_pubr()
-
-
 ```
 
