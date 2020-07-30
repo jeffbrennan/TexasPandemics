@@ -190,28 +190,46 @@ colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
 DSHS_deaths_time = DSHS_deaths_time[3:(nrow(DSHS_deaths_time) - 10), ]
 colnames(DSHS_deaths_time)[1] = 'County'
 
+
+# fix dates (DSHS included 2 different formats at random intervals)
+dates = colnames(DSHS_deaths_time)[2:length(colnames(DSHS_deaths_time))]
+numeric_dates = which(is.na(as.Date(dates, format = '%m/%d/%Y')))
+dates[numeric_dates] = format(as.Date(as.integer(dates[numeric_dates]), origin = '1899-12-30'))
+dates[-numeric_dates] = format(as.Date(dates[-numeric_dates], format = '%m/%d/%Y'), '%Y-%m-%d')
+
+colnames(DSHS_deaths_time)[2:length(colnames(DSHS_deaths_time))] = dates
+
 #save
 write.csv(DSHS_deaths_time, 'original-sources/DSHS_county_deaths.csv', row.names = FALSE)
 
 # melt
-DSHS_deaths_long = reshape::melt(DSHS_deaths_time, id = c('County', 'Population'))
+DSHS_deaths_long = reshape::melt(DSHS_deaths_time, id = c('County'))
                                 
 # set colnames
-colnames(DSHS_deaths_long) = c('County', 'Population', 'Date', 'Deaths_Cumulative')
+colnames(DSHS_deaths_long) = c('County', 'Date', 'Deaths_Cumulative')
 
-# fix dates
-DSHS_deaths_long$Date = as.Date(as.integer(DSHS_deaths_long$Date), origin = '2020-03-06')
+# fix county names (HARRIS -> Harris) & fuzzy match to case county names
+DSHS_deaths_long$County = stringr::str_to_title(DSHS_deaths_long$County)
 
-seq(max(DSHS_deaths_long$Date)+1, date_out, 'day')
+# manually fix 
+mismatched_counties = setdiff(unique(DSHS_deaths_long$County), unique(DSHS_cases_long$County))
+
+DSHS_deaths_long$County = gsub('De Witt', 'DeWitt', DSHS_deaths_long$County)
+DSHS_deaths_long$County = gsub('Mcculloch', 'McCulloch', DSHS_deaths_long$County)
+DSHS_deaths_long$County = gsub('Mclennan', 'McLennan', DSHS_deaths_long$County)
+DSHS_deaths_long$County = gsub('Mcmullen', 'McMullen', DSHS_deaths_long$County)
+
+# check again
+length(setdiff(unique(DSHS_deaths_long$County), unique(DSHS_cases_long$County)))
 
 # calculate daily deaths
 DSHS_deaths_long$Deaths_Cumulative = as.integer(as.character(DSHS_deaths_long$Deaths_Cumulative))
 DSHS_deaths_long = 
   DSHS_deaths_long %>%
+  mutate(Date = as.Date(Date)) %>%
   group_by(County) %>%
   tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
   tidyr::fill(Deaths_Cumulative, .direction = "down") %>%
-  tidyr::fill(Population, .direction = "down") %>%
   mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))
 ```
 
