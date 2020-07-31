@@ -155,10 +155,10 @@ colnames(DSHS_cases_time)[1] = 'County'
 write.csv(DSHS_cases_time, 'original-sources/DSHS_county_cases.csv', row.names = FALSE)
 
 # melt
-DSHS_cases_long = reshape::melt(DSHS_cases_time, id = c('County', 'Population'))
+DSHS_cases_long = reshape::melt(DSHS_cases_time, id = c('County'))
                                 
 # set colnames
-colnames(DSHS_cases_long) = c('County', 'Population', 'Date', 'Cases_Cumulative')
+colnames(DSHS_cases_long) = c('County', 'Date', 'Cases_Cumulative')
 
 # fix dates
 DSHS_cases_long$Date = as.Date(gsub('Cases|\r|\r|\n', '', DSHS_cases_long$Date), format = '%m-%d')
@@ -173,7 +173,6 @@ DSHS_cases_long =
   group_by(County) %>% 
   tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
   tidyr::fill(Cases_Cumulative, .direction = "down") %>%
-  tidyr::fill(Population, .direction = "down") %>%
   mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
 ```
 
@@ -382,8 +381,8 @@ tsa_long_complete = merge(tsa_long_complete, DSHS_tsa_names, by = 'TSA') %>% uni
 ## merge
 
 ```{r}
-# DSHS pop
-dshs_pops = unique(DSHS_cases_long[, c(1, 3)])
+# DSHS pop - removed by DSHS 07/30 - defaulting to previous file
+dshs_pops = unique(read.csv('https://raw.githubusercontent.com/jeffbrennan/COVID-19/d03d476f7fb060dfd2e1a600a6a1e449df0ab8df/original-sources/DSHS_county_cases.csv')[, c('County', 'Population')])
 colnames(dshs_pops) = c('County', 'Population_DSHS')
 
 merged_dshs = Reduce(function(x, y) merge(x, y, by = 'County', all = TRUE),
@@ -394,7 +393,7 @@ merged_dshs$TSA_Combined = paste0(merged_dshs$TSA, ' - ', merged_dshs$TSA_Name)
 merged_dshs$PHR_Combined = paste0(merged_dshs$PHR, ' - ', merged_dshs$PHR_Name)
 
 merged_county = as.data.frame(merge(merged_dshs, mobility_texas, by = c('Date', 'County'), all = TRUE)) %>% 
-  filter(!is.na(County))
+  filter(!is.na(County) & County != 'Unknown')
 
 # fix types
 merged_county$County = as.factor(merged_county$County)
@@ -448,10 +447,15 @@ DSHS_hosp_clean = function(df, var_name) {
   df = df[2:23, ]
   df$`TSA ID` = gsub('.', '', df$`TSA ID`, fixed = TRUE)
   df$`TSA AREA` = NULL   # TODO: remove if switch to DSHS
+  dates = colnames(df)[2:length(colnames(df))]
+  numeric_dates = which(is.na(as.Date(dates, format = '%Y-%m-%d')))
+  dates[numeric_dates] = format(as.Date(as.integer(dates[numeric_dates]), origin = '1899-12-30'))
+  dates[-numeric_dates] = format(as.Date(dates[-numeric_dates]), '%Y-%m-%d')
+  colnames(df)[2:length(colnames(df))] = dates
+
   df_long = reshape::melt(df, id = 'TSA ID')
   colnames(df_long) = c('TSA', 'Date', var_name)
   df_long$Date = as.Date(df_long$Date)
-  
   return(df_long)
 }
 
