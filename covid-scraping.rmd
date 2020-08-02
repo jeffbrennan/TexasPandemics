@@ -830,7 +830,7 @@ DSHS_death_race <- lapply(demo.list, read_excel, sheet = 14)
 
 DSHS_demo_clean = function(df, count_type) {
   # search for updated date (digit "/" digit)
-  matches = str_extract_all(colnames(df)[1], '\\d+\\/\\d+')[[1]]
+  date = str_extract_all(colnames(df)[1], '\\d+\\/\\d+')[[1]]
   # date = matches[length(matches)]  # gets last instance of '/' (handle race/ethnicity first)
   df = df[2:(nrow(df) - 4), ]
   df[, 'Date'] = as.Date(paste0('2020/', date))
