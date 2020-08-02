@@ -17,7 +17,6 @@ library(rjson)
 ```
 
 ```{r helper files & functions}
-
 # Grab every sheet from an excel file and convert to list of dataframes
 # https://stackoverflow.com/questions/12945687/read-all-worksheets-in-an-excel-workbook-into-an-r-list-with-data-frames
 read_excel_allsheets = function(filename, tibble = FALSE) {
@@ -30,6 +29,7 @@ read_excel_allsheets = function(filename, tibble = FALSE) {
 
 # set data for writing files
 # If before 5 PM, then record as last date since DSHS data will not be updated yet
+# TODO: see if this can be removed in place of using the max date on a consistent dataframe
 date_out = ifelse((Sys.time() < as.POSIXct(paste0(Sys.Date(), '16:00'), tz = 'America/Chicago')),
                    Sys.Date() - 1,
                    Sys.Date())
@@ -147,10 +147,6 @@ colnames(DSHS_cases_long) = c('County', 'Date', 'Cases_Cumulative')
 
 # fix dates (remove linebreaks and return characters from column, then interpret as %m-%d)
 DSHS_cases_long$Date = as.Date(gsub('Cases|\r|\r|\n', '', DSHS_cases_long$Date), format = '%m-%d')
-
-# TODO: delete if runs correctly
-# sort
-# DSHS_cases_long = DSHS_cases_long[order(DSHS_cases_long$County, DSHS_cases_long$Date), ]
 
 # force as integer -> coerce -- to NA
 # if a date is missing, fill using previous cumulative cases
@@ -432,6 +428,9 @@ DSHS_hosp_clean = function(df, var_name) {
   # TODO: make date conversion function
   dates = colnames(df)[2:length(colnames(df))]
   numeric_dates = which(is.na(as.Date(dates, format = '%Y-%m-%d')))
+  
+  # convert from 5 digit excel numeric format
+  # https://stackoverflow.com/questions/43230470/how-to-convert-excel-date-format-to-proper-date-in-r
   dates[numeric_dates] = format(as.Date(as.integer(dates[numeric_dates]), origin = '1899-12-30'))
   dates[-numeric_dates] = format(as.Date(dates[-numeric_dates]), '%Y-%m-%d')
   colnames(df)[2:length(colnames(df))] = dates
@@ -442,6 +441,7 @@ DSHS_hosp_clean = function(df, var_name) {
   return(df_long)
 }
 
+# 1,2,3 references the 3 sheets produced by DSHS
 hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[[1]], 'Hospitalizations_Total')
 hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[[2]], 'Hospitalizations_General')
 hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[[3]], 'Hospitalizations_ICU')
@@ -828,9 +828,10 @@ DSHS_death_age <- lapply(demo.list, read_excel, sheet = 12)
 DSHS_death_gender <- lapply(demo.list, read_excel, sheet = 13)
 DSHS_death_race <- lapply(demo.list, read_excel, sheet = 14)
 
-DSHS_demo_clean = function(df, count_type) { 
-  matches = str_extract_all(colnames(df)[1], '\\d*\\/\\d*')[[1]]
-  date = matches[length(matches)]  # gets last instance of '/' (handle race/ethnicity first)
+DSHS_demo_clean = function(df, count_type) {
+  # search for updated date (digit "/" digit)
+  matches = str_extract_all(colnames(df)[1], '\\d+\\/\\d+')[[1]]
+  # date = matches[length(matches)]  # gets last instance of '/' (handle race/ethnicity first)
   df = df[2:(nrow(df) - 4), ]
   df[, 'Date'] = as.Date(paste0('2020/', date))
   colnames(df) = c('Group', paste0(count_type, '_Cumulative'),
