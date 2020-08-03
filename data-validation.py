@@ -10,25 +10,25 @@ scraping_output = open("scrape-sources.Rout", "r").read()
 
 slack_channel = auth.iloc[2,1]
 slack_token = auth.iloc[3,1]
-
+test_channel = auth.iloc[5,1]
 
 def post_slack_message(text, blocks = None):
     return requests.post('https://slack.com/api/chat.postMessage', 
     {
         'token': slack_token,
-        'channel': slack_channel,
+        'channel': test_channel,
         'text': text,
         'blocks': json.dumps(blocks) if blocks else None
     }).json()	
 
 
-def build_run_block(status, date):
+def build_scrape_block(status, date):
     blocks = [
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "Script run at *" + date + "* EST"
+				"text": "Script run at *" + date + " EST*"
 			}
 		},
 		{
@@ -63,6 +63,9 @@ def build_run_block(status, date):
 		}
 	]
     return blocks
+
+def build_validation_block(status):
+
 
 
 def get_error_message(f):
@@ -100,8 +103,12 @@ def parse_scraping_output(f):
 
 def main():
     scraping_status = parse_scraping_output(scraping_output)
-    blocks = build_run_block(scraping_status, date_out)
-    post_slack_message(date_out + ' update', blocks)
+	validation_df = pd.read_csv('statistical_output/diagnostics/validation-test.csv')
+    scrape_block = build_scrape_block(scraping_status, date_out)
+    post_slack_message(date_out + ' update', scrape_block)
+
+	validation_block = build_validation_block(validation_df)
+	post_slack_message('validation', validation_block)
 
 if __name__ == '__main__':
     main()
