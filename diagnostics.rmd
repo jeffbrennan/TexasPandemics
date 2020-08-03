@@ -68,7 +68,7 @@ Plot_Threshold(case_features, 'criteria5', 'median(Cases_Daily)')
 # DSHS VS HHS 
 
 ```{r}
-state = openxlsx::read.xlsx('combined-datasets/state.xlsx', sheet = 1)
+state = readxl::read_excel('combined-datasets/state.xlsx', sheet = 1)
 
 state_compare = state %>%
   mutate(Date = openxlsx::convertToDate(Date)) %>%
