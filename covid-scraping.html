@@ -1005,9 +1005,16 @@ merged_tsa = merged_tsa %&gt;%
   mutate_at(vars(Beds_Available_Total, Ventilators_Available, Beds_Available_ICU,
                  Beds_Occupied_Total, Beds_Occupied_ICU, Hospitalizations_Total,
                  Hospitalizations_General, Hospitalizations_ICU),
-            funs(as.numeric)) %&gt;%
+            funs(as.character)) %&gt;%
+  mutate_at(vars(Beds_Available_Total, Ventilators_Available, Beds_Available_ICU,
+                 Beds_Occupied_Total, Beds_Occupied_ICU, Hospitalizations_Total,
+                 Hospitalizations_General, Hospitalizations_ICU),
+            funs(as.integer)) %&gt;%
   mutate(TSA_Combined = paste0(TSA, &#39; - &#39;, TSA_Name)) %&gt;%
   filter(!is.na(TSA))</code></pre>
+<pre><code>## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion</code></pre>
 </div>
 </div>
 <div id="phr-level" class="section level1">
