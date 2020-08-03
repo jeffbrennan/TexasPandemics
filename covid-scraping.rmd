@@ -513,7 +513,11 @@ merged_tsa = merged_tsa %>%
   mutate_at(vars(Beds_Available_Total, Ventilators_Available, Beds_Available_ICU,
                  Beds_Occupied_Total, Beds_Occupied_ICU, Hospitalizations_Total,
                  Hospitalizations_General, Hospitalizations_ICU),
-            funs(as.numeric)) %>%
+            funs(as.character)) %>%
+  mutate_at(vars(Beds_Available_Total, Ventilators_Available, Beds_Available_ICU,
+                 Beds_Occupied_Total, Beds_Occupied_ICU, Hospitalizations_Total,
+                 Hospitalizations_General, Hospitalizations_ICU),
+            funs(as.integer)) %>%
   mutate(TSA_Combined = paste0(TSA, ' - ', TSA_Name)) %>%
   filter(!is.na(TSA))
 ```
