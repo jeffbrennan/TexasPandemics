@@ -828,70 +828,51 @@ DSHS_death_age <- lapply(demo.list, read_excel, sheet = 12)
 DSHS_death_gender <- lapply(demo.list, read_excel, sheet = 13)
 DSHS_death_race <- lapply(demo.list, read_excel, sheet = 14)
 
-DSHS_demo_clean = function(df, count_type) {
+DSHS_demo_clean = function(df) {
   # search for updated date (digit "/" digit)
   date = str_extract_all(colnames(df)[1], '\\d+\\/\\d+')[[1]]
-  # date = matches[length(matches)]  # gets last instance of '/' (handle race/ethnicity first)
   df = df[2:(nrow(df) - 4), ]
-  df[, 'Date'] = as.Date(paste0('2020/', date))
-  colnames(df) = c('Group', paste0(count_type, '_Cumulative'),
-                   paste0(count_type, '_PCT'), 'Date')
+  
+  colnames(df) = c('Group', 'var_Cumulative', 'var_PCT')
 
   # remove any rows containing total
   total_check = which(df[, 'Group'] == 'Total')
   if (length(total_check) != 0) {df = df[-which(df[, 'Group'] == 'Total'), ]}
 
-  # ensure values are numeric and drop coerced NAs (eg. Gender 7/8)
+  # ensure values are numeric, PCT reported in decimals, and drop coerced NAs (eg. Gender 7/8)
   df = df %>%
-    mutate_at(vars(!!as.name(paste0(count_type, '_Cumulative')),
-                   !!as.name(paste0(count_type, '_PCT'))),
-              funs(as.numeric)) %>%
+    mutate(Date = as.Date(paste0('2020/', date))) %>% 
+    mutate_at(c('var_Cumulative', 'var_PCT'), as.numeric) %>% 
+    mutate(var_PCT = ifelse(var_PCT > 1, var_PCT/100, var_PCT)) %>%
     na.omit()
+
+  return(df)
+}
+
+# calculate daily cases/deaths based on cumulative counts
+Demo_Daily = function(df, count_type) { 
+  df = df %>% 
+    group_by(Group) %>% 
+    mutate(var_Daily = as.numeric(c(var_Cumulative[1], diff(var_Cumulative))))
+    
+  colnames(df) = gsub('var', count_type, colnames(df))
+  
   return(df)
   }
 
-DSHS_case_age = lapply(DSHS_case_age, DSHS_demo_clean, count_type = 'Cases')
-DSHS_case_gender = lapply(DSHS_case_gender, DSHS_demo_clean, count_type = 'Cases')
-DSHS_case_race = lapply(DSHS_case_race, DSHS_demo_clean, count_type = 'Cases')
-DSHS_death_age = lapply(DSHS_death_age, DSHS_demo_clean, count_type = 'Deaths')
-DSHS_death_gender = lapply(DSHS_death_gender, DSHS_demo_clean, count_type = 'Deaths')
-DSHS_death_race = lapply(DSHS_death_race, DSHS_demo_clean, count_type = 'Deaths')
+# clean all files, row bind them together, then calculate daily counts
+DSHS_case_age_df = Demo_Daily(rbindlist(lapply(DSHS_case_age, DSHS_demo_clean)), count_type = 'Cases')
+DSHS_case_gender_df = Demo_Daily(rbindlist(lapply(DSHS_case_gender, DSHS_demo_clean)), count_type = 'Cases')
+DSHS_case_race_df = Demo_Daily(rbindlist(lapply(DSHS_case_race, DSHS_demo_clean)), count_type = 'Cases')
 
-# combine list of dataframes into one df
-# calculate daily cases after rbind
-DSHS_case_age_df = data.table::rbindlist(DSHS_case_age) %>%
-  group_by(Group) %>% 
-  mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
-
-DSHS_case_gender_df = data.table::rbindlist(DSHS_case_gender) %>%
-  group_by(Group) %>% 
-  mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
-
-DSHS_case_race_df = data.table::rbindlist(DSHS_case_race) %>%
-  group_by(Group) %>% 
-  mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
-
-DSHS_death_age_df = data.table::rbindlist(DSHS_death_age) %>%
-  group_by(Group) %>% 
-  mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))
-
-DSHS_death_gender_df = data.table::rbindlist(DSHS_death_gender) %>%
-  group_by(Group) %>% 
-  mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))
-
-DSHS_death_race_df = data.table::rbindlist(DSHS_death_race) %>%
-  group_by(Group) %>% 
-  mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))
+DSHS_death_age_df = Demo_Daily(rbindlist(lapply(DSHS_death_age, DSHS_demo_clean)), count_type = 'Deaths')
+DSHS_death_gender_df = Demo_Daily(rbindlist(lapply(DSHS_death_gender, DSHS_demo_clean)), count_type = 'Deaths')
+DSHS_death_race_df = Demo_Daily(rbindlist(lapply(DSHS_death_race, DSHS_demo_clean)), count_type = 'Deaths')
 
 # combine case and death cols
 DSHS_age_df = merge(DSHS_case_age_df, DSHS_death_age_df, by = c('Date', 'Group'))
 DSHS_gender_df = merge(DSHS_case_gender_df, DSHS_death_gender_df, by = c('Date', 'Group'))
 DSHS_race_df = merge(DSHS_case_race_df, DSHS_death_race_df, by = c('Date', 'Group'))
-
-# fix types
-DSHS_age_df[, 3:6] <- lapply(DSHS_age_df[, 3:6], as.numeric)
-DSHS_gender_df[, 3:6] <- lapply(DSHS_gender_df[, 3:6], as.numeric)
-DSHS_race_df[, 3:6] <- lapply(DSHS_race_df[, 3:6], as.numeric)
 ```
 
 ## Computed
