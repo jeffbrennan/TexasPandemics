@@ -556,6 +556,10 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## Expecting numeric in EQ3 / R3C147: got a date</code></pre>
 <pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
 ## Expecting numeric in ER3 / R3C148: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in ES3 / R3C149: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in ET3 / R3C150: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
@@ -588,6 +592,12 @@ DSHS_deaths_long = reshape::melt(DSHS_deaths_time, id = c(&#39;County&#39;))</co
 <pre><code>## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = c(7, 4, 32, 8, 0, 0, 10, 2, :
 ## invalid factor level, NA generated</code></pre>
 <pre><code>## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = c(7, 4, 33, 8, 0, 0, 10, 2, :
+## invalid factor level, NA generated
+
+## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = c(7, 4, 33, 8, 0, 0, 10, 2, :
+## invalid factor level, NA generated
+
+## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = c(7, 4, 33, 8, 0, 0, 10, 2, :
 ## invalid factor level, NA generated
 
 ## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = c(7, 4, 33, 8, 0, 0, 10, 2, :
@@ -1252,6 +1262,12 @@ download.file(state_url, paste0(&#39;original-sources/historical/demo/dshs_&#39;
                                 dshs_date, &#39;.xlsx&#39;), mode = &#39;wb&#39;)
 
 DSHS_state = read_excel_allsheets(&#39;original-sources/DSHS_state.xlsx&#39;)</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6</code></pre>
 <pre class="r"><code>DSHS_tests = DSHS_state[[4]]
 DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests) - 3), ]
 
@@ -1300,6 +1316,9 @@ demo.list &lt;- paste0(&#39;original-sources/historical/demo/&#39;,
 
 DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -1665,9 +1684,15 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_case_race &lt;- lapply(demo.list, read_excel, sheet = 11)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -2033,6 +2058,9 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_gender &lt;- lapply(demo.list, read_excel, sheet = 13)</code></pre>
 <pre><code>## New names:
@@ -2217,9 +2245,15 @@ DSHS_case_age &lt;- lapply(demo.list, read_excel, sheet = 9)</code></pre>
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_race &lt;- lapply(demo.list, read_excel, sheet = 14)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
