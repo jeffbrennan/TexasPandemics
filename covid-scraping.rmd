@@ -152,11 +152,20 @@ DSHS_cases_long$Date = as.Date(gsub('Cases|\r|\r|\n', '', DSHS_cases_long$Date),
 # if a date is missing, fill using previous cumulative cases
 # calculate daily cases by padding the initial cumulative value, then reporting the difference between successive values by county
 DSHS_cases_long$Cases_Cumulative = as.integer(as.character(DSHS_cases_long$Cases_Cumulative))
+
+# DSHS_cases_long_NA = 
+#   DSHS_cases_long %>% 
+#     group_by(County) %>% 
+#     tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
+#     mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
+
 DSHS_cases_long = 
   DSHS_cases_long %>% 
-  group_by(County) %>% 
-  tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
-  mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
+    group_by(County) %>%
+    tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
+    mutate(Cases_Cumulative_NA = Cases_Cumulative) %>% 
+    tidyr::fill(Cases_Cumulative, .direction = "down") %>%
+    mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
 ```
 
 ### deaths
@@ -206,11 +215,21 @@ length(setdiff(unique(DSHS_deaths_long$County), unique(DSHS_cases_long$County)))
 
 # calculate daily deaths & fill cumulative deaths
 DSHS_deaths_long$Deaths_Cumulative = as.integer(as.character(DSHS_deaths_long$Deaths_Cumulative))
+
+# DSHS_deaths_long_NA = 
+#   DSHS_deaths_long %>%
+#   mutate(Date = as.Date(Date)) %>%
+#   group_by(County) %>%
+#   tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
+#   mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))
+
 DSHS_deaths_long = 
   DSHS_deaths_long %>%
   mutate(Date = as.Date(Date)) %>%
   group_by(County) %>%
   tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
+  mutate(Deaths_Cumulative_NA = Deaths_Cumulative) %>%
+  tidyr::fill(Deaths_Cumulative, .direction = "down") %>%
   mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))
 ```
 
@@ -249,13 +268,22 @@ DSHS_tests_long$Tests_Cumulative = na_if(DSHS_tests_long$Tests_Cumulative, '--')
 DSHS_tests_long$Tests_Cumulative = as.numeric(as.character(DSHS_tests_long$Tests_Cumulative))
 
 # calculate daily tests
+# DSHS_tests_long_NA = 
+#     DSHS_tests_long %>% 
+#     group_by(County) %>% 
+#     tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
+#     mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative)))
+
 DSHS_tests_long = 
-    DSHS_tests_long %>% 
-    group_by(County) %>% 
-    tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
-    mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative)))
+  DSHS_tests_long %>% 
+  group_by(County) %>% 
+  tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
+  mutate(Tests_Cumulative_NA = Tests_Cumulative) %>%
+  tidyr::fill(Tests_Cumulative, .direction = "down") %>%
+  mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative)))
 
 # drop unmergable counties 
+# DSHS_tests_long_NA = subset(DSHS_tests_long_NA, County != 'Unknown' & County != 'Pending Assignments')
 DSHS_tests_long = subset(DSHS_tests_long, County != 'Unknown' & County != 'Pending Assignments')
 ```
 
@@ -285,12 +313,22 @@ DSHS_active_cases_long$Date = as.Date(gsub('Active|Cases|\r|\n', '',
                                       format = '%m-%d')
 
 # calculate daily active_cases & drop duplicate dates (07-24 DSHS duplicated)
+# DSHS_active_cases_long_NA =  
+#     DSHS_active_cases_long %>% 
+#     group_by(County) %>% 
+#     unique() %>%
+#     mutate(Active_Cases_Cumulative = as.integer(as.character(Active_Cases_Cumulative))) %>%
+#     tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
+#     mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative)))
+
 DSHS_active_cases_long =  
     DSHS_active_cases_long %>% 
     group_by(County) %>% 
     unique() %>%
     mutate(Active_Cases_Cumulative = as.integer(as.character(Active_Cases_Cumulative))) %>%
     tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
+    mutate(Active_Cases_Cumulative_NA = Active_Cases_Cumulative) %>%
+    tidyr::fill(Active_Cases_Cumulative, .direction = "down") %>%
     mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative)))
 ```
 
@@ -678,7 +716,7 @@ HHS_fac_clean = function(df) {
     
     clean_df = df %>% 
       filter(state_name == 'Texas') %>% 
-      select(-c('ï..OBJECTID', 'Shape__Area', 'Shape__Length', 'state_fips',
+      dplyr::select(-c('ï..OBJECTID', 'Shape__Area', 'Shape__Length', 'state_fips',
                 'state_abbr', 'hhs_region', 'state_name'))
     
     colnames(clean_df)[1:3] = c('reporting_hospitals', 'total_hospitals', 'percent_reporting')
@@ -690,7 +728,7 @@ HHS_fac_clean = function(df) {
   } else { 
     clean_df = df %>% 
       filter(state_name == 'Texas') %>% 
-      select(-c('ï..OBJECTID', 'state_name'))
+      dplyr::select(-c('ï..OBJECTID', 'state_name'))
     
     colnames(clean_df)[1:3] = paste0('HHS_', colnames(clean_df)[1:3])
     }
@@ -709,7 +747,7 @@ HHS_fac_reporting <- rbindlist(lapply(lapply(hhs_list, read_xlsx, sheet = 1), HH
 HHS_hosp_clean = function(df, data_type) { 
   clean_df = df %>% 
     filter(state == 'TX') %>% 
-    select(-c('state'))
+    dplyr::select(-c('state'))
   
   # append type of data to colnames
   colnames(clean_df)[c(3:4, 6:7)] = paste0(data_type, colnames(clean_df[c(3:4, 6:7)]))
@@ -947,25 +985,32 @@ write.csv(merged_city, 'tableau/city_pops.csv', row.names = F)
 ## County
 
 ```{r}
-write.csv(merged_county, file = 'combined-datasets/county.csv', row.names = F)
-write.csv(merged_county, 'tableau/county.csv', row.names = FALSE)
+merged_county_out = merged_county %>% 
+  dplyr::select(-c(Cases_Cumulative_NA, Deaths_Cumulative_NA,
+                   Tests_Cumulative_NA, Active_Cases_Cumulative_NA))
+
+write.csv(merged_county_out, file = 'combined-datasets/county.csv', row.names = F)
+write.csv(merged_county_out, 'tableau/county.csv', row.names = FALSE)
 write.csv(county_demo_2018, file = 'combined-datasets/county_demo.csv', row.names = F)
 ```
 
-### Fill cumulative cases
+### NA cumulative cases when missing
 
 ```{r}
-merged_county_fill = merged_county %>%
-  tidyr::fill(Cases_Cumulative, .direction = "down") %>%
-  tidyr::fill(Deaths_Cumulative, .direction = "down") %>%
-  tidyr::fill(Tests_Cumulative, .direction = "down") %>%
-  tidyr::fill(Active_Cases_Cumulative, .direction = "down") %>%
+merged_county_NA = merged_county %>%
+  group_by(County) %>%
+  mutate(Cases_Cumulative = Cases_Cumulative_NA) %>%
+  mutate(Deaths_Cumulative = Deaths_Cumulative_NA) %>%
+  mutate(Tests_Cumulative = Tests_Cumulative_NA) %>%
+  mutate(Active_Cases_Cumulative = Active_Cases_Cumulative_NA) %>% 
   mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative))) %>%
   mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative))) %>%
   mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative))) %>%
-  mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative)))
+  mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative))) %>% 
+  dplyr::select(-c(Cases_Cumulative_NA, Deaths_Cumulative_NA,
+                   Tests_Cumulative_NA, Active_Cases_Cumulative_NA))
 
-write.csv(merged_county_fill, 'tableau/county_date_fill.csv', row.names = F)
+write.csv(merged_county_NA, 'tableau/county_cumulative_NA.csv', row.names = F)
 ```
 
 
