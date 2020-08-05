@@ -156,7 +156,6 @@ DSHS_cases_long =
   DSHS_cases_long %>% 
   group_by(County) %>% 
   tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
-  tidyr::fill(Cases_Cumulative, .direction = "down") %>%
   mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
 ```
 
@@ -212,7 +211,6 @@ DSHS_deaths_long =
   mutate(Date = as.Date(Date)) %>%
   group_by(County) %>%
   tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
-  tidyr::fill(Deaths_Cumulative, .direction = "down") %>%
   mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))
 ```
 
@@ -255,7 +253,6 @@ DSHS_tests_long =
     DSHS_tests_long %>% 
     group_by(County) %>% 
     tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
-    tidyr::fill(Tests_Cumulative, .direction = "down") %>%
     mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative)))
 
 # drop unmergable counties 
@@ -294,7 +291,6 @@ DSHS_active_cases_long =
     unique() %>%
     mutate(Active_Cases_Cumulative = as.integer(as.character(Active_Cases_Cumulative))) %>%
     tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
-    tidyr::fill(Active_Cases_Cumulative, .direction = "down") %>%
     mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative)))
 ```
 
@@ -660,15 +656,11 @@ DSHS_metro = DSHS_metro %>% filter(!is.na(Metro_Area))
 
 ```{r}
 # read in files
-hhs_fac_reporting_raw = read.csv(url('https://opendata.arcgis.com/datasets/7841114f71fa4c56aab1f09e58833c09_0.csv'))
+hhs_fac_reporting_raw = read.csv(url('https://opendata.arcgis.com/datasets/adf5753521ed4e2199d6a4c246e08f84_0.csv'))
 
-# get modified date for file naming from fac reporting json
-get_hhs_date = rjson::fromJSON(file='https://opendata.arcgis.com/api/v3/datasets?filter%5Bslug%5D=HHSGOV%3A%3Apercentage-of-facilities-reporting-by-state-1')[['data']][[1]][['attributes']][['modified']]
-
-#convert 13 digit unix date code to R date
-# https://stackoverflow.com/questions/9691319/new-to-json-java-what-datatype-is-this-a-datetime-13-digits-long-using-php
-hhs_date = as.Date(format(as.POSIXct(get_hhs_date/1000, origin="1970-01-01"), '%Y-%m-%d'))
+hhs_date = as.Date(hhs_fac_reporting_raw$last_updated)
 hhs_fac_reporting_raw$Date = hhs_date
+hhs_fac_reporting_raw$last_updated = NULL
 
 # combine csv for archival
 write_xlsx(list('1' = hhs_fac_reporting_raw),
@@ -680,20 +672,30 @@ hhs_list <- paste0('original-sources/historical/hhs/',
                                pattern = '*.xlsx'))
 
 HHS_fac_clean = function(df) { 
-  clean_df = df %>% 
-    filter(state_name == 'Texas') %>% 
-    select(-c('ï..OBJECTID', 'Shape__Area', 'Shape__Length', 'state_fips',
-              'state_abbr', 'hhs_region', 'state_name'))
-  
-  colnames(clean_df)[1:3] = paste0('HHS_', colnames(clean_df)[1:3])
-  
-  # drop date from colnames (will likely change over time)
-  colnames(clean_df) = gsub('_*\\d', '', colnames(clean_df))
-  
-  # convert numeric date to y-m-d
-  clean_df$Date = format(as.Date(clean_df$Date, origin = '1899-12-30'), '%Y-%m-%d')
+    df$Date = format(as.Date(df$Date, origin = '1899-12-30'), '%Y-%m-%d')
+    
+    if (df$Date[1] <= as.Date('2020-08-03')) {
+    
+    clean_df = df %>% 
+      filter(state_name == 'Texas') %>% 
+      select(-c('ï..OBJECTID', 'Shape__Area', 'Shape__Length', 'state_fips',
+                'state_abbr', 'hhs_region', 'state_name'))
+    
+    colnames(clean_df)[1:3] = c('reporting_hospitals', 'total_hospitals', 'percent_reporting')
+    colnames(clean_df)[1:3] = paste0('HHS_', colnames(clean_df)[1:3])
+    
+    # drop date from colnames (will likely change over time)
+    colnames(clean_df) = gsub('_*\\d', '', colnames(clean_df))
+    
+  } else { 
+    clean_df = df %>% 
+      filter(state_name == 'Texas') %>% 
+      select(-c('ï..OBJECTID', 'state_name'))
+    
+    colnames(clean_df)[1:3] = paste0('HHS_', colnames(clean_df)[1:3])
+    }
   return(clean_df)
-  }
+}
 
 # 1st lapply: read excel sheets
 # 2nd: clean all of them
@@ -950,12 +952,30 @@ write.csv(merged_county, 'tableau/county.csv', row.names = FALSE)
 write.csv(county_demo_2018, file = 'combined-datasets/county_demo.csv', row.names = F)
 ```
 
+### Fill cumulative cases
+
+```{r}
+merged_county_fill = merged_county %>%
+  tidyr::fill(Cases_Cumulative, .direction = "down") %>%
+  tidyr::fill(Deaths_Cumulative, .direction = "down") %>%
+  tidyr::fill(Tests_Cumulative, .direction = "down") %>%
+  tidyr::fill(Active_Cases_Cumulative, .direction = "down") %>%
+  mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative))) %>%
+  mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative))) %>%
+  mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative))) %>%
+  mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative)))
+
+write.csv(merged_county_fill, 'tableau/county_date_fill.csv', row.names = F)
+```
+
+
+
 ## TSA
 
 ```{r}
 write.csv(merged_tsa, file = 'combined-datasets/tsa.csv', row.names = F)
 
-hosp_tsa = merged_tsa[, c(1:3, 18:26)]
+hosp_tsa = merged_tsa[, c(1:3, 18:26)] %>% filter(Date >= min(hosp_cap1$Date))
 write.csv(hosp_tsa, file = 'tableau/hospitalizations_tsa.csv', row.names = F)
 ```
 
@@ -984,7 +1004,7 @@ write_xlsx(state_out, path = "combined-datasets/state.xlsx")
 ```{r}
 demo_out = list("age" = DSHS_age_df, "gender" = DSHS_gender_df, "race" = DSHS_race_df)
 write_xlsx(demo_out, path = "combined-datasets/demographics.xlsx")
-write_xlsx(demo_out, path = "tableau/demographics.xlsx")
+# write_xlsx(demo_out, path = "tableau/demographics.xlsx")
 ```
 
 ### stacked
