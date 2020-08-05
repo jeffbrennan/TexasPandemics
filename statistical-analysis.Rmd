@@ -225,6 +225,8 @@ covid.rt <- function(mydata, threshold) {
 
     #reduce the vector to be rows from min date (March 9 or first nonzero case) to current date
     mydata.newest <- mydata.new[i:j]
+    
+    tryCatch({
     rt.DSHS <- estimate.R(mydata.newest, 
                         gen.time, 
                         begin=as.integer(1),
@@ -234,7 +236,15 @@ covid.rt <- function(mydata, threshold) {
                         nsim=1000)
   
     rt.DSHS.df <- rt.df.extraction(rt.DSHS)
-    
+    },
+    error = function(e) {
+    cat(as.character(mydata[1,2]))
+    rt.DSHS.df <<- data.frame(Date = as.Date(mydata$Date),
+                             Rt = rep(NA, length(mydata$Date)),
+                             lower = rep(NA, length(mydata$Date)),
+                             upper = rep(NA, length(mydata$Date)))
+    return(rt.DSHS.df)
+    })
   } else {
     # error catch small regions & na values for minrow
     rt.DSHS.df <- data.frame(Date = as.Date(mydata$Date),
@@ -542,8 +552,8 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate, threshol
     q<- arima.fit$arma[2]          # moving average order 
     d<-arima.fit$arma[6]           # differencing order from model
   
-    # 10 day forecast, CI for lower and upper has confidence level 70% set by level =c(70,70)
-    arima.forecast <- forecast::forecast(arima.fit, h = prediction.period, level=c(70,70))
+    # 10 day forecast, CI for lower and upper has confidence level 95% set by level =c(95,95)
+    arima.forecast <- forecast::forecast(arima.fit, h = prediction.period, level=c(95,95))
 
     #return a dataframe of the arima model(Daily cases by date)
     arima.out <- data.frame(Date = seq(mindate, maxdate + prediction.period, by = 'days'),
@@ -836,8 +846,8 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate)
     q<- arima.fit$arma[2]          # moving average order 
     d<-arima.fit$arma[6]           # differencing order from model
   
-    # 10 day forecast, CI for lower and upper has confidence level 70% set by level =c(70,70)
-    arima.forecast <- forecast::forecast(arima.fit, h = prediction.period, level=c(70,70))
+    # 10 day forecast, CI for lower and upper has confidence level 95% set by level =c(95,95)
+    arima.forecast <- forecast::forecast(arima.fit, h = prediction.period, level=c(95,95))
 
     #return a dataframe of the arima model(Daily cases by date)
     arima.out <- data.frame(Date = seq(mindate, maxdate + prediction.period, by = 'days'),
@@ -1138,11 +1148,11 @@ write.csv(county_current_ratio_dat, 'statistical-output/standard-stats/case-rati
 write.csv(metro_current_ratio_dat,'statistical-output/standard-stats/case-ratios/metro_case_ratio.csv', row.names = F)
 write.csv(phr_current_ratio_dat,'statistical-output/standard-stats/case-ratios/phr_case_ratio.csv', row.names = F)
 
-write.csv(state_current_ratio_dat, 'tableau/case-ratios/state_case_ratio.csv', row.names = F)
-write.csv(tsa_current_ratio_dat,'tableau/case-ratios/tsa_case_ratio.csv', row.names = F)
-write.csv(county_current_ratio_dat, 'tableau/case-ratios/county_case_ratio.csv', row.names = F)
-write.csv(metro_current_ratio_dat,'tableau/case-ratios/metro_case_ratio.csv', row.names = F)
-write.csv(phr_current_ratio_dat,'tableau/case-ratios/phr_case_ratio.csv', row.names = F)
+# write.csv(state_current_ratio_dat, 'tableau/case-ratios/state_case_ratio.csv', row.names = F)
+# write.csv(tsa_current_ratio_dat,'tableau/case-ratios/tsa_case_ratio.csv', row.names = F)
+# write.csv(county_current_ratio_dat, 'tableau/case-ratios/county_case_ratio.csv', row.names = F)
+# write.csv(metro_current_ratio_dat,'tableau/case-ratios/metro_case_ratio.csv', row.names = F)
+# write.csv(phr_current_ratio_dat,'tableau/case-ratios/phr_case_ratio.csv', row.names = F)
 ```
 
 
