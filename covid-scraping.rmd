@@ -810,7 +810,7 @@ DSHS_state = read_excel_allsheets('original-sources/DSHS_state.xlsx')
 DSHS_tests = DSHS_state[[4]]
 DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests) - 3), ]
 
-colnames(DSHS_tests) = c('Date', 'Viral_Tests', 'Antibody_Tests', 'Tests_Total', 'Positive_Rate', 'Viral_Tests_New_Avg', 'Antibody_Tests_New_Avg', 'Total_Tests_New_Avg')
+colnames(DSHS_tests) = c('Date', 'Viral_Tests', 'Antibody_Tests', 'Antigen_Tests', 'Tests_Total', 'Positive_Rate', 'Viral_Tests_New_Avg', 'Antibody_Tests_New_Avg', 'Total_Tests_New_Avg')
 
 # fix date (https://stackoverflow.com/questions/43230470/how-to-convert-excel-date-format-to-proper-date-in-r) 
 DSHS_tests$Date = as.Date(as.integer(DSHS_tests$Date), origin = '1899-12-30')
