@@ -409,7 +409,8 @@ merged_county$Population_DSHS = as.numeric(merged_county$Population_DSHS)
 
 # keep only relevant dates (previous dates include google mobility only)
 merged_county = merged_county %>% 
-  filter(Date >= as.Date('2020-03-04') & !is.na(County))
+  filter(Date >= as.Date('2020-03-04') & !is.na(County)) %>% 
+  unique()
 ```
 
 # TSA LEVEL
@@ -459,6 +460,10 @@ DSHS_hosp_clean = function(df, var_name) {
   df = df[2:23, c(1, 3:ncol(df))]
   df$`TSA ID` = gsub('.', '', df$`TSA ID`, fixed = TRUE)
 
+  # add temp fix for DSHS duplicated dates (8/8)
+  df = df[, -grep('.x', colnames(df))]
+  colnames(df) = gsub('.y', '', colnames(df))
+  
   # TODO: make date conversion function
   dates = colnames(df)[2:length(colnames(df))]
   numeric_dates = which(is.na(as.Date(dates, format = '%Y-%m-%d')))
@@ -553,7 +558,8 @@ merged_tsa = merged_tsa %>%
                  Hospitalizations_General, Hospitalizations_ICU),
             funs(as.integer)) %>%
   mutate(TSA_Combined = paste0(TSA, ' - ', TSA_Name)) %>%
-  filter(!is.na(TSA))
+  filter(!is.na(TSA)) %>% 
+  unique()
 ```
 
 # PHR LEVEL
@@ -644,7 +650,7 @@ phr_df = Reduce(function(x, y) merge(x, y, by = c('Date', 'PHR'), all = TRUE),
 phr_df$Nursing_Cases = as.numeric(phr_df$Nursing_Cases)
 phr_df$Nursing_Recoveries = as.numeric(phr_df$Nursing_Recoveries)
 
-phr_df = phr_df %>% filter(!is.na(PHR))
+phr_df = phr_df %>% filter(!is.na(PHR)) %>% unique()
 ```
 
 # METRO LEVEL
@@ -684,7 +690,7 @@ DSHS_metro = subset(merge(DSHS_metro_counts, DSHS_metro_pops,
                           by = 'Metro_Area', all = TRUE), !is.na(Date))
 
 DSHS_metro = merge(DSHS_metro, DSHS_metro_google, by = c('Date', 'Metro_Area'))
-DSHS_metro = DSHS_metro %>% filter(!is.na(Metro_Area))
+DSHS_metro = DSHS_metro %>% filter(!is.na(Metro_Area)) %>% unique()
 ```
 
 
@@ -810,7 +816,7 @@ DSHS_state = read_excel_allsheets('original-sources/DSHS_state.xlsx')
 DSHS_tests = DSHS_state[[4]]
 DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests) - 3), ]
 
-colnames(DSHS_tests) = c('Date', 'Viral_Tests', 'Antibody_Tests', 'Antigen_Tests', 'Tests_Total', 'Positive_Rate', 'Viral_Tests_New_Avg', 'Antibody_Tests_New_Avg', 'Total_Tests_New_Avg')
+colnames(DSHS_tests) = c('Date', 'Viral_Tests', 'Antibody_Tests', 'Antigen Tests',  'Tests_Total', 'Positive_Rate', 'Viral_Tests_New_Avg', 'Antibody_Tests_New_Avg', 'Total_Tests_New_Avg')
 
 # fix date (https://stackoverflow.com/questions/43230470/how-to-convert-excel-date-format-to-proper-date-in-r) 
 DSHS_tests$Date = as.Date(as.integer(DSHS_tests$Date), origin = '1899-12-30')
@@ -822,7 +828,7 @@ DSHS_tests$Positive_Rate = as.numeric(DSHS_tests$Positive_Rate)
 
 ```{r}
 # drop row num
-DSHS_hospitalizations = DSHS_state[[8]][, c(2:3)]
+DSHS_hospitalizations = DSHS_state[[9]][, c(2:3)]
 
 # drop footnote
 DSHS_hospitalizations = DSHS_hospitalizations[1:(nrow(DSHS_hospitalizations) - 2), ]
@@ -848,13 +854,16 @@ DSHS_state_day = data.frame(Recovered_Total = DSHS_state[[3]][1,1],
                             Active_Total = DSHS_state[[3]][1,2],
                             Tests_State_Lab = DSHS_state[[5]][1,2],
                             Tests_Commercial_Lab = DSHS_state[[5]][2,2],
-                            Antibody_Tests_Positive = DSHS_state[[6]][2,2],
-                            Hospital_Bed_Total = DSHS_state[[7]][2,2],
-                            Hospital_Bed_Available = DSHS_state[[7]][3,2],
-                            ICU_Bed_Available = DSHS_state[[7]][4,2],
-                            Ventilator_Available = DSHS_state[[7]][5,2],
-                            Case_Investigations = DSHS_state[[9]][[14,2]],
-                            Death_Investigations = DSHS_state[[12]][14,2])
+                            Antigen_Tests_Total = DSHS_state[[6]][1,2],
+                            Antigen_Tests_Positive = DSHS_state[[6]][2,2],
+                            Antibody_Tests_Total = DSHS_state[[7]][1,2],
+                            Antibody_tests_Positive = DSHS_state[[7]][2,2],
+                            Hospital_Bed_Total = DSHS_state[[8]][2,2],
+                            Hospital_Bed_Available = DSHS_state[[8]][3,2],
+                            ICU_Bed_Available = DSHS_state[[8]][4,2],
+                            Ventilator_Available = DSHS_state[[8]][5,2],
+                            Case_Investigations = DSHS_state[[10]][[14,2]],
+                            Death_Investigations = DSHS_state[[13]][14,2])
 ```
 
 ## DSHS Demographics
@@ -865,12 +874,23 @@ demo.list <- paste0('original-sources/historical/demo/',
                     list.files(path = 'original-sources/historical/demo',
                                pattern = '*.xlsx'))
 
-DSHS_case_age <- lapply(demo.list, read_excel, sheet = 9)
-DSHS_case_gender <- lapply(demo.list, read_excel, sheet = 10)
-DSHS_case_race <- lapply(demo.list, read_excel, sheet = 11)
-DSHS_death_age <- lapply(demo.list, read_excel, sheet = 12)
-DSHS_death_gender <- lapply(demo.list, read_excel, sheet = 13)
-DSHS_death_race <- lapply(demo.list, read_excel, sheet = 14)
+DSHS_case_age <- append(lapply(demo.list[1:66], read_excel, sheet = 9),
+                        lapply(demo.list[67:length(demo.list)], read_excel, sheet = 10))
+                        
+DSHS_case_gender <- append(lapply(demo.list[1:66], read_excel, sheet = 10),
+                           lapply(demo.list[67:length(demo.list)], read_excel, sheet = 11))
+
+DSHS_case_race <- append(lapply(demo.list[1:66], read_excel, sheet = 11),
+                        lapply(demo.list[67:length(demo.list)], read_excel, sheet = 12))
+
+DSHS_death_age <- append(lapply(demo.list[1:66], read_excel, sheet = 12),
+                         lapply(demo.list[67:length(demo.list)], read_excel, sheet = 13))
+
+DSHS_death_gender <- append(lapply(demo.list[1:66], read_excel, sheet = 13),
+                            lapply(demo.list[67:length(demo.list)], read_excel, sheet = 14))
+
+DSHS_death_race <- append(lapply(demo.list[1:66], read_excel, sheet = 14),
+                          lapply(demo.list[67:length(demo.list)], read_excel, sheet = 15))
 
 DSHS_demo_clean = function(df) {
   # search for updated date (digit "/" digit)
