@@ -460,10 +460,13 @@ DSHS_hosp_clean = function(df, var_name) {
   df = df[2:23, c(1, 3:ncol(df))]
   df$`TSA ID` = gsub('.', '', df$`TSA ID`, fixed = TRUE)
 
-  # add temp fix for DSHS duplicated dates (8/8)
-  df = df[, -grep('.x', colnames(df))]
-  colnames(df) = gsub('.y', '', colnames(df))
-  
+  # add temp fix for DSHS duplicated dates (8/8) (fixed by DSHS 8/10)
+  # TODO: add dynamic handling
+  if (length(grep('.x', colnames(df)) > 0)) { 
+    df = df[, -grep('.x', colnames(df))]
+    colnames(df) = gsub('.y', '', colnames(df))
+  }
+
   # TODO: make date conversion function
   dates = colnames(df)[2:length(colnames(df))]
   numeric_dates = which(is.na(as.Date(dates, format = '%Y-%m-%d')))
