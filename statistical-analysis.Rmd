@@ -527,7 +527,7 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate, threshol
     # arima requires cases to be a timeseries vector
     # convert daily cases to time series
     my.timeseries<-ts(mydata$Cases_Daily)
-    print(mydata[1,2])
+    print(as.character(mydata[1,2]))
     #load package(pracma)
     library(pracma)
     my.timeseries<-movavg(my.timeseries,7,"s")
