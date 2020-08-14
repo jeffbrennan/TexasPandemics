@@ -586,6 +586,8 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## Expecting numeric in FB3 / R3C158: got a date</code></pre>
 <pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
 ## Expecting numeric in FC3 / R3C159: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in FD3 / R3C160: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
@@ -618,6 +620,9 @@ DSHS_deaths_long = reshape::melt(DSHS_deaths_time, id = c(&#39;County&#39;))</co
 <pre><code>## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = c(8, 4, 32, 8, 0, 0, 11, 3, :
 ## invalid factor level, NA generated</code></pre>
 <pre><code>## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = c(8, 4, 33, 8, 0, 0, 11, 3, :
+## invalid factor level, NA generated
+
+## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = c(8, 4, 33, 8, 0, 0, 11, 3, :
 ## invalid factor level, NA generated
 
 ## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = c(8, 4, 33, 8, 0, 0, 11, 3, :
@@ -1623,10 +1628,16 @@ DSHS_case_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 9),
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_case_gender &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 10),
                            lapply(demo.list[67:length(demo.list)], read_excel, sheet = 11))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -2053,10 +2064,16 @@ DSHS_case_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 9),
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 12),
                          lapply(demo.list[67:length(demo.list)], read_excel, sheet = 13))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -2483,10 +2500,16 @@ DSHS_case_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 9),
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_race &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 14),
                           lapply(demo.list[67:length(demo.list)], read_excel, sheet = 15))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
