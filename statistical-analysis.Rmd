@@ -271,7 +271,7 @@ metro.daily <- covid.frame.list$metro
 phr.daily <- covid.frame.list$phr
 
 
-case_quant = county.daily %>% filter(Date >= as.Date('2020-06-01')) %>%
+case_quant = county.daily %>% filter(Date >= as.Date(Sys.Date() - as.difftime(3, unit = 'weeks'))) %>%
   group_by(County) %>%
   mutate(mean_cases = mean(Cases_Daily, na.rm = TRUE)) %>%
   dplyr::select(mean_cases) %>%
