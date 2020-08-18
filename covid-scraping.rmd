@@ -503,7 +503,14 @@ hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[3]], 'Beds_Occupied_Total')
 hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[4]], 'Beds_Occupied_ICU')
 
 hosp_cap4$Beds_Occupied_ICU = gsub('--', NA, hosp_cap4$Beds_Occupied_ICU)
+
+# DSHS duplicated Aug 7th available ICU Beds
+if(length(which(hosp_cap2$Date == '2020-08-07')) > 22) { 
+  hosp_cap2$Date[which(hosp_cap2$Date == '2020-08-07')[23:44]] = as.Date('2020-08-08')
+}
 ```
+
+
 
 ## DSHS dashboard
 

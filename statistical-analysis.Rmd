@@ -179,7 +179,9 @@ covid.rt <- function(mydata, threshold) {
   # TODO: consider removing this and handling na cases directly
   #change na values to 0
   mydata <- mydata %>% replace(is.na(.),0)
-  recent_case_avg = mydata %>% filter(Date > as.Date('2020-06-01')) %>%
+  
+  # get case average from past month
+  recent_case_avg = mydata %>% filter(Date > seq(Sys.Date(), length = 2, by = "-1 month")[2]) %>%
     summarize(mean(Cases_Daily, na.rm = TRUE)) %>% 
     unlist()
   
@@ -517,9 +519,7 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate, threshol
   mydata = subset(mydata, Date >= mindate)
   model.length <- as.numeric(length(mydata$Date) + prediction.period)
   
-  case_avg_date = as.Date('2020-05-01')
-  
-  recent_case_avg = mydata %>% filter(Date > as.Date('2020-06-01')) %>%
+  recent_case_avg = mydata %>% filter(Date > seq(Sys.Date(), length = 2, by = "-1 month")[2]) %>%
     summarize(mean(Cases_Daily, na.rm = TRUE)) %>% 
     unlist()
 
@@ -545,8 +545,6 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate, threshol
     #               mydata$Level[1],'/', mydata$Level_Name[1], pred_start_label, '.png'),
     #        plot = ts.diagnostics)
 
-    
-    
     # save parameters from arima autofit
     p<- arima.fit$arma[1]          # autoregressive order 
     q<- arima.fit$arma[2]          # moving average order 
