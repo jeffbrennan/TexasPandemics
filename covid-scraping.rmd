@@ -487,6 +487,15 @@ DSHS_hosp_clean = function(df, var_name) {
 hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[[1]], 'Hospitalizations_Total')
 hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[[2]], 'Hospitalizations_General')
 hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[[3]], 'Hospitalizations_ICU')
+
+
+if(length(which(hosp_1$Date == '2008-08-08')) > 0) {
+  hosp_1$Date[which(hosp_1$Date == '2008-08-08')] = as.Date('2020-08-08')
+}
+
+if(length(which(hosp_2$Date == '2008-08-08')) > 0) {
+  hosp_2$Date[which(hosp_2$Date == '2008-08-08')] = as.Date('2020-08-08')
+}
 ```
 
 
@@ -504,10 +513,10 @@ hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[4]], 'Beds_Occupied_ICU')
 
 hosp_cap4$Beds_Occupied_ICU = gsub('--', NA, hosp_cap4$Beds_Occupied_ICU)
 
-# DSHS duplicated Aug 7th available ICU Beds
-if(length(which(hosp_cap2$Date == '2020-08-07')) > 22) { 
-  hosp_cap2$Date[which(hosp_cap2$Date == '2020-08-07')[23:44]] = as.Date('2020-08-08')
-}
+# DSHS duplicated Aug 7th available ICU Beds - fixed 8/17
+# if(length(which(hosp_cap2$Date == '2020-08-07')) > 22) { 
+#   hosp_cap2$Date[which(hosp_cap2$Date == '2020-08-07')[23:44]] = as.Date('2020-08-08')
+# }
 ```
 
 
@@ -1009,7 +1018,7 @@ merged_state = merged_state %>%
 ## City
 
 ```{r}
-write.csv(merged_city, 'tableau/city_pops.csv', row.names = F)
+# write.csv(merged_city, 'tableau/city_pops.csv', row.names = F)
 ``` 
 
 ## County
@@ -1024,24 +1033,24 @@ write.csv(merged_county_out, 'tableau/county.csv', row.names = FALSE)
 write.csv(county_demo_2018, file = 'combined-datasets/county_demo.csv', row.names = F)
 ```
 
-### NA cumulative cases when missing
+<!-- ### NA cumulative cases when missing -->
 
-```{r}
-merged_county_NA = merged_county %>%
-  group_by(County) %>%
-  mutate(Cases_Cumulative = Cases_Cumulative_NA) %>%
-  mutate(Deaths_Cumulative = Deaths_Cumulative_NA) %>%
-  mutate(Tests_Cumulative = Tests_Cumulative_NA) %>%
-  mutate(Active_Cases_Cumulative = Active_Cases_Cumulative_NA) %>% 
-  mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative))) %>%
-  mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative))) %>%
-  mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative))) %>%
-  mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative))) %>% 
-  dplyr::select(-c(Cases_Cumulative_NA, Deaths_Cumulative_NA,
-                   Tests_Cumulative_NA, Active_Cases_Cumulative_NA))
+<!-- ```{r} -->
+<!-- merged_county_NA = merged_county %>% -->
+<!--   group_by(County) %>% -->
+<!--   mutate(Cases_Cumulative = Cases_Cumulative_NA) %>% -->
+<!--   mutate(Deaths_Cumulative = Deaths_Cumulative_NA) %>% -->
+<!--   mutate(Tests_Cumulative = Tests_Cumulative_NA) %>% -->
+<!--   mutate(Active_Cases_Cumulative = Active_Cases_Cumulative_NA) %>%  -->
+<!--   mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative))) %>% -->
+<!--   mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative))) %>% -->
+<!--   mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative))) %>% -->
+<!--   mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative))) %>%  -->
+<!--   dplyr::select(-c(Cases_Cumulative_NA, Deaths_Cumulative_NA, -->
+<!--                    Tests_Cumulative_NA, Active_Cases_Cumulative_NA)) -->
 
-write.csv(merged_county_NA, 'tableau/county_cumulative_NA.csv', row.names = F)
-```
+<!-- write.csv(merged_county_NA, 'tableau/county_cumulative_NA.csv', row.names = F) -->
+<!-- ``` -->
 
 
 
@@ -1058,7 +1067,7 @@ write.csv(hosp_tsa, file = 'tableau/hospitalizations_tsa.csv', row.names = F)
 
 ```{r}
 write.csv(phr_df, file = 'combined-datasets/phr.csv', row.names = F)
-write.csv(phr_df, file = 'tableau/phr.csv', row.names = F)
+# write.csv(phr_df, file = 'tableau/phr.csv', row.names = F)
 ```
 
 ## Metro
