@@ -844,6 +844,8 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## Expecting numeric in FG3 / R3C163: got a date</code></pre>
 <pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
 ## Expecting numeric in FH3 / R3C164: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in FI3 / R3C165: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
@@ -1045,6 +1047,10 @@ tsa_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsO
 download.file(tsa_url, &#39;original-sources/DSHS_tsa_hosp.xlsx&#39;, mode = &#39;wb&#39;) 
 
 DSHS_tsa_names = readxl::read_xlsx(&#39;original-sources/DSHS_tsa_hosp.xlsx&#39;)[3:24, 1:2]</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in DQ3 / R3C121: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in DY3 / R3C129: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
@@ -1143,21 +1149,32 @@ DSHS_tsa = merge(DSHS_tsa, DSHS_tsa_pops, by = &#39;TSA&#39;, all = TRUE)</code>
 <pre class="r"><code>hosp_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx&#39;
 download.file(hosp_url, &#39;original-sources/DSHS_tsa_hosp.xlsx&#39;, mode = &#39;wb&#39;) 
 DSHS_tsa_hosp = read_excel_allsheets(&#39;original-sources/DSHS_tsa_hosp.xlsx&#39;)</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in DQ3 / R3C121: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in DY3 / R3C129: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ...
-## New names:
+## * ...</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in DQ3 / R3C121: got a date
+
+## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in DY3 / R3C129: got a date</code></pre>
+<pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ...
-## New names:
+## * ...</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in DQ3 / R3C121: got a date</code></pre>
+<pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
@@ -1193,54 +1210,98 @@ DSHS_tsa_hosp = read_excel_allsheets(&#39;original-sources/DSHS_tsa_hosp.xlsx&#3
 }
 
 # 1,2,3 references the 3 sheets produced by DSHS
-hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[[1]], &#39;Hospitalizations_Total&#39;)
-hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[[2]], &#39;Hospitalizations_General&#39;)
-hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[[3]], &#39;Hospitalizations_ICU&#39;)</code></pre>
+hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[[1]], &#39;Hospitalizations_Total&#39;)</code></pre>
+<pre><code>## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = c(74, 117, 43, 60, 1337, 111, :
+## invalid factor level, NA generated</code></pre>
+<pre><code>## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = c(59, 84, 46, 42, 1155, 103, :
+## invalid factor level, NA generated</code></pre>
+<pre class="r"><code>hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[[2]], &#39;Hospitalizations_General&#39;)</code></pre>
+<pre><code>## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = c(42, 56, 22, 20, 877, 53, :
+## invalid factor level, NA generated
+
+## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = c(42, 56, 22, 20, 877, 53, :
+## invalid factor level, NA generated</code></pre>
+<pre class="r"><code>hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[[3]], &#39;Hospitalizations_ICU&#39;)</code></pre>
+<pre><code>## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = c(32, 60, 21, 40, 434, 58, :
+## invalid factor level, NA generated</code></pre>
+<pre class="r"><code>if(length(which(hosp_1$Date == &#39;2008-08-08&#39;)) &gt; 0) {
+  hosp_1$Date[which(hosp_1$Date == &#39;2008-08-08&#39;)] = as.Date(&#39;2020-08-08&#39;)
+}
+
+if(length(which(hosp_2$Date == &#39;2008-08-08&#39;)) &gt; 0) {
+  hosp_2$Date[which(hosp_2$Date == &#39;2008-08-08&#39;)] = as.Date(&#39;2020-08-08&#39;)
+}</code></pre>
 </div>
 <div id="hospital-capacity" class="section level2">
 <h2>hospital capacity</h2>
 <pre class="r"><code>hosp_cap_url = &#39;https://dshs.texas.gov/coronavirus/TexasHospitalCapacityoverTimebyTSA.xlsx&#39;
 download.file(hosp_cap_url, &#39;original-sources/DSHS_tsa_hosp_cap.xlsx&#39;, mode = &#39;wb&#39;) 
 DSHS_tsa_hosp_cap = read_excel_allsheets(&#39;original-sources/DSHS_tsa_hosp_cap.xlsx&#39;)</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in DY3 / R3C129: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ...
-## New names:
-## * `` -&gt; ...2
-## * `` -&gt; ...3
-## * `` -&gt; ...4
-## * `` -&gt; ...5
-## * `` -&gt; ...6
-## * ...
-## New names:
-## * `` -&gt; ...2
-## * `` -&gt; ...3
-## * `` -&gt; ...4
-## * `` -&gt; ...5
-## * `` -&gt; ...6
-## * ...
-## New names:
+## * ...</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in DP3 / R3C120: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in DQ3 / R3C121: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in DY3 / R3C129: got a date</code></pre>
+<pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
 ## * ...</code></pre>
-<pre class="r"><code>hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[1]], &#39;Beds_Available_Total&#39;)
-hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[2]], &#39;Beds_Available_ICU&#39;)
-hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[3]], &#39;Beds_Occupied_Total&#39;)
-hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[4]], &#39;Beds_Occupied_ICU&#39;)
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in DQ3 / R3C121: got a date</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in DF3 / R3C110: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in DN3 / R3C118: got a date</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...</code></pre>
+<pre class="r"><code>hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[1]], &#39;Beds_Available_Total&#39;)</code></pre>
+<pre><code>## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = c(632, 473, 306, 320, 2124, :
+## invalid factor level, NA generated</code></pre>
+<pre class="r"><code>hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[2]], &#39;Beds_Available_ICU&#39;)</code></pre>
+<pre><code>## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = c(43, 24, 9, 4, 309, 40, 42, :
+## invalid factor level, NA generated</code></pre>
+<pre><code>## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = c(52, 32, 11, 7, 316, 17, 46, :
+## invalid factor level, NA generated</code></pre>
+<pre class="r"><code>hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[3]], &#39;Beds_Occupied_Total&#39;)</code></pre>
+<pre><code>## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = c(634, 933, 333, 561, 11304, :
+## invalid factor level, NA generated</code></pre>
+<pre class="r"><code>hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[4]], &#39;Beds_Occupied_ICU&#39;)</code></pre>
+<pre><code>## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = c(88, 162, 29, 47, 1380, 80, :
+## invalid factor level, NA generated
 
-hosp_cap4$Beds_Occupied_ICU = gsub(&#39;--&#39;, NA, hosp_cap4$Beds_Occupied_ICU)
+## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = c(88, 162, 29, 47, 1380, 80, :
+## invalid factor level, NA generated</code></pre>
+<pre class="r"><code>hosp_cap4$Beds_Occupied_ICU = gsub(&#39;--&#39;, NA, hosp_cap4$Beds_Occupied_ICU)
 
-# DSHS duplicated Aug 7th available ICU Beds
-if(length(which(hosp_cap2$Date == &#39;2020-08-07&#39;)) &gt; 22) { 
-  hosp_cap2$Date[which(hosp_cap2$Date == &#39;2020-08-07&#39;)[23:44]] = as.Date(&#39;2020-08-08&#39;)
-}</code></pre>
+# DSHS duplicated Aug 7th available ICU Beds - fixed 8/17
+# if(length(which(hosp_cap2$Date == &#39;2020-08-07&#39;)) &gt; 22) { 
+#   hosp_cap2$Date[which(hosp_cap2$Date == &#39;2020-08-07&#39;)[23:44]] = as.Date(&#39;2020-08-08&#39;)
+# }</code></pre>
 </div>
 <div id="dshs-dashboard" class="section level2">
 <h2>DSHS dashboard</h2>
@@ -1825,10 +1886,16 @@ DSHS_case_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 9),
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_case_gender &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 10),
                            lapply(demo.list[67:length(demo.list)], read_excel, sheet = 11))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -2285,10 +2352,16 @@ DSHS_case_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 9),
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 12),
                          lapply(demo.list[67:length(demo.list)], read_excel, sheet = 13))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -2745,10 +2818,16 @@ DSHS_case_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 9),
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_race &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 14),
                           lapply(demo.list[67:length(demo.list)], read_excel, sheet = 15))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -3168,7 +3247,7 @@ merged_state = merged_state %&gt;%
 <h1>OUTPUT</h1>
 <div id="city-1" class="section level2">
 <h2>City</h2>
-<pre class="r"><code>write.csv(merged_city, &#39;tableau/city_pops.csv&#39;, row.names = F)</code></pre>
+<pre class="r"><code># write.csv(merged_city, &#39;tableau/city_pops.csv&#39;, row.names = F)</code></pre>
 </div>
 <div id="county-1" class="section level2">
 <h2>County</h2>
@@ -3179,23 +3258,22 @@ merged_state = merged_state %&gt;%
 write.csv(merged_county_out, file = &#39;combined-datasets/county.csv&#39;, row.names = F)
 write.csv(merged_county_out, &#39;tableau/county.csv&#39;, row.names = FALSE)
 write.csv(county_demo_2018, file = &#39;combined-datasets/county_demo.csv&#39;, row.names = F)</code></pre>
-<div id="na-cumulative-cases-when-missing" class="section level3">
-<h3>NA cumulative cases when missing</h3>
-<pre class="r"><code>merged_county_NA = merged_county %&gt;%
-  group_by(County) %&gt;%
-  mutate(Cases_Cumulative = Cases_Cumulative_NA) %&gt;%
-  mutate(Deaths_Cumulative = Deaths_Cumulative_NA) %&gt;%
-  mutate(Tests_Cumulative = Tests_Cumulative_NA) %&gt;%
-  mutate(Active_Cases_Cumulative = Active_Cases_Cumulative_NA) %&gt;% 
-  mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative))) %&gt;%
-  mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative))) %&gt;%
-  mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative))) %&gt;%
-  mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative))) %&gt;% 
-  dplyr::select(-c(Cases_Cumulative_NA, Deaths_Cumulative_NA,
-                   Tests_Cumulative_NA, Active_Cases_Cumulative_NA))
-
-write.csv(merged_county_NA, &#39;tableau/county_cumulative_NA.csv&#39;, row.names = F)</code></pre>
-</div>
+<!-- ### NA cumulative cases when missing -->
+<!-- ```{r} -->
+<!-- merged_county_NA = merged_county %>% -->
+<!--   group_by(County) %>% -->
+<!--   mutate(Cases_Cumulative = Cases_Cumulative_NA) %>% -->
+<!--   mutate(Deaths_Cumulative = Deaths_Cumulative_NA) %>% -->
+<!--   mutate(Tests_Cumulative = Tests_Cumulative_NA) %>% -->
+<!--   mutate(Active_Cases_Cumulative = Active_Cases_Cumulative_NA) %>%  -->
+<!--   mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative))) %>% -->
+<!--   mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative))) %>% -->
+<!--   mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative))) %>% -->
+<!--   mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative))) %>%  -->
+<!--   dplyr::select(-c(Cases_Cumulative_NA, Deaths_Cumulative_NA, -->
+<!--                    Tests_Cumulative_NA, Active_Cases_Cumulative_NA)) -->
+<!-- write.csv(merged_county_NA, 'tableau/county_cumulative_NA.csv', row.names = F) -->
+<!-- ``` -->
 </div>
 <div id="tsa" class="section level2">
 <h2>TSA</h2>
@@ -3207,7 +3285,7 @@ write.csv(hosp_tsa, file = &#39;tableau/hospitalizations_tsa.csv&#39;, row.names
 <div id="phr" class="section level2">
 <h2>PHR</h2>
 <pre class="r"><code>write.csv(phr_df, file = &#39;combined-datasets/phr.csv&#39;, row.names = F)
-write.csv(phr_df, file = &#39;tableau/phr.csv&#39;, row.names = F)</code></pre>
+# write.csv(phr_df, file = &#39;tableau/phr.csv&#39;, row.names = F)</code></pre>
 </div>
 <div id="metro" class="section level2">
 <h2>Metro</h2>
