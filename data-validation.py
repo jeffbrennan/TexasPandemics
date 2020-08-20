@@ -64,8 +64,180 @@ def build_scrape_block(status, date):
 	]
     return blocks
 
+# TODO: refactor
 def build_validation_block(status):
+	status_emoji = {1:":heavy_check_mark:", 2:":warning:"}
+	blocks = [
+		############################### COUNTY #####################################################
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*County Level Data (county.csv)*"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "<https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyFatalityCountData.xlsx|" + status_emoji[status] + "Cases>"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": " ○ Latest date: \n ○ Average daily cases: \n ○ Average % change: \n ○ % of counties reporting > 0 cases:"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "<https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsOverTimebyCounty.xlsx|" + status_emoji[status] + "Deaths>"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": " ○ Latest date: \n ○ Average daily deaths: \n ○ Average % change: \n ○ % of counties reporting > 0 deaths:"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "<https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsOverTimebyCounty.xlsx|" + status_emoji[status] + "Tests>"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": " ○ Latest date: \n ○ Average daily tests: \n ○ Average % change: \n ○ % of counties reporting > 0 tests:"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "<https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsOverTimebyCounty.xlsx|" + status_emoji[status] + "Google Mobility>"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": " ○ Latest date: \n ○ Average daily cases: \n ○ Average % change: \n ○ % of counties reporting > 0 cases"
+			}
+		},
+		{
+			"type": "divider"
+		},
+		############################### TSA ########################################################
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*TSA Level Data (tsa.csv)*"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "<https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx|" + status_emoji[status] + "Hospitalizations>"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": " ○ Latest date: \n ○ Average daily hospitalizations: \n ○ Average % change:"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "<https://dshs.texas.gov/coronavirus/TexasHospitalCapacityoverTimebyTSA.xlsx|" + status_emoji[status] + "Hospital Capacity>"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": " ○ Latest date: \n ○ Average daily capacity: \n ○ Average % change:"
+			}
+		},
+		{
+			"type": "divider"
+		},
+		{
+		############################### PHR ########################################################
 
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*PHR Level Data (phr.csv)*"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "<https://apps.hhs.texas.gov/providers/directories/Texas_Nursing_Facilities_COVID_Summary.xls|" + status_emoji[status] + "Nursing Facilities>"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": " ○ Latest date: \n ○ Average daily cases: \n ○ Average % change: \n ○ % of PHRs reporting > 0 cases"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "<https://apps.hhs.texas.gov/providers/directories/Texas_Assisted_Living_Facilities_COVID_Summary.xls|" + status_emoji[status] + "Assisted Living Facilities>"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": " ○ Latest date: \n ○ Average daily cases: \n ○ Average % change: \n ○ % of PHRs reporting > 0 cases"
+			}
+		},
+		{
+			"type": "divider"
+		},
+		############################### STATE ######################################################
+
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*State Level Data (phr.csv)*"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "<https://dshs.texas.gov/coronavirus/TexasCOVID19CaseCountData.xlsx|" + status_emoji[status] + "Demographics>"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": " ○ Latest date: \n Age: \n Gender: \n Race:"
+			}
+		}
+	]
 
 
 def get_error_message(f):
@@ -97,9 +269,6 @@ def parse_scraping_output(f):
 
     return [scrape, stats, diagnostics]
 
-
-# TODO
-# Parse validation text
 
 def main():
     scraping_status = parse_scraping_output(scraping_output)
