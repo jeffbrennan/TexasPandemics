@@ -178,20 +178,24 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))
 
 # fix colnames
 colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
-DSHS_deaths_time = DSHS_deaths_time[3:(nrow(DSHS_deaths_time) - 10), ]
+last_row = which(DSHS_deaths_time[, 1] == 'Zavala')
+
+DSHS_deaths_time = DSHS_deaths_time[3:last_row, ]
 colnames(DSHS_deaths_time)[1] = 'County'
 
+colnames(DSHS_deaths_time) = trimws(gsub('Fatalities', '', colnames(DSHS_deaths_time)))
 
 # fix dates (DSHS included 2 different formats at random intervals)
 # numeric format -> convert to date using excel numbering convetion
 # non-numeric format -> coerce m/d/y to yyy-mm-dd
 dates = colnames(DSHS_deaths_time)[2:length(colnames(DSHS_deaths_time))]
-numeric_dates = which(is.na(as.Date(dates, format = '%m/%d/%Y')))
-dates[numeric_dates] = format(as.Date(as.integer(dates[numeric_dates]), origin = '1899-12-30'))
-dates[-numeric_dates] = format(as.Date(dates[-numeric_dates], format = '%m/%d/%Y'), '%Y-%m-%d')
+dates = as.Date(dates, format = '%m-%d')
+# numeric_dates = which(is.na(as.Date(dates, format = '%m-%d')))
+# dates[numeric_dates] = format(as.Date(as.integer(dates[numeric_dates]), origin = '1899-12-30'), '%Y-%m-%d')
+# dates[-numeric_dates] = format(as.Date(dates[-numeric_dates], format = '%m-%d'), '%Y-%m-%d')
 
 # replace date values
-colnames(DSHS_deaths_time)[2:length(colnames(DSHS_deaths_time))] = dates
+colnames(DSHS_deaths_time)[2:length(colnames(DSHS_deaths_time))] = format(dates, '%Y-%m-%d')
 
 #save
 write.csv(DSHS_deaths_time, 'original-sources/DSHS_county_deaths.csv', row.names = FALSE)
