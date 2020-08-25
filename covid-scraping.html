@@ -2803,7 +2803,8 @@ DSHS_case_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 9),
 
   # ensure values are numeric, PCT reported in decimals, and drop coerced NAs (eg. Gender 7/8)
   df = df %&gt;%
-    mutate(Date = as.Date(paste0(&#39;2020/&#39;, date))) %&gt;% 
+    mutate(Date = as.Date(paste0(&#39;2020/&#39;, date))) %&gt;%
+    mutate(var_PCT = gsub(&#39;%&#39;,&#39;&#39;,var_PCT)) %&gt;%
     mutate_at(c(&#39;var_Cumulative&#39;, &#39;var_PCT&#39;), as.numeric) %&gt;% 
     mutate(var_PCT = ifelse(var_PCT &gt; 1, var_PCT/100, var_PCT)) %&gt;%
     na.omit()
@@ -2834,37 +2835,9 @@ DSHS_case_age_df = Demo_Daily(rbindlist(lapply(DSHS_case_age, DSHS_demo_clean)),
 
 ## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
 
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
 ## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion</code></pre>
 <pre class="r"><code>DSHS_case_gender_df = Demo_Daily(rbindlist(lapply(DSHS_case_gender, DSHS_demo_clean)), count_type = &#39;Cases&#39;)</code></pre>
 <pre><code>## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
 
 ## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
 
@@ -2894,43 +2867,9 @@ DSHS_case_age_df = Demo_Daily(rbindlist(lapply(DSHS_case_age, DSHS_demo_clean)),
 
 ## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
 
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
 ## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion</code></pre>
 <pre class="r"><code>DSHS_death_age_df = Demo_Daily(rbindlist(lapply(DSHS_death_age, DSHS_demo_clean)), count_type = &#39;Deaths&#39;)</code></pre>
 <pre><code>## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
 
 ## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
 
@@ -2962,45 +2901,9 @@ DSHS_case_age_df = Demo_Daily(rbindlist(lapply(DSHS_case_age, DSHS_demo_clean)),
 
 ## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
 
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
 ## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion</code></pre>
 <pre class="r"><code>DSHS_death_race_df = Demo_Daily(rbindlist(lapply(DSHS_death_race, DSHS_demo_clean)), count_type = &#39;Deaths&#39;)</code></pre>
 <pre><code>## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
 
 ## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
 

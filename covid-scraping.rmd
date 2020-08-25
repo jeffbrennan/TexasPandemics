@@ -928,7 +928,8 @@ DSHS_demo_clean = function(df) {
 
   # ensure values are numeric, PCT reported in decimals, and drop coerced NAs (eg. Gender 7/8)
   df = df %>%
-    mutate(Date = as.Date(paste0('2020/', date))) %>% 
+    mutate(Date = as.Date(paste0('2020/', date))) %>%
+    mutate(var_PCT = gsub('%','',var_PCT)) %>%
     mutate_at(c('var_Cumulative', 'var_PCT'), as.numeric) %>% 
     mutate(var_PCT = ifelse(var_PCT > 1, var_PCT/100, var_PCT)) %>%
     na.omit()
