@@ -10,7 +10,7 @@ scraping_output = open("scrape-sources.Rout", "r").read()
 
 slack_channel = auth.iloc[2,1]
 slack_token = auth.iloc[3,1]
-test_channel = auth.iloc[5,1]
+test_channel = auth.iloc[4,1]
 
 def post_slack_message(text, blocks = None):
     return requests.post('https://slack.com/api/chat.postMessage', 
@@ -65,10 +65,10 @@ def build_scrape_block(status, date):
     return blocks
 
 # TODO: refactor
-def build_validation_block(status):
-	status_emoji = {1:":heavy_check_mark:", 2:":warning:"}
+def build_validation_block(validation):
+	# status_emoji = {1:":heavy_check_mark:", 2:":warning:"}
 	blocks = [
-		############################### COUNTY #####################################################
+####################################### COUNTY #####################################################
 		{
 			"type": "section",
 			"text": {
@@ -76,66 +76,70 @@ def build_validation_block(status):
 				"text": "*County Level Data (county.csv)*"
 			}
 		},
+####################################### CASES ######################################################
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "<https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyFatalityCountData.xlsx|" + status_emoji[status] + "Cases>"
+				"text": validation['County']['Cases']['url'][0]
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": " ○ Latest date: \n ○ Average daily cases: \n ○ Average % change: \n ○ % of counties reporting > 0 cases:"
+				"text": validation['County']['Cases']['text'][0]
+			}
+		},
+####################################### DEATHS ######################################################
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": validation['County']['Deaths']['url'][0]
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "<https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsOverTimebyCounty.xlsx|" + status_emoji[status] + "Deaths>"
+				"text": validation['County']['Deaths']['text'][0]
+			}
+		},
+####################################### TESTS ######################################################
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": validation['County']['Tests']['url'][0]
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": " ○ Latest date: \n ○ Average daily deaths: \n ○ Average % change: \n ○ % of counties reporting > 0 deaths:"
+				"text": validation['County']['Tests']['text'][0]
+			}
+		},
+####################################### GOOGLE MOBILITY ######################################################
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": validation['County']['Mobility']['url'][0]
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "<https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsOverTimebyCounty.xlsx|" + status_emoji[status] + "Tests>"
+				"text":  validation['County']['Mobility']['text'][0]
 			}
 		},
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": " ○ Latest date: \n ○ Average daily tests: \n ○ Average % change: \n ○ % of counties reporting > 0 tests:"
-			}
-		},
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": "<https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsOverTimebyCounty.xlsx|" + status_emoji[status] + "Google Mobility>"
-			}
-		},
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": " ○ Latest date: \n ○ Average daily cases: \n ○ Average % change: \n ○ % of counties reporting > 0 cases"
-			}
-		},
+############################### TSA ################################################################
 		{
 			"type": "divider"
 		},
-		############################### TSA ########################################################
 		{
 			"type": "section",
 			"text": {
@@ -143,102 +147,159 @@ def build_validation_block(status):
 				"text": "*TSA Level Data (tsa.csv)*"
 			}
 		},
+############################### HOSPITALIZATIONS ################################################################
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "<https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx|" + status_emoji[status] + "Hospitalizations>"
+				"text": validation['TSA']['Hosp_Total']['url'][0]
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": " ○ Latest date: \n ○ Average daily hospitalizations: \n ○ Average % change:"
+				"text": validation['TSA']['Hosp_Total']['text'][0]
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "<https://dshs.texas.gov/coronavirus/TexasHospitalCapacityoverTimebyTSA.xlsx|" + status_emoji[status] + "Hospital Capacity>"
+				"text": validation['TSA']['Hosp_ICU']['url'][0]
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": " ○ Latest date: \n ○ Average daily capacity: \n ○ Average % change:"
+				"text": validation['TSA']['Hosp_ICU']['text'][0]
+			}
+		},
+############################### HOSPITAL CAPACITY ################################################################
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": validation['TSA']['Cap_Total']['url'][0]
 			}
 		},
 		{
-			"type": "divider"
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": validation['TSA']['Cap_Total']['text'][0]
+			}
 		},
 		{
-		############################### PHR ########################################################
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": validation['TSA']['Cap_ICU']['url'][0]
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": validation['TSA']['Cap_ICU']['text'][0]
+			}
+		},
+# ############################### PHR ########################################################
+# 		{
+# 			"type": "section",
+# 			"text": {
+# 				"type": "mrkdwn",
+# 				"text": "*PHR Level Data (phr.csv)*"
+# 			}
+# 		},
+# ############################### NURSING ################################################################
+# 		{
+# 			"type": "section",
+# 			"text": {
+# 				"type": "mrkdwn",
+# 				"text": status['phr']['nursing']['url']
+# 			}
+# 		},
+# 		{
+# 			"type": "section",
+# 			"text": {
+# 				"type": "mrkdwn",
+# 				"text": status['phr']['nursing']['text']
+# 			}
+# 		},
+# ############################### ALF ################################################################
 
+# 		{
+# 			"type": "section",
+# 			"text": {
+# 				"type": "mrkdwn",
+# 				"text": status['phr']['alf']['url']
+# 			}
+# 		},
+# 		{
+# 			"type": "section",
+# 			"text": {
+# 				"type": "mrkdwn",
+# 				"text": status['phr']['alf']['text']
+# 			}
+# 		},
+# 		{
+# 			"type": "divider"
+# 		},
+############################### STATE ######################################################
+		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "*PHR Level Data (phr.csv)*"
+				"text": "*State Level Data (stacked_demographics.csv)*"
+			}
+		},
+############################### DEMOGRAPHICS ################################################################
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": validation['State']['Age']['url'][0]
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "<https://apps.hhs.texas.gov/providers/directories/Texas_Nursing_Facilities_COVID_Summary.xls|" + status_emoji[status] + "Nursing Facilities>"
+				"text": validation['State']['Age']['text'][0]
+			}
+		},
+			{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": validation['State']['Gender']['url'][0]
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": " ○ Latest date: \n ○ Average daily cases: \n ○ Average % change: \n ○ % of PHRs reporting > 0 cases"
+				"text": validation['State']['Gender']['text'][0]
+			}
+		},
+			{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": validation['State']['Race']['url'][0]
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "<https://apps.hhs.texas.gov/providers/directories/Texas_Assisted_Living_Facilities_COVID_Summary.xls|" + status_emoji[status] + "Assisted Living Facilities>"
-			}
-		},
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": " ○ Latest date: \n ○ Average daily cases: \n ○ Average % change: \n ○ % of PHRs reporting > 0 cases"
-			}
-		},
-		{
-			"type": "divider"
-		},
-		############################### STATE ######################################################
-
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": "*State Level Data (phr.csv)*"
-			}
-		},
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": "<https://dshs.texas.gov/coronavirus/TexasCOVID19CaseCountData.xlsx|" + status_emoji[status] + "Demographics>"
-			}
-		},
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": " ○ Latest date: \n Age: \n Gender: \n Race:"
+				"text": validation['State']['Race']['text'][0]
 			}
 		}
 	]
-
+	return blocks
 
 def get_error_message(f):
     location = re.findall(r"(?<=Quitting from lines )(\d+-\d+)", f)[0]
@@ -271,12 +332,13 @@ def parse_scraping_output(f):
 
 
 def main():
-    scraping_status = parse_scraping_output(scraping_output)
-	validation_df = pd.read_csv('statistical_output/diagnostics/validation-test.csv')
-    scrape_block = build_scrape_block(scraping_status, date_out)
-    post_slack_message(date_out + ' update', scrape_block)
+	scraping_status = parse_scraping_output(scraping_output)
+	validation = json.load(open('statistical-output/diagnostics/validation.json', 'r'))
+	
+	scrape_block = build_scrape_block(scraping_status, date_out)
+	post_slack_message(date_out + ' update', scrape_block)
 
-	validation_block = build_validation_block(validation_df)
+	validation_block = build_validation_block(validation)
 	post_slack_message('validation', validation_block)
 
 if __name__ == '__main__':
