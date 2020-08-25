@@ -1240,9 +1240,10 @@ DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests) - 3), ]
 colnames(DSHS_tests) = c(&#39;Date&#39;, &#39;Viral_Tests&#39;, &#39;Antibody_Tests&#39;, &#39;Antigen Tests&#39;,  &#39;Tests_Total&#39;, &#39;Positive_Rate&#39;, &#39;Viral_Tests_New_Avg&#39;, &#39;Antibody_Tests_New_Avg&#39;, &#39;Total_Tests_New_Avg&#39;)
 
 # fix date (https://stackoverflow.com/questions/43230470/how-to-convert-excel-date-format-to-proper-date-in-r) 
-DSHS_tests$Date = as.Date(as.integer(DSHS_tests$Date), origin = &#39;1899-12-30&#39;)
-
-# fix calc col type
+DSHS_tests$Date = as.Date(as.integer(DSHS_tests$Date), origin = &#39;1899-12-30&#39;)</code></pre>
+<pre><code>## Warning in as.Date(as.integer(DSHS_tests$Date), origin = &quot;1899-12-30&quot;): NAs
+## introduced by coercion</code></pre>
+<pre class="r"><code># fix calc col type
 DSHS_tests$Positive_Rate = as.numeric(DSHS_tests$Positive_Rate)</code></pre>
 <pre class="r"><code># drop row num
 DSHS_hospitalizations = DSHS_state[[9]][, c(2:3)]
@@ -1286,6 +1287,9 @@ demo.list &lt;- paste0(&#39;original-sources/historical/demo/&#39;,
 DSHS_case_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 9),
                         lapply(demo.list[67:length(demo.list)], read_excel, sheet = 10))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -1778,10 +1782,16 @@ DSHS_case_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 9),
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_case_race &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 11),
                         lapply(demo.list[67:length(demo.list)], read_excel, sheet = 12))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -2274,10 +2284,16 @@ DSHS_case_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 9),
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_gender &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 13),
                             lapply(demo.list[67:length(demo.list)], read_excel, sheet = 14))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -2770,6 +2786,9 @@ DSHS_case_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 9),
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_demo_clean = function(df) {
   # search for updated date (digit &quot;/&quot; digit)
@@ -2823,9 +2842,17 @@ DSHS_case_age_df = Demo_Daily(rbindlist(lapply(DSHS_case_age, DSHS_demo_clean)),
 
 ## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
 
+## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
+
 ## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion</code></pre>
 <pre class="r"><code>DSHS_case_gender_df = Demo_Daily(rbindlist(lapply(DSHS_case_gender, DSHS_demo_clean)), count_type = &#39;Cases&#39;)</code></pre>
 <pre><code>## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
 
 ## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
 
@@ -2881,9 +2908,17 @@ DSHS_case_age_df = Demo_Daily(rbindlist(lapply(DSHS_case_age, DSHS_demo_clean)),
 
 ## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
 
+## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
+
 ## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion</code></pre>
 <pre class="r"><code>DSHS_death_age_df = Demo_Daily(rbindlist(lapply(DSHS_death_age, DSHS_demo_clean)), count_type = &#39;Deaths&#39;)</code></pre>
 <pre><code>## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
 
 ## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
 
@@ -2941,9 +2976,17 @@ DSHS_case_age_df = Demo_Daily(rbindlist(lapply(DSHS_case_age, DSHS_demo_clean)),
 
 ## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
 
+## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
+
 ## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion</code></pre>
 <pre class="r"><code>DSHS_death_race_df = Demo_Daily(rbindlist(lapply(DSHS_death_race, DSHS_demo_clean)), count_type = &#39;Deaths&#39;)</code></pre>
 <pre><code>## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
 
 ## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
 
