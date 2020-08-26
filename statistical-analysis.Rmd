@@ -53,6 +53,10 @@ library(fpp2)
 full.dshs <- read.csv("combined-datasets/county.csv")
 tsa.dshs <- read.csv("combined-datasets/tsa.csv")
 phr.df <- read.csv("combined-datasets/phr.csv")
+
+date_out = as.Date(ifelse((Sys.time() < as.POSIXct(paste0(Sys.Date(), '16:00'), tz = 'America/Chicago')),
+                   Sys.Date() - 1,
+                   Sys.Date()))
 ```
 
 ```{r rt data clean}
@@ -181,7 +185,7 @@ covid.rt <- function(mydata, threshold) {
   mydata <- mydata %>% replace(is.na(.),0)
   
   # get case average from past month
-  recent_case_avg = mydata %>% filter(Date > seq(Sys.Date(), length = 2, by = "-1 month")[2]) %>%
+  recent_case_avg = mydata %>% filter(Date > seq(date_out, length = 2, by = "-1 month")[2]) %>%
     summarize(mean(Cases_Daily, na.rm = TRUE)) %>% 
     unlist()
   
@@ -273,12 +277,12 @@ metro.daily <- covid.frame.list$metro
 phr.daily <- covid.frame.list$phr
 
 
-case_quant = county.daily %>% filter(Date >= as.Date(Sys.Date() - as.difftime(3, unit = 'weeks'))) %>%
+case_quant = county.daily %>% filter(Date >= as.Date(date_out - as.difftime(3, unit = 'weeks'))) %>%
   group_by(County) %>%
   mutate(mean_cases = mean(Cases_Daily, na.rm = TRUE)) %>%
   dplyr::select(mean_cases) %>%
   ungroup() %>%
-  summarize(case_quant = quantile(mean_cases, c(0.4, 0.5, 0.6, 0.7, 0.8))[4]) %>% 
+  summarize(case_quant = quantile(mean_cases, c(0.4, 0.5, 0.6, 0.7, 0.8), na.rm = TRUE)[4]) %>% 
   unlist()
 ```
 
@@ -512,6 +516,8 @@ ts.data.organize<-function(mycounty, mytsa, myphr){
 ```{r ts arima function}
 # Compute forecast (UPDATE PREDICTION PERIOD [days] AS NEEDED)
 covid.arima.forecast<-function(mydata, prediction.period = 10, mindate, threshold) {
+  print(as.character(mydata[1,2]))
+
   maxdate <- max(mydata$Date)
   # mindate <- as.Date('2020-05-01')
   pred_start_label = format(mindate, format = '%m_%d')
@@ -519,15 +525,16 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate, threshol
   mydata = subset(mydata, Date >= mindate)
   model.length <- as.numeric(length(mydata$Date) + prediction.period)
   
-  recent_case_avg = mydata %>% filter(Date > seq(Sys.Date(), length = 2, by = "-1 month")[2]) %>%
+  recent_case_avg = mydata %>% filter(Date > seq(date_out, length = 2, by = "-1 month")[2]) %>%
     summarize(mean(Cases_Daily, na.rm = TRUE)) %>% 
     unlist()
+  
+  print(recent_case_avg)
 
   if(recent_case_avg >= threshold) {
     # arima requires cases to be a timeseries vector
     # convert daily cases to time series
     my.timeseries<-ts(mydata$Cases_Daily)
-    print(as.character(mydata[1,2]))
     #load package(pracma)
     library(pracma)
     my.timeseries<-movavg(my.timeseries,7,"s")
@@ -593,7 +600,6 @@ covid.arima.forecast<-function(mydata, prediction.period = 10, mindate, threshol
   
   #replace CI lower limit with 0 if negative
   arima.out$CI_Lower <- ifelse(arima.out$CI_Lower>=0 ,arima.out$CI_Lower, 0)
-  
   
   return(arima.out)
 }

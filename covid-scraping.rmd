@@ -210,6 +210,7 @@ DSHS_deaths_long$County = stringr::str_to_title(DSHS_deaths_long$County)
 # manually fix exceptions using DSHS_cases_long as dictionary
 mismatched_counties = setdiff(unique(DSHS_deaths_long$County), unique(DSHS_cases_long$County))
 DSHS_deaths_long$County = gsub('De Witt', 'DeWitt', DSHS_deaths_long$County)
+DSHS_deaths_long$County = gsub('Dewitt', 'DeWitt', DSHS_deaths_long$County)
 DSHS_deaths_long$County = gsub('Mcculloch', 'McCulloch', DSHS_deaths_long$County)
 DSHS_deaths_long$County = gsub('Mclennan', 'McLennan', DSHS_deaths_long$County)
 DSHS_deaths_long$County = gsub('Mcmullen', 'McMullen', DSHS_deaths_long$County)
