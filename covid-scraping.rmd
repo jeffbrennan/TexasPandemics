@@ -178,7 +178,7 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))
 
 # fix colnames
 colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
-last_row = which(DSHS_deaths_time[, 1] == 'Zavala')
+last_row = which(DSHS_deaths_time[, 1] == 'ZAVALA')
 
 DSHS_deaths_time = DSHS_deaths_time[3:last_row, ]
 colnames(DSHS_deaths_time)[1] = 'County'
