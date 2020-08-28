@@ -250,11 +250,15 @@ hosp_diagnostics %>% filter(Other_ratio_total1 < 0) %>%
 
 Builds validation text to be read by slack and outputted by slackbot
 
-## compute stats
+## setup
 ```{r}
 county = read.csv('tableau/county.csv')
 tsa = read.csv('tableau/hospitalizations_tsa.csv')
 state = read.csv('tableau/stacked_demographics.csv')
+
+date_out = ifelse((Sys.time() < as.POSIXct(paste0(Sys.Date(), '16:00'), tz = 'America/Chicago')),
+                   Sys.Date() - 1,
+                   Sys.Date())
 
 data_urls = c('<https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyCaseCountData.xlsx|CASES>',
               '<https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyFatalityCountData.xlsx|DEATHS>',
@@ -272,8 +276,22 @@ data_urls = c('<https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyCaseCo
 
 calc_count_stats = function(daily_stat, df) { 
   
-  # TODO: add emoji criteria
-  # if declared good, prepend :heavy_check_mark: to text, otherwise :warning:
+  # TODO: refactor to combine with demo component
+  # get most recent data date where > 0 counties, TSAs etc report a valid value
+  # some stats have missing values for smaller regions (including google mobility and lagged cases)
+  latest_date = df %>%
+    mutate(Date = as.Date(Date)) %>%
+    group_by(Date) %>%
+    mutate(nonzeros = !!as.name(daily_stat) > 0 & !is.na(!!as.name(daily_stat))) %>% 
+    filter(sum(nonzeros) / length(nonzeros) > 0) %>%
+    ungroup() %>%
+    summarize(max(Date)) %>% 
+    unlist() %>% 
+    as.Date(origin = '1970-01-01')
+
+  df = df %>%
+    mutate(Date = as.Date(Date)) %>% 
+    filter(Date <= latest_date)
   
   avg_df = df %>% 
     group_by(Date) %>% 
@@ -281,18 +299,43 @@ calc_count_stats = function(daily_stat, df) {
     mutate(lag = Daily_Avg - lag(Daily_Avg))
 
   nonzeros = df %>%
-    filter(as.Date(Date) == max(as.Date(df$Date))) %>% 
-    summarize(!!as.name(daily_stat) > 0 & !is.na(!!as.name(daily_stat))) %>% unlist()
-
-  stats = list(format(max(as.Date(df[['Date']]), '%Y-%m-%d')),
+    filter(Date == max(as.Date(df$Date))) %>% 
+    summarize(!!as.name(daily_stat) > 0 & !is.na(!!as.name(daily_stat))) %>%
+    unlist()
+  
+  stats = list(max(df[['Date']]),
                round(avg_df[['Daily_Avg']][nrow(avg_df)], 2),
                round(avg_df[['lag']][[nrow(avg_df)]], 2),
                round(sum(nonzeros) / length(nonzeros), 2) * 100)
   
-  return(unlist(stats))
+  emojis = c(ifelse(stats[[1]] < date_out, ':warning:', ':heavy_check_mark:'),
+             ifelse(stats[[2]] <= 0 | is.na(stats[2]), ':warning:', ':heavy_check_mark:'),
+             ifelse(stats[[3]] <= 0 | is.na(stats[3]), ':warning:', ':heavy_check_mark:'),
+             ifelse(stats[[4]] < 50 | is.na(stats[4]), ':warning:', ':heavy_check_mark:'))
+
+  stats[[1]] = format(stats[[1]], '%Y-%m-%d')
+
+  
+  return(list(unlist(stats), emojis))
 }
 
-calc_demo_stats = function(group_text, df) { 
+calc_demo_stats = function(group_text, df) {
+  
+  latest_date = df %>%
+    mutate(Date = as.Date(Date)) %>%
+    filter(Group_Type == group_text) %>%
+    mutate(nonzeros = Cases_Daily > 0 & !is.na(Cases_Daily) & Deaths_Daily > 0 & !is.na(Deaths_Daily)) %>% 
+    group_by(Date) %>%
+    filter(sum(nonzeros) / length(nonzeros) > 0) %>% 
+    ungroup() %>%
+    summarize(max(Date)) %>% 
+    unlist() %>% 
+    as.Date(origin = '1970-01-01')
+  
+  df = df %>%
+    mutate(Date = as.Date(Date)) %>% 
+    filter(Date <= latest_date)
+
   avg_df = df %>% 
     dplyr::filter(Group_Type == group_text) %>%
     group_by(Date) %>%
@@ -302,39 +345,57 @@ calc_demo_stats = function(group_text, df) {
     mutate(death_lag = Deaths_Daily - lag(Deaths_Daily))
 
   
-  stats = list(format(max(as.Date(df[['Date']]), '%Y-%m-%d')),
+  stats = list(max(df[['Date']]),
                round(avg_df[['case_lag']][nrow(avg_df)], 2),
                round(avg_df[['death_lag']][nrow(avg_df)], 2))
+
+  emojis = c(ifelse(stats[1] < date_out, ':warning:', ':heavy_check_mark:'),
+             ifelse(stats[2] == 0 | is.na(stats[2]), ':warning:', ':heavy_check_mark:'),
+             ifelse(stats[3] == 0 | is.na(stats[3]), ':warning:', ':heavy_check_mark:'))
+    
+  stats[[1]] = format(stats[[1]], '%Y-%m-%d')
   
-  return(unlist(stats))
+  return(list(unlist(stats), emojis))
   }
-
-county_stats = lapply(c('Cases_Daily', 'Deaths_Daily', 'Tests_Daily', 'Residential'), 
-              calc_count_stats, df = county)
-
-tsa_stats = lapply(c('Hospitalizations_Total', 'Hospitalizations_ICU', 'Beds_Available_Total', 'Beds_Available_ICU'),
-                   calc_count_stats, df = tsa)
-
-state_stats = lapply(c('Age', 'Gender', 'Race'), calc_demo_stats, df = state)
-
-stats_out = unlist(c(county_stats, tsa_stats, state_stats))
 ```
 
-## gather stats
+
+## compute stats
+```{r}
+county_check = lapply(c('Cases_Daily', 'Deaths_Daily', 'Tests_Daily', 'Residential'), 
+                      calc_count_stats, df = county)
+
+tsa_check = lapply(c('Hospitalizations_Total', 'Hospitalizations_ICU', 'Beds_Available_Total', 'Beds_Available_ICU'),
+                   calc_count_stats, df = tsa)
+
+state_check = lapply(c('Age', 'Gender', 'Race'), calc_demo_stats, df = state)
+
+# https://stackoverflow.com/questions/20428742/select-first-element-of-nested-list
+stats_out = unlist(c(lapply(county_check, `[[`, 1),
+                     lapply(tsa_check, `[[`, 1),
+                     lapply(state_check, `[[`, 1)))
+
+emojis_out = unlist(c(lapply(county_check, `[[`, 2),
+                      lapply(tsa_check, `[[`, 2),
+                      lapply(state_check, `[[`, 2)))
+```
+
+## organize stats
 ```{r}
 # declare sublevels for use in creating validation df and renaming nested list output
 county_sublevels = c('Cases', 'Deaths', 'Tests', 'Mobility')
 tsa_sublevels = c('Hosp_Total', 'Hosp_ICU', 'Cap_Total', 'Cap_ICU')
 state_sublevels = c('Age', 'Gender', 'Race')
 
+
 validation_df = data.frame(Level = c(rep(c('County', 'TSA'), each = 16), rep('State', 9)),
                            Sublevel = c(rep(county_sublevels, each = 4),
                                         rep(tsa_sublevels, each = 4),
                                         rep(state_sublevels, each = 3)),
-                       # Emoji = county_stats$emoji
+                           Emoji = emojis_out,
                            Text = c(rep(c('Latest date:', 'Average daily value:' ,
                                           'Average % change:', '% reporting > 0:'),
-                                        times = length(unlist(c(county_stats, tsa_stats))) / 4),
+                                        times = length(unlist(c(county_check, tsa_check))) / 4 / 2),
                                 rep(c('Latest Date', 'Average case change:', 'Average death change:'), times = 3)),
                        Statistic = stats_out) %>% 
   mutate_all(as.character)
@@ -347,10 +408,10 @@ build_text = function(text_filters, data_url) {
   # based on level and sublevel match, combined all despcriptive text and statistics into string separated by newlines ('\n')
   text_out = validation_df %>% 
     dplyr::filter(Level == text_filters[[1]] & Sublevel == text_filters[[2]]) %>%
-    unite(combined, Text, Statistic, sep = ' ') %>% 
+    unite(combined, Emoji, Text, Statistic, sep = ' ') %>% 
     dplyr::select(combined) %>% 
     unlist() %>%
-    paste0(collapse = '\n')
+    paste0(collapse = '\n ')
     
   return(list(text = text_out, url = data_url))
 }
