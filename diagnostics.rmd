@@ -275,7 +275,23 @@ data_urls = c('<https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyCaseCo
               '<https://dshs.texas.gov/coronavirus/TexasCOVID19CaseCountData.xlsx|RACE>')
 
 calc_count_stats = function(daily_stat, df) { 
-  df = df %>% mutate(Date = as.Date(Date))
+  
+  # TODO: refactor to combine with demo component
+  # get most recent data date where > 0 counties, TSAs etc report a valid value
+  # some stats have missing values for smaller regions (including google mobility and lagged cases)
+  latest_date = df %>%
+    mutate(Date = as.Date(Date)) %>%
+    group_by(Date) %>%
+    mutate(nonzeros = !!as.name(daily_stat) > 0 & !is.na(!!as.name(daily_stat))) %>% 
+    filter(sum(nonzeros) / length(nonzeros) > 0) %>%
+    ungroup() %>%
+    summarize(max(Date)) %>% 
+    unlist() %>% 
+    as.Date(origin = '1970-01-01')
+
+  df = df %>%
+    mutate(Date = as.Date(Date)) %>% 
+    filter(Date <= latest_date)
   
   avg_df = df %>% 
     group_by(Date) %>% 
@@ -283,9 +299,10 @@ calc_count_stats = function(daily_stat, df) {
     mutate(lag = Daily_Avg - lag(Daily_Avg))
 
   nonzeros = df %>%
-    filter(as.Date(Date) == max(as.Date(df$Date))) %>% 
-    summarize(!!as.name(daily_stat) > 0 & !is.na(!!as.name(daily_stat))) %>% unlist()
-
+    filter(Date == max(as.Date(df$Date))) %>% 
+    summarize(!!as.name(daily_stat) > 0 & !is.na(!!as.name(daily_stat))) %>%
+    unlist()
+  
   stats = list(max(df[['Date']]),
                round(avg_df[['Daily_Avg']][nrow(avg_df)], 2),
                round(avg_df[['lag']][[nrow(avg_df)]], 2),
@@ -303,7 +320,21 @@ calc_count_stats = function(daily_stat, df) {
 }
 
 calc_demo_stats = function(group_text, df) {
-  df = df %>% mutate(Date = as.Date(Date))
+  
+  latest_date = df %>%
+    mutate(Date = as.Date(Date)) %>%
+    filter(Group_Type == group_text) %>%
+    mutate(nonzeros = Cases_Daily > 0 & !is.na(Cases_Daily) & Deaths_Daily > 0 & !is.na(Deaths_Daily)) %>% 
+    group_by(Date) %>%
+    filter(sum(nonzeros) / length(nonzeros) > 0) %>% 
+    ungroup() %>%
+    summarize(max(Date)) %>% 
+    unlist() %>% 
+    as.Date(origin = '1970-01-01')
+  
+  df = df %>%
+    mutate(Date = as.Date(Date)) %>% 
+    filter(Date <= latest_date)
 
   avg_df = df %>% 
     dplyr::filter(Group_Type == group_text) %>%
