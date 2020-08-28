@@ -81,14 +81,14 @@ def build_validation_block(validation):
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['County']['Cases']['url'][0]
+				"text": validation['County']['Cases']['url']
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['County']['Cases']['text'][0]
+				"text": validation['County']['Cases']['text']
 			}
 		},
 ####################################### DEATHS ######################################################
@@ -96,14 +96,14 @@ def build_validation_block(validation):
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['County']['Deaths']['url'][0]
+				"text": validation['County']['Deaths']['url']
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['County']['Deaths']['text'][0]
+				"text": validation['County']['Deaths']['text']
 			}
 		},
 ####################################### TESTS ######################################################
@@ -111,14 +111,14 @@ def build_validation_block(validation):
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['County']['Tests']['url'][0]
+				"text": validation['County']['Tests']['url']
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['County']['Tests']['text'][0]
+				"text": validation['County']['Tests']['text']
 			}
 		},
 ####################################### GOOGLE MOBILITY ######################################################
@@ -126,14 +126,14 @@ def build_validation_block(validation):
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['County']['Mobility']['url'][0]
+				"text": validation['County']['Mobility']['url']
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text":  validation['County']['Mobility']['text'][0]
+				"text":  validation['County']['Mobility']['text']
 			}
 		},
 ############################### TSA ################################################################
@@ -152,28 +152,28 @@ def build_validation_block(validation):
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['TSA']['Hosp_Total']['url'][0]
+				"text": validation['TSA']['Hosp_Total']['url']
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['TSA']['Hosp_Total']['text'][0]
+				"text": validation['TSA']['Hosp_Total']['text']
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['TSA']['Hosp_ICU']['url'][0]
+				"text": validation['TSA']['Hosp_ICU']['url']
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['TSA']['Hosp_ICU']['text'][0]
+				"text": validation['TSA']['Hosp_ICU']['text']
 			}
 		},
 ############################### HOSPITAL CAPACITY ################################################################
@@ -181,28 +181,28 @@ def build_validation_block(validation):
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['TSA']['Cap_Total']['url'][0]
+				"text": validation['TSA']['Cap_Total']['url']
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['TSA']['Cap_Total']['text'][0]
+				"text": validation['TSA']['Cap_Total']['text']
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['TSA']['Cap_ICU']['url'][0]
+				"text": validation['TSA']['Cap_ICU']['url']
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['TSA']['Cap_ICU']['text'][0]
+				"text": validation['TSA']['Cap_ICU']['text']
 			}
 		},
 # ############################### PHR ########################################################
@@ -260,42 +260,42 @@ def build_validation_block(validation):
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['State']['Age']['url'][0]
+				"text": validation['State']['Age']['url']
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['State']['Age']['text'][0]
+				"text": validation['State']['Age']['text']
 			}
 		},
 			{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['State']['Gender']['url'][0]
+				"text": validation['State']['Gender']['url']
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['State']['Gender']['text'][0]
+				"text": validation['State']['Gender']['text']
 			}
 		},
 			{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['State']['Race']['url'][0]
+				"text": validation['State']['Race']['url']
 			}
 		},
 		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": validation['State']['Race']['text'][0]
+				"text": validation['State']['Race']['text']
 			}
 		}
 	]
