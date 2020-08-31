@@ -1229,12 +1229,6 @@ download.file(state_url, paste0(&#39;original-sources/historical/demo/dshs_&#39;
                                 dshs_date, &#39;.xlsx&#39;), mode = &#39;wb&#39;)
 
 DSHS_state = read_excel_allsheets(&#39;original-sources/DSHS_state.xlsx&#39;)</code></pre>
-<pre><code>## New names:
-## * `` -&gt; ...2
-## * `` -&gt; ...3
-## * `` -&gt; ...4
-## * `` -&gt; ...5
-## * `` -&gt; ...6</code></pre>
 <pre class="r"><code>DSHS_tests = DSHS_state[[4]]
 DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests) - 3), ]
 
@@ -1287,6 +1281,9 @@ demo.list &lt;- paste0(&#39;original-sources/historical/demo/&#39;,
 DSHS_case_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 9),
                         lapply(demo.list[67:length(demo.list)], read_excel, sheet = 10))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -1815,10 +1812,16 @@ DSHS_case_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 9),
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_case_race &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 11),
                         lapply(demo.list[67:length(demo.list)], read_excel, sheet = 12))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -2347,6 +2350,9 @@ DSHS_case_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 9),
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_gender &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 13),
                             lapply(demo.list[67:length(demo.list)], read_excel, sheet = 14))</code></pre>
@@ -2613,10 +2619,16 @@ DSHS_case_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 9),
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_race &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 14),
                           lapply(demo.list[67:length(demo.list)], read_excel, sheet = 15))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
