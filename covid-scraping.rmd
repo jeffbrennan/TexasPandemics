@@ -4,6 +4,8 @@ author: 'Jeffrey Brennan'
 output: html_document
 ---
 
+# SETUP
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
@@ -122,9 +124,8 @@ mobility_texas$County = as.factor(mobility_texas$County)
 mobility_texas$Date = as.Date(mobility_texas$Date)
 ```
 
-## DSHS 
 
-### cases
+## cases
 
 ```{r}
 # download xlsx as tempfile and load using readxl
@@ -168,7 +169,7 @@ DSHS_cases_long =
     mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
 ```
 
-### deaths
+## deaths
 
 ```{r}
 death_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyFatalityCountData.xlsx'
@@ -178,7 +179,7 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))
 
 # fix colnames
 colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
-last_row = which(DSHS_deaths_time[, 1] == 'ZAVALA')
+last_row = which(DSHS_deaths_time[, 1] == 'Zavala')
 
 DSHS_deaths_time = DSHS_deaths_time[3:last_row, ]
 colnames(DSHS_deaths_time)[1] = 'County'
@@ -238,7 +239,7 @@ DSHS_deaths_long =
   mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))
 ```
 
-### testing
+## testing
 
 ```{r}
 test_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsOverTimebyCounty.xlsx'
@@ -292,7 +293,7 @@ DSHS_tests_long =
 DSHS_tests_long = subset(DSHS_tests_long, County != 'Unknown' & County != 'Pending Assignments')
 ```
 
-### active cases
+## active cases
 
 ```{r}
 active_case_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19ActiveCaseDatabyCounty.xlsx'
@@ -337,16 +338,58 @@ DSHS_active_cases_long =
     mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative)))
 ```
 
+## childcare
+
+```{r}
+temp = tempfile()
+download.file('https://apps.hhs.texas.gov/documents/CCR/texas-child-care-facility-based-covid-status.xls',
+              temp, mode = 'wb') 
+county_childcare = read_excel_allsheets(temp)
+
+Clean_Childcare = function(df, data_type) { 
+  date = as.Date(gsub('Data current as of ', '', colnames(df)[1]), '%m/%d/%y')
+  colnames(df) = df[3, ]
+  
+  df = df[4:(nrow(df)-1), c(1, 7:10)]
+  
+  grouped_df = df %>% 
+    group_by(County) %>%
+    select(2:5) %>%
+    mutate_all(as.numeric) %>% 
+    summarise_all(sum)
+ 
+  colnames(grouped_df) = c('County', 'Childcare_Child_Cases_Daily', 'Childcare_Employee_Cases_Daily',
+                   'Childcare_Child_Cases_Cumulative', 'Childcare_Employee_Cases_Cumulative')
+  
+  grouped_df[['Date']] = date
+  
+  return(grouped_df)
+}
+
+county_childcare_df = rbindlist(lapply(county_childcare, Clean_Childcare))
+
+# fix all caps county names
+county_childcare_df$County = stringr::str_to_title(county_childcare_df$County)
+
+# manually fix exceptions using DSHS_cases_long as dictionary
+mismatched_counties = setdiff(unique(county_childcare_df$County), unique(DSHS_cases_long$County))
+county_childcare_df$County = gsub('Deafsmith', 'Deaf Smith', county_childcare_df$County)
+county_childcare_df$County = gsub('Dewitt', 'DeWitt', county_childcare_df$County)
+county_childcare_df$County = gsub('Mcculloch', 'McCulloch', county_childcare_df$County)
+county_childcare_df$County = gsub('Mclennan', 'McLennan', county_childcare_df$County)
+```
+
+
 ```{r}
 # combine DSHS sources using merge helper function
 # https://www.musgraveanalytics.com/blog/2018/2/12/how-to-merge-multiple-data-frames-using-base-r
 
-DSHS_county_counts = Reduce(function(x, y) merge(x, y, by = c('Date', 'County'), all=TRUE),
-       list(DSHS_cases_long, DSHS_deaths_long, DSHS_tests_long, DSHS_active_cases_long))
+county_counts = Reduce(function(x, y) merge(x, y, by = c('Date', 'County'), all=TRUE),
+       list(DSHS_cases_long, DSHS_deaths_long, DSHS_tests_long, DSHS_active_cases_long, county_childcare_df))
 # 
 # # drop population - will be using census data
-# DSHS_county_counts$Population.x = NULL
-# DSHS_county_counts$Population.y = NULL
+# county_counts$Population.x = NULL
+# county_counts$Population.y = NULL
 ```
 
 ## Classifications
@@ -354,16 +397,16 @@ DSHS_county_counts = Reduce(function(x, y) merge(x, y, by = c('Date', 'County'),
 ```{r}
 # add metro and PHR code designations
 # source: https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls]
-county_classifications = read_xlsx('original-sources/county_classifications.xlsx', sheet = 1)[1:254, c(1, 5, 8)]
+county_classifications = read_xlsx('original-sources/county_classifications.xlsx', sheet = 1)[1:254, c(1, 5, 8, 13:14)]
 
 # set colnames
-colnames(county_classifications) = c('County', 'PHR', 'Metro_Area')
+colnames(county_classifications) = c('County', 'PHR', 'Metro_Area', 'HHSC', 'HHSC_Name')
 
 # add PHR readable names from https://dshs.texas.gov/regions/default.shtm
-PHR_helper = data.frame(PHR = unique(county_classifications$PHR))
-PHR_helper$PHR_Name = c('Tyler PHR', 'El Paso PHR', 'Harlingen PHR', 
-                        'Arlington PHR', 'Lubbock PHR', 'San Antonio PHR',
-                        'Houston PHR', 'Temple PHR')
+PHR_helper = data.frame(PHR = unique(county_classifications$PHR),
+                        PHR_Name = c('Tyler PHR', 'El Paso PHR', 'Harlingen PHR', 
+                                     'Arlington PHR', 'Lubbock PHR', 'San Antonio PHR',
+                                     'Houston PHR', 'Temple PHR'))
 
 county_classifications = merge(county_classifications, PHR_helper, by = 'PHR')
 ```
@@ -398,11 +441,12 @@ dshs_pops = unique(read.csv('https://raw.githubusercontent.com/jeffbrennan/COVID
 colnames(dshs_pops) = c('County', 'Population_DSHS')
 
 merged_dshs = Reduce(function(x, y) merge(x, y, by = 'County', all = TRUE),
-                       list(DSHS_county_counts, tsa_long_complete, dshs_pops, county_classifications))
+                       list(county_counts, tsa_long_complete, dshs_pops, county_classifications))
 
-# add TSA & PHR combination
+# add TSA, PHR & HHSC combination
 merged_dshs$TSA_Combined = paste0(merged_dshs$TSA, ' - ', merged_dshs$TSA_Name)
 merged_dshs$PHR_Combined = paste0(merged_dshs$PHR, ' - ', merged_dshs$PHR_Name)
+merged_dshs$HHSC_Combined = paste0(merged_dshs$HHSC, ' - ', merged_dshs$HHSC_Name)
 
 merged_county = as.data.frame(merge(merged_dshs, mobility_texas,
                                     by = c('Date', 'County'), all = TRUE)) %>% 
@@ -622,10 +666,8 @@ DSHS_phr = merge(DSHS_phr, DSHS_phr_pops, by = c('PHR'), all = TRUE)
 (Assisted Living Facilities)
 
 ```{r}
-download.file('https://dshs.texas.gov/coronavirus/COVID-19inALFsoverTimebyRegion.xlsx',
-               destfile = 'original-sources/DSHS_alf.xlsx', mode = 'wb')
-
-DSHS_alf = read_excel_allsheets('original-sources/DSHS_alf.xlsx')
+# data ending on 7/28
+DSHS_alf = read_excel_allsheets('original-sources/historical/phr/DSHS_alf_old.xlsx')
 
 Clean_Facility = function(df, count_type) { 
   df = df[1:8, ]
@@ -650,10 +692,8 @@ alf_df = Reduce(function(x, y) merge(x, y, by = c('Date', 'PHR'), all = TRUE),
 ## nursing
 
 ```{r}
-download.file('https://dshs.texas.gov/coronavirus/COVID-19inNursingHomesoverTimebyRegion.xlsx',
-               destfile = 'original-sources/DSHS_nursing.xlsx', mode = 'wb')
-
-DSHS_nursing = read_excel_allsheets('original-sources/DSHS_nursing.xlsx')
+# data ending on 7/28
+DSHS_nursing = read_excel_allsheets('original-sources/historical/phr/DSHS_nursing_old.xlsx')
 
 nursing_fac_totals = Clean_Facility(DSHS_nursing[[1]], 'Nursing_Total')
 nursing_cases = Clean_Facility(DSHS_nursing[[2]], 'Nursing_Cases')
@@ -676,6 +716,93 @@ phr_df$Nursing_Recoveries = as.numeric(phr_df$Nursing_Recoveries)
 
 phr_df = phr_df %>% filter(!is.na(PHR)) %>% unique()
 ```
+
+# HHSC Regulation Level
+
+7 levels used for assisted living facility and nursing data (since 7/28)
+
+
+## computed
+
+```{r}
+DSHS_metro_counts =
+    merged_county %>%
+    group_by(Date, HHSC) %>%
+    summarize_at(vars(Cases_Cumulative, Cases_Daily,
+                      Deaths_Cumulative, Deaths_Daily,
+                      Tests_Cumulative, Tests_Daily,
+                      Active_Cases_Cumulative, Active_Cases_Daily),
+                 funs(sum))
+
+DSHS_metro_pops = 
+  subset(merged_county, Date == '2020-03-04') %>%
+  group_by(HHSC) %>%
+  summarize_at(vars(Population_DSHS),
+               funs(sum))
+
+DSHS_metro_google = 
+  merged_county %>%
+  group_by(Date, HHSC) %>%
+  summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
+                    Parks, Transit,
+                    Workplaces, Residential),
+               funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)
+```
+
+## alf
+
+```{r}
+temp = tempfile()
+download.file('https://apps.hhs.texas.gov/providers/directories/Texas_Assisted_Living_Facilities_COVID_Summary.xls',
+              temp, mode = 'wb') 
+hhsc_alf = read_excel_allsheets(temp)
+
+Clean_HHSC = function(df, data_type) { 
+  date = as.Date(gsub('Data current as of ', '', colnames(df)[1]), '%B %d, %Y')
+  
+  first_row = which(df[, 1] == 1)
+  last_row =  which(df[, 1] == 7)
+  na_cols = which(is.na(df[first_row, ]))  # earlier sheets have hidden columns with null values
+  
+  df = df[first_row:last_row, ]
+  
+  if(length(na_cols) > 0) {df = df[,  -na_cols]}
+  
+  colnames(df) = c('HHSC', 'Fac_Outbreak_Active' , 'Fac_Outbreak_Recovered', 'Fac_Outbreak_Cumulative',
+                   'Cases_Active', 'Recovered_Cumulative', 'Deaths_Cumulative', 'Cases_Cumulative')
+  
+  # add data prefix (nursing of ALF (assisted living facility))
+  # start at 2 to ignore HHSC
+  colnames(df)[2:ncol(df)] =  paste0(data_type, '_', colnames(df)[2:ncol(df)])
+  
+  df[['Date']] = date
+  
+  return(df)
+}
+
+hhsc_alf_df = rbindlist(lapply(hhsc_alf, Clean_HHSC, data_type = 'ALF'))
+```
+
+
+## nursing
+
+```{r}
+temp = tempfile()
+download.file('https://apps.hhs.texas.gov/providers/directories/Texas_Nursing_Facilities_COVID_Summary.xls',
+              temp, mode = 'wb') 
+
+hhsc_nursing = read_excel_allsheets(temp)
+
+hhsc_nursing_df = rbindlist(lapply(hhsc_nursing, Clean_HHSC, data_type = 'NURSING'))
+```
+
+## merge
+
+```{r}
+hhsc_df = merge(hhsc_alf_df, hhsc_nursing_df, by = c('Date', 'HHSC'))
+```
+
+
 
 # METRO LEVEL
 
@@ -1075,6 +1202,13 @@ write.csv(hosp_tsa, file = 'tableau/hospitalizations_tsa.csv', row.names = F)
 write.csv(phr_df, file = 'combined-datasets/phr.csv', row.names = F)
 # write.csv(phr_df, file = 'tableau/phr.csv', row.names = F)
 ```
+
+## HHSC
+
+```{r}
+write.csv(hhsc_df, file = 'combined-datasets/hhsc.csv', row.names = F)
+```
+
 
 ## Metro
 
