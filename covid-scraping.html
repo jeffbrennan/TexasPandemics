@@ -368,6 +368,8 @@ summary {
 </div>
 
 
+<div id="setup" class="section level1">
+<h1>SETUP</h1>
 <pre class="r"><code># Grab every sheet from an excel file and convert to list of dataframes
 # https://stackoverflow.com/questions/12945687/read-all-worksheets-in-an-excel-workbook-into-an-r-list-with-data-frames
 read_excel_allsheets = function(filename, tibble = FALSE) {
@@ -387,6 +389,7 @@ date_out = ifelse((Sys.time() &lt; as.POSIXct(paste0(Sys.Date(), &#39;16:00&#39;
 
 # convert numeric sys.date() to yyyy-mm-dd
 date_out = as.Date(date_out, origin = &#39;1970-1-1&#39;)</code></pre>
+</div>
 <div id="census" class="section level1">
 <h1>CENSUS</h1>
 <div id="county" class="section level2">
@@ -462,10 +465,8 @@ mobility_texas = subset(mobility_texas, County != &#39;Unallocated&#39;)
 mobility_texas$County = as.factor(mobility_texas$County)
 mobility_texas$Date = as.Date(mobility_texas$Date)</code></pre>
 </div>
-<div id="dshs" class="section level2">
-<h2>DSHS</h2>
-<div id="cases" class="section level3">
-<h3>cases</h3>
+<div id="cases" class="section level2">
+<h2>cases</h2>
 <pre class="r"><code># download xlsx as tempfile and load using readxl
 case_url = &#39;http://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyCaseCountData.xlsx&#39;
 temp = tempfile()
@@ -512,8 +513,8 @@ DSHS_cases_long =
     tidyr::fill(Cases_Cumulative, .direction = &quot;down&quot;) %&gt;%
     mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))</code></pre>
 </div>
-<div id="deaths" class="section level3">
-<h3>deaths</h3>
+<div id="deaths" class="section level2">
+<h2>deaths</h2>
 <pre class="r"><code>death_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyFatalityCountData.xlsx&#39;
 temp = tempfile()
 download.file(death_url, temp, mode = &#39;wb&#39;) 
@@ -527,7 +528,7 @@ DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## * ...</code></pre>
 <pre class="r"><code># fix colnames
 colnames(DSHS_deaths_time) = DSHS_deaths_time[2, ]
-last_row = which(DSHS_deaths_time[, 1] == &#39;ZAVALA&#39;)
+last_row = which(DSHS_deaths_time[, 1] == &#39;Zavala&#39;)
 
 DSHS_deaths_time = DSHS_deaths_time[3:last_row, ]
 colnames(DSHS_deaths_time)[1] = &#39;County&#39;
@@ -586,8 +587,8 @@ DSHS_deaths_long =
   tidyr::fill(Deaths_Cumulative, .direction = &quot;down&quot;) %&gt;%
   mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))</code></pre>
 </div>
-<div id="testing" class="section level3">
-<h3>testing</h3>
+<div id="testing" class="section level2">
+<h2>testing</h2>
 <pre class="r"><code>test_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsOverTimebyCounty.xlsx&#39;
 temp = tempfile()
 download.file(test_url, temp, mode = &#39;wb&#39;) 
@@ -644,8 +645,8 @@ DSHS_tests_long =
 # DSHS_tests_long_NA = subset(DSHS_tests_long_NA, County != &#39;Unknown&#39; &amp; County != &#39;Pending Assignments&#39;)
 DSHS_tests_long = subset(DSHS_tests_long, County != &#39;Unknown&#39; &amp; County != &#39;Pending Assignments&#39;)</code></pre>
 </div>
-<div id="active-cases" class="section level3">
-<h3>active cases</h3>
+<div id="active-cases" class="section level2">
+<h2>active cases</h2>
 <pre class="r"><code>active_case_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID-19ActiveCaseDatabyCounty.xlsx&#39;
 temp = tempfile()
 download.file(active_case_url, temp, mode = &#39;wb&#39;) 
@@ -692,31 +693,155 @@ DSHS_active_cases_long =
     mutate(Active_Cases_Cumulative_NA = Active_Cases_Cumulative) %&gt;%
     tidyr::fill(Active_Cases_Cumulative, .direction = &quot;down&quot;) %&gt;%
     mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative)))</code></pre>
+</div>
+<div id="childcare" class="section level2">
+<h2>childcare</h2>
+<pre class="r"><code>temp = tempfile()
+download.file(&#39;https://apps.hhs.texas.gov/documents/CCR/texas-child-care-facility-based-covid-status.xls&#39;,
+              temp, mode = &#39;wb&#39;) 
+county_childcare = read_excel_allsheets(temp)</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...</code></pre>
+<pre class="r"><code>Clean_Childcare = function(df, data_type) { 
+  date = as.Date(gsub(&#39;Data current as of &#39;, &#39;&#39;, colnames(df)[1]), &#39;%m/%d/%y&#39;)
+  colnames(df) = df[3, ]
+  
+  df = df[4:(nrow(df)-1), c(1, 7:10)]
+  
+  grouped_df = df %&gt;% 
+    group_by(County) %&gt;%
+    select(2:5) %&gt;%
+    mutate_all(as.numeric) %&gt;% 
+    summarise_all(sum)
+ 
+  colnames(grouped_df) = c(&#39;County&#39;, &#39;Childcare_Child_Cases_Daily&#39;, &#39;Childcare_Employee_Cases_Daily&#39;,
+                   &#39;Childcare_Child_Cases_Cumulative&#39;, &#39;Childcare_Employee_Cases_Cumulative&#39;)
+  
+  grouped_df[[&#39;Date&#39;]] = date
+  
+  return(grouped_df)
+}
+
+county_childcare_df = rbindlist(lapply(county_childcare, Clean_Childcare))</code></pre>
+<pre><code>## Adding missing grouping variables: `County`</code></pre>
+<pre><code>## `mutate_all()` ignored the following grouping variables:
+## Column `County`
+## Use `mutate_at(df, vars(-group_cols()), myoperation)` to silence the message.</code></pre>
+<pre><code>## Adding missing grouping variables: `County`</code></pre>
+<pre><code>## `mutate_all()` ignored the following grouping variables:
+## Column `County`
+## Use `mutate_at(df, vars(-group_cols()), myoperation)` to silence the message.</code></pre>
+<pre><code>## Adding missing grouping variables: `County`</code></pre>
+<pre><code>## `mutate_all()` ignored the following grouping variables:
+## Column `County`
+## Use `mutate_at(df, vars(-group_cols()), myoperation)` to silence the message.</code></pre>
+<pre><code>## Adding missing grouping variables: `County`</code></pre>
+<pre><code>## `mutate_all()` ignored the following grouping variables:
+## Column `County`
+## Use `mutate_at(df, vars(-group_cols()), myoperation)` to silence the message.</code></pre>
+<pre><code>## Adding missing grouping variables: `County`</code></pre>
+<pre><code>## `mutate_all()` ignored the following grouping variables:
+## Column `County`
+## Use `mutate_at(df, vars(-group_cols()), myoperation)` to silence the message.</code></pre>
+<pre><code>## Adding missing grouping variables: `County`</code></pre>
+<pre><code>## `mutate_all()` ignored the following grouping variables:
+## Column `County`
+## Use `mutate_at(df, vars(-group_cols()), myoperation)` to silence the message.</code></pre>
+<pre><code>## Adding missing grouping variables: `County`</code></pre>
+<pre><code>## `mutate_all()` ignored the following grouping variables:
+## Column `County`
+## Use `mutate_at(df, vars(-group_cols()), myoperation)` to silence the message.</code></pre>
+<pre><code>## Adding missing grouping variables: `County`</code></pre>
+<pre><code>## `mutate_all()` ignored the following grouping variables:
+## Column `County`
+## Use `mutate_at(df, vars(-group_cols()), myoperation)` to silence the message.</code></pre>
+<pre class="r"><code># fix all caps county names
+county_childcare_df$County = stringr::str_to_title(county_childcare_df$County)
+
+# manually fix exceptions using DSHS_cases_long as dictionary
+mismatched_counties = setdiff(unique(county_childcare_df$County), unique(DSHS_cases_long$County))
+county_childcare_df$County = gsub(&#39;Deafsmith&#39;, &#39;Deaf Smith&#39;, county_childcare_df$County)
+county_childcare_df$County = gsub(&#39;Dewitt&#39;, &#39;DeWitt&#39;, county_childcare_df$County)
+county_childcare_df$County = gsub(&#39;Mcculloch&#39;, &#39;McCulloch&#39;, county_childcare_df$County)
+county_childcare_df$County = gsub(&#39;Mclennan&#39;, &#39;McLennan&#39;, county_childcare_df$County)</code></pre>
 <pre class="r"><code># combine DSHS sources using merge helper function
 # https://www.musgraveanalytics.com/blog/2018/2/12/how-to-merge-multiple-data-frames-using-base-r
 
-DSHS_county_counts = Reduce(function(x, y) merge(x, y, by = c(&#39;Date&#39;, &#39;County&#39;), all=TRUE),
-       list(DSHS_cases_long, DSHS_deaths_long, DSHS_tests_long, DSHS_active_cases_long))
+county_counts = Reduce(function(x, y) merge(x, y, by = c(&#39;Date&#39;, &#39;County&#39;), all=TRUE),
+       list(DSHS_cases_long, DSHS_deaths_long, DSHS_tests_long, DSHS_active_cases_long, county_childcare_df))
 # 
 # # drop population - will be using census data
-# DSHS_county_counts$Population.x = NULL
-# DSHS_county_counts$Population.y = NULL</code></pre>
-</div>
+# county_counts$Population.x = NULL
+# county_counts$Population.y = NULL</code></pre>
 </div>
 <div id="classifications" class="section level2">
 <h2>Classifications</h2>
 <pre class="r"><code># add metro and PHR code designations
 # source: https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls]
-county_classifications = read_xlsx(&#39;original-sources/county_classifications.xlsx&#39;, sheet = 1)[1:254, c(1, 5, 8)]
+county_classifications = read_xlsx(&#39;original-sources/county_classifications.xlsx&#39;, sheet = 1)[1:254, c(1, 5, 8, 13:14)]
 
 # set colnames
-colnames(county_classifications) = c(&#39;County&#39;, &#39;PHR&#39;, &#39;Metro_Area&#39;)
+colnames(county_classifications) = c(&#39;County&#39;, &#39;PHR&#39;, &#39;Metro_Area&#39;, &#39;HHSC&#39;, &#39;HHSC_Name&#39;)
 
 # add PHR readable names from https://dshs.texas.gov/regions/default.shtm
-PHR_helper = data.frame(PHR = unique(county_classifications$PHR))
-PHR_helper$PHR_Name = c(&#39;Tyler PHR&#39;, &#39;El Paso PHR&#39;, &#39;Harlingen PHR&#39;, 
-                        &#39;Arlington PHR&#39;, &#39;Lubbock PHR&#39;, &#39;San Antonio PHR&#39;,
-                        &#39;Houston PHR&#39;, &#39;Temple PHR&#39;)
+PHR_helper = data.frame(PHR = unique(county_classifications$PHR),
+                        PHR_Name = c(&#39;Tyler PHR&#39;, &#39;El Paso PHR&#39;, &#39;Harlingen PHR&#39;, 
+                                     &#39;Arlington PHR&#39;, &#39;Lubbock PHR&#39;, &#39;San Antonio PHR&#39;,
+                                     &#39;Houston PHR&#39;, &#39;Temple PHR&#39;))
 
 county_classifications = merge(county_classifications, PHR_helper, by = &#39;PHR&#39;)</code></pre>
 <pre class="r"><code># TSA levels
@@ -752,11 +877,12 @@ dshs_pops = unique(read.csv(&#39;https://raw.githubusercontent.com/jeffbrennan/C
 colnames(dshs_pops) = c(&#39;County&#39;, &#39;Population_DSHS&#39;)
 
 merged_dshs = Reduce(function(x, y) merge(x, y, by = &#39;County&#39;, all = TRUE),
-                       list(DSHS_county_counts, tsa_long_complete, dshs_pops, county_classifications))
+                       list(county_counts, tsa_long_complete, dshs_pops, county_classifications))
 
-# add TSA &amp; PHR combination
+# add TSA, PHR &amp; HHSC combination
 merged_dshs$TSA_Combined = paste0(merged_dshs$TSA, &#39; - &#39;, merged_dshs$TSA_Name)
 merged_dshs$PHR_Combined = paste0(merged_dshs$PHR, &#39; - &#39;, merged_dshs$PHR_Name)
+merged_dshs$HHSC_Combined = paste0(merged_dshs$HHSC, &#39; - &#39;, merged_dshs$HHSC_Name)
 
 merged_county = as.data.frame(merge(merged_dshs, mobility_texas,
                                     by = c(&#39;Date&#39;, &#39;County&#39;), all = TRUE)) %&gt;% 
@@ -1021,10 +1147,8 @@ DSHS_phr = merge(DSHS_phr, DSHS_phr_pops, by = c(&#39;PHR&#39;), all = TRUE)</co
 <div id="alf" class="section level2">
 <h2>alf</h2>
 <p>(Assisted Living Facilities)</p>
-<pre class="r"><code>download.file(&#39;https://dshs.texas.gov/coronavirus/COVID-19inALFsoverTimebyRegion.xlsx&#39;,
-               destfile = &#39;original-sources/DSHS_alf.xlsx&#39;, mode = &#39;wb&#39;)
-
-DSHS_alf = read_excel_allsheets(&#39;original-sources/DSHS_alf.xlsx&#39;)
+<pre class="r"><code># data ending on 7/28
+DSHS_alf = read_excel_allsheets(&#39;original-sources/historical/phr/DSHS_alf_old.xlsx&#39;)
 
 Clean_Facility = function(df, count_type) { 
   df = df[1:8, ]
@@ -1054,10 +1178,8 @@ alf_fac_totals = Clean_Facility(DSHS_alf[[1]], &#39;ALF_Total&#39;)</code></pre>
 </div>
 <div id="nursing" class="section level2">
 <h2>nursing</h2>
-<pre class="r"><code>download.file(&#39;https://dshs.texas.gov/coronavirus/COVID-19inNursingHomesoverTimebyRegion.xlsx&#39;,
-               destfile = &#39;original-sources/DSHS_nursing.xlsx&#39;, mode = &#39;wb&#39;)
-
-DSHS_nursing = read_excel_allsheets(&#39;original-sources/DSHS_nursing.xlsx&#39;)
+<pre class="r"><code># data ending on 7/28
+DSHS_nursing = read_excel_allsheets(&#39;original-sources/historical/phr/DSHS_nursing_old.xlsx&#39;)
 
 nursing_fac_totals = Clean_Facility(DSHS_nursing[[1]], &#39;Nursing_Total&#39;)</code></pre>
 <pre><code>## Warning in Clean_Facility(DSHS_nursing[[1]], &quot;Nursing_Total&quot;): NAs introduced by
@@ -1086,9 +1208,530 @@ phr_df$Nursing_Recoveries = as.numeric(phr_df$Nursing_Recoveries)
 phr_df = phr_df %&gt;% filter(!is.na(PHR)) %&gt;% unique()</code></pre>
 </div>
 </div>
+<div id="hhsc-regulation-level" class="section level1">
+<h1>HHSC Regulation Level</h1>
+<p>7 levels used for assisted living facility and nursing data (since 7/28)</p>
+<div id="computed-2" class="section level2">
+<h2>computed</h2>
+<pre class="r"><code>DSHS_metro_counts =
+    merged_county %&gt;%
+    group_by(Date, HHSC) %&gt;%
+    summarize_at(vars(Cases_Cumulative, Cases_Daily,
+                      Deaths_Cumulative, Deaths_Daily,
+                      Tests_Cumulative, Tests_Daily,
+                      Active_Cases_Cumulative, Active_Cases_Daily),
+                 funs(sum))
+
+DSHS_metro_pops = 
+  subset(merged_county, Date == &#39;2020-03-04&#39;) %&gt;%
+  group_by(HHSC) %&gt;%
+  summarize_at(vars(Population_DSHS),
+               funs(sum))
+
+DSHS_metro_google = 
+  merged_county %&gt;%
+  group_by(Date, HHSC) %&gt;%
+  summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
+                    Parks, Transit,
+                    Workplaces, Residential),
+               funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)</code></pre>
+</div>
+<div id="alf-1" class="section level2">
+<h2>alf</h2>
+<pre class="r"><code>temp = tempfile()
+download.file(&#39;https://apps.hhs.texas.gov/providers/directories/Texas_Assisted_Living_Facilities_COVID_Summary.xls&#39;,
+              temp, mode = &#39;wb&#39;) 
+hhsc_alf = read_excel_allsheets(temp)</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...</code></pre>
+<pre class="r"><code>Clean_HHSC = function(df, data_type) { 
+  date = as.Date(gsub(&#39;Data current as of &#39;, &#39;&#39;, colnames(df)[1]), &#39;%B %d, %Y&#39;)
+  
+  first_row = which(df[, 1] == 1)
+  last_row =  which(df[, 1] == 7)
+  na_cols = which(is.na(df[first_row, ]))  # earlier sheets have hidden columns with null values
+  
+  df = df[first_row:last_row, ]
+  
+  if(length(na_cols) &gt; 0) {df = df[,  -na_cols]}
+  
+  colnames(df) = c(&#39;HHSC&#39;, &#39;Fac_Outbreak_Active&#39; , &#39;Fac_Outbreak_Recovered&#39;, &#39;Fac_Outbreak_Cumulative&#39;,
+                   &#39;Cases_Active&#39;, &#39;Recovered_Cumulative&#39;, &#39;Deaths_Cumulative&#39;, &#39;Cases_Cumulative&#39;)
+  
+  # add data prefix (nursing of ALF (assisted living facility))
+  # start at 2 to ignore HHSC
+  colnames(df)[2:ncol(df)] =  paste0(data_type, &#39;_&#39;, colnames(df)[2:ncol(df)])
+  
+  df[[&#39;Date&#39;]] = date
+  
+  return(df)
+}
+
+hhsc_alf_df = rbindlist(lapply(hhsc_alf, Clean_HHSC, data_type = &#39;ALF&#39;))</code></pre>
+</div>
+<div id="nursing-1" class="section level2">
+<h2>nursing</h2>
+<pre class="r"><code>temp = tempfile()
+download.file(&#39;https://apps.hhs.texas.gov/providers/directories/Texas_Nursing_Facilities_COVID_Summary.xls&#39;,
+              temp, mode = &#39;wb&#39;) 
+
+hhsc_nursing = read_excel_allsheets(temp)</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...</code></pre>
+<pre class="r"><code>hhsc_nursing_df = rbindlist(lapply(hhsc_nursing, Clean_HHSC, data_type = &#39;NURSING&#39;))</code></pre>
+</div>
+<div id="merge-3" class="section level2">
+<h2>merge</h2>
+<pre class="r"><code>hhsc_df = merge(hhsc_alf_df, hhsc_nursing_df, by = c(&#39;Date&#39;, &#39;HHSC&#39;))</code></pre>
+</div>
+</div>
 <div id="metro-level" class="section level1">
 <h1>METRO LEVEL</h1>
-<div id="computed-2" class="section level2">
+<div id="computed-3" class="section level2">
 <h2>computed</h2>
 <pre class="r"><code>DSHS_metro_counts =
     merged_county %&gt;%
@@ -1113,7 +1756,7 @@ DSHS_metro_google =
                     Workplaces, Residential),
                funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)</code></pre>
 </div>
-<div id="merge-3" class="section level2">
+<div id="merge-4" class="section level2">
 <h2>merge</h2>
 <pre class="r"><code>DSHS_metro = subset(merge(DSHS_metro_counts, DSHS_metro_pops,
                           by = &#39;Metro_Area&#39;, all = TRUE), !is.na(Date))
@@ -1204,7 +1847,7 @@ HHS_all_icu =
   HHS_hosp_clean(
     read.csv(url(&#39;https://healthdata.gov/sites/default/files/icu_final_20200720_0537.csv&#39;)),
     &#39;All.ICU.&#39;)</code></pre>
-<div id="merge-4" class="section level3">
+<div id="merge-5" class="section level3">
 <h3>merge</h3>
 <pre class="r"><code># merge together for combination with other state data
 hhs_df = Reduce(function(x, y) merge(x, y, by = &#39;Date&#39;, all = TRUE),
@@ -1281,6 +1924,9 @@ demo.list &lt;- paste0(&#39;original-sources/historical/demo/&#39;,
 DSHS_case_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 9),
                         lapply(demo.list[67:length(demo.list)], read_excel, sheet = 10))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -1815,10 +2461,16 @@ DSHS_case_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 9),
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_case_race &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 11),
                         lapply(demo.list[67:length(demo.list)], read_excel, sheet = 12))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -2353,10 +3005,16 @@ DSHS_case_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 9),
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_gender &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 13),
                             lapply(demo.list[67:length(demo.list)], read_excel, sheet = 14))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -2891,6 +3549,9 @@ DSHS_case_age &lt;- append(lapply(demo.list[1:66], read_excel, sheet = 9),
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_demo_clean = function(df) {
   # search for updated date (digit &quot;/&quot; digit)
@@ -3027,7 +3688,7 @@ DSHS_age_df = merge(DSHS_case_age_df, DSHS_death_age_df, by = c(&#39;Date&#39;, 
 DSHS_gender_df = merge(DSHS_case_gender_df, DSHS_death_gender_df, by = c(&#39;Date&#39;, &#39;Group&#39;))
 DSHS_race_df = merge(DSHS_case_race_df, DSHS_death_race_df, by = c(&#39;Date&#39;, &#39;Group&#39;))</code></pre>
 </div>
-<div id="computed-3" class="section level2">
+<div id="computed-4" class="section level2">
 <h2>Computed</h2>
 <pre class="r"><code>state_counts =
     merged_county %&gt;%
@@ -3067,7 +3728,7 @@ state_hosp_detail =
                     Ventilators_Available),
                funs(sum))</code></pre>
 </div>
-<div id="merge-5" class="section level2">
+<div id="merge-6" class="section level2">
 <h2>merge</h2>
 <pre class="r"><code>merged_state = Reduce(function(x, y) merge(x, y, by = c(&#39;Date&#39;), all=TRUE),
        list(state_counts, state_google, DSHS_state_time, state_facilities, state_hosp_detail, hhs_df))
@@ -3122,6 +3783,10 @@ write.csv(hosp_tsa, file = &#39;tableau/hospitalizations_tsa.csv&#39;, row.names
 <h2>PHR</h2>
 <pre class="r"><code>write.csv(phr_df, file = &#39;combined-datasets/phr.csv&#39;, row.names = F)
 # write.csv(phr_df, file = &#39;tableau/phr.csv&#39;, row.names = F)</code></pre>
+</div>
+<div id="hhsc" class="section level2">
+<h2>HHSC</h2>
+<pre class="r"><code>write.csv(hhsc_df, file = &#39;combined-datasets/hhsc.csv&#39;, row.names = F)</code></pre>
 </div>
 <div id="metro" class="section level2">
 <h2>Metro</h2>
