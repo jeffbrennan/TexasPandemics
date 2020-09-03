@@ -3,6 +3,7 @@ import json
 import pandas as pd
 from datetime import datetime as dt
 import re
+import os
 
 date_out = dt.now().strftime("%Y-%m-%d %H:%M")
 auth = pd.read_csv('backend/auth.csv', header=None)
@@ -332,14 +333,20 @@ def parse_scraping_output(f):
 
 
 def main():
+	# SCRAPING
 	scraping_status = parse_scraping_output(scraping_output)
-	validation = json.load(open('statistical-output/diagnostics/validation.json', 'r'))
-	
 	scrape_block = build_scrape_block(scraping_status, date_out)
 	post_slack_message(date_out + ' update', scrape_block)
 
-	validation_block = build_validation_block(validation)
-	post_slack_message('validation', validation_block)
+	# VALIDATION
+	try:
+		validation = json.load(open('statistical-output/diagnostics/validation.json', 'r'))
+		validation_block = build_validation_block(validation)
+		post_slack_message('validation', validation_block)
+		os.remove('statistical-output/diagnostics/validation.json')
+	except FileNotFoundError:
+		post_slack_message('Validation file not created - scraping failed')
 
+		
 if __name__ == '__main__':
     main()
