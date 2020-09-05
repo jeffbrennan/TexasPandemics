@@ -298,8 +298,8 @@ county.rt.df <- data.table::rbindlist(county.rt.output, idcol = TRUE)
 colnames(county.rt.df)[1] = 'County'
 ```
 
-## County Focus Group
-```{r county focus rt}
+## TMC RT ESIMTEATES: NINE COUNTIES
+```{r RT ESTIMATES FOR TMC}
 #select the 9 counties of interest
 county.focus<-county.daily%>%filter(County=="Austin"|
                                       County=="Brazoria"|
@@ -318,11 +318,17 @@ county.focus.cast<-dcast(county.focus.melt, Date~variable, sum)
 
 # run covid.rt function on count.focus.cast dataframe
 county.focus.rt.output<-covid.rt(county.focus.cast, threshold=case_quant)
-write.csv(county.focus.rt.output, "nine_county_rt_estimates.csv", row.names = FALSE)
+
+#create directory for focused plots
+rt_TMC_path="rt_estimates_for_TMC"
+ifelse(!dir.exists(rt_TMC_path), dir.create(rt_TMC_path), "focued area rt folder already exists")
+
+#write csv of estimates to rt_TMC Path
+write.csv(county.focus.rt.output, paste(rt_TMC_path,"/nine_county_rt_estimates.csv",sep=""), row.names = FALSE)
 
 
 # plot with shaded confidence intervals
-rt.plot<-function(rt.data){
+focused.rt.plot<-function(rt.data){
   library(ggplot2)
     plot<-ggplot(rt.data, aes(Date, Rt))+
     geom_ribbon(aes(ymin=lower, ymax=upper), fill="light grey")+
@@ -333,8 +339,8 @@ rt.plot<-function(rt.data){
 }
 
 
-county.focus.plot<-rt.plot(county.focus.rt.output)
-ggsave("nine_county_rt_plot.png", width=20, height=10, unit="cm")
+county.focus.plot<-focused.rt.plot(county.focus.rt.output)
+ggsave( paste(rt_TMC_path,"/nine_county_rt_plot.png",sep=""), width=20, height=10, unit="cm")
 ```
 
 
