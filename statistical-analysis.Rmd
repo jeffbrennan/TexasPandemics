@@ -298,6 +298,46 @@ county.rt.df <- data.table::rbindlist(county.rt.output, idcol = TRUE)
 colnames(county.rt.df)[1] = 'County'
 ```
 
+## County Focus Group
+```{r county focus rt}
+#select the 9 counties of interest
+county.focus<-county.daily%>%filter(County=="Austin"|
+                                      County=="Brazoria"|
+                                      County=="Chambers"|
+                                      County=="Fort Bend"|
+                                      County=="Galveston"|
+                                      County=="Harris"|
+                                      County=="Liberty"|
+                                      County=="Montgomery"|
+                                      County=="Waller")
+#drop county variable and aggregate other variables by date
+library(reshape2)
+county.focus<-county.focus%>%dplyr::select(-County, -PHR, -PHR_Name)
+county.focus.melt<-melt(county.focus, id="Date")
+county.focus.cast<-dcast(county.focus.melt, Date~variable, sum)
+
+# run covid.rt function on count.focus.cast dataframe
+county.focus.rt.output<-covid.rt(county.focus.cast, threshold=case_quant)
+write.csv(county.focus.rt.output, "nine_county_rt_estimates.csv", row.names = FALSE)
+
+
+# plot with shaded confidence intervals
+rt.plot<-function(rt.data){
+  library(ggplot2)
+    plot<-ggplot(rt.data, aes(Date, Rt))+
+    geom_ribbon(aes(ymin=lower, ymax=upper), fill="light grey")+
+    geom_point(color="blue", size=0.2)+
+    labs(title="R(t) Estimates:", 
+    subtitle="Austin, Brazoria, Chambers, Fort Bend, Galveston, Harris, Liberty, Montgomery, and Waller")
+  plot
+}
+
+
+county.focus.plot<-rt.plot(county.focus.rt.output)
+ggsave("nine_county_rt_plot.png", width=20, height=10, unit="cm")
+```
+
+
 ## Metro
 
 ```{r metro rt}
