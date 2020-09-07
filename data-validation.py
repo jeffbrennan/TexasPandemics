@@ -6,18 +6,14 @@ import re
 import os
 
 date_out = dt.now().strftime("%Y-%m-%d %H:%M")
-auth = pd.read_csv('backend/auth.csv', header=None)
+auth = pd.read_csv('backend/auth.csv').squeeze()
 scraping_output = open("scrape-sources.Rout", "r").read() 
-
-slack_channel = auth.iloc[2,1]
-slack_token = auth.iloc[3,1]
-test_channel = auth.iloc[4,1]
 
 def post_slack_message(text, blocks = None):
     return requests.post('https://slack.com/api/chat.postMessage', 
     {
-        'token': slack_token,
-        'channel': slack_channel,
+        'token': auth['slack_token'],
+        'channel': auth['slack_channel'],
         'text': text,
         'blocks': json.dumps(blocks) if blocks else None
     }).json()	
