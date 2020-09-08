@@ -298,6 +298,52 @@ county.rt.df <- data.table::rbindlist(county.rt.output, idcol = TRUE)
 colnames(county.rt.df)[1] = 'County'
 ```
 
+## TMC RT ESIMTEATES: NINE COUNTIES
+```{r RT ESTIMATES FOR TMC}
+#select the 9 counties of interest
+county.focus<-county.daily%>%filter(County=="Austin"|
+                                      County=="Brazoria"|
+                                      County=="Chambers"|
+                                      County=="Fort Bend"|
+                                      County=="Galveston"|
+                                      County=="Harris"|
+                                      County=="Liberty"|
+                                      County=="Montgomery"|
+                                      County=="Waller")
+#drop county variable and aggregate other variables by date
+library(reshape2)
+county.focus<-county.focus%>%dplyr::select(-County, -PHR, -PHR_Name)
+county.focus.melt<-melt(county.focus, id="Date")
+county.focus.cast<-dcast(county.focus.melt, Date~variable, sum)
+
+# run covid.rt function on count.focus.cast dataframe
+county.focus.rt.output<-covid.rt(county.focus.cast, threshold=case_quant)
+
+#create directory for focused plots
+rt_TMC_path="rt_estimates_for_TMC"
+ifelse(!dir.exists(rt_TMC_path), dir.create(rt_TMC_path), "focued area rt folder already exists")
+
+#write csv of estimates to rt_TMC Path
+write.csv(county.focus.rt.output, paste(rt_TMC_path,"/nine_county_rt_estimates.csv",sep=""), row.names = FALSE)
+
+
+# plot with shaded confidence intervals
+focused.rt.plot<-function(rt.data){
+  library(ggplot2)
+    plot<-ggplot(rt.data, aes(Date, Rt))+
+    geom_ribbon(aes(ymin=lower, ymax=upper), fill="light grey")+
+    geom_point(color="blue", size=0.2)+
+    labs(title="R(t) Estimates:", 
+    subtitle="Austin, Brazoria, Chambers, Fort Bend, Galveston, Harris, Liberty, Montgomery, and Waller")
+  plot
+}
+
+
+county.focus.plot<-focused.rt.plot(county.focus.rt.output)
+ggsave( paste(rt_TMC_path,"/nine_county_rt_plot.png",sep=""), width=20, height=10, unit="cm")
+```
+
+
 ## Metro
 
 ```{r metro rt}
