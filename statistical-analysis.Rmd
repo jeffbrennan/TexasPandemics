@@ -298,7 +298,7 @@ county.rt.df <- data.table::rbindlist(county.rt.output, idcol = TRUE)
 colnames(county.rt.df)[1] = 'County'
 ```
 
-## TMC RT ESIMTEATES: NINE COUNTIES
+## TMC RT ESTIMATES: NINE COUNTIES
 ```{r RT ESTIMATES FOR TMC}
 #select the 9 counties of interest
 county.focus<-county.daily%>%filter(County=="Austin"|
@@ -317,7 +317,7 @@ county.focus.melt<-melt(county.focus, id="Date")
 county.focus.cast<-dcast(county.focus.melt, Date~variable, sum)
 
 # run covid.rt function on count.focus.cast dataframe
-county.focus.rt.output<-covid.rt(county.focus.cast, threshold=case_quant)
+county.focus.rt.output<-covid.rt(county.focus.cast, threshold=case_quant) %>% na.omit()
 
 #create directory for focused plots
 rt_TMC_path="rt_estimates_for_TMC"
