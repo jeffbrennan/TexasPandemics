@@ -491,10 +491,54 @@ age_summary = demo %>%
   mutate(AGEGRP = dplyr::recode(AGEGRP,  `1` = '0-9', `3` = '10-19', `5` = '20-29',
                                 `7` = '30-39', `9` = '40-49', `11` = '50-59',
                                 `13` = '60-69', `15` = '70-79', `17` = '80+')) %>% 
-  select(AGEGRP, TOTALPOP)
+  select(AGEGRP, TOT_POP)
+```
 
-  
+```{r}
+merged_county_out = read.csv('combined-datasets/county.csv') 
+Q_df = merged_county_out %>%
+  mutate(Date = as.Date(Date)) %>%
+  dplyr::filter(Date == max(Date)) %>%
+  dplyr::filter(TSA == 'Q') %>%
+  dplyr::select(County, Population_DSHS, TSA) %>% 
+  arrange(desc(Population_DSHS)) %>% 
+  mutate(Q_POP = sum(Population_DSHS))
+ 
+ Q_pop = Q_df$Q_POP[1]
+ 
+TMC_df = merged_county_out %>%
+  mutate(Date = as.Date(Date)) %>% 
+  dplyr::filter(Date == max(Date)) %>%
+  dplyr::filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend', 'Galveston', 'Harris', 'Liberty', 'Montgomery', 'Waller')) %>%
+  dplyr::select(County, Population_DSHS, TSA) %>% 
+  arrange(desc(Population_DSHS)) %>% 
+  mutate(TMC_POP = sum(Population_DSHS))
 
+TMC_pop = TMC_df$TMC_POP[1]
 
+# ICU hospitalizations from TSA Q (8/31)
+hosp_tsa = read.csv('combined-datasets/tsa.csv')
+Q_ICU = hosp_tsa %>%
+  mutate(Date = as.Date(Date)) %>%
+  dplyr::filter(Date == as.Date('2020-09-06') & TSA == 'Q') %>%
+  select(Hospitalizations_ICU) %>% unlist()
+
+# TMC dashboard value - 9/6
+TMC_ICU = 78
+
+# proposed TMC reporting and ICU share of surrounding 9 counties
+TMC_coverage = 0.75
+
+# 1.1 - Surrounding 9 county area has larger population than TSA Q
+TMC_Q_ratio =  round(TMC_pop / Q_pop, 2)
+
+# expected TSA Q hosp assuming above values are accurate
+(TMC_ICU / TMC_coverage) / TMC_Q_ratio
+
+# actual
+Q_ICU
+
+# actual TMC_coverage
+round(TMC_ICU / Q_ICU, 2)
 ```
 
