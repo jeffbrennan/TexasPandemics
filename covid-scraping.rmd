@@ -29,7 +29,7 @@ read_excel_allsheets = function(filename, tibble = FALSE) {
     return(x)
 }
 
-# set data for writing files
+# set date for writing files
 # If before 5 PM, then record as last date since DSHS data will not be updated yet
 # TODO: see if this can be removed in place of using the max date on a consistent dataframe
 date_out = ifelse((Sys.time() < as.POSIXct(paste0(Sys.Date(), '16:00'), tz = 'America/Chicago')),
@@ -534,7 +534,6 @@ DSHS_hosp_clean = function(df, var_name) {
   df_long$Date = as.Date(df_long$Date)
   return(df_long)
 }
-
 # 1,2,3 references the 3 sheets produced by DSHS
 hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[[1]], 'Hospitalizations_Total')
 hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[[2]], 'Hospitalizations_General')
