@@ -134,6 +134,8 @@ temp = tempfile()
 download.file(case_url, temp, mode = 'wb') 
 DSHS_cases_time = data.frame(read_excel(temp, sheet = 1))
 
+
+
 # fix colnames & select correct rows
 colnames(DSHS_cases_time) = DSHS_cases_time[2, ]
 DSHS_cases_time = DSHS_cases_time[3:(nrow(DSHS_cases_time) - 11), ]
@@ -153,12 +155,6 @@ DSHS_cases_long$Date = as.Date(gsub('Cases|\r|\r|\n', '', DSHS_cases_long$Date),
 # if a date is missing, fill using previous cumulative cases
 # calculate daily cases by padding the initial cumulative value, then reporting the difference between successive values by county
 DSHS_cases_long$Cases_Cumulative = as.integer(as.character(DSHS_cases_long$Cases_Cumulative))
-
-# DSHS_cases_long_NA = 
-#   DSHS_cases_long %>% 
-#     group_by(County) %>% 
-#     tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
-#     mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
 
 DSHS_cases_long = 
   DSHS_cases_long %>% 

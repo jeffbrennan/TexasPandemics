@@ -27,7 +27,7 @@ def post_slack_message(text, blocks = None):
     return requests.post('https://slack.com/api/chat.postMessage', 
     {
         'token': auth['slack_token'],
-        'channel': auth['test_channel'],
+        'channel': auth['tests_channel'],
         'text': text,
         'blocks': json.dumps(blocks) if blocks else None
     }).json()	

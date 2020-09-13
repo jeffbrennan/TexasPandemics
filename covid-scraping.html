@@ -499,12 +499,6 @@ DSHS_cases_long$Date = as.Date(gsub(&#39;Cases|\r|\r|\n&#39;, &#39;&#39;, DSHS_c
 # calculate daily cases by padding the initial cumulative value, then reporting the difference between successive values by county
 DSHS_cases_long$Cases_Cumulative = as.integer(as.character(DSHS_cases_long$Cases_Cumulative))
 
-# DSHS_cases_long_NA = 
-#   DSHS_cases_long %&gt;% 
-#     group_by(County) %&gt;% 
-#     tidyr::complete(Date = seq.Date(min(Date), date_out, by=&quot;day&quot;)) %&gt;%
-#     mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
-
 DSHS_cases_long = 
   DSHS_cases_long %&gt;% 
     group_by(County) %&gt;%
