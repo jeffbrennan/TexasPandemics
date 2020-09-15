@@ -91,6 +91,19 @@ merged_city = subset(merged_city, Place_Code != 0 & Place_Code != 99990)[, 2:4]
 colnames(merged_city)[1] = 'FIPS'
 ```
 
+# SCHOOL LEVEL 
+
+
+```{r}
+# school files are small (~ 6kb - read every time and don't overwrite)
+nyt_schools = rbindlist(lapply(list.files('original-sources/historical/schools/', full.names = TRUE), read.csv)) %>% 
+  setNames(c('School', 'City', 'County', 'Deaths_Cumulative', 'Cases_Cumulative', 'Date')) %>%
+  mutate(Date = as.Date(Date)) %>% 
+  mutate(Cases_Cumulative = ifelse(Cases_Cumulative == -1, NA, Cases_Cumulative))
+```
+
+
+
 # COUNTY LEVEL
 
 ## Google mobility
@@ -1139,6 +1152,13 @@ merged_state = merged_state %>%
 ```
 
 # OUTPUT 
+
+## Schools
+
+```{r}
+write.csv(nyt_schools, file = 'combined-datasets/schools.csv', row.names = F)
+```
+
 
 ## City
 
