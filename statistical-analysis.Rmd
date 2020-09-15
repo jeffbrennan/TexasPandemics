@@ -342,8 +342,11 @@ focused.rt.plot<-function(rt.data){
 county.focus.plot<-focused.rt.plot(county.focus.rt.output)
 ggsave( paste(rt_TMC_path,"/nine_county_rt_plot.png",sep=""), width=20, height=10, unit="cm")
 ```
-## TMC RT ESTIMATS: SCHOOL DISTRICT COUNTIES
+## RT ESTIMATS: SCHOOL DISTRICT COUNTIES
 ```{r TMC RT ESTIMATS: SCHOOL DISTRICT COUNTIES}
+#create directory for school district rt estimates
+rt_school_path="rt_estimates_for_schools"
+ifelse(!dir.exists(rt_school_path), dir.create(rt_school_path), "School rt folder already exists")
 #select the counties associated with school districts of interest
 school.focus<-county.daily%>%filter(County=="Brazoria"|
                                       County=="Galveston"|
@@ -358,7 +361,7 @@ school.county.rt.df <- data.table::rbindlist(school.focus.rt.output, idcol = TRU
 colnames(school.county.rt.df)[1] = 'County'
 
 #write csv of estimates to rt_TMC Path
-write.csv(school.county.rt.df, paste(rt_TMC_path,"/nine_county_rt_estimates.csv",sep=""), row.names = FALSE)
+write.csv(school.county.rt.df, paste(rt_school_path,"/nine_county_rt_estimates.csv",sep=""), row.names = FALSE)
 
 
 # plot with shaded confidence intervals
@@ -370,24 +373,25 @@ school.rt.plot<-function(rt.data, caption){
   plot<-ggplot(rt.data, aes(Date, Rt))+
     geom_ribbon(aes(ymin=lower, ymax=upper), fill="light grey")+
         geom_point(color="blue", size=0.2)+
-    labs(title=plot_title,subtitle=caption)
+    labs(title=plot_title,subtitle=caption)+
+    geom_hline(yintercept=1, col="red", linetype="dashed")
   plot
 }
 
 harris.schools<-school.county.rt.df%>%filter(County=="Harris")
-harris.schools.plot<-school.rt.plot(harris.schools, "Pasadena, La Porte, Deer Park, Channel View, Galena Park, Sheldon, Crosby Goose Creek, n/ Humble, Aldine, Spring, Klein, Cyrrpress-Fairbanks, Katy, Spring Branch, Alief and Houston ISD")
+harris.schools.plot<-school.rt.plot(harris.schools, "Pasadena, La Porte, Deer Park, Channel View, Galena Park, \n Sheldon, Crosby Goose Creek, Humble, Aldine, Spring, Klein,\n Cyrrpress-Fairbanks, Katy, Spring Branch, Alief and Houston ISD")
 harris.schools.plot
-ggsave( paste(rt_TMC_path,"/harris_schools_rt_plot.png",sep=""), width=20, height=10, unit="cm")
+ggsave( paste(rt_school_path,"/harris_schools_rt_plot.png",sep=""), width=20, height=10, unit="cm")
 
 galveston.schools<-school.county.rt.df%>%filter(County=="Galveston")
 galveston.schools.plot<-school.rt.plot(galveston.schools, "Friendswood  and Clear Creek ISD")
 galveston.schools.plot
-ggsave( paste(rt_TMC_path,"/galveston_schools_rt_plot.png",sep=""), width=20, height=10, unit="cm")
+ggsave( paste(rt_school_path,"/galveston_schools_rt_plot.png",sep=""), width=20, height=10, unit="cm")
 
 brazoria.schools<-school.county.rt.df%>%filter(County=="Brazoria")
 brazoria.schools.plot<-school.rt.plot(brazoria.schools, "Alvin and Pearland ISD")
 brazoria.schools.plot
-ggsave( paste(rt_TMC_path,"/brazoria_schools_rt_plot.png",sep=""), width=20, height=10, unit="cm")
+ggsave( paste(rt_school_path,"/brazoria_schools_rt_plot.png",sep=""), width=20, height=10, unit="cm")
 ```
 
 
