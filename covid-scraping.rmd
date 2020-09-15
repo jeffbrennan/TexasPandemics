@@ -238,58 +238,53 @@ DSHS_deaths_long =
 ## testing
 
 ```{r}
-test_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsOverTimebyCounty.xlsx'
+Clean_County_Tests = function(df) { 
+  test_date = as.Date(df[1,2], origin = '1899-12-30')
+  colnames(df) = c('County', 'Tests_Cumulative')
+
+  start_row = which(df$County == 'Anderson')
+  end_row = which(df$County == 'Zavala')
+
+  clean_df = df[start_row:end_row, ] %>% 
+    mutate(Date = test_date)
+  
+  # archive
+  return(list(clean_df, test_date))
+}
+
+# download daily data
+test_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsbyCounty.xlsx'
 temp = tempfile()
 download.file(test_url, temp, mode = 'wb') 
-DSHS_tests_time = data.frame(readxl::read_excel(temp, sheet = 1))
 
-# TEMP FIX drop first duplicated date column
-dupe_dates = which(DSHS_tests_time[1, ] == 'Tests Through June 23')
-DSHS_tests_time = DSHS_tests_time[, -dupe_dates[1]]
+# basic file cleaning
+test_clean_output = Clean_County_Tests(data.frame(readxl::read_excel(temp, sheet = 1)))
+new_tests = test_clean_output[[1]]
 
-# change August 32 to Sept 1
-DSHS_tests_time[1, ] = gsub('August 32', 'September 1', DSHS_tests_time[1, ])
+# read in legacy data
+legacy_tests = read.csv('original-sources/historical/testing/DSHS_county_tests.csv') %>% 
+  dplyr::select('County', 'Tests_Cumulative', 'Date') %>% 
+  mutate(Date = as.Date(Date))
 
-# fix colnames
-colnames(DSHS_tests_time) = DSHS_tests_time[1, ]
-DSHS_tests_time = DSHS_tests_time[2:(nrow(DSHS_tests_time) - 9), ]
-colnames(DSHS_tests_time)[1] = 'County'
+# TODO add NA date error catch
 
-#save
-write.csv(DSHS_tests_time, 'original-sources/DSHS_county_tests.csv', row.names = FALSE)
+# append new tests to old tests
+merged_tests = rbind(legacy_tests, new_tests) %>% unique()
 
-# melt
-DSHS_tests_long = reshape::melt(DSHS_tests_time, id = c('County'))
-colnames(DSHS_tests_long) = c('County', 'Date', 'Tests_Cumulative')
+# overwrite previous file
+if (sum(is.na(merged_tests$Date)) == 0) { 
+  write.csv(merged_tests, row.names = FALSE,
+          file = 'original-sources/historical/testing/DSHS_county_tests.csv')
+}
 
-# fix dates
-DSHS_tests_long$Date = gsub('*', '', DSHS_tests_long$Date, fixed = T)
-DSHS_tests_long$Date = as.Date(gsub('Tests Through ', '', DSHS_tests_long$Date), format = '%B%d')
-
-# replace '--' and '-' with NA
-DSHS_tests_long$Tests_Cumulative = na_if(DSHS_tests_long$Tests_Cumulative, '-')
-DSHS_tests_long$Tests_Cumulative = na_if(DSHS_tests_long$Tests_Cumulative, '--')
-
-DSHS_tests_long$Tests_Cumulative = as.numeric(as.character(DSHS_tests_long$Tests_Cumulative))
-
-# calculate daily tests
-# DSHS_tests_long_NA = 
-#     DSHS_tests_long %>% 
-#     group_by(County) %>% 
-#     tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
-#     mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative)))
-
+# calc daily values and fill in df (generated daily on merged file b/c can't calc daily tests with only new data)
 DSHS_tests_long = 
-  DSHS_tests_long %>% 
+  merged_tests %>% 
   group_by(County) %>% 
   tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
   mutate(Tests_Cumulative_NA = Tests_Cumulative) %>%
   tidyr::fill(Tests_Cumulative, .direction = "down") %>%
   mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative)))
-
-# drop unmergable counties 
-# DSHS_tests_long_NA = subset(DSHS_tests_long_NA, County != 'Unknown' & County != 'Pending Assignments')
-DSHS_tests_long = subset(DSHS_tests_long, County != 'Unknown' & County != 'Pending Assignments')
 ```
 
 ## active cases
@@ -963,36 +958,36 @@ DSHS_state = read_excel_allsheets('original-sources/DSHS_state.xlsx')
 
 ```{r}
 DSHS_tests = DSHS_state[[4]]
-DSHS_tests = DSHS_tests[1:(nrow(DSHS_tests) - 3), ]
 
-colnames(DSHS_tests) = c('Date', 'Viral_Tests', 'Antibody_Tests', 'Antigen Tests',  'Tests_Total', 'Positive_Rate', 'Viral_Tests_New_Avg', 'Antibody_Tests_New_Avg', 'Total_Tests_New_Avg')
+# LAB TESTS
+# select lab tests & remove rows where all rows are NA
+DSHS_lab_tests = DSHS_tests[2:nrow(DSHS_tests), 1:4] %>%
+  setNames(c('Date', 'LAB_Tests_Daily', 'LAB_Positive_Tests_Daily','LAB_Positivity_Rate')) %>%
+  filter(rowSums(is.na(.)) < ncol(.)) %>%
+  mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
 
-# fix date (https://stackoverflow.com/questions/43230470/how-to-convert-excel-date-format-to-proper-date-in-r) 
-DSHS_tests$Date = as.Date(as.integer(DSHS_tests$Date), origin = '1899-12-30')
-
-# fix calc col type
-DSHS_tests$Positive_Rate = as.numeric(DSHS_tests$Positive_Rate)
+# SPECIMEN TESTS
+DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %>% 
+  setNames(c('Date', 'SPECIMEN_Tests_Daily','SPECIMEN_Positive_Tests_Daily',
+             'SPECIMEN_Positivity_Rate')) %>% 
+  filter(rowSums(is.na(.)) < ncol(.)) %>%
+  mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
 ```
 
 
 ```{r}
-# drop row num
-DSHS_hospitalizations = DSHS_state[[9]][, c(2:3)]
-
-# drop footnote
-DSHS_hospitalizations = DSHS_hospitalizations[1:(nrow(DSHS_hospitalizations) - 2), ]
-
-# fix date
-DSHS_hospitalizations$Date = as.Date(DSHS_hospitalizations$Date, format = '%Y%m%d')
-
-# set colnames
-colnames(DSHS_hospitalizations)[2] = 'Hospital_Total'
+# selects covid hospitalization time series, drops footnote, formates date and sets colnames
+DSHS_hospitalizations = DSHS_state[[9]][, c(2:3)] %>%
+  filter(rowSums(is.na(.)) < ncol(.)) %>% 
+  mutate(Date = as.Date(Date)) %>% 
+  setNames(c('Date', 'Hospitalizations_Total'))
 ```
 
 
 ```{r}
 # merge tests & hospitalizations
-DSHS_state_time = merge(DSHS_tests, DSHS_hospitalizations, by = 'Date', all = TRUE)
+DSHS_state_time = Reduce(function(x, y) merge(x, y, by = c('Date')),
+       list(DSHS_specimen_tests, DSHS_lab_tests, DSHS_hospitalizations))
 ```
 
 ## DSHS (day counts)
@@ -1001,8 +996,6 @@ DSHS_state_time = merge(DSHS_tests, DSHS_hospitalizations, by = 'Date', all = TR
 # avoids duplication of results between sheets
 DSHS_state_day = data.frame(Recovered_Total = DSHS_state[[3]][1,1],
                             Active_Total = DSHS_state[[3]][1,2],
-                            Tests_State_Lab = DSHS_state[[5]][1,2],
-                            Tests_Commercial_Lab = DSHS_state[[5]][2,2],
                             Antigen_Tests_Total = DSHS_state[[6]][1,2],
                             Antigen_Tests_Positive = DSHS_state[[6]][2,2],
                             Antibody_Tests_Total = DSHS_state[[7]][1,2],
@@ -1018,6 +1011,7 @@ DSHS_state_day = data.frame(Recovered_Total = DSHS_state[[3]][1,1],
 ## DSHS Demographics
 
 ```{r}
+# TODO: refactor (clean once and append to the cleaned files)
 # read in all files
 demo.list <- paste0('original-sources/historical/demo/',
                     list.files(path = 'original-sources/historical/demo',
