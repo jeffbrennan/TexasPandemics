@@ -14,8 +14,6 @@ from datetime import datetime as dt
 # https://stackoverflow.com/questions/3362600/how-to-send-email-attachments
 # https://www.tutorialspoint.com/send-mail-with-attachment-from-your-gmail-account-using-python
 
-# set date
-date_out = dt.now().strftime("%Y-%m-%d %H:%M:%S")
 
 # read in data
 credentials = pd.read_csv('backend/email_credentials.csv').squeeze()
@@ -27,7 +25,7 @@ def post_slack_message(text, blocks = None):
     return requests.post('https://slack.com/api/chat.postMessage', 
     {
         'token': auth['slack_token'],
-        'channel': auth['tests_channel'],
+        'channel': auth['test_channel'],
         'text': text,
         'blocks': json.dumps(blocks) if blocks else None
     }).json()	
@@ -43,11 +41,13 @@ def build_slack_message(email_details):
 def build_file_details(receiver, parsed_files):
     body = []    
     for file in parsed_files: 
-        text_part = ('<br><b>' + str(file[0]) + '</b>' + 
+        text_part = ('<br><b>' + str(file['Name']) + '</b>' + 
                      '<br>Regional Level: ' + receiver['region_level'] + 
                      '<br>Regions: ' +', '.join(receiver['regions']) + 
-                     '<br>Date: ' + str(file[1]) + 
-                     '<br>Value (95% CI): ' + str(file[2]) + ' (' + str(file[3]) + ', ' + str(file[4]) + ')')
+                     '<br>Date: ' + str(file['Date']) + 
+                     '<br>Value (95% CI): ' + str(file['Value']) + ' (' +
+                                              str(file['Low_CI']) + ', ' +
+                                              str(file['Upper_CI']) + ')')
         body.append(text_part)
 
     return ''.join(body)
@@ -57,7 +57,11 @@ def send_email(credentials, receiver, file_paths, parsed_files):
     message = MIMEMultipart()
     message['From'] = credentials['sender']
     message['To'] = receiver['address']
-    message['Subject'] = receiver['data_type'] + ' [' + date_out + ']'
+
+    # TODO: add handling for multiple dates/files
+    message['Subject'] = (receiver['nickname'] + ' ' + receiver['data_type'] + 
+                          ' [' + parsed_files[0]['Date'] + ']')
+                          
     message['Cc'] = ','.join(receiver['cc'])
     # The subject line
     #The body and the attachments for the mail
@@ -105,7 +109,8 @@ def parse_file(file):
         low_CI = round(df_new.iloc[0, 2], 3)
         upper_CI = round(df_new.iloc[0, 3], 3)
 
-        file_values = [file_name, max_date, value, low_CI, upper_CI]
+        file_values = {'Name':file_name, 'Date':max_date, 'Value':value,
+                       'Low_CI':low_CI, 'Upper_CI': upper_CI}
 
     return file_values
 
