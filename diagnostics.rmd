@@ -491,7 +491,7 @@ age_summary = demo %>%
   mutate(AGEGRP = dplyr::recode(AGEGRP,  `1` = '0-9', `3` = '10-19', `5` = '20-29',
                                 `7` = '30-39', `9` = '40-49', `11` = '50-59',
                                 `13` = '60-69', `15` = '70-79', `17` = '80+')) %>% 
-  select(AGEGRP, TOT_POP)
+  dplyr::select(c(AGEGRP, TOT_POP))
 ```
 
 ```{r}
@@ -521,7 +521,7 @@ hosp_tsa = read.csv('combined-datasets/tsa.csv')
 Q_ICU = hosp_tsa %>%
   mutate(Date = as.Date(Date)) %>%
   dplyr::filter(Date == as.Date('2020-09-06') & TSA == 'Q') %>%
-  select(Hospitalizations_ICU) %>% unlist()
+  dplyr::select(Hospitalizations_ICU) %>% unlist()
 
 # TMC dashboard value - 9/6
 TMC_ICU = 78
