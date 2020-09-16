@@ -110,6 +110,7 @@ nyt_schools = rbindlist(lapply(list.files('original-sources/historical/schools/'
 
 ```{r}
 # fread for faster processing
+# TODO: run once a week instead of daily
 mobility_data = fread('https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv')
 ```
 
@@ -231,13 +232,6 @@ length(setdiff(unique(DSHS_deaths_long$County), unique(DSHS_cases_long$County)))
 # calculate daily deaths & fill cumulative deaths
 DSHS_deaths_long$Deaths_Cumulative = as.integer(as.character(DSHS_deaths_long$Deaths_Cumulative))
 
-# DSHS_deaths_long_NA = 
-#   DSHS_deaths_long %>%
-#   mutate(Date = as.Date(Date)) %>%
-#   group_by(County) %>%
-#   tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
-#   mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))
-
 DSHS_deaths_long = 
   DSHS_deaths_long %>%
   mutate(Date = as.Date(Date)) %>%
@@ -251,48 +245,43 @@ DSHS_deaths_long =
 ## testing
 
 ```{r}
-Clean_County_Tests = function(df) { 
-  test_date = as.Date(df[1,2], origin = '1899-12-30')
-  colnames(df) = c('County', 'Tests_Cumulative')
+# LEGACY
+# test_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsOverTimebyCounty.xlsx'
+# temp = tempfile()
+# download.file(test_url, temp, mode = 'wb')
+# legacy_tests = data.frame(readxl::read_excel(temp, sheet = 1))
+# legacy_tests_long = legacy_tests %>%
+#   setNames(legacy_tests[1, ]) %>%
+#   slice(2:(nrow(.) - 11)) %>%
+#   reshape::melt(id = 'County') %>%
+#   setNames(c('County', 'Date', 'Tests_Cumulative')) %>%
+#   mutate(Date = str_replace(Date, 'Tests Through ', '')) %>%
+#   mutate(Date = as.Date(Date, '%B %d')) %>%
+#   mutate(Tests_Cumulative = as.integer(as.character(Tests_Cumulative)))
+# 
+# # store backup
+# write.csv(legacy_tests_long, 'original-sources/DSHS_county_tests_legacy_cleaned.csv', row.names = FALSE)
 
-  start_row = which(df$County == 'Anderson')
-  end_row = which(df$County == 'Zavala')
-
-  clean_df = df[start_row:end_row, ] %>% 
-    mutate(Date = test_date)
-  
-  # archive
-  return(list(clean_df, test_date))
-}
-
-# download daily data
-test_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsbyCounty.xlsx'
-temp = tempfile()
-download.file(test_url, temp, mode = 'wb') 
-
-# basic file cleaning
-test_clean_output = Clean_County_Tests(data.frame(readxl::read_excel(temp, sheet = 1)))
-new_tests = test_clean_output[[1]]
-
-# read in legacy data
-legacy_tests = read.csv('original-sources/historical/testing/DSHS_county_tests.csv') %>% 
-  dplyr::select('County', 'Tests_Cumulative', 'Date') %>% 
+# LEGACY
+legacy_tests_long = read.csv('original-sources/DSHS_county_tests_legacy_cleaned.csv') %>% 
   mutate(Date = as.Date(Date))
 
-# TODO add NA date error catch
+# NEW
+test_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsbyCounty.xlsx'
+temp = tempfile()
+download.file(test_url, temp, mode = 'wb')
+new_tests = data.frame(readxl::read_excel(temp, sheet = 1))
+new_tests_long = new_tests %>% 
+  setNames(new_tests[1, ]) %>% 
+  filter(str_detect(County, 'County|Unknown|Total', negate = TRUE)) %>% 
+  reshape::melt(id = 'County') %>% 
+  setNames(c('County', 'Date', 'Tests_Cumulative')) %>% 
+  mutate(Date = as.Date(as.integer(Date), '2020-09-12'))
 
-# append new tests to old tests
-merged_tests = rbind(legacy_tests, new_tests) %>% unique()
+# MERGE
+merged_tests = rbind(legacy_tests_long, new_tests_long)
 
-# overwrite previous file
-if (sum(is.na(merged_tests$Date)) == 0) { 
-  write.csv(merged_tests, row.names = FALSE,
-          file = 'original-sources/historical/testing/DSHS_county_tests.csv')
-}
-
-# calc daily values and fill in df (generated daily on merged file b/c can't calc daily tests with only new data)
-DSHS_tests_long = 
-  merged_tests %>% 
+DSHS_tests_long = merged_tests %>%
   group_by(County) %>% 
   tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
   mutate(Tests_Cumulative_NA = Tests_Cumulative) %>%
@@ -324,15 +313,6 @@ colnames(DSHS_active_cases_long) = c('County', 'Date', 'Active_Cases_Cumulative'
 DSHS_active_cases_long$Date = as.Date(gsub('Active|Cases|\r|\n', '',
                                            DSHS_active_cases_long$Date),
                                       format = '%m-%d')
-
-# calculate daily active_cases & drop duplicate dates (07-24 DSHS duplicated)
-# DSHS_active_cases_long_NA =  
-#     DSHS_active_cases_long %>% 
-#     group_by(County) %>% 
-#     unique() %>%
-#     mutate(Active_Cases_Cumulative = as.integer(as.character(Active_Cases_Cumulative))) %>%
-#     tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
-#     mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative)))
 
 DSHS_active_cases_long =  
     DSHS_active_cases_long %>% 
@@ -990,10 +970,10 @@ DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %>%
 
 ```{r}
 # selects covid hospitalization time series, drops footnote, formates date and sets colnames
-DSHS_hospitalizations = DSHS_state[[9]][, c(2:3)] %>%
+DSHS_hospitalizations = DSHS_state[[8]][, c(2:3)] %>%
   filter(rowSums(is.na(.)) < ncol(.)) %>% 
-  mutate(Date = as.Date(Date)) %>% 
-  setNames(c('Date', 'Hospitalizations_Total'))
+  setNames(c('Date', 'Hospitalizations_Total')) %>%
+  mutate(Date = as.Date(Date))
 ```
 
 
@@ -1011,42 +991,42 @@ DSHS_state_day = data.frame(Recovered_Total = DSHS_state[[3]][1,1],
                             Active_Total = DSHS_state[[3]][1,2],
                             Antigen_Tests_Total = DSHS_state[[6]][1,2],
                             Antigen_Tests_Positive = DSHS_state[[6]][2,2],
-                            Antibody_Tests_Total = DSHS_state[[7]][1,2],
-                            Antibody_tests_Positive = DSHS_state[[7]][2,2],
-                            Hospital_Bed_Total = DSHS_state[[8]][2,2],
-                            Hospital_Bed_Available = DSHS_state[[8]][3,2],
-                            ICU_Bed_Available = DSHS_state[[8]][4,2],
-                            Ventilator_Available = DSHS_state[[8]][5,2],
-                            Case_Investigations = DSHS_state[[10]][[14,2]],
-                            Death_Investigations = DSHS_state[[13]][14,2])
+                            Antibody_Tests_Total = DSHS_state[[5]][1,2],
+                            Antibody_tests_Positive = DSHS_state[[5]][2,2],
+                            Hospital_Bed_Total = DSHS_state[[7]][2,2],
+                            Hospital_Bed_Available = DSHS_state[[7]][3,2],
+                            ICU_Bed_Available = DSHS_state[[7]][4,2],
+                            Ventilator_Available = DSHS_state[[7]][5,2],
+                            Case_Investigations = DSHS_state[[9]][[14,2]],
+                            Death_Investigations = DSHS_state[[12]][14,2])
 ```
 
 ## DSHS Demographics
 
 ```{r}
-# TODO: refactor (clean once and append to the cleaned files)
+# TODO: refactor (clean once and append to the cleaned files) - primary script bottleneck
 # read in all files
 demo.list <- paste0('original-sources/historical/demo/',
                     list.files(path = 'original-sources/historical/demo',
                                pattern = '*.xlsx'))
 
-DSHS_case_age <- append(lapply(demo.list[1:66], read_excel, sheet = 9),
-                        lapply(demo.list[67:length(demo.list)], read_excel, sheet = 10))
-                        
-DSHS_case_gender <- append(lapply(demo.list[1:66], read_excel, sheet = 10),
-                           lapply(demo.list[67:length(demo.list)], read_excel, sheet = 11))
+DSHS_case_age <- append(lapply(demo.list[c(1:66, 104:length(demo.list))], read_excel, sheet = 9),
+                        lapply(demo.list[67:103], read_excel, sheet = 10))
 
-DSHS_case_race <- append(lapply(demo.list[1:66], read_excel, sheet = 11),
-                        lapply(demo.list[67:length(demo.list)], read_excel, sheet = 12))
+DSHS_case_gender <- append(lapply(demo.list[c(1:66, 104:length(demo.list))], read_excel, sheet = 10),
+                           lapply(demo.list[67:103], read_excel, sheet = 11))
 
-DSHS_death_age <- append(lapply(demo.list[1:66], read_excel, sheet = 12),
-                         lapply(demo.list[67:length(demo.list)], read_excel, sheet = 13))
+DSHS_case_race <- append(lapply(demo.list[c(1:66, 104:length(demo.list))], read_excel, sheet = 11),
+                        lapply(demo.list[67:103], read_excel, sheet = 12))
 
-DSHS_death_gender <- append(lapply(demo.list[1:66], read_excel, sheet = 13),
-                            lapply(demo.list[67:length(demo.list)], read_excel, sheet = 14))
+DSHS_death_age <- append(lapply(demo.list[c(1:66, 104:length(demo.list))], read_excel, sheet = 12),
+                         lapply(demo.list[67:103], read_excel, sheet = 13))
 
-DSHS_death_race <- append(lapply(demo.list[1:66], read_excel, sheet = 14),
-                          lapply(demo.list[67:length(demo.list)], read_excel, sheet = 15))
+DSHS_death_gender <- append(lapply(demo.list[c(1:66, 104:length(demo.list))], read_excel, sheet = 13),
+                            lapply(demo.list[67:103], read_excel, sheet = 14))
+
+DSHS_death_race <- append(lapply(demo.list[c(1:66, 104:length(demo.list))], read_excel, sheet = 14),
+                          lapply(demo.list[67:103], read_excel, sheet = 15))
 
 DSHS_demo_clean = function(df) {
   # search for updated date (digit "/" digit)
