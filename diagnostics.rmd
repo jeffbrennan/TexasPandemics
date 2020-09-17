@@ -510,11 +510,12 @@ TMC_df = merged_county_out %>%
   mutate(Date = as.Date(Date)) %>% 
   dplyr::filter(Date == max(Date)) %>%
   dplyr::filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend', 'Galveston', 'Harris', 'Liberty', 'Montgomery', 'Waller')) %>%
-  dplyr::select(County, Population_DSHS, TSA) %>% 
+  dplyr::select(County, Population_DSHS, TSA, Cases_Daily, Date) %>% 
   arrange(desc(Population_DSHS)) %>% 
   mutate(TMC_POP = sum(Population_DSHS))
 
 TMC_pop = TMC_df$TMC_POP[1]
+
 
 # ICU hospitalizations from TSA Q (8/31)
 hosp_tsa = read.csv('combined-datasets/tsa.csv')
@@ -540,5 +541,14 @@ Q_ICU
 
 # actual TMC_coverage
 round(TMC_ICU / Q_ICU, 2)
+```
+
+```{r}
+merged_county_out %>% 
+  filter(as.Date(Date) > as.Date('2020-09-01')) %>% 
+  dplyr::filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend', 'Galveston', 'Harris', 'Liberty', 'Montgomery', 'Waller')) %>% 
+  group_by(Date) %>% 
+  summarize(sum(Cases_Daily))
+
 ```
 
