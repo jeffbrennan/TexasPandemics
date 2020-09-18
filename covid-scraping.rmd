@@ -1087,6 +1087,24 @@ DSHS_gender_df = merge(DSHS_case_gender_df, DSHS_death_gender_df, by = c('Date',
 DSHS_race_df = merge(DSHS_case_race_df, DSHS_death_race_df, by = c('Date', 'Group'))
 ```
 
+## School reopening (DEFUNCT ON 9/23)
+
+```{r}
+# TODO: change on 9/23
+school_reopenings = lapply(list.files('original-sources/school-reopening/', full.names = TRUE), read.csv, skipNul = TRUE, sep = '\t', stringsAsFactors = FALSE)
+
+school_df = school_reopenings[[1]] %>% 
+  setNames(c('Date', 'Staff_Positive', 'Students_Positive')) %>% 
+  mutate(Date = as.Date(Date, '%B %d, %Y')) %>%
+  unique() %>% 
+  mutate(Staff_Total = ifelse(Date == as.Date('2020-09-13'), as.numeric(gsub(',', '', school_reopenings[[2]][1,2])), NA)) %>% 
+  mutate(Student_Total = ifelse(Date == as.Date('2020-09-13'), as.numeric(gsub(',', '', school_reopenings[[3]][1,2])), NA))
+
+write.csv(school_df, 'tableau/state_school_reopening.csv')
+
+```
+
+
 ## Computed
 
 ```{r}
