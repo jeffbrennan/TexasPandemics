@@ -11,3 +11,5 @@
 *.ini
 /backend
 rt_estimates_for_TMC/
+original-sources/dshs-new-cases/
+dshs-scrape.py
