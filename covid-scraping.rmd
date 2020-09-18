@@ -1100,7 +1100,7 @@ school_df = school_reopenings[[1]] %>%
   mutate(Staff_Total = ifelse(Date == as.Date('2020-09-13'), as.numeric(gsub(',', '', school_reopenings[[2]][1,2])), NA)) %>% 
   mutate(Student_Total = ifelse(Date == as.Date('2020-09-13'), as.numeric(gsub(',', '', school_reopenings[[3]][1,2])), NA))
 
-write.csv(school_df, 'tableau/state_school_reopening.csv')
+write.csv(school_df, 'tableau/state_school_reopening.csv', row.names = FALSE)
 
 ```
 
