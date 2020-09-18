@@ -289,6 +289,19 @@ DSHS_tests_long = merged_tests %>%
   mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative)))
 ```
 
+##  new cases
+
+```{r}
+DSHS_new_cases_long = rbindlist(lapply(list.files(path = 'original-sources/dshs-new-cases', full.names = TRUE),
+                                read.csv, fileEncoding="utf-16", sep='\t')) %>% 
+  dplyr::select(Date, County, New.Cases) %>% 
+  setNames(c('Date', 'County', 'Cases_Daily_New')) %>% 
+  mutate(Date = ifelse(as.integer(as.Date(Date, '%m/%d/%Y')) < 0, as.Date(Date, '%m/%d/%y'), as.Date(Date, '%m/%d/%Y'))) %>% 
+  mutate(Date = as.Date(Date, origin = '1970-01-01')) %>% 
+  mutate(Cases_Daily_New = gsub(',', '', as.character(Cases_Daily_New), fixed = TRUE)) %>% 
+  mutate(Cases_Daily_New = as.integer(Cases_Daily_New)) %>% 
+  na.omit()
+```
 ## active cases
 
 ```{r}
@@ -341,7 +354,7 @@ Clean_Childcare = function(df, data_type) {
   
   grouped_df = df %>% 
     group_by(County) %>%
-    select(2:5) %>%
+    dplyr::select(2:5) %>%
     mutate_all(as.numeric) %>% 
     summarise_all(sum)
  
@@ -366,13 +379,14 @@ county_childcare_df$County = gsub('Mcculloch', 'McCulloch', county_childcare_df$
 county_childcare_df$County = gsub('Mclennan', 'McLennan', county_childcare_df$County)
 ```
 
+### merge
 
 ```{r}
 # combine DSHS sources using merge helper function
 # https://www.musgraveanalytics.com/blog/2018/2/12/how-to-merge-multiple-data-frames-using-base-r
 
 county_counts = Reduce(function(x, y) merge(x, y, by = c('Date', 'County'), all=TRUE),
-       list(DSHS_cases_long, DSHS_deaths_long, DSHS_tests_long, DSHS_active_cases_long, county_childcare_df))
+       list(DSHS_cases_long, DSHS_new_cases_long, DSHS_deaths_long, DSHS_tests_long, DSHS_active_cases_long, county_childcare_df))
 # 
 # # drop population - will be using census data
 # county_counts$Population.x = NULL
@@ -458,7 +472,7 @@ merged_county = merged_county %>%
 DSHS_tsa_counts =
     merged_county %>%
     group_by(Date, TSA, TSA_Name) %>% 
-    summarize_at(vars(Cases_Cumulative, Cases_Daily,
+    summarize_at(vars(Cases_Cumulative, Cases_Daily, Cases_Daily_New,
                       Deaths_Cumulative, Deaths_Daily,
                       Tests_Cumulative, Tests_Daily,
                       Active_Cases_Cumulative, Active_Cases_Daily),
@@ -624,7 +638,7 @@ merged_tsa = merged_tsa %>%
 DSHS_phr_counts =
     merged_county %>%
     group_by(Date, PHR, PHR_Name) %>%
-    summarize_at(vars(Cases_Cumulative, Cases_Daily,
+    summarize_at(vars(Cases_Cumulative, Cases_Daily, Cases_Daily_New,
                       Deaths_Cumulative, Deaths_Daily,
                       Tests_Cumulative, Tests_Daily,
                       Active_Cases_Cumulative, Active_Cases_Daily),
@@ -798,7 +812,7 @@ hhsc_df = merge(hhsc_alf_df, hhsc_nursing_df, by = c('Date', 'HHSC'))
 DSHS_metro_counts =
     merged_county %>%
     group_by(Date, Metro_Area) %>%
-    summarize_at(vars(Cases_Cumulative, Cases_Daily,
+    summarize_at(vars(Cases_Cumulative, Cases_Daily, Cases_Daily_New,
                       Deaths_Cumulative, Deaths_Daily,
                       Tests_Cumulative, Tests_Daily,
                       Active_Cases_Cumulative, Active_Cases_Daily),
@@ -1082,7 +1096,7 @@ DSHS_race_df = merge(DSHS_case_race_df, DSHS_death_race_df, by = c('Date', 'Grou
 state_counts =
     merged_county %>%
     group_by(Date) %>%
-    summarize_at(vars(Cases_Cumulative, Cases_Daily,
+    summarize_at(vars(Cases_Cumulative, Cases_Daily, Cases_Daily_New,
                       Deaths_Cumulative, Deaths_Daily,
                       Tests_Cumulative, Tests_Daily,
                       Active_Cases_Cumulative, Active_Cases_Daily),
