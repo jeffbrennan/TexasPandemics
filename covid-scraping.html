@@ -619,11 +619,14 @@ new_tests = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## Expecting numeric in D2 / R2C4: got a date</code></pre>
 <pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
 ## Expecting numeric in E2 / R2C5: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in F2 / R2C6: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
-## * `` -&gt; ...5</code></pre>
+## * `` -&gt; ...5
+## * `` -&gt; ...6</code></pre>
 <pre class="r"><code>new_tests_long = new_tests %&gt;% 
   setNames(new_tests[1, ]) %&gt;% 
   filter(str_detect(County, &#39;County|Unknown|Total&#39;, negate = TRUE)) %&gt;% 
@@ -838,6 +841,13 @@ county_childcare = read_excel_allsheets(temp)</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
 ## * ...</code></pre>
 <pre class="r"><code>Clean_Childcare = function(df, data_type) { 
   date = as.Date(gsub(&#39;Data current as of &#39;, &#39;&#39;, colnames(df)[1]), &#39;%m/%d/%y&#39;)
@@ -860,6 +870,10 @@ county_childcare = read_excel_allsheets(temp)</code></pre>
 }
 
 county_childcare_df = rbindlist(lapply(county_childcare, Clean_Childcare))</code></pre>
+<pre><code>## Adding missing grouping variables: `County`</code></pre>
+<pre><code>## `mutate_all()` ignored the following grouping variables:
+## Column `County`
+## Use `mutate_at(df, vars(-group_cols()), myoperation)` to silence the message.</code></pre>
 <pre><code>## Adding missing grouping variables: `County`</code></pre>
 <pre><code>## `mutate_all()` ignored the following grouping variables:
 ## Column `County`
@@ -1707,6 +1721,13 @@ hhsc_alf = read_excel_allsheets(temp)</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
 ## * ...</code></pre>
 <pre class="r"><code>Clean_HHSC = function(df, data_type) { 
   date = as.Date(gsub(&#39;Data current as of &#39;, &#39;&#39;, colnames(df)[1]), &#39;%B %d, %Y&#39;)
@@ -1741,6 +1762,13 @@ download.file(&#39;https://apps.hhs.texas.gov/providers/directories/Texas_Nursin
 
 hhsc_nursing = read_excel_allsheets(temp)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
@@ -2231,6 +2259,12 @@ DSHS_state = read_excel_allsheets(&#39;original-sources/DSHS_state.xlsx&#39;)</c
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
+## * `` -&gt; ...6</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
 ## * `` -&gt; ...7
 ## * ...</code></pre>
 <pre class="r"><code>DSHS_tests = DSHS_state[[4]]
@@ -2284,6 +2318,9 @@ demo.list &lt;- paste0(&#39;original-sources/historical/demo/&#39;,
 DSHS_case_age &lt;- append(lapply(demo.list[c(1:66, 104:length(demo.list))], read_excel, sheet = 9),
                         lapply(demo.list[67:103], read_excel, sheet = 10))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -2920,10 +2957,16 @@ DSHS_case_age &lt;- append(lapply(demo.list[c(1:66, 104:length(demo.list))], rea
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_case_race &lt;- append(lapply(demo.list[c(1:66, 104:length(demo.list))], read_excel, sheet = 11),
                         lapply(demo.list[67:103], read_excel, sheet = 12))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -3560,10 +3603,16 @@ DSHS_case_age &lt;- append(lapply(demo.list[c(1:66, 104:length(demo.list))], rea
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_gender &lt;- append(lapply(demo.list[c(1:66, 104:length(demo.list))], read_excel, sheet = 13),
                             lapply(demo.list[67:103], read_excel, sheet = 14))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -4200,6 +4249,9 @@ DSHS_case_age &lt;- append(lapply(demo.list[c(1:66, 104:length(demo.list))], rea
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_demo_clean = function(df) {
   # search for updated date (digit &quot;/&quot; digit)
@@ -4361,6 +4413,20 @@ DSHS_case_age_df = Demo_Daily(rbindlist(lapply(DSHS_case_age, DSHS_demo_clean)),
 DSHS_age_df = merge(DSHS_case_age_df, DSHS_death_age_df, by = c(&#39;Date&#39;, &#39;Group&#39;))
 DSHS_gender_df = merge(DSHS_case_gender_df, DSHS_death_gender_df, by = c(&#39;Date&#39;, &#39;Group&#39;))
 DSHS_race_df = merge(DSHS_case_race_df, DSHS_death_race_df, by = c(&#39;Date&#39;, &#39;Group&#39;))</code></pre>
+</div>
+<div id="school-reopening-defunct-on-923" class="section level2">
+<h2>School reopening (DEFUNCT ON 9/23)</h2>
+<pre class="r"><code># TODO: change on 9/23
+school_reopenings = lapply(list.files(&#39;original-sources/school-reopening/&#39;, full.names = TRUE), read.csv, skipNul = TRUE, sep = &#39;\t&#39;, stringsAsFactors = FALSE)
+
+school_df = school_reopenings[[1]] %&gt;% 
+  setNames(c(&#39;Date&#39;, &#39;Staff_Positive&#39;, &#39;Students_Positive&#39;)) %&gt;% 
+  mutate(Date = as.Date(Date, &#39;%B %d, %Y&#39;)) %&gt;%
+  unique() %&gt;% 
+  mutate(Staff_Total = ifelse(Date == as.Date(&#39;2020-09-13&#39;), as.numeric(gsub(&#39;,&#39;, &#39;&#39;, school_reopenings[[2]][1,2])), NA)) %&gt;% 
+  mutate(Student_Total = ifelse(Date == as.Date(&#39;2020-09-13&#39;), as.numeric(gsub(&#39;,&#39;, &#39;&#39;, school_reopenings[[3]][1,2])), NA))
+
+write.csv(school_df, &#39;tableau/state_school_reopening.csv&#39;, row.names = FALSE)</code></pre>
 </div>
 <div id="computed-4" class="section level2">
 <h2>Computed</h2>
