@@ -58,7 +58,7 @@ counties = pd.read_excel(r"C:\Users\jeffb\Desktop\Life\personal-projects\COVID\o
                             sheet_name=0)['County Name'].tolist()
 
 # WIPE DIRECTORY FROM PREVIOUS DAY 
-files = glob.glob(case_directory)
+files = glob.glob(f'{case_directory}\*')
 for f in files:
     os.remove(f)
 
