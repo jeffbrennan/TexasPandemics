@@ -405,18 +405,18 @@ mydata$Date = as.Date(mydata$Date)
 maxdate = max(mydata$Date)
 case_features = subset(mydata, Date &gt;= maxdate-14) %&gt;%
   group_by(County) %&gt;%
-  mutate(criteria1 = mean(Cases_Daily_New)) %&gt;% 
+  mutate(criteria1 = mean(Cases_Daily)) %&gt;% 
   mutate(criteria2 = mean(Cases_Cumulative)) %&gt;% 
   mutate(criteria3 = (mean(Cases_Cumulative) / Population_DSHS) * 1000)%&gt;%
-  mutate(criteria4 = max(Cases_Daily_New, na.rm = TRUE)) %&gt;%
-  mutate(criteria5 = median(Cases_Daily_New)) %&gt;%
+  mutate(criteria4 = max(Cases_Daily, na.rm = TRUE)) %&gt;%
+  mutate(criteria5 = median(Cases_Daily)) %&gt;%
   dplyr::select(County, Date, PHR, TSA, contains(&#39;Criteria&#39;))
 
-Plot_Threshold(case_features, &#39;criteria1&#39;, &#39;mean(Cases_Daily_New)&#39;)
+Plot_Threshold(case_features, &#39;criteria1&#39;, &#39;mean(Cases_Daily)&#39;)
 Plot_Threshold(case_features, &#39;criteria2&#39;, &#39;mean(Cases_Cumulative)&#39;)
 Plot_Threshold(case_features, &#39;criteria3&#39;, &#39;mean(Cases_Cumulative) by Population_DSHS x 1000&#39;)
-Plot_Threshold(case_features, &#39;criteria4&#39;, &#39;max(Cases_Daily_New)&#39;)
-Plot_Threshold(case_features, &#39;criteria5&#39;, &#39;median(Cases_Daily_New)&#39;)</code></pre>
+Plot_Threshold(case_features, &#39;criteria4&#39;, &#39;max(Cases_Daily)&#39;)
+Plot_Threshold(case_features, &#39;criteria5&#39;, &#39;median(Cases_Daily)&#39;)</code></pre>
 <!-- # DSHS VS HHS  -->
 <!-- ```{r} -->
 <!-- state = readxl::read_excel('combined-datasets/state.xlsx', sheet = 1) -->
@@ -681,7 +681,7 @@ calc_demo_stats = function(group_text, df) {
 </div>
 <div id="compute-stats" class="section level2">
 <h2>compute stats</h2>
-<pre class="r"><code>county_check = lapply(c(&#39;Cases_Daily_New&#39;, &#39;Deaths_Daily&#39;, &#39;Tests_Daily&#39;, &#39;Residential&#39;), 
+<pre class="r"><code>county_check = lapply(c(&#39;Cases_Daily&#39;, &#39;Deaths_Daily&#39;, &#39;Tests_Daily&#39;, &#39;Residential&#39;), 
                       calc_count_stats, df = county)</code></pre>
 <pre><code>`summarise()` ungrouping output (override with `.groups` argument)
 `summarise()` ungrouping output (override with `.groups` argument)
@@ -829,7 +829,7 @@ TMC_df = merged_county_out %&gt;%
   mutate(Date = as.Date(Date)) %&gt;% 
   dplyr::filter(Date == max(Date)) %&gt;%
   dplyr::filter(County %in% c(&#39;Austin&#39;, &#39;Brazoria&#39;, &#39;Chambers&#39;, &#39;Fort Bend&#39;, &#39;Galveston&#39;, &#39;Harris&#39;, &#39;Liberty&#39;, &#39;Montgomery&#39;, &#39;Waller&#39;)) %&gt;%
-  dplyr::select(County, Population_DSHS, TSA, Cases_Daily_New, Date) %&gt;% 
+  dplyr::select(County, Population_DSHS, TSA, Cases_Daily, Date) %&gt;% 
   arrange(desc(Population_DSHS)) %&gt;% 
   mutate(TMC_POP = sum(Population_DSHS))
 
@@ -867,29 +867,30 @@ round(TMC_ICU / Q_ICU, 2)</code></pre>
   filter(as.Date(Date) &gt; as.Date(&#39;2020-09-01&#39;)) %&gt;% 
   dplyr::filter(County %in% c(&#39;Austin&#39;, &#39;Brazoria&#39;, &#39;Chambers&#39;, &#39;Fort Bend&#39;, &#39;Galveston&#39;, &#39;Harris&#39;, &#39;Liberty&#39;, &#39;Montgomery&#39;, &#39;Waller&#39;)) %&gt;% 
   group_by(Date) %&gt;% 
-  summarize(sum(Cases_Daily_New))</code></pre>
+  summarize(sum(Cases_Daily))</code></pre>
 <pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
-<pre><code># A tibble: 18 x 2
-   Date       `sum(Cases_Daily_New)`
-   &lt;fct&gt;                       &lt;int&gt;
- 1 2020-09-02                   1200
- 2 2020-09-03                    803
- 3 2020-09-04                   1046
- 4 2020-09-05                   1237
- 5 2020-09-06                   1197
- 6 2020-09-07                    851
- 7 2020-09-08                     66
- 8 2020-09-09                   1008
- 9 2020-09-10                   1069
-10 2020-09-11                   1154
-11 2020-09-12                   1412
-12 2020-09-13                    705
-13 2020-09-14                   1032
-14 2020-09-15                   1459
-15 2020-09-16                    585
-16 2020-09-17                    626
-17 2020-09-18                    785
-18 2020-09-19                    589</code></pre>
+<pre><code># A tibble: 19 x 2
+   Date       `sum(Cases_Daily)`
+   &lt;fct&gt;                   &lt;int&gt;
+ 1 2020-09-02               1200
+ 2 2020-09-03                803
+ 3 2020-09-04               1046
+ 4 2020-09-05               1237
+ 5 2020-09-06               1197
+ 6 2020-09-07                851
+ 7 2020-09-08                 66
+ 8 2020-09-09               1008
+ 9 2020-09-10               1069
+10 2020-09-11               1154
+11 2020-09-12               1412
+12 2020-09-13                705
+13 2020-09-14               1032
+14 2020-09-15               1459
+15 2020-09-16                585
+16 2020-09-17                626
+17 2020-09-18                785
+18 2020-09-19                589
+19 2020-09-20                791</code></pre>
 </div>
 
 
