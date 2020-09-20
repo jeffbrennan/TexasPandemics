@@ -51,18 +51,18 @@ mydata$Date = as.Date(mydata$Date)
 maxdate = max(mydata$Date)
 case_features = subset(mydata, Date >= maxdate-14) %>%
   group_by(County) %>%
-  mutate(criteria1 = mean(Cases_Daily_New)) %>% 
+  mutate(criteria1 = mean(Cases_Daily)) %>% 
   mutate(criteria2 = mean(Cases_Cumulative)) %>% 
   mutate(criteria3 = (mean(Cases_Cumulative) / Population_DSHS) * 1000)%>%
-  mutate(criteria4 = max(Cases_Daily_New, na.rm = TRUE)) %>%
-  mutate(criteria5 = median(Cases_Daily_New)) %>%
+  mutate(criteria4 = max(Cases_Daily, na.rm = TRUE)) %>%
+  mutate(criteria5 = median(Cases_Daily)) %>%
   dplyr::select(County, Date, PHR, TSA, contains('Criteria'))
 
-Plot_Threshold(case_features, 'criteria1', 'mean(Cases_Daily_New)')
+Plot_Threshold(case_features, 'criteria1', 'mean(Cases_Daily)')
 Plot_Threshold(case_features, 'criteria2', 'mean(Cases_Cumulative)')
 Plot_Threshold(case_features, 'criteria3', 'mean(Cases_Cumulative) by Population_DSHS x 1000')
-Plot_Threshold(case_features, 'criteria4', 'max(Cases_Daily_New)')
-Plot_Threshold(case_features, 'criteria5', 'median(Cases_Daily_New)')
+Plot_Threshold(case_features, 'criteria4', 'max(Cases_Daily)')
+Plot_Threshold(case_features, 'criteria5', 'median(Cases_Daily)')
 ```
 
 
@@ -362,7 +362,7 @@ calc_demo_stats = function(group_text, df) {
 
 ## compute stats
 ```{r}
-county_check = lapply(c('Cases_Daily_New', 'Deaths_Daily', 'Tests_Daily', 'Residential'), 
+county_check = lapply(c('Cases_Daily', 'Deaths_Daily', 'Tests_Daily', 'Residential'), 
                       calc_count_stats, df = county)
 
 tsa_check = lapply(c('Hospitalizations_Total', 'Hospitalizations_ICU', 'Beds_Available_Total'),
@@ -513,7 +513,7 @@ TMC_df = merged_county_out %>%
   mutate(Date = as.Date(Date)) %>% 
   dplyr::filter(Date == max(Date)) %>%
   dplyr::filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend', 'Galveston', 'Harris', 'Liberty', 'Montgomery', 'Waller')) %>%
-  dplyr::select(County, Population_DSHS, TSA, Cases_Daily_New, Date) %>% 
+  dplyr::select(County, Population_DSHS, TSA, Cases_Daily, Date) %>% 
   arrange(desc(Population_DSHS)) %>% 
   mutate(TMC_POP = sum(Population_DSHS))
 
@@ -551,7 +551,7 @@ merged_county_out %>%
   filter(as.Date(Date) > as.Date('2020-09-01')) %>% 
   dplyr::filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend', 'Galveston', 'Harris', 'Liberty', 'Montgomery', 'Waller')) %>% 
   group_by(Date) %>% 
-  summarize(sum(Cases_Daily_New))
+  summarize(sum(Cases_Daily))
 
 ```
 

@@ -64,17 +64,17 @@ rt.data.clean<-function(covid.data) {
   
   # select relevant metadata & DSHS population estimates
   rt.cols <- c("County", "Date", "TSA_Name", "TSA", "PHR", "PHR_Name",
-               "Metro_Area", "Cases_Daily_New", "Population_DSHS")
+               "Metro_Area", "Cases_Daily", "Population_DSHS")
   
   covid.data <- covid.data[, names(covid.data) %in% rt.cols]
              
   # set correct types
   covid.data$Date <- as.Date(covid.data$Date)
-  covid.data$Cases_Daily_New <- as.numeric(covid.data$Cases_Daily_New)
+  covid.data$Cases_Daily <- as.numeric(covid.data$Cases_Daily)
   
   # TODO: decide on how to handle drops in cumulative counts -> negative daily cases
   covid.data <- covid.data %>% 
-    mutate(Cases_Daily_New = ifelse(Cases_Daily_New < 0, 0, Cases_Daily_New))
+    mutate(Cases_Daily = ifelse(Cases_Daily < 0, 0, Cases_Daily))
   
   return(covid.data)
 }
@@ -99,15 +99,15 @@ rt.data.organize <- function(mycounty, mytsa, myphr){
   # calculate daily cases and population at metro level, drop repeated rows
   metro.temp <- cleaned.county %>%
     group_by(Metro_Area,Date) %>%
-    mutate(metro_Cases_Daily_New=sum(Cases_Daily_New, na.rm=TRUE)) %>%
+    mutate(metro_Cases_Daily=sum(Cases_Daily, na.rm=TRUE)) %>%
     mutate(metro_pop_DSHS=sum(Population_DSHS, na.rm=TRUE)) %>%
-    dplyr::select(Date, Metro_Area, metro_Cases_Daily_New, metro_pop_DSHS) %>%
+    dplyr::select(Date, Metro_Area, metro_Cases_Daily, metro_pop_DSHS) %>%
     distinct()
   
   
   metro.df <- data.frame(Date = metro.temp$Date,
                          Metro_Area = metro.temp$Metro_Area,
-                         Cases_Daily_New = metro.temp$metro_Cases_Daily_New,
+                         Cases_Daily = metro.temp$metro_Cases_Daily,
                          Population_DSHS = metro.temp$metro_pop_DSHS)
   
   
@@ -115,14 +115,14 @@ rt.data.organize <- function(mycounty, mytsa, myphr){
   # calculate daily cases and population at state level, drop repeated rows
   state.temp <- TSA.df %>%
     group_by(Date) %>%
-    mutate(state_Cases_Daily_New=sum(Cases_Daily_New, na.rm=TRUE)) %>%
+    mutate(state_Cases_Daily=sum(Cases_Daily, na.rm=TRUE)) %>%
     mutate(state_pop_DSHS=sum(Population_DSHS, na.rm=TRUE)) %>%
-    dplyr::select(Date, state_Cases_Daily_New, state_pop_DSHS) %>%
+    dplyr::select(Date, state_Cases_Daily, state_pop_DSHS) %>%
     distinct()
   
   
   state.df <- data.frame(Date = state.temp$Date, 
-                         Cases_Daily_New = state.temp$state_Cases_Daily_New,
+                         Cases_Daily = state.temp$state_Cases_Daily,
                          Population_DSHS = state.temp$state_pop_DSHS)
 
   ### OUTPUT ###
@@ -186,19 +186,19 @@ covid.rt <- function(mydata, threshold) {
   
   # get case average from past month
   recent_case_avg = mydata %>% filter(Date > seq(date_out, length = 2, by = "-1 month")[2]) %>%
-    summarize(mean(Cases_Daily_New, na.rm = TRUE)) %>% 
+    summarize(mean(Cases_Daily, na.rm = TRUE)) %>% 
     unlist()
   
   # pop.DSHS <- mydata$Population_DSHS[1]
   
   #Get 7 day moving average of daily cases
-  mydata$MA_7day<-rollmean(mydata$Cases_Daily_New, k=7, na.pad=TRUE, align='right')
+  mydata$MA_7day<-rollmean(mydata$Cases_Daily, k=7, na.pad=TRUE, align='right')
   #change na values to 0
   mydata<-mydata%>%replace(is.na(.),0)
 
   #create a vector of new cases 7 day moving average
   mydata.new<-pull(mydata, MA_7day)
-  #mydata.new <- pull(mydata, Cases_Daily_New)
+  #mydata.new <- pull(mydata, Cases_Daily)
   
   # get dates as vectors
   date.vector <- pull(mydata, Date)
@@ -215,8 +215,8 @@ covid.rt <- function(mydata, threshold) {
   #NOTE: for 7 day moving average start March 15, for daily start March 9
   #find max row between the two (this will be beginning of rt data used)
   march15.row <- which(mydata$Date=="2020-03-15")
-  first.nonzero <- min(which(mydata$Cases_Daily_New>0))
-  last.nonzero <- max(which(mydata$Cases_Daily_New>0))
+  first.nonzero <- min(which(mydata$Cases_Daily>0))
+  last.nonzero <- max(which(mydata$Cases_Daily>0))
   minrow <- max(march15.row, first.nonzero)
 
   ### R0 ESTIMATION ###
@@ -279,7 +279,7 @@ phr.daily <- covid.frame.list$phr
 
 case_quant = county.daily %>% filter(Date >= as.Date(date_out - as.difftime(3, unit = 'weeks'))) %>%
   group_by(County) %>%
-  mutate(mean_cases = mean(Cases_Daily_New, na.rm = TRUE)) %>%
+  mutate(mean_cases = mean(Cases_Daily, na.rm = TRUE)) %>%
   dplyr::select(mean_cases) %>%
   ungroup() %>%
   summarize(case_quant = quantile(mean_cases, c(0.4, 0.5, 0.6, 0.7, 0.8), na.rm = TRUE)[4]) %>% 

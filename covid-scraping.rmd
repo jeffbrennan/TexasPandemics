@@ -175,8 +175,8 @@ DSHS_cases_long =
     group_by(County) %>%
     tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
     mutate(Cases_Cumulative_NA = Cases_Cumulative) %>% 
-    tidyr::fill(Cases_Cumulative, .direction = "down") %>%
-    mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
+    tidyr::fill(Cases_Cumulative, .direction = "down")
+    # mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
 ```
 
 ## deaths
@@ -295,11 +295,11 @@ DSHS_tests_long = merged_tests %>%
 DSHS_new_cases_long = rbindlist(lapply(list.files(path = 'original-sources/dshs-new-cases', full.names = TRUE),
                                 read.csv, fileEncoding="utf-16", sep='\t')) %>% 
   dplyr::select(Date, County, New.Cases) %>% 
-  setNames(c('Date', 'County', 'Cases_Daily_New')) %>% 
+  setNames(c('Date', 'County', 'Cases_Daily')) %>% 
   mutate(Date = ifelse(as.integer(as.Date(Date, '%m/%d/%Y')) < 0, as.Date(Date, '%m/%d/%y'), as.Date(Date, '%m/%d/%Y'))) %>% 
   mutate(Date = as.Date(Date, origin = '1970-01-01')) %>% 
-  mutate(Cases_Daily_New = gsub(',', '', as.character(Cases_Daily_New), fixed = TRUE)) %>% 
-  mutate(Cases_Daily_New = as.integer(Cases_Daily_New)) %>% 
+  mutate(Cases_Daily = gsub(',', '', as.character(Cases_Daily), fixed = TRUE)) %>% 
+  mutate(Cases_Daily = as.integer(Cases_Daily)) %>% 
   na.omit()
 ```
 ## active cases
@@ -472,7 +472,7 @@ merged_county = merged_county %>%
 DSHS_tsa_counts =
     merged_county %>%
     group_by(Date, TSA, TSA_Name) %>% 
-    summarize_at(vars(Cases_Cumulative, Cases_Daily, Cases_Daily_New,
+    summarize_at(vars(Cases_Cumulative, Cases_Daily,
                       Deaths_Cumulative, Deaths_Daily,
                       Tests_Cumulative, Tests_Daily,
                       Active_Cases_Cumulative, Active_Cases_Daily),
@@ -633,7 +633,7 @@ merged_tsa = merged_tsa %>%
 DSHS_phr_counts =
     merged_county %>%
     group_by(Date, PHR, PHR_Name) %>%
-    summarize_at(vars(Cases_Cumulative, Cases_Daily, Cases_Daily_New,
+    summarize_at(vars(Cases_Cumulative, Cases_Daily,
                       Deaths_Cumulative, Deaths_Daily,
                       Tests_Cumulative, Tests_Daily,
                       Active_Cases_Cumulative, Active_Cases_Daily),
@@ -807,7 +807,7 @@ hhsc_df = merge(hhsc_alf_df, hhsc_nursing_df, by = c('Date', 'HHSC'))
 DSHS_metro_counts =
     merged_county %>%
     group_by(Date, Metro_Area) %>%
-    summarize_at(vars(Cases_Cumulative, Cases_Daily, Cases_Daily_New,
+    summarize_at(vars(Cases_Cumulative, Cases_Daily,
                       Deaths_Cumulative, Deaths_Daily,
                       Tests_Cumulative, Tests_Daily,
                       Active_Cases_Cumulative, Active_Cases_Daily),
@@ -1136,7 +1136,7 @@ write.csv(school_df, 'tableau/state_school_reopening.csv', row.names = FALSE)
 state_counts =
     merged_county %>%
     group_by(Date) %>%
-    summarize_at(vars(Cases_Cumulative, Cases_Daily, Cases_Daily_New,
+    summarize_at(vars(Cases_Cumulative, Cases_Daily,
                       Deaths_Cumulative, Deaths_Daily,
                       Tests_Cumulative, Tests_Daily,
                       Active_Cases_Cumulative, Active_Cases_Daily),
