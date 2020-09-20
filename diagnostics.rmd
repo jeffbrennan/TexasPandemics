@@ -267,7 +267,7 @@ data_urls = c('<https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyCaseCo
               '<https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx|TOTAL HOSPITALIZATIONS>',
               '<https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx|ICU HOSPITALIZATIONS>',
               '<https://dshs.texas.gov/coronavirus/TexasHospitalCapacityoverTimebyTSA.xlsx|TOTAL CAPACITY>',
-              '<https://dshs.texas.gov/coronavirus/TexasHospitalCapacityoverTimebyTSA.xlsx|ICU CAPACITY>',
+              # '<https://dshs.texas.gov/coronavirus/TexasHospitalCapacityoverTimebyTSA.xlsx|ICU CAPACITY>',
               # '<https://apps.hhs.texas.gov/providers/directories/Texas_Nursing_Facilities_COVID_Summary.xls|NURSING FACILITIES>',
               # '<https://apps.hhs.texas.gov/providers/directories/Texas_Assisted_Living_Facilities_COVID_Summary.xls|ALF>',
               '<https://dshs.texas.gov/coronavirus/TexasCOVID19CaseCountData.xlsx|AGE>',
@@ -365,7 +365,7 @@ calc_demo_stats = function(group_text, df) {
 county_check = lapply(c('Cases_Daily_New', 'Deaths_Daily', 'Tests_Daily', 'Residential'), 
                       calc_count_stats, df = county)
 
-tsa_check = lapply(c('Hospitalizations_Total', 'Hospitalizations_ICU', 'Beds_Available_Total', 'Beds_Available_ICU'),
+tsa_check = lapply(c('Hospitalizations_Total', 'Hospitalizations_ICU', 'Beds_Available_Total'),
                    calc_count_stats, df = tsa)
 
 state_check = lapply(c('Age', 'Gender', 'Race'), calc_demo_stats, df = state)
@@ -384,19 +384,22 @@ emojis_out = unlist(c(lapply(county_check, `[[`, 2),
 ```{r}
 # declare sublevels for use in creating validation df and renaming nested list output
 county_sublevels = c('Cases', 'Deaths', 'Tests', 'Mobility')
-tsa_sublevels = c('Hosp_Total', 'Hosp_ICU', 'Cap_Total', 'Cap_ICU')
+tsa_sublevels = c('Hosp_Total', 'Hosp_ICU', 'Cap_Total')
 state_sublevels = c('Age', 'Gender', 'Race')
 
 
-validation_df = data.frame(Level = c(rep(c('County', 'TSA'), each = 16), rep('State', 9)),
+validation_df = data.frame(Level = c(rep('County', each = 16),
+                                     rep('TSA', each = 12),
+                                     rep('State', each = 9)),
                            Sublevel = c(rep(county_sublevels, each = 4),
                                         rep(tsa_sublevels, each = 4),
                                         rep(state_sublevels, each = 3)),
                            Emoji = emojis_out,
                            Text = c(rep(c('Latest date:', 'Average daily value:' ,
                                           'Average % change:', '% reporting > 0:'),
-                                        times = length(unlist(c(county_check, tsa_check))) / 4 / 2),
-                                rep(c('Latest Date', 'Average case change:', 'Average death change:'), times = 3)),
+                                        times = 4 + 3),
+                                rep(c('Latest Date', 'Average case change:', 'Average death change:'),
+                                    times = 3)),
                        Statistic = stats_out) %>% 
   mutate_all(as.character)
 ```
@@ -417,7 +420,7 @@ build_text = function(text_filters, data_url) {
 }
 
 # declare for combination into 'text_filters' list
-level_text = c(head(rep(unique(validation_df$Level), each = 4), -1))
+level_text = c(rep('County', each=4), rep('TSA', each=3), rep('State', each=3))
 sublevel_text = c(unique(validation_df$Sublevel))
 
 # obtain list of lists (~4 of 4)
