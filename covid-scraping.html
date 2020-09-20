@@ -621,12 +621,15 @@ new_tests = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## Expecting numeric in E2 / R2C5: got a date</code></pre>
 <pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
 ## Expecting numeric in F2 / R2C6: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in G2 / R2C7: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
-## * `` -&gt; ...6</code></pre>
+## * `` -&gt; ...6
+## * ...</code></pre>
 <pre class="r"><code>new_tests_long = new_tests %&gt;% 
   setNames(new_tests[1, ]) %&gt;% 
   filter(str_detect(County, &#39;County|Unknown|Total&#39;, negate = TRUE)) %&gt;% 
@@ -1183,20 +1186,13 @@ DSHS_tsa_hosp_cap = read_excel_allsheets(&#39;original-sources/DSHS_tsa_hosp_cap
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ...
-## New names:
-## * `` -&gt; ...2
-## * `` -&gt; ...3
-## * `` -&gt; ...4
-## * `` -&gt; ...5
-## * `` -&gt; ...6
 ## * ...</code></pre>
 <pre class="r"><code>hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[1]], &#39;Beds_Available_Total&#39;)
-hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[2]], &#39;Beds_Available_ICU&#39;)
-hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[3]], &#39;Beds_Occupied_Total&#39;)
-hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[4]], &#39;Beds_Occupied_ICU&#39;)
+# hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[2]], &#39;Beds_Available_ICU&#39;)
+hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[2]], &#39;Beds_Occupied_Total&#39;)
+hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[3]], &#39;Beds_Occupied_ICU&#39;)
 
-hosp_cap4$Beds_Occupied_ICU = gsub(&#39;--&#39;, NA, hosp_cap4$Beds_Occupied_ICU)</code></pre>
+# hosp_cap4$Beds_Occupied_ICU = gsub(&#39;--&#39;, NA, hosp_cap4$Beds_Occupied_ICU)</code></pre>
 </div>
 <div id="dshs-dashboard" class="section level2">
 <h2>DSHS dashboard</h2>
@@ -1238,15 +1234,15 @@ tsa_combined_hosp = tsa_combined_hosp[, c(&#39;TSA&#39;, &#39;Date&#39;, &#39;Ve
 <pre class="r"><code>merged_tsa = Reduce(function(x, y) merge(x, y, by = c(&#39;Date&#39;, &#39;TSA&#39;), all = TRUE),
                     list(DSHS_tsa, tsa_combined_hosp,
                          hosp_1, hosp_2, hosp_3,
-                         hosp_cap1, hosp_cap2, hosp_cap3, hosp_cap4))
+                         hosp_cap1, hosp_cap2, hosp_cap3))
 
 # fix types &amp; ensure TSA values are valid
 merged_tsa = merged_tsa %&gt;% 
-  mutate_at(vars(Beds_Available_Total, Ventilators_Available, Beds_Available_ICU,
+  mutate_at(vars(Beds_Available_Total, Ventilators_Available,
                  Beds_Occupied_Total, Beds_Occupied_ICU, Hospitalizations_Total,
                  Hospitalizations_General, Hospitalizations_ICU),
             funs(as.character)) %&gt;%
-  mutate_at(vars(Beds_Available_Total, Ventilators_Available, Beds_Available_ICU,
+  mutate_at(vars(Beds_Available_Total, Ventilators_Available,
                  Beds_Occupied_Total, Beds_Occupied_ICU, Hospitalizations_Total,
                  Hospitalizations_General, Hospitalizations_ICU),
             funs(as.integer)) %&gt;%
@@ -1728,6 +1724,13 @@ hhsc_alf = read_excel_allsheets(temp)</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
 ## * ...</code></pre>
 <pre class="r"><code>Clean_HHSC = function(df, data_type) { 
   date = as.Date(gsub(&#39;Data current as of &#39;, &#39;&#39;, colnames(df)[1]), &#39;%B %d, %Y&#39;)
@@ -1762,6 +1765,13 @@ download.file(&#39;https://apps.hhs.texas.gov/providers/directories/Texas_Nursin
 
 hhsc_nursing = read_excel_allsheets(temp)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
@@ -2637,10 +2647,16 @@ DSHS_case_age &lt;- append(lapply(demo.list[c(1:66, 104:length(demo.list))], rea
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_case_gender &lt;- append(lapply(demo.list[c(1:66, 104:length(demo.list))], read_excel, sheet = 10),
                            lapply(demo.list[67:103], read_excel, sheet = 11))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -3283,10 +3299,16 @@ DSHS_case_age &lt;- append(lapply(demo.list[c(1:66, 104:length(demo.list))], rea
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_age &lt;- append(lapply(demo.list[c(1:66, 104:length(demo.list))], read_excel, sheet = 12),
                          lapply(demo.list[67:103], read_excel, sheet = 13))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -3929,10 +3951,16 @@ DSHS_case_age &lt;- append(lapply(demo.list[c(1:66, 104:length(demo.list))], rea
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_race &lt;- append(lapply(demo.list[c(1:66, 104:length(demo.list))], read_excel, sheet = 14),
                           lapply(demo.list[67:103], read_excel, sheet = 15))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -4412,7 +4440,93 @@ DSHS_case_age_df = Demo_Daily(rbindlist(lapply(DSHS_case_age, DSHS_demo_clean)),
 <pre class="r"><code># combine case and death cols
 DSHS_age_df = merge(DSHS_case_age_df, DSHS_death_age_df, by = c(&#39;Date&#39;, &#39;Group&#39;))
 DSHS_gender_df = merge(DSHS_case_gender_df, DSHS_death_gender_df, by = c(&#39;Date&#39;, &#39;Group&#39;))
-DSHS_race_df = merge(DSHS_case_race_df, DSHS_death_race_df, by = c(&#39;Date&#39;, &#39;Group&#39;))</code></pre>
+DSHS_race_df = merge(DSHS_case_race_df, DSHS_death_race_df, by = c(&#39;Date&#39;, &#39;Group&#39;))
+
+
+DSHS_age_df %&gt;% 
+  filter(Date == max(Date)) %&gt;% 
+  mutate(manual_pct_cumulative = Cases_Cumulative / sum(Cases_Cumulative)) %&gt;% 
+  mutate(manual_pct_daily = Cases_Daily / sum(Cases_Daily)) %&gt;% 
+  select(Date, Group, Cases_Cumulative, Cases_Daily, Cases_PCT, manual_pct_cumulative, manual_pct_daily)</code></pre>
+<pre><code>##          Date       Group Cases_Cumulative Cases_Daily   Cases_PCT
+## 1  2020-09-19     &lt;1 year              171           1 0.003275737
+## 2  2020-09-19   1-9 years              815           7 0.015612429
+## 3  2020-09-19 10-19 years             2151          24 0.041205318
+## 4  2020-09-19 20-29 years             9991          98 0.191391134
+## 5  2020-09-19 30-39 years            11059          94 0.211850121
+## 6  2020-09-19 40-49 years            10039          58 0.192310639
+## 7  2020-09-19 50-59 years             8802          48 0.168614229
+## 8  2020-09-19 60-64 years             3293          17 0.063081874
+## 9  2020-09-19 65-69 years             2257           6 0.043235891
+## 10 2020-09-19 70-74 years             1341           2 0.025688671
+## 11 2020-09-19 75-79 years              872           5 0.016704341
+## 12 2020-09-19   80+ years             1391           3 0.026646489
+##    manual_pct_cumulative manual_pct_daily
+## 1            0.003276992      0.002754821
+## 2            0.015618412      0.019283747
+## 3            0.041221111      0.066115702
+## 4            0.191464490      0.269972452
+## 5            0.211931317      0.258953168
+## 6            0.192384347      0.159779614
+## 7            0.168678855      0.132231405
+## 8            0.063106052      0.046831956
+## 9            0.043252463      0.016528926
+## 10           0.025698517      0.005509642
+## 11           0.016710743      0.013774105
+## 12           0.026656702      0.008264463</code></pre>
+<pre class="r"><code>DSHS_gender_df %&gt;% 
+  filter(Date == max(Date)) %&gt;% 
+  mutate(manual_pct_cumulative = Cases_Cumulative / sum(Cases_Cumulative)) %&gt;% 
+  mutate(manual_pct_daily = Cases_Daily / sum(Cases_Daily)) %&gt;% 
+  select(Date, Group, Cases_Cumulative, Cases_Daily, Cases_PCT, manual_pct_cumulative, manual_pct_daily)</code></pre>
+<pre><code>##         Date   Group Cases_Cumulative Cases_Daily  Cases_PCT
+## 1 2020-09-19  Female            17689         102 0.33885675
+## 2 2020-09-19    Male            33594         269 0.64353856
+## 3 2020-09-19 Unknown              919          -8 0.01760469
+##   manual_pct_cumulative manual_pct_daily
+## 1            0.33885675       0.28099174
+## 2            0.64353856       0.74104683
+## 3            0.01760469      -0.02203857</code></pre>
+<pre class="r"><code>DSHS_race_df %&gt;% 
+  filter(Date == max(Date)) %&gt;% 
+  mutate(manual_pct_cumulative = Cases_Cumulative / sum(Cases_Cumulative)) %&gt;% 
+  mutate(manual_pct_daily = Cases_Daily / sum(Cases_Daily)) %&gt;% 
+  select(Date, Group, Cases_Cumulative, Cases_Daily, Cases_PCT, manual_pct_cumulative, manual_pct_daily)</code></pre>
+<pre><code>##         Date    Group Cases_Cumulative Cases_Daily  Cases_PCT
+## 1 2020-09-19    Asian              789           4 0.01511436
+## 2 2020-09-19    Black             8586          79 0.16447646
+## 3 2020-09-19 Hispanic            20720         139 0.39691966
+## 4 2020-09-19    Other              236          -1 0.00452090
+## 5 2020-09-19  Unknown             6477           7 0.12407571
+## 6 2020-09-19    White            15394         135 0.29489292
+##   manual_pct_cumulative manual_pct_daily
+## 1            0.01511436      0.011019284
+## 2            0.16447646      0.217630854
+## 3            0.39691966      0.382920110
+## 4            0.00452090     -0.002754821
+## 5            0.12407571      0.019283747
+## 6            0.29489292      0.371900826</code></pre>
+<pre class="r"><code>DSHS_age_df %&gt;% 
+  group_by(Date) %&gt;% 
+  summarize(sum(Cases_Cumulative), sum(Deaths_Cumulative)) %&gt;% tail(14)</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 14 x 3
+##    Date       `sum(Cases_Cumulative)` `sum(Deaths_Cumulative)`
+##    &lt;date&gt;                       &lt;dbl&gt;                    &lt;dbl&gt;
+##  1 2020-09-05                   48621                    13408
+##  2 2020-09-06                   48666                    13472
+##  3 2020-09-07                   48666                    13492
+##  4 2020-09-08                   48680                    13553
+##  5 2020-09-09                   48957                    13692
+##  6 2020-09-10                   49268                    13853
+##  7 2020-09-11                   49670                    13997
+##  8 2020-09-13                   50046                    14190
+##  9 2020-09-14                   50086                    14211
+## 10 2020-09-15                   50272                    14343
+## 11 2020-09-16                   50847                    14478
+## 12 2020-09-17                   51341                    14590
+## 13 2020-09-18                   51819                    14713
+## 14 2020-09-19                   52182                    14848</code></pre>
 </div>
 <div id="school-reopening-defunct-on-923" class="section level2">
 <h2>School reopening (DEFUNCT ON 9/23)</h2>
@@ -4464,7 +4578,7 @@ state_hosp_detail =
   merged_tsa %&gt;% 
   group_by(Date) %&gt;%
   summarize_at(vars(Hospitalizations_Total, Hospitalizations_General, Hospitalizations_ICU,
-                    Beds_Available_Total, Beds_Available_ICU, Beds_Occupied_Total, Beds_Occupied_ICU,
+                    Beds_Available_Total, Beds_Occupied_Total, Beds_Occupied_ICU,
                     Ventilators_Available),
                funs(sum))</code></pre>
 </div>
@@ -4523,7 +4637,7 @@ write.csv(county_demo_2018, file = &#39;combined-datasets/county_demo.csv&#39;, 
 hosp_tsa = merged_tsa %&gt;% 
   dplyr::select(Date, TSA, TSA_Name, TSA_Combined, Population_DSHS, Ventilators_Available,
                 Hospitalizations_Total, Hospitalizations_General, Hospitalizations_ICU,
-                Beds_Available_Total, Beds_Available_ICU, Beds_Occupied_Total, Beds_Occupied_ICU) %&gt;% 
+                Beds_Available_Total, Beds_Occupied_Total, Beds_Occupied_ICU) %&gt;% 
   filter(Date &gt;= min(hosp_cap1$Date))
 write.csv(hosp_tsa, file = &#39;tableau/hospitalizations_tsa.csv&#39;, row.names = F)</code></pre>
 </div>

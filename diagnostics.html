@@ -588,7 +588,7 @@ data_urls = c(&#39;&lt;https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCount
               &#39;&lt;https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx|TOTAL HOSPITALIZATIONS&gt;&#39;,
               &#39;&lt;https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx|ICU HOSPITALIZATIONS&gt;&#39;,
               &#39;&lt;https://dshs.texas.gov/coronavirus/TexasHospitalCapacityoverTimebyTSA.xlsx|TOTAL CAPACITY&gt;&#39;,
-              &#39;&lt;https://dshs.texas.gov/coronavirus/TexasHospitalCapacityoverTimebyTSA.xlsx|ICU CAPACITY&gt;&#39;,
+              # &#39;&lt;https://dshs.texas.gov/coronavirus/TexasHospitalCapacityoverTimebyTSA.xlsx|ICU CAPACITY&gt;&#39;,
               # &#39;&lt;https://apps.hhs.texas.gov/providers/directories/Texas_Nursing_Facilities_COVID_Summary.xls|NURSING FACILITIES&gt;&#39;,
               # &#39;&lt;https://apps.hhs.texas.gov/providers/directories/Texas_Assisted_Living_Facilities_COVID_Summary.xls|ALF&gt;&#39;,
               &#39;&lt;https://dshs.texas.gov/coronavirus/TexasCOVID19CaseCountData.xlsx|AGE&gt;&#39;,
@@ -687,10 +687,9 @@ calc_demo_stats = function(group_text, df) {
 `summarise()` ungrouping output (override with `.groups` argument)
 `summarise()` ungrouping output (override with `.groups` argument)
 `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
-<pre class="r"><code>tsa_check = lapply(c(&#39;Hospitalizations_Total&#39;, &#39;Hospitalizations_ICU&#39;, &#39;Beds_Available_Total&#39;, &#39;Beds_Available_ICU&#39;),
+<pre class="r"><code>tsa_check = lapply(c(&#39;Hospitalizations_Total&#39;, &#39;Hospitalizations_ICU&#39;, &#39;Beds_Available_Total&#39;),
                    calc_count_stats, df = tsa)</code></pre>
 <pre><code>`summarise()` ungrouping output (override with `.groups` argument)
-`summarise()` ungrouping output (override with `.groups` argument)
 `summarise()` ungrouping output (override with `.groups` argument)
 `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
 <pre class="r"><code>state_check = lapply(c(&#39;Age&#39;, &#39;Gender&#39;, &#39;Race&#39;), calc_demo_stats, df = state)</code></pre>
@@ -710,19 +709,22 @@ emojis_out = unlist(c(lapply(county_check, `[[`, 2),
 <h2>organize stats</h2>
 <pre class="r"><code># declare sublevels for use in creating validation df and renaming nested list output
 county_sublevels = c(&#39;Cases&#39;, &#39;Deaths&#39;, &#39;Tests&#39;, &#39;Mobility&#39;)
-tsa_sublevels = c(&#39;Hosp_Total&#39;, &#39;Hosp_ICU&#39;, &#39;Cap_Total&#39;, &#39;Cap_ICU&#39;)
+tsa_sublevels = c(&#39;Hosp_Total&#39;, &#39;Hosp_ICU&#39;, &#39;Cap_Total&#39;)
 state_sublevels = c(&#39;Age&#39;, &#39;Gender&#39;, &#39;Race&#39;)
 
 
-validation_df = data.frame(Level = c(rep(c(&#39;County&#39;, &#39;TSA&#39;), each = 16), rep(&#39;State&#39;, 9)),
+validation_df = data.frame(Level = c(rep(&#39;County&#39;, each = 16),
+                                     rep(&#39;TSA&#39;, each = 12),
+                                     rep(&#39;State&#39;, each = 9)),
                            Sublevel = c(rep(county_sublevels, each = 4),
                                         rep(tsa_sublevels, each = 4),
                                         rep(state_sublevels, each = 3)),
                            Emoji = emojis_out,
                            Text = c(rep(c(&#39;Latest date:&#39;, &#39;Average daily value:&#39; ,
                                           &#39;Average % change:&#39;, &#39;% reporting &gt; 0:&#39;),
-                                        times = length(unlist(c(county_check, tsa_check))) / 4 / 2),
-                                rep(c(&#39;Latest Date&#39;, &#39;Average case change:&#39;, &#39;Average death change:&#39;), times = 3)),
+                                        times = 4 + 3),
+                                rep(c(&#39;Latest Date&#39;, &#39;Average case change:&#39;, &#39;Average death change:&#39;),
+                                    times = 3)),
                        Statistic = stats_out) %&gt;% 
   mutate_all(as.character)</code></pre>
 </div>
@@ -741,7 +743,7 @@ validation_df = data.frame(Level = c(rep(c(&#39;County&#39;, &#39;TSA&#39;), eac
 }
 
 # declare for combination into &#39;text_filters&#39; list
-level_text = c(head(rep(unique(validation_df$Level), each = 4), -1))
+level_text = c(rep(&#39;County&#39;, each=4), rep(&#39;TSA&#39;, each=3), rep(&#39;State&#39;, each=3))
 sublevel_text = c(unique(validation_df$Sublevel))
 
 # obtain list of lists (~4 of 4)
@@ -867,7 +869,7 @@ round(TMC_ICU / Q_ICU, 2)</code></pre>
   group_by(Date) %&gt;% 
   summarize(sum(Cases_Daily_New))</code></pre>
 <pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
-<pre><code># A tibble: 17 x 2
+<pre><code># A tibble: 18 x 2
    Date       `sum(Cases_Daily_New)`
    &lt;fct&gt;                       &lt;int&gt;
  1 2020-09-02                   1200
@@ -886,7 +888,8 @@ round(TMC_ICU / Q_ICU, 2)</code></pre>
 14 2020-09-15                   1459
 15 2020-09-16                    585
 16 2020-09-17                    626
-17 2020-09-18                    785</code></pre>
+17 2020-09-18                    785
+18 2020-09-19                    589</code></pre>
 </div>
 
 
