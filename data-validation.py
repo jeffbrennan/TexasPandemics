@@ -188,6 +188,20 @@ def build_validation_block(validation):
 				"text": validation['TSA']['Cap_Total']['text']
 			}
 		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": validation['TSA']['Cap_ICU']['url']
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": validation['TSA']['Cap_ICU']['text']
+			}
+		},
 # ############################### PHR ########################################################
 # 		{
 # 			"type": "section",
