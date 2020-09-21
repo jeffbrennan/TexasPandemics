@@ -1197,11 +1197,9 @@ DSHS_tsa_hosp_cap = read_excel_allsheets(&#39;original-sources/DSHS_tsa_hosp_cap
 ## * `` -&gt; ...6
 ## * ...</code></pre>
 <pre class="r"><code>hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[1]], &#39;Beds_Available_Total&#39;)
-# hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[2]], &#39;Beds_Available_ICU&#39;)
-hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[2]], &#39;Beds_Occupied_Total&#39;)
-hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[3]], &#39;Beds_Occupied_ICU&#39;)
-
-# hosp_cap4$Beds_Occupied_ICU = gsub(&#39;--&#39;, NA, hosp_cap4$Beds_Occupied_ICU)</code></pre>
+hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[2]], &#39;Beds_Available_ICU&#39;)
+hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[3]], &#39;Beds_Occupied_Total&#39;)
+hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[4]], &#39;Beds_Occupied_ICU&#39;)</code></pre>
 </div>
 <div id="dshs-dashboard" class="section level2">
 <h2>DSHS dashboard</h2>
@@ -1243,22 +1241,24 @@ tsa_combined_hosp = tsa_combined_hosp[, c(&#39;TSA&#39;, &#39;Date&#39;, &#39;Ve
 <pre class="r"><code>merged_tsa = Reduce(function(x, y) merge(x, y, by = c(&#39;Date&#39;, &#39;TSA&#39;), all = TRUE),
                     list(DSHS_tsa, tsa_combined_hosp,
                          hosp_1, hosp_2, hosp_3,
-                         hosp_cap1, hosp_cap2, hosp_cap3))
+                         hosp_cap1, hosp_cap2, hosp_cap3, hosp_cap4))
 
 # fix types &amp; ensure TSA values are valid
 merged_tsa = merged_tsa %&gt;% 
-  mutate_at(vars(Beds_Available_Total, Ventilators_Available,
+  mutate_at(vars(Beds_Available_Total, Beds_Available_ICU, Ventilators_Available,
                  Beds_Occupied_Total, Beds_Occupied_ICU, Hospitalizations_Total,
                  Hospitalizations_General, Hospitalizations_ICU),
             funs(as.character)) %&gt;%
-  mutate_at(vars(Beds_Available_Total, Ventilators_Available,
+  mutate_at(vars(Beds_Available_Total, Beds_Available_ICU, Ventilators_Available,
                  Beds_Occupied_Total, Beds_Occupied_ICU, Hospitalizations_Total,
                  Hospitalizations_General, Hospitalizations_ICU),
             funs(as.integer)) %&gt;%
   mutate(TSA_Combined = paste0(TSA, &#39; - &#39;, TSA_Name)) %&gt;%
   filter(!is.na(TSA)) %&gt;% 
   unique()</code></pre>
-<pre><code>## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(dots[[i]]): NAs introduced by coercion</code></pre>
 </div>
 </div>
 <div id="phr-level" class="section level1">
@@ -4348,10 +4348,10 @@ DSHS_case_age &lt;- append(lapply(demo.list[c(1:66, 104:length(demo.list))], rea
 Demo_Daily = function(df, count_type) { 
   df = df %&gt;% 
     group_by(Group) %&gt;% 
-    mutate(var_Daily = as.numeric(c(var_Cumulative[1], diff(var_Cumulative))))
-    
-  colnames(df) = gsub(&#39;var&#39;, count_type, colnames(df))
+    mutate(var_Daily = as.numeric(c(var_Cumulative[1], diff(var_Cumulative)))) %&gt;% 
+    mutate(var_Daily_NO_NEGATIVE = ifelse(var_Daily &lt; 0, 0, var_Daily))
   
+  colnames(df) = gsub(&#39;var&#39;, count_type, colnames(df))
   return(df)
   }
 
@@ -4481,6 +4481,8 @@ DSHS_age_df = merge(DSHS_case_age_df, DSHS_death_age_df, by = c(&#39;Date&#39;, 
 DSHS_gender_df = merge(DSHS_case_gender_df, DSHS_death_gender_df, by = c(&#39;Date&#39;, &#39;Group&#39;))
 DSHS_race_df = merge(DSHS_case_race_df, DSHS_death_race_df, by = c(&#39;Date&#39;, &#39;Group&#39;))
 
+
+test = DSHS_gender_df %&gt;% filter(Cases_Daily &lt; 0)
 
 DSHS_age_df %&gt;% 
   filter(Date == max(Date)) %&gt;% 
@@ -4617,7 +4619,7 @@ state_hosp_detail =
   merged_tsa %&gt;% 
   group_by(Date) %&gt;%
   summarize_at(vars(Hospitalizations_Total, Hospitalizations_General, Hospitalizations_ICU,
-                    Beds_Available_Total, Beds_Occupied_Total, Beds_Occupied_ICU,
+                    Beds_Available_Total, Beds_Available_ICU,  Beds_Occupied_Total, Beds_Occupied_ICU,
                     Ventilators_Available),
                funs(sum))</code></pre>
 </div>
@@ -4676,7 +4678,7 @@ write.csv(county_demo_2018, file = &#39;combined-datasets/county_demo.csv&#39;, 
 hosp_tsa = merged_tsa %&gt;% 
   dplyr::select(Date, TSA, TSA_Name, TSA_Combined, Population_DSHS, Ventilators_Available,
                 Hospitalizations_Total, Hospitalizations_General, Hospitalizations_ICU,
-                Beds_Available_Total, Beds_Occupied_Total, Beds_Occupied_ICU) %&gt;% 
+                Beds_Available_Total, Beds_Available_ICU, Beds_Occupied_Total, Beds_Occupied_ICU) %&gt;% 
   filter(Date &gt;= min(hosp_cap1$Date))
 write.csv(hosp_tsa, file = &#39;tableau/hospitalizations_tsa.csv&#39;, row.names = F)</code></pre>
 </div>

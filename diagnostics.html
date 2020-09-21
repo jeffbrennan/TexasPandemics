@@ -588,7 +588,7 @@ data_urls = c(&#39;&lt;https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCount
               &#39;&lt;https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx|TOTAL HOSPITALIZATIONS&gt;&#39;,
               &#39;&lt;https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx|ICU HOSPITALIZATIONS&gt;&#39;,
               &#39;&lt;https://dshs.texas.gov/coronavirus/TexasHospitalCapacityoverTimebyTSA.xlsx|TOTAL CAPACITY&gt;&#39;,
-              # &#39;&lt;https://dshs.texas.gov/coronavirus/TexasHospitalCapacityoverTimebyTSA.xlsx|ICU CAPACITY&gt;&#39;,
+              &#39;&lt;https://dshs.texas.gov/coronavirus/TexasHospitalCapacityoverTimebyTSA.xlsx|ICU CAPACITY&gt;&#39;,
               # &#39;&lt;https://apps.hhs.texas.gov/providers/directories/Texas_Nursing_Facilities_COVID_Summary.xls|NURSING FACILITIES&gt;&#39;,
               # &#39;&lt;https://apps.hhs.texas.gov/providers/directories/Texas_Assisted_Living_Facilities_COVID_Summary.xls|ALF&gt;&#39;,
               &#39;&lt;https://dshs.texas.gov/coronavirus/TexasCOVID19CaseCountData.xlsx|AGE&gt;&#39;,
@@ -687,9 +687,10 @@ calc_demo_stats = function(group_text, df) {
 `summarise()` ungrouping output (override with `.groups` argument)
 `summarise()` ungrouping output (override with `.groups` argument)
 `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
-<pre class="r"><code>tsa_check = lapply(c(&#39;Hospitalizations_Total&#39;, &#39;Hospitalizations_ICU&#39;, &#39;Beds_Available_Total&#39;),
+<pre class="r"><code>tsa_check = lapply(c(&#39;Hospitalizations_Total&#39;, &#39;Hospitalizations_ICU&#39;, &#39;Beds_Available_Total&#39;, &#39;Beds_Available_ICU&#39;),
                    calc_count_stats, df = tsa)</code></pre>
 <pre><code>`summarise()` ungrouping output (override with `.groups` argument)
+`summarise()` ungrouping output (override with `.groups` argument)
 `summarise()` ungrouping output (override with `.groups` argument)
 `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
 <pre class="r"><code>state_check = lapply(c(&#39;Age&#39;, &#39;Gender&#39;, &#39;Race&#39;), calc_demo_stats, df = state)</code></pre>
@@ -709,12 +710,12 @@ emojis_out = unlist(c(lapply(county_check, `[[`, 2),
 <h2>organize stats</h2>
 <pre class="r"><code># declare sublevels for use in creating validation df and renaming nested list output
 county_sublevels = c(&#39;Cases&#39;, &#39;Deaths&#39;, &#39;Tests&#39;, &#39;Mobility&#39;)
-tsa_sublevels = c(&#39;Hosp_Total&#39;, &#39;Hosp_ICU&#39;, &#39;Cap_Total&#39;)
+tsa_sublevels = c(&#39;Hosp_Total&#39;, &#39;Hosp_ICU&#39;, &#39;Cap_Total&#39;, &#39;Cap_ICU&#39;)
 state_sublevels = c(&#39;Age&#39;, &#39;Gender&#39;, &#39;Race&#39;)
 
 
 validation_df = data.frame(Level = c(rep(&#39;County&#39;, each = 16),
-                                     rep(&#39;TSA&#39;, each = 12),
+                                     rep(&#39;TSA&#39;, each = 16),
                                      rep(&#39;State&#39;, each = 9)),
                            Sublevel = c(rep(county_sublevels, each = 4),
                                         rep(tsa_sublevels, each = 4),
@@ -722,7 +723,7 @@ validation_df = data.frame(Level = c(rep(&#39;County&#39;, each = 16),
                            Emoji = emojis_out,
                            Text = c(rep(c(&#39;Latest date:&#39;, &#39;Average daily value:&#39; ,
                                           &#39;Average % change:&#39;, &#39;% reporting &gt; 0:&#39;),
-                                        times = 4 + 3),
+                                        times = 4 + 4),
                                 rep(c(&#39;Latest Date&#39;, &#39;Average case change:&#39;, &#39;Average death change:&#39;),
                                     times = 3)),
                        Statistic = stats_out) %&gt;% 
@@ -743,7 +744,7 @@ validation_df = data.frame(Level = c(rep(&#39;County&#39;, each = 16),
 }
 
 # declare for combination into &#39;text_filters&#39; list
-level_text = c(rep(&#39;County&#39;, each=4), rep(&#39;TSA&#39;, each=3), rep(&#39;State&#39;, each=3))
+level_text = c(rep(&#39;County&#39;, each = 4), rep(&#39;TSA&#39;, each = 4), rep(&#39;State&#39;, each = 3))
 sublevel_text = c(unique(validation_df$Sublevel))
 
 # obtain list of lists (~4 of 4)
@@ -814,8 +815,8 @@ ggplot(demo_summary, aes(x = AGEGRP, y = total, fill = demo_group)) +
                                 `13` = &#39;60-69&#39;, `15` = &#39;70-79&#39;, `17` = &#39;80+&#39;)) %&gt;% 
   dplyr::select(c(AGEGRP, TOT_POP))</code></pre>
 <pre><code>Adding missing grouping variables: `AGEGRP_TEST`</code></pre>
-<pre class="r"><code>merged_county_out = read.csv(&#39;combined-datasets/county.csv&#39;) 
-Q_df = merged_county_out %&gt;%
+<pre class="r"><code>county = read.csv(&#39;combined-datasets/county.csv&#39;) 
+Q_df = county %&gt;%
   mutate(Date = as.Date(Date)) %&gt;%
   dplyr::filter(Date == max(Date)) %&gt;%
   dplyr::filter(TSA == &#39;Q&#39;) %&gt;%
@@ -825,10 +826,11 @@ Q_df = merged_county_out %&gt;%
  
  Q_pop = Q_df$Q_POP[1]
  
-TMC_df = merged_county_out %&gt;%
+TMC_df = county %&gt;%
   mutate(Date = as.Date(Date)) %&gt;% 
   dplyr::filter(Date == max(Date)) %&gt;%
-  dplyr::filter(County %in% c(&#39;Austin&#39;, &#39;Brazoria&#39;, &#39;Chambers&#39;, &#39;Fort Bend&#39;, &#39;Galveston&#39;, &#39;Harris&#39;, &#39;Liberty&#39;, &#39;Montgomery&#39;, &#39;Waller&#39;)) %&gt;%
+  dplyr::filter(County %in% c(&#39;Austin&#39;, &#39;Brazoria&#39;, &#39;Chambers&#39;, &#39;Fort Bend&#39;,
+                              &#39;Galveston&#39;, &#39;Harris&#39;, &#39;Liberty&#39;, &#39;Montgomery&#39;, &#39;Waller&#39;)) %&gt;%
   dplyr::select(County, Population_DSHS, TSA, Cases_Daily, Date) %&gt;% 
   arrange(desc(Population_DSHS)) %&gt;% 
   mutate(TMC_POP = sum(Population_DSHS))
@@ -840,38 +842,44 @@ TMC_pop = TMC_df$TMC_POP[1]
 hosp_tsa = read.csv(&#39;combined-datasets/tsa.csv&#39;)
 Q_ICU = hosp_tsa %&gt;%
   mutate(Date = as.Date(Date)) %&gt;%
-  dplyr::filter(Date == as.Date(&#39;2020-09-06&#39;) &amp; TSA == &#39;Q&#39;) %&gt;%
+  dplyr::filter(Date == max(Date) &amp; TSA == &#39;Q&#39;) %&gt;%
   dplyr::select(Hospitalizations_ICU) %&gt;% unlist()
 
-# TMC dashboard value - 9/6
-TMC_ICU = 78
+# TMC dashboard value - 9/20
+TMC_ICU = 154
 
 # proposed TMC reporting and ICU share of surrounding 9 counties
 TMC_coverage = 0.75
 
 # 1.1 - Surrounding 9 county area has larger population than TSA Q
-TMC_Q_ratio =  round(TMC_pop / Q_pop, 2)
+TMC_Q_ratio = round(TMC_pop / Q_pop, 2)
 
 # expected TSA Q hosp assuming above values are accurate
-(TMC_ICU / TMC_coverage) / TMC_Q_ratio</code></pre>
-<pre><code>[1] 94.54545</code></pre>
+Q_expected = (TMC_ICU / TMC_coverage) / TMC_Q_ratio
+Q_expected</code></pre>
+<pre><code>[1] 186.6667</code></pre>
 <pre class="r"><code># actual
 Q_ICU</code></pre>
 <pre><code>Hospitalizations_ICU 
-                 263 </code></pre>
+                 176 </code></pre>
 <pre class="r"><code># actual TMC_coverage
-round(TMC_ICU / Q_ICU, 2)</code></pre>
+round(TMC_ICU / Q_ICU, 2) </code></pre>
 <pre><code>Hospitalizations_ICU 
-                 0.3 </code></pre>
+                0.88 </code></pre>
+<pre class="r"><code># expected / actual
+Q_expected / Q_ICU</code></pre>
+<pre><code>Hospitalizations_ICU 
+            1.060606 </code></pre>
 <pre class="r"><code>merged_county_out %&gt;% 
   filter(as.Date(Date) &gt; as.Date(&#39;2020-09-01&#39;)) %&gt;% 
-  dplyr::filter(County %in% c(&#39;Austin&#39;, &#39;Brazoria&#39;, &#39;Chambers&#39;, &#39;Fort Bend&#39;, &#39;Galveston&#39;, &#39;Harris&#39;, &#39;Liberty&#39;, &#39;Montgomery&#39;, &#39;Waller&#39;)) %&gt;% 
+  dplyr::filter(County %in% c(&#39;Austin&#39;, &#39;Brazoria&#39;, &#39;Chambers&#39;, &#39;Fort Bend&#39;,
+                              &#39;Galveston&#39;, &#39;Harris&#39;, &#39;Liberty&#39;, &#39;Montgomery&#39;, &#39;Waller&#39;)) %&gt;% 
   group_by(Date) %&gt;% 
   summarize(sum(Cases_Daily))</code></pre>
 <pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
 <pre><code># A tibble: 19 x 2
    Date       `sum(Cases_Daily)`
-   &lt;fct&gt;                   &lt;int&gt;
+   &lt;date&gt;                  &lt;int&gt;
  1 2020-09-02               1200
  2 2020-09-03                803
  3 2020-09-04               1046
