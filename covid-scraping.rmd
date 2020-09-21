@@ -556,14 +556,10 @@ download.file(hosp_cap_url, 'original-sources/DSHS_tsa_hosp_cap.xlsx', mode = 'w
 DSHS_tsa_hosp_cap = read_excel_allsheets('original-sources/DSHS_tsa_hosp_cap.xlsx')
 
 hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[1]], 'Beds_Available_Total')
-# hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[2]], 'Beds_Available_ICU')
-hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[2]], 'Beds_Occupied_Total')
-hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[3]], 'Beds_Occupied_ICU')
-
-# hosp_cap4$Beds_Occupied_ICU = gsub('--', NA, hosp_cap4$Beds_Occupied_ICU)
+hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[2]], 'Beds_Available_ICU')
+hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[3]], 'Beds_Occupied_Total')
+hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[4]], 'Beds_Occupied_ICU')
 ```
-
-
 
 ## DSHS dashboard
 
@@ -608,15 +604,15 @@ tsa_combined_hosp = tsa_combined_hosp[, c('TSA', 'Date', 'Ventilators_Available'
 merged_tsa = Reduce(function(x, y) merge(x, y, by = c('Date', 'TSA'), all = TRUE),
                     list(DSHS_tsa, tsa_combined_hosp,
                          hosp_1, hosp_2, hosp_3,
-                         hosp_cap1, hosp_cap2, hosp_cap3))
+                         hosp_cap1, hosp_cap2, hosp_cap3, hosp_cap4))
 
 # fix types & ensure TSA values are valid
 merged_tsa = merged_tsa %>% 
-  mutate_at(vars(Beds_Available_Total, Ventilators_Available,
+  mutate_at(vars(Beds_Available_Total, Beds_Available_ICU, Ventilators_Available,
                  Beds_Occupied_Total, Beds_Occupied_ICU, Hospitalizations_Total,
                  Hospitalizations_General, Hospitalizations_ICU),
             funs(as.character)) %>%
-  mutate_at(vars(Beds_Available_Total, Ventilators_Available,
+  mutate_at(vars(Beds_Available_Total, Beds_Available_ICU, Ventilators_Available,
                  Beds_Occupied_Total, Beds_Occupied_ICU, Hospitalizations_Total,
                  Hospitalizations_General, Hospitalizations_ICU),
             funs(as.integer)) %>%
@@ -1065,10 +1061,10 @@ DSHS_demo_clean = function(df) {
 Demo_Daily = function(df, count_type) { 
   df = df %>% 
     group_by(Group) %>% 
-    mutate(var_Daily = as.numeric(c(var_Cumulative[1], diff(var_Cumulative))))
-    
-  colnames(df) = gsub('var', count_type, colnames(df))
+    mutate(var_Daily = as.numeric(c(var_Cumulative[1], diff(var_Cumulative)))) %>% 
+    mutate(var_Daily_NO_NEGATIVE = ifelse(var_Daily < 0, 0, var_Daily))
   
+  colnames(df) = gsub('var', count_type, colnames(df))
   return(df)
   }
 
@@ -1086,6 +1082,8 @@ DSHS_age_df = merge(DSHS_case_age_df, DSHS_death_age_df, by = c('Date', 'Group')
 DSHS_gender_df = merge(DSHS_case_gender_df, DSHS_death_gender_df, by = c('Date', 'Group'))
 DSHS_race_df = merge(DSHS_case_race_df, DSHS_death_race_df, by = c('Date', 'Group'))
 
+
+test = DSHS_gender_df %>% filter(Cases_Daily < 0)
 
 DSHS_age_df %>% 
   filter(Date == max(Date)) %>% 
@@ -1126,7 +1124,6 @@ school_df = school_reopenings[[1]] %>%
   mutate(Student_Total = ifelse(Date == as.Date('2020-09-13'), as.numeric(gsub(',', '', school_reopenings[[3]][1,2])), NA))
 
 write.csv(school_df, 'tableau/state_school_reopening.csv', row.names = FALSE)
-
 ```
 
 
@@ -1167,7 +1164,7 @@ state_hosp_detail =
   merged_tsa %>% 
   group_by(Date) %>%
   summarize_at(vars(Hospitalizations_Total, Hospitalizations_General, Hospitalizations_ICU,
-                    Beds_Available_Total, Beds_Occupied_Total, Beds_Occupied_ICU,
+                    Beds_Available_Total, Beds_Available_ICU,  Beds_Occupied_Total, Beds_Occupied_ICU,
                     Ventilators_Available),
                funs(sum))
 ```
@@ -1241,7 +1238,7 @@ write.csv(merged_tsa, file = 'combined-datasets/tsa.csv', row.names = F)
 hosp_tsa = merged_tsa %>% 
   dplyr::select(Date, TSA, TSA_Name, TSA_Combined, Population_DSHS, Ventilators_Available,
                 Hospitalizations_Total, Hospitalizations_General, Hospitalizations_ICU,
-                Beds_Available_Total, Beds_Occupied_Total, Beds_Occupied_ICU) %>% 
+                Beds_Available_Total, Beds_Available_ICU, Beds_Occupied_Total, Beds_Occupied_ICU) %>% 
   filter(Date >= min(hosp_cap1$Date))
 write.csv(hosp_tsa, file = 'tableau/hospitalizations_tsa.csv', row.names = F)
 ```
