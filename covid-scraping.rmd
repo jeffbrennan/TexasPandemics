@@ -293,7 +293,7 @@ DSHS_tests_long = merged_tests %>%
 
 ```{r}
 DSHS_new_cases_long = rbindlist(lapply(list.files(path = 'original-sources/dshs-new-cases', full.names = TRUE),
-                                read.csv, fileEncoding="utf-16", sep='\t')) %>% 
+                                read.csv, fileEncoding="utf-16", sep='\t', stringsAsFactors=FALSE)) %>% 
   dplyr::select(Date, County, New.Cases) %>% 
   setNames(c('Date', 'County', 'Cases_Daily')) %>% 
   mutate(Date = ifelse(as.integer(as.Date(Date, '%m/%d/%Y')) < 0, as.Date(Date, '%m/%d/%y'), as.Date(Date, '%m/%d/%Y'))) %>% 
@@ -327,15 +327,15 @@ DSHS_active_cases_long$Date = as.Date(gsub('Active|Cases|\r|\n', '',
                                            DSHS_active_cases_long$Date),
                                       format = '%m-%d')
 
-DSHS_active_cases_long =  
-    DSHS_active_cases_long %>% 
-    group_by(County) %>% 
-    unique() %>%
-    mutate(Active_Cases_Cumulative = as.integer(as.character(Active_Cases_Cumulative))) %>%
-    tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
-    mutate(Active_Cases_Cumulative_NA = Active_Cases_Cumulative) %>%
-    tidyr::fill(Active_Cases_Cumulative, .direction = "down") %>%
-    mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative)))
+DSHS_active_cases_long = DSHS_active_cases_long %>%
+  group_by(County) %>% 
+  unique() %>%
+  mutate(Active_Cases_Cumulative = as.integer(as.character(Active_Cases_Cumulative))) %>%
+  tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
+  mutate(Active_Cases_Cumulative_NA = Active_Cases_Cumulative) %>%
+  tidyr::fill(Active_Cases_Cumulative, .direction = "down") %>%
+  mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative))) %>%
+  filter(!is.na(County))
 ```
 
 ## childcare
@@ -501,7 +501,7 @@ DSHS_tsa = merge(DSHS_tsa, DSHS_tsa_pops, by = 'TSA', all = TRUE)
 ## DSHS hospitals
 
 ```{r}
-hosp_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx'
+hosp_url = 'https://dshs.texas.gov/coronavirus/CombinedHospitalDataoverTimebyTSA.xlsx'
 download.file(hosp_url, 'original-sources/DSHS_tsa_hosp.xlsx', mode = 'wb') 
 DSHS_tsa_hosp = read_excel_allsheets('original-sources/DSHS_tsa_hosp.xlsx')
 
@@ -530,35 +530,21 @@ DSHS_hosp_clean = function(df, var_name) {
   df_long = reshape::melt(df, id = 'TSA ID')
   colnames(df_long) = c('TSA', 'Date', var_name)
   df_long$Date = as.Date(df_long$Date)
+  
+  if(length(which(df_long$Date == '2008-08-08')) > 0) {
+    df_long$Date[which(df_long$Date == '2008-08-08')] = as.Date('2020-08-08')
+  }
+  
   return(df_long)
 }
 # 1,2,3 references the 3 sheets produced by DSHS
-hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[[1]], 'Hospitalizations_Total')
-hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[[2]], 'Hospitalizations_General')
-hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[[3]], 'Hospitalizations_ICU')
-
-
-if(length(which(hosp_1$Date == '2008-08-08')) > 0) {
-  hosp_1$Date[which(hosp_1$Date == '2008-08-08')] = as.Date('2020-08-08')
-}
-
-if(length(which(hosp_2$Date == '2008-08-08')) > 0) {
-  hosp_2$Date[which(hosp_2$Date == '2008-08-08')] = as.Date('2020-08-08')
-}
-```
-
-
-## hospital capacity
-
-```{r}
-hosp_cap_url = 'https://dshs.texas.gov/coronavirus/TexasHospitalCapacityoverTimebyTSA.xlsx'
-download.file(hosp_cap_url, 'original-sources/DSHS_tsa_hosp_cap.xlsx', mode = 'wb') 
-DSHS_tsa_hosp_cap = read_excel_allsheets('original-sources/DSHS_tsa_hosp_cap.xlsx')
-
-hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[1]], 'Beds_Available_Total')
-hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[2]], 'Beds_Available_ICU')
-hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[3]], 'Beds_Occupied_Total')
-hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[4]], 'Beds_Occupied_ICU')
+hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[[2]], 'Hospitalizations_Total')
+hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[[3]], 'Hospitalizations_General')
+hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[[4]], 'Hospitalizations_ICU')
+hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[5]], 'Beds_Available_Total')
+hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[6]], 'Beds_Available_ICU')
+hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[7]], 'Beds_Occupied_Total')
+hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[8]], 'Beds_Occupied_ICU')
 ```
 
 ## DSHS dashboard
@@ -571,7 +557,7 @@ DSHS_json_hosp_tsa = DSHS_json_hosp_tsa[, c(2,5:9)]
 
 colnames(DSHS_json_hosp_tsa) = c('TSA', 'Hospital_Beds_Staffed', 'Hospital_Beds_Available',
                                  'ICU_Beds_Available', 'Ventilators_Available', 'Current_Cases')
-DSHS_json_hosp_tsa$Date = format(date_out, '%m/%d/%y')
+# DSHS_json_hosp_tsa$Date = format(date_out, '%m/%d/%y')
 
 # add computed cols
 DSHS_json_hosp_tsa = DSHS_json_hosp_tsa %>%
@@ -617,7 +603,7 @@ merged_tsa = merged_tsa %>%
                  Hospitalizations_General, Hospitalizations_ICU),
             funs(as.integer)) %>%
   mutate(TSA_Combined = paste0(TSA, ' - ', TSA_Name)) %>%
-  filter(!is.na(TSA)) %>% 
+  filter(!is.na(TSA) & !is.na(Date)) %>% 
   unique()
 ```
 
