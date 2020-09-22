@@ -861,15 +861,15 @@ Q_expected</code></pre>
 <pre class="r"><code># actual
 Q_ICU</code></pre>
 <pre><code>Hospitalizations_ICU 
-                 176 </code></pre>
+                 169 </code></pre>
 <pre class="r"><code># actual TMC_coverage
 round(TMC_ICU / Q_ICU, 2) </code></pre>
 <pre><code>Hospitalizations_ICU 
-                0.88 </code></pre>
+                0.91 </code></pre>
 <pre class="r"><code># expected / actual
 Q_expected / Q_ICU</code></pre>
 <pre><code>Hospitalizations_ICU 
-            1.060606 </code></pre>
+            1.104536 </code></pre>
 <pre class="r"><code>merged_county_out %&gt;% 
   filter(as.Date(Date) &gt; as.Date(&#39;2020-09-01&#39;)) %&gt;% 
   dplyr::filter(County %in% c(&#39;Austin&#39;, &#39;Brazoria&#39;, &#39;Chambers&#39;, &#39;Fort Bend&#39;,
@@ -877,7 +877,7 @@ Q_expected / Q_ICU</code></pre>
   group_by(Date) %&gt;% 
   summarize(sum(Cases_Daily))</code></pre>
 <pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
-<pre><code># A tibble: 19 x 2
+<pre><code># A tibble: 20 x 2
    Date       `sum(Cases_Daily)`
    &lt;date&gt;                  &lt;int&gt;
  1 2020-09-02               1200
@@ -898,7 +898,8 @@ Q_expected / Q_ICU</code></pre>
 16 2020-09-17                626
 17 2020-09-18                785
 18 2020-09-19                589
-19 2020-09-20                791</code></pre>
+19 2020-09-20                791
+20 2020-09-21                361</code></pre>
 </div>
 
 
