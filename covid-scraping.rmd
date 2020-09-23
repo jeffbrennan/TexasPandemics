@@ -298,8 +298,8 @@ DSHS_new_cases_long = rbindlist(lapply(list.files(path = 'original-sources/dshs-
   setNames(c('Date', 'County', 'Cases_Daily')) %>% 
   mutate(Date = ifelse(as.integer(as.Date(Date, '%m/%d/%Y')) < 0, as.Date(Date, '%m/%d/%y'), as.Date(Date, '%m/%d/%Y'))) %>% 
   mutate(Date = as.Date(Date, origin = '1970-01-01')) %>% 
-  mutate(Cases_Daily = gsub(',', '', as.character(Cases_Daily), fixed = TRUE)) %>% 
-  mutate(Cases_Daily = as.integer(Cases_Daily)) %>% 
+  mutate(Cases_Daily = as.integer(gsub(',', '', as.character(Cases_Daily), fixed = TRUE))) %>% 
+  mutate(Cases_Daily = ifelse(Cases_Daily < 0, 0, Cases_Daily)) %>% 
   na.omit()
 ```
 ## active cases
@@ -504,7 +504,7 @@ DSHS_tsa = merge(DSHS_tsa, DSHS_tsa_pops, by = 'TSA', all = TRUE)
 hosp_url = 'https://dshs.texas.gov/coronavirus/CombinedHospitalDataoverTimebyTSA.xlsx'
 download.file(hosp_url, 'original-sources/DSHS_tsa_hosp.xlsx', mode = 'wb') 
 DSHS_tsa_hosp = read_excel_allsheets('original-sources/DSHS_tsa_hosp.xlsx')
-
+ 
 DSHS_hosp_clean = function(df, var_name) { 
   colnames(df) = df[1, ]
   df = df[2:23, c(1, 3:ncol(df))]
@@ -541,10 +541,10 @@ DSHS_hosp_clean = function(df, var_name) {
 hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[[2]], 'Hospitalizations_Total')
 hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[[3]], 'Hospitalizations_General')
 hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[[4]], 'Hospitalizations_ICU')
-hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[5]], 'Beds_Available_Total')
-hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[6]], 'Beds_Available_ICU')
-hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[7]], 'Beds_Occupied_Total')
-hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[8]], 'Beds_Occupied_ICU')
+hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp[[5]], 'Beds_Available_Total')
+hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp[[6]], 'Beds_Available_ICU')
+hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp[[7]], 'Beds_Occupied_Total')
+hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp[[8]], 'Beds_Occupied_ICU')
 ```
 
 ## DSHS dashboard
