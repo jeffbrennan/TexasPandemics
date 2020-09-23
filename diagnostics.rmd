@@ -551,10 +551,19 @@ Q_expected / Q_ICU
 ```
 
 ```{r}
-merged_county_out %>% 
-  filter(as.Date(Date) > as.Date('2020-09-01')) %>% 
-  dplyr::filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend',
+county %>% 
+  filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend',
                               'Galveston', 'Harris', 'Liberty', 'Montgomery', 'Waller')) %>% 
   group_by(Date) %>% 
-  summarize(sum(Cases_Daily))
+  summarize(sum(Cases_Daily)) %>% 
+  tail(14)
+
+recent_tmc_cases = county %>% 
+  filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend',
+                       'Galveston', 'Harris', 'Liberty', 'Montgomery', 'Waller')) %>% 
+  filter(as.Date(Date) >= max(as.Date(Date)) - 2) %>% 
+  group_by(Date, County) %>%
+  summarize(Cases_Daily)
+
+
 ```
