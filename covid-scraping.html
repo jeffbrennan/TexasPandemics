@@ -627,6 +627,8 @@ new_tests = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## Expecting numeric in H2 / R2C8: got a date</code></pre>
 <pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
 ## Expecting numeric in I2 / R2C9: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in J2 / R2C10: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
@@ -659,8 +661,8 @@ DSHS_tests_long = merged_tests %&gt;%
   setNames(c(&#39;Date&#39;, &#39;County&#39;, &#39;Cases_Daily&#39;)) %&gt;% 
   mutate(Date = ifelse(as.integer(as.Date(Date, &#39;%m/%d/%Y&#39;)) &lt; 0, as.Date(Date, &#39;%m/%d/%y&#39;), as.Date(Date, &#39;%m/%d/%Y&#39;))) %&gt;% 
   mutate(Date = as.Date(Date, origin = &#39;1970-01-01&#39;)) %&gt;% 
-  mutate(Cases_Daily = gsub(&#39;,&#39;, &#39;&#39;, as.character(Cases_Daily), fixed = TRUE)) %&gt;% 
-  mutate(Cases_Daily = as.integer(Cases_Daily)) %&gt;% 
+  mutate(Cases_Daily = as.integer(gsub(&#39;,&#39;, &#39;&#39;, as.character(Cases_Daily), fixed = TRUE))) %&gt;% 
+  mutate(Cases_Daily = ifelse(Cases_Daily &lt; 0, 0, Cases_Daily)) %&gt;% 
   na.omit()</code></pre>
 </div>
 <div id="active-cases" class="section level2">
@@ -862,6 +864,13 @@ county_childcare = read_excel_allsheets(temp)</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
 ## * ...</code></pre>
 <pre class="r"><code>Clean_Childcare = function(df, data_type) { 
   date = as.Date(gsub(&#39;Data current as of &#39;, &#39;&#39;, colnames(df)[1]), &#39;%m/%d/%y&#39;)
@@ -884,6 +893,10 @@ county_childcare = read_excel_allsheets(temp)</code></pre>
 }
 
 county_childcare_df = rbindlist(lapply(county_childcare, Clean_Childcare))</code></pre>
+<pre><code>## Adding missing grouping variables: `County`</code></pre>
+<pre><code>## `mutate_all()` ignored the following grouping variables:
+## Column `County`
+## Use `mutate_at(df, vars(-group_cols()), myoperation)` to silence the message.</code></pre>
 <pre><code>## Adding missing grouping variables: `County`</code></pre>
 <pre><code>## `mutate_all()` ignored the following grouping variables:
 ## Column `County`
@@ -1206,10 +1219,10 @@ DSHS_tsa_hosp = read_excel_allsheets(&#39;original-sources/DSHS_tsa_hosp.xlsx&#3
 hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[[2]], &#39;Hospitalizations_Total&#39;)
 hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[[3]], &#39;Hospitalizations_General&#39;)
 hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[[4]], &#39;Hospitalizations_ICU&#39;)
-hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[5]], &#39;Beds_Available_Total&#39;)
-hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[6]], &#39;Beds_Available_ICU&#39;)
-hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[7]], &#39;Beds_Occupied_Total&#39;)
-hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp_cap[[8]], &#39;Beds_Occupied_ICU&#39;)</code></pre>
+hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp[[5]], &#39;Beds_Available_Total&#39;)
+hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp[[6]], &#39;Beds_Available_ICU&#39;)
+hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp[[7]], &#39;Beds_Occupied_Total&#39;)
+hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp[[8]], &#39;Beds_Occupied_ICU&#39;)</code></pre>
 </div>
 <div id="dshs-dashboard" class="section level2">
 <h2>DSHS dashboard</h2>
@@ -1762,6 +1775,13 @@ hhsc_alf = read_excel_allsheets(temp)</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
 ## * ...</code></pre>
 <pre class="r"><code>Clean_HHSC = function(df, data_type) { 
   date = as.Date(gsub(&#39;Data current as of &#39;, &#39;&#39;, colnames(df)[1]), &#39;%B %d, %Y&#39;)
@@ -1796,6 +1816,13 @@ download.file(&#39;https://apps.hhs.texas.gov/providers/directories/Texas_Nursin
 
 hhsc_nursing = read_excel_allsheets(temp)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
@@ -2701,10 +2728,16 @@ DSHS_case_age &lt;- append(lapply(demo.list[c(1:66, 104:length(demo.list))], rea
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_case_gender &lt;- append(lapply(demo.list[c(1:66, 104:length(demo.list))], read_excel, sheet = 10),
                            lapply(demo.list[67:103], read_excel, sheet = 11))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -3365,10 +3398,16 @@ DSHS_case_age &lt;- append(lapply(demo.list[c(1:66, 104:length(demo.list))], rea
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_age &lt;- append(lapply(demo.list[c(1:66, 104:length(demo.list))], read_excel, sheet = 12),
                          lapply(demo.list[67:103], read_excel, sheet = 13))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -4029,10 +4068,16 @@ DSHS_case_age &lt;- append(lapply(demo.list[c(1:66, 104:length(demo.list))], rea
 ## * `` -&gt; ...3
 ## New names:
 ## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
+## * `` -&gt; ...2
 ## * `` -&gt; ...3</code></pre>
 <pre class="r"><code>DSHS_death_race &lt;- append(lapply(demo.list[c(1:66, 104:length(demo.list))], read_excel, sheet = 14),
                           lapply(demo.list[67:103], read_excel, sheet = 15))</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## New names:
@@ -4543,64 +4588,64 @@ DSHS_age_df %&gt;%
   mutate(manual_pct_cumulative = Cases_Cumulative / sum(Cases_Cumulative)) %&gt;% 
   mutate(manual_pct_daily = Cases_Daily / sum(Cases_Daily)) %&gt;% 
   select(Date, Group, Cases_Cumulative, Cases_Daily, Cases_PCT, manual_pct_cumulative, manual_pct_daily)</code></pre>
-<pre><code>##          Date       Group Cases_Cumulative Cases_Daily  Cases_PCT
-## 1  2020-09-21     &lt;1 year              172           1 0.00330000
-## 2  2020-09-21   1-9 years              817           1 0.01560000
-## 3  2020-09-21 10-19 years             2155           3 0.04130000
-## 4  2020-09-21 20-29 years             9994           1 0.19140000
-## 5  2020-09-21 30-39 years            11062           1 0.21180000
-## 6  2020-09-21 40-49 years            10040          -1 0.19230000
-## 7  2020-09-21 50-59 years             8808           0 0.16870000
-## 8  2020-09-21 60-64 years             3293           0 0.06310000
-## 9  2020-09-21 65-69 years             2257          -1 0.04320000
-## 10 2020-09-21 70-74 years             1341          -1 0.02570000
-## 11 2020-09-21 75-79 years              872           0 0.01669794
-## 12 2020-09-21   80+ years             1391           0 0.02660000
+<pre><code>##          Date       Group Cases_Cumulative Cases_Daily   Cases_PCT
+## 1  2020-09-22     &lt;1 year              173           1 0.003278502
+## 2  2020-09-22   1-9 years              821           4 0.015558672
+## 3  2020-09-22 10-19 years             2172          17 0.041161310
+## 4  2020-09-22 20-29 years            10112         118 0.191631292
+## 5  2020-09-22 30-39 years            11212         150 0.212477259
+## 6  2020-09-22 40-49 years            10167         127 0.192673590
+## 7  2020-09-22 50-59 years             8899          91 0.168643875
+## 8  2020-09-22 60-64 years             3307          14 0.062670558
+## 9  2020-09-22 65-69 years             2264           7 0.042904791
+## 10 2020-09-22 70-74 years             1348           7 0.025545785
+## 11 2020-09-22 75-79 years              878           6 0.016638872
+## 12 2020-09-22   80+ years             1395           4 0.026436477
 ##    manual_pct_cumulative manual_pct_daily
-## 1            0.003294893             0.25
-## 2            0.015650741             0.25
-## 3            0.041281943             0.75
-## 4            0.191448604             0.25
-## 5            0.211907590             0.25
-## 6            0.192329796            -0.25
-## 7            0.168729167             0.00
-## 8            0.063081874             0.00
-## 9            0.043235891            -0.25
-## 10           0.025688671            -0.25
-## 11           0.016704341             0.00
-## 12           0.026646489             0.00</code></pre>
+## 1            0.003279745      0.001831502
+## 2            0.015564571      0.007326007
+## 3            0.041176917      0.031135531
+## 4            0.191703951      0.216117216
+## 5            0.212557822      0.274725275
+## 6            0.192746644      0.232600733
+## 7            0.168707818      0.166666667
+## 8            0.062694320      0.025641026
+## 9            0.042921059      0.012820513
+## 10           0.025555471      0.012820513
+## 11           0.016645181      0.010989011
+## 12           0.026446500      0.007326007</code></pre>
 <pre class="r"><code>DSHS_gender_df %&gt;% 
   filter(Date == max(Date)) %&gt;% 
   mutate(manual_pct_cumulative = Cases_Cumulative / sum(Cases_Cumulative)) %&gt;% 
   mutate(manual_pct_daily = Cases_Daily / sum(Cases_Daily)) %&gt;% 
   select(Date, Group, Cases_Cumulative, Cases_Daily, Cases_PCT, manual_pct_cumulative, manual_pct_daily)</code></pre>
-<pre><code>##         Date   Group Cases_Cumulative Cases_Daily Cases_PCT
-## 1 2020-09-21  Female            17701           5    0.3390
-## 2 2020-09-21    Male            33602          -1    0.6434
-## 3 2020-09-21 Unknown              919           0    0.0176
+<pre><code>##         Date   Group Cases_Cumulative Cases_Daily  Cases_PCT
+## 1 2020-09-22  Female            17827         126 0.33783733
+## 2 2020-09-22    Male            34028         426 0.64486052
+## 3 2020-09-22 Unknown              913          -6 0.01730215
 ##   manual_pct_cumulative manual_pct_daily
-## 1            0.33895676             1.25
-## 2            0.64344529            -0.25
-## 3            0.01759795             0.00</code></pre>
+## 1            0.33783733       0.23076923
+## 2            0.64486052       0.78021978
+## 3            0.01730215      -0.01098901</code></pre>
 <pre class="r"><code>DSHS_race_df %&gt;% 
   filter(Date == max(Date)) %&gt;% 
   mutate(manual_pct_cumulative = Cases_Cumulative / sum(Cases_Cumulative)) %&gt;% 
   mutate(manual_pct_daily = Cases_Daily / sum(Cases_Daily)) %&gt;% 
   select(Date, Group, Cases_Cumulative, Cases_Daily, Cases_PCT, manual_pct_cumulative, manual_pct_daily)</code></pre>
-<pre><code>##         Date    Group Cases_Cumulative Cases_Daily Cases_PCT
-## 1 2020-09-21    Asian              789           0    0.0151
-## 2 2020-09-21    Black             8586          -1    0.1644
-## 3 2020-09-21 Hispanic            20732           4    0.3970
-## 4 2020-09-21    Other              233          -3    0.0045
-## 5 2020-09-21  Unknown             6481           2    0.1241
-## 6 2020-09-21    White            15401           2    0.2949
+<pre><code>##         Date    Group Cases_Cumulative Cases_Daily  Cases_PCT
+## 1 2020-09-22    Asian              791           2 0.01499015
+## 2 2020-09-22    Black             8716         130 0.16517586
+## 3 2020-09-22 Hispanic            20916         184 0.39637659
+## 4 2020-09-22    Other              239           6 0.00452926
+## 5 2020-09-22  Unknown             6480          -1 0.12280170
+## 6 2020-09-22    White            15626         225 0.29612644
 ##   manual_pct_cumulative manual_pct_daily
-## 1           0.015108575             0.00
-## 2           0.164413466            -0.25
-## 3           0.396997434             1.00
-## 4           0.004461721            -0.75
-## 5           0.124104783             0.50
-## 6           0.294914021             0.50</code></pre>
+## 1            0.01499015      0.003663004
+## 2            0.16517586      0.238095238
+## 3            0.39637659      0.336996337
+## 4            0.00452926      0.010989011
+## 5            0.12280170     -0.001831502
+## 6            0.29612644      0.412087912</code></pre>
 <pre class="r"><code>DSHS_age_df %&gt;% 
   group_by(Date) %&gt;% 
   summarize(sum(Cases_Cumulative), sum(Deaths_Cumulative)) %&gt;% tail(14)</code></pre>
@@ -4608,20 +4653,20 @@ DSHS_age_df %&gt;%
 <pre><code>## # A tibble: 14 x 3
 ##    Date       `sum(Cases_Cumulative)` `sum(Deaths_Cumulative)`
 ##    &lt;date&gt;                       &lt;dbl&gt;                    &lt;dbl&gt;
-##  1 2020-09-07                   48666                    13492
-##  2 2020-09-08                   48680                    13553
-##  3 2020-09-09                   48957                    13692
-##  4 2020-09-10                   49268                    13853
-##  5 2020-09-11                   49670                    13997
-##  6 2020-09-13                   50046                    14190
-##  7 2020-09-14                   50086                    14211
-##  8 2020-09-15                   50272                    14343
-##  9 2020-09-16                   50847                    14478
-## 10 2020-09-17                   51341                    14590
-## 11 2020-09-18                   51819                    14713
-## 12 2020-09-19                   52182                    14848
-## 13 2020-09-20                   52198                    14893
-## 14 2020-09-21                   52202                    14917</code></pre>
+##  1 2020-09-08                   48680                    13553
+##  2 2020-09-09                   48957                    13692
+##  3 2020-09-10                   49268                    13853
+##  4 2020-09-11                   49670                    13997
+##  5 2020-09-13                   50046                    14190
+##  6 2020-09-14                   50086                    14211
+##  7 2020-09-15                   50272                    14343
+##  8 2020-09-16                   50847                    14478
+##  9 2020-09-17                   51341                    14590
+## 10 2020-09-18                   51819                    14713
+## 11 2020-09-19                   52182                    14848
+## 12 2020-09-20                   52198                    14893
+## 13 2020-09-21                   52202                    14917
+## 14 2020-09-22                   52748                    14994</code></pre>
 </div>
 <div id="school-reopening-defunct-on-923" class="section level2">
 <h2>School reopening (DEFUNCT ON 9/23)</h2>

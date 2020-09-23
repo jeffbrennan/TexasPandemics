@@ -861,45 +861,46 @@ Q_expected</code></pre>
 <pre class="r"><code># actual
 Q_ICU</code></pre>
 <pre><code>Hospitalizations_ICU 
-                 169 </code></pre>
+                 175 </code></pre>
 <pre class="r"><code># actual TMC_coverage
 round(TMC_ICU / Q_ICU, 2) </code></pre>
 <pre><code>Hospitalizations_ICU 
-                0.91 </code></pre>
+                0.88 </code></pre>
 <pre class="r"><code># expected / actual
 Q_expected / Q_ICU</code></pre>
 <pre><code>Hospitalizations_ICU 
-            1.104536 </code></pre>
-<pre class="r"><code>merged_county_out %&gt;% 
-  filter(as.Date(Date) &gt; as.Date(&#39;2020-09-01&#39;)) %&gt;% 
-  dplyr::filter(County %in% c(&#39;Austin&#39;, &#39;Brazoria&#39;, &#39;Chambers&#39;, &#39;Fort Bend&#39;,
+            1.066667 </code></pre>
+<pre class="r"><code>county %&gt;% 
+  filter(County %in% c(&#39;Austin&#39;, &#39;Brazoria&#39;, &#39;Chambers&#39;, &#39;Fort Bend&#39;,
                               &#39;Galveston&#39;, &#39;Harris&#39;, &#39;Liberty&#39;, &#39;Montgomery&#39;, &#39;Waller&#39;)) %&gt;% 
   group_by(Date) %&gt;% 
-  summarize(sum(Cases_Daily))</code></pre>
+  summarize(sum(Cases_Daily)) %&gt;% 
+  tail(14)</code></pre>
 <pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
-<pre><code># A tibble: 20 x 2
+<pre><code># A tibble: 14 x 2
    Date       `sum(Cases_Daily)`
-   &lt;date&gt;                  &lt;int&gt;
- 1 2020-09-02               1200
- 2 2020-09-03                803
- 3 2020-09-04               1046
- 4 2020-09-05               1237
- 5 2020-09-06               1197
- 6 2020-09-07                851
- 7 2020-09-08                 66
- 8 2020-09-09               1008
- 9 2020-09-10               1069
-10 2020-09-11               1154
-11 2020-09-12               1412
-12 2020-09-13                705
-13 2020-09-14               1032
-14 2020-09-15               1459
-15 2020-09-16                585
-16 2020-09-17                626
-17 2020-09-18                785
-18 2020-09-19                589
-19 2020-09-20                791
-20 2020-09-21                361</code></pre>
+   &lt;fct&gt;                   &lt;int&gt;
+ 1 2020-09-09               1012
+ 2 2020-09-10               1069
+ 3 2020-09-11               1154
+ 4 2020-09-12               1412
+ 5 2020-09-13                705
+ 6 2020-09-14               1032
+ 7 2020-09-15               1459
+ 8 2020-09-16                585
+ 9 2020-09-17                626
+10 2020-09-18                786
+11 2020-09-19                589
+12 2020-09-20                791
+13 2020-09-21                361
+14 2020-09-22                578</code></pre>
+<pre class="r"><code>recent_tmc_cases = county %&gt;% 
+  filter(County %in% c(&#39;Austin&#39;, &#39;Brazoria&#39;, &#39;Chambers&#39;, &#39;Fort Bend&#39;,
+                       &#39;Galveston&#39;, &#39;Harris&#39;, &#39;Liberty&#39;, &#39;Montgomery&#39;, &#39;Waller&#39;)) %&gt;% 
+  filter(as.Date(Date) &gt;= max(as.Date(Date)) - 2) %&gt;% 
+  group_by(Date, County) %&gt;%
+  summarize(Cases_Daily)</code></pre>
+<pre><code>`summarise()` regrouping output by &#39;Date&#39; (override with `.groups` argument)</code></pre>
 </div>
 
 
