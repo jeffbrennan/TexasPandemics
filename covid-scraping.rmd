@@ -1096,18 +1096,19 @@ DSHS_age_df %>%
 
 ```
 
-## School reopening (DEFUNCT ON 9/23)
+## School reopening (DEFUNCT ON 9/24)
 
 ```{r}
 # TODO: change on 9/23
 school_reopenings = lapply(list.files('original-sources/school-reopening/', full.names = TRUE), read.csv, skipNul = TRUE, sep = '\t', stringsAsFactors = FALSE)
 
+# staff total and student totals remained the same on 9/23
 school_df = school_reopenings[[1]] %>% 
   setNames(c('Date', 'Staff_Positive', 'Students_Positive')) %>% 
   mutate(Date = as.Date(Date, '%B %d, %Y')) %>%
   unique() %>% 
-  mutate(Staff_Total = ifelse(Date == as.Date('2020-09-13'), as.numeric(gsub(',', '', school_reopenings[[2]][1,2])), NA)) %>% 
-  mutate(Student_Total = ifelse(Date == as.Date('2020-09-13'), as.numeric(gsub(',', '', school_reopenings[[3]][1,2])), NA))
+  mutate(Staff_Total = ifelse(Date >= as.Date('2020-09-13'), as.numeric(gsub(',', '', school_reopenings[[2]][1,2])), NA)) %>% 
+  mutate(Student_Total = ifelse(Date >= as.Date('2020-09-13'), as.numeric(gsub(',', '', school_reopenings[[3]][1,2])), NA))
 
 write.csv(school_df, 'tableau/state_school_reopening.csv', row.names = FALSE)
 ```
