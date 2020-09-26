@@ -1231,7 +1231,8 @@ write.csv(daily_demo_stack, paste0('original-sources/historical/demo-json/dshs_'
 ```{r}
 daily_demo_stack_all = rbindlist(lapply(list.files('original-sources/historical/demo-json/',
                                                    full.names = TRUE), read.csv)) %>% 
-  mutate(Date = as.Date(Date))
+  mutate(Date = as.Date(Date)) %>% 
+  distinct(Cases_Cumulative, Cases_PCT, Deaths_Cumulative, Deaths_PCT, .keep_all = TRUE)
 
 demo_stacked_combined = rbind(demo_stack, daily_demo_stack_all) %>% 
   group_by(Group_Type, Group) %>% 
