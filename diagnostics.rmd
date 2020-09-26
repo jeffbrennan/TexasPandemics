@@ -444,7 +444,7 @@ names(validation_out$County) = county_sublevels
 names(validation_out$TSA) = tsa_sublevels
 names(validation_out$State) = state_sublevels
 
-validation_json = toJSON(validation_out)
+validation_json = toJSON(validation_out, auto_unbox = TRUE)
 write(validation_json, file = 'statistical-output/diagnostics/validation.json')
 ```
 
