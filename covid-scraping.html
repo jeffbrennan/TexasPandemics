@@ -2017,6 +2017,13 @@ hhsc_alf = read_excel_allsheets(temp)</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
 ## * ...</code></pre>
 <pre class="r"><code>Clean_HHSC = function(df, data_type) { 
   date = as.Date(gsub(&#39;Data current as of &#39;, &#39;&#39;, colnames(df)[1]), &#39;%B %d, %Y&#39;)
@@ -2054,6 +2061,13 @@ download.file(&#39;https://apps.hhs.texas.gov/providers/directories/Texas_Nursin
 
 hhsc_nursing = read_excel_allsheets(temp)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
@@ -4904,7 +4918,8 @@ write.csv(daily_demo_stack, paste0(&#39;original-sources/historical/demo-json/ds
 <h3>merge</h3>
 <pre class="r"><code>daily_demo_stack_all = rbindlist(lapply(list.files(&#39;original-sources/historical/demo-json/&#39;,
                                                    full.names = TRUE), read.csv)) %&gt;% 
-  mutate(Date = as.Date(Date))
+  mutate(Date = as.Date(Date)) %&gt;% 
+  distinct(Cases_Cumulative, Cases_PCT, Deaths_Cumulative, Deaths_PCT, .keep_all = TRUE)
 
 demo_stacked_combined = rbind(demo_stack, daily_demo_stack_all) %&gt;% 
   group_by(Group_Type, Group) %&gt;% 
