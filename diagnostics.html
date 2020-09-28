@@ -861,15 +861,15 @@ Q_expected</code></pre>
 <pre class="r"><code># actual
 Q_ICU</code></pre>
 <pre><code>Hospitalizations_ICU 
-                 167 </code></pre>
+                  NA </code></pre>
 <pre class="r"><code># actual TMC_coverage
 round(TMC_ICU / Q_ICU, 2) </code></pre>
 <pre><code>Hospitalizations_ICU 
-                0.92 </code></pre>
+                  NA </code></pre>
 <pre class="r"><code># expected / actual
 Q_expected / Q_ICU</code></pre>
 <pre><code>Hospitalizations_ICU 
-            1.117764 </code></pre>
+                  NA </code></pre>
 <pre class="r"><code>county %&gt;% 
   filter(County %in% c(&#39;Austin&#39;, &#39;Brazoria&#39;, &#39;Chambers&#39;, &#39;Fort Bend&#39;,
                               &#39;Galveston&#39;, &#39;Harris&#39;, &#39;Liberty&#39;, &#39;Montgomery&#39;, &#39;Waller&#39;)) %&gt;% 
@@ -880,20 +880,20 @@ Q_expected / Q_ICU</code></pre>
 <pre><code># A tibble: 14 x 2
    Date       `sum(Cases_Daily)`
    &lt;fct&gt;                   &lt;int&gt;
- 1 2020-09-13                705
- 2 2020-09-14               1032
- 3 2020-09-15               1459
- 4 2020-09-16                585
- 5 2020-09-17                626
- 6 2020-09-18                786
- 7 2020-09-19                589
- 8 2020-09-20                791
- 9 2020-09-21                361
-10 2020-09-22                578
-11 2020-09-23                386
-12 2020-09-24                367
-13 2020-09-25                370
-14 2020-09-26                415</code></pre>
+ 1 2020-09-14               1032
+ 2 2020-09-15               1459
+ 3 2020-09-16                585
+ 4 2020-09-17                626
+ 5 2020-09-18                786
+ 6 2020-09-19                589
+ 7 2020-09-20                791
+ 8 2020-09-21                361
+ 9 2020-09-22                578
+10 2020-09-23                386
+11 2020-09-24                367
+12 2020-09-25                370
+13 2020-09-26                415
+14 2020-09-27                229</code></pre>
 <pre class="r"><code>recent_tmc_cases = county %&gt;% 
   filter(County %in% c(&#39;Austin&#39;, &#39;Brazoria&#39;, &#39;Chambers&#39;, &#39;Fort Bend&#39;,
                        &#39;Galveston&#39;, &#39;Harris&#39;, &#39;Liberty&#39;, &#39;Montgomery&#39;, &#39;Waller&#39;)) %&gt;% 
