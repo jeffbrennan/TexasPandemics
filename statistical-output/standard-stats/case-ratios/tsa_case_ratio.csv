@@ -1,23 +1,23 @@
 "TSA","current_ratio","current_ratio_cat"
-"A - Amarillo",NA,NA
-"B - Lubbock",NA,NA
-"C - Wichita Falls",NA,NA
-"D - Abilene",NA,NA
-"E - Dallas/Ft. Worth",NA,NA
-"F - Paris",NA,NA
-"G - Longview/Tyler",0.5,"(0,0.5]"
-"H - Lufkin",4.75,"(4,8]"
-"I - El Paso",NA,NA
-"J - Midland/Odessa",NA,NA
-"K - San Angelo",1,"(0.9,1.1]"
-"L - Belton/Killeen",0.5,"(0,0.5]"
-"M - Waco",NA,NA
-"N - Bryan/College Station",1.52631578947368,"(1.5,2]"
-"O - Austin",NA,NA
-"P - San Antonio",NA,NA
-"Q - Houston",0.264255910987483,"(0,0.5]"
-"R - Galveston",4.84210526315789,"(4,8]"
-"S - Victoria",NA,NA
-"T - Laredo",0.941176470588235,"(0.9,1.1]"
-"U - Corpus Christi",NA,NA
-"V - Lower Rio Grande Valley",0.126050420168067,"(0,0.5]"
+"A - Amarillo",1.23369565217391,"(1.1,1.5]"
+"B - Lubbock",1.28190476190476,"(1.1,1.5]"
+"C - Wichita Falls",1.78658536585366,"(1.5,1.79]"
+"D - Abilene",0.956521739130435,"(0.9,1.1]"
+"E - Dallas/Ft. Worth",0.97065649867374,"(0.9,1.1]"
+"F - Paris",1.22348484848485,"(1.1,1.5]"
+"G - Longview/Tyler",0.934189406099518,"(0.9,1.1]"
+"H - Lufkin",0.87218045112782,"(0.5,0.9]"
+"I - El Paso",1.51093210586881,"(1.5,1.79]"
+"J - Midland/Odessa",0.921225382932166,"(0.9,1.1]"
+"K - San Angelo",1.26315789473684,"(1.1,1.5]"
+"L - Belton/Killeen",0.936363636363636,"(0.9,1.1]"
+"M - Waco",0.996587030716724,"(0.9,1.1]"
+"N - Bryan/College Station",0.691714836223507,"(0.5,0.9]"
+"O - Austin",0.746083550913838,"(0.5,0.9]"
+"P - San Antonio",1.17787610619469,"(1.1,1.5]"
+"Q - Houston",0.428958295721249,"(0,0.5]"
+"R - Galveston",0.684255319148936,"(0.5,0.9]"
+"S - Victoria",0.605882352941176,"(0.5,0.9]"
+"T - Laredo",1.01420959147425,"(0.9,1.1]"
+"U - Corpus Christi",0.729442970822281,"(0.5,0.9]"
+"V - Lower Rio Grande Valley",0.747627024008934,"(0.5,0.9]"

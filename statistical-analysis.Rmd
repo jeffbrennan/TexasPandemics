@@ -1044,23 +1044,38 @@ forecast.plot(texas.hosp.arima.df.1, "Texas Daily Hospitalizations", "Daily Hosp
 ### TSA
 
 ```{r}
+Calculate_Ratio = function(df) { 
+  latestdate = max(df$Date)
+  earliestdate = latestdate - 14
+  middate = latestdate - 7
+  
+  week2 = df %>% 
+    filter(Date < latestdate & Date >= middate) %>% 
+    group_by(Level_Name) %>%
+    summarize(mean(Cases_Daily), na.rm = TRUE) %>% 
+    .[, 2] %>%
+    unlist()
+
+  week1 = df %>% 
+    filter(Date < middate & Date >= earliestdate) %>% 
+    group_by(Level_Name) %>%
+    summarize(mean(Cases_Daily), na.rm = TRUE) %>% 
+    .[, 2] %>%
+    unlist()
+  
+  current_ratio = week2 / week1
+  current_ratio = replace(current_ratio,
+                          is.infinite(current_ratio) | is.nan(current_ratio) | current_ratio < 0,
+                          NA)
+  
+  return(current_ratio)
+}
+
 #TODO: update all varnames
-casesdaily.TSA <- TSA.Daily %>% dplyr::select(Date,Level_Name, Cases_Daily) %>% filter(!is.na(Level_Name))
+casesdaily.TSA <- TSA.Daily %>% dplyr::select(Date, Level_Name, Cases_Daily) %>% filter(!is.na(Level_Name))
 casesdaily.TSA$Date <- ymd(casesdaily.TSA$Date)
+current_ratio = Calculate_Ratio(casesdaily.TSA)
 
-latestdate <- max(casesdaily.TSA$Date)
-earliestdate <- latestdate - 14
-middate <- latestdate - 7
-
-week2 <- subset(casesdaily.TSA, Date==latestdate, select=Cases_Daily) - 
-  subset(casesdaily.TSA, Date==middate, select=Cases_Daily)
-
-week1 <- subset(casesdaily.TSA, Date==middate, select=Cases_Daily) - 
-  subset(casesdaily.TSA, Date==earliestdate, select=Cases_Daily)
-
-current_ratio <- (week2/week1)[,1]
-#current_ratio[week1<10] <- NA
-current_ratio[current_ratio<0] <- NA
 tsa_current_ratio_dat <- data.frame(TSA=subset(casesdaily.TSA, Date==latestdate, select=Level_Name)[,1],
                                     current_ratio=current_ratio, current_ratio_cat = cut(current_ratio, breaks=c(0,0.5,.9,1.1,1.5,2,4,8,max(current_ratio))))
 
@@ -1078,19 +1093,7 @@ tsa_current_ratio_dat$TSA_Name <- NULL
 casesdaily.PHR <- PHR.Daily %>% dplyr::select(Date, Level_Name, Cases_Daily) %>% filter(!is.na(Level_Name))
 casesdaily.PHR$Date <- ymd(casesdaily.PHR$Date)
 
-latestdate <- max(casesdaily.PHR$Date)
-earliestdate <- latestdate - 14
-middate <- latestdate - 7
-
-week2 <- subset(casesdaily.PHR, Date==latestdate, select=Cases_Daily) - 
-  subset(casesdaily.PHR, Date==middate, select=Cases_Daily)
-
-week1 <- subset(casesdaily.PHR, Date==middate, select=Cases_Daily) - 
-  subset(casesdaily.PHR, Date==earliestdate, select=Cases_Daily)
-
-current_ratio <- (week2/week1)[,1]
-#current_ratio[week1<10] <- NA
-current_ratio[current_ratio<0] <- NA
+current_ratio = Calculate_Ratio(casesdaily.PHR)
 phr_current_ratio_dat <- data.frame(Level_Name=subset(casesdaily.PHR, Date==latestdate, select=Level_Name)[,1],
                                     current_ratio=current_ratio, current_ratio_cat = cut(current_ratio, breaks=c(0,0.5,.9,1.1,1.5,2,4,8,max(current_ratio))))
 
@@ -1112,23 +1115,7 @@ colnames(phr_current_ratio_dat)[1] <- 'PHR'
 casesdaily.county <- county.Daily %>% dplyr::select(Date, Level_Name, Cases_Daily) %>% filter(!is.na(Level_Name))
 casesdaily.county$Date <- ymd(casesdaily.county$Date)
 
-latestdate <- max(casesdaily.county$Date, na.rm=T)
-earliestdate <- latestdate - 14
-middate <- latestdate-7
-
-# calc cumulative case ratios from 2 weeks ago and last week
-week2 <- subset(casesdaily.county, Date==latestdate, select=Cases_Daily) - 
-         subset(casesdaily.county, Date==middate, select=Cases_Daily)
-
-week1 <- subset(casesdaily.county, Date==middate, select=Cases_Daily) - 
-         subset(casesdaily.county, Date==earliestdate, select=Cases_Daily)
-
-current_ratio <- (week2/week1)[,1]
-
-# add contingencies 
-current_ratio[week1<10] <- NA
-current_ratio[current_ratio<0] <- NA
-
+current_ratio = Calculate_Ratio(casesdaily.county)
 # output
 # TODO: investigate select vs subset(...)[, 'County']
 county_current_ratio_dat <- 
@@ -1144,17 +1131,7 @@ county_current_ratio_dat <-
 casesdaily.metro <- metro.Daily %>% dplyr::select(Date, Level_Name, Cases_Daily) %>% filter(!is.na(Level_Name))
 casesdaily.metro$Date <- ymd(casesdaily.metro$Date)
 
-latestdate <- max(casesdaily.metro$Date, na.rm=T)
-earliestdate <- latestdate - 14
-middate <- latestdate-7
-
-week2 <- subset(casesdaily.metro, Date==latestdate, select=Cases_Daily) - 
-         subset(casesdaily.metro, Date==middate, select=Cases_Daily)
-week1 <- subset(casesdaily.metro, Date==middate, select=Cases_Daily) - 
-         subset(casesdaily.metro, Date==earliestdate, select=Cases_Daily)
-
-current_ratio <- (week2/week1)[,1]
-current_ratio[current_ratio<0] <- NA
+current_ratio = Calculate_Ratio(casesdaily.metro)
 
 metro_current_ratio_dat <-
   data.frame(Metro_Area=subset(casesdaily.metro, Date==latestdate, select=Level_Name)[,1],
@@ -1166,21 +1143,10 @@ metro_current_ratio_dat <-
 ### State
 
 ```{r}
-casesdaily.state <- state.Daily %>% dplyr::select(Date, Cases_Daily)
+casesdaily.state <- state.Daily %>% dplyr::select(Date, Level_Name, Cases_Daily)
 casesdaily.state$Date <- ymd(casesdaily.state$Date)
 
-latestdate <- max(casesdaily.state$Date, na.rm = TRUE)
-earliestdate <- latestdate - 14
-middate <- latestdate-7
-
-week2 <- subset(casesdaily.state, Date == latestdate, select = Cases_Daily) - 
-         subset(casesdaily.state, Date == middate, select = Cases_Daily)
-
-week1 <- subset(casesdaily.state, Date == middate, select = Cases_Daily) - 
-         subset(casesdaily.state, Date == earliestdate, select = Cases_Daily)
-
-current_ratio <- (week2/week1)[,1]
-current_ratio[current_ratio<0] <- NA
+current_ratio = Calculate_Ratio(casesdaily.state)
 
 state_current_ratio_dat <- 
   data.frame(current_ratio=current_ratio,
