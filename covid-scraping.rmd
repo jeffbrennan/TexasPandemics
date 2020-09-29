@@ -1056,27 +1056,27 @@ DSHS_state = read_excel_allsheets('original-sources/DSHS_state.xlsx')
 
 
 ```{r}
-# DSHS_tests = DSHS_state[[4]]
-# 
-# # LAB TESTS
-# # select lab tests & remove rows where all rows are NA
-# DSHS_lab_tests = DSHS_tests[2:nrow(DSHS_tests), 1:4] %>%
-#   setNames(c('Date', 'LAB_Tests_Daily', 'LAB_Positive_Tests_Daily','LAB_Positivity_Rate')) %>%
-#   filter(rowSums(is.na(.)) < ncol(.)) %>%
-#   mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
-# 
-# # SPECIMEN TESTS
-# DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %>% 
-#   setNames(c('Date', 'SPECIMEN_Tests_Daily','SPECIMEN_Positive_Tests_Daily',
-#              'SPECIMEN_Positivity_Rate')) %>% 
-#   filter(rowSums(is.na(.)) < ncol(.)) %>%
-#   mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
+DSHS_tests = DSHS_state[[4]]
+
+# LAB TESTS
+# select lab tests & remove rows where all rows are NA
+DSHS_lab_tests = DSHS_tests[2:nrow(DSHS_tests), 1:4] %>%
+  setNames(c('Date', 'LAB_Tests_Daily', 'LAB_Positive_Tests_Daily','LAB_Positivity_Rate')) %>%
+  filter(rowSums(is.na(.)) < ncol(.)) %>%
+  mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
+
+# SPECIMEN TESTS
+DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %>%
+  setNames(c('Date', 'SPECIMEN_Tests_Daily','SPECIMEN_Positive_Tests_Daily',
+             'SPECIMEN_Positivity_Rate')) %>%
+  filter(rowSums(is.na(.)) < ncol(.)) %>%
+  mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
 ```
 
 
 ```{r}
 # selects covid hospitalization time series, drops footnote, formates date and sets colnames
-DSHS_hospitalizations = DSHS_state[[7]][, c(2:3)] %>%
+DSHS_hospitalizations = DSHS_state[[8]][, c(2:3)] %>%
   filter(rowSums(is.na(.)) < ncol(.)) %>% 
   setNames(c('Date', 'Hospitalizations_Total')) %>%
   mutate(Date = as.Date(Date))
@@ -1097,16 +1097,14 @@ DSHS_state_time = DSHS_hospitalizations
 # avoids duplication of results between sheets
 DSHS_state_day = data.frame(Recovered_Total = DSHS_state[[3]][1,1],
                             Active_Total = DSHS_state[[3]][1,2],
-                            Antigen_Tests_Total = DSHS_state[[5]][1,2],
-                            Antigen_Tests_Positive = DSHS_state[[5]][2,2],
-                            Antibody_Tests_Total = DSHS_state[[4]][1,2],
-                            Antibody_tests_Positive = DSHS_state[[4]][2,2],
-                            Hospital_Bed_Total = DSHS_state[[6]][2,2],
-                            Hospital_Bed_Available = DSHS_state[[6]][3,2],
-                            ICU_Bed_Available = DSHS_state[[6]][4,2],
-                            Ventilator_Available = DSHS_state[[6]][5,2])
-                            # Case_Investigations = DSHS_state[[8]][[14,2]],
-                            # Death_Investigations = DSHS_state[[11]][14,2])
+                            Antigen_Tests_Total = DSHS_state[[6]][1,2],
+                            Antigen_Tests_Positive = DSHS_state[[6]][2,2],
+                            Antibody_Tests_Total = DSHS_state[[5]][1,2],
+                            Antibody_tests_Positive = DSHS_state[[5]][2,2],
+                            Hospital_Bed_Total = DSHS_state[[7]][2,2],
+                            Hospital_Bed_Available = DSHS_state[[7]][3,2],
+                            ICU_Bed_Available = DSHS_state[[7]][4,2],
+                            Ventilator_Available = DSHS_state[[7]][5,2])
 ```
 
 ## DSHS Demographics
