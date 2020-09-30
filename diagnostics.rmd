@@ -565,6 +565,24 @@ recent_tmc_cases = county %>%
   filter(as.Date(Date) >= max(as.Date(Date)) - 2) %>% 
   group_by(Date, County) %>%
   summarize(Cases_Daily)
-
-
 ```
+
+
+# Regional comparisons
+
+```{r}
+# northeast
+county %>% 
+  filter(County %in% c('Rains', 'Wood', 'Van Zandt', 'Smith', 'Gregg', 'Henderson', 'Anderson')) %>%
+  filter(as.Date(Date) >= Sys.Date()-7) %>%
+  dplyr::select(Date, County, Cases_Cumulative, Cases_Daily) %>% 
+  arrange(County, Date)
+
+# south
+county %>% 
+  filter(County %in% c('Cameron')) %>%
+  filter(as.Date(Date) >= Sys.Date()-7) %>%
+  dplyr::select(Date, County, Cases_Cumulative, Cases_Daily) %>% 
+  arrange(County, Date)
+```
+
