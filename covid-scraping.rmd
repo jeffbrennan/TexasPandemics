@@ -303,13 +303,13 @@ colnames(DSHS_deaths_time) = trimws(gsub('Fatalities', '', colnames(DSHS_deaths_
 # numeric format -> convert to date using excel numbering convetion
 # non-numeric format -> coerce m/d/y to yyy-mm-dd
 dates = colnames(DSHS_deaths_time)[2:length(colnames(DSHS_deaths_time))]
-dates = as.Date(dates, format = '%m-%d')
-# numeric_dates = which(is.na(as.Date(dates, format = '%m-%d')))
-# dates[numeric_dates] = format(as.Date(as.integer(dates[numeric_dates]), origin = '1899-12-30'), '%Y-%m-%d')
-# dates[-numeric_dates] = format(as.Date(dates[-numeric_dates], format = '%m-%d'), '%Y-%m-%d')
+# dates = as.Date(dates, format = '%m-%d')
+numeric_dates = which(is.na(as.Date(dates, format = '%m/%d/%Y')))
+dates[numeric_dates] = format(as.Date(as.integer(dates[numeric_dates]), origin = '1899-12-30'), '%Y-%m-%d')
+dates[-numeric_dates] = format(as.Date(dates[-numeric_dates], format = '%m/%d/%Y'), '%Y-%m-%d')
 
 # replace date values
-colnames(DSHS_deaths_time)[2:length(colnames(DSHS_deaths_time))] = format(dates, '%Y-%m-%d')
+colnames(DSHS_deaths_time)[2:ncol(DSHS_deaths_time)] = dates
 
 #save
 write.csv(DSHS_deaths_time, 'original-sources/DSHS_county_deaths.csv', row.names = FALSE)
@@ -456,6 +456,7 @@ Clean_Childcare = function(df, data_type) {
   df = df[4:(nrow(df)-1), c(1, 7:10)]
   
   grouped_df = df %>% 
+    filter(County != 'Licensed Child Care Center' & County != 'School-Age Program') %>%
     group_by(County) %>%
     dplyr::select(2:5) %>%
     mutate_all(as.numeric) %>% 
