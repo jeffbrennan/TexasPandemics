@@ -2,6 +2,8 @@
 title: 'COVID Scraping'
 author: 'Jeffrey Brennan'
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 # SETUP
@@ -40,7 +42,7 @@ date_out = ifelse((Sys.time() < as.POSIXct(paste0(Sys.Date(), '16:00'), tz = 'Am
 date_out = as.Date(date_out, origin = '1970-1-1')
 ```
 
-# CENSUS 
+# CENSUS
 
 ## County
 
@@ -63,7 +65,6 @@ county_demo_2018$AGEGRP = factor(county_demo_2018$AGEGRP,
                                             '30-34', '35-39', '40-44', '45-49', '50-54', '55-59',
                                             '60-64',  '65-69', '70-74', '75-79', '80-84', '85+'))
 ```
-
 
 ## City
 
@@ -91,8 +92,7 @@ merged_city = subset(merged_city, Place_Code != 0 & Place_Code != 99990)[, 2:4]
 colnames(merged_city)[1] = 'FIPS'
 ```
 
-# SCHOOL LEVEL 
-
+# SCHOOL LEVEL
 
 ```{r}
 # school files are small (~ 6kb - read every time and don't overwrite)
@@ -102,89 +102,61 @@ nyt_schools = rbindlist(lapply(list.files('original-sources/historical/schools/'
   mutate(Cases_Cumulative = ifelse(Cases_Cumulative == -1, NA, Cases_Cumulative))
 ```
 
-
 ## Texas school districts
 
 ```{r}
-school_dates = seq(as.Date('2020-09-23'), by = 'week', length.out=52)
+school_dates = seq(as.Date('2020-09-20'), by = 'week', length.out=52)
 school_date = max(school_dates[which(school_dates <= date_out)])
 
-school_url = paste0('https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/district-level-data-file_',
-                          format(school_date, '%m%d%Y'), '.xls')
+school_url = paste0('https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/District-level-data-file-',
+                          format(school_date, '%m%d%Y'), '.xlsx')
 temp = tempfile()
-download.file(school_url, temp, mode = 'wb') 
+download.file(school_url, temp, mode = 'wb')
 DSHS_schools_raw = data.frame(read_excel(temp, sheet = 1))
 first_row = which(DSHS_schools_raw[, 1] == 'District Name') + 1
 last_row = which(DSHS_schools_raw[, 1] == 'ZEPHYR ISD')
-colnames(DSHS_schools_raw)[1] = 'District'
+colnames(DSHS_schools_raw)[1:2] = c('District', 'LEA')
 
-county_school_link = read.csv('original-sources/Directory.csv') %>% 
-  dplyr::select(County.Name, District.Number, District.Name, District.City, District.Zip) %>% 
-  unique() %>% 
+county_school_link = read.csv('original-sources/Directory.csv') %>%
+  dplyr::select(County.Name, District.Number, District.Name, District.City, District.Zip) %>%
+  unique() %>%
   mutate(District.Number = as.numeric(gsub("'", '', as.character(District.Number))))
 
-
-district_metadata = read.csv('original-sources/Current_Districts.csv') %>% 
+district_metadata = read.csv('original-sources/Current_Districts.csv') %>%
   dplyr::select(NAME, SDLEA10, DISTRICT_N, NCES_DISTR) %>%
-  filter(!is.na(SDLEA10)) %>% 
+  filter(!is.na(SDLEA10)) %>%
   unique() %>%
-  merge(., county_school_link, by.x = 'DISTRICT_N', by.y = 'District.Number', all = TRUE) %>% 
-  mutate(District.Name = gsub('CONSOLIDATED ISD|CISD|CSD', 'CONS ISD', District.Name)) %>% 
-  mutate(District.Name = gsub('GOLD BURG', 'GOLD-BURG', District.Name)) %>% 
-  mutate(District.Name = gsub('LEGACY PREPARATORY', 'LEGACY PREPARATORY CHARTER ACADEMY', District.Name))
+  merge(., county_school_link, by.x = 'DISTRICT_N', by.y = 'District.Number', all = TRUE)
 
-
-DSHS_schools = DSHS_schools_raw[first_row:last_row, ] %>% 
-  group_by(District) %>%
-  mutate(LEA = str_match(District, '(\\d{6})')[2]) %>% 
-  mutate(District = gsub('CONSOLIDATED ISD|CISD|CSD', 'CONS ISD', District)) %>% 
-  mutate(District = gsub('GOLD BURG', 'GOLD-BURG', District)) %>% 
-  mutate(District = gsub('Valley View', 'VALLEY VIEW ISD', District)) %>% 
-  mutate(District = gsub('TAFORT', 'TAFT', District)) %>%   # assuming FT in taft was converted to tafort - can't find any info about tafort ISD 
-  mutate(District = gsub('  ', ' ', District)) %>%
-  mutate(District = gsub('\r\n', ' ', District)) %>% 
-  merge(., district_metadata, by.x = 'District', by.y = 'District.Name', all.x = TRUE) %>%
-  mutate(DISTRICT_N = as.numeric(ifelse(is.na(LEA), DISTRICT_N, LEA))) %>%
-  mutate(District = gsub(' \\(LEA.*', '', District)) %>%
-  dplyr::select(-NAME, -NCES_DISTR, -LEA) %>% 
-  dplyr::select(District, DISTRICT_N, SDLEA10, County.Name, District.City, District.Zip, everything())
-
-DSHS_duplicated_schools = DSHS_schools %>% filter(is.na(County.Name)) %>% 
-  merge(., district_metadata, by = 'DISTRICT_N', all.x = TRUE) %>% 
-  dplyr::select(-grep('\\.x', names(.))) %>%
-  setNames(gsub('\\.y', '', names(.))) %>%
-  dplyr::select(-NAME, -NCES_DISTR, -District.Name) %>%
-  dplyr::select(District, DISTRICT_N, SDLEA10, County.Name, District.City, District.Zip, everything())
-
-# recombine
-DSHS_schools_combined = rbind(DSHS_schools, DSHS_duplicated_schools) %>% 
-  filter(!is.na(County.Name))
-
-# both 0
-unmatched_districts = DSHS_schools %>% filter(is.na(SDLEA10) & is.na(DISTRICT_N)) %>% filter(grepl('ISD', District))
-unmatched_private_schools = DSHS_schools %>% filter(is.na(SDLEA10) & is.na(DISTRICT_N)) %>% filter(!grepl('ISD', District))
+DSHS_schools = DSHS_schools_raw[first_row:last_row, ] %>%
+  mutate(LEA = as.numeric(gsub("'", '', LEA))) %>%
+  merge(., district_metadata, by.x = 'LEA', by.y = 'DISTRICT_N', all.x = TRUE) %>%
+  dplyr::select(-NAME, -NCES_DISTR, -SDLEA10, -District.Name) %>%
+  dplyr::select(District, LEA, County.Name, District.City, District.Zip, everything())
 ```
 
 ```{r}
-# modify county and cities 
-DSHS_schools_combined_clean = DSHS_schools_combined %>%
-  mutate(County.Name = gsub(' COUNTY', '', County.Name)) %>% 
-  mutate(County.Name = stringr::str_to_title(County.Name)) %>% 
-  mutate(County.Name = gsub('Dewitt', 'DeWitt', County.Name)) %>% 
-  mutate(County.Name = gsub('Mcculloch', 'McCulloch', County.Name)) %>% 
-  mutate(County.Name = gsub('Mclennan', 'McLennan', County.Name)) %>% 
-  mutate(County.Name = gsub('Mcmullen', 'McMullen', County.Name)) %>% 
-  mutate(District.City = stringr::str_to_title(District.City)) %>% 
-  # merge(., merged_city[, 2:3], by.x = 'District.City', by.y = 'City', all.x = TRUE) %>% 
+# modify county and cities
+DSHS_schools_clean = DSHS_schools %>%
+  mutate(District = str_to_title(District)) %>% 
+  mutate(District = gsub('Isd', 'ISD', District)) %>%
+  mutate(County.Name = gsub(' COUNTY', '', County.Name)) %>%
+  mutate(County.Name = stringr::str_to_title(County.Name)) %>%
+  mutate(County.Name = gsub('Dewitt', 'DeWitt', County.Name)) %>%
+  mutate(County.Name = gsub('Mcculloch', 'McCulloch', County.Name)) %>%
+  mutate(County.Name = gsub('Mclennan', 'McLennan', County.Name)) %>%
+  mutate(County.Name = gsub('Mcmullen', 'McMullen', County.Name)) %>%
+  mutate(District.City = stringr::str_to_title(District.City)) %>%
+  mutate(District.Zip = substr(as.character(District.Zip), 1, 5)) %>%
   mutate(Date = school_date) %>%
-  dplyr::select(District, Date, DISTRICT_N, SDLEA10, County.Name,
-                District.Zip, District.City, everything()) %>% 
-  mutate_at(8:ncol(.), as.numeric) %>% 
-  setNames(c('District', 'Date', 'District_Number', 'SDLEA10', 'County', 'ZIP', 'City',
-             'Enrollment', 'Cases_Weekly_GRADE_EE_3', 'Cases_Weekly_GRADE_4_6', 'Cases_Weekly_GRADE_7_12',
+  dplyr::select(District, Date, LEA, County.Name,
+                District.City, District.Zip, everything()) %>%
+  mutate_at(7:ncol(.), as.numeric) %>%
+  setNames(c('District', 'Date', 'LEA', 'County', 'City', 'ZIP',
+             'Total_Enrollment', 'Approximate_Enrollment', 'Cases_Weekly_GRADE_EE_3', 'Cases_Weekly_GRADE_4_6', 'Cases_Weekly_GRADE_7_12',
              'Cases_Weekly_Staff', 'Infections_Weekly_On_Campus',
              'Infections_Weekly_Off_Campus', 'Infections_Weekly_Unknown',
-             
+
              'Cases_Cumulative_GRADE_EE_3', 'Cases_Cumulative_GRADE_4_6',
              'Cases_Cumulative_GRADE_7_12', 'Cases_Cumulative_Staff',
              'Infections_Cumulative_On_Campus', 'Infections_Cumulative_Off_Campus',
@@ -192,15 +164,13 @@ DSHS_schools_combined_clean = DSHS_schools_combined %>%
 full_counties = read_excel('original-sources/county_classifications.xlsx', sheet=1)[, 1] %>% unlist()
 
 # no schools reporting from loving, all other counties match
-setdiff(unique(full_counties), unique(DSHS_schools_combined_clean$County.Name))
+setdiff(unique(full_counties), unique(DSHS_schools_clean$County))
 
 # save for future combinations - avoids cleaning on every run
-write.csv(DSHS_schools_combined_clean,
+write.csv(DSHS_schools_clean,
           paste0('original-sources/historical/dshs-schools/DSHS_Schools_', school_date, '.csv'),
           row.names = FALSE)
 ```
-
-
 
 ```{r}
 # combine previous cleaned versions w/ current week
@@ -242,7 +212,6 @@ mobility_texas = subset(mobility_texas, County != 'Unallocated')
 mobility_texas$County = as.factor(mobility_texas$County)
 mobility_texas$Date = as.Date(mobility_texas$Date)
 ```
-
 
 ## cases
 
@@ -303,10 +272,10 @@ colnames(DSHS_deaths_time) = trimws(gsub('Fatalities', '', colnames(DSHS_deaths_
 # numeric format -> convert to date using excel numbering convetion
 # non-numeric format -> coerce m/d/y to yyy-mm-dd
 dates = colnames(DSHS_deaths_time)[2:length(colnames(DSHS_deaths_time))]
-# dates = as.Date(dates, format = '%m-%d')
-numeric_dates = which(is.na(as.Date(dates, format = '%m/%d/%Y')))
-dates[numeric_dates] = format(as.Date(as.integer(dates[numeric_dates]), origin = '1899-12-30'), '%Y-%m-%d')
-dates[-numeric_dates] = format(as.Date(dates[-numeric_dates], format = '%m/%d/%Y'), '%Y-%m-%d')
+dates = format(as.Date(dates, format = '%m-%d'), '%Y-%m-%d')
+# numeric_dates = which(is.na(as.Date(dates, format = '%m-%d')))
+# dates[numeric_dates] = format(as.Date(as.integer(dates[numeric_dates]), origin = '1899-12-30'), '%Y-%m-%d')
+# dates[-numeric_dates] = as.Date(dates[-numeric_dates], '%m-%d')
 
 # replace date values
 colnames(DSHS_deaths_time)[2:ncol(DSHS_deaths_time)] = dates
@@ -392,7 +361,7 @@ DSHS_tests_long = merged_tests %>%
   mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative)))
 ```
 
-##  new cases
+## new cases
 
 ```{r}
 DSHS_new_cases_long = rbindlist(lapply(list.files(path = 'original-sources/dshs-new-cases', full.names = TRUE),
@@ -405,6 +374,7 @@ DSHS_new_cases_long = rbindlist(lapply(list.files(path = 'original-sources/dshs-
   mutate(Cases_Daily = ifelse(Cases_Daily < 0, 0, Cases_Daily)) %>% 
   na.omit()
 ```
+
 ## active cases
 
 ```{r}
@@ -524,7 +494,6 @@ PHR_helper = data.frame(PHR = unique(county_classifications$PHR),
 
 county_classifications = merge(county_classifications, PHR_helper, by = 'PHR')
 ```
-
 
 ```{r}
 # TSA levels
@@ -753,6 +722,7 @@ DSHS_phr = merge(DSHS_phr, DSHS_phr_pops, by = c('PHR'), all = TRUE)
 ```
 
 ## alf
+
 (Assisted Living Facilities)
 
 ```{r}
@@ -810,7 +780,6 @@ phr_df = phr_df %>% filter(!is.na(PHR)) %>% unique()
 # HHSC Regulation Level
 
 7 levels used for assisted living facility and nursing data (since 7/28)
-
 
 ## computed
 
@@ -876,7 +845,6 @@ Clean_HHSC = function(df, data_type) {
 hhsc_alf_df = rbindlist(lapply(hhsc_alf, Clean_HHSC, data_type = 'ALF'))
 ```
 
-
 ## nursing
 
 ```{r}
@@ -894,8 +862,6 @@ hhsc_nursing_df = rbindlist(lapply(hhsc_nursing, Clean_HHSC, data_type = 'NURSIN
 ```{r}
 hhsc_df = merge(hhsc_alf_df, hhsc_nursing_df, by = c('Date', 'HHSC'))
 ```
-
-
 
 # METRO LEVEL
 
@@ -926,7 +892,6 @@ DSHS_metro_google =
                funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)
 ```
 
-
 ## merge
 
 ```{r}
@@ -936,7 +901,6 @@ DSHS_metro = subset(merge(DSHS_metro_counts, DSHS_metro_pops,
 DSHS_metro = merge(DSHS_metro, DSHS_metro_google, by = c('Date', 'Metro_Area'))
 DSHS_metro = DSHS_metro %>% filter(!is.na(Metro_Area)) %>% unique()
 ```
-
 
 # STATE LEVEL
 
@@ -1025,7 +989,6 @@ HHS_all_icu =
     'All.ICU.')
 ```
 
-
 ### merge
 
 ```{r}
@@ -1034,7 +997,6 @@ hhs_df = Reduce(function(x, y) merge(x, y, by = 'Date', all = TRUE),
                 list(HHS_all_inpatient, HHS_covid_inpatient, HHS_all_icu, HHS_fac_reporting))
 
 ```
-
 
 ## DSHS (time series)
 
@@ -1055,7 +1017,6 @@ download.file(state_url, paste0('original-sources/historical/demo/dshs_',
 DSHS_state = read_excel_allsheets('original-sources/DSHS_state.xlsx')
 ```
 
-
 ```{r}
 DSHS_tests = DSHS_state[[4]]
 
@@ -1074,7 +1035,6 @@ DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %>%
   mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
 ```
 
-
 ```{r}
 # selects covid hospitalization time series, drops footnote, formates date and sets colnames
 DSHS_hospitalizations = DSHS_state[[8]][, c(2:3)] %>%
@@ -1082,7 +1042,6 @@ DSHS_hospitalizations = DSHS_state[[8]][, c(2:3)] %>%
   setNames(c('Date', 'Hospitalizations_Total')) %>%
   mutate(Date = as.Date(Date))
 ```
-
 
 ```{r}
 # merge tests & hospitalizations
@@ -1192,9 +1151,9 @@ DSHS_race_df = merge(DSHS_case_race_df, DSHS_death_race_df, by = c('Date', 'Grou
 demo_stack = rbind(DSHS_age_df, DSHS_gender_df, DSHS_race_df) %>% arrange(Date)
 ```
 
-## POST 9/25 DEMOGRAPHIC SCRAPING 
+## POST 9/25 DEMOGRAPHIC SCRAPING
 
-```{r} 
+```{r}
 Clean_Demographics = function(index) {
   group_conversion =  c('Age', 'Gender', 'Race')
   base_url = 'https://services5.arcgis.com/ACaLB9ifngzawspq/arcgis/rest/services/DSHS_COVID19_Cases_Service/FeatureServer/'
@@ -1297,7 +1256,7 @@ merged_state = merged_state %>%
   unique()
 ```
 
-# OUTPUT 
+# OUTPUT
 
 ## Schools
 
@@ -1309,7 +1268,7 @@ write.csv(nyt_schools, file = 'combined-datasets/schools.csv', row.names = F)
 
 ```{r}
 # write.csv(merged_city, 'tableau/city_pops.csv', row.names = F)
-``` 
+```
 
 ## County
 
@@ -1336,7 +1295,7 @@ hosp_tsa = merged_tsa %>%
 write.csv(hosp_tsa, file = 'tableau/hospitalizations_tsa.csv', row.names = F)
 ```
 
-## PHR 
+## PHR
 
 ```{r}
 write.csv(phr_df, file = 'combined-datasets/phr.csv', row.names = F)
@@ -1348,7 +1307,6 @@ write.csv(phr_df, file = 'combined-datasets/phr.csv', row.names = F)
 ```{r}
 write.csv(hhsc_df, file = 'combined-datasets/hhsc.csv', row.names = F)
 ```
-
 
 ## Metro
 
