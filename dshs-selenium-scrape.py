@@ -2,6 +2,7 @@ import pandas as pd
 import os 
 import time 
 import glob
+import sys
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -10,7 +11,6 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
 
 # TODO: continue trying to scrape POST/GET requests instead of automating clicking on download 
 # was experiencing [400] and [500 errors with previous attempts (dshs-scrape.py)]
@@ -33,7 +33,7 @@ def build_selenium(case_directory):
 def scrape_data(driver, county, start_files, case_directory): 
     
     driver.get(f'https://tabexternal.dshs.texas.gov/t/THD/views/COVIDExternalQC/COVIDTrends?County={county}&:isGuestRedirectFromVizportal=y&:embed=y')
-
+    
     wait = WebDriverWait(driver, 4)
     wait.until(EC.element_to_be_clickable((By.XPATH, "//span[contains(.,'Download')]"))).click()
     wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(.,'Crosstab')]"))).click()
@@ -50,12 +50,14 @@ def scrape_data(driver, county, start_files, case_directory):
             driver.quit()
             break
 
-
 # SETUP
 case_directory = r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID\original-sources\dshs-new-cases'
 
-counties = pd.read_excel(r"C:\Users\jeffb\Desktop\Life\personal-projects\COVID\original-sources\county_classifications.xlsx",
-                            sheet_name=0)['County Name'].tolist()
+if sys.argv[1] == 'all': 
+    counties = pd.read_excel(r"C:\Users\jeffb\Desktop\Life\personal-projects\COVID\original-sources\county_classifications.xlsx",
+                                sheet_name=0)['County Name'].tolist()
+else: 
+    counties = sys.argv[1].split(',')
 
 # WIPE DIRECTORY FROM PREVIOUS DAY 
 files = glob.glob(f'{case_directory}\*')
