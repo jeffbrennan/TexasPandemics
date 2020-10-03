@@ -459,8 +459,9 @@ nyt_schools = rbindlist(lapply(list.files(&#39;original-sources/historical/schoo
   mutate(Cases_Cumulative = ifelse(Cases_Cumulative == -1, NA, Cases_Cumulative))</code></pre>
 <div id="texas-school-districts" class="section level2">
 <h2>Texas school districts</h2>
-<pre class="r"><code>school_dates = seq(as.Date(&#39;2020-09-20&#39;), by = &#39;week&#39;, length.out=52)
-school_date = max(school_dates[which(school_dates &lt;= date_out)])
+<pre class="r"><code># data labeled on Sunday posted on Wednesday (3 day lag)
+school_dates = seq(as.Date(&#39;2020-09-20&#39;), by = &#39;week&#39;, length.out = 52)
+school_date = max(school_dates[which(school_dates &lt;= date_out - 3)])
 
 school_url = paste0(&#39;https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/District-level-data-file-&#39;,
                           format(school_date, &#39;%m%d%Y&#39;), &#39;.xlsx&#39;)
@@ -706,23 +707,6 @@ DSHS_deaths_long =
 <div id="testing" class="section level2">
 <h2>testing</h2>
 <pre class="r"><code># LEGACY
-# test_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsOverTimebyCounty.xlsx&#39;
-# temp = tempfile()
-# download.file(test_url, temp, mode = &#39;wb&#39;)
-# legacy_tests = data.frame(readxl::read_excel(temp, sheet = 1))
-# legacy_tests_long = legacy_tests %&gt;%
-#   setNames(legacy_tests[1, ]) %&gt;%
-#   slice(2:(nrow(.) - 11)) %&gt;%
-#   reshape::melt(id = &#39;County&#39;) %&gt;%
-#   setNames(c(&#39;County&#39;, &#39;Date&#39;, &#39;Tests_Cumulative&#39;)) %&gt;%
-#   mutate(Date = str_replace(Date, &#39;Tests Through &#39;, &#39;&#39;)) %&gt;%
-#   mutate(Date = as.Date(Date, &#39;%B %d&#39;)) %&gt;%
-#   mutate(Tests_Cumulative = as.integer(as.character(Tests_Cumulative)))
-# 
-# # store backup
-# write.csv(legacy_tests_long, &#39;original-sources/DSHS_county_tests_legacy_cleaned.csv&#39;, row.names = FALSE)
-
-# LEGACY
 legacy_tests_long = read.csv(&#39;original-sources/DSHS_county_tests_legacy_cleaned.csv&#39;) %&gt;% 
   mutate(Date = as.Date(Date))
 
@@ -767,6 +751,8 @@ new_tests = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## Expecting numeric in R2 / R2C18: got a date</code></pre>
 <pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
 ## Expecting numeric in S2 / R2C19: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in T2 / R2C20: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
@@ -808,32 +794,19 @@ DSHS_tests_long = merged_tests %&gt;%
 <pre class="r"><code>active_case_url = &#39;https://dshs.texas.gov/coronavirus/TexasCOVID-19ActiveCaseDatabyCounty.xlsx&#39;
 temp = tempfile()
 download.file(active_case_url, temp, mode = &#39;wb&#39;) 
-DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
-<pre><code>## New names:
-## * `` -&gt; ...2
-## * `` -&gt; ...3
-## * `` -&gt; ...4
-## * `` -&gt; ...5
-## * `` -&gt; ...6
-## * ...</code></pre>
-<pre class="r"><code># fix colname
-colnames(DSHS_active_cases_time) = DSHS_active_cases_time[2, ]
-DSHS_active_cases_time = DSHS_active_cases_time[3:(nrow(DSHS_active_cases_time)), 2:ncol(DSHS_active_cases_time)]
-colnames(DSHS_active_cases_time)[1] = &#39;County&#39;
+DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) %&gt;%
+  slice(which(County == &#39;Anderson&#39;):which(County == &#39;Zavala&#39;)) %&gt;% 
+  dplyr::select(-Notes)
 
 #save
 write.csv(DSHS_active_cases_time, &#39;original-sources/DSHS_county_active_cases.csv&#39;, row.names = FALSE)
 
 # melt
-DSHS_active_cases_long = reshape::melt(DSHS_active_cases_time, id = c(&#39;County&#39;))
-colnames(DSHS_active_cases_long) = c(&#39;County&#39;, &#39;Date&#39;, &#39;Active_Cases_Cumulative&#39;)
-
-# fix dates
-DSHS_active_cases_long$Date = as.Date(gsub(&#39;Active|Cases|\r|\n&#39;, &#39;&#39;,
-                                           DSHS_active_cases_long$Date),
-                                      format = &#39;%m-%d&#39;)
-
-DSHS_active_cases_long = DSHS_active_cases_long %&gt;%
+DSHS_active_cases_long = reshape::melt(DSHS_active_cases_time, id = &#39;County&#39;) %&gt;% 
+  setNames(c(&#39;County&#39;, &#39;Date&#39;, &#39;Active_Cases_Cumulative&#39;)) %&gt;%
+  group_by(Date) %&gt;%
+  mutate(Date = as.Date(paste(str_extract_all(Date, &#39;\\d+&#39;)[[1]], collapse = &#39; &#39;), &#39;%m%d&#39;)) %&gt;% 
+  ungroup() %&gt;%
   group_by(County) %&gt;% 
   unique() %&gt;%
   mutate(Active_Cases_Cumulative = as.integer(as.character(Active_Cases_Cumulative))) %&gt;%
@@ -850,6 +823,13 @@ download.file(&#39;https://apps.hhs.texas.gov/documents/CCR/texas-child-care-fac
               temp, mode = &#39;wb&#39;) 
 county_childcare = read_excel_allsheets(temp)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
@@ -1201,6 +1181,10 @@ county_childcare_df = rbindlist(lapply(county_childcare, Clean_Childcare))</code
 <pre><code>## `mutate_all()` ignored the following grouping variables:
 ## Column `County`
 ## Use `mutate_at(df, vars(-group_cols()), myoperation)` to silence the message.</code></pre>
+<pre><code>## Adding missing grouping variables: `County`</code></pre>
+<pre><code>## `mutate_all()` ignored the following grouping variables:
+## Column `County`
+## Use `mutate_at(df, vars(-group_cols()), myoperation)` to silence the message.</code></pre>
 <pre class="r"><code># fix all caps county names
 county_childcare_df$County = stringr::str_to_title(county_childcare_df$County)
 
@@ -1236,17 +1220,13 @@ county_childcare_df$County = gsub(&#39;Mclennan&#39;, &#39;McLennan&#39;, county
 
 county_counts = Reduce(function(x, y) merge(x, y, by = c(&#39;Date&#39;, &#39;County&#39;), all=TRUE),
        list(DSHS_cases_long, DSHS_new_cases_long, DSHS_deaths_long, DSHS_tests_long,
-            DSHS_active_cases_long, county_school_counts, county_childcare_df))
-# 
-# # drop population - will be using census data
-# county_counts$Population.x = NULL
-# county_counts$Population.y = NULL</code></pre>
+            DSHS_active_cases_long, county_school_counts, county_childcare_df))</code></pre>
 </div>
 </div>
 <div id="classifications" class="section level2">
 <h2>Classifications</h2>
 <pre class="r"><code># add metro and PHR code designations
-# source: https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls]
+# source: https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls
 county_classifications = read_xlsx(&#39;original-sources/county_classifications.xlsx&#39;, sheet = 1)[1:254, c(1, 5, 8, 13:14)]
 
 # set colnames
@@ -1360,6 +1340,8 @@ DSHS_tsa_hosp = read_excel_allsheets(&#39;original-sources/DSHS_tsa_hosp.xlsx&#3
 ## * ...</code></pre>
 <pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
 ## Expecting numeric in FS3 / R3C175: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in FT3 / R3C176: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
@@ -1875,6 +1857,13 @@ hhsc_alf = read_excel_allsheets(temp)</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
 ## * ...</code></pre>
 <pre class="r"><code>Clean_HHSC = function(df, data_type) { 
   date = as.Date(gsub(&#39;Data current as of &#39;, &#39;&#39;, colnames(df)[1]), &#39;%B %d, %Y&#39;)
@@ -1912,6 +1901,13 @@ download.file(&#39;https://apps.hhs.texas.gov/providers/directories/Texas_Nursin
 
 hhsc_nursing = read_excel_allsheets(temp)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
@@ -4605,10 +4601,13 @@ demo_stack = rbind(DSHS_age_df, DSHS_gender_df, DSHS_race_df) %&gt;% arrange(Dat
   return(clean_df)
 }
 
-daily_demo_stack = rbindlist(lapply(seq(1,3), Clean_Demographics))
+demo_releases = seq(as.Date(&#39;2020-09-25&#39;), by = &#39;week&#39;, length = 52)
 
-# save
-write.csv(daily_demo_stack, paste0(&#39;original-sources/historical/demo-json/dshs_&#39;, date_out, &#39;.csv&#39;), row.names = FALSE)</code></pre>
+# only run weekly
+if (date_out %in% demo_releases) {
+  daily_demo_stack = rbindlist(lapply(seq(1,3), Clean_Demographics))
+  write.csv(daily_demo_stack, paste0(&#39;original-sources/historical/demo-json/dshs_&#39;, date_out, &#39;.csv&#39;), row.names = FALSE)
+}</code></pre>
 <div id="merge-7" class="section level3">
 <h3>merge</h3>
 <pre class="r"><code>daily_demo_stack_all = rbindlist(lapply(list.files(&#39;original-sources/historical/demo-json/&#39;,
