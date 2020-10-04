@@ -753,6 +753,8 @@ new_tests = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## Expecting numeric in S2 / R2C19: got a date</code></pre>
 <pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
 ## Expecting numeric in T2 / R2C20: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in U2 / R2C21: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
@@ -1342,6 +1344,8 @@ DSHS_tsa_hosp = read_excel_allsheets(&#39;original-sources/DSHS_tsa_hosp.xlsx&#3
 ## Expecting numeric in FS3 / R3C175: got a date</code></pre>
 <pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
 ## Expecting numeric in FT3 / R3C176: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in FU3 / R3C177: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
@@ -1621,6 +1625,13 @@ download.file(&#39;https://apps.hhs.texas.gov/providers/directories/Texas_Assist
               temp, mode = &#39;wb&#39;) 
 hhsc_alf = read_excel_allsheets(temp)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
@@ -2144,6 +2155,13 @@ hhsc_nursing = read_excel_allsheets(temp)</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
 ## * ...</code></pre>
 <pre class="r"><code>hhsc_nursing_df = rbindlist(lapply(hhsc_nursing, Clean_HHSC, data_type = &#39;NURSING&#39;))</code></pre>
 </div>
@@ -2300,30 +2318,23 @@ DSHS_state = read_excel_allsheets(&#39;original-sources/DSHS_state.xlsx&#39;)</c
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6</code></pre>
-<pre><code>## New names:
-## * `` -&gt; ...2
-## * `` -&gt; ...3
-## * `` -&gt; ...4
-## * `` -&gt; ...5
-## * `` -&gt; ...7
-## * ...</code></pre>
-<pre class="r"><code>DSHS_tests = DSHS_state[[4]]
+<pre class="r"><code># DSHS_tests = DSHS_state[[4]]
 
-# LAB TESTS
-# select lab tests &amp; remove rows where all rows are NA
-DSHS_lab_tests = DSHS_tests[2:nrow(DSHS_tests), 1:4] %&gt;%
-  setNames(c(&#39;Date&#39;, &#39;LAB_Tests_Daily&#39;, &#39;LAB_Positive_Tests_Daily&#39;,&#39;LAB_Positivity_Rate&#39;)) %&gt;%
-  filter(rowSums(is.na(.)) &lt; ncol(.)) %&gt;%
-  mutate(Date = as.Date(as.integer(Date), origin = &#39;1899-12-30&#39;))
-
-# SPECIMEN TESTS
-DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %&gt;%
-  setNames(c(&#39;Date&#39;, &#39;SPECIMEN_Tests_Daily&#39;,&#39;SPECIMEN_Positive_Tests_Daily&#39;,
-             &#39;SPECIMEN_Positivity_Rate&#39;)) %&gt;%
-  filter(rowSums(is.na(.)) &lt; ncol(.)) %&gt;%
-  mutate(Date = as.Date(as.integer(Date), origin = &#39;1899-12-30&#39;))</code></pre>
+# # LAB TESTS
+# # select lab tests &amp; remove rows where all rows are NA
+# DSHS_lab_tests = DSHS_tests[2:nrow(DSHS_tests), 1:4] %&gt;%
+#   setNames(c(&#39;Date&#39;, &#39;LAB_Tests_Daily&#39;, &#39;LAB_Positive_Tests_Daily&#39;,&#39;LAB_Positivity_Rate&#39;)) %&gt;%
+#   filter(rowSums(is.na(.)) &lt; ncol(.)) %&gt;%
+#   mutate(Date = as.Date(as.integer(Date), origin = &#39;1899-12-30&#39;))
+# 
+# # SPECIMEN TESTS
+# DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %&gt;%
+#   setNames(c(&#39;Date&#39;, &#39;SPECIMEN_Tests_Daily&#39;,&#39;SPECIMEN_Positive_Tests_Daily&#39;,
+#              &#39;SPECIMEN_Positivity_Rate&#39;)) %&gt;%
+#   filter(rowSums(is.na(.)) &lt; ncol(.)) %&gt;%
+#   mutate(Date = as.Date(as.integer(Date), origin = &#39;1899-12-30&#39;))</code></pre>
 <pre class="r"><code># selects covid hospitalization time series, drops footnote, formates date and sets colnames
-DSHS_hospitalizations = DSHS_state[[8]][, c(2:3)] %&gt;%
+DSHS_hospitalizations = DSHS_state[[7]][, c(2:3)] %&gt;%
   filter(rowSums(is.na(.)) &lt; ncol(.)) %&gt;% 
   setNames(c(&#39;Date&#39;, &#39;Hospitalizations_Total&#39;)) %&gt;%
   mutate(Date = as.Date(Date))</code></pre>
@@ -2338,14 +2349,14 @@ DSHS_state_time = DSHS_hospitalizations</code></pre>
 <pre class="r"><code># avoids duplication of results between sheets
 DSHS_state_day = data.frame(Recovered_Total = DSHS_state[[3]][1,1],
                             Active_Total = DSHS_state[[3]][1,2],
-                            Antigen_Tests_Total = DSHS_state[[6]][1,2],
-                            Antigen_Tests_Positive = DSHS_state[[6]][2,2],
-                            Antibody_Tests_Total = DSHS_state[[5]][1,2],
-                            Antibody_tests_Positive = DSHS_state[[5]][2,2],
-                            Hospital_Bed_Total = DSHS_state[[7]][2,2],
-                            Hospital_Bed_Available = DSHS_state[[7]][3,2],
-                            ICU_Bed_Available = DSHS_state[[7]][4,2],
-                            Ventilator_Available = DSHS_state[[7]][5,2])</code></pre>
+                            Antigen_Tests_Total = DSHS_state[[5]][1,2],
+                            Antigen_Tests_Positive = DSHS_state[[5]][2,2],
+                            Antibody_Tests_Total = DSHS_state[[4]][1,2],
+                            Antibody_tests_Positive = DSHS_state[[4]][2,2],
+                            Hospital_Bed_Total = DSHS_state[[6]][2,2],
+                            Hospital_Bed_Available = DSHS_state[[6]][3,2],
+                            ICU_Bed_Available = DSHS_state[[6]][4,2],
+                            Ventilator_Available = DSHS_state[[6]][5,2])</code></pre>
 </div>
 <div id="dshs-demographics" class="section level2">
 <h2>DSHS Demographics</h2>
