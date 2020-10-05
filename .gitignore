@@ -10,4 +10,9 @@
 *.zip
 *.ini
 /backend
-rt_estimates_for_TMC/
+estimates-TMC/
+original-sources/dshs-new-cases/
+dshs-scrape.py
+.vscode/settings.json
+original-sources/school-reopening/
+.vscode/launch.json

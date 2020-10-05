@@ -66,185 +66,185 @@ Plot_Threshold(case_features, 'criteria5', 'median(Cases_Daily)')
 ```
 
 
-# DSHS VS HHS 
+<!-- # DSHS VS HHS  -->
 
-```{r}
-state = readxl::read_excel('combined-datasets/state.xlsx', sheet = 1)
+<!-- ```{r} -->
+<!-- state = readxl::read_excel('combined-datasets/state.xlsx', sheet = 1) -->
 
-state_compare = state %>%
-  mutate(Date = openxlsx::convertToDate(Date)) %>%
-  dplyr::select(c(Date, grep('Hospitalizations_|Beds_', colnames(state)),
-           HHS_Inpatient.Beds.Occupied.Estimated,
-           HHS_Inpatient.Beds.Occupied.by.COVID.19.Patients.Estimated,
-           HHS_ICU.Beds.Occupied.Estimated)) %>% 
-  na.omit()
+<!-- state_compare = state %>% -->
+<!--   mutate(Date = openxlsx::convertToDate(Date)) %>% -->
+<!--   dplyr::select(c(Date, grep('Hospitalizations_|Beds_', colnames(state)), -->
+<!--            HHS_Inpatient.Beds.Occupied.Estimated, -->
+<!--            HHS_Inpatient.Beds.Occupied.by.COVID.19.Patients.Estimated, -->
+<!--            HHS_ICU.Beds.Occupied.Estimated)) %>%  -->
+<!--   na.omit() -->
 
-ggplot(state_compare, aes(x = Date)) + 
-  geom_point(aes(y = Beds_Occupied_Total, color = 'DSHS'), size = 2) + 
-  geom_point(aes(y = HHS_Inpatient.Beds.Occupied.Estimated, color = 'HHS Estimate'), size = 2) + 
-  labs(y = 'Beds', title = 'Beds Occupied',
-       subtitle = paste0('DSHS: Total Beds Occupied by Trauma Service Area\n',
-                         'HHS: Estimated number of inpatient beds occupied for the given state and date')) +
-  scale_color_manual('', values = c('blue', 'red'), labels = c('DSHS', 'HHS Estimate')) + 
-  theme_pubr()
+<!-- ggplot(state_compare, aes(x = Date)) +  -->
+<!--   geom_point(aes(y = Beds_Occupied_Total, color = 'DSHS'), size = 2) +  -->
+<!--   geom_point(aes(y = HHS_Inpatient.Beds.Occupied.Estimated, color = 'HHS Estimate'), size = 2) +  -->
+<!--   labs(y = 'Beds', title = 'Beds Occupied', -->
+<!--        subtitle = paste0('DSHS: Total Beds Occupied by Trauma Service Area\n', -->
+<!--                          'HHS: Estimated number of inpatient beds occupied for the given state and date')) + -->
+<!--   scale_color_manual('', values = c('blue', 'red'), labels = c('DSHS', 'HHS Estimate')) +  -->
+<!--   theme_pubr() -->
 
-ggplot(state_compare, aes(x = Date)) + 
-  geom_point(aes(y = Hospitalizations_General, color = 'DSHS'), size = 2) + 
-  geom_point(aes(y = HHS_Inpatient.Beds.Occupied.by.COVID.19.Patients.Estimated, color = 'HHS Estimate'), size = 2) + 
-  labs(y = 'Beds', title = 'COVID Beds Occupied', 
-  subtitle = paste0('DSHS: Lab-Confirmed COVID-19 Hospitalized Patients (General) by Trauma Service Area (TSA)\n',
-                    'HHS: Estimated number of inpatient beds occupied by COVID-19 patients')) + 
-  scale_color_manual('', values = c('blue', 'red'), labels = c('DSHS', 'HHS Estimate')) + 
-  theme_pubr()
-
-
-ggplot(state_compare, aes(x = Date)) + 
-  geom_point(aes(y = Beds_Occupied_ICU, color = 'DSHS'), size = 2) + 
-  geom_point(aes(y = HHS_ICU.Beds.Occupied.Estimated, color = 'HHS Estimate'), size = 2) + 
-  labs(y = 'Beds', title = 'ICU Beds Occupied',
-       subtitle = paste0('DSHS: Total ICU Beds Occupied by Trauma Service Area (TSA)\n',
-                         'HHS: Estimated number of ICU beds occupied for the given state and date')) + 
-  scale_color_manual('', values = c('blue', 'red'), labels = c('DSHS', 'HHS Estimate')) + 
-  theme_pubr()
+<!-- ggplot(state_compare, aes(x = Date)) +  -->
+<!--   geom_point(aes(y = Hospitalizations_General, color = 'DSHS'), size = 2) +  -->
+<!--   geom_point(aes(y = HHS_Inpatient.Beds.Occupied.by.COVID.19.Patients.Estimated, color = 'HHS Estimate'), size = 2) +  -->
+<!--   labs(y = 'Beds', title = 'COVID Beds Occupied',  -->
+<!--   subtitle = paste0('DSHS: Lab-Confirmed COVID-19 Hospitalized Patients (General) by Trauma Service Area (TSA)\n', -->
+<!--                     'HHS: Estimated number of inpatient beds occupied by COVID-19 patients')) +  -->
+<!--   scale_color_manual('', values = c('blue', 'red'), labels = c('DSHS', 'HHS Estimate')) +  -->
+<!--   theme_pubr() -->
 
 
-ggplot(state_compare, aes(x = Date)) + 
-  geom_point(aes(y = Beds_Occupied_ICU, color = 'DSHS'), size = 2) + 
-  geom_point(aes(y = HHS_ICU.Beds.Occupied.Estimated, color = 'HHS Estimate'), size = 2) + 
-  labs(y = 'Beds', title = 'ICU Beds Occupied',
-       subtitle = paste0('DSHS: Total ICU Beds Occupied by Trauma Service Area (TSA)\n',
-                         'HHS: Estimated number of ICU beds occupied for the given state and date')) + 
-  scale_color_manual('', values = c('blue', 'red'), labels = c('DSHS', 'HHS Estimate')) + 
-  theme_pubr()
-```
-
-# Hospitalization Investigation
-
-```{r}
-hosp = read.csv('tableau/hospitalizations_tsa.csv')
-hosp$Date = as.Date(hosp$Date)
-
-hosp_diagnostics = hosp %>%
-  group_by(Date, TSA) %>%
-  mutate(Hosp_manual_total = Hospitalizations_General + Hospitalizations_ICU) %>%
-  mutate(Hosp_check = (Hosp_manual_total) == Hospitalizations_Total) %>% 
-  mutate(Hosp_ratio = (Hosp_manual_total) / Hospitalizations_Total) %>%
-  
-  mutate(Capacity_Total = Beds_Available_Total + Beds_Occupied_Total) %>% 
-  mutate(COVID_ratio_total1 = Hospitalizations_Total / Capacity_Total) %>% 
-  mutate(COVID_ratio_total2 = (Hosp_manual_total) / Capacity_Total) %>% 
-  mutate(Other_ratio_total1 = (Beds_Occupied_Total - Hospitalizations_Total) / Capacity_Total) %>% 
-  mutate(Other_ratio_total2 = (Beds_Occupied_Total - Hosp_manual_total) / Capacity_Total) %>% 
-  mutate(Available_ratio_total = Beds_Available_Total / Capacity_Total) %>% 
-  mutate(ratio_check_total1 = COVID_ratio_total1 + Other_ratio_total1 + Available_ratio_total) %>%
-  mutate(ratio_check_total2 = COVID_ratio_total2 + Other_ratio_total2 + Available_ratio_total) %>%
-    
-  mutate(Capacity_ICU = Beds_Available_ICU + Beds_Occupied_ICU) %>% 
-  mutate(COVID_ratio_ICU = Hospitalizations_ICU / Capacity_ICU) %>% 
-  mutate(Other_ratio_ICU = (Beds_Occupied_ICU - Hospitalizations_ICU) / Capacity_ICU) %>% 
-  mutate(Available_ratio_ICU = Beds_Available_ICU / Capacity_ICU) %>%
-  mutate(ratio_check_ICU = COVID_ratio_ICU + Other_ratio_ICU + Available_ratio_ICU)
-```
-
-## Covid Hospitalization Checking
-
-```{r, fig.height=10, fig.width = 12}
-ggplot(subset(hosp_diagnostics, !is.na(Hosp_check)),
-       aes(x = Date)) +
-  geom_point(aes(y = TSA)) + 
-  labs(title = '(Hospitalizations_General + Hospitalizations_ICU) == Hospitalizations_Total') + 
-  facet_wrap(~ Hosp_check, nrow = 2) +
-  scale_x_date(date_labels = '%m/%d', breaks= 'days',
-               limits = as.Date(c(min(hosp_diagnostics$Date), max(hosp_diagnostics$Date)))) +
-  theme_pubr() +
-  theme(axis.text.x = element_text(angle = -90, size = 8))
-```
-
-```{r, fig.height=8, fig.width=10}
-hosp_false = subset(hosp_diagnostics, Hosp_check == FALSE)
-
-ggplot(hosp_false, aes(x = as.factor(Date), y = Hosp_ratio)) +
-  geom_text(aes(label = round(Hosp_ratio, 2)), position = 'dodge') + 
-  labs(title = '(Hospitalizations_General + Hospitalizations_ICU) / Hospitalizations_Total',
-       subtitle = 'FALSE TSA only') + 
-  facet_wrap(~ TSA) +
-  theme_pubr() +
-  theme(axis.text.x = element_text(angle = -90, size = 8))
-```
-
-```{r}
-subset(hosp_diagnostics, dplyr::near(ratio_check_total1, 1) == FALSE) %>%
-  dplyr::select(c('Date', 'TSA', 'ratio_check_total1'))
-
-subset(hosp_diagnostics, dplyr::near(ratio_check_total2, 1) == FALSE) %>%
-  dplyr::select(c('Date', 'TSA', 'ratio_check_total1'))
-
-subset(hosp_diagnostics, dplyr::near(ratio_check_ICU, 1) == FALSE) %>%
-  dplyr::select(c('Date', 'TSA', 'ratio_check_total1'))
-```
-
-Spot checking
-
-```{r}
-hosp_diagnostics %>% filter(TSA == 'M' & Date == as.Date('2020-08-01')) %>%
-  dplyr::select(c(Available_ratio_ICU, COVID_ratio_ICU, Other_ratio_ICU))
-
-hosp_diagnostics %>% filter(TSA == 'M' & Date == as.Date('2020-08-01')) %>%
-  dplyr::select(c(Beds_Available_ICU, Capacity_ICU, Hospitalizations_ICU, Beds_Occupied_ICU))
-```
-
-## ICU
+<!-- ggplot(state_compare, aes(x = Date)) +  -->
+<!--   geom_point(aes(y = Beds_Occupied_ICU, color = 'DSHS'), size = 2) +  -->
+<!--   geom_point(aes(y = HHS_ICU.Beds.Occupied.Estimated, color = 'HHS Estimate'), size = 2) +  -->
+<!--   labs(y = 'Beds', title = 'ICU Beds Occupied', -->
+<!--        subtitle = paste0('DSHS: Total ICU Beds Occupied by Trauma Service Area (TSA)\n', -->
+<!--                          'HHS: Estimated number of ICU beds occupied for the given state and date')) +  -->
+<!--   scale_color_manual('', values = c('blue', 'red'), labels = c('DSHS', 'HHS Estimate')) +  -->
+<!--   theme_pubr() -->
 
 
-```{r, fig.height=10, fig.width=8}
-hosp_diagnostics %>% dplyr::filter(COVID_ratio_ICU < 0) %>% dplyr::select(contains('ICU'))
-hosp_diagnostics %>% dplyr::filter(Available_ratio_ICU < 0) %>% dplyr::select(contains('ICU'))
-```
+<!-- ggplot(state_compare, aes(x = Date)) +  -->
+<!--   geom_point(aes(y = Beds_Occupied_ICU, color = 'DSHS'), size = 2) +  -->
+<!--   geom_point(aes(y = HHS_ICU.Beds.Occupied.Estimated, color = 'HHS Estimate'), size = 2) +  -->
+<!--   labs(y = 'Beds', title = 'ICU Beds Occupied', -->
+<!--        subtitle = paste0('DSHS: Total ICU Beds Occupied by Trauma Service Area (TSA)\n', -->
+<!--                          'HHS: Estimated number of ICU beds occupied for the given state and date')) +  -->
+<!--   scale_color_manual('', values = c('blue', 'red'), labels = c('DSHS', 'HHS Estimate')) +  -->
+<!--   theme_pubr() -->
+<!-- ``` -->
 
-### Negative other causes
+<!-- # Hospitalization Investigation -->
 
-```{r, fig.height=10, fig.width=8}
-hosp_diagnostics %>% filter(Other_ratio_ICU < 0) %>% dplyr::select(contains('ICU')) %>% 
-  ggplot(., aes(x = Date)) + 
-  geom_point(aes(y = Hospitalizations_ICU, color = 'HOSP')) + 
-  geom_point(aes(y = Beds_Occupied_ICU, color = 'OCC')) + 
-  facet_wrap(~ TSA, scales = 'free') + 
-  theme_pubr() + 
-  scale_color_manual(values = c('HOSP' = 'blue', 'OCC' = 'red'),
-                     labels = c('Hosp_ICU', 'Beds_Occupied_ICU')) +
-  theme(axis.text.x = element_text(angle = -90))
-```
+<!-- ```{r} -->
+<!-- # hosp = read.csv('tableau/hospitalizations_tsa.csv') -->
+<!-- # hosp$Date = as.Date(hosp$Date) -->
+<!-- #  -->
+<!-- # hosp_diagnostics = hosp %>% -->
+<!-- #   group_by(Date, TSA) %>% -->
+<!-- #   mutate(Hosp_manual_total = Hospitalizations_General + Hospitalizations_ICU) %>% -->
+<!-- #   mutate(Hosp_check = (Hosp_manual_total) == Hospitalizations_Total) %>%  -->
+<!-- #   mutate(Hosp_ratio = (Hosp_manual_total) / Hospitalizations_Total) %>% -->
+<!-- #    -->
+<!-- #   mutate(Capacity_Total = Beds_Available_Total + Beds_Occupied_Total) %>%  -->
+<!-- #   mutate(COVID_ratio_total1 = Hospitalizations_Total / Capacity_Total) %>%  -->
+<!-- #   mutate(COVID_ratio_total2 = (Hosp_manual_total) / Capacity_Total) %>%  -->
+<!-- #   mutate(Other_ratio_total1 = (Beds_Occupied_Total - Hospitalizations_Total) / Capacity_Total) %>%  -->
+<!-- #   mutate(Other_ratio_total2 = (Beds_Occupied_Total - Hosp_manual_total) / Capacity_Total) %>%  -->
+<!-- #   mutate(Available_ratio_total = Beds_Available_Total / Capacity_Total) %>%  -->
+<!-- #   mutate(ratio_check_total1 = COVID_ratio_total1 + Other_ratio_total1 + Available_ratio_total) %>% -->
+<!-- #   mutate(ratio_check_total2 = COVID_ratio_total2 + Other_ratio_total2 + Available_ratio_total) %>% -->
+<!-- #      -->
+<!-- #   mutate(Capacity_ICU = Beds_Available_ICU + Beds_Occupied_ICU) %>%  -->
+<!-- #   mutate(COVID_ratio_ICU = Hospitalizations_ICU / Capacity_ICU) %>%  -->
+<!-- #   mutate(Other_ratio_ICU = (Beds_Occupied_ICU - Hospitalizations_ICU) / Capacity_ICU) %>%  -->
+<!-- #   mutate(Available_ratio_ICU = Beds_Available_ICU / Capacity_ICU) %>% -->
+<!-- #   mutate(ratio_check_ICU = COVID_ratio_ICU + Other_ratio_ICU + Available_ratio_ICU) -->
+<!-- ``` -->
 
-## Total
-### COVID Hosp > Capacity
-```{r}
-hosp_diagnostics %>% filter(COVID_ratio_total1 < 0 | COVID_ratio_total1 > 1) %>%
-  dplyr::select(matches('Total|General')) %>%
-  ggplot(., aes(x = Date)) + 
-  geom_point(aes(y = Capacity_Total, color = 'blue')) + 
-  geom_point(aes(y = Hospitalizations_Total, color = 'red')) + 
-  facet_wrap(~ TSA, scales = 'free') + 
-  theme_pubr() +
-  scale_color_manual(values = c('blue', 'red'), labels = c('Capacity_Total', 'Hosp_Total')) +
-  theme(axis.text.x = element_text(angle = -90))
-```
+<!-- ## Covid Hospitalization Checking -->
 
-### Negative other causes
+<!-- ```{r, fig.height=10, fig.width = 12} -->
+<!-- ggplot(subset(hosp_diagnostics, !is.na(Hosp_check)), -->
+<!--        aes(x = Date)) + -->
+<!--   geom_point(aes(y = TSA)) +  -->
+<!--   labs(title = '(Hospitalizations_General + Hospitalizations_ICU) == Hospitalizations_Total') +  -->
+<!--   facet_wrap(~ Hosp_check, nrow = 2) + -->
+<!--   scale_x_date(date_labels = '%m/%d', breaks= 'days', -->
+<!--                limits = as.Date(c(min(hosp_diagnostics$Date), max(hosp_diagnostics$Date)))) + -->
+<!--   theme_pubr() + -->
+<!--   theme(axis.text.x = element_text(angle = -90, size = 8)) -->
+<!-- ``` -->
 
-```{r, fig.height=8, fig.width=8}
-hosp_diagnostics %>% filter(Other_ratio_total1 < 0) %>%
-  dplyr::select(matches('Total|General')) %>% 
-  ggplot(., aes(x = Date)) + 
-  geom_point(aes(y = Capacity_Total, color = 'CAP')) + 
-  geom_point(aes(y = Hospitalizations_Total, color = 'HOSP')) + 
-  geom_point(aes(y = Beds_Occupied_Total, color = 'OCC')) +
-  facet_wrap(~ TSA, scales = 'free') + 
-  theme_pubr() +
-  scale_color_manual(values = c('CAP' = 'blue', 'HOSP' = 'red', 'OCC' = 'green'),
-                     labels = c('Capacity_Total', 'Hosp_Total', 'Beds_Occupied_Total')) +
-  theme(axis.text.x = element_text(angle = -90))
+<!-- ```{r, fig.height=8, fig.width=10} -->
+<!-- hosp_false = subset(hosp_diagnostics, Hosp_check == FALSE) -->
 
-```
+<!-- ggplot(hosp_false, aes(x = as.factor(Date), y = Hosp_ratio)) + -->
+<!--   geom_text(aes(label = round(Hosp_ratio, 2)), position = 'dodge') +  -->
+<!--   labs(title = '(Hospitalizations_General + Hospitalizations_ICU) / Hospitalizations_Total', -->
+<!--        subtitle = 'FALSE TSA only') +  -->
+<!--   facet_wrap(~ TSA) + -->
+<!--   theme_pubr() + -->
+<!--   theme(axis.text.x = element_text(angle = -90, size = 8)) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- subset(hosp_diagnostics, dplyr::near(ratio_check_total1, 1) == FALSE) %>% -->
+<!--   dplyr::select(c('Date', 'TSA', 'ratio_check_total1')) -->
+
+<!-- subset(hosp_diagnostics, dplyr::near(ratio_check_total2, 1) == FALSE) %>% -->
+<!--   dplyr::select(c('Date', 'TSA', 'ratio_check_total1')) -->
+
+<!-- subset(hosp_diagnostics, dplyr::near(ratio_check_ICU, 1) == FALSE) %>% -->
+<!--   dplyr::select(c('Date', 'TSA', 'ratio_check_total1')) -->
+<!-- ``` -->
+
+<!-- Spot checking -->
+
+<!-- ```{r} -->
+<!-- hosp_diagnostics %>% filter(TSA == 'M' & Date == as.Date('2020-08-01')) %>% -->
+<!--   dplyr::select(c(Available_ratio_ICU, COVID_ratio_ICU, Other_ratio_ICU)) -->
+
+<!-- hosp_diagnostics %>% filter(TSA == 'M' & Date == as.Date('2020-08-01')) %>% -->
+<!--   dplyr::select(c(Beds_Available_ICU, Capacity_ICU, Hospitalizations_ICU, Beds_Occupied_ICU)) -->
+<!-- ``` -->
+
+<!-- ## ICU -->
+
+
+<!-- ```{r, fig.height=10, fig.width=8} -->
+<!-- hosp_diagnostics %>% dplyr::filter(COVID_ratio_ICU < 0) %>% dplyr::select(contains('ICU')) -->
+<!-- hosp_diagnostics %>% dplyr::filter(Available_ratio_ICU < 0) %>% dplyr::select(contains('ICU')) -->
+<!-- ``` -->
+
+<!-- ### Negative other causes -->
+
+<!-- ```{r, fig.height=10, fig.width=8} -->
+<!-- hosp_diagnostics %>% filter(Other_ratio_ICU < 0) %>% dplyr::select(contains('ICU')) %>%  -->
+<!--   ggplot(., aes(x = Date)) +  -->
+<!--   geom_point(aes(y = Hospitalizations_ICU, color = 'HOSP')) +  -->
+<!--   geom_point(aes(y = Beds_Occupied_ICU, color = 'OCC')) +  -->
+<!--   facet_wrap(~ TSA, scales = 'free') +  -->
+<!--   theme_pubr() +  -->
+<!--   scale_color_manual(values = c('HOSP' = 'blue', 'OCC' = 'red'), -->
+<!--                      labels = c('Hosp_ICU', 'Beds_Occupied_ICU')) + -->
+<!--   theme(axis.text.x = element_text(angle = -90)) -->
+<!-- ``` -->
+
+<!-- ## Total -->
+<!-- ### COVID Hosp > Capacity -->
+<!-- ```{r} -->
+<!-- hosp_diagnostics %>% filter(COVID_ratio_total1 < 0 | COVID_ratio_total1 > 1) %>% -->
+<!--   dplyr::select(matches('Total|General')) %>% -->
+<!--   ggplot(., aes(x = Date)) +  -->
+<!--   geom_point(aes(y = Capacity_Total, color = 'blue')) +  -->
+<!--   geom_point(aes(y = Hospitalizations_Total, color = 'red')) +  -->
+<!--   facet_wrap(~ TSA, scales = 'free') +  -->
+<!--   theme_pubr() + -->
+<!--   scale_color_manual(values = c('blue', 'red'), labels = c('Capacity_Total', 'Hosp_Total')) + -->
+<!--   theme(axis.text.x = element_text(angle = -90)) -->
+<!-- ``` -->
+
+<!-- ### Negative other causes -->
+
+<!-- ```{r, fig.height=8, fig.width=8} -->
+<!-- hosp_diagnostics %>% filter(Other_ratio_total1 < 0) %>% -->
+<!--   dplyr::select(matches('Total|General')) %>%  -->
+<!--   ggplot(., aes(x = Date)) +  -->
+<!--   geom_point(aes(y = Capacity_Total, color = 'CAP')) +  -->
+<!--   geom_point(aes(y = Hospitalizations_Total, color = 'HOSP')) +  -->
+<!--   geom_point(aes(y = Beds_Occupied_Total, color = 'OCC')) + -->
+<!--   facet_wrap(~ TSA, scales = 'free') +  -->
+<!--   theme_pubr() + -->
+<!--   scale_color_manual(values = c('CAP' = 'blue', 'HOSP' = 'red', 'OCC' = 'green'), -->
+<!--                      labels = c('Capacity_Total', 'Hosp_Total', 'Beds_Occupied_Total')) + -->
+<!--   theme(axis.text.x = element_text(angle = -90)) -->
+
+<!-- ``` -->
 
 # VALIDATION
 
@@ -388,15 +388,18 @@ tsa_sublevels = c('Hosp_Total', 'Hosp_ICU', 'Cap_Total', 'Cap_ICU')
 state_sublevels = c('Age', 'Gender', 'Race')
 
 
-validation_df = data.frame(Level = c(rep(c('County', 'TSA'), each = 16), rep('State', 9)),
+validation_df = data.frame(Level = c(rep('County', each = 16),
+                                     rep('TSA', each = 16),
+                                     rep('State', each = 9)),
                            Sublevel = c(rep(county_sublevels, each = 4),
                                         rep(tsa_sublevels, each = 4),
                                         rep(state_sublevels, each = 3)),
                            Emoji = emojis_out,
                            Text = c(rep(c('Latest date:', 'Average daily value:' ,
                                           'Average % change:', '% reporting > 0:'),
-                                        times = length(unlist(c(county_check, tsa_check))) / 4 / 2),
-                                rep(c('Latest Date', 'Average case change:', 'Average death change:'), times = 3)),
+                                        times = 4 + 4),
+                                rep(c('Latest Date', 'Average case change:', 'Average death change:'),
+                                    times = 3)),
                        Statistic = stats_out) %>% 
   mutate_all(as.character)
 ```
@@ -417,7 +420,7 @@ build_text = function(text_filters, data_url) {
 }
 
 # declare for combination into 'text_filters' list
-level_text = c(head(rep(unique(validation_df$Level), each = 4), -1))
+level_text = c(rep('County', each = 4), rep('TSA', each = 4), rep('State', each = 3))
 sublevel_text = c(unique(validation_df$Sublevel))
 
 # obtain list of lists (~4 of 4)
@@ -441,7 +444,7 @@ names(validation_out$County) = county_sublevels
 names(validation_out$TSA) = tsa_sublevels
 names(validation_out$State) = state_sublevels
 
-validation_json = toJSON(validation_out)
+validation_json = toJSON(validation_out, auto_unbox = TRUE)
 write(validation_json, file = 'statistical-output/diagnostics/validation.json')
 ```
 
@@ -491,12 +494,12 @@ age_summary = demo %>%
   mutate(AGEGRP = dplyr::recode(AGEGRP,  `1` = '0-9', `3` = '10-19', `5` = '20-29',
                                 `7` = '30-39', `9` = '40-49', `11` = '50-59',
                                 `13` = '60-69', `15` = '70-79', `17` = '80+')) %>% 
-  select(AGEGRP, TOT_POP)
+  dplyr::select(c(AGEGRP, TOT_POP))
 ```
 
 ```{r}
-merged_county_out = read.csv('combined-datasets/county.csv') 
-Q_df = merged_county_out %>%
+county = read.csv('combined-datasets/county.csv') 
+Q_df = county %>%
   mutate(Date = as.Date(Date)) %>%
   dplyr::filter(Date == max(Date)) %>%
   dplyr::filter(TSA == 'Q') %>%
@@ -506,39 +509,88 @@ Q_df = merged_county_out %>%
  
  Q_pop = Q_df$Q_POP[1]
  
-TMC_df = merged_county_out %>%
+TMC_df = county %>%
   mutate(Date = as.Date(Date)) %>% 
   dplyr::filter(Date == max(Date)) %>%
-  dplyr::filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend', 'Galveston', 'Harris', 'Liberty', 'Montgomery', 'Waller')) %>%
-  dplyr::select(County, Population_DSHS, TSA) %>% 
+  dplyr::filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend',
+                              'Galveston', 'Harris', 'Liberty', 'Montgomery', 'Waller')) %>%
+  dplyr::select(County, Population_DSHS, TSA, Cases_Daily, Date) %>% 
   arrange(desc(Population_DSHS)) %>% 
   mutate(TMC_POP = sum(Population_DSHS))
 
 TMC_pop = TMC_df$TMC_POP[1]
 
+
 # ICU hospitalizations from TSA Q (8/31)
 hosp_tsa = read.csv('combined-datasets/tsa.csv')
 Q_ICU = hosp_tsa %>%
   mutate(Date = as.Date(Date)) %>%
-  dplyr::filter(Date == as.Date('2020-09-06') & TSA == 'Q') %>%
-  select(Hospitalizations_ICU) %>% unlist()
+  dplyr::filter(Date == max(Date) & TSA == 'Q') %>%
+  dplyr::select(Hospitalizations_ICU) %>% unlist()
 
-# TMC dashboard value - 9/6
-TMC_ICU = 78
+# TMC dashboard value - 9/20
+TMC_ICU = 154
 
 # proposed TMC reporting and ICU share of surrounding 9 counties
 TMC_coverage = 0.75
 
 # 1.1 - Surrounding 9 county area has larger population than TSA Q
-TMC_Q_ratio =  round(TMC_pop / Q_pop, 2)
+TMC_Q_ratio = round(TMC_pop / Q_pop, 2)
 
 # expected TSA Q hosp assuming above values are accurate
-(TMC_ICU / TMC_coverage) / TMC_Q_ratio
-
+Q_expected = (TMC_ICU / TMC_coverage) / TMC_Q_ratio
+Q_expected
 # actual
 Q_ICU
 
 # actual TMC_coverage
-round(TMC_ICU / Q_ICU, 2)
+round(TMC_ICU / Q_ICU, 2) 
+
+# expected / actual
+Q_expected / Q_ICU
+```
+
+```{r}
+county = read.csv('combined-datasets/county.csv') 
+county %>% 
+  filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend',
+                              'Galveston', 'Harris', 'Liberty', 'Montgomery', 'Waller')) %>% 
+  group_by(Date) %>% 
+  summarize(sum(Cases_Daily)) %>% 
+  tail(14)
+
+recent_tmc_cases = county %>% 
+  filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend',
+                       'Galveston', 'Harris', 'Liberty', 'Montgomery', 'Waller')) %>% 
+  filter(as.Date(Date) >= max(as.Date(Date)) - 2) %>% 
+  group_by(Date, County) %>%
+  summarize(Cases_Daily)
+```
+
+
+# Regional comparisons
+
+```{r}
+# northeast
+county %>% 
+  filter(County %in% c('Rains', 'Wood', 'Van Zandt', 'Smith', 'Gregg', 'Henderson', 'Anderson')) %>%
+  filter(as.Date(Date) >= Sys.Date()-7) %>%
+  dplyr::select(Date, County, Cases_Cumulative, Cases_Daily) %>% 
+  arrange(County, Date)
+
+# south
+county %>% 
+  filter(County %in% c('Cameron')) %>%
+  filter(as.Date(Date) >= Sys.Date()-7) %>%
+  dplyr::select(Date, County, Cases_Cumulative, Cases_Daily) %>% 
+  arrange(County, Date)
+```
+
+```{r}
+schools = read.csv('tableau/district_school_reopening.csv')
+
+schools %>% 
+  filter(District == 'Houston ISD') %>% 
+  dplyr::select(Total_Enrollment, Cases_Cumulative_GRADE_4_6, Cases_Cumulative_GRADE_EE_3, Cases_Cumulative_GRADE_7_12, Cases_Cumulative_Staff)
 ```
 
