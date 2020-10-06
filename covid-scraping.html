@@ -757,6 +757,8 @@ new_tests = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## Expecting numeric in U2 / R2C21: got a date</code></pre>
 <pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
 ## Expecting numeric in V2 / R2C22: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in W2 / R2C23: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
@@ -827,6 +829,13 @@ download.file(&#39;https://apps.hhs.texas.gov/documents/CCR/texas-child-care-fac
               temp, mode = &#39;wb&#39;) 
 county_childcare = read_excel_allsheets(temp)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
@@ -1189,6 +1198,10 @@ county_childcare_df = rbindlist(lapply(county_childcare, Clean_Childcare))</code
 <pre><code>## `mutate_all()` ignored the following grouping variables:
 ## Column `County`
 ## Use `mutate_at(df, vars(-group_cols()), myoperation)` to silence the message.</code></pre>
+<pre><code>## Adding missing grouping variables: `County`</code></pre>
+<pre><code>## `mutate_all()` ignored the following grouping variables:
+## Column `County`
+## Use `mutate_at(df, vars(-group_cols()), myoperation)` to silence the message.</code></pre>
 <pre class="r"><code># fix all caps county names
 county_childcare_df$County = stringr::str_to_title(county_childcare_df$County)
 
@@ -1341,8 +1354,18 @@ DSHS_tsa_hosp = read_excel_allsheets(&#39;original-sources/DSHS_tsa_hosp.xlsx&#3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
-## * ...
-## New names:
+## * ...</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in FS3 / R3C175: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in FT3 / R3C176: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in FU3 / R3C177: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in FV3 / R3C178: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in FW3 / R3C179: got a date</code></pre>
+<pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
@@ -1871,6 +1894,20 @@ hhsc_alf = read_excel_allsheets(temp)</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
 ## * ...</code></pre>
 <pre class="r"><code>Clean_HHSC = function(df, data_type) { 
   date = as.Date(gsub(&#39;Data current as of &#39;, &#39;&#39;, colnames(df)[1]), &#39;%B %d, %Y&#39;)
@@ -1908,6 +1945,20 @@ download.file(&#39;https://apps.hhs.texas.gov/providers/directories/Texas_Nursin
 
 hhsc_nursing = read_excel_allsheets(temp)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
