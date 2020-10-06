@@ -299,16 +299,17 @@ colnames(county.rt.df)[1] = 'County'
 ```
 
 ## RT ESTIMATES: SCHOOL DISTRICT COUNTIES
-```{r TMC RT ESTIMATS: SCHOOL DISTRICT COUNTIES}
+```{r TMC RT ESTIMATES: SCHOOL DISTRICT COUNTIES}
 #create directory for school district rt estimates
 rt_school_path="rt_estimates_for_schools"
 ifelse(!dir.exists(rt_school_path), dir.create(rt_school_path), "School rt folder already exists")
 #select the counties associated with school districts of interest
-school.focus<-county.daily%>%filter(County=="Brazoria"|
-                                      County=="Galveston"|
-                                      County=="Harris")%>%dplyr::select(-PHR, -PHR_Name)
+school.focus<-county.daily %>%
+  filter(County %in% c("Brazoria", "Galveston", "Harris")) %>%
+  mutate(County = as.character(County)) %>%
+  dplyr::select(-PHR, -PHR_Name)
 
-#apply the covid.rt function to the county.datily data by county 
+#apply the covid.rt function to the county.daily data by county 
 school.focus.rt.output <- nlme::gapply(school.focus, FUN = covid.rt,
                                  groups = school.focus$County, threshold = case_quant)
 
