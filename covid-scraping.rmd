@@ -105,10 +105,10 @@ nyt_schools = rbindlist(lapply(list.files('original-sources/historical/schools/'
 ## Texas school districts
 
 ```{r}
-
 # data labeled on Sunday posted on Wednesday (3 day lag)
+# TEMP UPDATE - Updates now on Thursdays
 school_dates = seq(as.Date('2020-09-20'), by = 'week', length.out = 52)
-school_date = max(school_dates[which(school_dates <= date_out - 3)])
+school_date = max(school_dates[which(school_dates <= date_out - 4)])
 
 school_url = paste0('https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/District-level-data-file-',
                           format(school_date, '%m%d%Y'), '.xlsx')
