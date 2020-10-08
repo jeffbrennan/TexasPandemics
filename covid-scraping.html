@@ -460,8 +460,9 @@ nyt_schools = rbindlist(lapply(list.files(&#39;original-sources/historical/schoo
 <div id="texas-school-districts" class="section level2">
 <h2>Texas school districts</h2>
 <pre class="r"><code># data labeled on Sunday posted on Wednesday (3 day lag)
+# TEMP UPDATE - Updates now on Thursdays
 school_dates = seq(as.Date(&#39;2020-09-20&#39;), by = &#39;week&#39;, length.out = 52)
-school_date = max(school_dates[which(school_dates &lt;= date_out - 3)])
+school_date = max(school_dates[which(school_dates &lt;= date_out - 4)])
 
 school_url = paste0(&#39;https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/District-level-data-file-&#39;,
                           format(school_date, &#39;%m%d%Y&#39;), &#39;.xlsx&#39;)
@@ -761,6 +762,8 @@ new_tests = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## Expecting numeric in W2 / R2C23: got a date</code></pre>
 <pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
 ## Expecting numeric in X2 / R2C24: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in Y2 / R2C25: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
@@ -1060,6 +1063,13 @@ county_childcare = read_excel_allsheets(temp)</code></pre>
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
 ## * ...</code></pre>
 <pre class="r"><code>Clean_Childcare = function(df, data_type) { 
   date = as.Date(gsub(&#39;Data current as of &#39;, &#39;&#39;, colnames(df)[1]), &#39;%m/%d/%y&#39;)
@@ -1083,6 +1093,10 @@ county_childcare = read_excel_allsheets(temp)</code></pre>
 }
 
 county_childcare_df = rbindlist(lapply(county_childcare, Clean_Childcare))</code></pre>
+<pre><code>## Adding missing grouping variables: `County`</code></pre>
+<pre><code>## `mutate_all()` ignored the following grouping variables:
+## Column `County`
+## Use `mutate_at(df, vars(-group_cols()), myoperation)` to silence the message.</code></pre>
 <pre><code>## Adding missing grouping variables: `County`</code></pre>
 <pre><code>## `mutate_all()` ignored the following grouping variables:
 ## Column `County`
