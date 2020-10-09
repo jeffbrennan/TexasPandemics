@@ -464,8 +464,7 @@ nyt_schools = rbindlist(lapply(list.files(&#39;original-sources/historical/schoo
 school_dates = seq(as.Date(&#39;2020-09-20&#39;), by = &#39;week&#39;, length.out = 52)
 school_date = max(school_dates[which(school_dates &lt;= date_out - 4)])
 
-school_url = paste0(&#39;https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/District-level-data-file-&#39;,
-                          format(school_date, &#39;%m%d%Y&#39;), &#39;.xlsx&#39;)
+school_url = paste0(&#39;https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/District-level-data.xlsx&#39;)
 temp = tempfile()
 download.file(school_url, temp, mode = &#39;wb&#39;)
 DSHS_schools_raw = data.frame(read_excel(temp, sheet = 1))</code></pre>
@@ -764,6 +763,8 @@ new_tests = data.frame(readxl::read_excel(temp, sheet = 1))</code></pre>
 ## Expecting numeric in X2 / R2C24: got a date</code></pre>
 <pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
 ## Expecting numeric in Y2 / R2C25: got a date</code></pre>
+<pre><code>## Warning in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet, :
+## Expecting numeric in Z2 / R2C26: got a date</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
@@ -834,6 +835,13 @@ download.file(&#39;https://apps.hhs.texas.gov/documents/CCR/texas-child-care-fac
               temp, mode = &#39;wb&#39;) 
 county_childcare = read_excel_allsheets(temp)</code></pre>
 <pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
 ## * `` -&gt; ...2
 ## * `` -&gt; ...3
 ## * `` -&gt; ...4
@@ -1229,6 +1237,10 @@ county_childcare_df = rbindlist(lapply(county_childcare, Clean_Childcare))</code
 <pre><code>## `mutate_all()` ignored the following grouping variables:
 ## Column `County`
 ## Use `mutate_at(df, vars(-group_cols()), myoperation)` to silence the message.</code></pre>
+<pre><code>## Adding missing grouping variables: `County`</code></pre>
+<pre><code>## `mutate_all()` ignored the following grouping variables:
+## Column `County`
+## Use `mutate_at(df, vars(-group_cols()), myoperation)` to silence the message.</code></pre>
 <pre class="r"><code># fix all caps county names
 county_childcare_df$County = stringr::str_to_title(county_childcare_df$County)
 
@@ -1430,6 +1442,20 @@ DSHS_tsa_hosp = read_excel_allsheets(&#39;original-sources/DSHS_tsa_hosp.xlsx&#3
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...
+## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
 ## * ...</code></pre>
 <pre class="r"><code>DSHS_hosp_clean = function(df, var_name) { 
   colnames(df) = df[1, ]
@@ -1464,17 +1490,18 @@ DSHS_tsa_hosp = read_excel_allsheets(&#39;original-sources/DSHS_tsa_hosp.xlsx&#3
   return(df_long)
 }
 # 1,2,3 references the 3 sheets produced by DSHS
-hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[[1]], &#39;Hospitalizations_Total&#39;)
-hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[[3]], &#39;Hospitalizations_General&#39;)
-hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[[4]], &#39;Hospitalizations_ICU&#39;)
-hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp[[5]], &#39;Beds_Available_Total&#39;)
-hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp[[6]], &#39;Beds_Available_ICU&#39;)
-hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp[[7]], &#39;Beds_Occupied_Total&#39;)
-hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp[[8]], &#39;Beds_Occupied_ICU&#39;)</code></pre>
+hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[[3]], &#39;Hospitalizations_Total&#39;)
+hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[[5]], &#39;Hospitalizations_General&#39;)
+hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[[6]], &#39;Hospitalizations_ICU&#39;)
+hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp[[7]], &#39;Beds_Available_Total&#39;)
+hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp[[8]], &#39;Beds_Available_ICU&#39;)
+hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp[[9]], &#39;Beds_Occupied_Total&#39;)
+hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp[[10]], &#39;Beds_Occupied_ICU&#39;)</code></pre>
 </div>
 <div id="dshs-dashboard" class="section level2">
 <h2>DSHS dashboard</h2>
-<pre class="r"><code># pull DSHS dashboard data using link found from inspect element -&gt; network
+<pre class="r"><code># TODO: check on this
+# pull DSHS dashboard data using link found from inspect element -&gt; network
 DSHS_json_hosp_tsa = jsonlite::fromJSON(&quot;https://services5.arcgis.com/ACaLB9ifngzawspq/arcgis/rest/services/DSHS_COVID_Hospital_Data/FeatureServer/0/query?f=json&amp;where=1%3D1&amp;returnGeometry=false&amp;spatialRel=esriSpatialRelIntersects&amp;outFields=*&amp;outSR=102100&amp;resultOffset=0&amp;resultRecordCount=25&amp;resultType=standard&amp;cacheHint=true&quot;)[[&#39;features&#39;]][[&#39;attributes&#39;]]
 
 DSHS_json_hosp_tsa = DSHS_json_hosp_tsa[, c(2,5:9)]
