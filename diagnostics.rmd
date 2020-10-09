@@ -365,7 +365,8 @@ calc_demo_stats = function(group_text, df) {
 county_check = lapply(c('Cases_Daily', 'Deaths_Daily', 'Tests_Daily', 'Residential'), 
                       calc_count_stats, df = county)
 
-tsa_check = lapply(c('Hospitalizations_Total', 'Hospitalizations_ICU', 'Beds_Available_Total', 'Beds_Available_ICU'),
+tsa_check = lapply(c('Hospitalizations_Total', 'Hospitalizations_ICU',
+                     'Beds_Available_Total', 'Beds_Available_ICU'),
                    calc_count_stats, df = tsa)
 
 state_check = lapply(c('Age', 'Gender', 'Race'), calc_demo_stats, df = state)
