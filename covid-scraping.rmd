@@ -110,8 +110,7 @@ nyt_schools = rbindlist(lapply(list.files('original-sources/historical/schools/'
 school_dates = seq(as.Date('2020-09-20'), by = 'week', length.out = 52)
 school_date = max(school_dates[which(school_dates <= date_out - 4)])
 
-school_url = paste0('https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/District-level-data-file-',
-                          format(school_date, '%m%d%Y'), '.xlsx')
+school_url = paste0('https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/District-level-data.xlsx')
 temp = tempfile()
 download.file(school_url, temp, mode = 'wb')
 DSHS_schools_raw = data.frame(read_excel(temp, sheet = 1))
@@ -594,18 +593,19 @@ DSHS_hosp_clean = function(df, var_name) {
   return(df_long)
 }
 # 1,2,3 references the 3 sheets produced by DSHS
-hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[[1]], 'Hospitalizations_Total')
-hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[[3]], 'Hospitalizations_General')
-hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[[4]], 'Hospitalizations_ICU')
-hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp[[5]], 'Beds_Available_Total')
-hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp[[6]], 'Beds_Available_ICU')
-hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp[[7]], 'Beds_Occupied_Total')
-hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp[[8]], 'Beds_Occupied_ICU')
+hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[[3]], 'Hospitalizations_Total')
+hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[[5]], 'Hospitalizations_General')
+hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[[6]], 'Hospitalizations_ICU')
+hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp[[7]], 'Beds_Available_Total')
+hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp[[8]], 'Beds_Available_ICU')
+hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp[[9]], 'Beds_Occupied_Total')
+hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp[[10]], 'Beds_Occupied_ICU')
 ```
 
 ## DSHS dashboard
 
 ```{r}
+# TODO: check on this
 # pull DSHS dashboard data using link found from inspect element -> network
 DSHS_json_hosp_tsa = jsonlite::fromJSON("https://services5.arcgis.com/ACaLB9ifngzawspq/arcgis/rest/services/DSHS_COVID_Hospital_Data/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outSR=102100&resultOffset=0&resultRecordCount=25&resultType=standard&cacheHint=true")[['features']][['attributes']]
 
