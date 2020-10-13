@@ -15,12 +15,6 @@ from datetime import datetime as dt
 # https://www.tutorialspoint.com/send-mail-with-attachment-from-your-gmail-account-using-python
 
 
-# read in data
-credentials = pd.read_csv('backend/email_credentials.csv').squeeze()
-recipients = json.load(open('backend/mailing_list.json', 'r'))
-auth = pd.read_csv('backend/auth.csv').squeeze() 
-
-
 def post_slack_message(text, blocks = None):
     return requests.post('https://slack.com/api/chat.postMessage', 
     {
@@ -33,7 +27,7 @@ def post_slack_message(text, blocks = None):
 
 def build_slack_message(email_details): 
 
-    return '\n'.join(str(detail[0]) + ' received data from ' + str(detail[1]) +
+    return '\n'.join(' & '.join(detail[0]) + ' received data from ' + str(detail[1]) +
            ' file(s) regarding ' + str(detail[2]) + ' in the following regions: ' + ', '.join(detail[3])
            for detail in email_details)
 
@@ -56,7 +50,7 @@ def build_file_details(receiver, parsed_files):
 def send_email(credentials, receiver, file_paths, parsed_files):
     message = MIMEMultipart()
     message['From'] = credentials['sender']
-    message['To'] = receiver['address']
+    message['To'] = ','.join(receiver['address'])
 
     # TODO: add handling for multiple dates/files
     message['Subject'] = (receiver['nickname'] + ' ' + receiver['data_type'] + 
@@ -82,13 +76,13 @@ def send_email(credentials, receiver, file_paths, parsed_files):
                             'attachment; filename="{}"'.format(Path(path).name))
             message.attach(part)
 
-#Create SMTP session for sending the mail
+    #Create SMTP session for sending the mail
     session = smtplib.SMTP('smtp.gmail.com', 587) #use gmail with port
     session.starttls() #enable security
     session.login(credentials['sender'], credentials['sender_pass']) #login with mail_id and password
     text = message.as_string()
 
-    all_receivers = [receiver['address']] + receiver['cc']
+    all_receivers = receiver['address'] + receiver['cc']
 
     session.sendmail(credentials['sender'], all_receivers, text)
     session.quit()
@@ -114,6 +108,11 @@ def parse_file(file):
 
     return file_values
 
+
+# read in data
+credentials = pd.read_csv('backend/email_credentials.csv').squeeze()
+recipients = json.load(open('backend/mailing_list.json', 'r'))
+auth = pd.read_csv('backend/auth.csv').squeeze() 
 
 # send emails
 email_details = []
