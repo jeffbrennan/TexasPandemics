@@ -17,7 +17,8 @@ library(writexl)
 library(dplyr)
 library(stringr)
 library(jsonlite)
-# library(rjson)
+library(ggplot2)
+library(ggpubr)
 ```
 
 ```{r helper files & functions}
@@ -518,6 +519,31 @@ merged_county = merged_county %>%
   unique()
 ```
 
+```{r}
+# data dump investigation - move to diagnostics 
+daily_tests = merged_county %>% 
+  dplyr::select(Date, County, Tests_Cumulative, Tests_Daily) %>% 
+  filter(County == 'Harris' & Date > as.Date('2020-09-01'))
+
+ggplot(daily_tests, aes(x = Date, y = Tests_Daily)) + 
+  geom_point() +
+  geom_line(color = 'red') +
+  labs(title = 'Daily Tests since 9/1 in Harris County') + 
+  theme_pubr()
+
+
+# tpr calculation
+merged_county %>%
+  dplyr::select(Date, County, Cases_Cumulative, Cases_Daily, Tests_Daily) %>%
+  group_by(County) %>% 
+  mutate(Cases_Cumulative_daily = as.numeric(c(Cases_Cumulative[1], diff(Cases_Cumulative)))) %>%
+  filter(County == 'Harris' & Date > Sys.Date() - 14) %>% 
+  summarize(TPR_new_cases = sum(Cases_Daily) / sum(Tests_Daily),
+            TPR_cumulative_cases = sum(Cases_Cumulative_daily) / sum(Tests_Daily))
+
+```
+
+
 # TSA LEVEL
 
 ## Computed
@@ -593,13 +619,13 @@ DSHS_hosp_clean = function(df, var_name) {
   return(df_long)
 }
 # 1,2,3 references the 3 sheets produced by DSHS
-hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[[1]], 'Hospitalizations_Total')
-hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[[3]], 'Hospitalizations_General')
-hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[[4]], 'Hospitalizations_ICU')
-hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp[[5]], 'Beds_Available_Total')
-hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp[[6]], 'Beds_Available_ICU')
-hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp[[7]], 'Beds_Occupied_Total')
-hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp[[8]], 'Beds_Occupied_ICU')
+hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[[4]], 'Hospitalizations_Total')
+hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[[6]], 'Hospitalizations_General')
+hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[[7]], 'Hospitalizations_ICU')
+hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp[[8]], 'Beds_Available_Total')
+hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp[[9]], 'Beds_Available_ICU')
+hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp[[10]], 'Beds_Occupied_Total')
+hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp[[11]], 'Beds_Occupied_ICU')
 ```
 
 ## DSHS dashboard
@@ -795,11 +821,7 @@ Clean_HHSC = function(df, data_type) {
   
   first_row = which(df[, 1] == 1)
   last_row =  which(df[, 1] == 7)
-  na_cols = which(is.na(df[first_row, ]))  # earlier sheets have hidden columns with null values
-  
   df = df[first_row:last_row, ]
-  
-  if(length(na_cols) > 0) {df = df[,  -na_cols]}
   
   if (ncol(df) == 8) {df = df %>% mutate(Discharges_Cumulative = NA)} 
   else {df = df %>% dplyr::select(1:7, 9, 8)}
@@ -992,26 +1014,26 @@ DSHS_state = read_excel_allsheets('original-sources/DSHS_state.xlsx')
 ```
 
 ```{r}
-# DSHS_tests = DSHS_state[[4]]
-# 
-# # # LAB TESTS
-# # select lab tests & remove rows where all rows are NA
-# DSHS_lab_tests = DSHS_tests[2:nrow(DSHS_tests), 1:4] %>%
-#   setNames(c('Date', 'LAB_Tests_Daily', 'LAB_Positive_Tests_Daily','LAB_Positivity_Rate')) %>%
-#   filter(rowSums(is.na(.)) < ncol(.)) %>%
-#   mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
-# #
-# # # SPECIMEN TESTS
-# DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %>%
-#   setNames(c('Date', 'SPECIMEN_Tests_Daily','SPECIMEN_Positive_Tests_Daily',
-#              'SPECIMEN_Positivity_Rate')) %>%
-#   filter(rowSums(is.na(.)) < ncol(.)) %>%
-#   mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
+DSHS_tests = DSHS_state[[4]]
+
+# # LAB TESTS
+# select lab tests & remove rows where all rows are NA
+DSHS_lab_tests = DSHS_tests[2:nrow(DSHS_tests), 1:4] %>%
+  setNames(c('Date', 'LAB_Tests_Daily', 'LAB_Positive_Tests_Daily','LAB_Positivity_Rate')) %>%
+  filter(rowSums(is.na(.)) < ncol(.)) %>%
+  mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
+#
+# # SPECIMEN TESTS
+DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %>%
+  setNames(c('Date', 'SPECIMEN_Tests_Daily','SPECIMEN_Positive_Tests_Daily',
+             'SPECIMEN_Positivity_Rate')) %>%
+  filter(rowSums(is.na(.)) < ncol(.)) %>%
+  mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
 ```
 
 ```{r}
 # selects covid hospitalization time series, drops footnote, formates date and sets colnames
-DSHS_hospitalizations = DSHS_state[[7]][, c(2:3)] %>%
+DSHS_hospitalizations = DSHS_state[[8]][, c(2:3)] %>%
   filter(rowSums(is.na(.)) < ncol(.)) %>% 
   setNames(c('Date', 'Hospitalizations_Total')) %>%
   mutate(Date = as.Date(Date))
@@ -1019,10 +1041,10 @@ DSHS_hospitalizations = DSHS_state[[7]][, c(2:3)] %>%
 
 ```{r}
 # merge tests & hospitalizations
-# DSHS_state_time = Reduce(function(x, y) merge(x, y, by = c('Date')),
-       # list(DSHS_specimen_tests, DSHS_lab_tests, DSHS_hospitalizations))
+DSHS_state_time = Reduce(function(x, y) merge(x, y, by = c('Date')),
+list(DSHS_specimen_tests, DSHS_lab_tests, DSHS_hospitalizations))
 
-DSHS_state_time = DSHS_hospitalizations
+# DSHS_state_time = DSHS_hospitalizations
 ```
 
 ## DSHS (day counts)
@@ -1031,14 +1053,14 @@ DSHS_state_time = DSHS_hospitalizations
 # avoids duplication of results between sheets
 DSHS_state_day = data.frame(Recovered_Total = DSHS_state[[3]][1,1],
                             Active_Total = DSHS_state[[3]][1,2],
-                            Antigen_Tests_Total = DSHS_state[[5]][1,2],
-                            Antigen_Tests_Positive = DSHS_state[[5]][2,2],
-                            Antibody_Tests_Total = DSHS_state[[4]][1,2],
-                            Antibody_tests_Positive = DSHS_state[[4]][2,2],
-                            Hospital_Bed_Total = DSHS_state[[6]][2,2],
-                            Hospital_Bed_Available = DSHS_state[[6]][3,2],
-                            ICU_Bed_Available = DSHS_state[[6]][4,2],
-                            Ventilator_Available = DSHS_state[[6]][5,2])
+                            Antigen_Tests_Total = DSHS_state[[6]][1,2],
+                            Antigen_Tests_Positive = DSHS_state[[6]][2,2],
+                            Antibody_Tests_Total = DSHS_state[[5]][1,2],
+                            Antibody_tests_Positive = DSHS_state[[5]][2,2],
+                            Hospital_Bed_Total = DSHS_state[[7]][2,2],
+                            Hospital_Bed_Available = DSHS_state[[7]][3,2],
+                            ICU_Bed_Available = DSHS_state[[7]][4,2],
+                            Ventilator_Available = DSHS_state[[7]][5,2])
 ```
 
 ## DSHS Demographics
