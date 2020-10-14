@@ -553,19 +553,6 @@ Q_expected / Q_ICU
 
 ```{r}
 county = read.csv('combined-datasets/county.csv') 
-county %>% 
-  filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend',
-                              'Galveston', 'Harris', 'Liberty', 'Montgomery', 'Waller')) %>% 
-  group_by(Date) %>% 
-  summarize(sum(Cases_Daily)) %>% 
-  tail(14)
-
-recent_tmc_cases = county %>% 
-  filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend',
-                       'Galveston', 'Harris', 'Liberty', 'Montgomery', 'Waller')) %>% 
-  filter(as.Date(Date) >= max(as.Date(Date)) - 2) %>% 
-  group_by(Date, County) %>%
-  summarize(Cases_Daily)
 ```
 
 
@@ -593,5 +580,57 @@ schools = read.csv('tableau/district_school_reopening.csv')
 schools %>% 
   filter(District == 'Houston ISD') %>% 
   dplyr::select(Total_Enrollment, Cases_Cumulative_GRADE_4_6, Cases_Cumulative_GRADE_EE_3, Cases_Cumulative_GRADE_7_12, Cases_Cumulative_Staff)
+```
+
+
+# TPR comparison
+
+```{r}
+# cmr tpr 
+tpr = readxl::read_excel('original-sources/historical/TPR/10-7.xlsx') %>% 
+  setNames(.[6, ]) %>% 
+  filter(State == 'TX') %>% 
+  mutate(County = gsub(' County, TX', '', County)) %>% 
+  dplyr::select(1, 7, 8, 9) %>% 
+  mutate_at(c(2,3,4), as.numeric) %>% 
+  setNames(c('County', 'Tests', 'Test_Rate', 'TPR_CMS'))
+
+county_tpr = county %>% 
+  group_by(County) %>%
+  mutate(Cases_Cumulative_daily = as.numeric(c(Cases_Cumulative[1], diff(Cases_Cumulative)))) %>%
+  filter(Date >= as.Date('2020-09-24') & Date <= as.Date('2020-10-07')) %>% 
+  dplyr::select(County, TSA_Name, Tests_Daily, Cases_Cumulative_daily, Cases_Daily) %>% 
+  group_by(County, TSA_Name) %>% 
+  summarize(TPR_new_cases = sum(Cases_Daily, na.rm=T) / sum(Tests_Daily, na.rm=T),
+            TPR_cumulative_cases = sum(Cases_Cumulative_daily, na.rm=T) / sum(Tests_Daily, na.rm=T)) %>% 
+  merge(., tpr, by = 'County') %>%
+  mutate(TPR_new_ratio = TPR_new_cases / TPR_CMS,
+         TPR_cumulative_ratio = TPR_cumulative_cases / TPR_CMS) %>%
+  dplyr::select(1,2,8,9) %>%
+  reshape2::melt(c('County', 'TSA_Name')) %>% 
+  na.omit()
+
+ggplot(county_tpr, aes(x = County, y = value, color = variable)) + 
+  geom_point(alpha=0.3, size = 2) + 
+  geom_hline(yintercept = 1, color = 'black', linetype = 'dashed') +
+  scale_color_manual(values = c('red', 'black')) + 
+  # facet_wrap(~ TSA_Name, scales = 'free') + 
+  theme_pubr() + 
+  theme(axis.text.y = element_text(size = 8),
+        axis.text.x = element_text(size = 8, angle = -90))
+
+ggsave('statistical-output/diagnostics/TPR.png', dpi=800, width = 20, height = 5)
+
+test = county_tpr %>% 
+  filter(variable == 'TPR_new_ratio') %>% 
+  select(value) %>%
+  unlist() %>% unname() %>%
+  fivenum()
+
+county_tpr %>% 
+  filter(variable == 'TPR_cumulative_ratio') %>% 
+  select(value) %>% 
+  unlist() %>% unname() %>%
+  fivenum()
 ```
 
