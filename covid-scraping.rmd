@@ -19,6 +19,9 @@ library(stringr)
 library(jsonlite)
 library(ggplot2)
 library(ggpubr)
+library(zoo)
+# web scraping
+library(rvest)
 ```
 
 ```{r helper files & functions}
@@ -439,6 +442,7 @@ county_school_counts = DSHS_school_df %>%
   summarize_at(vars(8:ncol(.)-2), funs(sum), na.rm = TRUE)
 ```
 
+
 ### merge
 
 ```{r}
@@ -542,6 +546,74 @@ merged_county %>%
             TPR_cumulative_cases = sum(Cases_Cumulative_daily) / sum(Tests_Daily))
 
 ```
+
+
+## TPR 
+
+```{r}
+Get_TPR = function() { 
+  page = read_html('https://data.cms.gov/stories/s/q5r5-gjyu')
+  tpr_url = page %>% html_nodes('a') %>% html_attr('href') %>%
+    .[grepl('download', .)] %>% .[1] %>% gsub('%2F', '/', .)
+  
+  temp = tempfile()
+  download.file(url, temp, mode = 'wb')
+  tpr_df = read_excel(unzip(temp, list = TRUE)[['Name']][1])
+  unlink(temp)
+  rm(temp)
+  
+  
+  tpr_df = read_excel(file)
+  
+  tpr_date = as.Date(str_match(tpr_df[2,2], '-(.*)')[2], '%B %d')
+  print(tpr_date)
+  
+  tpr_out = tpr_df %>% 
+    setNames(.[which(tpr_df[, 1] == 'County'), ]) %>% 
+    filter(State == 'TX') %>% 
+    mutate(County = gsub(' County, TX', '', County)) %>% 
+    dplyr::select(1, 7, 9) %>% 
+    mutate_at(c(2,3), as.numeric) %>% 
+    setNames(c('County', 'Tests', 'TPR_CMS')) %>% 
+    mutate(Date = tpr_date) %>% 
+    dplyr::select(County, Date, Tests, TPR_CMS)
+
+  write.csv(tpr_out, paste0('original-sources/historical/TPR/TPR_', tpr_date, '.csv'),
+            row.names = FALSE) 
+  }
+  
+# TODO: find out which day the new file is added
+TPR_dates = seq(as.Date('2020-08-19'), by = 'week', length.out = 52)
+if (date_out %in% (TPR_dates + 2)) {Get_TPR()}
+
+tpr_df = rbindlist(
+         lapply(list.files('original-sources/historical/TPR', full.names = TRUE), read.csv),
+         fill = TRUE) %>% 
+         mutate(Date = as.Date(Date))
+
+tpr_cases = merged_county %>% 
+  dplyr::select(County, Date, Cases_Daily, Population_DSHS) %>%
+  filter(Date >= as.Date(min(TPR_dates)) - 13 & Date <= max(tpr_df$Date)) %>%
+  group_by(County) %>%
+  mutate(Cases_100K_7Day = (rollsum(Cases_Daily, k = 7, align = 'right',
+                                    na.pad = TRUE, na.rm = TRUE)
+                            / Population_DSHS) * 100000) %>% 
+  mutate(Cases_100K_7Day_MA = (rollmean(Cases_Daily, k = 7, align = 'right',
+                                        na.pad = TRUE, na.rm = TRUE)
+                               / Population_DSHS) * 100000) %>%
+  mutate(Cases_100K_14Day = (rollsum(Cases_Daily, k = 14, align = 'right',
+                                     na.rm = TRUE, na.pad = TRUE)
+                             / Population_DSHS) * 100000) %>% 
+  mutate(Cases_100K_14Day_MA = (rollmean(Cases_Daily, k = 14, align = 'right',
+                                         na.rm = TRUE, na.pad = TRUE)
+                                / Population_DSHS) * 100000) %>% 
+  filter(Date %in% TPR_dates) %>% 
+  dplyr::select(-Cases_Daily, -Population_DSHS)
+
+tpr_out = tpr_df %>% inner_join(tpr_cases, by = c('County', 'Date')) %>% arrange(County, Date)
+write.csv(tpr_out, 'tableau/county_TPR.csv', row.names = FALSE)
+```
+
 
 
 # TSA LEVEL
