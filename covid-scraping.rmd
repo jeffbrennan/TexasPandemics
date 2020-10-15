@@ -595,15 +595,9 @@ tpr_cases = merged_county %>%
   dplyr::select(County, Date, Cases_Daily, Population_DSHS) %>%
   filter(Date >= as.Date(min(TPR_dates)) - 13 & Date <= max(tpr_df$Date)) %>%
   group_by(County) %>%
-  mutate(Cases_100K_7Day = (rollsum(Cases_Daily, k = 7, align = 'right',
-                                    na.pad = TRUE, na.rm = TRUE)
-                            / Population_DSHS) * 100000) %>% 
   mutate(Cases_100K_7Day_MA = (rollmean(Cases_Daily, k = 7, align = 'right',
                                         na.pad = TRUE, na.rm = TRUE)
                                / Population_DSHS) * 100000) %>%
-  mutate(Cases_100K_14Day = (rollsum(Cases_Daily, k = 14, align = 'right',
-                                     na.rm = TRUE, na.pad = TRUE)
-                             / Population_DSHS) * 100000) %>% 
   mutate(Cases_100K_14Day_MA = (rollmean(Cases_Daily, k = 14, align = 'right',
                                          na.rm = TRUE, na.pad = TRUE)
                                 / Population_DSHS) * 100000) %>% 
