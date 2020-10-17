@@ -237,6 +237,10 @@
 "",2020-10-07,-16,-7,2,-25,-31,9
 "",2020-10-08,-16,-8,9,-24,-32,9
 "",2020-10-09,-17,-8,-7,-24,-32,10
+"",2020-10-10,-17,-6,11,-19,-13,3
+"",2020-10-11,-16,-9,-5,-22,-15,4
+"",2020-10-12,-16,-10,0,-25,-38,10
+"",2020-10-13,-16,-9,6,-25,-33,9
 "Anderson County",2020-02-15,3,1,NA,NA,-1,NA
 "Anderson County",2020-02-16,7,10,NA,NA,-4,NA
 "Anderson County",2020-02-17,1,-3,NA,NA,-13,3
@@ -469,6 +473,10 @@
 "Anderson County",2020-10-07,-4,-1,NA,NA,-15,2
 "Anderson County",2020-10-08,-5,-3,NA,NA,-15,1
 "Anderson County",2020-10-09,-4,-5,NA,-30,-15,3
+"Anderson County",2020-10-10,-7,-1,NA,NA,-5,1
+"Anderson County",2020-10-11,-9,0,NA,NA,-11,1
+"Anderson County",2020-10-12,-15,-11,NA,NA,-25,5
+"Anderson County",2020-10-13,-8,-6,NA,NA,-15,3
 "Andrews County",2020-02-15,-3,-8,NA,NA,-6,NA
 "Andrews County",2020-02-16,17,-4,NA,NA,2,NA
 "Andrews County",2020-02-17,4,-1,NA,44,-5,NA
@@ -682,6 +690,10 @@
 "Andrews County",2020-10-07,-18,NA,NA,10,-26,NA
 "Andrews County",2020-10-08,-16,NA,NA,15,-25,NA
 "Andrews County",2020-10-09,-13,NA,NA,6,-23,NA
+"Andrews County",2020-10-10,NA,NA,NA,NA,-24,NA
+"Andrews County",2020-10-11,NA,NA,NA,NA,-27,NA
+"Andrews County",2020-10-12,-23,NA,NA,19,-27,NA
+"Andrews County",2020-10-13,-22,NA,NA,26,-24,NA
 "Angelina County",2020-02-15,2,1,-5,-8,-6,0
 "Angelina County",2020-02-16,5,-1,NA,-4,-4,1
 "Angelina County",2020-02-17,4,1,NA,-1,-18,4
@@ -920,6 +932,10 @@
 "Angelina County",2020-10-07,-10,0,NA,14,-20,3
 "Angelina County",2020-10-08,-10,4,NA,7,-21,4
 "Angelina County",2020-10-09,-16,-6,NA,5,-20,8
+"Angelina County",2020-10-10,-14,-4,NA,14,-15,3
+"Angelina County",2020-10-11,-11,-4,NA,23,-13,4
+"Angelina County",2020-10-12,-15,-6,NA,10,-22,6
+"Angelina County",2020-10-13,-7,-4,NA,9,-19,5
 "Aransas County",2020-02-15,19,4,60,NA,-1,NA
 "Aransas County",2020-02-16,19,11,41,NA,-2,NA
 "Aransas County",2020-02-17,5,4,NA,NA,-10,2
@@ -1136,6 +1152,10 @@
 "Aransas County",2020-10-07,-21,-11,-1,NA,-20,2
 "Aransas County",2020-10-08,-23,-15,-4,NA,-22,3
 "Aransas County",2020-10-09,-19,2,9,NA,-26,4
+"Aransas County",2020-10-10,-5,7,37,NA,-12,1
+"Aransas County",2020-10-11,-7,NA,33,NA,-16,NA
+"Aransas County",2020-10-12,-22,-10,-7,NA,-25,4
+"Aransas County",2020-10-13,-13,-9,-6,NA,-21,2
 "Archer County",2020-02-17,NA,NA,NA,NA,-28,NA
 "Archer County",2020-02-18,NA,NA,NA,NA,0,NA
 "Archer County",2020-02-19,NA,NA,NA,NA,9,NA
@@ -1287,6 +1307,8 @@
 "Archer County",2020-10-07,NA,NA,NA,NA,-13,NA
 "Archer County",2020-10-08,NA,NA,NA,NA,-21,NA
 "Archer County",2020-10-09,NA,NA,NA,NA,-23,NA
+"Archer County",2020-10-12,NA,NA,NA,NA,-29,NA
+"Archer County",2020-10-13,NA,NA,NA,NA,-20,NA
 "Atascosa County",2020-02-15,3,-1,NA,3,3,NA
 "Atascosa County",2020-02-16,8,2,NA,9,-3,NA
 "Atascosa County",2020-02-17,1,3,NA,16,-18,3
@@ -1519,6 +1541,10 @@
 "Atascosa County",2020-10-07,-10,-13,NA,-35,-26,7
 "Atascosa County",2020-10-08,-14,-14,NA,-32,-27,8
 "Atascosa County",2020-10-09,-10,-13,NA,-29,-24,7
+"Atascosa County",2020-10-10,-6,-12,NA,-13,-12,6
+"Atascosa County",2020-10-11,-8,-10,NA,-15,-12,5
+"Atascosa County",2020-10-12,-14,-14,NA,-11,-31,9
+"Atascosa County",2020-10-13,-12,-16,NA,-32,-27,8
 "Austin County",2020-02-15,3,3,NA,NA,-5,NA
 "Austin County",2020-02-16,6,5,NA,NA,3,NA
 "Austin County",2020-02-17,8,-5,NA,NA,-15,2
@@ -1732,6 +1758,10 @@
 "Austin County",2020-10-07,-9,-2,NA,NA,-23,5
 "Austin County",2020-10-08,-10,4,NA,NA,-29,6
 "Austin County",2020-10-09,-9,8,NA,NA,-31,9
+"Austin County",2020-10-10,-12,4,NA,NA,-13,NA
+"Austin County",2020-10-11,-12,NA,NA,NA,-11,NA
+"Austin County",2020-10-12,-11,-4,NA,NA,-26,6
+"Austin County",2020-10-13,-8,8,NA,NA,-20,6
 "Bailey County",2020-02-15,-1,-6,NA,NA,NA,NA
 "Bailey County",2020-02-16,NA,-6,NA,NA,NA,NA
 "Bailey County",2020-02-17,-3,0,NA,NA,-19,NA
@@ -1899,6 +1929,8 @@
 "Bailey County",2020-10-07,NA,NA,NA,NA,-25,NA
 "Bailey County",2020-10-08,NA,NA,NA,NA,-18,NA
 "Bailey County",2020-10-09,NA,NA,NA,NA,-26,NA
+"Bailey County",2020-10-12,NA,NA,NA,NA,-38,NA
+"Bailey County",2020-10-13,NA,NA,NA,NA,-26,NA
 "Bandera County",2020-02-15,71,4,NA,NA,11,NA
 "Bandera County",2020-02-16,16,2,NA,NA,0,NA
 "Bandera County",2020-02-17,8,-4,NA,NA,-19,NA
@@ -2112,6 +2144,10 @@
 "Bandera County",2020-10-07,NA,NA,NA,NA,-21,4
 "Bandera County",2020-10-08,NA,NA,NA,NA,-22,7
 "Bandera County",2020-10-09,NA,NA,NA,NA,-27,7
+"Bandera County",2020-10-10,NA,NA,NA,NA,-10,NA
+"Bandera County",2020-10-11,NA,NA,NA,NA,-13,NA
+"Bandera County",2020-10-12,NA,NA,NA,NA,-38,9
+"Bandera County",2020-10-13,NA,NA,NA,NA,-21,6
 "Bastrop County",2020-02-15,7,7,51,NA,2,-1
 "Bastrop County",2020-02-16,9,8,NA,NA,-1,-1
 "Bastrop County",2020-02-17,5,6,NA,NA,-25,6
@@ -2350,6 +2386,10 @@
 "Bastrop County",2020-10-07,-8,-2,NA,NA,-30,8
 "Bastrop County",2020-10-08,-12,-1,NA,NA,-30,8
 "Bastrop County",2020-10-09,-10,1,-14,NA,-34,6
+"Bastrop County",2020-10-10,-15,-4,-9,NA,-16,3
+"Bastrop County",2020-10-11,-10,1,0,NA,-16,3
+"Bastrop County",2020-10-12,-10,-4,NA,NA,-37,9
+"Bastrop County",2020-10-13,-4,-1,NA,NA,-30,9
 "Bee County",2020-02-15,1,3,NA,NA,-4,NA
 "Bee County",2020-02-16,4,-9,NA,NA,-5,NA
 "Bee County",2020-02-17,-1,3,NA,NA,-9,NA
@@ -2563,6 +2603,10 @@
 "Bee County",2020-10-07,-22,NA,NA,NA,-29,7
 "Bee County",2020-10-08,-26,-13,NA,NA,-29,7
 "Bee County",2020-10-09,-22,-11,NA,NA,-27,8
+"Bee County",2020-10-10,-25,-13,NA,NA,-17,NA
+"Bee County",2020-10-11,-26,-18,NA,NA,-13,NA
+"Bee County",2020-10-12,-27,NA,NA,NA,-30,7
+"Bee County",2020-10-13,-15,-10,NA,NA,-26,7
 "Bell County",2020-02-15,5,-3,-4,10,-3,0
 "Bell County",2020-02-16,8,2,36,11,-3,-1
 "Bell County",2020-02-17,7,0,44,12,-32,7
@@ -2801,6 +2845,10 @@
 "Bell County",2020-10-07,-9,1,47,6,-23,5
 "Bell County",2020-10-08,-10,0,82,15,-23,5
 "Bell County",2020-10-09,-10,0,32,17,-31,6
+"Bell County",2020-10-10,-10,-2,62,15,-12,3
+"Bell County",2020-10-11,-13,0,29,15,-14,3
+"Bell County",2020-10-12,-12,-3,54,3,-41,11
+"Bell County",2020-10-13,-14,-2,61,10,-23,6
 "Bexar County",2020-02-15,4,7,6,0,0,-1
 "Bexar County",2020-02-16,7,4,13,-1,1,-1
 "Bexar County",2020-02-17,6,5,20,-4,-23,5
@@ -3039,6 +3087,10 @@
 "Bexar County",2020-10-07,-18,-9,-15,-31,-35,11
 "Bexar County",2020-10-08,-19,-9,-10,-32,-36,11
 "Bexar County",2020-10-09,-21,-5,-15,-28,-35,10
+"Bexar County",2020-10-10,-18,-5,-25,-29,-17,4
+"Bexar County",2020-10-11,-18,-8,-26,-33,-17,4
+"Bexar County",2020-10-12,-19,-8,-9,-33,-41,11
+"Bexar County",2020-10-13,-18,-8,-10,-29,-37,11
 "Blanco County",2020-02-15,26,28,NA,NA,NA,NA
 "Blanco County",2020-02-16,54,24,NA,NA,NA,NA
 "Blanco County",2020-02-17,32,18,NA,NA,-23,NA
@@ -3221,6 +3273,8 @@
 "Blanco County",2020-10-07,NA,NA,NA,NA,-22,NA
 "Blanco County",2020-10-08,NA,NA,NA,NA,-21,NA
 "Blanco County",2020-10-09,NA,NA,NA,NA,-30,NA
+"Blanco County",2020-10-12,NA,NA,NA,NA,-35,NA
+"Blanco County",2020-10-13,NA,NA,NA,NA,-17,NA
 "Bosque County",2020-02-15,0,6,NA,NA,2,NA
 "Bosque County",2020-02-16,18,13,NA,NA,9,NA
 "Bosque County",2020-02-17,0,3,NA,NA,-14,NA
@@ -3434,6 +3488,10 @@
 "Bosque County",2020-10-07,NA,NA,NA,NA,-13,NA
 "Bosque County",2020-10-08,NA,NA,NA,NA,-14,NA
 "Bosque County",2020-10-09,NA,NA,NA,NA,-13,NA
+"Bosque County",2020-10-10,NA,NA,NA,NA,-2,NA
+"Bosque County",2020-10-11,NA,NA,NA,NA,-11,NA
+"Bosque County",2020-10-12,NA,NA,NA,NA,-25,NA
+"Bosque County",2020-10-13,NA,NA,NA,NA,-14,NA
 "Bowie County",2020-02-15,6,0,4,-7,-2,0
 "Bowie County",2020-02-16,8,4,6,-3,-1,0
 "Bowie County",2020-02-17,7,0,NA,-2,-21,6
@@ -3672,6 +3730,10 @@
 "Bowie County",2020-10-07,-9,-3,NA,6,-20,2
 "Bowie County",2020-10-08,-8,-3,NA,20,-19,2
 "Bowie County",2020-10-09,-13,-4,NA,14,-19,5
+"Bowie County",2020-10-10,-17,-4,NA,2,-12,2
+"Bowie County",2020-10-11,-16,1,NA,17,-14,3
+"Bowie County",2020-10-12,-11,-6,NA,10,-31,7
+"Bowie County",2020-10-13,-8,-4,NA,3,-20,3
 "Brazoria County",2020-02-15,5,5,22,3,3,-2
 "Brazoria County",2020-02-16,7,4,24,10,3,-1
 "Brazoria County",2020-02-17,7,0,7,2,-20,4
@@ -3910,6 +3972,10 @@
 "Brazoria County",2020-10-07,-9,-6,30,-12,-25,9
 "Brazoria County",2020-10-08,-8,-8,18,-25,-28,10
 "Brazoria County",2020-10-09,-12,-12,-17,-23,-30,13
+"Brazoria County",2020-10-10,-9,-5,59,-8,-10,4
+"Brazoria County",2020-10-11,-10,-8,53,-17,-10,4
+"Brazoria County",2020-10-12,-7,-9,11,-15,-31,10
+"Brazoria County",2020-10-13,-5,-6,31,-21,-29,9
 "Brazos County",2020-02-15,1,-1,19,NA,3,-1
 "Brazos County",2020-02-16,3,-3,2,NA,2,-1
 "Brazos County",2020-02-17,5,-8,13,NA,-10,3
@@ -4148,6 +4214,10 @@
 "Brazos County",2020-10-07,-15,-4,37,-22,-32,9
 "Brazos County",2020-10-08,-17,-8,31,-40,-35,11
 "Brazos County",2020-10-09,-17,3,15,-23,-30,10
+"Brazos County",2020-10-10,-15,-10,48,-9,-14,3
+"Brazos County",2020-10-11,-21,-9,-2,-26,-17,5
+"Brazos County",2020-10-12,-16,-9,25,-35,-38,11
+"Brazos County",2020-10-13,-16,-7,18,-42,-33,9
 "Brewster County",2020-02-15,33,16,NA,NA,NA,NA
 "Brewster County",2020-02-16,32,14,NA,NA,NA,NA
 "Brewster County",2020-02-17,20,12,NA,NA,-20,NA
@@ -4315,6 +4385,8 @@
 "Brewster County",2020-10-07,NA,NA,NA,NA,-22,NA
 "Brewster County",2020-10-08,NA,NA,NA,NA,-16,NA
 "Brewster County",2020-10-09,NA,NA,NA,NA,-15,NA
+"Brewster County",2020-10-12,NA,NA,NA,NA,-32,NA
+"Brewster County",2020-10-13,NA,NA,NA,NA,-21,NA
 "Brooks County",2020-02-15,-6,1,NA,4,NA,NA
 "Brooks County",2020-02-16,4,11,NA,17,NA,NA
 "Brooks County",2020-02-17,-14,-11,NA,5,-16,NA
@@ -4524,6 +4596,9 @@
 "Brooks County",2020-10-07,NA,NA,NA,-45,-24,NA
 "Brooks County",2020-10-08,NA,NA,NA,-39,-27,NA
 "Brooks County",2020-10-09,NA,NA,NA,-45,-23,NA
+"Brooks County",2020-10-10,NA,NA,NA,-47,NA,NA
+"Brooks County",2020-10-12,NA,NA,NA,-46,-29,NA
+"Brooks County",2020-10-13,NA,NA,NA,-44,-26,NA
 "Brown County",2020-02-15,0,6,NA,NA,-1,NA
 "Brown County",2020-02-16,3,4,NA,NA,0,NA
 "Brown County",2020-02-17,2,-5,NA,NA,-21,4
@@ -4756,6 +4831,10 @@
 "Brown County",2020-10-07,1,-5,NA,NA,-14,2
 "Brown County",2020-10-08,-2,-3,NA,NA,-13,1
 "Brown County",2020-10-09,0,-3,NA,NA,-16,4
+"Brown County",2020-10-10,-5,-4,NA,NA,-12,0
+"Brown County",2020-10-11,-5,-5,NA,NA,-12,NA
+"Brown County",2020-10-12,-3,0,NA,NA,-27,6
+"Brown County",2020-10-13,-2,-7,NA,NA,-10,3
 "Burleson County",2020-02-15,7,2,NA,NA,-8,NA
 "Burleson County",2020-02-16,10,6,NA,NA,-2,NA
 "Burleson County",2020-02-17,-1,-1,NA,NA,-14,NA
@@ -4969,6 +5048,10 @@
 "Burleson County",2020-10-07,NA,NA,NA,NA,-19,NA
 "Burleson County",2020-10-08,NA,NA,NA,NA,-18,NA
 "Burleson County",2020-10-09,NA,NA,NA,NA,-19,NA
+"Burleson County",2020-10-10,NA,NA,NA,NA,-20,NA
+"Burleson County",2020-10-11,NA,NA,NA,NA,-12,NA
+"Burleson County",2020-10-12,NA,NA,NA,NA,-28,NA
+"Burleson County",2020-10-13,NA,NA,NA,NA,-21,NA
 "Burnet County",2020-02-15,4,6,2,NA,-1,NA
 "Burnet County",2020-02-16,14,12,46,NA,-1,NA
 "Burnet County",2020-02-17,12,5,NA,NA,-19,3
@@ -5201,6 +5284,10 @@
 "Burnet County",2020-10-07,-7,-8,NA,NA,-18,4
 "Burnet County",2020-10-08,-5,-6,NA,NA,-25,3
 "Burnet County",2020-10-09,-6,-5,NA,NA,-25,3
+"Burnet County",2020-10-10,-3,0,31,NA,-17,3
+"Burnet County",2020-10-11,2,-5,59,NA,-16,4
+"Burnet County",2020-10-12,0,-8,NA,NA,-32,7
+"Burnet County",2020-10-13,-6,-10,NA,NA,-21,4
 "Caldwell County",2020-02-15,4,12,NA,10,-2,NA
 "Caldwell County",2020-02-16,5,17,NA,16,-5,NA
 "Caldwell County",2020-02-17,2,11,NA,10,-22,4
@@ -5433,6 +5520,10 @@
 "Caldwell County",2020-10-07,-12,-6,NA,3,-26,8
 "Caldwell County",2020-10-08,-6,4,NA,13,-28,7
 "Caldwell County",2020-10-09,-9,10,NA,12,-29,8
+"Caldwell County",2020-10-10,-11,6,NA,6,-18,3
+"Caldwell County",2020-10-11,-15,16,NA,18,-22,5
+"Caldwell County",2020-10-12,-17,4,NA,10,-36,9
+"Caldwell County",2020-10-13,-12,-2,NA,1,-32,9
 "Calhoun County",2020-02-15,5,11,NA,NA,7,NA
 "Calhoun County",2020-02-16,7,10,NA,NA,9,NA
 "Calhoun County",2020-02-17,2,-6,NA,NA,-13,NA
@@ -5646,6 +5737,10 @@
 "Calhoun County",2020-10-07,-7,2,NA,NA,-17,3
 "Calhoun County",2020-10-08,-3,8,NA,NA,-14,5
 "Calhoun County",2020-10-09,-4,4,NA,NA,-15,4
+"Calhoun County",2020-10-10,3,NA,NA,NA,-2,NA
+"Calhoun County",2020-10-11,-3,NA,NA,NA,0,NA
+"Calhoun County",2020-10-12,0,8,NA,NA,-14,2
+"Calhoun County",2020-10-13,-3,6,NA,NA,-10,4
 "Callahan County",2020-02-15,0,-3,NA,3,6,NA
 "Callahan County",2020-02-16,19,-14,NA,13,NA,NA
 "Callahan County",2020-02-17,4,-6,NA,7,-14,NA
@@ -5859,6 +5954,10 @@
 "Callahan County",2020-10-07,NA,NA,NA,-7,-15,NA
 "Callahan County",2020-10-08,NA,NA,NA,4,-16,NA
 "Callahan County",2020-10-09,NA,NA,NA,-1,-17,NA
+"Callahan County",2020-10-10,NA,NA,NA,9,-7,NA
+"Callahan County",2020-10-11,NA,NA,NA,16,-24,NA
+"Callahan County",2020-10-12,NA,NA,NA,-1,-28,NA
+"Callahan County",2020-10-13,NA,NA,NA,-3,-15,NA
 "Cameron County",2020-02-15,6,4,22,3,-1,-1
 "Cameron County",2020-02-16,12,2,20,4,-1,-1
 "Cameron County",2020-02-17,7,1,17,1,-14,4
@@ -6097,6 +6196,10 @@
 "Cameron County",2020-10-07,-27,-20,-33,-40,-36,10
 "Cameron County",2020-10-08,-27,-20,-39,-44,-37,11
 "Cameron County",2020-10-09,-28,-17,-37,-40,-34,11
+"Cameron County",2020-10-10,-25,-12,-33,NA,-18,4
+"Cameron County",2020-10-11,-24,-17,-34,-45,-16,4
+"Cameron County",2020-10-12,-25,-19,-33,-42,-38,10
+"Cameron County",2020-10-13,-28,-18,-36,-45,-37,11
 "Camp County",2020-02-15,12,6,NA,NA,4,NA
 "Camp County",2020-02-16,NA,1,NA,NA,NA,NA
 "Camp County",2020-02-17,21,-9,NA,NA,-17,NA
@@ -6287,6 +6390,9 @@
 "Camp County",2020-10-07,NA,NA,NA,NA,-17,NA
 "Camp County",2020-10-08,NA,NA,NA,NA,-17,NA
 "Camp County",2020-10-09,NA,NA,NA,NA,-16,NA
+"Camp County",2020-10-10,NA,NA,NA,NA,-10,NA
+"Camp County",2020-10-12,NA,NA,NA,NA,-23,NA
+"Camp County",2020-10-13,NA,NA,NA,NA,-18,NA
 "Carson County",2020-02-15,NA,-2,NA,13,NA,NA
 "Carson County",2020-02-16,NA,NA,NA,-12,NA,NA
 "Carson County",2020-02-17,NA,11,NA,NA,-25,NA
@@ -6495,6 +6601,10 @@
 "Carson County",2020-10-07,NA,NA,NA,16,-16,NA
 "Carson County",2020-10-08,NA,NA,NA,NA,-17,NA
 "Carson County",2020-10-09,NA,NA,NA,NA,-22,NA
+"Carson County",2020-10-10,NA,NA,NA,20,NA,NA
+"Carson County",2020-10-11,NA,NA,NA,7,NA,NA
+"Carson County",2020-10-12,NA,NA,NA,NA,-36,NA
+"Carson County",2020-10-13,NA,NA,NA,NA,-16,NA
 "Cass County",2020-02-15,4,-2,NA,-6,3,NA
 "Cass County",2020-02-16,0,7,NA,-8,-6,NA
 "Cass County",2020-02-17,4,-2,NA,11,-19,NA
@@ -6719,6 +6829,10 @@
 "Cass County",2020-10-07,5,NA,NA,10,-15,0
 "Cass County",2020-10-08,7,NA,NA,12,-12,1
 "Cass County",2020-10-09,7,18,NA,5,-12,3
+"Cass County",2020-10-10,10,NA,NA,7,-9,NA
+"Cass County",2020-10-11,NA,NA,NA,22,-17,NA
+"Cass County",2020-10-12,NA,NA,NA,15,-23,5
+"Cass County",2020-10-13,5,NA,NA,6,-12,3
 "Castro County",2020-02-17,NA,NA,NA,NA,-18,NA
 "Castro County",2020-02-18,NA,NA,NA,NA,2,NA
 "Castro County",2020-02-19,NA,NA,NA,NA,4,NA
@@ -6871,6 +6985,8 @@
 "Castro County",2020-10-07,NA,NA,NA,NA,-5,NA
 "Castro County",2020-10-08,NA,NA,NA,NA,-11,NA
 "Castro County",2020-10-09,NA,NA,NA,NA,-1,NA
+"Castro County",2020-10-12,NA,NA,NA,NA,-21,NA
+"Castro County",2020-10-13,NA,NA,NA,NA,-22,NA
 "Chambers County",2020-02-15,9,9,NA,-8,3,NA
 "Chambers County",2020-02-16,13,3,NA,7,-3,NA
 "Chambers County",2020-02-17,11,-2,NA,-14,-12,3
@@ -7103,6 +7219,10 @@
 "Chambers County",2020-10-07,-10,-8,NA,-15,-25,6
 "Chambers County",2020-10-08,6,10,NA,-15,-27,6
 "Chambers County",2020-10-09,-27,-22,NA,-46,-33,17
+"Chambers County",2020-10-10,3,-3,NA,-17,-15,4
+"Chambers County",2020-10-11,2,-15,NA,-1,-15,3
+"Chambers County",2020-10-12,-7,-13,NA,-20,-29,8
+"Chambers County",2020-10-13,-7,-11,NA,-24,-25,6
 "Cherokee County",2020-02-15,7,-1,NA,NA,-4,NA
 "Cherokee County",2020-02-16,10,2,NA,NA,2,NA
 "Cherokee County",2020-02-17,2,-2,NA,NA,-20,4
@@ -7335,6 +7455,10 @@
 "Cherokee County",2020-10-07,-1,6,NA,NA,-18,3
 "Cherokee County",2020-10-08,-4,12,NA,NA,-20,4
 "Cherokee County",2020-10-09,-3,5,NA,NA,-21,6
+"Cherokee County",2020-10-10,2,1,NA,NA,-17,3
+"Cherokee County",2020-10-11,-2,-1,NA,NA,-13,3
+"Cherokee County",2020-10-12,-9,-3,NA,NA,-25,7
+"Cherokee County",2020-10-13,0,10,NA,NA,-17,5
 "Childress County",2020-02-15,1,4,NA,-7,NA,NA
 "Childress County",2020-02-16,2,2,NA,11,NA,NA
 "Childress County",2020-02-17,-6,0,NA,NA,-34,NA
@@ -7511,6 +7635,8 @@
 "Childress County",2020-10-07,NA,NA,NA,NA,-6,NA
 "Childress County",2020-10-08,NA,NA,NA,29,-10,NA
 "Childress County",2020-10-09,NA,NA,NA,11,-8,NA
+"Childress County",2020-10-12,NA,NA,NA,NA,-21,NA
+"Childress County",2020-10-13,NA,NA,NA,NA,-13,NA
 "Clay County",2020-02-15,NA,NA,NA,-2,NA,NA
 "Clay County",2020-02-16,NA,NA,NA,-6,NA,NA
 "Clay County",2020-02-17,NA,NA,NA,2,-12,NA
@@ -7693,6 +7819,8 @@
 "Clay County",2020-10-07,NA,NA,NA,NA,-8,NA
 "Clay County",2020-10-08,NA,NA,NA,NA,-9,NA
 "Clay County",2020-10-09,NA,NA,NA,NA,-12,NA
+"Clay County",2020-10-12,NA,NA,NA,NA,-17,NA
+"Clay County",2020-10-13,NA,NA,NA,NA,-15,NA
 "Coke County",2020-02-21,NA,-11,NA,NA,NA,NA
 "Coke County",2020-02-28,NA,11,NA,NA,NA,NA
 "Coke County",2020-03-06,NA,2,NA,NA,NA,NA
@@ -7868,6 +7996,8 @@
 "Coleman County",2020-10-07,NA,NA,NA,NA,-10,NA
 "Coleman County",2020-10-08,NA,NA,NA,NA,-11,NA
 "Coleman County",2020-10-09,NA,NA,NA,NA,-18,NA
+"Coleman County",2020-10-12,NA,NA,NA,NA,-32,NA
+"Coleman County",2020-10-13,NA,NA,NA,NA,-15,NA
 "Collin County",2020-02-15,4,1,24,4,0,-1
 "Collin County",2020-02-16,7,2,63,3,0,-1
 "Collin County",2020-02-17,12,3,44,2,-24,5
@@ -8106,6 +8236,10 @@
 "Collin County",2020-10-07,-16,-9,54,-27,-42,14
 "Collin County",2020-10-08,-17,-10,54,-34,-44,14
 "Collin County",2020-10-09,-18,-10,29,-25,-41,13
+"Collin County",2020-10-10,-18,-9,62,-31,-14,5
+"Collin County",2020-10-11,-19,-13,32,-28,-9,5
+"Collin County",2020-10-12,-13,-10,41,-32,-52,15
+"Collin County",2020-10-13,-14,-12,60,-32,-44,15
 "Colorado County",2020-02-15,8,3,NA,-2,-4,NA
 "Colorado County",2020-02-16,15,11,NA,13,2,NA
 "Colorado County",2020-02-17,5,6,NA,3,-10,NA
@@ -8319,6 +8453,10 @@
 "Colorado County",2020-10-07,NA,NA,NA,-7,-20,NA
 "Colorado County",2020-10-08,-5,NA,NA,-10,-19,NA
 "Colorado County",2020-10-09,0,NA,NA,-13,-21,NA
+"Colorado County",2020-10-10,-4,NA,NA,-25,-15,NA
+"Colorado County",2020-10-11,NA,NA,NA,12,-13,NA
+"Colorado County",2020-10-12,NA,NA,NA,-6,-23,NA
+"Colorado County",2020-10-13,NA,NA,NA,-5,-23,NA
 "Comal County",2020-02-15,3,14,12,4,-1,-1
 "Comal County",2020-02-16,12,12,22,16,0,-1
 "Comal County",2020-02-17,9,11,24,0,-23,4
@@ -8557,6 +8695,10 @@
 "Comal County",2020-10-07,-10,0,17,2,-25,8
 "Comal County",2020-10-08,-9,2,56,4,-26,8
 "Comal County",2020-10-09,-7,8,55,10,-26,7
+"Comal County",2020-10-10,-6,10,71,7,-13,3
+"Comal County",2020-10-11,-6,7,35,12,-15,4
+"Comal County",2020-10-12,-5,1,21,1,-35,9
+"Comal County",2020-10-13,-10,5,14,0,-27,8
 "Comanche County",2020-02-15,0,2,NA,NA,NA,NA
 "Comanche County",2020-02-16,-1,-3,NA,NA,NA,NA
 "Comanche County",2020-02-17,1,1,NA,NA,-11,NA
@@ -8726,6 +8868,8 @@
 "Comanche County",2020-10-07,NA,NA,NA,NA,-13,NA
 "Comanche County",2020-10-08,NA,NA,NA,NA,-16,NA
 "Comanche County",2020-10-09,NA,NA,NA,NA,-17,NA
+"Comanche County",2020-10-12,NA,NA,NA,NA,-16,NA
+"Comanche County",2020-10-13,NA,NA,NA,NA,-19,NA
 "Cooke County",2020-02-15,2,-2,NA,NA,4,NA
 "Cooke County",2020-02-16,13,4,NA,NA,8,NA
 "Cooke County",2020-02-17,10,5,NA,NA,-16,3
@@ -8958,6 +9102,10 @@
 "Cooke County",2020-10-07,6,NA,NA,NA,-18,2
 "Cooke County",2020-10-08,6,5,NA,NA,-19,2
 "Cooke County",2020-10-09,2,9,NA,NA,-21,3
+"Cooke County",2020-10-10,-4,6,21,NA,-10,1
+"Cooke County",2020-10-11,4,NA,19,NA,-14,NA
+"Cooke County",2020-10-12,3,6,NA,NA,-30,6
+"Cooke County",2020-10-13,1,0,NA,NA,-19,3
 "Coryell County",2020-02-15,2,7,14,NA,-2,-1
 "Coryell County",2020-02-16,8,8,41,NA,-2,-1
 "Coryell County",2020-02-17,-4,-3,8,NA,-40,9
@@ -9196,6 +9344,10 @@
 "Coryell County",2020-10-07,-6,5,-11,NA,-18,3
 "Coryell County",2020-10-08,-9,-1,-6,NA,-19,3
 "Coryell County",2020-10-09,-10,-4,-8,NA,-25,5
+"Coryell County",2020-10-10,-12,-2,24,NA,-13,3
+"Coryell County",2020-10-11,-11,-9,14,NA,-8,2
+"Coryell County",2020-10-12,-19,-5,-13,NA,-41,11
+"Coryell County",2020-10-13,-10,3,-4,NA,-18,4
 "Crane County",2020-02-15,NA,-7,NA,NA,NA,NA
 "Crane County",2020-02-16,NA,0,NA,NA,NA,NA
 "Crane County",2020-02-17,NA,-7,NA,NA,NA,NA
@@ -9453,6 +9605,8 @@
 "Crosby County",2020-10-07,NA,NA,NA,NA,-20,NA
 "Crosby County",2020-10-08,NA,NA,NA,NA,-27,NA
 "Crosby County",2020-10-09,NA,NA,NA,NA,-22,NA
+"Crosby County",2020-10-12,NA,NA,NA,NA,-42,NA
+"Crosby County",2020-10-13,NA,NA,NA,NA,-30,NA
 "Culberson County",2020-02-15,-3,NA,NA,-4,NA,NA
 "Culberson County",2020-02-16,0,NA,NA,4,NA,NA
 "Culberson County",2020-02-17,12,NA,NA,10,NA,NA
@@ -9666,6 +9820,10 @@
 "Culberson County",2020-10-07,NA,NA,NA,-11,NA,NA
 "Culberson County",2020-10-08,NA,NA,NA,-11,NA,NA
 "Culberson County",2020-10-09,NA,NA,NA,-7,NA,NA
+"Culberson County",2020-10-10,NA,NA,NA,-1,NA,NA
+"Culberson County",2020-10-11,NA,NA,NA,-11,NA,NA
+"Culberson County",2020-10-12,NA,NA,NA,0,NA,NA
+"Culberson County",2020-10-13,NA,NA,NA,1,NA,NA
 "Dallam County",2020-02-15,3,4,NA,NA,NA,NA
 "Dallam County",2020-02-16,-1,16,NA,NA,NA,NA
 "Dallam County",2020-02-17,0,11,NA,NA,-11,NA
@@ -9838,6 +9996,8 @@
 "Dallam County",2020-10-07,NA,NA,NA,NA,-17,NA
 "Dallam County",2020-10-08,NA,NA,NA,NA,-13,NA
 "Dallam County",2020-10-09,NA,NA,NA,NA,-13,NA
+"Dallam County",2020-10-12,NA,NA,NA,NA,-22,NA
+"Dallam County",2020-10-13,NA,NA,NA,NA,-14,NA
 "Dallas County",2020-02-15,4,1,16,0,1,-1
 "Dallas County",2020-02-16,9,2,50,3,1,-2
 "Dallas County",2020-02-17,7,0,39,-2,-18,4
@@ -10076,6 +10236,10 @@
 "Dallas County",2020-10-07,-17,-7,22,-31,-35,9
 "Dallas County",2020-10-08,-18,-9,18,-32,-36,9
 "Dallas County",2020-10-09,-17,-10,4,-28,-35,7
+"Dallas County",2020-10-10,-19,-10,17,-23,-15,3
+"Dallas County",2020-10-11,-18,-11,6,-27,-17,3
+"Dallas County",2020-10-12,-18,-13,8,-33,-40,10
+"Dallas County",2020-10-13,-19,-12,23,-32,-36,10
 "Dawson County",2020-02-15,13,15,NA,NA,NA,NA
 "Dawson County",2020-02-16,12,17,NA,NA,NA,NA
 "Dawson County",2020-02-17,4,2,NA,NA,-11,NA
@@ -10243,6 +10407,8 @@
 "Dawson County",2020-10-07,NA,NA,NA,NA,-18,NA
 "Dawson County",2020-10-08,NA,NA,NA,NA,-24,NA
 "Dawson County",2020-10-09,NA,NA,NA,NA,-15,NA
+"Dawson County",2020-10-12,NA,NA,NA,NA,-31,NA
+"Dawson County",2020-10-13,NA,NA,NA,NA,-22,NA
 "Deaf Smith County",2020-02-15,1,-12,NA,NA,-10,NA
 "Deaf Smith County",2020-02-16,0,3,NA,NA,-2,NA
 "Deaf Smith County",2020-02-17,-5,-4,NA,NA,-20,NA
@@ -10456,6 +10622,10 @@
 "Deaf Smith County",2020-10-07,-4,NA,NA,NA,-20,NA
 "Deaf Smith County",2020-10-08,-11,NA,NA,NA,-20,NA
 "Deaf Smith County",2020-10-09,-6,NA,NA,9,-16,NA
+"Deaf Smith County",2020-10-10,-9,NA,NA,NA,-5,NA
+"Deaf Smith County",2020-10-11,NA,NA,NA,NA,-21,NA
+"Deaf Smith County",2020-10-12,NA,NA,NA,NA,-29,NA
+"Deaf Smith County",2020-10-13,NA,NA,NA,NA,-21,NA
 "Delta County",2020-03-11,NA,NA,NA,NA,-20,NA
 "Delta County",2020-03-17,NA,NA,NA,NA,-26,NA
 "Delta County",2020-03-18,NA,NA,NA,NA,-29,NA
@@ -10752,6 +10922,10 @@
 "Denton County",2020-10-07,-12,-7,86,-19,-37,12
 "Denton County",2020-10-08,-12,-5,82,-20,-38,12
 "Denton County",2020-10-09,-12,-3,55,-8,-35,11
+"Denton County",2020-10-10,-14,-5,86,-14,-13,4
+"Denton County",2020-10-11,-15,-6,36,-16,-16,4
+"Denton County",2020-10-12,-11,-6,58,-21,-47,14
+"Denton County",2020-10-13,-11,-8,104,-24,-39,13
 "DeWitt County",2020-02-15,1,-4,NA,NA,-6,NA
 "DeWitt County",2020-02-16,4,4,NA,NA,-4,NA
 "DeWitt County",2020-02-17,-1,-1,NA,NA,-17,NA
@@ -10965,6 +11139,10 @@
 "DeWitt County",2020-10-07,NA,NA,NA,NA,-13,NA
 "DeWitt County",2020-10-08,-7,NA,NA,NA,-17,NA
 "DeWitt County",2020-10-09,-9,NA,NA,NA,-18,NA
+"DeWitt County",2020-10-10,-9,NA,NA,NA,-14,NA
+"DeWitt County",2020-10-11,NA,NA,NA,NA,-12,NA
+"DeWitt County",2020-10-12,NA,NA,NA,NA,-24,NA
+"DeWitt County",2020-10-13,-15,NA,NA,NA,-18,NA
 "Dimmit County",2020-02-15,-6,-3,NA,NA,NA,NA
 "Dimmit County",2020-02-16,6,-1,NA,NA,NA,NA
 "Dimmit County",2020-02-17,1,-4,NA,-6,-17,NA
@@ -11177,6 +11355,10 @@
 "Dimmit County",2020-10-07,NA,NA,NA,-2,-35,NA
 "Dimmit County",2020-10-08,NA,NA,NA,-16,-32,NA
 "Dimmit County",2020-10-09,NA,NA,NA,-19,-35,NA
+"Dimmit County",2020-10-10,NA,NA,NA,-14,NA,NA
+"Dimmit County",2020-10-11,NA,NA,NA,-30,NA,NA
+"Dimmit County",2020-10-12,NA,NA,NA,-23,-33,NA
+"Dimmit County",2020-10-13,NA,NA,NA,-10,-30,NA
 "Donley County",2020-02-16,NA,NA,NA,2,NA,NA
 "Donley County",2020-02-19,NA,NA,NA,-6,NA,NA
 "Donley County",2020-02-22,NA,NA,NA,9,NA,NA
@@ -11370,6 +11552,8 @@
 "Duval County",2020-10-07,NA,NA,NA,NA,-34,NA
 "Duval County",2020-10-08,NA,NA,NA,NA,-32,NA
 "Duval County",2020-10-09,NA,NA,NA,NA,-29,NA
+"Duval County",2020-10-12,NA,NA,NA,NA,-22,NA
+"Duval County",2020-10-13,NA,NA,NA,NA,-29,NA
 "Eastland County",2020-02-15,0,15,NA,5,2,NA
 "Eastland County",2020-02-16,4,4,NA,14,6,NA
 "Eastland County",2020-02-17,3,5,NA,20,-10,NA
@@ -11583,6 +11767,10 @@
 "Eastland County",2020-10-07,NA,NA,NA,-4,-17,NA
 "Eastland County",2020-10-08,NA,NA,NA,-1,-16,NA
 "Eastland County",2020-10-09,NA,NA,NA,0,-17,NA
+"Eastland County",2020-10-10,NA,NA,NA,-5,-16,NA
+"Eastland County",2020-10-11,NA,NA,NA,9,-18,NA
+"Eastland County",2020-10-12,NA,NA,NA,2,-25,NA
+"Eastland County",2020-10-13,NA,NA,NA,-10,-18,NA
 "Ector County",2020-02-15,0,-4,NA,4,2,-1
 "Ector County",2020-02-16,5,1,NA,4,1,-3
 "Ector County",2020-02-17,4,0,NA,1,-3,1
@@ -11821,6 +12009,10 @@
 "Ector County",2020-10-07,-21,-17,NA,-30,-30,9
 "Ector County",2020-10-08,-20,-14,NA,-29,-30,8
 "Ector County",2020-10-09,-23,-18,NA,-28,-30,8
+"Ector County",2020-10-10,-24,-19,NA,-33,-25,5
+"Ector County",2020-10-11,-24,-22,NA,-35,-22,5
+"Ector County",2020-10-12,-26,-20,NA,-35,-39,12
+"Ector County",2020-10-13,-23,-18,NA,-33,-30,9
 "El Paso County",2020-02-15,4,3,-18,17,0,-1
 "El Paso County",2020-02-16,9,4,-11,19,-2,-1
 "El Paso County",2020-02-17,7,1,-19,18,-16,3
@@ -12059,6 +12251,10 @@
 "El Paso County",2020-10-07,-21,-15,-37,-19,-35,12
 "El Paso County",2020-10-08,-22,-15,-38,-23,-36,12
 "El Paso County",2020-10-09,-22,-12,-46,-25,-36,12
+"El Paso County",2020-10-10,-24,-11,-45,-23,-13,5
+"El Paso County",2020-10-11,-26,-18,-46,-22,-14,5
+"El Paso County",2020-10-12,-21,-18,-39,-22,-44,12
+"El Paso County",2020-10-13,-21,-15,-37,-18,-38,11
 "Ellis County",2020-02-15,2,0,16,9,-1,0
 "Ellis County",2020-02-16,7,1,59,4,-2,-1
 "Ellis County",2020-02-17,7,1,48,5,-23,5
@@ -12297,6 +12493,10 @@
 "Ellis County",2020-10-07,-10,-3,28,7,-27,7
 "Ellis County",2020-10-08,-6,-5,42,0,-27,6
 "Ellis County",2020-10-09,-8,-3,20,9,-26,6
+"Ellis County",2020-10-10,-12,-3,72,2,-16,2
+"Ellis County",2020-10-11,-11,-8,25,1,-17,3
+"Ellis County",2020-10-12,-10,-9,27,3,-34,9
+"Ellis County",2020-10-13,-13,-7,48,-3,-30,7
 "Erath County",2020-02-15,2,2,NA,NA,-1,NA
 "Erath County",2020-02-16,8,5,NA,NA,-5,NA
 "Erath County",2020-02-17,4,-3,NA,NA,-15,3
@@ -12526,6 +12726,10 @@
 "Erath County",2020-10-07,-12,-1,NA,NA,-22,3
 "Erath County",2020-10-08,-15,-5,NA,NA,-23,4
 "Erath County",2020-10-09,-8,1,NA,NA,-20,4
+"Erath County",2020-10-10,-7,0,NA,NA,-10,NA
+"Erath County",2020-10-11,-13,-6,NA,NA,-18,NA
+"Erath County",2020-10-12,-15,-10,NA,NA,-33,8
+"Erath County",2020-10-13,-11,-6,NA,NA,-27,7
 "Falls County",2020-02-15,-1,-2,NA,NA,2,NA
 "Falls County",2020-02-16,9,4,NA,NA,NA,NA
 "Falls County",2020-02-17,3,1,NA,NA,-18,NA
@@ -12717,6 +12921,9 @@
 "Falls County",2020-10-07,NA,NA,NA,NA,-15,NA
 "Falls County",2020-10-08,NA,NA,NA,NA,-18,NA
 "Falls County",2020-10-09,NA,NA,NA,NA,-18,NA
+"Falls County",2020-10-10,NA,NA,NA,NA,-20,NA
+"Falls County",2020-10-12,NA,NA,NA,NA,-26,NA
+"Falls County",2020-10-13,NA,NA,NA,NA,-15,NA
 "Fannin County",2020-02-15,9,6,NA,NA,0,NA
 "Fannin County",2020-02-16,7,4,NA,NA,-3,NA
 "Fannin County",2020-02-17,-5,4,NA,NA,-16,4
@@ -12948,6 +13155,10 @@
 "Fannin County",2020-10-07,9,NA,NA,NA,-17,0
 "Fannin County",2020-10-08,11,NA,NA,NA,-22,2
 "Fannin County",2020-10-09,11,4,NA,NA,-18,3
+"Fannin County",2020-10-10,23,NA,NA,NA,0,NA
+"Fannin County",2020-10-11,NA,NA,NA,NA,-8,NA
+"Fannin County",2020-10-12,3,NA,NA,NA,-23,5
+"Fannin County",2020-10-13,5,NA,NA,NA,-18,3
 "Fayette County",2020-02-15,13,8,NA,8,2,NA
 "Fayette County",2020-02-16,18,4,NA,16,-4,NA
 "Fayette County",2020-02-17,10,8,NA,16,-16,NA
@@ -13161,6 +13372,10 @@
 "Fayette County",2020-10-07,-9,NA,NA,3,-20,NA
 "Fayette County",2020-10-08,-6,NA,NA,-3,-21,NA
 "Fayette County",2020-10-09,-7,-3,NA,15,-19,NA
+"Fayette County",2020-10-10,-8,NA,NA,0,-13,NA
+"Fayette County",2020-10-11,3,NA,NA,14,-18,NA
+"Fayette County",2020-10-12,-8,NA,NA,13,-32,NA
+"Fayette County",2020-10-13,1,NA,NA,-2,-21,NA
 "Floyd County",2020-03-19,NA,NA,NA,NA,-28,NA
 "Floyd County",2020-03-26,NA,NA,NA,NA,-28,NA
 "Floyd County",2020-04-01,NA,NA,NA,NA,-32,NA
@@ -13429,6 +13644,10 @@
 "Fort Bend County",2020-10-07,-10,-1,29,2,-36,14
 "Fort Bend County",2020-10-08,-10,-4,19,4,-36,15
 "Fort Bend County",2020-10-09,-13,-4,12,-5,-35,15
+"Fort Bend County",2020-10-10,-12,-4,25,NA,-8,6
+"Fort Bend County",2020-10-11,-15,-8,-2,12,-10,6
+"Fort Bend County",2020-10-12,-10,-5,20,-3,-39,14
+"Fort Bend County",2020-10-13,-9,-5,46,-10,-37,14
 "Franklin County",2020-02-15,-3,3,NA,-4,NA,NA
 "Franklin County",2020-02-16,10,2,NA,-3,NA,NA
 "Franklin County",2020-02-17,8,-5,NA,1,-16,NA
@@ -13642,6 +13861,10 @@
 "Franklin County",2020-10-07,NA,NA,NA,-13,-24,NA
 "Franklin County",2020-10-08,NA,NA,NA,7,-18,NA
 "Franklin County",2020-10-09,NA,NA,NA,5,-18,NA
+"Franklin County",2020-10-10,NA,NA,NA,1,NA,NA
+"Franklin County",2020-10-11,NA,NA,NA,20,NA,NA
+"Franklin County",2020-10-12,NA,NA,NA,12,-29,NA
+"Franklin County",2020-10-13,NA,NA,NA,6,-22,NA
 "Freestone County",2020-02-15,12,8,NA,17,-4,NA
 "Freestone County",2020-02-16,13,9,NA,15,0,NA
 "Freestone County",2020-02-17,18,0,NA,13,-11,NA
@@ -13855,6 +14078,10 @@
 "Freestone County",2020-10-07,NA,NA,NA,20,-8,NA
 "Freestone County",2020-10-08,NA,NA,NA,16,-12,NA
 "Freestone County",2020-10-09,NA,NA,NA,17,-17,NA
+"Freestone County",2020-10-10,NA,NA,NA,14,-16,NA
+"Freestone County",2020-10-11,NA,NA,NA,24,-11,NA
+"Freestone County",2020-10-12,NA,NA,NA,25,-14,NA
+"Freestone County",2020-10-13,NA,NA,NA,19,-16,NA
 "Frio County",2020-02-15,-8,3,NA,-14,-5,NA
 "Frio County",2020-02-16,3,-4,NA,NA,-8,NA
 "Frio County",2020-02-17,-11,0,NA,-9,-19,NA
@@ -14068,6 +14295,10 @@
 "Frio County",2020-10-07,NA,NA,NA,NA,-24,NA
 "Frio County",2020-10-08,NA,NA,NA,NA,-26,NA
 "Frio County",2020-10-09,NA,NA,NA,NA,-23,NA
+"Frio County",2020-10-10,NA,NA,NA,NA,-14,NA
+"Frio County",2020-10-11,NA,NA,NA,NA,-6,NA
+"Frio County",2020-10-12,NA,NA,NA,NA,-34,NA
+"Frio County",2020-10-13,NA,NA,NA,NA,-25,NA
 "Gaines County",2020-02-15,7,6,NA,NA,5,NA
 "Gaines County",2020-02-16,9,5,NA,NA,-6,NA
 "Gaines County",2020-02-17,6,1,NA,NA,-7,NA
@@ -14281,6 +14512,10 @@
 "Gaines County",2020-10-07,NA,NA,NA,NA,-21,NA
 "Gaines County",2020-10-08,NA,NA,NA,NA,-24,NA
 "Gaines County",2020-10-09,-18,NA,NA,NA,-30,NA
+"Gaines County",2020-10-10,NA,NA,NA,NA,-20,NA
+"Gaines County",2020-10-11,NA,NA,NA,NA,-24,NA
+"Gaines County",2020-10-12,NA,NA,NA,NA,-27,NA
+"Gaines County",2020-10-13,NA,NA,NA,NA,-22,NA
 "Galveston County",2020-02-15,17,16,51,17,1,-1
 "Galveston County",2020-02-16,12,8,32,22,2,-1
 "Galveston County",2020-02-17,7,1,38,9,-18,3
@@ -14519,6 +14754,10 @@
 "Galveston County",2020-10-07,-9,-1,32,20,-28,7
 "Galveston County",2020-10-08,-13,-3,13,17,-28,8
 "Galveston County",2020-10-09,-25,-17,-32,-27,-32,13
+"Galveston County",2020-10-10,-2,5,29,77,-8,3
+"Galveston County",2020-10-11,-8,-1,27,77,-15,4
+"Galveston County",2020-10-12,-9,-6,50,46,-34,8
+"Galveston County",2020-10-13,-9,-1,45,31,-29,7
 "Garza County",2020-02-15,-2,-15,NA,NA,NA,NA
 "Garza County",2020-02-16,NA,0,NA,NA,NA,NA
 "Garza County",2020-02-17,NA,-15,NA,NA,NA,NA
@@ -14783,6 +15022,10 @@
 "Gillespie County",2020-10-07,2,NA,NA,NA,-19,1
 "Gillespie County",2020-10-08,4,NA,NA,NA,-20,2
 "Gillespie County",2020-10-09,7,1,NA,NA,-19,2
+"Gillespie County",2020-10-10,21,NA,8,NA,-12,NA
+"Gillespie County",2020-10-11,29,NA,-17,NA,-17,NA
+"Gillespie County",2020-10-12,13,NA,NA,NA,-29,5
+"Gillespie County",2020-10-13,5,NA,NA,NA,-18,2
 "Goliad County",2020-02-18,NA,NA,NA,NA,4,NA
 "Goliad County",2020-02-19,NA,NA,NA,NA,4,NA
 "Goliad County",2020-02-20,NA,NA,NA,NA,0,NA
@@ -14937,6 +15180,8 @@
 "Goliad County",2020-10-07,NA,NA,NA,NA,-14,NA
 "Goliad County",2020-10-08,NA,NA,NA,NA,-14,NA
 "Goliad County",2020-10-09,NA,NA,NA,NA,-21,NA
+"Goliad County",2020-10-12,NA,NA,NA,NA,-23,NA
+"Goliad County",2020-10-13,NA,NA,NA,NA,-12,NA
 "Gonzales County",2020-02-15,-3,-6,NA,NA,-9,NA
 "Gonzales County",2020-02-16,-4,-7,NA,NA,-12,NA
 "Gonzales County",2020-02-17,-2,-7,NA,NA,-19,NA
@@ -15150,6 +15395,10 @@
 "Gonzales County",2020-10-07,NA,NA,NA,NA,-20,1
 "Gonzales County",2020-10-08,-12,NA,NA,NA,-22,1
 "Gonzales County",2020-10-09,-8,NA,NA,NA,-23,NA
+"Gonzales County",2020-10-10,-4,NA,NA,NA,-22,NA
+"Gonzales County",2020-10-11,NA,NA,NA,NA,-20,NA
+"Gonzales County",2020-10-12,NA,NA,NA,NA,-22,NA
+"Gonzales County",2020-10-13,-16,NA,NA,NA,-20,NA
 "Gray County",2020-02-15,1,1,NA,NA,2,NA
 "Gray County",2020-02-16,7,12,NA,NA,3,NA
 "Gray County",2020-02-17,6,10,NA,NA,-24,NA
@@ -15363,6 +15612,10 @@
 "Gray County",2020-10-07,0,NA,NA,NA,-17,2
 "Gray County",2020-10-08,-2,NA,NA,NA,-18,2
 "Gray County",2020-10-09,-9,NA,NA,NA,-29,4
+"Gray County",2020-10-10,-8,NA,NA,NA,-8,NA
+"Gray County",2020-10-11,NA,NA,NA,NA,-10,NA
+"Gray County",2020-10-12,-2,NA,NA,NA,-30,6
+"Gray County",2020-10-13,-4,NA,NA,NA,-17,4
 "Grayson County",2020-02-15,3,3,18,NA,-1,0
 "Grayson County",2020-02-16,6,3,52,NA,-1,-1
 "Grayson County",2020-02-17,6,1,75,NA,-16,3
@@ -15601,6 +15854,10 @@
 "Grayson County",2020-10-07,-2,1,68,NA,-20,3
 "Grayson County",2020-10-08,-1,0,89,NA,-21,3
 "Grayson County",2020-10-09,-4,-3,81,NA,-23,4
+"Grayson County",2020-10-10,-9,-6,70,NA,-15,1
+"Grayson County",2020-10-11,-6,-3,59,NA,-11,1
+"Grayson County",2020-10-12,-3,-4,65,NA,-28,6
+"Grayson County",2020-10-13,-1,1,69,NA,-22,4
 "Gregg County",2020-02-15,3,1,3,NA,1,0
 "Gregg County",2020-02-16,8,0,25,NA,0,-1
 "Gregg County",2020-02-17,3,-5,12,NA,-11,3
@@ -15839,6 +16096,10 @@
 "Gregg County",2020-10-07,-9,-4,44,NA,-16,3
 "Gregg County",2020-10-08,-12,-7,35,NA,-18,3
 "Gregg County",2020-10-09,-12,-4,27,NA,-21,5
+"Gregg County",2020-10-10,-15,-7,42,NA,-11,2
+"Gregg County",2020-10-11,-13,-6,35,NA,-14,3
+"Gregg County",2020-10-12,-15,-11,17,NA,-23,5
+"Gregg County",2020-10-13,-9,-7,39,NA,-18,4
 "Grimes County",2020-02-15,6,-12,NA,NA,1,NA
 "Grimes County",2020-02-16,8,-7,NA,NA,-1,NA
 "Grimes County",2020-02-17,4,-7,NA,NA,-19,NA
@@ -16052,6 +16313,10 @@
 "Grimes County",2020-10-07,NA,NA,NA,NA,-22,5
 "Grimes County",2020-10-08,8,NA,NA,NA,-23,4
 "Grimes County",2020-10-09,NA,NA,NA,NA,-23,4
+"Grimes County",2020-10-10,NA,NA,NA,NA,-21,NA
+"Grimes County",2020-10-11,NA,NA,NA,NA,-15,NA
+"Grimes County",2020-10-12,NA,NA,NA,NA,-29,7
+"Grimes County",2020-10-13,NA,NA,NA,NA,-22,4
 "Guadalupe County",2020-02-15,3,2,31,16,-3,-1
 "Guadalupe County",2020-02-16,10,3,40,19,0,-2
 "Guadalupe County",2020-02-17,9,2,20,9,-22,4
@@ -16290,6 +16555,10 @@
 "Guadalupe County",2020-10-07,-10,-1,30,5,-27,9
 "Guadalupe County",2020-10-08,-13,-5,NA,-5,-28,8
 "Guadalupe County",2020-10-09,-13,1,NA,14,-26,7
+"Guadalupe County",2020-10-10,-15,0,58,5,-10,3
+"Guadalupe County",2020-10-11,-13,-5,33,3,-13,3
+"Guadalupe County",2020-10-12,-10,-4,35,4,-30,9
+"Guadalupe County",2020-10-13,-13,-3,NA,13,-25,8
 "Hale County",2020-02-15,8,2,NA,NA,7,NA
 "Hale County",2020-02-16,6,10,NA,NA,0,NA
 "Hale County",2020-02-17,5,-1,NA,NA,-8,2
@@ -16521,6 +16790,10 @@
 "Hale County",2020-10-07,-3,-1,NA,NA,-16,2
 "Hale County",2020-10-08,0,2,NA,NA,-17,1
 "Hale County",2020-10-09,2,-1,NA,NA,-18,2
+"Hale County",2020-10-10,-3,9,NA,NA,-5,NA
+"Hale County",2020-10-11,-6,3,NA,NA,-15,NA
+"Hale County",2020-10-12,-7,-3,NA,NA,-31,6
+"Hale County",2020-10-13,6,-1,NA,NA,-17,2
 "Hall County",2020-02-15,NA,NA,NA,6,NA,NA
 "Hall County",2020-02-16,NA,NA,NA,2,NA,NA
 "Hall County",2020-02-17,NA,NA,NA,0,NA,NA
@@ -16652,6 +16925,8 @@
 "Hall County",2020-10-07,NA,NA,NA,14,NA,NA
 "Hall County",2020-10-08,NA,NA,NA,8,NA,NA
 "Hall County",2020-10-09,NA,NA,NA,23,NA,NA
+"Hall County",2020-10-10,NA,NA,NA,26,NA,NA
+"Hall County",2020-10-13,NA,NA,NA,25,NA,NA
 "Hamilton County",2020-02-15,0,5,NA,NA,NA,NA
 "Hamilton County",2020-02-16,11,9,NA,NA,NA,NA
 "Hamilton County",2020-02-17,22,14,NA,NA,-15,NA
@@ -16819,6 +17094,8 @@
 "Hamilton County",2020-10-07,NA,NA,NA,NA,-14,NA
 "Hamilton County",2020-10-08,NA,NA,NA,NA,-13,NA
 "Hamilton County",2020-10-09,NA,NA,NA,NA,-11,NA
+"Hamilton County",2020-10-12,NA,NA,NA,NA,-20,NA
+"Hamilton County",2020-10-13,NA,NA,NA,NA,-18,NA
 "Hardeman County",2020-02-15,NA,10,NA,-1,NA,NA
 "Hardeman County",2020-02-16,NA,-6,NA,12,NA,NA
 "Hardeman County",2020-02-17,NA,2,NA,16,NA,NA
@@ -17025,6 +17302,10 @@
 "Hardeman County",2020-10-07,NA,NA,NA,30,NA,NA
 "Hardeman County",2020-10-08,NA,NA,NA,31,NA,NA
 "Hardeman County",2020-10-09,NA,NA,NA,38,NA,NA
+"Hardeman County",2020-10-10,NA,NA,NA,36,NA,NA
+"Hardeman County",2020-10-11,NA,NA,NA,5,NA,NA
+"Hardeman County",2020-10-12,NA,NA,NA,40,NA,NA
+"Hardeman County",2020-10-13,NA,NA,NA,28,NA,NA
 "Hardin County",2020-02-15,0,5,NA,NA,7,NA
 "Hardin County",2020-02-16,4,4,NA,NA,6,NA
 "Hardin County",2020-02-17,-4,-1,NA,NA,-14,3
@@ -17257,6 +17538,10 @@
 "Hardin County",2020-10-07,-8,-2,NA,NA,-18,3
 "Hardin County",2020-10-08,0,6,NA,NA,-20,5
 "Hardin County",2020-10-09,-38,-24,NA,NA,-44,20
+"Hardin County",2020-10-10,6,4,NA,NA,-9,1
+"Hardin County",2020-10-11,-3,6,NA,NA,-14,2
+"Hardin County",2020-10-12,-8,-3,NA,NA,-23,5
+"Hardin County",2020-10-13,-4,-3,NA,NA,-19,4
 "Harris County",2020-02-15,3,2,13,0,2,-1
 "Harris County",2020-02-16,6,1,16,-2,0,-1
 "Harris County",2020-02-17,6,2,27,-3,-13,3
@@ -17495,6 +17780,10 @@
 "Harris County",2020-10-07,-17,-8,8,-35,-34,10
 "Harris County",2020-10-08,-18,-11,-8,-36,-35,11
 "Harris County",2020-10-09,-18,-9,-23,-37,-35,13
+"Harris County",2020-10-10,-16,-8,0,-29,-14,4
+"Harris County",2020-10-11,-16,-11,-8,-33,-16,4
+"Harris County",2020-10-12,-17,-11,-6,-37,-37,10
+"Harris County",2020-10-13,-17,-10,3,-35,-34,10
 "Harrison County",2020-02-15,6,2,-1,NA,-4,0
 "Harrison County",2020-02-16,11,3,23,NA,3,NA
 "Harrison County",2020-02-17,0,-4,7,NA,-18,4
@@ -17729,6 +18018,10 @@
 "Harrison County",2020-10-07,-5,8,17,NA,-17,2
 "Harrison County",2020-10-08,1,6,28,NA,-17,4
 "Harrison County",2020-10-09,-8,0,7,NA,-23,7
+"Harrison County",2020-10-10,-2,5,24,NA,-22,4
+"Harrison County",2020-10-11,-3,1,28,NA,-18,3
+"Harrison County",2020-10-12,-8,0,3,NA,-28,6
+"Harrison County",2020-10-13,-3,3,26,NA,-23,6
 "Hartley County",2020-02-16,NA,-2,NA,NA,NA,NA
 "Hartley County",2020-02-17,NA,-9,NA,NA,NA,NA
 "Hartley County",2020-02-19,NA,-9,NA,NA,NA,NA
@@ -18037,6 +18330,10 @@
 "Hays County",2020-10-07,-13,-5,NA,26,-34,10
 "Hays County",2020-10-08,-10,-7,9,8,-36,11
 "Hays County",2020-10-09,-9,-2,3,13,-33,9
+"Hays County",2020-10-10,-9,-7,3,23,-15,4
+"Hays County",2020-10-11,-5,-8,6,NA,-13,4
+"Hays County",2020-10-12,-8,-7,3,10,-41,11
+"Hays County",2020-10-13,-9,-9,14,6,-38,11
 "Henderson County",2020-02-15,5,2,NA,NA,2,-1
 "Henderson County",2020-02-16,9,3,NA,NA,3,-1
 "Henderson County",2020-02-17,2,-5,NA,NA,-16,2
@@ -18275,6 +18572,10 @@
 "Henderson County",2020-10-07,1,12,NA,NA,-18,1
 "Henderson County",2020-10-08,-2,11,NA,NA,-19,2
 "Henderson County",2020-10-09,-4,9,NA,NA,-19,4
+"Henderson County",2020-10-10,-1,12,NA,NA,-11,2
+"Henderson County",2020-10-11,-4,17,NA,NA,-12,2
+"Henderson County",2020-10-12,-4,5,NA,NA,-24,4
+"Henderson County",2020-10-13,-6,8,NA,NA,-19,4
 "Hidalgo County",2020-02-15,3,1,10,3,2,-1
 "Hidalgo County",2020-02-16,7,0,10,1,-1,-1
 "Hidalgo County",2020-02-17,4,0,4,8,4,-2
@@ -18513,6 +18814,10 @@
 "Hidalgo County",2020-10-07,-24,-19,-36,-22,-37,12
 "Hidalgo County",2020-10-08,-24,-17,-35,-27,-37,12
 "Hidalgo County",2020-10-09,-25,-14,-37,-29,-35,13
+"Hidalgo County",2020-10-10,-25,-13,-36,-25,-14,5
+"Hidalgo County",2020-10-11,-27,-17,-40,-35,-17,4
+"Hidalgo County",2020-10-12,-24,-18,-30,-24,-34,9
+"Hidalgo County",2020-10-13,-26,-17,-23,-26,-38,12
 "Hill County",2020-02-15,2,6,NA,8,4,NA
 "Hill County",2020-02-16,11,2,NA,10,1,NA
 "Hill County",2020-02-17,9,8,NA,13,-14,3
@@ -18745,6 +19050,10 @@
 "Hill County",2020-10-07,-4,NA,NA,-2,-16,0
 "Hill County",2020-10-08,-2,6,NA,-6,-17,2
 "Hill County",2020-10-09,2,9,NA,6,-16,3
+"Hill County",2020-10-10,-2,8,NA,1,-10,2
+"Hill County",2020-10-11,1,1,NA,6,-12,NA
+"Hill County",2020-10-12,2,4,NA,2,-28,5
+"Hill County",2020-10-13,-2,7,NA,-6,-16,3
 "Hockley County",2020-02-15,45,10,NA,NA,1,NA
 "Hockley County",2020-02-16,10,5,NA,NA,-6,NA
 "Hockley County",2020-02-17,8,-2,NA,NA,-23,NA
@@ -18958,6 +19267,10 @@
 "Hockley County",2020-10-07,-3,NA,NA,NA,-17,4
 "Hockley County",2020-10-08,-1,NA,NA,NA,-15,3
 "Hockley County",2020-10-09,1,NA,NA,NA,-14,4
+"Hockley County",2020-10-10,1,NA,NA,NA,-8,NA
+"Hockley County",2020-10-11,5,NA,NA,NA,-7,NA
+"Hockley County",2020-10-12,1,NA,NA,NA,-23,7
+"Hockley County",2020-10-13,3,NA,NA,NA,-15,2
 "Hood County",2020-02-15,9,4,NA,NA,1,0
 "Hood County",2020-02-16,8,0,NA,NA,-1,NA
 "Hood County",2020-02-17,4,-2,NA,NA,-18,3
@@ -19190,6 +19503,10 @@
 "Hood County",2020-10-07,-3,7,NA,NA,-17,2
 "Hood County",2020-10-08,-3,6,NA,NA,-19,3
 "Hood County",2020-10-09,-4,-3,NA,NA,-20,3
+"Hood County",2020-10-10,-8,1,NA,NA,-14,2
+"Hood County",2020-10-11,-5,1,NA,NA,-21,2
+"Hood County",2020-10-12,-8,-2,NA,NA,-34,6
+"Hood County",2020-10-13,-7,0,NA,NA,-27,6
 "Hopkins County",2020-02-15,0,9,NA,1,2,NA
 "Hopkins County",2020-02-16,4,19,NA,1,3,NA
 "Hopkins County",2020-02-17,2,-7,NA,6,-12,3
@@ -19422,6 +19739,10 @@
 "Hopkins County",2020-10-07,2,-2,NA,11,-14,1
 "Hopkins County",2020-10-08,2,-3,NA,5,-13,-1
 "Hopkins County",2020-10-09,-5,-3,NA,19,-11,0
+"Hopkins County",2020-10-10,-4,1,NA,20,-1,0
+"Hopkins County",2020-10-11,-2,NA,NA,22,-11,NA
+"Hopkins County",2020-10-12,-3,-6,NA,17,-19,3
+"Hopkins County",2020-10-13,-8,-4,NA,6,-16,2
 "Houston County",2020-02-15,3,8,NA,NA,-5,NA
 "Houston County",2020-02-16,-1,12,NA,NA,-2,NA
 "Houston County",2020-02-17,6,7,NA,NA,-16,NA
@@ -19635,6 +19956,10 @@
 "Houston County",2020-10-07,NA,NA,NA,NA,-13,NA
 "Houston County",2020-10-08,NA,NA,NA,NA,-14,NA
 "Houston County",2020-10-09,NA,NA,NA,NA,-16,NA
+"Houston County",2020-10-10,NA,NA,NA,NA,-9,NA
+"Houston County",2020-10-11,NA,NA,NA,NA,-13,NA
+"Houston County",2020-10-12,NA,NA,NA,NA,-21,NA
+"Houston County",2020-10-13,NA,NA,NA,NA,-16,NA
 "Howard County",2020-02-15,8,-4,NA,2,2,NA
 "Howard County",2020-02-16,8,1,NA,12,13,NA
 "Howard County",2020-02-17,3,-4,NA,7,-23,5
@@ -19867,6 +20192,10 @@
 "Howard County",2020-10-07,-24,-15,NA,-21,-26,8
 "Howard County",2020-10-08,-24,-18,NA,-17,-27,7
 "Howard County",2020-10-09,-25,-12,NA,-25,-26,7
+"Howard County",2020-10-10,-24,-21,NA,-23,-29,6
+"Howard County",2020-10-11,-28,-19,NA,-23,-27,NA
+"Howard County",2020-10-12,-27,-20,NA,-25,-38,11
+"Howard County",2020-10-13,-27,-15,NA,-29,-31,8
 "Hunt County",2020-02-15,1,-3,NA,3,1,-1
 "Hunt County",2020-02-16,7,3,NA,4,-1,-1
 "Hunt County",2020-02-17,5,1,NA,-1,-16,3
@@ -20105,6 +20434,10 @@
 "Hunt County",2020-10-07,-7,5,NA,12,-19,4
 "Hunt County",2020-10-08,-6,5,NA,23,-22,4
 "Hunt County",2020-10-09,-8,5,NA,10,-22,4
+"Hunt County",2020-10-10,-7,5,NA,19,-7,2
+"Hunt County",2020-10-11,-7,7,NA,20,-12,2
+"Hunt County",2020-10-12,-8,4,NA,10,-27,7
+"Hunt County",2020-10-13,-7,1,NA,18,-21,6
 "Hutchinson County",2020-02-15,4,6,NA,NA,3,NA
 "Hutchinson County",2020-02-16,7,5,NA,NA,-2,NA
 "Hutchinson County",2020-02-17,2,-8,NA,NA,-31,NA
@@ -20318,6 +20651,10 @@
 "Hutchinson County",2020-10-07,NA,NA,NA,NA,-13,1
 "Hutchinson County",2020-10-08,-3,NA,NA,NA,-10,3
 "Hutchinson County",2020-10-09,-9,NA,NA,NA,-14,0
+"Hutchinson County",2020-10-10,-4,NA,NA,NA,-8,NA
+"Hutchinson County",2020-10-11,NA,NA,NA,NA,-8,NA
+"Hutchinson County",2020-10-12,NA,NA,NA,NA,-27,6
+"Hutchinson County",2020-10-13,-2,NA,NA,NA,-13,2
 "Jack County",2020-02-15,9,NA,NA,NA,NA,NA
 "Jack County",2020-02-17,2,NA,NA,NA,-18,NA
 "Jack County",2020-02-18,NA,NA,NA,NA,-6,NA
@@ -20477,6 +20814,8 @@
 "Jack County",2020-10-07,NA,NA,NA,NA,-13,NA
 "Jack County",2020-10-08,NA,NA,NA,NA,-8,NA
 "Jack County",2020-10-09,NA,NA,NA,NA,-13,NA
+"Jack County",2020-10-12,NA,NA,NA,NA,-30,NA
+"Jack County",2020-10-13,NA,NA,NA,NA,-12,NA
 "Jackson County",2020-02-15,-2,-1,NA,-6,NA,NA
 "Jackson County",2020-02-16,7,1,NA,1,NA,NA
 "Jackson County",2020-02-17,4,-5,NA,4,-20,NA
@@ -20690,6 +21029,10 @@
 "Jackson County",2020-10-07,NA,NA,NA,-11,-23,NA
 "Jackson County",2020-10-08,NA,NA,NA,-11,-16,NA
 "Jackson County",2020-10-09,NA,NA,NA,-5,-15,NA
+"Jackson County",2020-10-10,NA,NA,NA,-10,NA,NA
+"Jackson County",2020-10-11,NA,NA,NA,-2,NA,NA
+"Jackson County",2020-10-12,NA,NA,NA,19,-22,NA
+"Jackson County",2020-10-13,NA,NA,NA,-10,-18,NA
 "Jasper County",2020-02-15,1,2,NA,NA,6,NA
 "Jasper County",2020-02-16,2,-4,NA,NA,5,NA
 "Jasper County",2020-02-17,-2,-2,10,NA,-15,3
@@ -20910,6 +21253,10 @@
 "Jasper County",2020-10-07,1,7,-22,NA,-13,1
 "Jasper County",2020-10-08,25,33,1,NA,-15,2
 "Jasper County",2020-10-09,-22,-18,-26,NA,-37,18
+"Jasper County",2020-10-10,22,11,NA,NA,-11,NA
+"Jasper County",2020-10-11,25,NA,NA,NA,-11,NA
+"Jasper County",2020-10-12,9,-2,-12,NA,-21,4
+"Jasper County",2020-10-13,4,-5,-19,NA,-14,2
 "Jefferson County",2020-02-15,7,5,-20,6,4,0
 "Jefferson County",2020-02-16,6,2,-6,-1,3,-1
 "Jefferson County",2020-02-17,1,2,-18,1,-11,3
@@ -21148,6 +21495,10 @@
 "Jefferson County",2020-10-07,-11,-5,NA,0,-23,5
 "Jefferson County",2020-10-08,-11,5,NA,21,-24,6
 "Jefferson County",2020-10-09,-54,-34,-62,-31,-50,21
+"Jefferson County",2020-10-10,-17,1,-15,-12,-29,-4
+"Jefferson County",2020-10-11,-3,3,-1,-8,-17,-4
+"Jefferson County",2020-10-12,-6,1,2,-8,-30,3
+"Jefferson County",2020-10-13,-3,-1,81,-8,-27,4
 "Jim Hogg County",2020-02-15,NA,3,NA,NA,NA,NA
 "Jim Hogg County",2020-02-16,NA,10,NA,NA,NA,NA
 "Jim Hogg County",2020-02-17,NA,12,NA,NA,NA,NA
@@ -21429,6 +21780,10 @@
 "Jim Wells County",2020-10-07,-14,-8,NA,NA,-26,6
 "Jim Wells County",2020-10-08,-16,-5,NA,NA,-26,8
 "Jim Wells County",2020-10-09,-14,-9,NA,NA,-26,9
+"Jim Wells County",2020-10-10,-16,-2,NA,NA,-12,NA
+"Jim Wells County",2020-10-11,-14,-4,NA,NA,-12,NA
+"Jim Wells County",2020-10-12,-22,-7,NA,NA,-32,9
+"Jim Wells County",2020-10-13,-18,-5,NA,NA,-28,7
 "Johnson County",2020-02-15,1,-2,26,NA,1,-1
 "Johnson County",2020-02-16,10,2,58,NA,2,-1
 "Johnson County",2020-02-17,8,-1,83,NA,-19,4
@@ -21667,6 +22022,10 @@
 "Johnson County",2020-10-07,-2,-5,46,NA,-20,4
 "Johnson County",2020-10-08,-3,-8,48,NA,-24,4
 "Johnson County",2020-10-09,-3,-8,46,NA,-23,4
+"Johnson County",2020-10-10,-6,-5,49,NA,-16,2
+"Johnson County",2020-10-11,-7,-10,-3,NA,-17,2
+"Johnson County",2020-10-12,-1,-8,28,NA,-34,8
+"Johnson County",2020-10-13,-4,-8,35,NA,-22,5
 "Jones County",2020-02-15,0,1,NA,NA,-8,NA
 "Jones County",2020-02-16,NA,-3,NA,NA,-7,NA
 "Jones County",2020-02-17,-30,-11,NA,NA,-21,NA
@@ -21880,6 +22239,10 @@
 "Jones County",2020-10-07,NA,NA,NA,NA,-18,NA
 "Jones County",2020-10-08,NA,NA,NA,NA,-14,NA
 "Jones County",2020-10-09,NA,NA,NA,NA,-12,NA
+"Jones County",2020-10-10,NA,NA,NA,NA,-11,NA
+"Jones County",2020-10-11,NA,NA,NA,NA,-17,NA
+"Jones County",2020-10-12,NA,NA,NA,NA,-26,NA
+"Jones County",2020-10-13,NA,NA,NA,NA,-11,NA
 "Karnes County",2020-02-15,4,1,NA,NA,4,NA
 "Karnes County",2020-02-16,12,9,NA,NA,NA,NA
 "Karnes County",2020-02-17,-3,-2,NA,NA,-10,NA
@@ -22093,6 +22456,10 @@
 "Karnes County",2020-10-07,-37,NA,NA,-65,-26,NA
 "Karnes County",2020-10-08,-28,NA,NA,-64,-23,NA
 "Karnes County",2020-10-09,-32,NA,NA,-54,-27,NA
+"Karnes County",2020-10-10,NA,NA,NA,NA,-24,NA
+"Karnes County",2020-10-11,NA,NA,NA,NA,-20,NA
+"Karnes County",2020-10-12,-35,NA,NA,-54,-39,NA
+"Karnes County",2020-10-13,-29,NA,NA,NA,-25,NA
 "Kaufman County",2020-02-15,2,6,NA,-1,3,0
 "Kaufman County",2020-02-16,8,8,NA,2,0,-1
 "Kaufman County",2020-02-17,4,8,NA,-4,-21,5
@@ -22331,6 +22698,10 @@
 "Kaufman County",2020-10-07,-3,10,NA,-12,-23,7
 "Kaufman County",2020-10-08,-4,11,NA,-6,-23,7
 "Kaufman County",2020-10-09,-5,7,NA,-2,-24,6
+"Kaufman County",2020-10-10,-8,15,NA,9,-9,2
+"Kaufman County",2020-10-11,-8,10,NA,-1,-9,3
+"Kaufman County",2020-10-12,-9,5,NA,-12,-31,9
+"Kaufman County",2020-10-13,-6,4,NA,-16,-27,8
 "Kendall County",2020-02-15,1,-3,NA,2,1,NA
 "Kendall County",2020-02-16,10,0,NA,1,-2,NA
 "Kendall County",2020-02-17,8,-5,NA,14,-20,5
@@ -22558,6 +22929,10 @@
 "Kendall County",2020-10-07,-9,-21,NA,-7,-23,7
 "Kendall County",2020-10-08,-10,-20,NA,0,-26,8
 "Kendall County",2020-10-09,-12,-19,NA,0,-28,5
+"Kendall County",2020-10-10,-6,-5,NA,-3,-13,NA
+"Kendall County",2020-10-11,-14,-23,NA,-10,-17,NA
+"Kendall County",2020-10-12,-14,-28,NA,-12,-40,9
+"Kendall County",2020-10-13,-14,-23,NA,-3,-26,7
 "Kerr County",2020-02-15,3,-2,5,NA,3,NA
 "Kerr County",2020-02-16,9,-5,26,NA,6,NA
 "Kerr County",2020-02-17,4,-7,14,NA,-17,4
@@ -22790,6 +23165,10 @@
 "Kerr County",2020-10-07,-4,-11,NA,NA,-13,2
 "Kerr County",2020-10-08,-3,-7,NA,NA,-15,2
 "Kerr County",2020-10-09,-5,-8,46,NA,-12,4
+"Kerr County",2020-10-10,-4,-10,56,NA,-9,2
+"Kerr County",2020-10-11,-6,-12,24,NA,-14,3
+"Kerr County",2020-10-12,-6,-15,26,NA,-22,6
+"Kerr County",2020-10-13,-2,-12,26,NA,-16,4
 "Kimble County",2020-02-15,33,NA,NA,9,NA,NA
 "Kimble County",2020-02-16,35,NA,NA,15,NA,NA
 "Kimble County",2020-02-17,69,NA,NA,16,NA,NA
@@ -23002,6 +23381,10 @@
 "Kimble County",2020-10-07,NA,NA,NA,-10,NA,NA
 "Kimble County",2020-10-08,NA,NA,NA,-7,NA,NA
 "Kimble County",2020-10-09,NA,NA,NA,-22,NA,NA
+"Kimble County",2020-10-10,NA,NA,NA,5,NA,NA
+"Kimble County",2020-10-11,NA,NA,NA,-16,NA,NA
+"Kimble County",2020-10-12,NA,NA,NA,-12,NA,NA
+"Kimble County",2020-10-13,NA,NA,NA,-22,NA,NA
 "Kleberg County",2020-02-15,2,-1,97,25,2,NA
 "Kleberg County",2020-02-16,8,4,42,12,2,NA
 "Kleberg County",2020-02-17,5,2,NA,1,-7,2
@@ -23229,6 +23612,10 @@
 "Kleberg County",2020-10-07,-9,-1,NA,-10,-33,7
 "Kleberg County",2020-10-08,-17,-6,NA,-10,-33,8
 "Kleberg County",2020-10-09,-13,-5,-37,-11,-29,6
+"Kleberg County",2020-10-10,-15,-6,10,8,-17,NA
+"Kleberg County",2020-10-11,-14,-8,-3,-11,-19,NA
+"Kleberg County",2020-10-12,-15,-7,NA,-7,-40,11
+"Kleberg County",2020-10-13,-13,-11,-15,-10,-34,9
 "La Salle County",2020-02-15,-25,2,NA,-15,NA,NA
 "La Salle County",2020-02-16,-1,-6,NA,-6,NA,NA
 "La Salle County",2020-02-17,-2,-2,NA,-4,NA,NA
@@ -23442,6 +23829,10 @@
 "La Salle County",2020-10-07,NA,NA,NA,-12,NA,NA
 "La Salle County",2020-10-08,NA,NA,NA,-12,NA,NA
 "La Salle County",2020-10-09,NA,NA,NA,-17,NA,NA
+"La Salle County",2020-10-10,NA,NA,NA,-24,NA,NA
+"La Salle County",2020-10-11,NA,NA,NA,-13,NA,NA
+"La Salle County",2020-10-12,NA,NA,NA,-11,NA,NA
+"La Salle County",2020-10-13,NA,NA,NA,-7,NA,NA
 "Lamar County",2020-02-15,6,-4,NA,NA,2,NA
 "Lamar County",2020-02-16,15,6,NA,NA,8,NA
 "Lamar County",2020-02-17,6,2,NA,18,-12,3
@@ -23674,6 +24065,10 @@
 "Lamar County",2020-10-07,-1,11,NA,25,-12,2
 "Lamar County",2020-10-08,-2,12,NA,6,-15,2
 "Lamar County",2020-10-09,-5,4,NA,15,-18,4
+"Lamar County",2020-10-10,-2,6,NA,NA,-6,0
+"Lamar County",2020-10-11,1,10,NA,NA,1,1
+"Lamar County",2020-10-12,-5,0,NA,25,-23,4
+"Lamar County",2020-10-13,-3,3,NA,19,-18,4
 "Lamb County",2020-02-15,3,2,NA,NA,4,NA
 "Lamb County",2020-02-16,4,-1,NA,NA,NA,NA
 "Lamb County",2020-02-17,-12,2,NA,NA,-22,NA
@@ -23887,6 +24282,10 @@
 "Lamb County",2020-10-07,NA,NA,NA,NA,-18,NA
 "Lamb County",2020-10-08,NA,NA,NA,NA,-18,NA
 "Lamb County",2020-10-09,NA,NA,NA,NA,-21,NA
+"Lamb County",2020-10-10,NA,NA,NA,NA,-14,NA
+"Lamb County",2020-10-11,NA,NA,NA,NA,-15,NA
+"Lamb County",2020-10-12,NA,NA,NA,NA,-35,NA
+"Lamb County",2020-10-13,NA,NA,NA,NA,-26,NA
 "Lampasas County",2020-02-15,0,-3,NA,NA,-1,NA
 "Lampasas County",2020-02-16,9,16,NA,NA,-2,NA
 "Lampasas County",2020-02-17,8,10,NA,NA,-34,NA
@@ -24100,6 +24499,10 @@
 "Lampasas County",2020-10-07,8,NA,NA,NA,-16,4
 "Lampasas County",2020-10-08,6,NA,NA,NA,-22,5
 "Lampasas County",2020-10-09,5,NA,NA,NA,-16,5
+"Lampasas County",2020-10-10,-4,NA,NA,NA,-5,NA
+"Lampasas County",2020-10-11,2,NA,NA,NA,-14,NA
+"Lampasas County",2020-10-12,9,NA,NA,NA,-37,10
+"Lampasas County",2020-10-13,4,NA,NA,NA,-19,4
 "Lavaca County",2020-02-15,9,12,NA,NA,-2,NA
 "Lavaca County",2020-02-16,5,10,NA,NA,NA,NA
 "Lavaca County",2020-02-17,2,-2,NA,NA,-21,NA
@@ -24291,6 +24694,9 @@
 "Lavaca County",2020-10-07,NA,NA,NA,NA,-14,NA
 "Lavaca County",2020-10-08,NA,NA,NA,NA,-17,NA
 "Lavaca County",2020-10-09,NA,NA,NA,NA,-11,NA
+"Lavaca County",2020-10-10,NA,NA,NA,NA,-12,NA
+"Lavaca County",2020-10-12,NA,NA,NA,NA,-27,NA
+"Lavaca County",2020-10-13,NA,NA,NA,NA,-15,NA
 "Lee County",2020-02-15,5,1,NA,NA,-6,NA
 "Lee County",2020-02-16,20,2,NA,NA,NA,NA
 "Lee County",2020-02-17,4,10,NA,NA,-19,NA
@@ -24499,6 +24905,10 @@
 "Lee County",2020-10-07,-5,NA,NA,NA,-22,NA
 "Lee County",2020-10-08,-2,NA,NA,NA,-18,NA
 "Lee County",2020-10-09,2,NA,NA,NA,-21,NA
+"Lee County",2020-10-10,-10,NA,NA,NA,-20,NA
+"Lee County",2020-10-11,-4,NA,NA,NA,-16,NA
+"Lee County",2020-10-12,NA,NA,NA,NA,-32,NA
+"Lee County",2020-10-13,-15,NA,NA,NA,-21,NA
 "Leon County",2020-02-15,7,4,NA,6,NA,NA
 "Leon County",2020-02-16,7,10,NA,8,NA,NA
 "Leon County",2020-02-17,11,16,NA,12,-24,NA
@@ -24711,6 +25121,10 @@
 "Leon County",2020-10-07,NA,NA,NA,21,-17,NA
 "Leon County",2020-10-08,NA,NA,NA,23,-15,NA
 "Leon County",2020-10-09,NA,NA,NA,38,-21,NA
+"Leon County",2020-10-10,NA,NA,NA,39,-13,NA
+"Leon County",2020-10-11,NA,NA,NA,62,-21,NA
+"Leon County",2020-10-12,NA,NA,NA,31,-38,NA
+"Leon County",2020-10-13,NA,NA,NA,NA,-21,NA
 "Liberty County",2020-02-15,3,10,NA,-7,6,-1
 "Liberty County",2020-02-16,3,14,NA,2,6,-1
 "Liberty County",2020-02-17,1,5,NA,-8,-17,3
@@ -24949,6 +25363,10 @@
 "Liberty County",2020-10-07,-10,7,NA,-7,-20,4
 "Liberty County",2020-10-08,-4,11,NA,8,-23,7
 "Liberty County",2020-10-09,-12,3,NA,17,-28,12
+"Liberty County",2020-10-10,-2,21,NA,14,-8,4
+"Liberty County",2020-10-11,-4,19,NA,28,-6,4
+"Liberty County",2020-10-12,-9,11,NA,7,-26,6
+"Liberty County",2020-10-13,-8,8,NA,1,-22,6
 "Limestone County",2020-02-15,0,4,NA,NA,-5,NA
 "Limestone County",2020-02-16,7,10,NA,NA,-3,NA
 "Limestone County",2020-02-17,-2,-11,NA,NA,-21,NA
@@ -25162,6 +25580,10 @@
 "Limestone County",2020-10-07,NA,NA,NA,NA,-18,0
 "Limestone County",2020-10-08,-4,NA,NA,NA,-19,4
 "Limestone County",2020-10-09,4,-4,NA,NA,-19,NA
+"Limestone County",2020-10-10,-9,NA,NA,NA,-15,NA
+"Limestone County",2020-10-11,NA,NA,NA,NA,-23,NA
+"Limestone County",2020-10-12,NA,NA,NA,NA,-33,5
+"Limestone County",2020-10-13,NA,NA,NA,NA,-21,2
 "Live Oak County",2020-02-15,16,6,NA,9,6,NA
 "Live Oak County",2020-02-16,23,3,NA,11,NA,NA
 "Live Oak County",2020-02-17,13,7,NA,12,-2,NA
@@ -25375,6 +25797,10 @@
 "Live Oak County",2020-10-07,NA,NA,NA,-15,-29,NA
 "Live Oak County",2020-10-08,NA,NA,NA,-12,-28,NA
 "Live Oak County",2020-10-09,NA,-14,NA,4,-30,NA
+"Live Oak County",2020-10-10,NA,NA,NA,1,-36,NA
+"Live Oak County",2020-10-11,NA,NA,NA,8,-36,NA
+"Live Oak County",2020-10-12,NA,NA,NA,5,-43,NA
+"Live Oak County",2020-10-13,NA,NA,NA,-13,-29,NA
 "Llano County",2020-02-15,0,6,6,NA,-2,NA
 "Llano County",2020-02-16,20,5,NA,NA,-7,NA
 "Llano County",2020-02-17,10,4,11,NA,-14,NA
@@ -25588,6 +26014,10 @@
 "Llano County",2020-10-07,-1,NA,1,NA,-13,-1
 "Llano County",2020-10-08,NA,NA,17,NA,-12,0
 "Llano County",2020-10-09,8,NA,24,NA,-13,1
+"Llano County",2020-10-10,6,NA,52,NA,-7,NA
+"Llano County",2020-10-11,NA,NA,NA,NA,-16,NA
+"Llano County",2020-10-12,NA,NA,0,NA,-22,4
+"Llano County",2020-10-13,NA,NA,-2,NA,-18,3
 "Loving County",2020-02-15,NA,-24,NA,NA,NA,NA
 "Loving County",2020-02-17,NA,-12,NA,NA,NA,NA
 "Loving County",2020-02-18,NA,-15,NA,NA,NA,NA
@@ -25870,6 +26300,10 @@
 "Lubbock County",2020-10-07,-8,-10,26,-24,-21,6
 "Lubbock County",2020-10-08,-7,-10,49,-25,-19,5
 "Lubbock County",2020-10-09,-9,-8,34,-20,-19,6
+"Lubbock County",2020-10-10,-15,-6,43,-28,-8,2
+"Lubbock County",2020-10-11,-10,-6,6,-36,-10,3
+"Lubbock County",2020-10-12,-11,-12,38,-28,-25,7
+"Lubbock County",2020-10-13,-6,-5,67,-19,-17,5
 "Lynn County",2020-02-17,NA,NA,NA,NA,-27,NA
 "Lynn County",2020-03-16,NA,NA,NA,NA,-22,NA
 "Lynn County",2020-03-17,NA,NA,NA,NA,-26,NA
@@ -25985,6 +26419,8 @@
 "Lynn County",2020-10-05,NA,NA,NA,NA,-17,NA
 "Lynn County",2020-10-06,NA,NA,NA,NA,-16,NA
 "Lynn County",2020-10-07,NA,NA,NA,NA,-16,NA
+"Lynn County",2020-10-12,NA,NA,NA,NA,-26,NA
+"Lynn County",2020-10-13,NA,NA,NA,NA,-12,NA
 "Madison County",2020-02-15,1,13,NA,NA,NA,NA
 "Madison County",2020-02-16,6,8,NA,NA,NA,NA
 "Madison County",2020-02-17,3,26,NA,NA,-20,NA
@@ -26198,6 +26634,10 @@
 "Madison County",2020-10-07,NA,NA,NA,NA,-17,NA
 "Madison County",2020-10-08,NA,3,NA,NA,-20,NA
 "Madison County",2020-10-09,NA,-1,NA,NA,-21,NA
+"Madison County",2020-10-10,NA,-14,NA,NA,-20,NA
+"Madison County",2020-10-11,NA,-2,NA,NA,NA,NA
+"Madison County",2020-10-12,NA,4,NA,NA,-33,NA
+"Madison County",2020-10-13,NA,NA,NA,NA,-15,NA
 "Marion County",2020-02-15,-1,5,NA,NA,NA,NA
 "Marion County",2020-02-16,11,10,NA,NA,NA,NA
 "Marion County",2020-02-17,6,15,NA,NA,-1,NA
@@ -26365,6 +26805,8 @@
 "Marion County",2020-10-07,NA,NA,NA,NA,-7,NA
 "Marion County",2020-10-08,NA,NA,NA,NA,-12,NA
 "Marion County",2020-10-09,NA,NA,NA,NA,-15,NA
+"Marion County",2020-10-12,NA,NA,NA,NA,-25,NA
+"Marion County",2020-10-13,NA,NA,NA,NA,-12,NA
 "Martin County",2020-02-15,-12,1,NA,NA,NA,NA
 "Martin County",2020-02-16,NA,12,NA,NA,NA,NA
 "Martin County",2020-02-17,6,13,NA,NA,-15,NA
@@ -26532,6 +26974,8 @@
 "Martin County",2020-10-07,NA,NA,NA,NA,-25,NA
 "Martin County",2020-10-08,NA,NA,NA,NA,-23,NA
 "Martin County",2020-10-09,NA,NA,NA,NA,-27,NA
+"Martin County",2020-10-12,NA,NA,NA,NA,-30,NA
+"Martin County",2020-10-13,NA,NA,NA,NA,-27,NA
 "Matagorda County",2020-02-15,10,13,NA,NA,7,NA
 "Matagorda County",2020-02-16,3,6,NA,NA,8,NA
 "Matagorda County",2020-02-17,0,5,NA,NA,-9,3
@@ -26763,6 +27207,10 @@
 "Matagorda County",2020-10-07,-3,-6,NA,NA,-21,3
 "Matagorda County",2020-10-08,-9,-9,NA,NA,-19,4
 "Matagorda County",2020-10-09,-12,-5,NA,NA,-19,5
+"Matagorda County",2020-10-10,-1,16,NA,NA,-10,0
+"Matagorda County",2020-10-11,-14,0,NA,NA,-11,NA
+"Matagorda County",2020-10-12,-11,-3,NA,NA,-25,6
+"Matagorda County",2020-10-13,-10,-7,NA,NA,-20,3
 "Maverick County",2020-02-15,5,3,-2,-2,0,-2
 "Maverick County",2020-02-16,8,0,3,9,-1,NA
 "Maverick County",2020-02-17,4,-1,5,9,-7,1
@@ -26995,6 +27443,10 @@
 "Maverick County",2020-10-07,-33,-18,NA,-41,-33,9
 "Maverick County",2020-10-08,-30,-15,NA,-43,-34,8
 "Maverick County",2020-10-09,-34,-19,-17,-56,-33,9
+"Maverick County",2020-10-10,-37,-13,-25,-65,-14,4
+"Maverick County",2020-10-11,-41,-25,8,-61,-20,6
+"Maverick County",2020-10-12,-38,-24,-15,-61,-36,11
+"Maverick County",2020-10-13,-31,-22,68,-46,-33,10
 "McCulloch County",2020-02-15,7,1,NA,NA,NA,NA
 "McCulloch County",2020-02-16,5,17,NA,NA,NA,NA
 "McCulloch County",2020-02-17,5,14,NA,NA,-12,NA
@@ -27162,6 +27614,8 @@
 "McCulloch County",2020-10-07,NA,NA,NA,NA,-17,NA
 "McCulloch County",2020-10-08,NA,NA,NA,NA,-23,NA
 "McCulloch County",2020-10-09,NA,NA,NA,NA,-18,NA
+"McCulloch County",2020-10-12,NA,NA,NA,NA,-26,NA
+"McCulloch County",2020-10-13,NA,NA,NA,NA,-17,NA
 "McLennan County",2020-02-15,4,6,28,3,2,-1
 "McLennan County",2020-02-16,12,7,66,16,0,-2
 "McLennan County",2020-02-17,7,7,41,7,-17,4
@@ -27400,6 +27854,10 @@
 "McLennan County",2020-10-07,-10,5,29,-6,-21,5
 "McLennan County",2020-10-08,-7,3,49,-6,-21,5
 "McLennan County",2020-10-09,-10,2,17,-1,-24,5
+"McLennan County",2020-10-10,-12,3,20,0,-11,2
+"McLennan County",2020-10-11,-10,1,8,-2,-15,3
+"McLennan County",2020-10-12,-9,3,27,-5,-33,8
+"McLennan County",2020-10-13,-11,2,40,-7,-23,7
 "McMullen County",2020-02-17,NA,NA,NA,-26,NA,NA
 "McMullen County",2020-02-18,NA,NA,NA,-23,NA,NA
 "McMullen County",2020-02-19,NA,NA,NA,-28,NA,NA
@@ -27553,6 +28011,9 @@
 "McMullen County",2020-10-06,NA,NA,NA,-64,NA,NA
 "McMullen County",2020-10-08,NA,NA,NA,-67,NA,NA
 "McMullen County",2020-10-09,NA,NA,NA,-69,NA,NA
+"McMullen County",2020-10-11,NA,NA,NA,-63,NA,NA
+"McMullen County",2020-10-12,NA,NA,NA,-59,NA,NA
+"McMullen County",2020-10-13,NA,NA,NA,-59,NA,NA
 "Medina County",2020-02-15,4,7,NA,-2,-1,NA
 "Medina County",2020-02-16,6,0,NA,2,0,NA
 "Medina County",2020-02-17,8,4,NA,10,-26,5
@@ -27785,6 +28246,10 @@
 "Medina County",2020-10-07,-1,-11,NA,13,-27,8
 "Medina County",2020-10-08,-4,-8,NA,15,-26,8
 "Medina County",2020-10-09,-2,-5,NA,12,-27,7
+"Medina County",2020-10-10,7,-4,NA,20,-14,5
+"Medina County",2020-10-11,1,-19,NA,16,-14,3
+"Medina County",2020-10-12,-6,-10,NA,12,-38,11
+"Medina County",2020-10-13,-4,-13,NA,7,-27,9
 "Midland County",2020-02-15,2,1,37,5,0,-2
 "Midland County",2020-02-16,9,2,39,6,0,-2
 "Midland County",2020-02-17,2,0,42,2,-7,1
@@ -28023,6 +28488,10 @@
 "Midland County",2020-10-07,-21,-22,13,-28,-25,9
 "Midland County",2020-10-08,-18,-22,38,-28,-25,8
 "Midland County",2020-10-09,-20,-20,10,-28,-26,8
+"Midland County",2020-10-10,-21,-19,20,-24,-21,5
+"Midland County",2020-10-11,-24,-23,10,-27,-18,5
+"Midland County",2020-10-12,-24,-25,10,-29,-30,10
+"Midland County",2020-10-13,-19,-26,20,-29,-26,8
 "Milam County",2020-02-15,7,1,NA,NA,-4,NA
 "Milam County",2020-02-16,14,5,NA,NA,6,NA
 "Milam County",2020-02-17,4,7,NA,NA,-18,NA
@@ -28236,6 +28705,10 @@
 "Milam County",2020-10-07,NA,NA,NA,NA,-12,1
 "Milam County",2020-10-08,NA,NA,NA,NA,-14,1
 "Milam County",2020-10-09,7,10,NA,NA,-14,3
+"Milam County",2020-10-10,12,NA,NA,NA,-10,NA
+"Milam County",2020-10-11,NA,NA,NA,NA,-7,NA
+"Milam County",2020-10-12,NA,NA,NA,NA,-24,6
+"Milam County",2020-10-13,NA,NA,NA,NA,-15,5
 "Mitchell County",2020-02-15,30,3,NA,NA,NA,NA
 "Mitchell County",2020-02-16,NA,6,-9,NA,NA,NA
 "Mitchell County",2020-02-17,NA,3,-26,NA,-10,NA
@@ -28441,6 +28914,10 @@
 "Mitchell County",2020-10-07,NA,NA,NA,NA,-24,NA
 "Mitchell County",2020-10-08,NA,NA,-74,NA,-20,NA
 "Mitchell County",2020-10-09,NA,NA,-72,NA,-19,NA
+"Mitchell County",2020-10-10,NA,NA,-59,NA,NA,NA
+"Mitchell County",2020-10-11,NA,NA,-67,NA,NA,NA
+"Mitchell County",2020-10-12,NA,NA,-78,NA,-26,NA
+"Mitchell County",2020-10-13,NA,NA,-74,NA,-16,NA
 "Montague County",2020-02-15,7,-9,NA,NA,0,NA
 "Montague County",2020-02-16,6,3,NA,NA,3,NA
 "Montague County",2020-02-17,2,-8,NA,NA,-18,NA
@@ -28654,6 +29131,10 @@
 "Montague County",2020-10-07,NA,NA,NA,NA,-15,NA
 "Montague County",2020-10-08,NA,NA,NA,NA,-15,NA
 "Montague County",2020-10-09,NA,NA,NA,NA,-18,NA
+"Montague County",2020-10-10,NA,NA,NA,NA,-15,NA
+"Montague County",2020-10-11,NA,NA,NA,NA,-9,NA
+"Montague County",2020-10-12,NA,NA,NA,NA,-28,NA
+"Montague County",2020-10-13,NA,NA,NA,NA,-21,NA
 "Montgomery County",2020-02-15,4,6,14,9,1,-1
 "Montgomery County",2020-02-16,6,5,15,8,0,-1
 "Montgomery County",2020-02-17,7,3,25,-6,-21,4
@@ -28892,6 +29373,10 @@
 "Montgomery County",2020-10-07,-10,-4,53,-10,-27,7
 "Montgomery County",2020-10-08,-10,-6,31,-3,-28,8
 "Montgomery County",2020-10-09,-9,-4,23,-2,-32,11
+"Montgomery County",2020-10-10,-9,-1,16,4,-13,3
+"Montgomery County",2020-10-11,-10,-4,23,12,-14,3
+"Montgomery County",2020-10-12,-10,-7,40,NA,-39,10
+"Montgomery County",2020-10-13,-10,-2,43,-3,-29,7
 "Moore County",2020-02-15,-5,1,NA,-7,-5,NA
 "Moore County",2020-02-16,6,-3,NA,NA,-6,NA
 "Moore County",2020-02-17,-4,-4,NA,NA,-16,NA
@@ -29105,6 +29590,10 @@
 "Moore County",2020-10-07,-16,-5,NA,-6,-16,0
 "Moore County",2020-10-08,-14,NA,NA,8,-12,0
 "Moore County",2020-10-09,-15,-6,NA,3,-12,-2
+"Moore County",2020-10-10,-10,-1,NA,NA,-15,NA
+"Moore County",2020-10-11,-5,NA,NA,NA,-8,NA
+"Moore County",2020-10-12,-16,-9,NA,NA,-13,2
+"Moore County",2020-10-13,-11,NA,NA,1,-10,0
 "Morris County",2020-02-15,-1,-4,NA,NA,NA,NA
 "Morris County",2020-02-16,-3,4,NA,NA,NA,NA
 "Morris County",2020-02-17,-2,0,NA,NA,-15,NA
@@ -29282,6 +29771,9 @@
 "Morris County",2020-10-07,NA,NA,NA,NA,-15,NA
 "Morris County",2020-10-08,NA,NA,NA,NA,-11,NA
 "Morris County",2020-10-09,NA,NA,NA,NA,-9,NA
+"Morris County",2020-10-11,NA,NA,NA,NA,-21,NA
+"Morris County",2020-10-12,NA,NA,NA,NA,-22,NA
+"Morris County",2020-10-13,NA,NA,NA,NA,-14,NA
 "Nacogdoches County",2020-02-15,1,3,8,-6,1,NA
 "Nacogdoches County",2020-02-16,2,4,27,-2,4,NA
 "Nacogdoches County",2020-02-17,-1,-4,NA,-11,-12,3
@@ -29514,6 +30006,10 @@
 "Nacogdoches County",2020-10-07,-6,-6,NA,NA,-20,4
 "Nacogdoches County",2020-10-08,-7,-10,NA,13,-23,5
 "Nacogdoches County",2020-10-09,-12,-12,NA,32,-29,11
+"Nacogdoches County",2020-10-10,-9,-7,35,34,-1,3
+"Nacogdoches County",2020-10-11,-10,-10,14,NA,-3,3
+"Nacogdoches County",2020-10-12,-9,-15,NA,12,-26,7
+"Nacogdoches County",2020-10-13,-6,-8,NA,11,-20,5
 "Navarro County",2020-02-15,8,3,NA,20,-3,NA
 "Navarro County",2020-02-16,11,7,NA,23,3,NA
 "Navarro County",2020-02-17,-2,-1,NA,9,-16,4
@@ -29746,6 +30242,10 @@
 "Navarro County",2020-10-07,2,-7,NA,-1,-16,3
 "Navarro County",2020-10-08,2,-9,NA,-18,-17,3
 "Navarro County",2020-10-09,-6,-13,NA,-18,-16,3
+"Navarro County",2020-10-10,-2,-5,NA,-10,-5,2
+"Navarro County",2020-10-11,-8,1,NA,-10,-12,3
+"Navarro County",2020-10-12,-8,-10,NA,0,-28,6
+"Navarro County",2020-10-13,-2,-10,NA,-16,-17,4
 "Newton County",2020-02-15,NA,-2,NA,NA,NA,NA
 "Newton County",2020-02-16,NA,11,NA,NA,NA,NA
 "Newton County",2020-02-17,NA,-8,NA,NA,-13,NA
@@ -29909,6 +30409,8 @@
 "Newton County",2020-10-07,NA,NA,NA,NA,-20,NA
 "Newton County",2020-10-08,NA,NA,NA,NA,-19,NA
 "Newton County",2020-10-09,NA,NA,NA,NA,-50,NA
+"Newton County",2020-10-12,NA,NA,NA,NA,-25,NA
+"Newton County",2020-10-13,NA,NA,NA,NA,-19,NA
 "Nolan County",2020-02-15,1,9,NA,0,7,NA
 "Nolan County",2020-02-16,8,9,NA,13,-2,NA
 "Nolan County",2020-02-17,0,4,NA,6,-18,NA
@@ -30122,6 +30624,10 @@
 "Nolan County",2020-10-07,-5,NA,NA,-9,-15,NA
 "Nolan County",2020-10-08,-8,NA,NA,-11,-17,NA
 "Nolan County",2020-10-09,-8,NA,NA,-1,-14,NA
+"Nolan County",2020-10-10,-7,NA,NA,-4,-9,NA
+"Nolan County",2020-10-11,-11,NA,NA,0,-13,NA
+"Nolan County",2020-10-12,-21,NA,NA,-6,-28,NA
+"Nolan County",2020-10-13,-13,NA,NA,-6,-15,NA
 "Nueces County",2020-02-15,8,7,62,4,0,-1
 "Nueces County",2020-02-16,15,6,39,3,-1,-1
 "Nueces County",2020-02-17,9,4,30,-5,-9,2
@@ -30360,6 +30866,10 @@
 "Nueces County",2020-10-07,-14,-9,23,-36,-22,7
 "Nueces County",2020-10-08,-13,-11,14,-36,-26,7
 "Nueces County",2020-10-09,-13,-7,23,-35,-26,8
+"Nueces County",2020-10-10,-12,-2,59,-34,-14,4
+"Nueces County",2020-10-11,-9,-6,19,-34,-12,3
+"Nueces County",2020-10-12,-12,-11,17,-41,-26,9
+"Nueces County",2020-10-13,-13,-12,18,-36,-26,8
 "Ochiltree County",2020-02-15,-1,-2,NA,NA,NA,NA
 "Ochiltree County",2020-02-16,-7,4,NA,NA,NA,NA
 "Ochiltree County",2020-02-17,9,-3,NA,NA,-19,NA
@@ -30527,6 +31037,8 @@
 "Ochiltree County",2020-10-07,NA,NA,NA,NA,-11,NA
 "Ochiltree County",2020-10-08,NA,NA,NA,NA,-16,NA
 "Ochiltree County",2020-10-09,NA,NA,NA,NA,-15,NA
+"Ochiltree County",2020-10-12,NA,NA,NA,NA,-18,NA
+"Ochiltree County",2020-10-13,NA,NA,NA,NA,-15,NA
 "Oldham County",2020-02-15,NA,NA,NA,-4,NA,NA
 "Oldham County",2020-02-16,NA,NA,NA,11,NA,NA
 "Oldham County",2020-02-17,NA,NA,NA,5,NA,NA
@@ -30730,6 +31242,10 @@
 "Oldham County",2020-10-07,NA,NA,NA,38,NA,NA
 "Oldham County",2020-10-08,NA,NA,NA,28,NA,NA
 "Oldham County",2020-10-09,NA,NA,NA,39,NA,NA
+"Oldham County",2020-10-10,NA,NA,NA,28,NA,NA
+"Oldham County",2020-10-11,NA,NA,NA,36,NA,NA
+"Oldham County",2020-10-12,NA,NA,NA,48,NA,NA
+"Oldham County",2020-10-13,NA,NA,NA,33,NA,NA
 "Orange County",2020-02-15,16,8,13,4,1,0
 "Orange County",2020-02-16,5,7,5,-2,4,0
 "Orange County",2020-02-17,-3,3,13,0,-11,2
@@ -30968,6 +31484,10 @@
 "Orange County",2020-10-07,4,11,20,24,-20,3
 "Orange County",2020-10-08,8,22,25,44,-20,5
 "Orange County",2020-10-09,-51,-33,-49,-38,-56,21
+"Orange County",2020-10-10,-8,4,-6,79,-28,-5
+"Orange County",2020-10-11,13,12,1,34,-17,-2
+"Orange County",2020-10-12,12,7,12,37,-27,3
+"Orange County",2020-10-13,14,8,16,33,-21,3
 "Palo Pinto County",2020-02-15,5,2,NA,NA,0,NA
 "Palo Pinto County",2020-02-16,9,12,NA,NA,0,NA
 "Palo Pinto County",2020-02-17,7,2,NA,NA,-13,4
@@ -31187,6 +31707,10 @@
 "Palo Pinto County",2020-10-07,-2,-10,NA,NA,-17,2
 "Palo Pinto County",2020-10-08,2,-6,NA,NA,-16,2
 "Palo Pinto County",2020-10-09,8,-9,NA,NA,-19,4
+"Palo Pinto County",2020-10-10,8,2,NA,NA,-10,NA
+"Palo Pinto County",2020-10-11,6,NA,NA,NA,-11,NA
+"Palo Pinto County",2020-10-12,6,-13,NA,NA,-31,6
+"Palo Pinto County",2020-10-13,2,-8,NA,NA,-21,4
 "Panola County",2020-02-15,0,5,NA,-16,3,NA
 "Panola County",2020-02-16,-4,5,NA,-7,-7,NA
 "Panola County",2020-02-17,-3,4,NA,-13,-16,NA
@@ -31400,6 +31924,10 @@
 "Panola County",2020-10-07,NA,NA,NA,13,-19,2
 "Panola County",2020-10-08,NA,NA,NA,31,-22,3
 "Panola County",2020-10-09,-5,NA,NA,14,-22,NA
+"Panola County",2020-10-10,NA,NA,NA,33,-17,NA
+"Panola County",2020-10-11,NA,NA,NA,42,-20,NA
+"Panola County",2020-10-12,NA,NA,NA,18,-31,6
+"Panola County",2020-10-13,NA,NA,NA,5,-17,1
 "Parker County",2020-02-15,3,-3,10,-2,-1,-1
 "Parker County",2020-02-16,5,0,29,5,-2,-1
 "Parker County",2020-02-17,6,2,22,3,-17,4
@@ -31638,6 +32166,10 @@
 "Parker County",2020-10-07,1,-3,8,-3,-14,5
 "Parker County",2020-10-08,6,-1,25,-4,-18,5
 "Parker County",2020-10-09,0,-4,8,-1,-16,3
+"Parker County",2020-10-10,-4,-5,17,-1,-10,2
+"Parker County",2020-10-11,-9,-7,-14,-8,-9,3
+"Parker County",2020-10-12,-4,-7,-8,-3,-30,9
+"Parker County",2020-10-13,-3,-6,11,-8,-22,7
 "Parmer County",2020-02-15,NA,-6,NA,NA,NA,NA
 "Parmer County",2020-02-16,NA,-4,NA,NA,NA,NA
 "Parmer County",2020-02-17,NA,-9,NA,NA,-21,NA
@@ -31805,6 +32337,8 @@
 "Parmer County",2020-10-07,NA,NA,NA,NA,-14,NA
 "Parmer County",2020-10-08,NA,NA,NA,NA,-12,NA
 "Parmer County",2020-10-09,NA,NA,NA,NA,-11,NA
+"Parmer County",2020-10-12,NA,NA,NA,NA,-24,NA
+"Parmer County",2020-10-13,NA,NA,NA,NA,-17,NA
 "Pecos County",2020-02-15,0,-4,NA,-1,-5,NA
 "Pecos County",2020-02-16,7,2,NA,7,2,NA
 "Pecos County",2020-02-17,9,-1,NA,18,-24,NA
@@ -32018,6 +32552,10 @@
 "Pecos County",2020-10-07,-23,NA,NA,-2,-17,NA
 "Pecos County",2020-10-08,-18,NA,NA,9,-19,NA
 "Pecos County",2020-10-09,-20,NA,NA,9,-23,NA
+"Pecos County",2020-10-10,-19,NA,NA,8,-23,NA
+"Pecos County",2020-10-11,-24,NA,NA,5,-24,NA
+"Pecos County",2020-10-12,-19,NA,NA,16,-36,NA
+"Pecos County",2020-10-13,-22,NA,NA,9,-20,NA
 "Polk County",2020-02-15,3,5,0,-16,0,NA
 "Polk County",2020-02-16,7,2,NA,NA,-2,NA
 "Polk County",2020-02-17,3,1,NA,NA,-20,4
@@ -32250,6 +32788,10 @@
 "Polk County",2020-10-07,5,10,NA,1,-16,2
 "Polk County",2020-10-08,5,14,NA,-10,-15,4
 "Polk County",2020-10-09,-2,4,NA,3,-19,8
+"Polk County",2020-10-10,8,14,NA,-11,-9,3
+"Polk County",2020-10-11,6,7,NA,-9,-18,4
+"Polk County",2020-10-12,3,7,NA,6,-25,7
+"Polk County",2020-10-13,6,7,NA,-10,-14,3
 "Potter County",2020-02-15,4,2,-5,0,-4,0
 "Potter County",2020-02-16,8,3,22,4,0,-2
 "Potter County",2020-02-17,5,-2,5,4,-18,4
@@ -32488,6 +33030,10 @@
 "Potter County",2020-10-07,-9,-4,18,11,-21,4
 "Potter County",2020-10-08,-8,-5,4,9,-20,4
 "Potter County",2020-10-09,-11,-8,12,9,-25,5
+"Potter County",2020-10-10,-12,-4,11,8,-9,1
+"Potter County",2020-10-11,-10,-5,-9,11,-12,2
+"Potter County",2020-10-12,-9,-10,15,7,-31,8
+"Potter County",2020-10-13,-7,-2,24,15,-19,3
 "Presidio County",2020-02-15,11,0,NA,NA,NA,NA
 "Presidio County",2020-02-16,NA,1,NA,NA,NA,NA
 "Presidio County",2020-02-17,NA,6,NA,NA,NA,NA
@@ -32650,6 +33196,8 @@
 "Presidio County",2020-10-07,NA,NA,NA,NA,-30,NA
 "Presidio County",2020-10-08,NA,NA,NA,NA,-29,NA
 "Presidio County",2020-10-09,NA,NA,NA,NA,-40,NA
+"Presidio County",2020-10-12,NA,NA,NA,NA,-52,NA
+"Presidio County",2020-10-13,NA,NA,NA,NA,-33,NA
 "Rains County",2020-02-15,-10,-18,NA,NA,NA,NA
 "Rains County",2020-02-16,16,-20,NA,NA,NA,NA
 "Rains County",2020-02-17,1,-25,NA,NA,-17,NA
@@ -32819,6 +33367,8 @@
 "Rains County",2020-10-07,NA,NA,NA,NA,-14,NA
 "Rains County",2020-10-08,NA,NA,NA,NA,-17,NA
 "Rains County",2020-10-09,NA,NA,NA,NA,-23,NA
+"Rains County",2020-10-12,NA,NA,NA,NA,-28,NA
+"Rains County",2020-10-13,NA,NA,NA,NA,-18,NA
 "Randall County",2020-02-15,2,1,-7,NA,-1,-1
 "Randall County",2020-02-16,8,2,NA,NA,-1,-2
 "Randall County",2020-02-17,8,0,NA,NA,-22,5
@@ -33057,6 +33607,10 @@
 "Randall County",2020-10-07,-4,-9,NA,NA,-20,5
 "Randall County",2020-10-08,-4,-7,NA,NA,-21,4
 "Randall County",2020-10-09,-8,-11,NA,NA,-29,6
+"Randall County",2020-10-10,-13,-13,NA,NA,-13,1
+"Randall County",2020-10-11,-10,-15,NA,NA,-15,2
+"Randall County",2020-10-12,-2,-11,NA,NA,-36,9
+"Randall County",2020-10-13,1,-2,NA,NA,-19,5
 "Reagan County",2020-02-15,NA,-10,NA,NA,NA,NA
 "Reagan County",2020-02-16,NA,6,NA,NA,NA,NA
 "Reagan County",2020-02-17,NA,-1,NA,NA,NA,NA
@@ -33248,6 +33802,9 @@
 "Reagan County",2020-10-07,NA,NA,NA,-32,NA,NA
 "Reagan County",2020-10-08,NA,NA,NA,-39,NA,NA
 "Reagan County",2020-10-09,NA,NA,NA,-25,NA,NA
+"Reagan County",2020-10-10,NA,NA,NA,-40,NA,NA
+"Reagan County",2020-10-12,NA,NA,NA,-33,NA,NA
+"Reagan County",2020-10-13,NA,NA,NA,-31,NA,NA
 "Real County",2020-04-04,NA,-38,NA,NA,NA,NA
 "Red River County",2020-02-15,NA,-4,NA,NA,NA,NA
 "Red River County",2020-02-16,NA,2,NA,NA,NA,NA
@@ -33416,6 +33973,8 @@
 "Red River County",2020-10-07,NA,NA,NA,NA,-10,NA
 "Red River County",2020-10-08,NA,NA,NA,NA,-7,NA
 "Red River County",2020-10-09,NA,NA,NA,NA,-11,NA
+"Red River County",2020-10-12,NA,NA,NA,NA,-27,NA
+"Red River County",2020-10-13,NA,NA,NA,NA,-12,NA
 "Reeves County",2020-02-15,-13,-9,NA,10,7,NA
 "Reeves County",2020-02-16,-13,-7,NA,4,7,NA
 "Reeves County",2020-02-17,-15,-5,NA,10,-12,NA
@@ -33629,6 +34188,10 @@
 "Reeves County",2020-10-07,-45,-41,NA,-19,-36,NA
 "Reeves County",2020-10-08,-42,-43,NA,-22,-39,NA
 "Reeves County",2020-10-09,-43,-37,NA,-14,-35,NA
+"Reeves County",2020-10-10,-37,-39,NA,-21,-43,NA
+"Reeves County",2020-10-11,-47,-40,NA,-22,-43,NA
+"Reeves County",2020-10-12,-48,-44,NA,-16,-47,NA
+"Reeves County",2020-10-13,-45,-40,NA,-21,-38,NA
 "Refugio County",2020-02-15,0,-2,NA,6,NA,NA
 "Refugio County",2020-02-16,14,16,NA,12,NA,NA
 "Refugio County",2020-02-17,10,4,NA,15,-16,NA
@@ -33842,6 +34405,10 @@
 "Refugio County",2020-10-07,NA,NA,NA,6,-20,NA
 "Refugio County",2020-10-08,NA,NA,NA,26,-20,NA
 "Refugio County",2020-10-09,NA,NA,NA,12,-24,NA
+"Refugio County",2020-10-10,NA,NA,NA,0,NA,NA
+"Refugio County",2020-10-11,NA,NA,NA,15,NA,NA
+"Refugio County",2020-10-12,NA,NA,NA,7,-19,NA
+"Refugio County",2020-10-13,NA,NA,NA,-1,-19,NA
 "Robertson County",2020-02-15,3,-8,NA,7,-8,NA
 "Robertson County",2020-02-16,9,2,NA,3,NA,NA
 "Robertson County",2020-02-17,8,-9,NA,13,-12,NA
@@ -34054,6 +34621,10 @@
 "Robertson County",2020-10-07,NA,NA,NA,0,-17,NA
 "Robertson County",2020-10-08,NA,NA,NA,-5,-21,NA
 "Robertson County",2020-10-09,NA,NA,NA,8,-21,NA
+"Robertson County",2020-10-10,NA,NA,NA,6,-14,NA
+"Robertson County",2020-10-11,NA,NA,NA,6,NA,NA
+"Robertson County",2020-10-12,NA,NA,NA,-6,-27,NA
+"Robertson County",2020-10-13,NA,NA,NA,-8,-20,NA
 "Rockwall County",2020-02-15,2,4,NA,2,-1,0
 "Rockwall County",2020-02-16,9,1,NA,9,-1,-2
 "Rockwall County",2020-02-17,13,11,NA,3,-21,4
@@ -34292,6 +34863,10 @@
 "Rockwall County",2020-10-07,4,-9,NA,-1,-34,10
 "Rockwall County",2020-10-08,0,-6,NA,-7,-31,9
 "Rockwall County",2020-10-09,-4,-7,NA,11,-31,10
+"Rockwall County",2020-10-10,-5,-6,NA,0,-9,3
+"Rockwall County",2020-10-11,-6,-11,NA,8,-11,4
+"Rockwall County",2020-10-12,3,-9,NA,-6,-34,11
+"Rockwall County",2020-10-13,5,-11,NA,2,-32,10
 "Runnels County",2020-02-15,0,7,NA,NA,NA,NA
 "Runnels County",2020-02-16,22,8,NA,NA,NA,NA
 "Runnels County",2020-02-17,14,13,NA,NA,-16,NA
@@ -34459,6 +35034,8 @@
 "Runnels County",2020-10-07,NA,NA,NA,NA,-10,NA
 "Runnels County",2020-10-08,NA,NA,NA,NA,-11,NA
 "Runnels County",2020-10-09,NA,NA,NA,NA,-12,NA
+"Runnels County",2020-10-12,NA,NA,NA,NA,-20,NA
+"Runnels County",2020-10-13,NA,NA,NA,NA,-14,NA
 "Rusk County",2020-02-15,4,-3,NA,NA,1,NA
 "Rusk County",2020-02-16,7,6,NA,NA,-4,NA
 "Rusk County",2020-02-17,-1,-5,NA,NA,-14,4
@@ -34691,6 +35268,10 @@
 "Rusk County",2020-10-07,1,0,NA,NA,-17,1
 "Rusk County",2020-10-08,5,2,NA,NA,-18,2
 "Rusk County",2020-10-09,-3,0,NA,NA,-18,4
+"Rusk County",2020-10-10,4,0,NA,NA,-11,1
+"Rusk County",2020-10-11,-4,1,NA,NA,-16,2
+"Rusk County",2020-10-12,-8,-8,NA,NA,-24,4
+"Rusk County",2020-10-13,0,-1,NA,NA,-19,3
 "Sabine County",2020-02-15,NA,12,NA,NA,NA,NA
 "Sabine County",2020-02-16,NA,0,NA,NA,NA,NA
 "Sabine County",2020-02-17,NA,-2,NA,NA,-22,NA
@@ -34857,6 +35438,8 @@
 "Sabine County",2020-10-07,NA,NA,NA,NA,-15,NA
 "Sabine County",2020-10-08,NA,NA,NA,NA,-16,NA
 "Sabine County",2020-10-09,NA,NA,NA,NA,-30,NA
+"Sabine County",2020-10-12,NA,NA,NA,NA,-33,NA
+"Sabine County",2020-10-13,NA,NA,NA,NA,-18,NA
 "San Augustine County",2020-02-17,NA,NA,NA,NA,-18,NA
 "San Augustine County",2020-02-18,NA,NA,NA,NA,-15,NA
 "San Augustine County",2020-02-19,NA,NA,NA,NA,-2,NA
@@ -35007,6 +35590,8 @@
 "San Augustine County",2020-10-07,NA,NA,NA,NA,-20,NA
 "San Augustine County",2020-10-08,NA,NA,NA,NA,-26,NA
 "San Augustine County",2020-10-09,NA,NA,NA,NA,-34,NA
+"San Augustine County",2020-10-12,NA,NA,NA,NA,-35,NA
+"San Augustine County",2020-10-13,NA,NA,NA,NA,-19,NA
 "San Jacinto County",2020-02-15,22,1,NA,NA,1,NA
 "San Jacinto County",2020-02-16,NA,6,NA,NA,2,NA
 "San Jacinto County",2020-02-17,6,-11,NA,NA,-21,5
@@ -35220,6 +35805,10 @@
 "San Jacinto County",2020-10-07,NA,NA,NA,NA,-22,4
 "San Jacinto County",2020-10-08,NA,NA,NA,NA,-20,5
 "San Jacinto County",2020-10-09,NA,NA,NA,NA,-26,9
+"San Jacinto County",2020-10-10,NA,NA,NA,NA,-9,NA
+"San Jacinto County",2020-10-11,NA,NA,NA,NA,-11,NA
+"San Jacinto County",2020-10-12,NA,NA,NA,NA,-32,8
+"San Jacinto County",2020-10-13,NA,NA,NA,NA,-22,5
 "San Patricio County",2020-02-15,10,-2,15,5,1,-2
 "San Patricio County",2020-02-16,12,1,42,-7,1,-2
 "San Patricio County",2020-02-17,4,-2,25,9,-14,3
@@ -35458,6 +36047,10 @@
 "San Patricio County",2020-10-07,-10,-2,19,5,-24,5
 "San Patricio County",2020-10-08,-11,-2,-3,0,-22,6
 "San Patricio County",2020-10-09,-8,-5,5,-2,-23,7
+"San Patricio County",2020-10-10,-5,0,18,1,-8,1
+"San Patricio County",2020-10-11,-6,-5,0,3,-6,2
+"San Patricio County",2020-10-12,-9,-6,-5,15,-27,6
+"San Patricio County",2020-10-13,-9,-6,-2,-3,-21,6
 "San Saba County",2020-02-15,5,NA,NA,NA,NA,NA
 "San Saba County",2020-02-18,-13,NA,NA,NA,NA,NA
 "San Saba County",2020-02-20,-9,NA,NA,NA,NA,NA
@@ -35696,6 +36289,10 @@
 "Scurry County",2020-10-07,NA,NA,NA,NA,-28,NA
 "Scurry County",2020-10-08,NA,NA,NA,NA,-23,NA
 "Scurry County",2020-10-09,-12,NA,NA,NA,-19,NA
+"Scurry County",2020-10-10,-14,NA,NA,NA,-8,NA
+"Scurry County",2020-10-11,NA,NA,NA,NA,-14,NA
+"Scurry County",2020-10-12,NA,NA,NA,NA,-28,NA
+"Scurry County",2020-10-13,NA,NA,NA,NA,-24,NA
 "Shelby County",2020-02-15,5,6,NA,NA,1,NA
 "Shelby County",2020-02-16,11,14,NA,NA,2,NA
 "Shelby County",2020-02-17,-1,4,NA,NA,-18,NA
@@ -35909,6 +36506,10 @@
 "Shelby County",2020-10-07,NA,NA,NA,NA,-17,NA
 "Shelby County",2020-10-08,NA,NA,NA,NA,-16,NA
 "Shelby County",2020-10-09,-4,-16,NA,NA,-17,NA
+"Shelby County",2020-10-10,NA,NA,NA,NA,-13,NA
+"Shelby County",2020-10-11,NA,NA,NA,NA,-21,NA
+"Shelby County",2020-10-12,NA,NA,NA,NA,-21,NA
+"Shelby County",2020-10-13,NA,NA,NA,NA,-18,NA
 "Sherman County",2020-02-15,NA,NA,NA,-3,NA,NA
 "Sherman County",2020-02-16,NA,NA,NA,13,NA,NA
 "Sherman County",2020-02-17,NA,NA,NA,-6,NA,NA
@@ -36120,6 +36721,10 @@
 "Sherman County",2020-10-07,NA,NA,NA,-3,NA,NA
 "Sherman County",2020-10-08,NA,NA,NA,-2,NA,NA
 "Sherman County",2020-10-09,NA,NA,NA,8,NA,NA
+"Sherman County",2020-10-10,NA,NA,NA,3,NA,NA
+"Sherman County",2020-10-11,NA,NA,NA,7,NA,NA
+"Sherman County",2020-10-12,NA,NA,NA,12,NA,NA
+"Sherman County",2020-10-13,NA,NA,NA,13,NA,NA
 "Smith County",2020-02-15,5,1,56,4,3,0
 "Smith County",2020-02-16,9,3,66,7,2,-1
 "Smith County",2020-02-17,6,-3,2,11,-7,2
@@ -36358,6 +36963,10 @@
 "Smith County",2020-10-07,-4,-1,14,-3,-18,4
 "Smith County",2020-10-08,-7,-2,24,-3,-19,4
 "Smith County",2020-10-09,-8,-3,-1,-5,-18,5
+"Smith County",2020-10-10,-9,-2,58,-15,-8,3
+"Smith County",2020-10-11,-9,-2,24,4,-9,4
+"Smith County",2020-10-12,-7,-3,8,-11,-21,6
+"Smith County",2020-10-13,-6,-3,34,1,-19,5
 "Somervell County",2020-02-15,-5,7,NA,NA,NA,NA
 "Somervell County",2020-02-16,35,14,NA,NA,NA,NA
 "Somervell County",2020-02-17,26,4,NA,NA,-23,NA
@@ -36525,6 +37134,8 @@
 "Somervell County",2020-10-07,NA,NA,NA,NA,-14,NA
 "Somervell County",2020-10-08,NA,NA,NA,NA,-16,NA
 "Somervell County",2020-10-09,NA,NA,NA,NA,-11,NA
+"Somervell County",2020-10-12,NA,NA,NA,NA,-35,NA
+"Somervell County",2020-10-13,NA,NA,NA,NA,-18,NA
 "Starr County",2020-02-15,4,-5,2,NA,6,NA
 "Starr County",2020-02-16,8,-10,26,NA,2,NA
 "Starr County",2020-02-17,9,-3,3,NA,7,-1
@@ -36757,6 +37368,10 @@
 "Starr County",2020-10-07,-28,-6,-31,NA,-38,9
 "Starr County",2020-10-08,-27,-7,-30,NA,-38,9
 "Starr County",2020-10-09,-28,-1,-48,NA,-36,11
+"Starr County",2020-10-10,-27,NA,NA,NA,-6,4
+"Starr County",2020-10-11,-30,-5,-39,NA,-9,3
+"Starr County",2020-10-12,-32,NA,NA,NA,-40,8
+"Starr County",2020-10-13,-28,-3,-26,NA,-39,10
 "Stephens County",2020-02-15,10,NA,NA,NA,NA,NA
 "Stephens County",2020-02-16,1,NA,NA,NA,NA,NA
 "Stephens County",2020-02-17,2,NA,NA,NA,-5,NA
@@ -36924,6 +37539,8 @@
 "Stephens County",2020-10-07,NA,NA,NA,NA,-9,NA
 "Stephens County",2020-10-08,NA,NA,NA,NA,-8,NA
 "Stephens County",2020-10-09,NA,NA,NA,NA,-9,NA
+"Stephens County",2020-10-12,NA,NA,NA,NA,-26,NA
+"Stephens County",2020-10-13,NA,NA,NA,NA,-14,NA
 "Sutton County",2020-02-16,NA,0,NA,NA,NA,NA
 "Sutton County",2020-02-21,NA,-13,NA,NA,NA,NA
 "Sutton County",2020-02-22,NA,-12,NA,NA,NA,NA
@@ -37102,6 +37719,8 @@
 "Swisher County",2020-10-07,NA,NA,NA,NA,-10,NA
 "Swisher County",2020-10-08,NA,NA,NA,NA,-6,NA
 "Swisher County",2020-10-09,NA,NA,NA,NA,-11,NA
+"Swisher County",2020-10-12,NA,NA,NA,NA,-30,NA
+"Swisher County",2020-10-13,NA,NA,NA,NA,-27,NA
 "Tarrant County",2020-02-15,1,1,11,1,2,-1
 "Tarrant County",2020-02-16,10,3,48,-3,1,-1
 "Tarrant County",2020-02-17,8,2,50,2,-18,4
@@ -37340,6 +37959,10 @@
 "Tarrant County",2020-10-07,-14,-3,44,-37,-31,9
 "Tarrant County",2020-10-08,-14,-5,47,-34,-33,9
 "Tarrant County",2020-10-09,-14,-5,26,-33,-33,8
+"Tarrant County",2020-10-10,-19,-6,43,-31,-13,3
+"Tarrant County",2020-10-11,-14,-9,12,-32,-14,3
+"Tarrant County",2020-10-12,-13,-8,21,-32,-38,10
+"Tarrant County",2020-10-13,-14,-6,51,-31,-32,10
 "Taylor County",2020-02-15,5,2,NA,3,2,-1
 "Taylor County",2020-02-16,14,3,NA,23,2,-1
 "Taylor County",2020-02-17,7,0,NA,23,-19,5
@@ -37578,6 +38201,10 @@
 "Taylor County",2020-10-07,-9,-4,NA,16,-18,4
 "Taylor County",2020-10-08,-8,-1,NA,20,-17,4
 "Taylor County",2020-10-09,-10,-8,NA,25,-21,5
+"Taylor County",2020-10-10,-15,-7,NA,20,-12,2
+"Taylor County",2020-10-11,-11,-8,NA,13,-11,2
+"Taylor County",2020-10-12,-8,-8,NA,31,-33,10
+"Taylor County",2020-10-13,-8,-4,NA,18,-18,5
 "Terry County",2020-02-15,11,14,NA,NA,NA,NA
 "Terry County",2020-02-16,25,13,NA,NA,NA,NA
 "Terry County",2020-02-17,3,10,NA,NA,-13,NA
@@ -37769,6 +38396,9 @@
 "Terry County",2020-10-07,NA,NA,NA,NA,-22,NA
 "Terry County",2020-10-08,NA,NA,NA,NA,-16,NA
 "Terry County",2020-10-09,NA,NA,NA,NA,-19,NA
+"Terry County",2020-10-10,NA,NA,NA,NA,-12,NA
+"Terry County",2020-10-12,NA,NA,NA,NA,-26,NA
+"Terry County",2020-10-13,NA,NA,NA,NA,-19,NA
 "Titus County",2020-02-15,3,4,NA,NA,2,NA
 "Titus County",2020-02-16,8,2,NA,NA,-3,NA
 "Titus County",2020-02-17,4,-9,NA,NA,-15,3
@@ -38000,6 +38630,10 @@
 "Titus County",2020-10-07,2,3,NA,NA,-18,3
 "Titus County",2020-10-08,0,-1,NA,NA,-18,2
 "Titus County",2020-10-09,-6,-2,NA,NA,-14,3
+"Titus County",2020-10-10,-8,2,NA,NA,0,NA
+"Titus County",2020-10-11,-5,1,NA,NA,-11,NA
+"Titus County",2020-10-12,-6,-2,NA,NA,-18,4
+"Titus County",2020-10-13,0,9,NA,NA,-17,3
 "Tom Green County",2020-02-15,12,0,28,NA,3,-2
 "Tom Green County",2020-02-16,13,2,NA,NA,2,-3
 "Tom Green County",2020-02-17,9,2,27,NA,-21,5
@@ -38238,6 +38872,10 @@
 "Tom Green County",2020-10-07,-13,-11,-5,NA,-23,7
 "Tom Green County",2020-10-08,-15,-9,-3,NA,-22,6
 "Tom Green County",2020-10-09,-16,-13,3,NA,-25,8
+"Tom Green County",2020-10-10,-18,-12,NA,NA,-13,2
+"Tom Green County",2020-10-11,-23,-15,25,NA,-14,3
+"Tom Green County",2020-10-12,-12,-14,6,NA,-33,10
+"Tom Green County",2020-10-13,-17,-12,2,NA,-22,6
 "Travis County",2020-02-15,4,0,23,-3,3,-1
 "Travis County",2020-02-16,12,3,32,-2,1,-1
 "Travis County",2020-02-17,8,1,15,-8,-25,5
@@ -38476,6 +39114,10 @@
 "Travis County",2020-10-07,-28,-12,-18,-51,-46,16
 "Travis County",2020-10-08,-28,-13,-9,-52,-48,15
 "Travis County",2020-10-09,-26,-11,-13,-50,-44,13
+"Travis County",2020-10-10,-27,-13,-5,-45,-14,5
+"Travis County",2020-10-11,-24,-13,-12,-51,-15,5
+"Travis County",2020-10-12,-26,-12,-10,-52,-51,15
+"Travis County",2020-10-13,-27,-13,-4,-50,-48,15
 "Trinity County",2020-02-15,-1,1,NA,NA,-12,NA
 "Trinity County",2020-02-16,2,11,NA,NA,NA,NA
 "Trinity County",2020-02-17,-11,4,NA,NA,-20,NA
@@ -38681,6 +39323,10 @@
 "Trinity County",2020-10-07,NA,NA,NA,NA,-10,NA
 "Trinity County",2020-10-08,NA,NA,NA,NA,-13,NA
 "Trinity County",2020-10-09,NA,NA,NA,NA,-8,NA
+"Trinity County",2020-10-10,NA,NA,NA,NA,-7,NA
+"Trinity County",2020-10-11,NA,NA,NA,NA,-14,NA
+"Trinity County",2020-10-12,NA,NA,NA,NA,-13,NA
+"Trinity County",2020-10-13,NA,NA,NA,NA,-12,NA
 "Tyler County",2020-02-15,5,3,NA,NA,0,NA
 "Tyler County",2020-02-16,2,5,NA,NA,-2,NA
 "Tyler County",2020-02-17,-6,-10,NA,NA,-23,NA
@@ -38894,6 +39540,10 @@
 "Tyler County",2020-10-07,NA,NA,NA,NA,-18,NA
 "Tyler County",2020-10-08,NA,NA,NA,NA,-25,NA
 "Tyler County",2020-10-09,NA,NA,NA,NA,-32,NA
+"Tyler County",2020-10-10,NA,NA,NA,NA,-14,NA
+"Tyler County",2020-10-11,NA,NA,NA,NA,-17,NA
+"Tyler County",2020-10-12,NA,NA,NA,NA,-27,NA
+"Tyler County",2020-10-13,NA,NA,NA,NA,-13,NA
 "Upshur County",2020-02-15,8,-2,NA,NA,3,NA
 "Upshur County",2020-02-16,12,1,NA,NA,4,NA
 "Upshur County",2020-02-17,-4,-2,NA,NA,-10,3
@@ -39126,6 +39776,10 @@
 "Upshur County",2020-10-07,7,NA,NA,NA,-18,3
 "Upshur County",2020-10-08,15,NA,NA,NA,-21,3
 "Upshur County",2020-10-09,11,NA,NA,NA,-21,4
+"Upshur County",2020-10-10,11,NA,NA,NA,-7,2
+"Upshur County",2020-10-11,0,NA,NA,NA,-15,NA
+"Upshur County",2020-10-12,-2,NA,NA,NA,-23,5
+"Upshur County",2020-10-13,17,NA,NA,NA,-20,4
 "Upton County",2020-02-15,NA,-5,NA,NA,NA,NA
 "Upton County",2020-02-16,NA,12,NA,NA,NA,NA
 "Upton County",2020-02-17,NA,14,NA,NA,NA,NA
@@ -39392,6 +40046,10 @@
 "Uvalde County",2020-10-07,-13,NA,NA,NA,-24,3
 "Uvalde County",2020-10-08,-12,NA,NA,NA,-22,4
 "Uvalde County",2020-10-09,-14,-1,NA,NA,-24,3
+"Uvalde County",2020-10-10,-6,NA,NA,NA,-16,NA
+"Uvalde County",2020-10-11,-13,NA,NA,NA,-15,NA
+"Uvalde County",2020-10-12,-17,NA,NA,NA,-33,6
+"Uvalde County",2020-10-13,-17,NA,NA,NA,-32,6
 "Val Verde County",2020-02-15,1,-2,39,NA,-3,NA
 "Val Verde County",2020-02-16,6,3,20,NA,-1,NA
 "Val Verde County",2020-02-17,1,-4,24,NA,-35,7
@@ -39624,6 +40282,10 @@
 "Val Verde County",2020-10-07,-22,-13,NA,NA,-24,7
 "Val Verde County",2020-10-08,-20,-11,-8,NA,-25,7
 "Val Verde County",2020-10-09,-25,-14,NA,-11,-26,9
+"Val Verde County",2020-10-10,-22,-11,-13,NA,-12,4
+"Val Verde County",2020-10-11,-24,-18,36,NA,-20,4
+"Val Verde County",2020-10-12,-15,-17,-4,NA,-37,11
+"Val Verde County",2020-10-13,-23,-17,NA,NA,-27,8
 "Van Zandt County",2020-02-15,2,-1,-11,1,7,NA
 "Van Zandt County",2020-02-16,12,2,13,9,4,NA
 "Van Zandt County",2020-02-17,0,-1,NA,12,-14,3
@@ -39856,6 +40518,10 @@
 "Van Zandt County",2020-10-07,1,10,NA,11,-16,0
 "Van Zandt County",2020-10-08,10,11,NA,10,-19,2
 "Van Zandt County",2020-10-09,5,9,-16,0,-24,4
+"Van Zandt County",2020-10-10,25,22,14,8,-12,1
+"Van Zandt County",2020-10-11,9,9,-17,5,-12,2
+"Van Zandt County",2020-10-12,4,-1,-17,4,-28,5
+"Van Zandt County",2020-10-13,8,2,NA,7,-18,3
 "Victoria County",2020-02-15,3,3,NA,15,-4,-1
 "Victoria County",2020-02-16,6,2,NA,2,-3,-1
 "Victoria County",2020-02-17,4,2,NA,15,-17,5
@@ -40094,6 +40760,10 @@
 "Victoria County",2020-10-07,-14,-9,NA,37,-21,5
 "Victoria County",2020-10-08,-15,-10,NA,40,-21,5
 "Victoria County",2020-10-09,-16,-9,-22,26,-21,6
+"Victoria County",2020-10-10,-19,-9,NA,37,-12,2
+"Victoria County",2020-10-11,-17,-11,NA,34,-12,3
+"Victoria County",2020-10-12,-17,-12,NA,40,-24,6
+"Victoria County",2020-10-13,-16,-10,NA,38,-22,5
 "Walker County",2020-02-15,2,3,10,12,0,0
 "Walker County",2020-02-16,7,2,25,8,2,NA
 "Walker County",2020-02-17,7,-4,24,5,-15,5
@@ -40326,6 +40996,10 @@
 "Walker County",2020-10-07,-4,7,NA,24,-25,5
 "Walker County",2020-10-08,-2,3,99,27,-25,5
 "Walker County",2020-10-09,-8,2,78,22,-24,7
+"Walker County",2020-10-10,-11,1,78,29,-15,3
+"Walker County",2020-10-11,-10,1,111,32,-19,3
+"Walker County",2020-10-12,-7,-3,NA,35,-26,7
+"Walker County",2020-10-13,-1,2,104,27,-23,5
 "Waller County",2020-02-15,4,9,NA,27,1,NA
 "Waller County",2020-02-16,12,10,NA,28,-1,NA
 "Waller County",2020-02-17,7,12,NA,32,-10,3
@@ -40558,6 +41232,10 @@
 "Waller County",2020-10-07,-10,7,NA,17,-25,8
 "Waller County",2020-10-08,-14,5,NA,9,-26,9
 "Waller County",2020-10-09,-10,12,NA,13,-25,10
+"Waller County",2020-10-10,-1,13,NA,12,-11,3
+"Waller County",2020-10-11,-9,11,NA,9,-20,4
+"Waller County",2020-10-12,-13,7,NA,10,-25,8
+"Waller County",2020-10-13,-6,7,NA,13,-23,7
 "Ward County",2020-02-15,-2,-3,NA,36,9,NA
 "Ward County",2020-02-16,0,-1,NA,37,2,NA
 "Ward County",2020-02-17,3,-3,NA,38,-3,NA
@@ -40771,6 +41449,10 @@
 "Ward County",2020-10-07,-35,-40,NA,33,-35,NA
 "Ward County",2020-10-08,-36,-39,NA,42,-36,NA
 "Ward County",2020-10-09,-28,-40,NA,45,-35,NA
+"Ward County",2020-10-10,-38,-40,NA,65,-38,NA
+"Ward County",2020-10-11,NA,NA,NA,NA,-34,NA
+"Ward County",2020-10-12,-40,-39,NA,NA,-38,NA
+"Ward County",2020-10-13,-33,-44,NA,60,-32,NA
 "Washington County",2020-02-15,8,1,NA,NA,-3,NA
 "Washington County",2020-02-16,13,0,NA,NA,5,NA
 "Washington County",2020-02-17,6,-2,NA,NA,-9,NA
@@ -40984,6 +41666,10 @@
 "Washington County",2020-10-07,-13,1,NA,NA,-19,4
 "Washington County",2020-10-08,-9,-2,NA,NA,-19,8
 "Washington County",2020-10-09,-10,2,NA,NA,-19,6
+"Washington County",2020-10-10,6,2,NA,NA,-20,NA
+"Washington County",2020-10-11,9,2,NA,NA,-19,NA
+"Washington County",2020-10-12,-14,0,NA,NA,-21,6
+"Washington County",2020-10-13,-8,-4,NA,NA,-18,5
 "Webb County",2020-02-15,5,-2,-11,-1,0,-1
 "Webb County",2020-02-16,9,0,19,33,1,-1
 "Webb County",2020-02-17,3,-4,2,-2,18,-3
@@ -41222,6 +41908,10 @@
 "Webb County",2020-10-07,-25,-18,-49,-15,-31,10
 "Webb County",2020-10-08,-25,-15,-49,-10,-31,11
 "Webb County",2020-10-09,-26,-16,-49,-7,-28,11
+"Webb County",2020-10-10,-26,-14,-62,-9,-13,5
+"Webb County",2020-10-11,-28,-17,-54,-5,-13,5
+"Webb County",2020-10-12,-26,-21,-51,-8,-19,7
+"Webb County",2020-10-13,-28,-17,-42,-18,-30,11
 "Wharton County",2020-02-15,4,3,NA,-4,0,NA
 "Wharton County",2020-02-16,7,6,NA,1,3,NA
 "Wharton County",2020-02-17,6,3,NA,4,-16,3
@@ -41454,6 +42144,10 @@
 "Wharton County",2020-10-07,-10,0,NA,-12,-19,3
 "Wharton County",2020-10-08,-15,0,NA,0,-20,4
 "Wharton County",2020-10-09,-18,-5,NA,-6,-19,5
+"Wharton County",2020-10-10,-15,-7,NA,-8,-11,NA
+"Wharton County",2020-10-11,-16,4,NA,0,-12,NA
+"Wharton County",2020-10-12,-16,-8,NA,-4,-22,4
+"Wharton County",2020-10-13,-9,-5,NA,8,-20,4
 "Wheeler County",2020-03-27,-41,NA,NA,NA,NA,NA
 "Wichita County",2020-02-15,5,2,NA,-9,0,0
 "Wichita County",2020-02-16,10,3,NA,5,2,-1
@@ -41693,6 +42387,10 @@
 "Wichita County",2020-10-07,-5,-4,NA,7,-15,3
 "Wichita County",2020-10-08,-4,-8,NA,19,-13,4
 "Wichita County",2020-10-09,-10,-15,NA,-1,-16,4
+"Wichita County",2020-10-10,-14,-14,NA,9,-7,2
+"Wichita County",2020-10-11,-12,-10,NA,18,-9,2
+"Wichita County",2020-10-12,-6,-14,NA,1,-26,8
+"Wichita County",2020-10-13,-10,-14,NA,-1,-14,4
 "Wilbarger County",2020-02-15,5,0,NA,-6,2,NA
 "Wilbarger County",2020-02-16,9,16,NA,NA,NA,NA
 "Wilbarger County",2020-02-17,9,12,NA,17,-22,NA
@@ -41898,6 +42596,10 @@
 "Wilbarger County",2020-10-07,NA,NA,NA,-21,-17,NA
 "Wilbarger County",2020-10-08,NA,NA,NA,-1,-15,NA
 "Wilbarger County",2020-10-09,NA,NA,NA,-1,-20,NA
+"Wilbarger County",2020-10-10,NA,NA,NA,NA,-7,NA
+"Wilbarger County",2020-10-11,NA,NA,NA,NA,-17,NA
+"Wilbarger County",2020-10-12,NA,NA,NA,12,-24,NA
+"Wilbarger County",2020-10-13,NA,NA,NA,-18,-14,NA
 "Willacy County",2020-02-15,4,-2,NA,NA,-2,NA
 "Willacy County",2020-02-16,9,3,NA,NA,-4,NA
 "Willacy County",2020-02-17,8,-1,NA,NA,-19,NA
@@ -42111,6 +42813,10 @@
 "Willacy County",2020-10-07,NA,-10,NA,NA,-35,NA
 "Willacy County",2020-10-08,NA,-23,NA,NA,-37,NA
 "Willacy County",2020-10-09,NA,-15,NA,NA,-34,NA
+"Willacy County",2020-10-10,NA,NA,NA,NA,-9,NA
+"Willacy County",2020-10-11,NA,NA,NA,NA,-14,NA
+"Willacy County",2020-10-12,NA,-24,NA,NA,-39,NA
+"Willacy County",2020-10-13,NA,-13,NA,NA,-34,NA
 "Williamson County",2020-02-15,5,2,9,-8,1,0
 "Williamson County",2020-02-16,12,1,19,-6,-1,-1
 "Williamson County",2020-02-17,17,6,31,-5,-28,5
@@ -42349,6 +43055,10 @@
 "Williamson County",2020-10-07,-16,-9,15,-16,-40,14
 "Williamson County",2020-10-08,-15,-8,40,-16,-41,13
 "Williamson County",2020-10-09,-15,-4,23,-8,-39,12
+"Williamson County",2020-10-10,-19,-9,18,-1,-11,5
+"Williamson County",2020-10-11,-15,-12,-6,-5,-13,4
+"Williamson County",2020-10-12,-11,-9,20,-12,-49,14
+"Williamson County",2020-10-13,-13,-5,46,-21,-44,14
 "Wilson County",2020-02-15,4,6,NA,NA,2,NA
 "Wilson County",2020-02-16,4,6,NA,NA,-2,NA
 "Wilson County",2020-02-17,8,0,NA,NA,-24,6
@@ -42581,6 +43291,10 @@
 "Wilson County",2020-10-07,-5,-11,NA,NA,-23,7
 "Wilson County",2020-10-08,-9,-11,NA,NA,-25,9
 "Wilson County",2020-10-09,-12,NA,NA,NA,-24,8
+"Wilson County",2020-10-10,-9,-4,NA,NA,-14,4
+"Wilson County",2020-10-11,-12,-12,NA,NA,-20,5
+"Wilson County",2020-10-12,-3,-4,NA,NA,-37,11
+"Wilson County",2020-10-13,-11,-1,NA,NA,-25,9
 "Winkler County",2020-02-15,10,-1,NA,NA,12,NA
 "Winkler County",2020-02-16,2,2,NA,NA,NA,NA
 "Winkler County",2020-02-17,-8,-5,NA,NA,-12,NA
@@ -42794,6 +43508,10 @@
 "Winkler County",2020-10-07,NA,NA,NA,60,-26,NA
 "Winkler County",2020-10-08,NA,NA,NA,75,-31,NA
 "Winkler County",2020-10-09,NA,-43,NA,80,-31,NA
+"Winkler County",2020-10-10,NA,NA,NA,NA,-44,NA
+"Winkler County",2020-10-11,NA,NA,NA,NA,-39,NA
+"Winkler County",2020-10-12,NA,NA,NA,70,-39,NA
+"Winkler County",2020-10-13,NA,-46,NA,67,-30,NA
 "Wise County",2020-02-15,4,-1,-8,-2,4,0
 "Wise County",2020-02-16,7,-4,NA,4,4,NA
 "Wise County",2020-02-17,2,-2,NA,3,-17,3
@@ -43027,6 +43745,10 @@
 "Wise County",2020-10-07,5,3,NA,9,-18,4
 "Wise County",2020-10-08,1,11,NA,0,-21,4
 "Wise County",2020-10-09,4,7,NA,3,-19,2
+"Wise County",2020-10-10,2,13,NA,-8,-10,3
+"Wise County",2020-10-11,4,-3,NA,22,-10,3
+"Wise County",2020-10-12,-3,-1,NA,6,-33,8
+"Wise County",2020-10-13,4,-1,NA,8,-22,6
 "Wood County",2020-02-15,11,2,NA,NA,1,NA
 "Wood County",2020-02-16,6,5,NA,NA,2,NA
 "Wood County",2020-02-17,0,-4,NA,NA,-14,3
@@ -43259,6 +43981,10 @@
 "Wood County",2020-10-07,8,-1,NA,NA,-12,0
 "Wood County",2020-10-08,7,3,NA,NA,-14,0
 "Wood County",2020-10-09,3,5,NA,NA,-16,3
+"Wood County",2020-10-10,8,17,NA,NA,-1,2
+"Wood County",2020-10-11,4,6,NA,NA,-7,1
+"Wood County",2020-10-12,1,4,NA,NA,-23,5
+"Wood County",2020-10-13,5,3,NA,NA,-12,2
 "Yoakum County",2020-02-15,NA,9,NA,NA,NA,NA
 "Yoakum County",2020-02-16,NA,0,NA,NA,NA,NA
 "Yoakum County",2020-02-17,3,6,NA,NA,-11,NA
@@ -43426,6 +44152,8 @@
 "Yoakum County",2020-10-07,NA,NA,NA,NA,-16,NA
 "Yoakum County",2020-10-08,NA,NA,NA,NA,-19,NA
 "Yoakum County",2020-10-09,NA,NA,NA,NA,-21,NA
+"Yoakum County",2020-10-12,NA,NA,NA,NA,-28,NA
+"Yoakum County",2020-10-13,NA,NA,NA,NA,-18,NA
 "Young County",2020-02-15,-2,10,NA,NA,-2,NA
 "Young County",2020-02-16,-2,7,NA,NA,4,NA
 "Young County",2020-02-17,4,7,NA,NA,-16,NA
@@ -43639,6 +44367,10 @@
 "Young County",2020-10-07,NA,NA,NA,NA,-16,NA
 "Young County",2020-10-08,NA,NA,NA,NA,-23,NA
 "Young County",2020-10-09,-5,NA,NA,NA,-18,NA
+"Young County",2020-10-10,-1,NA,NA,NA,-19,NA
+"Young County",2020-10-11,NA,NA,NA,NA,-13,NA
+"Young County",2020-10-12,NA,NA,NA,NA,-34,NA
+"Young County",2020-10-13,-5,NA,NA,NA,-22,NA
 "Zapata County",2020-02-15,17,0,NA,NA,NA,NA
 "Zapata County",2020-02-16,33,3,NA,NA,NA,NA
 "Zapata County",2020-02-17,11,-9,NA,NA,3,NA
@@ -43806,6 +44538,8 @@
 "Zapata County",2020-10-07,NA,NA,NA,NA,-38,NA
 "Zapata County",2020-10-08,NA,NA,NA,NA,-37,NA
 "Zapata County",2020-10-09,NA,NA,NA,NA,-34,NA
+"Zapata County",2020-10-12,NA,NA,NA,NA,-37,NA
+"Zapata County",2020-10-13,NA,NA,NA,NA,-40,NA
 "Zavala County",2020-02-15,0,12,NA,NA,NA,NA
 "Zavala County",2020-02-16,NA,2,NA,NA,NA,NA
 "Zavala County",2020-02-17,NA,-7,NA,NA,-12,NA
@@ -43973,3 +44707,5 @@
 "Zavala County",2020-10-07,NA,NA,NA,NA,-30,NA
 "Zavala County",2020-10-08,NA,NA,NA,NA,-34,NA
 "Zavala County",2020-10-09,NA,NA,NA,NA,-31,NA
+"Zavala County",2020-10-12,NA,NA,NA,NA,-35,NA
+"Zavala County",2020-10-13,NA,NA,NA,NA,-29,NA
