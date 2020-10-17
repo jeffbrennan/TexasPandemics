@@ -600,7 +600,7 @@ schools %>%
 
 ```{r}
 # cmr tpr 
-tpr = readxl::read_excel('original-sources/historical/TPR/10-7.xlsx') %>% 
+tpr = read.csv('original-sources/historical/TPR/TPR_2020-10-07.csv') %>% 
   setNames(.[6, ]) %>% 
   filter(State == 'TX') %>% 
   mutate(County = gsub(' County, TX', '', County)) %>% 
