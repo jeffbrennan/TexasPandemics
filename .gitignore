@@ -1,7 +1,6 @@
 *.RData
 *.Rhistory
 *.Rproj.user
-.Rproj.user
 *.Rproj
 *.bat
 *.R
@@ -9,7 +8,7 @@
 *.txt
 *.zip
 *.ini
-/backend
+backend/
 estimates-TMC/
 original-sources/dshs-new-cases/
 dshs-scrape.py
@@ -17,3 +16,6 @@ dshs-scrape.py
 original-sources/school-reopening/
 .vscode/launch.json
 Rplots.pdf
+diagnostics/
+.Rproj.user
+*.png
