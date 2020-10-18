@@ -129,6 +129,19 @@ merged_city = subset(merged_city, Place_Code != 0 & Place_Code != 99990)[, 2:4]
 colnames(merged_city)[1] = 'FIPS'
 ```
 
+## State
+
+```{r}
+# source: https://www.census.gov/quickfacts/fact/table/TX/HSG860218#HSG860218
+# state_demo = 
+#   data.frame(Race = c('Black', 'Other', 'Asian', 'Other', 'Other', 'Hispanic', 'White'),
+#              PCT = c(.129, .01, .052, .001, .021, .397, .412)) %>% 
+#   group_by(Race) %>% 
+#   summarize(PCT = sum(PCT))
+# 
+# write.csv(state_demo, 'tableau/state_demographics.csv', row.names = FALSE)
+```
+
 
 # SCHOOL LEVEL
 
