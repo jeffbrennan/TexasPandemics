@@ -3,12 +3,41 @@ title: "diagnostics"
 author: "Jeffrey Brennan"
 date: "8/5/2020"
 output: html_document
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding, output_dir = "diagnostics/") })
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(comment = NA)
+# SETUP
 
+```{r, echo = FALSE}
+# performance analysis 
+# source: https://bookdown.org/yihui/rmarkdown-cookbook/time-chunk.html
+all_times <- list()  # store the time for each chunk
+knitr::knit_hooks$set(time_it = local({
+  now <- NULL
+  function(before, options) {
+    if (before) {
+      now <<- Sys.time()
+    } else {
+      res <- difftime(Sys.time(), now)
+      all_times[[options$label]] <<- res
+    }
+  }
+}))
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(time_it = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+```
+
+```{r, echo = FALSE}
+refactor_version = '2'
+```
+
+```{r, include=FALSE}
 library(tidyverse)
 library(ggpubr)
 ```
@@ -16,53 +45,53 @@ library(ggpubr)
 # TS & RT Thresholds
 
 ```{r}
-
-Plot_Threshold = function(df, criteria_name, plot_label) { 
-  criteria_vals = subset(df, Date == maxdate) %>% 
-    group_by(Date) %>% 
-    do(data.frame(t(quantile(unlist(df[, criteria_name]), probs = c(0.4, 0.5, 0.6, 0.7, 0.8)))))
-
-  criteria_features = merge(criteria_vals, df, by = 'Date')
-
-  ggplot(subset(criteria_features, Date == maxdate), aes_string(y = 'County', x = criteria_name)) + 
-  geom_point() + 
-  geom_vline(xintercept = criteria_features$X40[1], color = 'red') +
-  geom_vline(xintercept = criteria_features$X50.[1], color = 'orange') + 
-  geom_vline(xintercept = criteria_features$X60.[1], color = 'green') + 
-  geom_vline(xintercept = criteria_features$X70.[1], color = 'blue') + 
-  geom_vline(xintercept = criteria_features$X80.[1], color = 'purple') + 
-  labs(title = paste0(plot_label, ' by county quantile (Data from: ', maxdate-14, ')'),
-       subtitle = paste0('40%: ', round(criteria_features$X40.[1], 2), ' | ',
-                         '50%: ', round(criteria_features$X50.[1], 2), ' | ',
-                         '60%: ', round(criteria_features$X60.[1], 2), ' | ',
-                         '70%: ', round(criteria_features$X70.[1], 2), ' | ',
-                         '80%: ', round(criteria_features$X80.[1], 2)),
-       x = '', y ='') +
-  facet_wrap(~TSA, scales = 'free') +
-  ggpubr::theme_pubr(border = TRUE) +
-  theme(axis.text.y = element_text(size = 5)) + 
-  theme(axis.text.x = element_text(size = 6))
-  ggsave(paste0('statistical-output/diagnostics/', plot_label, '.png'),
-         width = 10, height = 10, dpi = 600)
-  }
-
-mydata = read.csv('tableau/county.csv')
-mydata$Date = as.Date(mydata$Date)
-maxdate = max(mydata$Date)
-case_features = subset(mydata, Date >= maxdate-14) %>%
-  group_by(County) %>%
-  mutate(criteria1 = mean(Cases_Daily)) %>% 
-  mutate(criteria2 = mean(Cases_Cumulative)) %>% 
-  mutate(criteria3 = (mean(Cases_Cumulative) / Population_DSHS) * 1000)%>%
-  mutate(criteria4 = max(Cases_Daily, na.rm = TRUE)) %>%
-  mutate(criteria5 = median(Cases_Daily)) %>%
-  dplyr::select(County, Date, PHR, TSA, contains('Criteria'))
-
-Plot_Threshold(case_features, 'criteria1', 'mean(Cases_Daily)')
-Plot_Threshold(case_features, 'criteria2', 'mean(Cases_Cumulative)')
-Plot_Threshold(case_features, 'criteria3', 'mean(Cases_Cumulative) by Population_DSHS x 1000')
-Plot_Threshold(case_features, 'criteria4', 'max(Cases_Daily)')
-Plot_Threshold(case_features, 'criteria5', 'median(Cases_Daily)')
+# 
+# Plot_Threshold = function(df, criteria_name, plot_label) { 
+#   criteria_vals = subset(df, Date == maxdate) %>% 
+#     group_by(Date) %>% 
+#     do(data.frame(t(quantile(unlist(df[, criteria_name]), probs = c(0.4, 0.5, 0.6, 0.7, 0.8)))))
+# 
+#   criteria_features = merge(criteria_vals, df, by = 'Date')
+# 
+#   ggplot(subset(criteria_features, Date == maxdate), aes_string(y = 'County', x = criteria_name)) + 
+#   geom_point() + 
+#   geom_vline(xintercept = criteria_features$X40[1], color = 'red') +
+#   geom_vline(xintercept = criteria_features$X50.[1], color = 'orange') + 
+#   geom_vline(xintercept = criteria_features$X60.[1], color = 'green') + 
+#   geom_vline(xintercept = criteria_features$X70.[1], color = 'blue') + 
+#   geom_vline(xintercept = criteria_features$X80.[1], color = 'purple') + 
+#   labs(title = paste0(plot_label, ' by county quantile (Data from: ', maxdate-14, ')'),
+#        subtitle = paste0('40%: ', round(criteria_features$X40.[1], 2), ' | ',
+#                          '50%: ', round(criteria_features$X50.[1], 2), ' | ',
+#                          '60%: ', round(criteria_features$X60.[1], 2), ' | ',
+#                          '70%: ', round(criteria_features$X70.[1], 2), ' | ',
+#                          '80%: ', round(criteria_features$X80.[1], 2)),
+#        x = '', y ='') +
+#   facet_wrap(~TSA, scales = 'free') +
+#   ggpubr::theme_pubr(border = TRUE) +
+#   theme(axis.text.y = element_text(size = 5)) + 
+#   theme(axis.text.x = element_text(size = 6))
+#   ggsave(paste0('diagnostics/', plot_label, '.png'),
+#          width = 10, height = 10, dpi = 600)
+#   }
+# 
+# mydata = read.csv('tableau/county.csv')
+# mydata$Date = as.Date(mydata$Date)
+# maxdate = max(mydata$Date)
+# case_features = subset(mydata, Date >= maxdate-14) %>%
+#   group_by(County) %>%
+#   mutate(criteria1 = mean(Cases_Daily)) %>% 
+#   mutate(criteria2 = mean(Cases_Cumulative)) %>% 
+#   mutate(criteria3 = (mean(Cases_Cumulative) / Population_DSHS) * 1000)%>%
+#   mutate(criteria4 = max(Cases_Daily, na.rm = TRUE)) %>%
+#   mutate(criteria5 = median(Cases_Daily)) %>%
+#   dplyr::select(County, Date, PHR, TSA, contains('Criteria'))
+# 
+# Plot_Threshold(case_features, 'criteria1', 'mean(Cases_Daily)')
+# Plot_Threshold(case_features, 'criteria2', 'mean(Cases_Cumulative)')
+# Plot_Threshold(case_features, 'criteria3', 'mean(Cases_Cumulative) by Population_DSHS x 1000')
+# Plot_Threshold(case_features, 'criteria4', 'max(Cases_Daily)')
+# Plot_Threshold(case_features, 'criteria5', 'median(Cases_Daily)')
 ```
 
 
@@ -446,109 +475,109 @@ names(validation_out$TSA) = tsa_sublevels
 names(validation_out$State) = state_sublevels
 
 validation_json = toJSON(validation_out, auto_unbox = TRUE)
-write(validation_json, file = 'statistical-output/diagnostics/validation.json')
+write(validation_json, file = 'diagnostics/validation.json')
 ```
 
 
 # special requests
 
 ```{r, fig.height = 12, fig.width = 8}
-demo = read.csv('original-sources/census/county_demo.csv')
-
-demo_summary = demo %>% 
-  filter(CTYNAME == 'Harris County' & YEAR == '11' & AGEGRP != 0) %>%
-  mutate(AGEGRP_TEST = ifelse((AGEGRP %% 2) != 0, AGEGRP + 1, AGEGRP)) %>%
-  group_by(AGEGRP_TEST) %>% 
-  mutate_at(vars(8:ncol(demo)), funs(sum)) %>% 
-  filter((AGEGRP %% 2) != 0) %>% 
-  mutate(AGEGRP = dplyr::recode(AGEGRP,  `1` = '0-9', `3` = '10-19', `5` = '20-29',
-                                `7` = '30-39', `9` = '40-49', `11` = '50-59',
-                                `13` = '60-69', `15` = '70-79', `17` = '80+')) %>%
-  gather('demographic', 'value', 9:ncol(demo)) %>% 
-  mutate(demo_group = gsub('\\_.*', '', demographic)) %>%
-  group_by(demo_group, AGEGRP) %>% 
-  summarize(total = sum(value)) %>% 
-  filter(demo_group %in% c('WA', 'BA', 'IA', 'AA', 'NA', 'NH', 'H')) %>% 
-  mutate(demo_group = recode(demo_group, 'WA' = 'White', 'BA' = 'Black',
-                             'IA' = 'American Indian & Alaska Native',
-                             'AA' = 'Asian', 'NA' = 'Native Hawaiian & Pacific Islander',
-                             'NH' = 'Not Hispanic', 'H' = 'Hispanic')) %>% 
-  mutate(pct = prop.table(total))
-
-write.csv(demo_summary, 'harris_demographics.csv', row.names = F)
-
-ggplot(demo_summary, aes(x = AGEGRP, y = total, fill = demo_group)) + 
-  geom_bar(stat = 'identity') +
-  labs(title = 'Age X Race - Harris County') + 
-  geom_text(aes(label = round(pct, 2))) + 
-  facet_wrap(~demo_group, ncol = 1, scales = 'free') + 
-  theme_pubr() + 
-  theme(legend.position = 'right')
-
-
-age_summary = demo %>%
-  filter(CTYNAME == 'Harris County' & YEAR == '11' & AGEGRP != 0) %>%
-  mutate(AGEGRP_TEST = ifelse((AGEGRP %% 2) != 0, AGEGRP + 1, AGEGRP)) %>%
-  group_by(AGEGRP_TEST) %>% 
-  mutate_at(vars(8:ncol(demo)), funs(sum)) %>% 
-  filter((AGEGRP %% 2) != 0) %>% 
-  mutate(AGEGRP = dplyr::recode(AGEGRP,  `1` = '0-9', `3` = '10-19', `5` = '20-29',
-                                `7` = '30-39', `9` = '40-49', `11` = '50-59',
-                                `13` = '60-69', `15` = '70-79', `17` = '80+')) %>% 
-  dplyr::select(c(AGEGRP, TOT_POP))
+# demo = read.csv('original-sources/census/county_demo.csv')
+# 
+# demo_summary = demo %>% 
+#   filter(CTYNAME == 'Harris County' & YEAR == '11' & AGEGRP != 0) %>%
+#   mutate(AGEGRP_TEST = ifelse((AGEGRP %% 2) != 0, AGEGRP + 1, AGEGRP)) %>%
+#   group_by(AGEGRP_TEST) %>% 
+#   mutate_at(vars(8:ncol(demo)), funs(sum)) %>% 
+#   filter((AGEGRP %% 2) != 0) %>% 
+#   mutate(AGEGRP = dplyr::recode(AGEGRP,  `1` = '0-9', `3` = '10-19', `5` = '20-29',
+#                                 `7` = '30-39', `9` = '40-49', `11` = '50-59',
+#                                 `13` = '60-69', `15` = '70-79', `17` = '80+')) %>%
+#   gather('demographic', 'value', 9:ncol(demo)) %>% 
+#   mutate(demo_group = gsub('\\_.*', '', demographic)) %>%
+#   group_by(demo_group, AGEGRP) %>% 
+#   summarize(total = sum(value)) %>% 
+#   filter(demo_group %in% c('WA', 'BA', 'IA', 'AA', 'NA', 'NH', 'H')) %>% 
+#   mutate(demo_group = recode(demo_group, 'WA' = 'White', 'BA' = 'Black',
+#                              'IA' = 'American Indian & Alaska Native',
+#                              'AA' = 'Asian', 'NA' = 'Native Hawaiian & Pacific Islander',
+#                              'NH' = 'Not Hispanic', 'H' = 'Hispanic')) %>% 
+#   mutate(pct = prop.table(total))
+# 
+# write.csv(demo_summary, 'harris_demographics.csv', row.names = F)
+# 
+# ggplot(demo_summary, aes(x = AGEGRP, y = total, fill = demo_group)) + 
+#   geom_bar(stat = 'identity') +
+#   labs(title = 'Age X Race - Harris County') + 
+#   geom_text(aes(label = round(pct, 2))) + 
+#   facet_wrap(~demo_group, ncol = 1, scales = 'free') + 
+#   theme_pubr() + 
+#   theme(legend.position = 'right')
+# 
+# 
+# age_summary = demo %>%
+#   filter(CTYNAME == 'Harris County' & YEAR == '11' & AGEGRP != 0) %>%
+#   mutate(AGEGRP_TEST = ifelse((AGEGRP %% 2) != 0, AGEGRP + 1, AGEGRP)) %>%
+#   group_by(AGEGRP_TEST) %>% 
+#   mutate_at(vars(8:ncol(demo)), funs(sum)) %>% 
+#   filter((AGEGRP %% 2) != 0) %>% 
+#   mutate(AGEGRP = dplyr::recode(AGEGRP,  `1` = '0-9', `3` = '10-19', `5` = '20-29',
+#                                 `7` = '30-39', `9` = '40-49', `11` = '50-59',
+#                                 `13` = '60-69', `15` = '70-79', `17` = '80+')) %>% 
+#   dplyr::select(c(AGEGRP, TOT_POP))
 ```
 
 ```{r}
-county = read.csv('combined-datasets/county.csv') 
-Q_df = county %>%
-  mutate(Date = as.Date(Date)) %>%
-  dplyr::filter(Date == max(Date)) %>%
-  dplyr::filter(TSA == 'Q') %>%
-  dplyr::select(County, Population_DSHS, TSA) %>% 
-  arrange(desc(Population_DSHS)) %>% 
-  mutate(Q_POP = sum(Population_DSHS))
- 
- Q_pop = Q_df$Q_POP[1]
- 
-TMC_df = county %>%
-  mutate(Date = as.Date(Date)) %>% 
-  dplyr::filter(Date == max(Date)) %>%
-  dplyr::filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend',
-                              'Galveston', 'Harris', 'Liberty', 'Montgomery', 'Waller')) %>%
-  dplyr::select(County, Population_DSHS, TSA, Cases_Daily, Date) %>% 
-  arrange(desc(Population_DSHS)) %>% 
-  mutate(TMC_POP = sum(Population_DSHS))
-
-TMC_pop = TMC_df$TMC_POP[1]
-
-
-# ICU hospitalizations from TSA Q (8/31)
-hosp_tsa = read.csv('combined-datasets/tsa.csv')
-Q_ICU = hosp_tsa %>%
-  mutate(Date = as.Date(Date)) %>%
-  dplyr::filter(Date == max(Date) & TSA == 'Q') %>%
-  dplyr::select(Hospitalizations_ICU) %>% unlist()
-
-# TMC dashboard value - 9/20
-TMC_ICU = 154
-
-# proposed TMC reporting and ICU share of surrounding 9 counties
-TMC_coverage = 0.75
-
-# 1.1 - Surrounding 9 county area has larger population than TSA Q
-TMC_Q_ratio = round(TMC_pop / Q_pop, 2)
-
-# expected TSA Q hosp assuming above values are accurate
-Q_expected = (TMC_ICU / TMC_coverage) / TMC_Q_ratio
-Q_expected
-# actual
-Q_ICU
-
-# actual TMC_coverage
-round(TMC_ICU / Q_ICU, 2) 
-
-# expected / actual
-Q_expected / Q_ICU
+# county = read.csv('combined-datasets/county.csv') 
+# Q_df = county %>%
+#   mutate(Date = as.Date(Date)) %>%
+#   dplyr::filter(Date == max(Date)) %>%
+#   dplyr::filter(TSA == 'Q') %>%
+#   dplyr::select(County, Population_DSHS, TSA) %>% 
+#   arrange(desc(Population_DSHS)) %>% 
+#   mutate(Q_POP = sum(Population_DSHS))
+#  
+#  Q_pop = Q_df$Q_POP[1]
+#  
+# TMC_df = county %>%
+#   mutate(Date = as.Date(Date)) %>% 
+#   dplyr::filter(Date == max(Date)) %>%
+#   dplyr::filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend',
+#                               'Galveston', 'Harris', 'Liberty', 'Montgomery', 'Waller')) %>%
+#   dplyr::select(County, Population_DSHS, TSA, Cases_Daily, Date) %>% 
+#   arrange(desc(Population_DSHS)) %>% 
+#   mutate(TMC_POP = sum(Population_DSHS))
+# 
+# TMC_pop = TMC_df$TMC_POP[1]
+# 
+# 
+# # ICU hospitalizations from TSA Q (8/31)
+# hosp_tsa = read.csv('combined-datasets/tsa.csv')
+# Q_ICU = hosp_tsa %>%
+#   mutate(Date = as.Date(Date)) %>%
+#   dplyr::filter(Date == max(Date) & TSA == 'Q') %>%
+#   dplyr::select(Hospitalizations_ICU) %>% unlist()
+# 
+# # TMC dashboard value - 9/20
+# TMC_ICU = 154
+# 
+# # proposed TMC reporting and ICU share of surrounding 9 counties
+# TMC_coverage = 0.75
+# 
+# # 1.1 - Surrounding 9 county area has larger population than TSA Q
+# TMC_Q_ratio = round(TMC_pop / Q_pop, 2)
+# 
+# # expected TSA Q hosp assuming above values are accurate
+# Q_expected = (TMC_ICU / TMC_coverage) / TMC_Q_ratio
+# Q_expected
+# # actual
+# Q_ICU
+# 
+# # actual TMC_coverage
+# round(TMC_ICU / Q_ICU, 2) 
+# 
+# # expected / actual
+# Q_expected / Q_ICU
 ```
 
 ```{r}
@@ -587,6 +616,8 @@ county %>%
   arrange(County, Date)
 ```
 
+# School districts
+
 ```{r}
 schools = read.csv('tableau/district_school_reopening.csv')
 
@@ -595,57 +626,91 @@ schools %>%
   dplyr::select(Total_Enrollment, Cases_Cumulative_GRADE_4_6, Cases_Cumulative_GRADE_EE_3, Cases_Cumulative_GRADE_7_12, Cases_Cumulative_Staff)
 ```
 
-
 # TPR comparison
 
 ```{r}
-# cmr tpr 
-tpr = read.csv('original-sources/historical/TPR/TPR_2020-10-07.csv') %>% 
-  setNames(.[6, ]) %>% 
-  filter(State == 'TX') %>% 
-  mutate(County = gsub(' County, TX', '', County)) %>% 
-  dplyr::select(1, 7, 8, 9) %>% 
-  mutate_at(c(2,3,4), as.numeric) %>% 
-  setNames(c('County', 'Tests', 'Test_Rate', 'TPR_CMS'))
-
-county_tpr = county %>% 
-  group_by(County) %>%
-  mutate(Cases_Cumulative_daily = as.numeric(c(Cases_Cumulative[1], diff(Cases_Cumulative)))) %>%
-  filter(Date >= as.Date('2020-09-24') & Date <= as.Date('2020-10-07')) %>% 
-  select(County, TSA_Name, Tests_Daily, Cases_Cumulative, Cases_Cumulative_daily, Cases_Daily) %>% 
-  group_by(County, TSA_Name) %>% 
-  summarize(TPR_new_cases = sum(Cases_Daily, na.rm=T) / sum(Tests_Daily, na.rm=T),
-            TPR_cumulative_cases = sum(Cases_Cumulative_daily, na.rm=T) / sum(Tests_Daily, na.rm=T)) %>% 
-  merge(., tpr, by = 'County') %>%
-  mutate(TPR_new_ratio = TPR_new_cases / TPR_CMS,
-         TPR_cumulative_ratio = TPR_cumulative_cases / TPR_CMS) %>%
-  dplyr::select(1,2,8,9) %>%
-  reshape2::melt(c('County', 'TSA_Name')) %>% 
-  na.omit()
-
-ggplot(county_tpr, aes(x = County, y = value, color = variable)) + 
-  geom_point(alpha=0.3, size = 2) + 
-  geom_hline(yintercept = 1, color = 'black', linetype = 'dashed') +
-  scale_color_manual(values = c('red', 'black')) + 
-  # facet_wrap(~ TSA_Name, scales = 'free') + 
-  theme_pubr() + 
-  theme(axis.text.y = element_text(size = 8),
-        axis.text.x = element_text(size = 8, angle = -90))
-
-ggsave('statistical-output/diagnostics/TPR.png', dpi=800, width = 20, height = 5)
-
-county_tpr %>% 
-  filter(variable == 'TPR_new_ratio') %>% 
-  select(value) %>%
-  unlist() %>%
-  fivenum() %>% 
-  round(3)
-
-county_tpr %>% 
-  filter(variable == 'TPR_cumulative_ratio') %>% 
-  select(value) %>% 
-  unlist() %>% 
-  fivenum() %>% 
-  round(3)
+# tpr = read.csv('original-sources/historical/TPR/TPR_2020-10-07.csv')
+# 
+# county_tpr = county %>% 
+#   group_by(County) %>%
+#   mutate(Cases_Cumulative_daily = as.numeric(c(Cases_Cumulative[1], diff(Cases_Cumulative)))) %>%
+#   filter(Date >= as.Date('2020-09-24') & Date <= as.Date('2020-10-07')) %>% 
+#   select(County, TSA_Name, Tests_Daily, Cases_Cumulative, Cases_Cumulative_daily, Cases_Daily) %>% 
+#   group_by(County, TSA_Name) %>% 
+#   summarize(TPR_new_cases = sum(Cases_Daily, na.rm=T) / sum(Tests_Daily, na.rm=T),
+#             TPR_cumulative_cases = sum(Cases_Cumulative_daily, na.rm=T) / sum(Tests_Daily, na.rm=T)) %>% 
+#   merge(., tpr, by = 'County') %>%
+#   mutate(TPR_new_ratio = TPR_new_cases / TPR_CMS,
+#          TPR_cumulative_ratio = TPR_cumulative_cases / TPR_CMS) %>%
+#   dplyr::select(1,2,8,9) %>%
+#   mutate(County_Group = cut(as.numeric(rownames(.)), 6)) %>% 
+#   reshape2::melt(c('County', 'County_Group', 'TSA_Name')) %>%
+#   na.omit()
+# 
+# ggplot(county_tpr, aes(x = County, y = value, color = variable)) + 
+#   geom_point(alpha=0.3, size = 4) + 
+#   geom_hline(yintercept = 1, color = 'black', linetype = 'dashed') +
+#   scale_color_manual(values = c('red', 'black')) + 
+#   # facet_wrap(~ TSA_Name, scales = 'free') +
+#   theme_pubr() + 
+#   facet_wrap(~ County_Group, nrow=2, scales = 'free_x') + 
+#   theme(axis.text.y = element_text(size = 12),
+#         axis.text.x = element_text(size = 12, angle = -45, hjust = 0),
+#         strip.background = element_blank(),
+#         strip.text.x = element_blank())
+# 
+# ggsave('diagnostics/TPR.png', dpi=800, width = 15, height = 10)
+# 
+# county_tpr %>% 
+#   filter(variable == 'TPR_new_ratio') %>% 
+#   select(value) %>%
+#   unlist() %>%
+#   fivenum() %>% 
+#   round(3)
+# 
+# county_tpr %>% 
+#   filter(variable == 'TPR_cumulative_ratio') %>% 
+#   select(value) %>% 
+#   unlist() %>% 
+#   fivenum() %>% 
+#   round(3)
 ```
+
+# Performance review
+
+```{r, fig.width=12, fig.height=6}
+time_flat = unlist(all_times)
+print(time_flat)
+
+names(time_flat) = NULL
+
+time_df = data.frame('time_sec' = time_flat) %>%
+  mutate(chunk = as.numeric(rownames(.)) + 2) %>%
+  mutate(version = refactor_version) %>%
+  mutate(script = 'covid-scraping.rmd') %>%
+  arrange(desc(time_sec))
+
+ggplot(time_df, aes(y = time_sec, x = chunk, fill = time_sec)) + 
+  geom_bar(stat = 'identity') + 
+  geom_text(aes(label = chunk), position=position_dodge(width = 0.9), vjust = -0.25) + 
+  labs(x = 'chunk #', y = 'runtime (seconds)') + 
+  scale_fill_gradient(low = 'gray80', high = 'tomato1') + 
+  theme_pubr() + 
+  theme(axis.text.x = element_blank(),
+        legend.position = 'none')
+```
+
+## total run time
+
+```{r}
+time_df %>% summarize(sum(time_sec))
+```
+
+
+```{r}
+write.csv(time_df, paste0('diagnostics/diagnostics_runtime_', refactor_version, '.csv'),
+          row.names = FALSE)
+```
+
+
 

@@ -4,27 +4,60 @@ author: 'Jeffrey Brennan'
 output: html_document
 editor_options: 
   chunk_output_type: console
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding, output_dir = "diagnostics/") })
 ---
 
 # SETUP
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r, echo = FALSE}
+# performance analysis 
+# source: https://bookdown.org/yihui/rmarkdown-cookbook/time-chunk.html
+all_times <- list()  # store the time for each chunk
+knitr::knit_hooks$set(time_it = local({
+  now <- NULL
+  function(before, options) {
+    if (before) {
+      now <<- Sys.time()
+    } else {
+      res <- difftime(Sys.time(), now)
+      all_times[[options$label]] <<- res
+    }
+  }
+}))
+```
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(time_it = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(comment = NA)
+```
+
+```{r, echo = FALSE}
+refactor_version = '1'
+```
+
+```{r}
+# data manipulation
 library(data.table)
 library(readxl)
 library(writexl)
 library(dplyr)
 library(stringr)
-library(jsonlite)
+library(zoo)
+
+# plotting
 library(ggplot2)
 library(ggpubr)
-library(zoo)
+
 # web scraping
 library(rvest)
+library(jsonlite)
 ```
 
-```{r helper files & functions}
+```{r}
 # Grab every sheet from an excel file and convert to list of dataframes
 # https://stackoverflow.com/questions/12945687/read-all-worksheets-in-an-excel-workbook-into-an-r-list-with-data-frames
 read_excel_allsheets = function(filename, tibble = FALSE) {
@@ -95,6 +128,7 @@ merged_city = merge(city_pops, county_fips, by = 'County_Code')
 merged_city = subset(merged_city, Place_Code != 0 & Place_Code != 99990)[, 2:4]
 colnames(merged_city)[1] = 'FIPS'
 ```
+
 
 # SCHOOL LEVEL
 
@@ -1365,7 +1399,6 @@ write.csv(hosp_tsa, file = 'tableau/hospitalizations_tsa.csv', row.names = F)
 
 ```{r}
 write.csv(phr_df, file = 'combined-datasets/phr.csv', row.names = F)
-# write.csv(phr_df, file = 'tableau/phr.csv', row.names = F)
 ```
 
 ## HHSC
@@ -1392,3 +1425,39 @@ write_xlsx(state_out, path = "combined-datasets/state.xlsx")
 ```{r}
 write.csv(demo_stacked_combined, file = 'tableau/stacked_demographics.csv', row.names = FALSE)
 ```
+
+# Performance review
+
+```{r, fig.width=12, fig.height=6}
+time_flat = unlist(all_times)
+names(time_flat) = NULL
+
+time_df = data.frame('time_sec' = time_flat) %>%
+  mutate(chunk = as.numeric(rownames(.)) + 2) %>%
+  mutate(version = refactor_version) %>%
+  mutate(script = 'covid-scraping.rmd') %>%
+  arrange(desc(time_sec))
+
+ggplot(time_df, aes(y = time_sec, x = chunk, fill = time_sec)) + 
+  geom_bar(stat = 'identity') + 
+  geom_text(aes(label = chunk), position=position_dodge(width = 0.9), vjust = -0.25) + 
+  labs(x = 'chunk #', y = 'runtime (seconds)') + 
+  scale_fill_gradient(low = 'gray80', high = 'tomato1') + 
+  theme_pubr() + 
+  theme(axis.text.x = element_blank(),
+        legend.position = 'none')
+```
+
+## total run time
+
+```{r}
+time_df %>% summarize(sum(time_sec))
+```
+
+
+```{r}
+write.csv(time_df, paste0('diagnostics/scrape_runtime_', refactor_version, '.csv'),
+          row.names = FALSE)
+```
+
+
