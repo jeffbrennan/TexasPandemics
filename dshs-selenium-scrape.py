@@ -57,12 +57,12 @@ def scrape_data(i, county, driver, start_files, case_directory):
     site_url = f'https://tabexternal.dshs.texas.gov/t/THD/views/COVIDExternalQC/COVIDTrends?County={county}&:isGuestRedirectFromVizportal=y&:embed=y'
     
     # if first run or multiple of 25, open as new window, otherwise open new tab (3x performance boost)
-    if (i == 1) or (i%25 == 0):
+    if (i == 1) or (i%30 == 0):
         driver.get(site_url)
     else:   
         driver.execute_script(f'''window.open("{site_url}","_blank");''')
         driver.switch_to.window(driver.window_handles[-1])
-        time.sleep(0.5)
+        # time.sleep(0.5)
 
     # use CSS selectors for small performance gain [obtained via https://addons.mozilla.org/en-US/firefox/addon/selenium-ide/]
     wait = WebDriverWait(driver, 3)
@@ -74,7 +74,7 @@ def scrape_data(i, county, driver, start_files, case_directory):
     # only exit once file has been added
     while True:
         if len([i for i in os.listdir(case_directory) if i.endswith('.csv')]) == start_files:
-            time.sleep(1)
+            time.sleep(0.8)
         else:
             break
 
@@ -98,9 +98,9 @@ def setup():
     base_directory = r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID\original-sources'
     case_directory = f'{base_directory}\dshs-new-cases'
     
-    # wipe directory if files > 10000 sec old
+    # wipe directory from previous day (> 10000 sec old) or TMC run (< 10)
     counties = glob.glob(f'{case_directory}\*')
-    [os.remove(f) for f in counties if (start_time - os.path.getctime(f)) > 10000]
+    [os.remove(f) for f in counties if ((start_time - os.path.getctime(f)) > 10000 or len(counties) < 10)]
     
     if sys.argv[1] == 'all': 
         counties = pd.read_excel(f'{base_directory}\county_classifications.xlsx',
@@ -118,7 +118,7 @@ def main():
     for i, county in enumerate(counties, 1):
         if i == 1: 
             driver = build_selenium(case_directory)
-        elif i%25 == 0: 
+        elif i%30 == 0: 
             driver.quit()
             driver = build_selenium(case_directory)
         
