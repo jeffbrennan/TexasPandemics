@@ -336,10 +336,10 @@ def main():
 
 	# VALIDATION
 	try:
-		validation = json.load(open('statistical-output/diagnostics/validation.json', 'r'))
+		validation = json.load(open('diagnostics/validation.json', 'r'))
 		validation_block = build_validation_block(validation)
 		post_slack_message('validation', validation_block)
-		os.remove('statistical-output/diagnostics/validation.json')
+		os.remove('diagnostics/validation.json')
 	except FileNotFoundError:
 		post_slack_message('Validation file not created - scraping failed')
 
