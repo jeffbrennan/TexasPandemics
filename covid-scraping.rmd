@@ -36,7 +36,7 @@ knitr::opts_chunk$set(comment = NA)
 ```
 
 ```{r, echo = FALSE}
-refactor_version = '1'
+refactor_version = '2'
 ```
 
 ```{r}
@@ -442,10 +442,22 @@ DSHS_active_cases_long = reshape::melt(DSHS_active_cases_time, id = 'County') %>
 ## childcare
 
 ```{r}
-temp = tempfile()
-download.file('https://apps.hhs.texas.gov/documents/CCR/texas-child-care-facility-based-covid-status.xls',
+# runtime bottleneck: switch pull to once per week (all data is stored in one file)
+Get_Childcare_Data = function(date_out) { 
+  if (date_out %in% seq(as.Date('2020-10-18'), length.out = 52, by = 'week')) { 
+    temp = tempfile()
+    download.file('https://apps.hhs.texas.gov/documents/CCR/texas-child-care-facility-based-covid-status.xls',
               temp, mode = 'wb') 
-county_childcare = read_excel_allsheets(temp)
+    county_childcare = read_excel_allsheets(temp)
+    county_childcare_df = rbindlist(lapply(county_childcare, Clean_Childcare))
+    write.csv(county_childcare_df, 'original-sources/county_childcare.csv', row.names = FALSE)
+  } else { 
+    county_childcare_df = read.csv('original-sources/county_childcare.csv') %>% 
+      mutate(Date = as.Date(Date))
+    }
+  return(county_childcare_df)
+}    
+
 
 Clean_Childcare = function(df, data_type) { 
   date = as.Date(gsub('Data current as of ', '', colnames(df)[1]), '%m/%d/%y')
@@ -455,30 +467,22 @@ Clean_Childcare = function(df, data_type) {
   
   grouped_df = df %>% 
     filter(County != 'Licensed Child Care Center' & County != 'School-Age Program') %>%
+    mutate(County = str_to_title(County)) %>% 
+    mutate(County =  gsub('Deafsmith', 'Deaf Smith', County)) %>% 
+    mutate(County =  gsub('Dewitt', 'DeWitt', County)) %>% 
+    mutate(County =  gsub('Mcculloch', 'McCulloch', County)) %>% 
+    mutate(County =  gsub('Mclennan', 'McLennan', County)) %>% 
     group_by(County) %>%
     dplyr::select(2:5) %>%
     mutate_all(as.numeric) %>% 
-    summarise_all(sum)
- 
-  colnames(grouped_df) = c('County', 'Childcare_Child_Cases_Daily', 'Childcare_Employee_Cases_Daily',
-                   'Childcare_Child_Cases_Cumulative', 'Childcare_Employee_Cases_Cumulative')
-  
-  grouped_df[['Date']] = date
-  
+    summarise_all(sum) %>% 
+    setNames(c('County', 'Childcare_Child_Cases_Daily', 'Childcare_Employee_Cases_Daily',
+               'Childcare_Child_Cases_Cumulative', 'Childcare_Employee_Cases_Cumulative')) %>% 
+    mutate(Date = date)
   return(grouped_df)
 }
 
-county_childcare_df = rbindlist(lapply(county_childcare, Clean_Childcare))
-
-# fix all caps county names
-county_childcare_df$County = stringr::str_to_title(county_childcare_df$County)
-
-# manually fix exceptions using DSHS_cases_long as dictionary
-mismatched_counties = setdiff(unique(county_childcare_df$County), unique(DSHS_cases_long$County))
-county_childcare_df$County = gsub('Deafsmith', 'Deaf Smith', county_childcare_df$County)
-county_childcare_df$County = gsub('Dewitt', 'DeWitt', county_childcare_df$County)
-county_childcare_df$County = gsub('Mcculloch', 'McCulloch', county_childcare_df$County)
-county_childcare_df$County = gsub('Mclennan', 'McLennan', county_childcare_df$County)
+county_childcare_df = Get_Childcare_Data(date_out)
 ```
 
 ## computed
@@ -603,15 +607,11 @@ Get_TPR = function() {
   tpr_url = page %>% html_nodes('a') %>% html_attr('href') %>%
     .[grepl('download', .)] %>% .[1] %>% gsub('%2F', '/', .)
   
-  temp = tempfile()
-  download.file(tpr_url, temp, mode = 'wb')
-  tpr_df = read_excel(unzip(temp, list = TRUE)[['Name']][1])
-  unlink(temp)
-  rm(temp)
-  
-  
-  tpr_df = read_excel(file)
-  
+  # temp dir needed for unzip to keep directory clean
+  temp_dir = tempdir()
+  temp_file = tempfile()
+  download.file(tpr_url, temp_file, mode = 'wb')
+  tpr_df = read_excel(unzip(temp_file, exdir = temp_dir)[[1]])
   tpr_date = as.Date(str_match(tpr_df[2,2], '-(.*)')[2], '%B %d')
   print(tpr_date)
   
