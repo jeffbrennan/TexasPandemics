@@ -289,9 +289,9 @@ date_out = ifelse((Sys.time() < as.POSIXct(paste0(Sys.Date(), '16:00'), tz = 'Am
                    Sys.Date() - 1,
                    Sys.Date())
 
-data_urls = c('https://tabexternal.dshs.texas.gov/t/THD/views/COVIDExternalQC/COVIDTrends?:isGuestRedirectFromVizportal=y&:embed=y|CASES>',
+data_urls = c('<https://tabexternal.dshs.texas.gov/t/THD/views/COVIDExternalQC/COVIDTrends?:isGuestRedirectFromVizportal=y&:embed=y|CASES>',
               '<https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyFatalityCountData.xlsx|DEATHS>',
-              'https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsbyCounty.xlsx|TESTS>',
+              '<https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsbyCounty.xlsx|TESTS>',
               '<https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv|GOOGLE MOBILITY>',
               '<https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx|TOTAL HOSPITALIZATIONS>',
               '<https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx|ICU HOSPITALIZATIONS>',
