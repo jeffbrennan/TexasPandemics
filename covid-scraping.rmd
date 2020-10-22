@@ -160,11 +160,25 @@ nyt_schools = rbindlist(lapply(list.files('original-sources/historical/schools/'
 school_dates = seq(as.Date('2020-09-20'), by = 'week', length.out = 52)
 school_date = max(school_dates[which(school_dates <= date_out - 4)])
 
-school_url = paste0('https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/District-level-data-file-',
+
+tryCatch({ 
+  school_url = paste0('https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/District-level-data-file-',
                     format(school_date+2, '%m%d%Y'), '.xls')
-temp = tempfile()
-download.file(school_url, temp, mode = 'wb')
-DSHS_schools_raw = data.frame(read_excel(temp, sheet = 1))
+  temp = tempfile()
+  download.file(school_url, temp, mode = 'wb')
+  DSHS_schools_raw = data.frame(read_excel(temp, sheet = 1))
+  },
+  # if error, retry url using _ instead of - in filename
+  error = function(e) { 
+   school_url = paste0('https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/District-level-data-file_',
+                    format(school_date+2, '%m%d%Y'), '.xls')
+  temp = tempfile()
+  download.file(school_url, temp, mode = 'wb')
+  DSHS_schools_raw <<- data.frame(read_excel(temp, sheet = 1))
+  
+  })
+
+
 first_row = which(DSHS_schools_raw[, 1] == 'District Name') + 1
 last_row = which(DSHS_schools_raw[, 1] == 'ZEPHYR ISD')
 colnames(DSHS_schools_raw)[1:2] = c('District', 'LEA')
@@ -399,15 +413,23 @@ DSHS_tests_long = merged_tests %>%
 ## new cases
 
 ```{r}
-DSHS_new_cases_long = rbindlist(lapply(list.files(path = 'original-sources/dshs-new-cases', full.names = TRUE),
-                                read.csv, fileEncoding="utf-16", sep='\t', stringsAsFactors=FALSE)) %>% 
-  dplyr::select(Date, County, New.Cases) %>% 
-  setNames(c('Date', 'County', 'Cases_Daily')) %>% 
-  mutate(Date = ifelse(as.integer(as.Date(Date, '%m/%d/%Y')) < 0, as.Date(Date, '%m/%d/%y'), as.Date(Date, '%m/%d/%Y'))) %>% 
-  mutate(Date = as.Date(Date, origin = '1970-01-01')) %>% 
-  mutate(Cases_Daily = as.integer(gsub(',', '', as.character(Cases_Daily), fixed = TRUE))) %>% 
-  mutate(Cases_Daily = ifelse(Cases_Daily < 0, 0, Cases_Daily)) %>% 
-  na.omit()
+# obtained via DSHS county trends dashboard
+new_cases_archive = read.csv('original-sources/historical/new-cases/new_case_archive.csv')
+
+# get new cases since 9/1 as excel file
+new_case_url ='https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx'
+temp = tempfile()
+download.file(new_case_url, temp, mode = 'wb') 
+
+DSHS_new_cases_long = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) %>%
+  setNames(gsub('New.Cases.', '', colnames(.))) %>% 
+  setNames(c('County', format(as.Date(colnames(.)[2:ncol(.)], '%Y.%m.%d'), '%Y-%m-%d'))) %>% 
+  reshape2::melt('County') %>% 
+  setNames(c('County', 'Date', 'Cases_Daily')) %>% 
+  mutate(Date = as.Date(Date)) %>% 
+  mutate(Cases_Daily = ifelse(Cases_Daily < 0, 0, Cases_Daily)) %>%
+  rbind(., new_cases_archive) %>% 
+  arrange(Date, County)
 ```
 
 ## active cases
