@@ -4142,7 +4142,7 @@
 2020-10-17,"E","Dallas/Ft. Worth","E - Dallas/Ft. Worth",8080080,NA,1223,835,374,1974,260,12893,1729
 2020-10-17,"F","Paris","F - Paris",273329,NA,91,59,32,367,15,608,81
 2020-10-17,"G","Longview/Tyler","G - Longview/Tyler",968611,NA,222,152,70,658,17,1963,278
-2020-10-17,"H","Lufkin","H - Lufkin",272151,NA,46,34,12,206,8,201,70
+2020-10-17,"H","Lufkin","H - Lufkin",272151,NA,46,34,12,206,8,361,70
 2020-10-17,"I","El Paso","I - El Paso",881765,NA,419,296,118,315,7,1600,265
 2020-10-17,"J","Midland/Odessa","J - Midland/Odessa",526736,NA,127,81,45,643,34,935,73
 2020-10-17,"K","San Angelo","K - San Angelo",179457,NA,35,30,5,184,15,287,27
@@ -4201,25 +4201,47 @@
 2020-10-19,"T","Laredo","T - Laredo",295669,NA,57,27,30,69,17,313,65
 2020-10-19,"U","Corpus Christi","U - Corpus Christi",630897,NA,85,61,24,621,63,956,138
 2020-10-19,"V","Lower Rio Grande Valley","V - Lower Rio Grande Valley",1385112,NA,233,128,104,1092,55,1876,320
-2020-10-20,"A","Amarillo","A - Amarillo",440127,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"B","Lubbock","B - Lubbock",513580,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"C","Wichita Falls","C - Wichita Falls",219793,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"D","Abilene","D - Abilene",306972,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"E","Dallas/Ft. Worth","E - Dallas/Ft. Worth",8080080,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"F","Paris","F - Paris",273329,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"G","Longview/Tyler","G - Longview/Tyler",968611,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"H","Lufkin","H - Lufkin",272151,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"I","El Paso","I - El Paso",881765,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"J","Midland/Odessa","J - Midland/Odessa",526736,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"K","San Angelo","K - San Angelo",179457,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"L","Belton/Killeen","L - Belton/Killeen",507311,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"M","Waco","M - Waco",330048,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"N","Bryan/College Station","N - Bryan/College Station",360335,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"O","Austin","O - Austin",2375407,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"P","San Antonio","P - San Antonio",2945792,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"Q","Houston","Q - Houston",6688587,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"R","Galveston","R - Galveston",1309237,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"S","Victoria","S - Victoria",186672,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"T","Laredo","T - Laredo",295669,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"U","Corpus Christi","U - Corpus Christi",630897,NA,NA,NA,NA,NA,NA,NA,NA
-2020-10-20,"V","Lower Rio Grande Valley","V - Lower Rio Grande Valley",1385112,NA,NA,NA,NA,NA,NA,NA,NA
+2020-10-20,"A","Amarillo","A - Amarillo",440127,NA,193,120,68,372,6,662,115
+2020-10-20,"B","Lubbock","B - Lubbock",513580,NA,245,174,70,324,12,1021,199
+2020-10-20,"C","Wichita Falls","C - Wichita Falls",219793,NA,87,68,19,363,12,789,29
+2020-10-20,"D","Abilene","D - Abilene",306972,NA,46,33,13,287,2,511,45
+2020-10-20,"E","Dallas/Ft. Worth","E - Dallas/Ft. Worth",8080080,NA,1341,942,383,2139,243,12131,1661
+2020-10-20,"F","Paris","F - Paris",273329,NA,105,75,30,384,11,532,83
+2020-10-20,"G","Longview/Tyler","G - Longview/Tyler",968611,NA,233,159,74,440,22,1583,267
+2020-10-20,"H","Lufkin","H - Lufkin",272151,NA,29,21,8,156,6,283,57
+2020-10-20,"I","El Paso","I - El Paso",881765,NA,516,361,148,345,17,1545,261
+2020-10-20,"J","Midland/Odessa","J - Midland/Odessa",526736,NA,123,78,43,620,31,863,63
+2020-10-20,"K","San Angelo","K - San Angelo",179457,NA,43,37,6,128,0,51,13
+2020-10-20,"L","Belton/Killeen","L - Belton/Killeen",507311,NA,42,27,13,311,34,814,101
+2020-10-20,"M","Waco","M - Waco",330048,NA,58,39,19,164,7,388,49
+2020-10-20,"N","Bryan/College Station","N - Bryan/College Station",360335,NA,42,35,6,110,8,358,34
+2020-10-20,"O","Austin","O - Austin",2375407,NA,104,61,42,791,65,3009,361
+2020-10-20,"P","San Antonio","P - San Antonio",2945792,NA,247,144,98,1432,198,4357,644
+2020-10-20,"Q","Houston","Q - Houston",6688587,NA,597,418,168,2241,205,11964,1663
+2020-10-20,"R","Galveston","R - Galveston",1309237,NA,131,101,30,199,11,1552,251
+2020-10-20,"S","Victoria","S - Victoria",186672,NA,23,16,7,203,41,271,28
+2020-10-20,"T","Laredo","T - Laredo",295669,NA,51,26,25,82,15,307,69
+2020-10-20,"U","Corpus Christi","U - Corpus Christi",630897,NA,84,59,25,597,64,924,139
+2020-10-20,"V","Lower Rio Grande Valley","V - Lower Rio Grande Valley",1385112,NA,248,140,107,1091,59,1884,321
+2020-10-21,"A","Amarillo","A - Amarillo",440127,NA,200,132,65,387,9,698,249
+2020-10-21,"B","Lubbock","B - Lubbock",513580,NA,258,191,65,274,27,1130,204
+2020-10-21,"C","Wichita Falls","C - Wichita Falls",219793,NA,74,57,17,359,11,799,28
+2020-10-21,"D","Abilene","D - Abilene",306972,NA,51,36,15,258,5,576,43
+2020-10-21,"E","Dallas/Ft. Worth","E - Dallas/Ft. Worth",8080080,NA,1347,946,385,1975,251,12823,1724
+2020-10-21,"F","Paris","F - Paris",273329,NA,115,79,36,371,12,599,84
+2020-10-21,"G","Longview/Tyler","G - Longview/Tyler",968611,NA,253,179,74,639,12,1974,281
+2020-10-21,"H","Lufkin","H - Lufkin",272151,NA,35,30,5,133,8,380,48
+2020-10-21,"I","El Paso","I - El Paso",881765,NA,583,423,151,325,18,1560,270
+2020-10-21,"J","Midland/Odessa","J - Midland/Odessa",526736,NA,116,75,40,611,25,908,57
+2020-10-21,"K","San Angelo","K - San Angelo",179457,NA,38,32,6,191,18,279,24
+2020-10-21,"L","Belton/Killeen","L - Belton/Killeen",507311,NA,43,29,12,307,22,853,118
+2020-10-21,"M","Waco","M - Waco",330048,NA,61,43,17,107,8,438,48
+2020-10-21,"N","Bryan/College Station","N - Bryan/College Station",360335,NA,42,33,8,92,4,408,22
+2020-10-21,"O","Austin","O - Austin",2375407,NA,135,87,47,739,58,3091,379
+2020-10-21,"P","San Antonio","P - San Antonio",2945792,NA,248,137,106,1223,153,4877,707
+2020-10-21,"Q","Houston","Q - Houston",6688587,NA,643,446,183,1974,139,12314,1622
+2020-10-21,"R","Galveston","R - Galveston",1309237,NA,119,90,29,248,13,1594,226
+2020-10-21,"S","Victoria","S - Victoria",186672,NA,28,19,9,177,32,307,42
+2020-10-21,"T","Laredo","T - Laredo",295669,NA,60,33,27,73,17,352,69
+2020-10-21,"U","Corpus Christi","U - Corpus Christi",630897,NA,84,62,22,534,56,999,143
+2020-10-21,"V","Lower Rio Grande Valley","V - Lower Rio Grande Valley",1385112,NA,249,142,105,1022,58,1992,317
