@@ -45,6 +45,7 @@ set.seed(1)
 ```
 
 ```{r library calls, warning=FALSE, message=FALSE}
+# TODO: remove extra libraries if possible
 # Data manipulation & cleaning
 library(tidyverse)
 library(reshape2)
@@ -195,7 +196,7 @@ rt.df.extraction <- function(Rt.estimate.output) {
 ```{r rt calculation}
 #Function to generate Rt estimates, need to read in data frame and population size
 covid.rt <- function(mydata, threshold) {
-  
+  set.seed(1)
   ### DECLARE VALS ###
   
   #set generation time
@@ -209,8 +210,7 @@ covid.rt <- function(mydata, threshold) {
   # gen.time<-generation.time("gamma", c(5.2, 1.72)) #Singapore
   # gen.time<-generation.time("gamma", c(3.95, 1.51)) #Tianjin
   gen.time <- generation.time("gamma", c(3.96, 4.75))
-  print(as.character(mydata[1,2]))
-  
+  print(mydata %>% dplyr::select(2) %>% distinct() %>% unlist() %>% setNames(NULL))
   # TODO: consider removing this and handling na cases directly
   #change na values to 0
   mydata <- mydata %>% replace(is.na(.),0)
@@ -219,6 +219,8 @@ covid.rt <- function(mydata, threshold) {
   recent_case_avg = mydata %>% filter(Date > seq(date_out, length = 2, by = "-1 month")[2]) %>%
     summarize(mean(Cases_Daily, na.rm = TRUE)) %>% 
     unlist()
+  
+  print(round(recent_case_avg, 2))
   
   pop.DSHS <- mydata$Population_DSHS[1]
   #Get 7 day moving average of daily cases
@@ -244,15 +246,13 @@ covid.rt <- function(mydata, threshold) {
   #get row number of March 15 and first nonzero entry
   #NOTE: for 7 day moving average start March 15, for daily start March 9
   #find max row between the two (this will be beginning of rt data used)
+  # TODO: figure out 3 county error
   march15.row <- which(mydata$Date=="2020-03-15")
   first.nonzero <- min(which(mydata$Cases_Daily>0))
   last.nonzero <- max(which(mydata$Cases_Daily>0))
   minrow <- max(march15.row, first.nonzero)
 
   ### R0 ESTIMATION ###
-  # TODO: establish better criteria for # of required daily cases
-  # mean daily cases; average last x number of days; % of region pop etc.
-  
   if(!is.na(minrow) & recent_case_avg > threshold) {
      
     # declare limits for rt estimation (first nonzero date & last nonzero date)
@@ -274,7 +274,7 @@ covid.rt <- function(mydata, threshold) {
     rt.DSHS.df <- rt.df.extraction(rt.DSHS)
     },
     error = function(e) {
-    cat(as.character(mydata[1,2]))
+    writeLines(paste0('Rt generation error (despite sufficient cases)', '\n'))
     rt.DSHS.df <<- data.frame(Date = as.Date(mydata$Date),
                              Rt = rep(NA, length(mydata$Date)),
                              lower = rep(NA, length(mydata$Date)),
@@ -282,6 +282,7 @@ covid.rt <- function(mydata, threshold) {
     return(rt.DSHS.df)
     })
   } else {
+    writeLines(paste0('Below required case threshold of ', round(threshold, 2), '\n'))
     # error catch small regions & na values for minrow
     rt.DSHS.df <- data.frame(Date = as.Date(mydata$Date),
                              Rt = rep(NA, length(mydata$Date)),
@@ -292,8 +293,6 @@ covid.rt <- function(mydata, threshold) {
   return(rt.DSHS.df)
 }
 ```
-
-
 
 
 ```{r prep dataframes, include=FALSE}
@@ -328,57 +327,55 @@ county.rt.df <- data.table::rbindlist(county.rt.output, idcol = TRUE)
 colnames(county.rt.df)[1] = 'County'
 ```
 
-## RT ESTIMATES: SCHOOL DISTRICT COUNTIES
+## School Districts
 ```{r TMC RT ESTIMATES: SCHOOL DISTRICT COUNTIES}
-#create directory for school district rt estimates
-rt_school_path="rt_estimates_for_schools"
-ifelse(!dir.exists(rt_school_path), dir.create(rt_school_path), "School rt folder already exists")
-#select the counties associated with school districts of interest
-school.focus<-county.daily %>%
-  filter(County %in% c("Brazoria", "Galveston", "Harris")) %>%
-  mutate(County = as.character(County)) %>%
-  dplyr::select(-PHR, -PHR_Name)
+school_districts = read.csv('tableau/district_school_reopening.csv') %>% 
+dplyr::select(District, County) %>%
+  distinct()
 
-#apply the covid.rt function to the county.daily data by county 
-school.focus.rt.output <- nlme::gapply(school.focus, FUN = covid.rt,
-                                 groups = school.focus$County, threshold = case_quant)
+# exclude ISDs w/ 1 county listed [no ,] - can get estimate from county.rt.df
+county_combos = school_districts %>% 
+  dplyr::select(County) %>% 
+  distinct() %>% 
+  filter(stringr::str_detect(County, ',')) %>% 
+  setNames(NULL) %>% unlist()
 
-#convert list of dataframes to single dataframe with county as id col
-school.county.rt.df <- data.table::rbindlist(school.focus.rt.output, idcol = TRUE)
-colnames(school.county.rt.df)[1] = 'County'
-
-#write csv of estimates to rt_TMC Path
-write.csv(school.county.rt.df, paste(rt_school_path,"/nine_county_rt_estimates.csv",sep=""), row.names = FALSE)
-
-
-# plot with shaded confidence intervals
-# plot with shaded confidence intervals
-school.rt.plot<-function(rt.data, caption){
-  library(ggplot2)
-  plot_title<-paste("Rt Estimates for ", rt.data$County[1], " County. Associated with:", sep="") 
-  caption<-caption
-  plot<-ggplot(rt.data, aes(Date, Rt))+
-    geom_ribbon(aes(ymin=lower, ymax=upper), fill="light grey")+
-        geom_point(color="blue", size=0.2)+
-    labs(title=plot_title,subtitle=caption)+
-    geom_hline(yintercept=1, col="red", linetype="dashed")
-  plot
+Create_Combo_County_df = function(combo) { 
+  combo_counties = stringr::str_split(combo, ',') %>% unlist()
+  combo_df = county.daily %>%
+    filter(County %in% combo_counties) %>%
+    mutate(County_Group = combo) %>% 
+    group_by(Date, County_Group) %>% 
+    summarize(Cases_Daily = sum(Cases_Daily),
+              Population_DSHS = sum(Population_DSHS)) %>% 
+    ungroup()
+  return(combo_df)
 }
 
-harris.schools<-school.county.rt.df%>%filter(County=="Harris")
-harris.schools.plot<-school.rt.plot(harris.schools, "Pasadena, La Porte, Deer Park, Channel View, Galena Park, \n Sheldon, Crosby Goose Creek, Humble, Aldine, Spring, Klein,\n Cyrrpress-Fairbanks, Katy, Spring Branch, Alief and Houston ISD")
-harris.schools.plot
-ggsave( paste(rt_school_path,"/harris_schools_rt_plot.png",sep=""), width=20, height=10, unit="cm")
 
-galveston.schools<-school.county.rt.df%>%filter(County=="Galveston")
-galveston.schools.plot<-school.rt.plot(galveston.schools, "Friendswood  and Clear Creek ISD")
-galveston.schools.plot
-ggsave( paste(rt_school_path,"/galveston_schools_rt_plot.png",sep=""), width=20, height=10, unit="cm")
+county.combo.rt.output = lapply(county_combos,
+                                function(x) covid.rt(Create_Combo_County_df(x),
+                                                     threshold = case_quant))
+county.combo.df = data.table::rbindlist(county.combo.rt.output, idcol = TRUE) %>% 
+  mutate(.id = county_combos[.id])
+colnames(county.combo.df)[1] = 'County'
 
-brazoria.schools<-school.county.rt.df%>%filter(County=="Brazoria")
-brazoria.schools.plot<-school.rt.plot(brazoria.schools, "Alvin and Pearland ISD")
-brazoria.schools.plot
-ggsave( paste(rt_school_path,"/brazoria_schools_rt_plot.png",sep=""), width=20, height=10, unit="cm")
+
+# TODO: investigate combining join statements in one df
+combo.district.rt.df = school_districts %>% 
+  dplyr::select(District, County) %>%
+  filter(str_detect(County, ',')) %>%
+  left_join(., county.combo.df, by = 'County')
+
+single.district.rt.df = school_districts %>% 
+  dplyr::select(District, County) %>%
+  filter(!str_detect(County, ',')) %>%
+  left_join(., county.rt.df, by = 'County')
+
+district.rt.df = rbind(combo.district.rt.df, single.district.rt.df) %>% 
+  distinct() %>%
+  dplyr::select(District, Date, everything(), -County) %>%
+  arrange(District, Date)
 ```
 
 ## Metro
@@ -461,6 +458,7 @@ state.rt.df <- covid.rt(state.daily, threshold = case_quant)
 
 ```{r export rt output to .csv files}
 write.csv(county.rt.df,"statistical-output/rt/county_rt.csv", row.names = FALSE)
+write.csv(district.rt.df,"statistical-output/rt/district_rt.csv", row.names = FALSE)
 write.csv(metro.rt.df, "statistical-output/rt/metro_rt.csv", row.names = FALSE)
 write.csv(TSA.rt.df, "statistical-output/rt/tsa_rt.csv", row.names = FALSE)
 write.csv(phr.rt.df, "statistical-output/rt/phr_rt.csv", row.names = FALSE)
@@ -471,24 +469,27 @@ write.csv(state.rt.df, "statistical-output/rt/state_rt.csv", row.names = FALSE)
 
 ```{r}
 colnames(county.rt.df)[1] <- 'Level'
+colnames(district.rt.df)[1] <- 'Level'
 colnames(metro.rt.df)[1] <- 'Level'
 colnames(TSA.rt.df)[1] <- 'Level'
 colnames(phr.rt.df)[1] <- 'Level'
 state.rt.df$Level <- 'Texas'
 
 county.rt.df$Level_Type = 'County'
+district.rt.df$Level_Type = 'District'
 metro.rt.df$Level_Type = 'Metro'
 TSA.rt.df$Level_Type = 'TSA'
 phr.rt.df$Level_Type = 'PHR'
 state.rt.df$Level_Type = 'State'
 
-combined.rt.df <- rbind(subset(county.rt.df, Date != max(Date)),
-                        subset(metro.rt.df, Date != max(Date)),
+combined.rt.df <- rbind(subset(district.rt.df, Date != max(Date)),
+                        subset(county.rt.df, Date != max(Date)),
                         subset(TSA.rt.df, Date != max(Date)),
-                        subset(state.rt.df, Date != max(Date)),
-                        subset(phr.rt.df, Date != max(Date)))
+                        subset(phr.rt.df, Date != max(Date)),
+                        subset(metro.rt.df, Date != max(Date)),
+                        subset(state.rt.df, Date != max(Date)))
 
-write.csv(combined.rt.df, 'statistical-output/rt/stacked_rt.csv', row.names = FALSE)
+# write.csv(combined.rt.df, 'statistical-output/rt/stacked_rt.csv', row.names = FALSE)
 write.csv(combined.rt.df, 'tableau/stacked_rt.csv', row.names = FALSE)
 ```
 
