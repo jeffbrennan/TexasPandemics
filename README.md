@@ -1,58 +1,32 @@
-# COVID-19 Scraping
+# [UTHealth COVID-19 Dashboard](http://texaspandemic.org)
 
-
-Scraping of various COVID sources to be used in UTHealth COVID dashboard focused on statistical trends
-
----
-
-## combined-datasets
-
-### City Level
-
-#### city_pops.csv: 2018 Population Estimates
-
-- [Census.gov](https://www.census.gov/data/tables/time-series/demo/popest/2010s-total-cities-and-towns.html)
-
-----
-
-### County Level
-
-#### county.csv: Case Count Data
-
-- [Texas Department of Health and Human Services (DSHS)](https://www.dshs.state.tx.us/coronavirus)
-- [Google mobility data](https://www.google.com/covid19/mobility/)
-
-#### county_demo.csv: Age, Gender & Race Demographics
-
-- [Census.gov](https://www.census.gov/data/tables/time-series/demo/popest/2010s-counties-detail.html)
+Scraping, statistics, and diagnostics of Texas COVID-19 data
 
 ---
 
-### TSA Level
+## Core Data
 
-#### tsa.csv: Daily Hospitalizations & Bed Availability
-
-- [DSHS](https://www.dshs.state.tx.us/coronavirus)
-
----
-
-### State Level
-
-#### demographics.xlsx: Demographics from Case & Fatality Investigations
-
-#### state.xlsx: Count, Testing & Hospitalization Summaries
-
-- [DSHS](https://www.dshs.state.tx.us/coronavirus)
-
+| Level           |Frequency  |File                                                                                     | Description                                                             | Sources                                                                                                                      |
+| :-------------  |:--------  |:-----                                                                                   |:-----                                                                   | :-----                                                                                                                       |
+| School District | Weekly    | [district_school_reopening.csv](tableau/district_school_reopening.csv)                  | ISD Cases & Infections                                            | [DSHS](https://www.dshs.state.tx.us/coronavirus/additionaldata/) & [TEA](https://schoolsdata2-tea-texas.opendata.arcgis.com/)|
+| County          | Daily     | [county.csv](tableau/county.csv)                    | Cases, Deaths, Testing, Mobility, Childcare facilities  | [DSHS](https://www.dshs.state.tx.us/coronavirus/additionaldata/) & [Google](https://www.google.com/covid19/mobility/)                                                                                  |
+| County          | Weekly    | [county_TPR.csv](tableau/county_TPR.csv)                | Test Positivity Rates                            | [Centers for Medicare & Medicaid](https://data.cms.gov/stories/s/q5r5-gjyu)                                                                                                                            |
+| TSA             | Daily     | [hospitalizations_tsa.csv](tableau/hospitalizations_tsa.csv)      | Hospitalizations & Bed Availability                     | [DSHS](https://www.dshs.state.tx.us/coronavirus/additionaldata/)                                                                                                                                       |
+| State           | Weekly    | [stacked_demographics.csv](tableau/stacked_demographics.csv)      | Demographics from Case & Fatality Investigations        | [DSHS](https://dshs.texas.gov/coronavirus/additionaldata/)
 
 ---
 
-## original-sources
+## Statistics
 
-Texas subsets of unmodified datasets
+| File                                                                | Description
+| :---------                                                          | :-----------------
+| [stacked_case_ratio.csv](tableau/stacked_case_ratio.csv)            | 7 day average in past week vs 2 weeks ago
+| [stacked_case_timeseries.csv](tableau/stacked_case_timeseries.csv)  | ARIMA forecast model on new daily cases
+| [stacked_hosp_timeseries.csv](tableau/stacked_hosp_timeseries.csv)  | ARIMA forecast model on new hospitalizations
+| [stacked_pct_change.csv](tableau/stacked_pct_change.csv)            | Spline case and test % change
+| [stacked_rt.csv](tableau/stacked_rt.csv)                            | Rt estimates
+| [stacked_critical_trends.csv](tableau/stacked_critical_trends.csv)  | All statistics stacked together
+
+note: "stacked" indicates file includes statistics at County, TSA, PHR, Metro & State levels. Rt also includes school district estimates.
 
 ---
-
-## Visualizations 
-
-[Dashboard](TexasPandemic.org)
