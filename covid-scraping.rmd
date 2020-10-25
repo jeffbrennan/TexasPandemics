@@ -1380,7 +1380,7 @@ merged_state = merged_state %>%
 ## Schools
 
 ```{r}
-write.csv(nyt_schools, file = 'combined-datasets/schools.csv', row.names = F)
+write.csv(nyt_schools, file = 'original-sources/nyt_schools.csv', row.names = F)
 ```
 
 ## City
@@ -1396,15 +1396,15 @@ merged_county_out = merged_county %>%
   dplyr::select(-c(Cases_Cumulative_NA, Deaths_Cumulative_NA,
                    Tests_Cumulative_NA, Active_Cases_Cumulative_NA))
 
-write.csv(merged_county_out, file = 'combined-datasets/county.csv', row.names = F)
+# write.csv(merged_county_out, file = 'combined-datasets/county.csv', row.names = F)
 write.csv(merged_county_out, 'tableau/county.csv', row.names = FALSE)
-write.csv(county_demo_2018, file = 'combined-datasets/county_demo.csv', row.names = F)
+# write.csv(county_demo_2018, file = 'combined-datasets/county_demo.csv', row.names = F)
 ```
 
 ## TSA
 
 ```{r}
-write.csv(merged_tsa, file = 'combined-datasets/tsa.csv', row.names = F)
+# write.csv(merged_tsa, file = 'combined-datasets/tsa.csv', row.names = F)
 
 hosp_tsa = merged_tsa %>% 
   dplyr::select(Date, TSA, TSA_Name, TSA_Combined, Population_DSHS, Ventilators_Available,
@@ -1417,19 +1417,19 @@ write.csv(hosp_tsa, file = 'tableau/hospitalizations_tsa.csv', row.names = F)
 ## PHR
 
 ```{r}
-write.csv(phr_df, file = 'combined-datasets/phr.csv', row.names = F)
+# write.csv(phr_df, file = 'combined-datasets/phr.csv', row.names = F)
 ```
 
 ## HHSC
 
 ```{r}
-write.csv(hhsc_df, file = 'combined-datasets/hhsc.csv', row.names = F)
+# write.csv(hhsc_df, file = 'combined-datasets/hhsc.csv', row.names = F)
 ```
 
 ## Metro
 
 ```{r}
-write.csv(DSHS_metro, file = 'combined-datasets/metro.csv', row.names = F)
+# write.csv(DSHS_metro, file = 'combined-datasets/metro.csv', row.names = F)
 ```
 
 ## State
@@ -1449,6 +1449,7 @@ write.csv(demo_stacked_combined, file = 'tableau/stacked_demographics.csv', row.
 
 ```{r, fig.width=12, fig.height=6}
 time_flat = unlist(all_times)
+print(time_flat)
 names(time_flat) = NULL
 
 time_df = data.frame('time_sec' = time_flat) %>%
