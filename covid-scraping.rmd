@@ -1435,8 +1435,8 @@ write.csv(hosp_tsa, file = 'tableau/hospitalizations_tsa.csv', row.names = F)
 ## State
 
 ```{r}
-state_out = list("longitudinal" = merged_state, "current" = DSHS_state_day)
-write_xlsx(state_out, path = "combined-datasets/state.xlsx")
+# state_out = list("longitudinal" = merged_state, "current" = DSHS_state_day)
+# write_xlsx(state_out, path = "combined-datasets/state.xlsx")
 ```
 
 ## Demographics

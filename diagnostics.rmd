@@ -1,7 +1,6 @@
 ---
 title: "diagnostics"
 author: "Jeffrey Brennan"
-date: "8/5/2020"
 output: html_document
 knit: (function(inputFile, encoding) {
   rmarkdown::render(inputFile, encoding = encoding, output_dir = "diagnostics/") })
@@ -581,7 +580,7 @@ write(validation_json, file = 'diagnostics/validation.json')
 ```
 
 ```{r}
-county = read.csv('combined-datasets/county.csv') 
+county = read.csv('tableau/county.csv') 
 county %>% 
   filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend',
                               'Galveston', 'Harris', 'Liberty', 'Montgomery', 'Waller')) %>% 
