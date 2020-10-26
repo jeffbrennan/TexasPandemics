@@ -5,7 +5,7 @@ output:
   html_document:
     df_print: paged
 editor_options: 
-  chunk_output_type: inline
+  chunk_output_type: console
 knit: (function(inputFile, encoding) {
   rmarkdown::render(inputFile, encoding = encoding, output_dir = "diagnostics/") })
 ---
@@ -67,7 +67,10 @@ set.seed(1)
 Clean_Data = function(df, level_type) { 
   if (level_type == 'State') {
     clean_df  = df %>% 
-      dplyr::select(Date, Cases_Daily, Tests_Daily, Population_DSHS) %>%
+      dplyr::select(Date,
+                    Cases_Daily, Cases_100K_7Day_MA,
+                    Tests_Daily, TPR_CMS,
+                    Population_DSHS) %>%
       group_by(Date) %>% 
       mutate_if(is.numeric, sum, na.rm = TRUE) %>% 
       distinct() %>%
@@ -76,7 +79,10 @@ Clean_Data = function(df, level_type) {
 
   } else { 
     clean_df = df %>% 
-      dplyr::select(Date, !!as.name(level_type), Cases_Daily, Tests_Daily, Population_DSHS) %>%
+      dplyr::select(Date, !!as.name(level_type),
+                    Cases_Daily, Cases_100K_7Day_MA,
+                    Tests_Daily, TPR_CMS,
+                    Population_DSHS) %>%
       group_by(Date, !!as.name(level_type)) %>% 
       mutate_if(is.numeric, sum, na.rm = TRUE) %>%
       distinct() %>%
@@ -86,11 +92,21 @@ Clean_Data = function(df, level_type) {
   return (clean_df %>% ungroup())
 }
 
+county_tpr = read.csv('tableau/county_TPR.csv') %>% 
+  dplyr::select(County, Date, TPR_CMS, Cases_100K_7Day_MA) %>% 
+  mutate(Date = as.Date(Date))
+
 county = read.csv("tableau/county.csv") %>% 
   dplyr::select(Date, Cases_Daily, Tests_Daily,
                 County, TSA_Combined, PHR_Combined,
                 Metro_Area, Population_DSHS) %>% 
-  rename(TSA = TSA_Combined, PHR = PHR_Combined, Metro = Metro_Area)
+  mutate(Date = as.Date(Date)) %>%
+  left_join(., county_tpr, by = c('County', 'Date')) %>% 
+  tidyr::fill(TPR_CMS, .direction = "down") %>%
+  tidyr::fill(Cases_100K_7Day_MA, .direction = "down") %>% 
+  mutate(TPR_CMS = ifelse(Date < min(county_tpr$Date), NA, TPR_CMS),
+         Cases_100K_7Day_MA = ifelse(Date < min(county_tpr$Date), NA, Cases_100K_7Day_MA)) %>%
+  rename(TSA = TSA_Combined, PHR = PHR_Combined, Metro = Metro_Area) 
 
 clean_dfs = sapply(c('County', 'TSA', 'PHR', 'Metro', 'State'), function(x) Clean_Data(county, x))
 
@@ -179,7 +195,7 @@ covid.rt = function(mydata, threshold) {
   print(mydata %>% dplyr::select(2) %>% distinct() %>% unlist() %>% setNames(NULL))
 
   #change na values to 0
-  mydata = mydata %>% replace(is.na(.),0)
+  mydata = mydata %>% mutate(Cases_Daily = ifelse(is.na(Cases_Daily), 0, Cases_Daily))
   
   # get case average from past month
   recent_case_avg = mydata %>% 
@@ -192,8 +208,6 @@ covid.rt = function(mydata, threshold) {
   pop.DSHS = mydata$Population_DSHS[1]
   #Get 7 day moving average of daily cases
   mydata$MA_7day=rollmean(mydata$Cases_Daily, k=7, na.pad=TRUE, align='right')
-  #change na values to 0
-  mydata=mydata%>%replace(is.na(.),0)
 
   #create a vector of new cases 7 day moving average
   mydata.new=pull(mydata, MA_7day)
@@ -206,27 +220,29 @@ covid.rt = function(mydata, threshold) {
   #Note: this is needed to run R0 package function estimate.R()
   names(mydata.new) = c(date.vector)
   
-  #Find min.date, max.date and row number of max.date
-  min.date = min(mydata$Date)
-  max.date = max(mydata$Date)
-
+  
   #get row number of March 15 and first nonzero entry
   #NOTE: for 7 day moving average start March 15, for daily start March 9
   #find max row between the two (this will be beginning of rt data used)
   march15.row = which(mydata$Date=="2020-03-15")
   first.nonzero = min(which(mydata$Cases_Daily>0))
   last.nonzero = max(which(mydata$Cases_Daily>0))
-  minrow = max(march15.row, first.nonzero)
+  
+  first.nonzero = ifelse(is.infinite(first.nonzero), NA, first.nonzero)
+  last.nonzero = ifelse(is.infinite(last.nonzero), NA, last.nonzero)
 
+  minrow = max(march15.row, first.nonzero, na.rm = TRUE)
+  maxrow = as.integer(min(last.nonzero, nrow(mydata), na.rm = TRUE))
+
+  # restrict df to same region as the minrow for addition of TPR & Cases/100
+  # TODO: work entirely off mydata and remove individual vars for which row is where
+  mydata = mydata %>% slice(minrow:maxrow)
+  
   ### R0 ESTIMATION ###
   if(!is.na(minrow) & recent_case_avg > threshold) {
      
-    # declare limits for rt estimation (first nonzero date & last nonzero date)
-    i = minrow
-    j = as.integer(min(last.nonzero, max.date))
-
     #reduce the vector to be rows from min date (March 9 or first nonzero case) to current date
-    mydata.newest = mydata.new[i:j]
+    mydata.newest = mydata.new[minrow:maxrow]
     
     tryCatch({
     rt.DSHS = estimate.R(mydata.newest, 
@@ -237,25 +253,30 @@ covid.rt = function(mydata, threshold) {
                         pop.size=pop.DSHS,
                         nsim=1000)
   
-    rt.DSHS.df = rt.df.extraction(rt.DSHS)
+    rt.DSHS.df = rt.df.extraction(rt.DSHS) %>% 
+                    mutate(TPR_CMS = mydata$TPR_CMS,
+                           Cases_100K_7Day_MA = mydata$Cases_100K_7Day_MA) %>% 
+                    dplyr::select(Date, TPR_CMS, Cases_100K_7Day_MA, Rt, lower, upper)
     },
     error = function(e) {
     writeLines(paste0('Rt generation error (despite sufficient cases)', '\n'))
-    rt.DSHS.df <= data.frame(Date = as.Date(mydata$Date),
+    rt.DSHS.df = data.frame(Date = as.Date(mydata$Date),
+                             TPR_CMS = mydata$TPR_CMS,
+                             Cases_100K_7Day_MA = mydata$Cases_100K_7Day_MA,
                              Rt = rep(NA, length(mydata$Date)),
                              lower = rep(NA, length(mydata$Date)),
                              upper = rep(NA, length(mydata$Date)))
-    return(rt.DSHS.df)
     })
   } else {
     writeLines(paste0('Below required case threshold of ', round(threshold, 2), '\n'))
     # error catch small regions & na values for minrow
     rt.DSHS.df = data.frame(Date = as.Date(mydata$Date),
-                             Rt = rep(NA, length(mydata$Date)),
-                             lower = rep(NA, length(mydata$Date)),
-                             upper = rep(NA, length(mydata$Date)))
+                            TPR_CMS = mydata$TPR_CMS,
+                            Cases_100K_7Day_MA = mydata$Cases_100K_7Day_MA,
+                            Rt = rep(NA, length(mydata$Date)),
+                            lower = rep(NA, length(mydata$Date)),
+                            upper = rep(NA, length(mydata$Date)))
   }
-  
   return(rt.DSHS.df)
 }
 ```
@@ -274,8 +295,10 @@ RT_County_df = rbindlist(county.rt.output, idcol = 'County')
 ## School Districts
 ```{r school district rt}
 school_districts = read.csv('tableau/district_school_reopening.csv') %>% 
-dplyr::select(District, County) %>%
-  distinct()
+  dplyr::select(District, LEA, County) %>%
+  mutate(District = paste0(District, ' (', LEA, ')')) %>%
+  distinct() %>%
+  dplyr::select(-LEA)
 
 # exclude ISDs w/ 1 county listed [no ,c ] - can get estimate from RT_County_df
 county_combos = school_districts %>% 
@@ -292,7 +315,9 @@ Create_Combo_County_df = function(combo) {
     mutate(County_Group = combo) %>% 
     group_by(Date, County_Group) %>% 
     summarize(Cases_Daily = sum(Cases_Daily),
-              Population_DSHS = sum(Population_DSHS)) %>% 
+              TPR_CMS = mean(TPR_CMS, na.rm = TRUE),
+              Cases_100K_7Day_MA = sum(Cases_100K_7Day_MA),
+              Population_DSHS = sum(Population_DSHS)) %>%
     ungroup()
   return(combo_df)
 }
@@ -300,10 +325,9 @@ Create_Combo_County_df = function(combo) {
 RT_Combo_Output = lapply(county_combos,
                                 function(x) covid.rt(Create_Combo_County_df(x),
                                                      threshold = case_quant))
-RT_Combo_df = rbindlist(RT_Combo_Output, idcol = TRUE) %>% 
-  mutate(.id = county_combos[.id])
-
-colnames(RT_Combo_df)[1] = 'County'
+RT_Combo_df = rbindlist(RT_Combo_Output, idcol = TRUE) %>%
+  mutate(.id = county_combos[.id]) %>% 
+  rename(County = .id)
 
 RT_District_Combo_df = school_districts %>% 
   dplyr::select(District, County) %>%
@@ -318,6 +342,7 @@ RT_District_single_df = school_districts %>%
 RT_District_df = rbind(RT_District_Combo_df, RT_District_single_df) %>% 
   distinct() %>%
   dplyr::select(District, Date, everything(), -County) %>%
+  filter(Date == max(Date) - 1) %>%
   arrange(District, Date)
 ```
 
@@ -814,33 +839,33 @@ write.csv(stacked_all, 'tableau/stacked_critical_trends.csv', row.names = FALSE)
 # PERFORMANCE REVIEW
 
 ```{r, fig.width=12, fig.height=6}
-time_flat = unlist(all_times)
-print(time_flat)
-names(time_flat) = NULL
-
-time_df = data.frame('time_sec' = time_flat) %>%
-  mutate(chunk = as.numeric(rownames(.)) + 2) %>%
-  mutate(version = refactor_version) %>%
-  mutate(script = 'covid-scraping.rmd') %>%
-  arrange(desc(time_sec))
-
-ggplot(time_df, aes(y = time_sec, x = chunk, fill = time_sec)) +
-  geom_bar(stat = 'identity') +
-  geom_text(aes(label = chunk), position=position_dodge(width = 0.9), vjust = -0.25) +
-  labs(x = 'chunk #', y = 'runtime (seconds)') +
-  scale_fill_gradient(low = 'gray80', high = 'tomato1') +
-  theme_pubr() +
-  theme(axis.text.x = element_blank(),
-        legend.position = 'none')
+# time_flat = unlist(all_times)
+# print(time_flat)
+# names(time_flat) = NULL
+# 
+# time_df = data.frame('time_sec' = time_flat) %>%
+#   mutate(chunk = as.numeric(rownames(.)) + 2) %>%
+#   mutate(version = refactor_version) %>%
+#   mutate(script = 'covid-scraping.rmd') %>%
+#   arrange(desc(time_sec))
+# 
+# ggplot(time_df, aes(y = time_sec, x = chunk, fill = time_sec)) +
+#   geom_bar(stat = 'identity') +
+#   geom_text(aes(label = chunk), position=position_dodge(width = 0.9), vjust = -0.25) +
+#   labs(x = 'chunk #', y = 'runtime (seconds)') +
+#   scale_fill_gradient(low = 'gray80', high = 'tomato1') +
+#   theme_pubr() +
+#   theme(axis.text.x = element_blank(),
+#         legend.position = 'none')
 ```
 
 ## total run time
 
 ```{r}
-time_df %>% summarize(sum(time_sec))
+# time_df %>% summarize(sum(time_sec))
 ```
 
 ```{r}
-write.csv(time_df, paste0('diagnostics/stats_runtime_', refactor_version, '.csv'),
-          row.names = FALSE)
+# write.csv(time_df, paste0('diagnostics/stats_runtime_', refactor_version, '.csv'),
+#           row.names = FALSE)
 ```
