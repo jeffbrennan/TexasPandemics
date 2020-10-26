@@ -27,24 +27,32 @@ def post_slack_message(text, blocks = None):
 
 def build_slack_message(email_details): 
 
-    return '\n'.join(' & '.join(detail[0]) + ' received data from ' + str(detail[1]) +
-           ' file(s) regarding ' + str(detail[2]) + ' in the following regions: ' + ', '.join(detail[3])
-           for detail in email_details)
+    return [(f'{" & ".join(detail[0])} received data from {detail[1]} '
+             f'file(s) regarding {detail[2]} in the following regions: \n{", ".join(detail[3])}')
+            for detail in email_details]
 
 
-def build_file_details(receiver, parsed_files):
+def build_file_details(receiver, file):
     body = []    
-    for file in parsed_files: 
-        text_part = ('<br><b>' + str(file['Name']) + '</b>' + 
-                     '<br>Regional Level: ' + receiver['region_level'] + 
-                     '<br>Regions: ' +', '.join(receiver['regions']) + 
-                     '<br>Date: ' + str(file['Date']) + 
-                     '<br>Value (95% CI): ' + str(file['Value']) + ' (' +
-                                              str(file['Low_CI']) + ', ' +
-                                              str(file['Upper_CI']) + ')')
-        body.append(text_part)
+    text_part = (f'<br><b>{file["Name"]}</b>'
+                 f'<br>Regional Level: {receiver["region_level"]}'
+                 f'<br>Regions: {", ".join(receiver["regions"])}'
+                 f'<br>Date: {file["Date"]}'  
+                 f'<br>Value (95% CI): {file["Value"]} ({file["Low_CI"]} {file["Upper_CI"]})')
+
+    body.append(text_part)
 
     return ''.join(body)
+
+
+def build_body_text(receiver, file_details): 
+
+    message = (f'Hello,<br>Here is your requested data:<br>'
+               f'{"<br>".join(file_details)}'
+               f'<br>Notes: {receiver["notes"]}'
+               f'<br><br>This is a bot. Please contact {credentials["real_email"]} if you have any questions.')
+
+    return message
 
 
 def send_email(credentials, receiver, file_paths, parsed_files):
@@ -52,19 +60,19 @@ def send_email(credentials, receiver, file_paths, parsed_files):
     message['From'] = credentials['sender']
     message['To'] = ','.join(receiver['address'])
 
-    # TODO: add handling for multiple dates/files
-    message['Subject'] = (receiver['nickname'] + ' ' + receiver['data_type'] + 
-                          ' [' + parsed_files[0]['Date'] + ']')
+    message['Subject'] = f'{receiver["nickname"]} {receiver["data_type"]} [{parsed_files[0]["Date"]}]'
                           
     message['Cc'] = ','.join(receiver['cc'])
-    # The subject line
-    #The body and the attachments for the mail
-    file_details = build_file_details(receiver, parsed_files)
-    message_out = ('Hello,<br>Here is your requested data:<br>' + file_details +
-                   '<br>Notes: ' + receiver['notes'] +
-                   '<br><br>This is a bot. Please contact ' + credentials['real_email'] + ' if you have any questions.')
+
+
+    # for each .csv, construct file details and combine together into message out
+    file_details = [build_file_details(receiver, file) for file in parsed_files if file]
+    message_out = build_body_text(receiver, file_details)
+
     message.attach(MIMEText(message_out, 'html'))
 
+
+    # attach files to email
     if receiver['send_files']:
         for path in file_paths :
             part = MIMEBase('application', 'octate-stream')
@@ -80,10 +88,12 @@ def send_email(credentials, receiver, file_paths, parsed_files):
     session = smtplib.SMTP('smtp.gmail.com', 587) #use gmail with port
     session.starttls() #enable security
     session.login(credentials['sender'], credentials['sender_pass']) #login with mail_id and password
+   
+    # convert parsed message to string, add receivers
     text = message.as_string()
-
     all_receivers = receiver['address'] + receiver['cc']
 
+    # send email and end SMTP session
     session.sendmail(credentials['sender'], all_receivers, text)
     session.quit()
 
@@ -105,6 +115,9 @@ def parse_file(file):
 
         file_values = {'Name':file_name, 'Date':max_date, 'Value':value,
                        'Low_CI':low_CI, 'Upper_CI': upper_CI}
+
+    else: 
+        file_values = None
 
     return file_values
 
