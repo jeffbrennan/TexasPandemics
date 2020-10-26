@@ -198,8 +198,7 @@ DSHS_schools_clean = DSHS_schools_raw[first_row:last_row, ] %>%
   rename(District = District.x) %>%
   mutate(District = str_to_title(District)) %>% 
   mutate(District = gsub('Isd', 'ISD', District)) %>%
-  mutate(District = gsub('\n', ' ', District)) %>%
-  mutate(District = gsub('Lighthouse Charter School', 'Lighthouse Public Schools', District)) %>%
+  mutate(District = gsub('\n', ' ', District)) %>% 
   mutate(Date = school_date) %>%
   dplyr::select(District, Date, County, LEA, everything()) %>%
   mutate_at(5:ncol(.), as.numeric) %>%
@@ -225,7 +224,13 @@ write.csv(DSHS_schools_clean,
 DSHS_school_df = rbindlist(lapply(list.files('original-sources/historical/dshs-schools', full.names = TRUE), read.csv))
 
 DSHS_school_df = DSHS_school_df %>% 
-  mutate(District = gsub('\n', ' ', District, fixed = TRUE))
+  mutate(District = gsub('\n', ' ', District, fixed = TRUE)) %>% 
+  mutate(District = gsub('  ', ' ', District)) %>% 
+  mutate(District = gsub('Lighthouse Charter School', 'Lighthouse Public Schools', District)) %>% 
+  mutate(District = paste0(District, ' (', LEA, ')')) %>%
+  distinct() %>%
+  dplyr::select(-LEA)
+
 write.csv(DSHS_school_df, 'tableau/district_school_reopening.csv', row.names = FALSE)
 ```
 
