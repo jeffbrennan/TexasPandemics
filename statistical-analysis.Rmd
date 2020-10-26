@@ -102,10 +102,12 @@ county = read.csv("tableau/county.csv") %>%
                 Metro_Area, Population_DSHS) %>% 
   mutate(Date = as.Date(Date)) %>%
   left_join(., county_tpr, by = c('County', 'Date')) %>% 
-  tidyr::fill(TPR_CMS, .direction = "down") %>%
-  tidyr::fill(Cases_100K_7Day_MA, .direction = "down") %>% 
   mutate(TPR_CMS = ifelse(Date < min(county_tpr$Date), NA, TPR_CMS),
          Cases_100K_7Day_MA = ifelse(Date < min(county_tpr$Date), NA, Cases_100K_7Day_MA)) %>%
+  group_by(County) %>%
+  tidyr::fill(TPR_CMS, .direction = "down") %>%
+  tidyr::fill(Cases_100K_7Day_MA, .direction = "down") %>%
+  ungroup(County) %>%
   rename(TSA = TSA_Combined, PHR = PHR_Combined, Metro = Metro_Area) 
 
 clean_dfs = sapply(c('County', 'TSA', 'PHR', 'Metro', 'State'), function(x) Clean_Data(county, x))
@@ -118,7 +120,6 @@ hospitalizations = read.csv("tableau/hospitalizations_tsa.csv") %>%
   arrange(Date, TSA)
 
 clean_dfs$TSA = clean_dfs$TSA %>% left_join(., hospitalizations, by = c('Date', 'TSA'))
-
 
 state_hosp = hospitalizations %>% 
   group_by(Date) %>%
