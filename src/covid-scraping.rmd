@@ -230,9 +230,13 @@ DSHS_school_df = DSHS_school_df %>%
   mutate(District = gsub('Lighthouse Charter School', 'Lighthouse Public Schools', District)) %>% 
   mutate(District = paste0(District, ' (', LEA, ')')) %>%
   distinct() %>%
-  dplyr::select(-LEA)
+  dplyr::select(-LEA, -County)
 
-write.csv(DSHS_school_df, 'tableau/district_school_reopening.csv', row.names = FALSE)
+
+write_xlsx(list('school_data' = DSHS_school_df,
+                'helper' = read.csv('original-sources/county_isd_long.csv')),
+           'tableau/district_school_reopening.xlsx',
+           format_headers = FALSE)
 ```
 
 # COUNTY LEVEL
@@ -452,46 +456,46 @@ DSHS_active_cases_long = reshape::melt(DSHS_active_cases_time, id = 'County') %>
 
 ```{r}
 # runtime bottleneck: switch pull to once per week (all data is stored in one file)
-Get_Childcare_Data = function(date_out) { 
-  if (date_out %in% seq(as.Date('2020-10-18'), length.out = 52, by = 'week')) { 
-    temp = tempfile()
-    download.file('https://apps.hhs.texas.gov/documents/CCR/texas-child-care-facility-based-covid-status.xls',
-              temp, mode = 'wb') 
-    county_childcare = read_excel_allsheets(temp)
-    county_childcare_df = rbindlist(lapply(county_childcare, Clean_Childcare))
-    write.csv(county_childcare_df, 'original-sources/county_childcare.csv', row.names = FALSE)
-  } else { 
-    county_childcare_df = read.csv('original-sources/county_childcare.csv') %>% 
-      mutate(Date = as.Date(Date))
-    }
-  return(county_childcare_df)
-}    
+# Get_Childcare_Data = function(date_out) { 
+#   if (date_out %in% seq(as.Date('2020-10-18'), length.out = 52, by = 'week')) { 
+#     temp = tempfile()
+#     download.file('https://apps.hhs.texas.gov/documents/CCR/texas-child-care-facility-based-covid-status.xls',
+#               temp, mode = 'wb') 
+#     county_childcare = read_excel_allsheets(temp)
+#     county_childcare_df = rbindlist(lapply(county_childcare, Clean_Childcare))
+#     write.csv(county_childcare_df, 'original-sources/county_childcare.csv', row.names = FALSE)
+#   } else { 
+#     county_childcare_df = read.csv('original-sources/county_childcare.csv') %>% 
+#       mutate(Date = as.Date(Date))
+#     }
+#   return(county_childcare_df)
+# }    
+# 
+# 
+# Clean_Childcare = function(df, data_type) { 
+#   date = as.Date(gsub('Data current as of ', '', colnames(df)[1]), '%m/%d/%y')
+#   colnames(df) = df[3, ]
+#   
+#   df = df[4:(nrow(df)-1), c(1, 7:10)]
+#   
+#   grouped_df = df %>% 
+#     filter(County != 'Licensed Child Care Center' & County != 'School-Age Program') %>%
+#     mutate(County = str_to_title(County)) %>% 
+#     mutate(County =  gsub('Deafsmith', 'Deaf Smith', County)) %>% 
+#     mutate(County =  gsub('Dewitt', 'DeWitt', County)) %>% 
+#     mutate(County =  gsub('Mcculloch', 'McCulloch', County)) %>% 
+#     mutate(County =  gsub('Mclennan', 'McLennan', County)) %>% 
+#     group_by(County) %>%
+#     dplyr::select(2:5) %>%
+#     mutate_all(as.numeric) %>% 
+#     summarise_all(sum) %>% 
+#     setNames(c('County', 'Childcare_Child_Cases_Daily', 'Childcare_Employee_Cases_Daily',
+#                'Childcare_Child_Cases_Cumulative', 'Childcare_Employee_Cases_Cumulative')) %>% 
+#     mutate(Date = date)
+#   return(grouped_df)
+# }
 
-
-Clean_Childcare = function(df, data_type) { 
-  date = as.Date(gsub('Data current as of ', '', colnames(df)[1]), '%m/%d/%y')
-  colnames(df) = df[3, ]
-  
-  df = df[4:(nrow(df)-1), c(1, 7:10)]
-  
-  grouped_df = df %>% 
-    filter(County != 'Licensed Child Care Center' & County != 'School-Age Program') %>%
-    mutate(County = str_to_title(County)) %>% 
-    mutate(County =  gsub('Deafsmith', 'Deaf Smith', County)) %>% 
-    mutate(County =  gsub('Dewitt', 'DeWitt', County)) %>% 
-    mutate(County =  gsub('Mcculloch', 'McCulloch', County)) %>% 
-    mutate(County =  gsub('Mclennan', 'McLennan', County)) %>% 
-    group_by(County) %>%
-    dplyr::select(2:5) %>%
-    mutate_all(as.numeric) %>% 
-    summarise_all(sum) %>% 
-    setNames(c('County', 'Childcare_Child_Cases_Daily', 'Childcare_Employee_Cases_Daily',
-               'Childcare_Child_Cases_Cumulative', 'Childcare_Employee_Cases_Cumulative')) %>% 
-    mutate(Date = date)
-  return(grouped_df)
-}
-
-county_childcare_df = Get_Childcare_Data(date_out)
+# county_childcare_df = Get_Childcare_Data(date_out)
 ```
 
 ## computed
@@ -511,7 +515,7 @@ county_childcare_df = Get_Childcare_Data(date_out)
 
 county_counts = Reduce(function(x, y) merge(x, y, by = c('Date', 'County'), all=TRUE),
        list(DSHS_cases_long, DSHS_new_cases_long, DSHS_deaths_long, DSHS_tests_long,
-            DSHS_active_cases_long, county_childcare_df))
+            DSHS_active_cases_long))
 ```
 
 ## Classifications
@@ -519,10 +523,12 @@ county_counts = Reduce(function(x, y) merge(x, y, by = c('Date', 'County'), all=
 ```{r}
 # add metro and PHR code designations
 # source: https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls
-county_classifications = read_xlsx('original-sources/county_classifications.xlsx', sheet = 1)[1:254, c(1, 5, 8, 13:14)]
+# county_classifications = read_xlsx('original-sources/county_classifications.xlsx', sheet = 1)[1:254, c(1, 5, 8, 13:14)]
+county_classifications = read_xlsx('original-sources/county_classifications.xlsx', sheet = 1)[1:254, c(1, 5, 8)]
 
 # set colnames
-colnames(county_classifications) = c('County', 'PHR', 'Metro_Area', 'HHSC', 'HHSC_Name')
+# colnames(county_classifications) = c('County', 'PHR', 'Metro_Area', 'HHSC', 'HHSC_Name')
+colnames(county_classifications) = c('County', 'PHR', 'Metro_Area')
 
 # add PHR readable names from https://dshs.texas.gov/regions/default.shtm
 PHR_helper = data.frame(PHR = unique(county_classifications$PHR),
@@ -567,7 +573,7 @@ merged_dshs = Reduce(function(x, y) merge(x, y, by = 'County', all = TRUE),
 # add TSA, PHR & HHSC combination
 merged_dshs$TSA_Combined = paste0(merged_dshs$TSA, ' - ', merged_dshs$TSA_Name)
 merged_dshs$PHR_Combined = paste0(merged_dshs$PHR, ' - ', merged_dshs$PHR_Name)
-merged_dshs$HHSC_Combined = paste0(merged_dshs$HHSC, ' - ', merged_dshs$HHSC_Name)
+# merged_dshs$HHSC_Combined = paste0(merged_dshs$HHSC, ' - ', merged_dshs$HHSC_Name)
 
 merged_county = as.data.frame(merge(merged_dshs, mobility_texas,
                                     by = c('Date', 'County'), all = TRUE)) %>% 
@@ -658,7 +664,7 @@ tpr_cases = merged_county %>%
                                          na.rm = TRUE, na.pad = TRUE)
                                 / Population_DSHS) * 100000) %>% 
   filter(Date %in% TPR_dates) %>% 
-  dplyr::select(-Cases_Daily, -Population_DSHS)
+  dplyr::select(-Cases_Daily, -Population_DSHS, -Cases_100K_14Day_MA)
 
 tpr_out = tpr_df %>% inner_join(tpr_cases, by = c('County', 'Date')) %>% arrange(County, Date)
 write.csv(tpr_out, 'tableau/county_TPR.csv', row.names = FALSE)
@@ -998,7 +1004,7 @@ DSHS_state = read_excel_allsheets('original-sources/DSHS_state.xlsx')
 ```
 
 ```{r}
-DSHS_tests = DSHS_state[[4]]
+DSHS_tests = DSHS_state[[3]]
 
 # # LAB TESTS
 # select lab tests & remove rows where all rows are NA
@@ -1017,7 +1023,7 @@ DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %>%
 
 ```{r}
 # selects covid hospitalization time series, drops footnote, formates date and sets colnames
-DSHS_hospitalizations = DSHS_state[[8]][, c(2:3)] %>%
+DSHS_hospitalizations = DSHS_state[[7]][, c(2:3)] %>%
   filter(rowSums(is.na(.)) < ncol(.)) %>% 
   setNames(c('Date', 'Hospitalizations_Total')) %>%
   mutate(Date = as.Date(Date))
@@ -1035,16 +1041,14 @@ list(DSHS_specimen_tests, DSHS_lab_tests, DSHS_hospitalizations))
 
 ```{r}
 # avoids duplication of results between sheets
-DSHS_state_day = data.frame(Recovered_Total = DSHS_state[[3]][1,1],
-                            Active_Total = DSHS_state[[3]][1,2],
-                            Antigen_Tests_Total = DSHS_state[[6]][1,2],
-                            Antigen_Tests_Positive = DSHS_state[[6]][2,2],
-                            Antibody_Tests_Total = DSHS_state[[5]][1,2],
-                            Antibody_tests_Positive = DSHS_state[[5]][2,2],
-                            Hospital_Bed_Total = DSHS_state[[7]][2,2],
-                            Hospital_Bed_Available = DSHS_state[[7]][3,2],
-                            ICU_Bed_Available = DSHS_state[[7]][4,2],
-                            Ventilator_Available = DSHS_state[[7]][5,2])
+DSHS_state_day = data.frame(Antigen_Tests_Total = DSHS_state[[5]][1,2],
+                            Antigen_Tests_Positive = DSHS_state[[5]][2,2],
+                            Antibody_Tests_Total = DSHS_state[[4]][1,2],
+                            Antibody_tests_Positive = DSHS_state[[4]][2,2],
+                            Hospital_Bed_Total = DSHS_state[[6]][2,2],
+                            Hospital_Bed_Available = DSHS_state[[6]][3,2],
+                            ICU_Bed_Available = DSHS_state[[6]][4,2],
+                            Ventilator_Available = DSHS_state[[6]][5,2])
 ```
 
 ## DSHS Demographics
