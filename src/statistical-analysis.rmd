@@ -67,10 +67,7 @@ set.seed(1)
 Clean_Data = function(df, level_type) { 
   if (level_type == 'State') {
     clean_df  = df %>% 
-      dplyr::select(Date,
-                    Cases_Daily, Cases_100K_7Day_MA,
-                    Tests_Daily, TPR_CMS,
-                    Population_DSHS) %>%
+      dplyr::select(Date, Cases_Daily, Tests_Daily, Population_DSHS) %>%
       group_by(Date) %>% 
       mutate_if(is.numeric, sum, na.rm = TRUE) %>% 
       distinct() %>%
@@ -79,10 +76,7 @@ Clean_Data = function(df, level_type) {
 
   } else { 
     clean_df = df %>% 
-      dplyr::select(Date, !!as.name(level_type),
-                    Cases_Daily, Cases_100K_7Day_MA,
-                    Tests_Daily, TPR_CMS,
-                    Population_DSHS) %>%
+      dplyr::select(Date, !!as.name(level_type), Cases_Daily, Tests_Daily, Population_DSHS) %>%
       group_by(Date, !!as.name(level_type)) %>% 
       mutate_if(is.numeric, sum, na.rm = TRUE) %>%
       distinct() %>%
@@ -92,22 +86,22 @@ Clean_Data = function(df, level_type) {
   return (clean_df %>% ungroup())
 }
 
-county_tpr = read.csv('tableau/county_TPR.csv') %>% 
-  dplyr::select(County, Date, TPR_CMS, Cases_100K_7Day_MA) %>% 
-  mutate(Date = as.Date(Date))
+# county_tpr = read.csv('tableau/county_TPR.csv') %>% 
+#   dplyr::select(County, Date) %>% 
+#   mutate(Date = as.Date(Date))
 
 county = read.csv("tableau/county.csv") %>% 
   dplyr::select(Date, Cases_Daily, Tests_Daily,
                 County, TSA_Combined, PHR_Combined,
                 Metro_Area, Population_DSHS) %>% 
   mutate(Date = as.Date(Date)) %>%
-  left_join(., county_tpr, by = c('County', 'Date')) %>% 
-  mutate(TPR_CMS = ifelse(Date < min(county_tpr$Date), NA, TPR_CMS),
-         Cases_100K_7Day_MA = ifelse(Date < min(county_tpr$Date), NA, Cases_100K_7Day_MA)) %>%
-  group_by(County) %>%
-  tidyr::fill(TPR_CMS, .direction = "down") %>%
-  tidyr::fill(Cases_100K_7Day_MA, .direction = "down") %>%
-  ungroup(County) %>%
+  # left_join(., county_tpr, by = c('County', 'Date')) %>% 
+  # mutate(TPR_CMS = ifelse(Date < min(county_tpr$Date), NA, TPR_CMS),
+         # Cases_100K_7Day_MA = ifelse(Date < min(county_tpr$Date), NA, Cases_100K_7Day_MA)) %>%
+  # group_by(County) %>%
+  # tidyr::fill(TPR_CMS, .direction = "down") %>%
+  # tidyr::fill(Cases_100K_7Day_MA, .direction = "down") %>%
+  # ungroup(County) %>%
   rename(TSA = TSA_Combined, PHR = PHR_Combined, Metro = Metro_Area) 
 
 clean_dfs = sapply(c('County', 'TSA', 'PHR', 'Metro', 'State'), function(x) Clean_Data(county, x))
@@ -255,15 +249,15 @@ covid.rt = function(mydata, threshold) {
                         nsim=1000)
   
     rt.DSHS.df = rt.df.extraction(rt.DSHS) %>% 
-                    mutate(TPR_CMS = mydata$TPR_CMS,
-                           Cases_100K_7Day_MA = mydata$Cases_100K_7Day_MA) %>% 
-                    dplyr::select(Date, TPR_CMS, Cases_100K_7Day_MA, Rt, lower, upper)
+                    # mutate(TPR_CMS = mydata$TPR_CMS,
+                    #        Cases_100K_7Day_MA = mydata$Cases_100K_7Day_MA) %>% 
+                    dplyr::select(Date, Rt, lower, upper)
     },
     error = function(e) {
     writeLines(paste0('Rt generation error (despite sufficient cases)', '\n'))
     rt.DSHS.df = data.frame(Date = as.Date(mydata$Date),
-                             TPR_CMS = mydata$TPR_CMS,
-                             Cases_100K_7Day_MA = mydata$Cases_100K_7Day_MA,
+                             # TPR_CMS = mydata$TPR_CMS,
+                             # Cases_100K_7Day_MA = mydata$Cases_100K_7Day_MA,
                              Rt = rep(NA, length(mydata$Date)),
                              lower = rep(NA, length(mydata$Date)),
                              upper = rep(NA, length(mydata$Date)))
@@ -272,8 +266,8 @@ covid.rt = function(mydata, threshold) {
     writeLines(paste0('Below required case threshold of ', round(threshold, 2), '\n'))
     # error catch small regions & na values for minrow
     rt.DSHS.df = data.frame(Date = as.Date(mydata$Date),
-                            TPR_CMS = mydata$TPR_CMS,
-                            Cases_100K_7Day_MA = mydata$Cases_100K_7Day_MA,
+                            # TPR_CMS = mydata$TPR_CMS,
+                            # Cases_100K_7Day_MA = mydata$Cases_100K_7Day_MA,
                             Rt = rep(NA, length(mydata$Date)),
                             lower = rep(NA, length(mydata$Date)),
                             upper = rep(NA, length(mydata$Date)))
@@ -293,57 +287,57 @@ county.rt.output = nlme::gapply(County_df, FUN = covid.rt,
 RT_County_df = rbindlist(county.rt.output, idcol = 'County')
 ```
 
-## School Districts
-```{r school district rt}
-school_districts = read.csv('tableau/district_school_reopening.csv') %>% 
-  dplyr::select(District, County) %>%
-  distinct()
+<!-- ## School Districts -->
+<!-- ```{r school district rt} -->
+<!-- school_districts = read.csv('tableau/district_school_reopening.csv') %>%  -->
+<!--   dplyr::select(District, County) %>% -->
+<!--   distinct() -->
 
-# exclude ISDs w/ 1 county listed [no ,c ] - can get estimate from RT_County_df
-county_combos = school_districts %>% 
-  dplyr::select(County) %>% 
-  distinct() %>% 
-  filter(stringr::str_detect(County, ',')) %>% 
-  setNames(NULL) %>% unlist()
+<!-- # exclude ISDs w/ 1 county listed [no ,c ] - can get estimate from RT_County_df -->
+<!-- county_combos = school_districts %>%  -->
+<!--   dplyr::select(County) %>%  -->
+<!--   distinct() %>%  -->
+<!--   filter(stringr::str_detect(County, ',')) %>%  -->
+<!--   setNames(NULL) %>% unlist() -->
 
-# split counties by comma, filter county daily with those counties, and pass back into rt function
-Create_Combo_County_df = function(combo) { 
-  combo_counties = stringr::str_split(combo, ',') %>% unlist()
-  combo_df = County_df %>%
-    filter(County %in% combo_counties) %>%
-    mutate(County_Group = combo) %>% 
-    group_by(Date, County_Group) %>% 
-    summarize(Cases_Daily = sum(Cases_Daily),
-              TPR_CMS = mean(TPR_CMS, na.rm = TRUE),
-              Cases_100K_7Day_MA = sum(Cases_100K_7Day_MA),
-              Population_DSHS = sum(Population_DSHS)) %>%
-    ungroup()
-  return(combo_df)
-}
+<!-- # split counties by comma, filter county daily with those counties, and pass back into rt function -->
+<!-- Create_Combo_County_df = function(combo) {  -->
+<!--   combo_counties = stringr::str_split(combo, ',') %>% unlist() -->
+<!--   combo_df = County_df %>% -->
+<!--     filter(County %in% combo_counties) %>% -->
+<!--     mutate(County_Group = combo) %>%  -->
+<!--     group_by(Date, County_Group) %>%  -->
+<!--     summarize(Cases_Daily = sum(Cases_Daily), -->
+<!--               TPR_CMS = mean(TPR_CMS, na.rm = TRUE), -->
+<!--               Cases_100K_7Day_MA = sum(Cases_100K_7Day_MA), -->
+<!--               Population_DSHS = sum(Population_DSHS)) %>% -->
+<!--     ungroup() -->
+<!--   return(combo_df) -->
+<!-- } -->
 
-RT_Combo_Output = lapply(county_combos,
-                                function(x) covid.rt(Create_Combo_County_df(x),
-                                                     threshold = case_quant))
-RT_Combo_df = rbindlist(RT_Combo_Output, idcol = TRUE) %>%
-  mutate(.id = county_combos[.id]) %>% 
-  rename(County = .id)
+<!-- RT_Combo_Output = lapply(county_combos, -->
+<!--                                 function(x) covid.rt(Create_Combo_County_df(x), -->
+<!--                                                      threshold = case_quant)) -->
+<!-- RT_Combo_df = rbindlist(RT_Combo_Output, idcol = TRUE) %>% -->
+<!--   mutate(.id = county_combos[.id]) %>%  -->
+<!--   rename(County = .id) -->
 
-RT_District_Combo_df = school_districts %>% 
-  dplyr::select(District, County) %>%
-  filter(str_detect(County, ',')) %>%
-  left_join(., RT_Combo_df, by = 'County')
+<!-- RT_District_Combo_df = school_districts %>%  -->
+<!--   dplyr::select(District, County) %>% -->
+<!--   filter(str_detect(County, ',')) %>% -->
+<!--   left_join(., RT_Combo_df, by = 'County') -->
 
-RT_District_single_df = school_districts %>% 
-  dplyr::select(District, County) %>%
-  filter(!str_detect(County, ',')) %>%
-  left_join(., RT_County_df, by = 'County')
+<!-- RT_District_single_df = school_districts %>%  -->
+<!--   dplyr::select(District, County) %>% -->
+<!--   filter(!str_detect(County, ',')) %>% -->
+<!--   left_join(., RT_County_df, by = 'County') -->
 
-RT_District_df = rbind(RT_District_Combo_df, RT_District_single_df) %>% 
-  distinct() %>%
-  dplyr::select(District, Date, everything(), -County) %>%
-  filter(Date == max(Date) - 1) %>%
-  arrange(District, Date)
-```
+<!-- RT_District_df = rbind(RT_District_Combo_df, RT_District_single_df) %>%  -->
+<!--   distinct() %>% -->
+<!--   dplyr::select(District, Date, everything(), -County) %>% -->
+<!--   filter(Date == max(Date) - 1) %>% -->
+<!--   arrange(District, Date) -->
+<!-- ``` -->
 
 ## Metro
 
@@ -378,22 +372,26 @@ RT_State_df = covid.rt(State_df, threshold = case_quant)
 ```{r}
 # Rename levels for easier parsing in tableau
 colnames(RT_County_df)[1] = 'Level'
-colnames(RT_District_df)[1] = 'Level'
+# colnames(RT_District_df)[1] = 'Level'
 colnames(RT_Metro_df)[1] = 'Level'
 colnames(RT_TSA_df)[1] = 'Level'
 colnames(RT_PHR_df)[1] = 'Level'
 RT_State_df$Level = 'Texas'
 
 RT_County_df$Level_Type = 'County'
-RT_District_df$Level_Type = 'District'
+# RT_District_df$Level_Type = 'District'
 RT_Metro_df$Level_Type = 'Metro'
 RT_TSA_df$Level_Type = 'TSA'
 RT_PHR_df$Level_Type = 'PHR'
 RT_State_df$Level_Type = 'State'
 
+# RT_Combined_df = 
+#   rbind(RT_District_df, RT_County_df, RT_TSA_df,
+#         RT_PHR_df, RT_Metro_df, RT_State_df) %>% 
+#   filter(Date != max(Date))
+
 RT_Combined_df = 
-  rbind(RT_District_df, RT_County_df, RT_TSA_df,
-        RT_PHR_df, RT_Metro_df, RT_State_df) %>% 
+  rbind(RT_County_df, RT_TSA_df, RT_PHR_df, RT_Metro_df, RT_State_df) %>% 
   filter(Date != max(Date))
 
 write.csv(RT_Combined_df, 'tableau/stacked_rt.csv', row.names = FALSE)
@@ -694,7 +692,7 @@ stacked_ratio_out = Ratio_Combined_df %>%
   mutate(County = ifelse(Level_Type == 'County', as.character(Level), '')) %>% 
   mutate(TSA = ifelse(Level_Type == 'TSA', as.character(Level), '')) %>% 
   mutate(PHR = ifelse(Level_Type == 'PHR', as.character(Level), '')) %>% 
-  mutate(Metro = ifelse(Level_Type == 'Metro', as.character(Level), '')) %>% 
+  mutate(`Metro Area` = ifelse(Level_Type == 'Metro', as.character(Level), '')) %>% 
   mutate(State = ifelse(Level_Type == 'State', as.character(Level), ''))
 
 write.csv(stacked_ratio_out, 'tableau/stacked_case_ratio.csv', row.names = FALSE)
@@ -827,6 +825,7 @@ write.csv(PCT_Combined_df, 'tableau/stacked_pct_change.csv', row.names = FALSE)
 Ratio_Combined_df$Date = max(PCT_Combined_df$Date)
 colnames(ARIMA_Case_Combined_df)[5:6] = c('TS_CI_Lower', 'TS_CI_Upper')
 colnames(RT_Combined_df)[4:5] = c('RT_CI_Lower', 'RT_CI_Upper')
+colnames(ARIMA_Hosp_Combined_df)[4:5] = c('TS_Hosp_CI_Lower', 'TS_Hosp_CI_Upper')
 
 stacked_all = Reduce(function(x, y) merge(x, y, by = c('Level_Type', 'Level', 'Date'), all=TRUE),
        list(PCT_Combined_df, Ratio_Combined_df, 
