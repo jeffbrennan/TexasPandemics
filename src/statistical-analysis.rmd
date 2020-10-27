@@ -1,0 +1,870 @@
+---
+title: "COVID Statistical Analysis"
+author: "Hongyin Lai, Yuan Li, Tara Prezioso, Alison Rector, Jeffrey Brennan, Swaminathan Kumar, Jose-Miguel Yamal"
+output:
+  html_document:
+    df_print: paged
+editor_options: 
+  chunk_output_type: console
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding, output_dir = "diagnostics/") })
+---
+
+# SETUP
+
+```{r, echo = FALSE}
+# performance analysis 
+# source: https://bookdown.org/yihui/rmarkdown-cookbook/time-chunk.html
+all_times = list()  # store the time for each chunk
+knitr::knit_hooks$set(time_it = local({
+  now = NULL
+  function(before, options) {
+    if (before) {
+      now <<- Sys.time()
+    } else {
+      res = difftime(Sys.time(), now)
+      all_times[[options$label]] <<- res
+    }
+  }
+}))
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+# knitr::opts_chunk$set(time_it = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+```
+
+```{r, warning=FALSE, message=FALSE}
+# TODO: remove extra libraries if possible
+# Data manipulation & cleaning
+library(tidyverse)
+library(reshape2)
+library(nlme)        # gapply
+library(data.table)
+
+# Modeling & stats
+library(mgcv)       # gam
+library(R0)         # rt
+library(Kendall)    # Mann-Kendall
+
+# Time series & forecasting
+library(forecast)
+library(zoo)
+library(astsa)
+library(fpp2)
+```
+
+
+```{r}
+refactor_version = 1.1
+set.seed(1)
+```
+
+```{r}
+# Obtain dfs for analysis
+Clean_Data = function(df, level_type) { 
+  if (level_type == 'State') {
+    clean_df  = df %>% 
+      dplyr::select(Date,
+                    Cases_Daily, Cases_100K_7Day_MA,
+                    Tests_Daily, TPR_CMS,
+                    Population_DSHS) %>%
+      group_by(Date) %>% 
+      mutate_if(is.numeric, sum, na.rm = TRUE) %>% 
+      distinct() %>%
+      mutate(Date = as.Date(Date)) %>% 
+      arrange(Date)
+
+  } else { 
+    clean_df = df %>% 
+      dplyr::select(Date, !!as.name(level_type),
+                    Cases_Daily, Cases_100K_7Day_MA,
+                    Tests_Daily, TPR_CMS,
+                    Population_DSHS) %>%
+      group_by(Date, !!as.name(level_type)) %>% 
+      mutate_if(is.numeric, sum, na.rm = TRUE) %>%
+      distinct() %>%
+      mutate(Date = as.Date(Date)) %>% 
+      arrange(Date, !!as.name(level_type))
+  }
+  return (clean_df %>% ungroup())
+}
+
+county_tpr = read.csv('tableau/county_TPR.csv') %>% 
+  dplyr::select(County, Date, TPR_CMS, Cases_100K_7Day_MA) %>% 
+  mutate(Date = as.Date(Date))
+
+county = read.csv("tableau/county.csv") %>% 
+  dplyr::select(Date, Cases_Daily, Tests_Daily,
+                County, TSA_Combined, PHR_Combined,
+                Metro_Area, Population_DSHS) %>% 
+  mutate(Date = as.Date(Date)) %>%
+  left_join(., county_tpr, by = c('County', 'Date')) %>% 
+  mutate(TPR_CMS = ifelse(Date < min(county_tpr$Date), NA, TPR_CMS),
+         Cases_100K_7Day_MA = ifelse(Date < min(county_tpr$Date), NA, Cases_100K_7Day_MA)) %>%
+  group_by(County) %>%
+  tidyr::fill(TPR_CMS, .direction = "down") %>%
+  tidyr::fill(Cases_100K_7Day_MA, .direction = "down") %>%
+  ungroup(County) %>%
+  rename(TSA = TSA_Combined, PHR = PHR_Combined, Metro = Metro_Area) 
+
+clean_dfs = sapply(c('County', 'TSA', 'PHR', 'Metro', 'State'), function(x) Clean_Data(county, x))
+
+# add hospitalizations
+hospitalizations = read.csv("tableau/hospitalizations_tsa.csv") %>%
+  dplyr::select(Date, TSA_Combined, Hospitalizations_Total) %>%
+  rename(TSA = TSA_Combined) %>%
+  mutate(Date = as.Date(Date)) %>%
+  arrange(Date, TSA)
+
+clean_dfs$TSA = clean_dfs$TSA %>% left_join(., hospitalizations, by = c('Date', 'TSA'))
+
+state_hosp = hospitalizations %>% 
+  group_by(Date) %>%
+  summarize(Hospitalizations_Total = sum(Hospitalizations_Total))
+
+clean_dfs$State = clean_dfs$State %>% left_join(., state_hosp, by = 'Date')
+```
+
+
+```{r}
+#extract data frames from the list
+County_df = clean_dfs$County
+TSA_df = clean_dfs$TSA
+PHR_df = clean_dfs$PHR
+Metro_df = clean_dfs$Metro
+State_df = clean_dfs$State
+
+case_quant = County_df %>%
+  filter(Date >= (max(Date) - as.difftime(3, unit = 'weeks'))) %>%
+  group_by(County) %>%
+  mutate(mean_cases = mean(Cases_Daily, na.rm = TRUE)) %>%
+  dplyr::select(mean_cases) %>%
+  ungroup() %>%
+  summarize(case_quant = quantile(mean_cases, c(0.4, 0.5, 0.6, 0.7, 0.8), na.rm = TRUE)[4]) %>% 
+  unlist()
+```
+
+# RT ANALYSIS
+
+```{r}
+rt.df.extraction = function(Rt.estimate.output) {
+
+  # extract r0 estimate values into dataframe
+  rt.df = setNames(stack(Rt.estimate.output$estimates$TD$R)[2:1], c('Date', 'Rt'))
+  rt.df$Date = as.Date(rt.df$Date)
+
+  # get 95% CI
+  CI.lower.list = Rt.estimate.output$estimates$TD$conf.int$lower
+  CI.upper.list = Rt.estimate.output$estimates$TD$conf.int$upper
+
+  #use unlist function to format as vector
+  CI.lower = unlist(CI.lower.list, recursive = TRUE, use.names = TRUE)
+  CI.upper = unlist(CI.upper.list, recursive = TRUE, use.names = TRUE)
+
+  rt.df$lower = CI.lower
+  rt.df$upper = CI.upper
+  
+  rt.df = rt.df %>%
+    mutate(lower = replace(lower, Rt == 0, NA)) %>%
+    mutate(upper = replace(upper, Rt == 0, NA)) %>%
+    mutate(Rt = replace(Rt, Rt == 0, NA))
+  
+  return(rt.df)
+}
+```
+
+```{r}
+#Function to generate Rt estimates, need to read in data frame and population size
+covid.rt = function(mydata, threshold) {
+  set.seed(1)
+  
+  ### DECLARE VALS ###
+  #set generation time
+  #Tapiwa, Ganyani "Esimating the gen interval for Covid-19":
+
+  # LOGNORMAL OPS
+  # gen.time=generation.time("lognormal", c(4.0, 2.9))
+  # gen.time=generation.time("lognormal", c(4.7,2.9)) #Nishiura
+
+  # GAMMA OPS
+  # gen.time=generation.time("gamma", c(5.2, 1.72)) #Singapore
+  # gen.time=generation.time("gamma", c(3.95, 1.51)) #Tianjin
+  gen.time = generation.time("gamma", c(3.96, 4.75))
+  print(mydata %>% dplyr::select(2) %>% distinct() %>% unlist() %>% setNames(NULL))
+
+  #change na values to 0
+  mydata = mydata %>% mutate(Cases_Daily = ifelse(is.na(Cases_Daily), 0, Cases_Daily))
+  
+  # get case average from past month
+  recent_case_avg = mydata %>% 
+    filter(Date > seq(max(Date), length = 2, by = "-1 month")[2]) %>%
+    summarize(mean(Cases_Daily, na.rm = TRUE)) %>% 
+    unlist()
+  
+  print(round(recent_case_avg, 2))
+  
+  pop.DSHS = mydata$Population_DSHS[1]
+  #Get 7 day moving average of daily cases
+  mydata$MA_7day=rollmean(mydata$Cases_Daily, k=7, na.pad=TRUE, align='right')
+
+  #create a vector of new cases 7 day moving average
+  mydata.new=pull(mydata, MA_7day)
+  #mydata.new = pull(mydata, Cases_Daily)
+  
+  # get dates as vectors
+  date.vector = pull(mydata, Date)
+  
+  #create a named numerical vector using the date.vector as names of new cases
+  #Note: this is needed to run R0 package function estimate.R()
+  names(mydata.new) = c(date.vector)
+  
+  
+  #get row number of March 15 and first nonzero entry
+  #NOTE: for 7 day moving average start March 15, for daily start March 9
+  #find max row between the two (this will be beginning of rt data used)
+  march15.row = which(mydata$Date=="2020-03-15")
+  first.nonzero = min(which(mydata$Cases_Daily>0))
+  last.nonzero = max(which(mydata$Cases_Daily>0))
+  
+  first.nonzero = ifelse(is.infinite(first.nonzero), NA, first.nonzero)
+  last.nonzero = ifelse(is.infinite(last.nonzero), NA, last.nonzero)
+
+  minrow = max(march15.row, first.nonzero, na.rm = TRUE)
+  maxrow = as.integer(min(last.nonzero, nrow(mydata), na.rm = TRUE))
+
+  # restrict df to same region as the minrow for addition of TPR & Cases/100
+  # TODO: work entirely off mydata and remove individual vars for which row is where
+  mydata = mydata %>% slice(minrow:maxrow)
+  
+  ### R0 ESTIMATION ###
+  if(!is.na(minrow) & recent_case_avg > threshold) {
+     
+    #reduce the vector to be rows from min date (March 9 or first nonzero case) to current date
+    mydata.newest = mydata.new[minrow:maxrow]
+    
+    tryCatch({
+    rt.DSHS = estimate.R(mydata.newest, 
+                        gen.time, 
+                        begin=as.integer(1),
+                        end=length(mydata.newest),
+                        methods=c("TD"), 
+                        pop.size=pop.DSHS,
+                        nsim=1000)
+  
+    rt.DSHS.df = rt.df.extraction(rt.DSHS) %>% 
+                    mutate(TPR_CMS = mydata$TPR_CMS,
+                           Cases_100K_7Day_MA = mydata$Cases_100K_7Day_MA) %>% 
+                    dplyr::select(Date, TPR_CMS, Cases_100K_7Day_MA, Rt, lower, upper)
+    },
+    error = function(e) {
+    writeLines(paste0('Rt generation error (despite sufficient cases)', '\n'))
+    rt.DSHS.df = data.frame(Date = as.Date(mydata$Date),
+                             TPR_CMS = mydata$TPR_CMS,
+                             Cases_100K_7Day_MA = mydata$Cases_100K_7Day_MA,
+                             Rt = rep(NA, length(mydata$Date)),
+                             lower = rep(NA, length(mydata$Date)),
+                             upper = rep(NA, length(mydata$Date)))
+    })
+  } else {
+    writeLines(paste0('Below required case threshold of ', round(threshold, 2), '\n'))
+    # error catch small regions & na values for minrow
+    rt.DSHS.df = data.frame(Date = as.Date(mydata$Date),
+                            TPR_CMS = mydata$TPR_CMS,
+                            Cases_100K_7Day_MA = mydata$Cases_100K_7Day_MA,
+                            Rt = rep(NA, length(mydata$Date)),
+                            lower = rep(NA, length(mydata$Date)),
+                            upper = rep(NA, length(mydata$Date)))
+  }
+  return(rt.DSHS.df)
+}
+```
+
+## County
+
+```{r}
+# Generate Rt estimates for each county, using 70% quantile of cases in past 3 weeks as threshold
+county.rt.output = nlme::gapply(County_df, FUN = covid.rt,
+                                 groups = County_df$County, threshold = case_quant)
+
+# combine list of dataframes (1 for each county) to single dataframe
+RT_County_df = rbindlist(county.rt.output, idcol = 'County')
+```
+
+## School Districts
+```{r school district rt}
+school_districts = read.csv('tableau/district_school_reopening.csv') %>% 
+  dplyr::select(District, County) %>%
+  distinct()
+
+# exclude ISDs w/ 1 county listed [no ,c ] - can get estimate from RT_County_df
+county_combos = school_districts %>% 
+  dplyr::select(County) %>% 
+  distinct() %>% 
+  filter(stringr::str_detect(County, ',')) %>% 
+  setNames(NULL) %>% unlist()
+
+# split counties by comma, filter county daily with those counties, and pass back into rt function
+Create_Combo_County_df = function(combo) { 
+  combo_counties = stringr::str_split(combo, ',') %>% unlist()
+  combo_df = County_df %>%
+    filter(County %in% combo_counties) %>%
+    mutate(County_Group = combo) %>% 
+    group_by(Date, County_Group) %>% 
+    summarize(Cases_Daily = sum(Cases_Daily),
+              TPR_CMS = mean(TPR_CMS, na.rm = TRUE),
+              Cases_100K_7Day_MA = sum(Cases_100K_7Day_MA),
+              Population_DSHS = sum(Population_DSHS)) %>%
+    ungroup()
+  return(combo_df)
+}
+
+RT_Combo_Output = lapply(county_combos,
+                                function(x) covid.rt(Create_Combo_County_df(x),
+                                                     threshold = case_quant))
+RT_Combo_df = rbindlist(RT_Combo_Output, idcol = TRUE) %>%
+  mutate(.id = county_combos[.id]) %>% 
+  rename(County = .id)
+
+RT_District_Combo_df = school_districts %>% 
+  dplyr::select(District, County) %>%
+  filter(str_detect(County, ',')) %>%
+  left_join(., RT_Combo_df, by = 'County')
+
+RT_District_single_df = school_districts %>% 
+  dplyr::select(District, County) %>%
+  filter(!str_detect(County, ',')) %>%
+  left_join(., RT_County_df, by = 'County')
+
+RT_District_df = rbind(RT_District_Combo_df, RT_District_single_df) %>% 
+  distinct() %>%
+  dplyr::select(District, Date, everything(), -County) %>%
+  filter(Date == max(Date) - 1) %>%
+  arrange(District, Date)
+```
+
+## Metro
+
+```{r}
+RT_Metro_output = nlme::gapply(Metro_df, FUN=covid.rt, groups=Metro_df$Metro, threshold = case_quant)
+RT_Metro_df = rbindlist(RT_Metro_output, idcol = 'Metro')
+```
+
+## TSA
+
+```{r}
+RT_TSA_output = nlme::gapply(TSA_df, FUN=covid.rt, groups=TSA_df$TSA, threshold = case_quant)
+RT_TSA_df = rbindlist(RT_TSA_output, idcol = 'TSA')
+```
+
+## PHR
+
+```{r}
+RT_PHR_output = nlme::gapply(PHR_df, FUN=covid.rt, groups=PHR_df$PHR, threshold = case_quant)
+RT_PHR_df = rbindlist(RT_PHR_output, idcol = 'PHR')
+```
+
+
+## State
+
+```{r}
+RT_State_df = covid.rt(State_df, threshold = case_quant)
+```
+
+## grouping
+
+```{r}
+# Rename levels for easier parsing in tableau
+colnames(RT_County_df)[1] = 'Level'
+colnames(RT_District_df)[1] = 'Level'
+colnames(RT_Metro_df)[1] = 'Level'
+colnames(RT_TSA_df)[1] = 'Level'
+colnames(RT_PHR_df)[1] = 'Level'
+RT_State_df$Level = 'Texas'
+
+RT_County_df$Level_Type = 'County'
+RT_District_df$Level_Type = 'District'
+RT_Metro_df$Level_Type = 'Metro'
+RT_TSA_df$Level_Type = 'TSA'
+RT_PHR_df$Level_Type = 'PHR'
+RT_State_df$Level_Type = 'State'
+
+RT_Combined_df = 
+  rbind(RT_District_df, RT_County_df, RT_TSA_df,
+        RT_PHR_df, RT_Metro_df, RT_State_df) %>% 
+  filter(Date != max(Date))
+
+write.csv(RT_Combined_df, 'tableau/stacked_rt.csv', row.names = FALSE)
+```
+
+# TIME SERIES
+
+```{r}
+# Compute forecast (UPDATE PREDICTION PERIOD [days] AS NEEDED)
+covid.arima.forecast=function(mydata, prediction.period = 10, mindate, threshold) {
+  print(as.character(mydata[1,2]))
+  maxdate = max(mydata$Date)
+  pred_start_label = format(mindate, format = '%m_%d')
+  
+  mydata = subset(mydata, Date >= mindate)
+  model.length = as.numeric(length(mydata$Date) + prediction.period)
+  
+  recent_case_avg = mydata %>%
+    filter(Date > seq(max(Date), length = 2, by = "-1 month")[2]) %>%
+    summarize(mean(Cases_Daily, na.rm = TRUE)) %>% 
+    unlist()
+  
+  print(recent_case_avg)
+
+  if(recent_case_avg >= threshold) {
+    # arima requires cases to be a timeseries vector
+    my.timeseries=ts(mydata$Cases_Daily)
+
+    library(pracma)
+    my.timeseries=movavg(my.timeseries,7,"s")
+    
+    arima.fit = forecast::auto.arima(my.timeseries)
+    # save parameters from arima autofit
+    p= arima.fit$arma[1]          # autoregressive order 
+    q= arima.fit$arma[2]          # moving average order 
+    d=arima.fit$arma[6]           # differencing order from model
+  
+    # 10 day forecast, CI for lower and upper has confidence level 95% set by level =c(95,95)
+    arima.forecast = forecast::forecast(arima.fit, h = prediction.period, level=c(95,95))
+
+    #return a dataframe of the arima model(Daily cases by date)
+    arima.out = data.frame(Date = seq(mindate, maxdate + prediction.period, by = 'days'),
+                            Cases_Raw = c(mydata$Cases_Daily, rep(NA, times = prediction.period)),
+                            Cases_Daily = c(my.timeseries, arima.forecast[['mean']]),
+                            CI_Lower = c(rep(NA, times = length(my.timeseries)),
+                                         arima.forecast[['lower']][, 2]),
+                            CI_Upper = c(rep(NA, times = length(my.timeseries)),
+                                         arima.forecast[['upper']][, 2]))
+  
+    } else {
+    # insufficient data catch: return NA values for predictions 
+    arima.out = data.frame(Date = seq(mindate, maxdate + prediction.period, by = 'days'),
+                            Cases_Raw = c(mydata$Cases_Daily, rep(NA, times = prediction.period)),
+                            Cases_Daily = rep(NA, times = model.length),
+                            CI_Lower = rep(NA, times = model.length),
+                            CI_Upper =  rep(NA, times = model.length))
+              
+    }
+  #replace CI lower limit with 0 if negative
+  arima.out$CI_Lower = ifelse(arima.out$CI_Lower>=0 ,arima.out$CI_Lower, 0)
+  return(arima.out)
+}
+```
+
+## County
+
+```{r county ts}
+ARIMA_Case_County_output = nlme::gapply(County_df,
+                                   FUN = covid.arima.forecast,
+                                   groups = County_df$County,
+                                   mindate = as.Date('2020-03-04'),
+                                   threshold = case_quant)
+
+ARIMA_Case_County_df = rbindlist(ARIMA_Case_County_output, idcol = 'County')
+```
+
+## TSA
+
+```{r}
+ARIMA_Case_TSA_output = nlme::gapply(TSA_df,
+                                FUN = covid.arima.forecast,
+                                groups = TSA_df$TSA,
+                                mindate = as.Date('2020-03-04'),
+                                threshold = case_quant)
+
+ARIMA_Case_TSA_df = rbindlist(ARIMA_Case_TSA_output, idcol = 'TSA')
+```
+
+## PHR
+
+```{r}
+ARIMA_Case_PHR_output = nlme::gapply(PHR_df,
+                                 FUN = covid.arima.forecast,
+                                 groups = PHR_df$PHR,
+                                 mindate = as.Date('2020-03-04'),
+                                 threshold = case_quant)
+
+ARIMA_Case_PHR_df = rbindlist(ARIMA_Case_PHR_output, idcol='PHR')
+```
+
+## Metro
+
+```{r}
+ARIMA_Case_Metro_output = nlme::gapply(Metro_df,
+                                  FUN = covid.arima.forecast,
+                                  groups = Metro_df$Metro,
+                                  mindate = as.Date('2020-03-04'),
+                                  threshold = case_quant)
+
+ARIMA_Case_Metro_df = rbindlist(ARIMA_Case_Metro_output, idcol = 'Metro')
+```
+
+## State
+
+```{r}
+ARIMA_Case_State_df = covid.arima.forecast(State_df, mindate = as.Date('2020-03-04'), threshold = case_quant)
+```
+
+## grouping
+
+```{r}
+colnames(ARIMA_Case_County_df)[1] = 'Level'
+colnames(ARIMA_Case_Metro_df)[1] = 'Level'
+colnames(ARIMA_Case_TSA_df)[1] = 'Level'
+ARIMA_Case_State_df$Level = 'Texas'
+colnames(ARIMA_Case_PHR_df)[1] = 'Level'
+
+ARIMA_Case_County_df$Level_Type = 'County'
+ARIMA_Case_Metro_df$Level_Type = 'Metro'
+ARIMA_Case_TSA_df$Level_Type = 'TSA'
+ARIMA_Case_PHR_df$Level_Type = 'PHR'
+ARIMA_Case_State_df$Level_Type = 'State'
+
+ARIMA_Case_Combined_df = rbind(ARIMA_Case_County_df, ARIMA_Case_TSA_df, ARIMA_Case_PHR_df,
+                               ARIMA_Case_Metro_df, ARIMA_Case_State_df)
+write.csv(ARIMA_Case_Combined_df, 'tableau/stacked_case_timeseries.csv', row.names = FALSE)
+```
+
+# Hospitalization Time Series
+```{r}
+# Compute forecast (UPDATE PREDICTION PERIOD [days] AS NEEDED)
+covid.arima.forecast=function(mydata, prediction.period = 10, mindate) {
+  maxdate = max(mydata$Date)
+  pred_start_label = format(mindate, format = '%m_%d')
+  
+  mydata = subset(mydata, Date >= mindate)
+  model.length = as.numeric(length(mydata$Date) + prediction.period)
+
+  if(max(mydata$Hospitalizations_Total>=100, na.rm = TRUE))
+  {
+    my.timeseries=ts(mydata$Hospitalizations_Total)
+
+    library(pracma)
+    my.timeseries=movavg(my.timeseries,7,"s")
+
+    arima.fit = forecast::auto.arima(my.timeseries)
+
+    # save parameters from arima autofit
+    p= arima.fit$arma[1]          # autoregressive order 
+    q= arima.fit$arma[2]          # moving average order 
+    d=arima.fit$arma[6]           # differencing order from model
+  
+    # 10 day forecast, CI for lower and upper has confidence level 95% set by level =c(95,95)
+    arima.forecast = forecast::forecast(arima.fit, h = prediction.period, level=c(95,95))
+
+    #return a dataframe of the arima model (Daily cases by date)
+    arima.out = data.frame(Date = seq(mindate, maxdate + prediction.period, by = 'days'),
+                            # Cases_Raw = c(mydata$Hospitalizations_Total, rep(NA, times = prediction.period)),
+                            Hospitalizations_Total = c(my.timeseries, arima.forecast[['mean']]),
+                            CI_Lower = c(rep(NA, times = length(my.timeseries)),
+                                         arima.forecast[['lower']][, 2]),
+                            CI_Upper = c(rep(NA, times = length(my.timeseries)),
+                                         arima.forecast[['upper']][, 2]))
+    } else {
+    # insufficient data catch: return NA values for predictions 
+    arima.out = data.frame(Date = seq(mindate, maxdate + prediction.period, by = 'days'),
+                            # Cases_Raw = c(mydata$Hospitalizations_Total, rep(NA, times = prediction.period)),
+                            Hospitalizations_Total = rep(NA, times = model.length),
+                            CI_Lower = rep(NA, times = model.length),
+                            CI_Upper =  rep(NA, times = model.length))
+    }
+  #replace CI lower limit with 0 if negative
+  arima.out$CI_Lower = ifelse(arima.out$CI_Lower>=0,arima.out$CI_Lower, 0)
+  return(arima.out)
+}
+```
+
+## TSA - Hospitalization
+
+```{r tsa hosp ts}
+ARIMA_Hosp_TSA_output = nlme::gapply(TSA_df,
+                                     FUN = covid.arima.forecast,
+                                     groups = TSA_df$TSA,
+                                     mindate = as.Date('2020-04-12'))
+
+ARIMA_Hosp_TSA_df = rbindlist(ARIMA_Hosp_TSA_output, idcol='TSA')
+```
+
+## State - hospitalization
+
+```{r}
+ARIMA_Hosp_State_df = covid.arima.forecast(State_df, mindate = as.Date('2020-04-12'))
+```
+
+## Stacking
+```{r}
+colnames(ARIMA_Hosp_TSA_df)[1] = 'Level'
+ARIMA_Hosp_State_df$Level = 'Texas'
+
+ARIMA_Hosp_TSA_df$Level_Type = 'TSA'
+ARIMA_Hosp_State_df$Level_Type = 'State'
+
+ARIMA_Hosp_Combined_df = rbind(ARIMA_Hosp_TSA_df, ARIMA_Hosp_State_df)
+write.csv(ARIMA_Hosp_Combined_df, 'tableau/stacked_hosp_timeseries.csv', row.names = FALSE)
+```
+
+# STANDARD STATISTICAL TESTS        
+
+## CASE RATIOS
+
+```{r}
+Calculate_Ratio = function(df) { 
+  latestdate = max(df$Date)
+  earliestdate = latestdate - 14
+  middate = latestdate - 7
+  
+  current_ratio = df %>%
+    setNames(c('Date', 'Level', 'Cases_Daily')) %>%
+    filter(Date > earliestdate) %>%
+    mutate(Week = ifelse(Date <= latestdate & Date > middate, 'Week_2', 'Week_1')) %>%
+    group_by(Level, Week) %>%
+    summarize(Cases_Daily_mean = mean(Cases_Daily), na.rm = TRUE) %>%
+    summarize(current_ratio = Cases_Daily_mean / lag(Cases_Daily_mean)) %>%
+    na.omit() %>%
+    mutate(current_ratio = replace(current_ratio,
+                                   is.infinite(current_ratio) | is.nan(current_ratio) | current_ratio <= 0,
+                                   NA)) %>%
+    mutate(current_ratio_cat = cut(current_ratio, breaks=unique(c(0,0.5,0.9,1.1,1.5,2,4,8,max(current_ratio)))))
+    
+  return(current_ratio)
+}
+```
+
+### County
+
+```{r}
+Ratio_County_df = County_df %>%
+  dplyr::select(Date, County, Cases_Daily) %>%
+  Calculate_Ratio()
+```
+
+### TSA
+
+```{r case ratios}
+Ratio_TSA_df = TSA_df %>%
+  dplyr::select(Date, TSA, Cases_Daily) %>% 
+  Calculate_Ratio()
+```
+
+### PHR
+
+```{r}
+Ratio_PHR_df = PHR_df %>%
+  dplyr::select(Date, PHR, Cases_Daily) %>%
+  Calculate_Ratio()
+```
+
+### Metro                                        
+
+```{r}
+Ratio_Metro_df = Metro_df %>%
+  dplyr::select(Date, Metro, Cases_Daily) %>%
+  Calculate_Ratio()
+```
+
+### State
+
+```{r}
+Ratio_State_df = State_df %>%
+  mutate(State = 'Texas') %>% 
+  dplyr::select(Date, State, Cases_Daily) %>%
+  Calculate_Ratio()
+```
+
+### grouping
+
+```{r}
+Ratio_County_df$Level_Type = 'County'
+Ratio_Metro_df$Level_Type = 'Metro'
+Ratio_TSA_df$Level_Type = 'TSA'
+Ratio_PHR_df$Level_Type = 'PHR'
+Ratio_State_df$Level_Type = 'State'
+
+Ratio_Combined_df = rbind(Ratio_County_df, Ratio_TSA_df, Ratio_PHR_df, 
+                          Ratio_Metro_df, Ratio_State_df)
+
+stacked_ratio_out = Ratio_Combined_df %>% 
+  mutate(County = ifelse(Level_Type == 'County', as.character(Level), '')) %>% 
+  mutate(TSA = ifelse(Level_Type == 'TSA', as.character(Level), '')) %>% 
+  mutate(PHR = ifelse(Level_Type == 'PHR', as.character(Level), '')) %>% 
+  mutate(Metro = ifelse(Level_Type == 'Metro', as.character(Level), '')) %>% 
+  mutate(State = ifelse(Level_Type == 'State', as.character(Level), ''))
+
+write.csv(stacked_ratio_out, 'tableau/stacked_case_ratio.csv', row.names = FALSE)
+```
+
+
+## % CHANGE
+
+```{r}
+create.case.test = function(level, dat, region){
+  # creates the % difference in cases and tests and smooth line with CIs 
+  # level: either "TSA", "County", or "Metro". Note that "county" won't work for many counties unless have enough cases.
+  # dat: dataset (e.g. "county", "metro", "tsa")
+  # region: the region within the dataset (county, metro region, or tsa)
+
+  if(level != 'State') {dat = dat %>% filter(!!as.name(level) == region)}
+
+  # restrict data to first test date (for % test increase)
+  first.test.date = as.Date("2020-04-22")
+  dat$Date = as.Date(dat$Date)
+  dat$Date2 = as.numeric(dat$Date)
+  
+  # get 14 day rolling avg for instances where initial cases or tests are 0
+  dat$cases_avg14 = rollmean(dat$Cases_Daily, k=14, fill = NA, align = 'right', na.rm = TRUE)
+  dat$tests_avg14 = rollmean(dat$Tests_Daily, k=14, fill = NA, align = 'right', na.rm = TRUE)
+  
+  # restrict new df to first.test.date forward  
+  slopedata.tests = data.frame(subset(dat, select=c(Date, Date2, Cases_Daily,
+                                                     Tests_Daily, cases_avg14, tests_avg14))) %>%
+    subset(Date >= first.test.date)
+  
+  tests_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=Tests_Daily))
+  cases_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=Cases_Daily))
+  
+  # numeric date for gam                         
+  tmpdata = data.frame(Date2=slopedata.tests$Date2)
+
+  if (cases_start != 0 & tests_start != 0) {
+    
+    # Calc splines if cases and tests will produce non Inf values
+    slopedata.tests$newtestsY = 100*(as.vector(slopedata.tests$Tests_Daily / tests_start) - 1)
+    slopedata.tests$newcasesY = 100*(as.vector(slopedata.tests$Cases_Daily / cases_start) - 1)
+    
+    # fit and predict w/ gam for spline vals
+    cases.gam = gam(newcasesY~s(Date2,bs="cs", k=5), data=slopedata.tests)
+    tests.gam = gam(newtestsY~s(Date2,bs="cs",k=5), data=slopedata.tests)
+    
+    cases.fit = predict(cases.gam, tmpdata, se.fit=TRUE)
+    tests.fit = predict(tests.gam, tmpdata, se.fit=TRUE)
+    
+    # Use 95% CI for splines
+    tmp.df = data.frame(Level = region,
+                        Date = slopedata.tests$Date,
+                        Data_Type = 'Raw',
+                        cases_percentdiff = slopedata.tests$newcasesY,
+                        tests_percentdiff = slopedata.tests$newtestsY,
+                        cases_percentdiff_spline = cases.fit$fit, 
+                        cases_percentdiff_spline_lower = cases.fit$fit-1.96*cases.fit$se, 
+                        cases_percentdiff_spline_upper = cases.fit$fit+1.96*cases.fit$se,
+                        tests_percentdiff_spline = tests.fit$fit,
+                        tests_percentdiff_spline_lower = tests.fit$fit-1.96*tests.fit$se,
+                        tests_percentdiff_spline_upper = tests.fit$fit+1.96*tests.fit$se,
+                        Level_Type = level)
+  } else {
+    # only calc % increase for regions w/ sparse cases
+    cases_avg_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=cases_avg14))
+    tests_avg_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=tests_avg14))
+
+    slopedata.tests$newcasesY = 100*(as.vector(slopedata.tests$cases_avg14 / cases_avg_start) - 1)
+    slopedata.tests$newtestsY = 100*(as.vector(slopedata.tests$tests_avg14 / tests_avg_start) - 1)
+    
+    tmp.df = data.frame(Level = region,
+                        Date = slopedata.tests$Date,
+                        Data_Type = '14-Day Average',
+                        cases_percentdiff = slopedata.tests$newcasesY,
+                        tests_percentdiff = slopedata.tests$newtestsY,
+                        cases_percentdiff_spline = rep(NA, times = nrow(slopedata.tests)),
+                        cases_percentdiff_spline_lower = rep(NA, times = nrow(slopedata.tests)),
+                        cases_percentdiff_spline_upper = rep(NA, times = nrow(slopedata.tests)),
+                        tests_percentdiff_spline = rep(NA, times = nrow(slopedata.tests)),
+                        tests_percentdiff_spline_lower = rep(NA, times = nrow(slopedata.tests)),
+                        tests_percentdiff_spline_upper = rep(NA, times = nrow(slopedata.tests)),
+                        Level_Type = level)  
+    }
+  
+  return(tmp.df)  
+}
+```
+
+### County
+
+```{r}
+PCT_County_df = rbindlist(lapply(unique(County_df$County), function(x) create.case.test('County', County_df, x)))
+```
+
+### TSA
+
+```{r pct change}
+PCT_TSA_df = rbindlist(lapply(unique(TSA_df$TSA), function(x) create.case.test('TSA', TSA_df, x)))
+```
+
+### PHR
+
+```{r}
+PCT_PHR_df = rbindlist(lapply(unique(PHR_df$PHR), function(x) create.case.test('PHR', PHR_df, x)))
+```
+
+### Metro
+
+```{r}
+PCT_Metro_df = rbindlist(lapply(unique(Metro_df$Metro), function(x) create.case.test('Metro', Metro_df, x)))
+```
+
+### State
+
+```{r}
+PCT_State_df = create.case.test('State', State_df, 'Texas')
+```
+
+### grouping
+
+```{r}
+PCT_Combined_df = rbind(PCT_County_df, PCT_TSA_df, PCT_PHR_df, PCT_Metro_df, PCT_State_df)
+write.csv(PCT_Combined_df, 'tableau/stacked_pct_change.csv', row.names = FALSE)
+```
+
+# STACK COMBINATIONS
+
+```{r}
+Ratio_Combined_df$Date = max(PCT_Combined_df$Date)
+colnames(ARIMA_Case_Combined_df)[5:6] = c('TS_CI_Lower', 'TS_CI_Upper')
+colnames(RT_Combined_df)[4:5] = c('RT_CI_Lower', 'RT_CI_Upper')
+
+stacked_all = Reduce(function(x, y) merge(x, y, by = c('Level_Type', 'Level', 'Date'), all=TRUE),
+       list(PCT_Combined_df, Ratio_Combined_df, 
+            ARIMA_Case_Combined_df, RT_Combined_df, ARIMA_Hosp_Combined_df))
+
+write.csv(stacked_all, 'tableau/stacked_critical_trends.csv', row.names = FALSE)
+```
+
+# PERFORMANCE REVIEW
+
+```{r, fig.width=12, fig.height=6}
+# time_flat = unlist(all_times)
+# print(time_flat)
+# names(time_flat) = NULL
+# 
+# time_df = data.frame('time_sec' = time_flat) %>%
+#   mutate(chunk = as.numeric(rownames(.)) + 2) %>%
+#   mutate(version = refactor_version) %>%
+#   mutate(script = 'covid-scraping.rmd') %>%
+#   arrange(desc(time_sec))
+# 
+# ggplot(time_df, aes(y = time_sec, x = chunk, fill = time_sec)) +
+#   geom_bar(stat = 'identity') +
+#   geom_text(aes(label = chunk), position=position_dodge(width = 0.9), vjust = -0.25) +
+#   labs(x = 'chunk #', y = 'runtime (seconds)') +
+#   scale_fill_gradient(low = 'gray80', high = 'tomato1') +
+#   theme_pubr() +
+#   theme(axis.text.x = element_blank(),
+#         legend.position = 'none')
+```
+
+## total run time
+
+```{r}
+# time_df %>% summarize(sum(time_sec))
+```
+
+```{r}
+# write.csv(time_df, paste0('diagnostics/stats_runtime_', refactor_version, '.csv'),
+#           row.names = FALSE)
+```
