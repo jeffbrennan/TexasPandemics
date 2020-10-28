@@ -285,6 +285,12 @@ county.rt.output = nlme::gapply(County_df, FUN = covid.rt,
 
 # combine list of dataframes (1 for each county) to single dataframe
 RT_County_df = rbindlist(county.rt.output, idcol = 'County')
+
+county_TPR = read.csv('tableau/county_TPR.csv') %>%
+  mutate(Date = as.Date(Date)) %>%
+  left_join(., RT_County_df[, c('County', 'Date', 'Rt')], by = c('County', 'Date'))
+
+write.csv('tableau/county_TPR.csv', row.names = FALSE)
 ```
 
 <!-- ## School Districts -->
@@ -384,11 +390,6 @@ RT_Metro_df$Level_Type = 'Metro'
 RT_TSA_df$Level_Type = 'TSA'
 RT_PHR_df$Level_Type = 'PHR'
 RT_State_df$Level_Type = 'State'
-
-# RT_Combined_df = 
-#   rbind(RT_District_df, RT_County_df, RT_TSA_df,
-#         RT_PHR_df, RT_Metro_df, RT_State_df) %>% 
-#   filter(Date != max(Date))
 
 RT_Combined_df = 
   rbind(RT_County_df, RT_TSA_df, RT_PHR_df, RT_Metro_df, RT_State_df) %>% 
