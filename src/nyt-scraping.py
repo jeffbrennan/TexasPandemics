@@ -41,7 +41,7 @@ def parse_data(nyt_data):
     df = pd.DataFrame(texas_schools)[['nytname', 'city', 'county', 'death', 'infected']]
     df['Date'] = date_out
     
-    df.to_csv('original-sources/historical/nyt-colleges/nyt_colleges_' + date_out.strftime('%Y-%m-%d') + '.csv',
+    df.to_csv('original-sources/historical/nyt/archive/nyt_colleges_' + date_out.strftime('%Y-%m-%d') + '.csv',
               index=False)
 
 

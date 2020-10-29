@@ -81,75 +81,11 @@ date_out = ifelse((Sys.time() < as.POSIXct(paste0(Sys.Date(), '16:00'), tz = 'Am
 date_out = as.Date(date_out, origin = '1970-1-1')
 ```
 
-# CENSUS
-
-## County
-
-```{r}
-# Source: https://www.census.gov/data/tables/time-series/demo/popest/2010s-counties-detail.html
-county_demo = read.csv('original-sources/census/county_demo.csv')
-
-# restrict to 2018 pop estimate & drop extra cols
-county_demo_2018 = subset(county_demo[, c(5:ncol(county_demo))], YEAR == 11)
-
-# Data cleaning (drop county suffix & total age group); rename county
-county_demo_2018$YEAR = NULL
-county_demo_2018$CTYNAME = gsub(' County', '', county_demo_2018$CTYNAME)
-county_demo_2018 = county_demo_2018[which(county_demo_2018$AGEGRP != 0), ]
-colnames(county_demo_2018)[1] = 'County'
-
-# add age labels
-county_demo_2018$AGEGRP = factor(county_demo_2018$AGEGRP,
-                                 labels = c('0-4', '5-9', '10-14', '15-19', '20-24', '25-29',
-                                            '30-34', '35-39', '40-44', '45-49', '50-54', '55-59',
-                                            '60-64',  '65-69', '70-74', '75-79', '80-84', '85+'))
-```
-
-## City
-
-```{r}
-# keep only 2019 population estimate
-city_pops = read.csv('original-sources/census/city_pops.csv')[, c(3, 4, 9, 22)]
-colnames(city_pops) = c('County_Code', 'Place_Code', 'City', 'City_Population')
-
-# drop city name suffixes 
-city_pops$City = gsub(' city| town| village', '', city_pops$City)
-
-# drop pt suffix
-# pt indicates overlap of cities between counties
-city_pops$City = gsub(' (pt.)', '', city_pops$City, fixed = TRUE)
-
-# get county FIPS code for verification
-county_fips = subset(city_pops, Place_Code == 0)[-1, c(1,3)]
-colnames(county_fips) = c('County_Code', 'County')
-
-# add FIPS to counties
-merged_city = merge(city_pops, county_fips, by = 'County_Code')
-
-# drop county totals from list (based on Place_Code)
-merged_city = subset(merged_city, Place_Code != 0 & Place_Code != 99990)[, 2:4]
-colnames(merged_city)[1] = 'FIPS'
-```
-
-## State
-
-```{r}
-# source: https://www.census.gov/quickfacts/fact/table/TX/HSG860218#HSG860218
-# state_demo = 
-#   data.frame(Race = c('Black', 'Other', 'Asian', 'Other', 'Other', 'Hispanic', 'White'),
-#              PCT = c(.129, .01, .052, .001, .021, .397, .412)) %>% 
-#   group_by(Race) %>% 
-#   summarize(PCT = sum(PCT))
-# 
-# write.csv(state_demo, 'tableau/state_demographics.csv', row.names = FALSE)
-```
-
-
 # SCHOOL LEVEL
 
 ```{r}
 # school files are small (~ 6kb - read every time and don't overwrite)
-nyt_schools = rbindlist(lapply(list.files('original-sources/historical/nyt-colleges/', full.names = TRUE), read.csv)) %>% 
+nyt_schools = rbindlist(lapply(list.files('original-sources/historical/nyt/archive', full.names = TRUE), read.csv)) %>% 
   setNames(c('School', 'City', 'County', 'Deaths_Cumulative', 'Cases_Cumulative', 'Date')) %>%
   mutate(Date = as.Date(Date)) %>% 
   mutate(Cases_Cumulative = ifelse(Cases_Cumulative == -1, NA, Cases_Cumulative))
@@ -189,21 +125,22 @@ colnames(DSHS_schools_raw)[1:2] = c('District', 'LEA')
 # read in matching county data (overlapping counties available for public, but not private ISDs)
 # public school source: http://tea-texas.maps.arcgis.com/sharing/rest/content/items/87c957f2ec334c83bc2b952bf6e64344/data
 # private school source: http://mansfield.tea.state.tx.us/Tea.AskTed.Web/Forms/DownloadDefault.aspx
-county_isd_wide = read.csv('original-sources/county_isd_wide.csv')
+county_isd_wide = read.csv('original-sources/helpers/county_isd_wide.csv')
 
 DSHS_schools_clean = DSHS_schools_raw[first_row:last_row, ] %>%
   mutate(LEA = as.numeric(gsub("'", '', LEA))) %>%
-  merge(., county_isd_wide, by.x = 'LEA', by.y = 'LEA', all.x = TRUE) %>%
+  # left_join(., county_isd_wide, by = 'LEA') %>%
   # mutate(District.x = District.y) %>% 
-  dplyr::select(-District.y) %>% 
-  rename(District = District.x) %>%
+  # dplyr::select(-District.y) %>% 
+  # rename(District = District.x) %>%
   mutate(District = str_to_title(District)) %>% 
   mutate(District = gsub('Isd', 'ISD', District)) %>%
   mutate(District = gsub('\n', ' ', District)) %>% 
   mutate(Date = school_date) %>%
-  dplyr::select(District, Date, County, LEA, everything()) %>%
+  # dplyr::select(District, Date, County, LEA, everything()) %>%
+  dplyr::select(District, Date, LEA, everything()) %>%
   mutate_at(5:ncol(.), as.numeric) %>%
-  setNames(c('District', 'Date', 'County', 'LEA', 'Total_Enrollment', 'Approximate_Enrollment',
+  setNames(c('District', 'Date', 'LEA', 'Total_Enrollment', 'Approximate_Enrollment',
              'Cases_Weekly_GRADE_EE_3', 'Cases_Weekly_GRADE_4_6', 'Cases_Weekly_GRADE_7_12',
              'Cases_Weekly_Staff', 'Infections_Weekly_On_Campus',
              'Infections_Weekly_Off_Campus', 'Infections_Weekly_Unknown',
@@ -228,11 +165,10 @@ DSHS_school_df = DSHS_school_df %>%
   mutate(District = gsub('\n', ' ', District, fixed = TRUE)) %>% 
   mutate(District = gsub('  ', ' ', District)) %>% 
   mutate(District = gsub('Lighthouse Charter School', 'Lighthouse Public Schools', District)) %>% 
-  distinct() %>%
-  dplyr::select(-County)
-
+  distinct()
+  
 write_xlsx(list('school_data' = DSHS_school_df,
-                'helper' = read.csv('original-sources/county_isd_long.csv')),
+                'helper' = read.csv('original-sources/helpers/county_isd_long.csv')),
            'tableau/district_school_reopening.xlsx',
            format_headers = FALSE)
 ```
@@ -252,7 +188,6 @@ mobility_texas = subset(mobility_data, sub_region_1 == 'Texas')
 
 # drop cols
 mobility_texas = mobility_texas[, -c(1:3, 5:7)]
-write.csv(mobility_texas, 'original-sources/GOOGLE.csv', row.names = F)
 
 # fix colnames
 colnames(mobility_texas) = c('County', 'Date', 'Retail_Recreation', 'Grocery_Pharmacy',
@@ -283,9 +218,6 @@ DSHS_cases_time = data.frame(read_excel(temp, sheet = 1))
 colnames(DSHS_cases_time) = DSHS_cases_time[2, ]
 DSHS_cases_time = DSHS_cases_time[3:(nrow(DSHS_cases_time) - 11), ]
 colnames(DSHS_cases_time)[1] = 'County'
-
-#save
-write.csv(DSHS_cases_time, 'original-sources/DSHS_county_cases.csv', row.names = FALSE)
 
 # convert wide data to long
 DSHS_cases_long = reshape::melt(DSHS_cases_time, id = c('County'))
@@ -337,9 +269,6 @@ dates = format(as.Date(dates, format = '%m-%d'), '%Y-%m-%d')
 # replace date values
 colnames(DSHS_deaths_time)[2:ncol(DSHS_deaths_time)] = dates
 
-#save
-write.csv(DSHS_deaths_time, 'original-sources/DSHS_county_deaths.csv', row.names = FALSE)
-
 # melt
 DSHS_deaths_long = reshape::melt(DSHS_deaths_time, id = c('County'))
 colnames(DSHS_deaths_long) = c('County', 'Date', 'Deaths_Cumulative')
@@ -375,13 +304,14 @@ DSHS_deaths_long =
 
 ```{r}
 # LEGACY
-legacy_tests_long = read.csv('original-sources/DSHS_county_tests_legacy_cleaned.csv') %>% 
+legacy_tests_long = read.csv('original-sources/historical/testing/DSHS_county_tests_legacy_cleaned.csv') %>% 
   mutate(Date = as.Date(Date))
 
 # NEW
 test_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsbyCounty.xlsx'
 temp = tempfile()
 download.file(test_url, temp, mode = 'wb')
+
 new_tests = data.frame(readxl::read_excel(temp, sheet = 1))
 new_tests_long = new_tests %>% 
   setNames(new_tests[1, ]) %>% 
@@ -431,9 +361,6 @@ DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2
   slice(which(County == 'Anderson'):which(County == 'Zavala')) %>% 
   dplyr::select(-Notes)
 
-#save
-write.csv(DSHS_active_cases_time, 'original-sources/DSHS_county_active_cases.csv', row.names = FALSE)
-
 # melt
 DSHS_active_cases_long = reshape::melt(DSHS_active_cases_time, id = 'County') %>% 
   setNames(c('County', 'Date', 'Active_Cases_Cumulative')) %>%
@@ -441,7 +368,7 @@ DSHS_active_cases_long = reshape::melt(DSHS_active_cases_time, id = 'County') %>
   mutate(Date = as.Date(paste(str_extract_all(Date, '\\d+')[[1]], collapse = ' '), '%m%d')) %>% 
   ungroup() %>%
   group_by(County) %>% 
-  unique() %>%
+  distinct() %>%
   mutate(Active_Cases_Cumulative = as.integer(as.character(Active_Cases_Cumulative))) %>%
   tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
   mutate(Active_Cases_Cumulative_NA = Active_Cases_Cumulative) %>%
@@ -522,7 +449,7 @@ county_counts = Reduce(function(x, y) merge(x, y, by = c('Date', 'County'), all=
 # add metro and PHR code designations
 # source: https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls
 # county_classifications = read_xlsx('original-sources/county_classifications.xlsx', sheet = 1)[1:254, c(1, 5, 8, 13:14)]
-county_classifications = read_xlsx('original-sources/county_classifications.xlsx', sheet = 1)[1:254, c(1, 5, 8)]
+county_classifications = read_xlsx('original-sources/helpers/county_classifications.xlsx', sheet = 1)[1:254, c(1, 5, 8)]
 
 # set colnames
 # colnames(county_classifications) = c('County', 'PHR', 'Metro_Area', 'HHSC', 'HHSC_Name')
@@ -540,22 +467,23 @@ county_classifications = merge(county_classifications, PHR_helper, by = 'PHR')
 ```{r}
 # TSA levels
 tsa_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx'
-download.file(tsa_url, 'original-sources/DSHS_tsa_hosp.xlsx', mode = 'wb') 
+temp = tempfile()
+download.file(tsa_url, temp, mode = 'wb')
+DSHS_tsa_names = readxl::read_xlsx(temp)[3:24, 1:2]
 
-DSHS_tsa_names = readxl::read_xlsx('original-sources/DSHS_tsa_hosp.xlsx')[3:24, 1:2]
 colnames(DSHS_tsa_names) = c('TSA', 'TSA_Name')
 
 # drop . suffix from TSA codes
 DSHS_tsa_names$TSA = gsub('.', '', DSHS_tsa_names$TSA, fixed = TRUE)
 
 # get list of counties per TSA
-tsa = read.csv('original-sources/tsa_list.csv', header = F)[-1]
+tsa = read.csv('original-sources/helpers/tsa_list.csv', header = F)[-1]
 tsa_long = reshape::melt(tsa, id = c('V2', 'V3'))
 tsa_long_complete = subset(tsa_long, value != '')[, c(1, 4)]
 colnames(tsa_long_complete) = c('TSA', 'County')
 
 tsa_long_complete$County = trimws(tsa_long_complete$County)
-tsa_long_complete = merge(tsa_long_complete, DSHS_tsa_names, by = 'TSA') %>% unique()
+tsa_long_complete = merge(tsa_long_complete, DSHS_tsa_names, by = 'TSA') %>% distinct()
 ```
 
 ## merge
@@ -584,7 +512,7 @@ merged_county$Population_DSHS = as.numeric(merged_county$Population_DSHS)
 # keep only relevant dates (previous dates include google mobility only)
 merged_county = merged_county %>% 
   filter(Date >= as.Date('2020-03-04') & !is.na(County)) %>% 
-  unique() 
+  distinct() 
 ```
 
 ```{r}
@@ -757,37 +685,34 @@ hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp[[11]], 'Beds_Occupied_ICU')
 ```{r}
 # TODO: check on this
 # pull DSHS dashboard data using link found from inspect element -> network
-DSHS_json_hosp_tsa = jsonlite::fromJSON("https://services5.arcgis.com/ACaLB9ifngzawspq/arcgis/rest/services/DSHS_COVID_Hospital_Data/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outSR=102100&resultOffset=0&resultRecordCount=25&resultType=standard&cacheHint=true")[['features']][['attributes']]
-
-DSHS_json_hosp_tsa = DSHS_json_hosp_tsa[, c(2,5:9)]
-
-colnames(DSHS_json_hosp_tsa) = c('TSA', 'Hospital_Beds_Staffed', 'Hospital_Beds_Available',
-                                 'ICU_Beds_Available', 'Ventilators_Available', 'Current_Cases')
-# DSHS_json_hosp_tsa$Date = format(date_out, '%m/%d/%y')
-
-# add computed cols
-DSHS_json_hosp_tsa = DSHS_json_hosp_tsa %>%
-                    mutate(Hospital_Beds_Taken = Hospital_Beds_Staffed - Hospital_Beds_Available - Current_Cases)
-
-# export todays file
-write.csv(DSHS_json_hosp_tsa, paste0('original-sources/historical/hosp/tsa_hosp_', date_out, '.csv'),
-          row.names = FALSE)
-
-# read in all files
-hosp_list <- paste0('original-sources/historical/hosp/',
-                    list.files(path = 'original-sources/historical/hosp',
-                               pattern = '*.csv'))
-
-tsa_all_hosp = lapply(hosp_list, read.csv, fileEncoding = 'UTF-8-BOM')
-tsa_combined_hosp = rbindlist(tsa_all_hosp, fill = TRUE)
-
-tsa_combined_hosp$Date = as.Date(tsa_combined_hosp$Date, format = '%m/%d/%y')
-# save
-write.csv(tsa_combined_hosp, 'original-sources/DSHS_tsa_hosp_detail.csv', row.names = FALSE)
-
-
-# only keep vents - rest of data is now being posted by DSHS directly 
-tsa_combined_hosp = tsa_combined_hosp[, c('TSA', 'Date', 'Ventilators_Available')]
+# DSHS_json_hosp_tsa = jsonlite::fromJSON("https://services5.arcgis.com/ACaLB9ifngzawspq/arcgis/rest/services/DSHS_COVID_Hospital_Data/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outSR=102100&resultOffset=0&resultRecordCount=25&resultType=standard&cacheHint=true")[['features']][['attributes']]
+# 
+# DSHS_json_hosp_tsa = DSHS_json_hosp_tsa[, c(2,5:9)]
+# 
+# colnames(DSHS_json_hosp_tsa) = c('TSA', 'Hospital_Beds_Staffed', 'Hospital_Beds_Available',
+#                                  'ICU_Beds_Available', 'Ventilators_Available', 'Current_Cases')
+# # DSHS_json_hosp_tsa$Date = format(date_out, '%m/%d/%y')
+# 
+# # add computed cols
+# DSHS_json_hosp_tsa = DSHS_json_hosp_tsa %>%
+#                     mutate(Hospital_Beds_Taken = Hospital_Beds_Staffed - Hospital_Beds_Available - Current_Cases)
+# 
+# # export todays file
+# write.csv(DSHS_json_hosp_tsa, paste0('original-sources/historical/hosp/tsa_hosp_', date_out, '.csv'),
+#           row.names = FALSE)
+# 
+# # read in all files
+# hosp_list <- paste0('original-sources/historical/hosp/',
+#                     list.files(path = 'original-sources/historical/hosp',
+#                                pattern = '*.csv'))
+# 
+# tsa_all_hosp = lapply(hosp_list, read.csv, fileEncoding = 'UTF-8-BOM')
+# tsa_combined_hosp = rbindlist(tsa_all_hosp, fill = TRUE)
+# 
+# tsa_combined_hosp$Date = as.Date(tsa_combined_hosp$Date, format = '%m/%d/%y')
+# 
+# # only keep vents - rest of data is now being posted by DSHS directly 
+# tsa_combined_hosp = tsa_combined_hosp[, c('TSA', 'Date', 'Ventilators_Available')]
 ```
 
 ## merge
@@ -810,7 +735,7 @@ merged_tsa = merged_tsa %>%
             funs(as.integer)) %>%
   mutate(TSA_Combined = paste0(TSA, ' - ', TSA_Name)) %>%
   filter(!is.na(TSA) & !is.na(Date)) %>% 
-  unique()
+  distinct()
 ```
 
 # PHR LEVEL
@@ -883,7 +808,7 @@ DSHS_metro = subset(merge(DSHS_metro_counts, DSHS_metro_pops,
                           by = 'Metro_Area', all = TRUE), !is.na(Date))
 
 DSHS_metro = merge(DSHS_metro, DSHS_metro_google, by = c('Date', 'Metro_Area'))
-DSHS_metro = DSHS_metro %>% filter(!is.na(Metro_Area)) %>% unique()
+DSHS_metro = DSHS_metro %>% filter(!is.na(Metro_Area)) %>% distinct()
 ```
 
 # STATE LEVEL
@@ -986,23 +911,23 @@ hhs_df = Reduce(function(x, y) merge(x, y, by = 'Date', all = TRUE),
 
 ```{r}
 state_url = 'https://www.dshs.state.tx.us/coronavirus/TexasCOVID19CaseCountData.xlsx'
-
-download.file(state_url, destfile = 'original-sources/DSHS_state.xlsx', mode = 'wb')
-dshs_header = colnames(read_excel('original-sources/DSHS_state.xlsx', sheet = 6))[1]
+temp = tempfile()
+download.file(state_url, temp, mode = 'wb')
+dshs_header = read_excel(temp, sheet = 1))[1]
 
 current_year =  substr(Sys.Date(), 1, 4)
 dshs_date = paste0(current_year, '/',  str_extract_all(dshs_header, '\\d*\\/\\d*')[[1]])
 dshs_date = format(as.Date(dshs_date), '%Y_%m_%d')
 
 # save state level file to historical database for longitudinal demo
-download.file(state_url, paste0('original-sources/historical/demo/dshs_',
+download.file(state_url, paste0('original-sources/historical/state/dshs_',
                                 dshs_date, '.xlsx'), mode = 'wb')
 
 DSHS_state = read_excel_allsheets('original-sources/DSHS_state.xlsx')
 ```
 
 ```{r}
-DSHS_tests = DSHS_state[[3]]
+DSHS_tests = DSHS_state[[4]]
 
 # # LAB TESTS
 # select lab tests & remove rows where all rows are NA
@@ -1021,7 +946,7 @@ DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %>%
 
 ```{r}
 # selects covid hospitalization time series, drops footnote, formates date and sets colnames
-DSHS_hospitalizations = DSHS_state[[7]][, c(2:3)] %>%
+DSHS_hospitalizations = DSHS_state[[8]][, c(2:3)] %>%
   filter(rowSums(is.na(.)) < ncol(.)) %>% 
   setNames(c('Date', 'Hospitalizations_Total')) %>%
   mutate(Date = as.Date(Date))
@@ -1039,14 +964,14 @@ list(DSHS_specimen_tests, DSHS_lab_tests, DSHS_hospitalizations))
 
 ```{r}
 # avoids duplication of results between sheets
-DSHS_state_day = data.frame(Antigen_Tests_Total = DSHS_state[[5]][1,2],
-                            Antigen_Tests_Positive = DSHS_state[[5]][2,2],
-                            Antibody_Tests_Total = DSHS_state[[4]][1,2],
-                            Antibody_tests_Positive = DSHS_state[[4]][2,2],
-                            Hospital_Bed_Total = DSHS_state[[6]][2,2],
-                            Hospital_Bed_Available = DSHS_state[[6]][3,2],
-                            ICU_Bed_Available = DSHS_state[[6]][4,2],
-                            Ventilator_Available = DSHS_state[[6]][5,2])
+DSHS_state_day = data.frame(Antigen_Tests_Total = DSHS_state[[6]][1,2],
+                            Antigen_Tests_Positive = DSHS_state[[6]][2,2],
+                            Antibody_Tests_Total = DSHS_state[[5]][1,2],
+                            Antibody_tests_Positive = DSHS_state[[5]][2,2],
+                            Hospital_Bed_Total = DSHS_state[[7]][2,2],
+                            Hospital_Bed_Available = DSHS_state[[7]][3,2],
+                            ICU_Bed_Available = DSHS_state[[7]][4,2],
+                            Ventilator_Available = DSHS_state[[7]][5,2])
 ```
 
 ## DSHS Demographics
@@ -1054,8 +979,8 @@ DSHS_state_day = data.frame(Antigen_Tests_Total = DSHS_state[[5]][1,2],
 ```{r}
 # TODO: refactor (clean once and append to the cleaned files) - primary script bottleneck
 # read in all files
-demo.list <- paste0('original-sources/historical/demo/',
-                    list.files(path = 'original-sources/historical/demo',
+demo.list <- paste0('original-sources/historical/state/',
+                    list.files(path = 'original-sources/historical/state',
                                pattern = '*.xlsx'))
 
 DSHS_case_age <- c(lapply(demo.list[c(1:66, 104:112)], read_excel, sheet = 9),
@@ -1232,7 +1157,7 @@ merged_state$Population_DSHS = state_pops$Population_DSHS
 
 merged_state = merged_state %>% 
   filter(Date >= as.Date('2020-03-04')) %>% 
-  unique()
+  distinct()
 ```
 
 # OUTPUT
@@ -1240,7 +1165,7 @@ merged_state = merged_state %>%
 ## Schools
 
 ```{r}
-write.csv(nyt_schools, file = 'original-sources/nyt_colleges.csv', row.names = F)
+write.csv(nyt_schools, file = 'original-sources/historical/nyt/nyt_colleges.csv', row.names = F)
 ```
 
 ## City

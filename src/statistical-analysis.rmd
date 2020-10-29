@@ -290,7 +290,7 @@ county_TPR = read.csv('tableau/county_TPR.csv') %>%
   mutate(Date = as.Date(Date)) %>%
   left_join(., RT_County_df[, c('County', 'Date', 'Rt')], by = c('County', 'Date'))
 
-write.csv('tableau/county_TPR.csv', row.names = FALSE)
+write.csv(county_TPR, 'tableau/county_TPR.csv', row.names = FALSE)
 ```
 
 <!-- ## School Districts -->

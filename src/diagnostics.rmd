@@ -620,11 +620,11 @@ county %>%
 # School districts
 
 ```{r}
-schools = read.csv('tableau/district_school_reopening.csv')
-
-schools %>% 
-  filter(District == 'Houston ISD') %>% 
-  dplyr::select(Total_Enrollment, Cases_Cumulative_GRADE_4_6, Cases_Cumulative_GRADE_EE_3, Cases_Cumulative_GRADE_7_12, Cases_Cumulative_Staff)
+# schools = read.csv('tableau/district_school_reopening.csv')
+# 
+# schools %>% 
+#   filter(District == 'Houston ISD') %>% 
+#   dplyr::select(Total_Enrollment, Cases_Cumulative_GRADE_4_6, Cases_Cumulative_GRADE_EE_3, Cases_Cumulative_GRADE_7_12, Cases_Cumulative_Staff)
 ```
 
 # TPR comparison
