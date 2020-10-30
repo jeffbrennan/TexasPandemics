@@ -635,8 +635,10 @@ DSHS_tsa = merge(DSHS_tsa, DSHS_tsa_pops, by = 'TSA', all = TRUE)
 
 ```{r}
 hosp_url = 'https://dshs.texas.gov/coronavirus/CombinedHospitalDataoverTimebyTSA.xlsx'
-download.file(hosp_url, 'original-sources/DSHS_tsa_hosp.xlsx', mode = 'wb') 
-DSHS_tsa_hosp = read_excel_allsheets('original-sources/DSHS_tsa_hosp.xlsx')
+temp = tempfile()
+
+download.file(hosp_url, temp, mode = 'wb') 
+DSHS_tsa_hosp = read_excel_allsheets(temp)
  
 DSHS_hosp_clean = function(df, var_name) { 
   colnames(df) = df[1, ]
@@ -683,36 +685,28 @@ hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp[[11]], 'Beds_Occupied_ICU')
 ## DSHS dashboard
 
 ```{r}
-# TODO: check on this
 # pull DSHS dashboard data using link found from inspect element -> network
-# DSHS_json_hosp_tsa = jsonlite::fromJSON("https://services5.arcgis.com/ACaLB9ifngzawspq/arcgis/rest/services/DSHS_COVID_Hospital_Data/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outSR=102100&resultOffset=0&resultRecordCount=25&resultType=standard&cacheHint=true")[['features']][['attributes']]
+DSHS_json_hosp_tsa = jsonlite::fromJSON("https://services5.arcgis.com/ACaLB9ifngzawspq/arcgis/rest/services/DSHS_COVID_Hospital_Data/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outSR=102100&resultOffset=0&resultRecordCount=25&resultType=standard&cacheHint=true")[['features']][['attributes']]
+
+DSHS_json_hosp_tsa = DSHS_json_hosp_tsa[, c(2,5:9)]
 # 
-# DSHS_json_hosp_tsa = DSHS_json_hosp_tsa[, c(2,5:9)]
-# 
-# colnames(DSHS_json_hosp_tsa) = c('TSA', 'Hospital_Beds_Staffed', 'Hospital_Beds_Available',
-#                                  'ICU_Beds_Available', 'Ventilators_Available', 'Current_Cases')
-# # DSHS_json_hosp_tsa$Date = format(date_out, '%m/%d/%y')
-# 
-# # add computed cols
-# DSHS_json_hosp_tsa = DSHS_json_hosp_tsa %>%
-#                     mutate(Hospital_Beds_Taken = Hospital_Beds_Staffed - Hospital_Beds_Available - Current_Cases)
-# 
-# # export todays file
-# write.csv(DSHS_json_hosp_tsa, paste0('original-sources/historical/hosp/tsa_hosp_', date_out, '.csv'),
-#           row.names = FALSE)
-# 
-# # read in all files
-# hosp_list <- paste0('original-sources/historical/hosp/',
-#                     list.files(path = 'original-sources/historical/hosp',
-#                                pattern = '*.csv'))
-# 
-# tsa_all_hosp = lapply(hosp_list, read.csv, fileEncoding = 'UTF-8-BOM')
-# tsa_combined_hosp = rbindlist(tsa_all_hosp, fill = TRUE)
-# 
-# tsa_combined_hosp$Date = as.Date(tsa_combined_hosp$Date, format = '%m/%d/%y')
-# 
-# # only keep vents - rest of data is now being posted by DSHS directly 
-# tsa_combined_hosp = tsa_combined_hosp[, c('TSA', 'Date', 'Ventilators_Available')]
+colnames(DSHS_json_hosp_tsa) = c('TSA', 'Hospital_Beds_Staffed', 'Hospital_Beds_Available',
+                                 'ICU_Beds_Available', 'Ventilators_Available', 'Current_Cases')
+
+# export today's file
+write.csv(DSHS_json_hosp_tsa, paste0('original-sources/historical/hosp/tsa_hosp_', date_out, '.csv'),
+          row.names = FALSE)
+
+# read in all files
+hosp_list = list.files('original-sources/historical/hosp', pattern = '*.csv', full.names = TRUE)
+hosp_dates = sapply(hosp_list, function(x) str_extract(x, '\\d{4}-\\d{2}-\\d{2}'))
+tsa_all_hosp = lapply(hosp_list, read.csv, fileEncoding = 'UTF-8-BOM')
+names(tsa_all_hosp) = hosp_dates
+
+tsa_combined_hosp = rbindlist(tsa_all_hosp, fill = TRUE, idcol = TRUE) %>% 
+  dplyr::select(-Date) %>% 
+  rename(Date = .id) %>% 
+  dplyr::select(TSA, Date, Ventilators_Available)
 ```
 
 ## merge
@@ -738,78 +732,6 @@ merged_tsa = merged_tsa %>%
   distinct()
 ```
 
-# PHR LEVEL
-
-## computed
-
-```{r}
-DSHS_phr_counts =
-    merged_county %>%
-    group_by(Date, PHR, PHR_Name) %>%
-    summarize_at(vars(Cases_Cumulative, Cases_Daily,
-                      Deaths_Cumulative, Deaths_Daily,
-                      Tests_Cumulative, Tests_Daily,
-                      Active_Cases_Cumulative, Active_Cases_Daily),
-                 funs(sum))
-
-DSHS_phr_pops = 
-  subset(merged_county, Date == '2020-03-04') %>%
-  group_by(PHR) %>%
-  summarize_at(vars(Population_DSHS),
-               funs(sum))
-
-DSHS_phr_google = 
-  merged_county %>%
-  group_by(Date, PHR) %>%
-  summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
-                    Parks, Transit,
-                    Workplaces, Residential),
-               funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)
-
-DSHS_phr = merge(DSHS_phr_counts, DSHS_phr_google, by = c('Date', 'PHR'))
-DSHS_phr = merge(DSHS_phr, DSHS_phr_pops, by = c('PHR'), all = TRUE)
-
-phr_df = DSHS_phr
-```
-
-# METRO LEVEL
-
-## computed
-
-```{r}
-DSHS_metro_counts =
-    merged_county %>%
-    group_by(Date, Metro_Area) %>%
-    summarize_at(vars(Cases_Cumulative, Cases_Daily,
-                      Deaths_Cumulative, Deaths_Daily,
-                      Tests_Cumulative, Tests_Daily,
-                      Active_Cases_Cumulative, Active_Cases_Daily),
-                 funs(sum))
-
-DSHS_metro_pops = 
-  subset(merged_county, Date == '2020-03-04') %>%
-  group_by(Metro_Area) %>%
-  summarize_at(vars(Population_DSHS),
-               funs(sum))
-
-DSHS_metro_google = 
-  merged_county %>%
-  group_by(Date, Metro_Area) %>%
-  summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
-                    Parks, Transit,
-                    Workplaces, Residential),
-               funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)
-```
-
-## merge
-
-```{r}
-DSHS_metro = subset(merge(DSHS_metro_counts, DSHS_metro_pops,
-                          by = 'Metro_Area', all = TRUE), !is.na(Date))
-
-DSHS_metro = merge(DSHS_metro, DSHS_metro_google, by = c('Date', 'Metro_Area'))
-DSHS_metro = DSHS_metro %>% filter(!is.na(Metro_Area)) %>% distinct()
-```
 
 # STATE LEVEL
 
@@ -913,7 +835,7 @@ hhs_df = Reduce(function(x, y) merge(x, y, by = 'Date', all = TRUE),
 state_url = 'https://www.dshs.state.tx.us/coronavirus/TexasCOVID19CaseCountData.xlsx'
 temp = tempfile()
 download.file(state_url, temp, mode = 'wb')
-dshs_header = read_excel(temp, sheet = 1))[1]
+dshs_header = names(read_excel(temp, sheet = 1)[1])
 
 current_year =  substr(Sys.Date(), 1, 4)
 dshs_date = paste0(current_year, '/',  str_extract_all(dshs_header, '\\d*\\/\\d*')[[1]])
@@ -923,7 +845,7 @@ dshs_date = format(as.Date(dshs_date), '%Y_%m_%d')
 download.file(state_url, paste0('original-sources/historical/state/dshs_',
                                 dshs_date, '.xlsx'), mode = 'wb')
 
-DSHS_state = read_excel_allsheets('original-sources/DSHS_state.xlsx')
+DSHS_state = read_excel_allsheets(temp)
 ```
 
 ```{r}
