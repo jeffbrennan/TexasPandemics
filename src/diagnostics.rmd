@@ -620,12 +620,56 @@ county %>%
 # School districts
 
 ```{r}
-# schools = read.csv('tableau/district_school_reopening.csv')
-# 
+schools = readxl::read_xlsx('tableau/district_school_reopening.xlsx', sheet = 1)
+
+weekly = schools %>% 
+  mutate(Total_Enrollment = as.numeric(Total_Enrollment),
+         Weekly_Cases = (Cases_Weekly_GRADE_EE_3 + Cases_Weekly_GRADE_4_6 + Cases_Weekly_GRADE_7_12),
+         Weekly_total_Ratio = Weekly_Cases / Total_Enrollment,
+         Weekly_Approx_Ratio = Weekly_Cases / Approximate_Enrollment)
+
+weekly %>% filter(Weekly_total_Ratio > 1 | Weekly_Approx_Ratio > 1)
+
+summary(weekly$Weekly_total_Ratio)
+summary(weekly$Weekly_Approx_Ratio)
+
+
+cumulative = schools %>% 
+  filter(Date == max(as.Date(Date))) %>% 
+  mutate(Total_Enrollment = as.numeric(Total_Enrollment),
+         Cumulative_Cases = (Cases_Cumulative_GRADE_EE_3 + Cases_Cumulative_GRADE_4_6 + Cases_Cumulative_GRADE_7_12),
+         Cumulative_total_Ratio = Cumulative_Cases / Total_Enrollment,
+         Cumulative_Approx_Ratio = Cumulative_Cases / Approximate_Enrollment)
+
+cumulative %>% filter(Cumulative_total_Ratio > 1 | Cumulative_Approx_Ratio > 1)
+
+summary(cumulative$Cumulative_total_Ratio)
+summary(cumulative$Cumulative_Approx_Ratio)
+
+
 # schools %>% 
 #   filter(District == 'Houston ISD') %>% 
 #   dplyr::select(Total_Enrollment, Cases_Cumulative_GRADE_4_6, Cases_Cumulative_GRADE_EE_3, Cases_Cumulative_GRADE_7_12, Cases_Cumulative_Staff)
 ```
+
+
+# TSA Hosp check
+
+```{r}
+hosp = read.csv('tableau/hospitalizations_tsa.csv')
+
+test = hosp %>% 
+  mutate(Date = as.Date(Date)) %>%
+  group_by(TSA, Date) %>%
+  summarize(pct_cap = Beds_Occupied_ICU / (Beds_Occupied_ICU + Beds_Available_ICU)) %>% 
+
+ggplot(test, aes(x=Date, y = pct_cap, group=TSA)) + 
+  geom_point() + 
+  scale_x_date(breaks = '1 month', date_labels = '%b') + 
+  facet_wrap(~TSA, scales = 'free') + 
+  theme(axis.text.x = element_text(angle = -45))
+```
+
 
 # TPR comparison
 
