@@ -282,68 +282,65 @@ covid.rt = function(mydata, threshold) {
 # Generate Rt estimates for each county, using 70% quantile of cases in past 3 weeks as threshold
 county.rt.output = nlme::gapply(County_df, FUN = covid.rt,
                                  groups = County_df$County, threshold = case_quant)
-
 # combine list of dataframes (1 for each county) to single dataframe
-RT_County_df = rbindlist(county.rt.output, idcol = 'County')
+RT_County_df = rbindlist(county.rt.output, idcol = 'County') %>% 
+  mutate(Date = as.Date(Date))
 
-county_TPR = read.csv('tableau/county_TPR.csv') %>%
+# county_TPR = read.csv('tableau/county_TPR.csv') %>%
+#   dplyr::select(-Rt) %>%
+#   mutate(Date = as.Date(county_TPR$Date, '%m/%d/%y')) %>%
+#   left_join(., RT_County_df[, c('County', 'Date', 'Rt')], by = c('County', 'Date'))
+
+# county_TPR_match = county_TPR %>% 
+#   mutate(Date = Date-3) %>% 
+#   dplyr::select(County, Date, TPR_CMS, Cases_100K_7Day_MA, Rt)
+# 
+# 
+
+# district_link = readxl::read_xlsx('tableau/district_school_reopening.xlsx', sheet=2)
+# district_match = district %>% 
+#   left_join(., district_link, by = c('District', 'LEA')) %>% 
+#   left_join(., county_TPR_match, by = c('County', 'Date')) %>% 
+#   select()
+# 
+# 
+# write.csv(county_TPR, 'tableau/county_TPR.csv', row.names = FALSE)
+# writexl::write_xlsx(list(district_match, district_link), 'tableau/district_school_reopening_merge.xlsx', format_headers = FALSE)
+# 
+
+# # district_dates = data.frame('Date' = unique(district$Date))
+
+
+district = readxl::read_xlsx('tableau/district_school_reopening.xlsx', sheet=1) %>%
+  mutate(LEA = as.character(LEA),
+         Date = as.Date(Date))
+
+district_dates = 
+  data.frame('Date' = rep(unique(district$Date), each = 254),
+             'County' = rep(unique(County_df$County), times = length(unique(district$Date))))
+
+county_TPR_padded = 
+  read.csv('tableau/county_TPR.csv') %>%
   mutate(Date = as.Date(Date)) %>%
-  left_join(., RT_County_df[, c('County', 'Date', 'Rt')], by = c('County', 'Date'))
+  full_join(., district_dates, by = c('County', 'Date')) %>% 
+  left_join(., RT_County_df[, c('County', 'Date', 'Rt')], by = c('County', 'Date')) %>%
+  group_by(County) %>% 
+  arrange(County, Date) %>%
+  tidyr::fill(TPR_CMS, .direction = 'up') %>%
+  tidyr::fill(Tests, .direction = 'up') %>% 
+  tidyr::fill(Cases_100K_7Day_MA, .direction = 'up') %>% 
+  tidyr::fill(Rt, .direction = 'up')
 
-write.csv(county_TPR, 'tableau/county_TPR.csv', row.names = FALSE)
+write.csv(county_TPR_padded, 'tableau/county_TPR.csv', row.names = FALSE)
+
+# 
+# district_combined = district %>% left_join(., district_link, by = c('District', 'LEA')) %>% 
+#   mutate(Date = Date + 3)
+# 
+# county_TPR %>% 
+#   left_join(., district_combined, by = c('Date', 'County'))
+
 ```
-
-<!-- ## School Districts -->
-<!-- ```{r school district rt} -->
-<!-- school_districts = read.csv('tableau/district_school_reopening.csv') %>%  -->
-<!--   dplyr::select(District, County) %>% -->
-<!--   distinct() -->
-
-<!-- # exclude ISDs w/ 1 county listed [no ,c ] - can get estimate from RT_County_df -->
-<!-- county_combos = school_districts %>%  -->
-<!--   dplyr::select(County) %>%  -->
-<!--   distinct() %>%  -->
-<!--   filter(stringr::str_detect(County, ',')) %>%  -->
-<!--   setNames(NULL) %>% unlist() -->
-
-<!-- # split counties by comma, filter county daily with those counties, and pass back into rt function -->
-<!-- Create_Combo_County_df = function(combo) {  -->
-<!--   combo_counties = stringr::str_split(combo, ',') %>% unlist() -->
-<!--   combo_df = County_df %>% -->
-<!--     filter(County %in% combo_counties) %>% -->
-<!--     mutate(County_Group = combo) %>%  -->
-<!--     group_by(Date, County_Group) %>%  -->
-<!--     summarize(Cases_Daily = sum(Cases_Daily), -->
-<!--               TPR_CMS = mean(TPR_CMS, na.rm = TRUE), -->
-<!--               Cases_100K_7Day_MA = sum(Cases_100K_7Day_MA), -->
-<!--               Population_DSHS = sum(Population_DSHS)) %>% -->
-<!--     ungroup() -->
-<!--   return(combo_df) -->
-<!-- } -->
-
-<!-- RT_Combo_Output = lapply(county_combos, -->
-<!--                                 function(x) covid.rt(Create_Combo_County_df(x), -->
-<!--                                                      threshold = case_quant)) -->
-<!-- RT_Combo_df = rbindlist(RT_Combo_Output, idcol = TRUE) %>% -->
-<!--   mutate(.id = county_combos[.id]) %>%  -->
-<!--   rename(County = .id) -->
-
-<!-- RT_District_Combo_df = school_districts %>%  -->
-<!--   dplyr::select(District, County) %>% -->
-<!--   filter(str_detect(County, ',')) %>% -->
-<!--   left_join(., RT_Combo_df, by = 'County') -->
-
-<!-- RT_District_single_df = school_districts %>%  -->
-<!--   dplyr::select(District, County) %>% -->
-<!--   filter(!str_detect(County, ',')) %>% -->
-<!--   left_join(., RT_County_df, by = 'County') -->
-
-<!-- RT_District_df = rbind(RT_District_Combo_df, RT_District_single_df) %>%  -->
-<!--   distinct() %>% -->
-<!--   dplyr::select(District, Date, everything(), -County) %>% -->
-<!--   filter(Date == max(Date) - 1) %>% -->
-<!--   arrange(District, Date) -->
-<!-- ``` -->
 
 ## Metro
 
