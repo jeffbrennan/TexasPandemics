@@ -661,7 +661,7 @@ hosp = read.csv('tableau/hospitalizations_tsa.csv')
 test = hosp %>% 
   mutate(Date = as.Date(Date)) %>%
   group_by(TSA, Date) %>%
-  summarize(pct_cap = Beds_Occupied_ICU / (Beds_Occupied_ICU + Beds_Available_ICU)) %>% 
+  summarize(pct_cap = Beds_Occupied_ICU / (Beds_Occupied_ICU + Beds_Available_ICU))
 
 ggplot(test, aes(x=Date, y = pct_cap, group=TSA)) + 
   geom_point() + 
