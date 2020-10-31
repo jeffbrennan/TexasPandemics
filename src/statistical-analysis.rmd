@@ -286,34 +286,9 @@ county.rt.output = nlme::gapply(County_df, FUN = covid.rt,
 RT_County_df = rbindlist(county.rt.output, idcol = 'County') %>% 
   mutate(Date = as.Date(Date))
 
-# county_TPR = read.csv('tableau/county_TPR.csv') %>%
-#   dplyr::select(-Rt) %>%
-#   mutate(Date = as.Date(county_TPR$Date, '%m/%d/%y')) %>%
-#   left_join(., RT_County_df[, c('County', 'Date', 'Rt')], by = c('County', 'Date'))
-
-# county_TPR_match = county_TPR %>% 
-#   mutate(Date = Date-3) %>% 
-#   dplyr::select(County, Date, TPR_CMS, Cases_100K_7Day_MA, Rt)
-# 
-# 
-
-# district_link = readxl::read_xlsx('tableau/district_school_reopening.xlsx', sheet=2)
-# district_match = district %>% 
-#   left_join(., district_link, by = c('District', 'LEA')) %>% 
-#   left_join(., county_TPR_match, by = c('County', 'Date')) %>% 
-#   select()
-# 
-# 
-# write.csv(county_TPR, 'tableau/county_TPR.csv', row.names = FALSE)
-# writexl::write_xlsx(list(district_match, district_link), 'tableau/district_school_reopening_merge.xlsx', format_headers = FALSE)
-# 
-
-# # district_dates = data.frame('Date' = unique(district$Date))
-
-
 district = readxl::read_xlsx('tableau/district_school_reopening.xlsx', sheet=1) %>%
-  mutate(LEA = as.character(LEA),
-         Date = as.Date(Date))
+             mutate(LEA = as.character(LEA),
+             Date = as.Date(Date))
 
 district_dates = 
   data.frame('Date' = rep(unique(district$Date), each = 254),
@@ -322,8 +297,8 @@ district_dates =
 county_TPR_padded = 
   read.csv('tableau/county_TPR.csv') %>%
   mutate(Date = as.Date(Date)) %>%
-  full_join(., district_dates, by = c('County', 'Date')) %>% 
   left_join(., RT_County_df[, c('County', 'Date', 'Rt')], by = c('County', 'Date')) %>%
+  full_join(., district_dates, by = c('County', 'Date')) %>% 
   group_by(County) %>% 
   arrange(County, Date) %>%
   tidyr::fill(TPR_CMS, .direction = 'up') %>%
@@ -331,15 +306,11 @@ county_TPR_padded =
   tidyr::fill(Cases_100K_7Day_MA, .direction = 'up') %>% 
   tidyr::fill(Rt, .direction = 'up')
 
-write.csv(county_TPR_padded, 'tableau/county_TPR.csv', row.names = FALSE)
+county_TPR = county_TPR_padded %>% filter(!(Date %in% district_dates$Date))
+county_TPR_sd = county_TPR_padded %>%  filter(Date %in% district_dates$Date)
 
-# 
-# district_combined = district %>% left_join(., district_link, by = c('District', 'LEA')) %>% 
-#   mutate(Date = Date + 3)
-# 
-# county_TPR %>% 
-#   left_join(., district_combined, by = c('Date', 'County'))
-
+write.csv(county_TPR, 'tableau/county_TPR.csv', row.names = FALSE)
+write.csv(county_TPR_sd, 'tableau/county_TPR_sd.csv', row.names = FALSE)
 ```
 
 ## Metro
