@@ -38,7 +38,7 @@ def build_file_details(receiver, file):
                  f'<br>Regional Level: {receiver["region_level"]}'
                  f'<br>Regions: {", ".join(receiver["regions"])}'
                  f'<br>Date: {file["Date"]}'  
-                 f'<br>Value (95% CI): {file["Value"]} ({file["Low_CI"]} {file["Upper_CI"]})')
+                 f'<br>Value (95% CI): {file["Value"]} ({file["Low_CI"]}, {file["Upper_CI"]})')
 
     body.append(text_part)
 
