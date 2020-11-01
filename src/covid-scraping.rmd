@@ -334,6 +334,21 @@ DSHS_tests_long = merged_tests %>%
 ## new cases
 
 ```{r}
+Date_Parser = function(Date) { 
+  #Matches 2 or 4 digits, separator, 2 or 4 digits, optional separator, optional 2 or 4 digits
+  # Coerces all common separators to "-" 
+  date_regex = '(\\d{2}|\\d{4})(\\.|\\-|\\/)(\\d{2}|\\d{4})?(\\.|\\-|\\/)?(\\d{2}|\\d{4})'
+  clean_dates = str_extract(Date, date_regex) %>% str_replace_all(., '\\/|\\.', '\\-')
+
+  # TODO: add more as needed
+  md_dates = which(!is.na(as.Date(clean_dates, format = '%m-%d')))
+  clean_dates[md_dates] = format(as.Date(clean_dates[md_dates], '%m-%d'), '%Y-%m-%d')
+  
+  dates_out = as.Date(clean_dates)
+  return(dates_out)
+}
+
+
 # 10/23 - file includes all dates now
 # get new cases as excel file
 new_case_url ='https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx'
@@ -341,11 +356,9 @@ temp = tempfile()
 download.file(new_case_url, temp, mode = 'wb') 
 
 DSHS_new_cases_long = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) %>%
-  setNames(gsub('New.Cases.', '', colnames(.))) %>% 
-  setNames(c('County', format(as.Date(colnames(.)[2:ncol(.)], '%Y.%m.%d'), '%Y-%m-%d'))) %>% 
   reshape2::melt('County') %>% 
   setNames(c('County', 'Date', 'Cases_Daily')) %>% 
-  mutate(Date = as.Date(Date)) %>% 
+  mutate(Date = Date_Parser(Date)) %>% 
   mutate(Cases_Daily = ifelse(Cases_Daily < 0, 0, Cases_Daily)) %>%
   # rbind(., new_cases_archive) %>% 
   arrange(Date, County)
