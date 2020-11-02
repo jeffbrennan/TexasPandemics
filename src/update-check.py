@@ -29,7 +29,6 @@ def parse_file(file_url, header_loc):
     df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
     date_text = list(df.columns)[-1]
     max_date = parsedate(re.search(date_regex, date_text).group(0)).date()
-    print(max_date)
   return 1 if max_date == today.date() else 0
 
 
@@ -87,7 +86,7 @@ def run_daily():
 
 # data updates at ~ 5PM EST
 # if running after midnight (4 UTC) or before 5 (22 UTC), subtract 1 day
-if datetime.utcnow().hour > 4 or datetime.utcnow().hour < 22: 
+if datetime.utcnow().hour > 4 and datetime.utcnow().hour < 22: 
   today = datetime.now() - timedelta(days=1)
 else:
   today = datetime.now()
