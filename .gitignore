@@ -13,3 +13,5 @@ backend/
 *.html
 diagnostics/
 estimates-TMC/
+src/dshs-selenium-scrape.py
+debug.log
