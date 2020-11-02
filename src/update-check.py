@@ -29,26 +29,28 @@ def parse_file(file_url, header_loc):
     df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
     date_text = list(df.columns)[-1]
     max_date = parsedate(re.search(date_regex, date_text).group(0)).date()
+    print(max_date)
   return 1 if max_date == today.date() else 0
 
 
 def check_update(files): 
-  new_files = 0
-  num_files = len(files)
-  attempts = 0
+  for file in files:
+    attempts = 1
+    new_file = 0
+    print(file[0])
 
-  while new_files < num_files: 
-    for file in files:
-      print(f'\nAttempt #{attempts+1}\n{file[0]}')
+    while new_file == 0: 
       new_file = parse_file(file[0], file[1])
 
       if new_file == 1:
-        print('New file!')
-        new_files +=1
+        print(f'Attempt #{attempts} | New file!')
+        break
+      elif attempts == 20: 
+        break
       else:
-        print('File not updated yet. Retrying in 5 minutes...')
+        print(f'Attempt #{attempts} | File not updated yet. Retrying in 5 minutes...')
         time.sleep(300)
-        count+=1
+        attempts+=1
 
 
 # if thursday (3), add schools, if friday (4), add demo, else none
@@ -82,8 +84,13 @@ def run_daily():
   print('\nDashboard files are ready!')
   run_bat(daily_bat)
 
-# set day as current day if after 5PM EST (10PM UTC), else subtract 1 day
-today = datetime.now() if datetime.utcnow().hour >= 20 else datetime.now() - timedelta(days=1)
+
+# data updates at ~ 5PM EST
+# if running after midnight (4 UTC) or before 5 (22 UTC), subtract 1 day
+if datetime.utcnow().hour > 4 or datetime.utcnow().hour < 22: 
+  today = datetime.now() - timedelta(days=1)
+else:
+  today = datetime.now()
 
 run_tmc()
 run_daily()
