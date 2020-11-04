@@ -7,7 +7,9 @@ output:
 editor_options: 
   chunk_output_type: console
 knit: (function(inputFile, encoding) {
-  rmarkdown::render(inputFile, encoding = encoding, output_dir = "diagnostics/") })
+  rmarkdown::render(inputFile, encoding = encoding,
+   output_dir = "diagnostics/",
+   knit_root_dir = "C:/Users/jeffb/Desktop/Life/personal-projects/COVID") })
 ---
 
 # SETUP
@@ -288,15 +290,18 @@ RT_County_df = rbindlist(county.rt.output, idcol = 'County') %>%
 
 district = readxl::read_xlsx('tableau/district_school_reopening.xlsx', sheet=1) %>%
              mutate(LEA = as.character(LEA),
-             Date = as.Date(Date))
+                    Date = as.Date(Date))
 
 district_dates = 
   data.frame('Date' = rep(unique(district$Date), each = 254),
              'County' = rep(unique(County_df$County), times = length(unique(district$Date))))
 
+TPR_df = read.csv('tableau/county_TPR.csv') %>%
+  dplyr::select(-contains('Rt')) %>%
+  mutate(Date = as.Date(Date))
+
 county_TPR_padded = 
-  read.csv('tableau/county_TPR.csv') %>%
-  mutate(Date = as.Date(Date)) %>%
+  TPR_df %>%
   left_join(., RT_County_df[, c('County', 'Date', 'Rt')], by = c('County', 'Date')) %>%
   full_join(., district_dates, by = c('County', 'Date')) %>% 
   group_by(County) %>% 
@@ -680,6 +685,106 @@ create.case.test = function(level, dat, region){
   if(level != 'State') {dat = dat %>% filter(!!as.name(level) == region)}
 
   # restrict data to first test date (for % test increase)
+  start_date = as.Date("2020-09-02")
+  dat = dat %>% filter(Date >= start_date)
+  start_values = dat %>% filter(Date == start_date)
+  
+  dat$ma_cases_y = 100*(as.vector(dat$Cases_MA_14 / start_values$Cases_MA_14) - 1)
+  dat$total_cases_y = 100*(as.vector(dat$Cases_Total_14 / start_values$Cases_Total_14) - 1)
+  dat$ma_tests_y = 100*(as.vector(dat$Tests_MA_14 / start_values$Tests_MA_14) - 1)
+  dat$total_tests_y = 100*(as.vector(dat$Tests_Total_14 / start_values$Tests_Total_14) - 1)
+   
+  tmp.df = data.frame(Level = region,
+                      Date = dat$Date,
+                      cases_ma = dat$Cases_MA_14,
+                      cases_total_14 = dat$Cases_Total_14,
+                      tests_ma = dat$Tests_MA_14,
+                      tests_total_14 = dat$Tests_Total_14,
+                      cases_ma_percentdiff = dat$ma_cases_y,
+                      cases_total_percentdiff = dat$total_cases_y,
+                      tests_ma_percentdiff = dat$ma_tests_y,
+                      tests_total_percentdiff = dat$total_tests_y,
+                      Level_Type = level)
+  return(tmp.df)  
+}
+```
+
+```{r}
+TPR = read.csv('tableau/county_TPR.csv') %>% 
+  mutate(Date = as.Date(Date)) %>% 
+  dplyr::select(Date, County, Tests)
+
+TPR_dates = unique(TPR$Date)
+
+TPR_merge = county %>% 
+  dplyr::select(-Tests_Daily, -Population_DSHS) %>%
+  left_join(TPR, by = c('Date', 'County')) %>%
+  group_by(County) %>% 
+  mutate(Cases_Total_14 = rollsum(Cases_Daily, k=14, na.pad=TRUE, align='right')) %>% 
+  mutate(Cases_MA_14 = rollmean(Cases_Daily, k=14, na.pad=TRUE, align='right')) %>% 
+  mutate(Tests_MA_14 = Tests / 14) %>% 
+  ungroup() %>%
+  filter(Date %in% TPR_dates) %>% 
+  dplyr::select(-Cases_Daily) %>% 
+  rename(Tests_Total_14 = Tests)
+
+
+TPR_county = TPR_merge %>% dplyr::select(-c(TSA, PHR, Metro))
+TPR_TSA = TPR_merge %>% group_by(Date, TSA) %>% summarize_if(is.numeric, sum, na.rm = TRUE)
+TPR_PHR = TPR_merge %>% group_by(Date, PHR) %>% summarize_if(is.numeric, sum, na.rm = TRUE)
+TPR_Metro = TPR_merge %>% group_by(Date, Metro) %>% summarize_if(is.numeric, sum, na.rm = TRUE)
+TPR_State = TPR_merge %>% group_by(Date) %>% summarize_if(is.numeric, sum, na.rm = TRUE)
+```
+
+
+### County
+
+```{r}
+PCT_County_df = rbindlist(lapply(unique(TPR_county$County), function(x) create.case.test('County', TPR_county, x)))
+```
+
+### TSA
+
+```{r pct change}
+PCT_TSA_df = rbindlist(lapply(unique(TPR_TSA$TSA), function(x) create.case.test('TSA', TPR_TSA, x)))
+```
+
+### PHR
+
+```{r}
+PCT_PHR_df = rbindlist(lapply(unique(TPR_PHR$PHR), function(x) create.case.test('PHR', TPR_PHR, x)))
+```
+
+### Metro
+
+```{r}
+PCT_Metro_df = rbindlist(lapply(unique(TPR_Metro$Metro), function(x) create.case.test('Metro', TPR_Metro, x)))
+```
+
+### State
+
+```{r}
+PCT_State_df = create.case.test('State', TPR_State, 'Texas')
+```
+
+### grouping
+
+```{r}
+PCT_Combined_df = rbind(PCT_County_df, PCT_TSA_df, PCT_PHR_df, PCT_Metro_df, PCT_State_df)
+write.csv(PCT_Combined_df, 'tableau/stacked_pct_change_new.csv', row.names = FALSE)
+```
+
+
+## % CHANGE (old)
+
+```{r}
+create.case.test = function(level, dat, region){
+  # creates the % difference in cases and tests and smooth line with CIs 
+  # level: either "TSA", "County", or "Metro". Note that "county" won't work for many counties unless have enough cases.
+  # dat: dataset (e.g. "county", "metro", "tsa")
+  # region: the region within the dataset (county, metro region, or tsa)
+  if(level != 'State') {dat = dat %>% filter(!!as.name(level) == region)}
+  # restrict data to first test date (for % test increase)
   first.test.date = as.Date("2020-04-22")
   dat$Date = as.Date(dat$Date)
   dat$Date2 = as.numeric(dat$Date)
@@ -698,7 +803,6 @@ create.case.test = function(level, dat, region){
   
   # numeric date for gam                         
   tmpdata = data.frame(Date2=slopedata.tests$Date2)
-
   if (cases_start != 0 & tests_start != 0) {
     
     # Calc splines if cases and tests will produce non Inf values
@@ -729,7 +833,6 @@ create.case.test = function(level, dat, region){
     # only calc % increase for regions w/ sparse cases
     cases_avg_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=cases_avg14))
     tests_avg_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=tests_avg14))
-
     slopedata.tests$newcasesY = 100*(as.vector(slopedata.tests$cases_avg14 / cases_avg_start) - 1)
     slopedata.tests$newtestsY = 100*(as.vector(slopedata.tests$tests_avg14 / tests_avg_start) - 1)
     
@@ -759,7 +862,7 @@ PCT_County_df = rbindlist(lapply(unique(County_df$County), function(x) create.ca
 
 ### TSA
 
-```{r pct change}
+```{r}
 PCT_TSA_df = rbindlist(lapply(unique(TSA_df$TSA), function(x) create.case.test('TSA', TSA_df, x)))
 ```
 
