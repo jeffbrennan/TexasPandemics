@@ -257,9 +257,6 @@ colnames(DSHS_deaths_time)[1] = 'County'
 
 colnames(DSHS_deaths_time) = trimws(gsub('Fatalities', '', colnames(DSHS_deaths_time)))
 
-# TEMP FIX: DSHS upload "11-31" instead of "11-01"
-# TODO check on 11/2, 11/3 and replace when fixed
-colnames(DSHS_deaths_time) = gsub('11-31', '10-31', colnames(DSHS_deaths_time))
 dates = colnames(DSHS_deaths_time)[2:length(colnames(DSHS_deaths_time))]
 dates = format(as.Date(dates, format = '%m-%d'), '%Y-%m-%d')
 
