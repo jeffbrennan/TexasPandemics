@@ -17,12 +17,17 @@ def parse_file(file_url, header_loc):
   # match 2/4 digits, separator, 2/4 digits, optional separator, optional 2/4 digits
   date_regex = r'((\d{2}|\d{4})(\.|\-|\/)(\d{2}|\d{4})?(\.|\-|\/)?(\d{2}|\d{4}))'
 
-  if file_url == 'https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics.xlsx.asp': 
+  if 'Demographics' in file_url: 
     r = get('https://dshs.texas.gov/coronavirus/additionaldata/')
     soup = BeautifulSoup(r.text, 'lxml')
     parent = soup.find("a", {"title": "Case and Fatality Demographics Data "})
     date_text = parent.nextSibling.nextSibling.text
     max_date = parsedate(re.search(date_regex, date_text).group(0))
+
+  elif 'district-level' in file_url:
+    # url updates weekly, if pandas can read and rows are approx expected, then file is updated
+    df = pd.ExcelFile(file_url, engine='xlrd').parse(sheet_name=0, header=header_loc)
+    if len(df.index) > 1000: max_date = today.date()
 
   else:
     df = pd.ExcelFile(file_url, engine='xlrd').parse(sheet_name=0, header=header_loc)
@@ -55,9 +60,9 @@ def check_update(files):
 # if thursday (3), add schools, if friday (4), add demo, else none
 def weekly_updates(today):
   day = today.weekday()
-  ymd_date = today.strftime('%Y%m%d')
+  district_date = (today - timedelta(days=2)).strftime('%m%d%Y')
   return { 
-    3: [f'https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/district-level-data-file_{ymd_date}.xls', 3],
+    3: [f'https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/district-level-data-file_{district_date}.xls', 0],
     4: ['https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics.xlsx.asp', 3]
   }.get(day, [])
 
@@ -76,7 +81,7 @@ def run_daily():
   daily_bat = [r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID\scrape.bat']
   daily_url = [['https://dshs.texas.gov/coronavirus/TexasCOVID19CaseCountData.xlsx', 0],
               ['https://dshs.texas.gov/coronavirus/CombinedHospitalDataoverTimebyTSA.xlsx', 2]]
-  daily_url.extend(weekly_updates(today.date()))
+  daily_url.append(weekly_updates(today.date()))
 
   print('\nChecking dashboard files...')
   check_update(daily_url)
