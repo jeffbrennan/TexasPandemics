@@ -309,7 +309,9 @@ county_TPR_padded =
   tidyr::fill(TPR_CMS, .direction = 'up') %>%
   tidyr::fill(Tests, .direction = 'up') %>% 
   tidyr::fill(Cases_100K_7Day_MA, .direction = 'up') %>% 
-  tidyr::fill(Rt, .direction = 'up')
+  tidyr::fill(Rt, .direction = 'up') %>% 
+  ungroup() %>% 
+  mutate(Tests = ifelse(Date < as.Date('2020-09-09'), NA, Tests))
 
 county_TPR = county_TPR_padded %>% filter(!(Date %in% district_dates$Date))
 county_TPR_sd = county_TPR_padded %>%  filter(Date %in% district_dates$Date)
@@ -685,7 +687,7 @@ create.case.test = function(level, dat, region){
   if(level != 'State') {dat = dat %>% filter(!!as.name(level) == region)}
 
   # restrict data to first test date (for % test increase)
-  start_date = as.Date("2020-09-02")
+  start_date = as.Date("2020-09-30")
   dat = dat %>% filter(Date >= start_date)
   start_values = dat %>% filter(Date == start_date)
   
@@ -737,33 +739,13 @@ TPR_State = TPR_merge %>% group_by(Date) %>% summarize_if(is.numeric, sum, na.rm
 ```
 
 
-### County
+### Calculations
 
 ```{r}
 PCT_County_df = rbindlist(lapply(unique(TPR_county$County), function(x) create.case.test('County', TPR_county, x)))
-```
-
-### TSA
-
-```{r pct change}
 PCT_TSA_df = rbindlist(lapply(unique(TPR_TSA$TSA), function(x) create.case.test('TSA', TPR_TSA, x)))
-```
-
-### PHR
-
-```{r}
 PCT_PHR_df = rbindlist(lapply(unique(TPR_PHR$PHR), function(x) create.case.test('PHR', TPR_PHR, x)))
-```
-
-### Metro
-
-```{r}
 PCT_Metro_df = rbindlist(lapply(unique(TPR_Metro$Metro), function(x) create.case.test('Metro', TPR_Metro, x)))
-```
-
-### State
-
-```{r}
 PCT_State_df = create.case.test('State', TPR_State, 'Texas')
 ```
 
