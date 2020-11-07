@@ -721,6 +721,68 @@ ggplot(test, aes(x=Date, y = pct_cap, group=TSA)) +
 #   round(3)
 ```
 
+# New PCT Calcs
+
+```{r}
+pct_df = read.csv("tableau/stacked_pct_change_new.csv")
+pct_tsa = pct_df %>%
+  dplyr::select(Level, Level_Type, Date, cases_total_14, tests_total_14,
+                cases_total_percentdiff, tests_total_percentdiff) %>% 
+  filter(Level_Type == 'TSA') %>%
+  mutate(Date = as.Date(Date))
+
+
+
+ggplot(pct_tsa, aes(group = Level)) + 
+  geom_point(aes(x = Date, y = cases_total_percentdiff, color = 'Cases % Difference (14 Day Total)'), size = 2) + 
+  geom_line(aes(x = Date, y = cases_total_percentdiff, color = 'Cases % Difference (14 Day Total)'), size = 1) + 
+  geom_point(aes(x = Date, y = tests_total_percentdiff, color = 'Tests % Difference (14 Day Total)'), size = 2) +
+  geom_line(aes(x = Date, y = tests_total_percentdiff, color = 'Tests % Difference (14 Day Total)'), size = 1) +
+  facet_wrap(~Level) +
+  scale_x_date(date_labels = '%m/%d', breaks = seq(as.Date('2020-09-30'), max(pct_tsa$Date), by = '1 week')) +
+  labs(y = '% Difference from Baseline (9/30)') +
+  theme_pubr() + 
+  theme(axis.text.x = element_text(size = 10, angle = -45))
+
+# ggplot(pct_tsa, aes(group = Level)) + 
+#   geom_point(aes(x = Date, y = cases_ma_percentdiff, color = 'Cases % Difference (14 Day MA)'), size = 2) + 
+#   geom_line(aes(x = Date, y = cases_ma_percentdiff, color = 'Cases % Difference (14 Day MA)'), size = 1) + 
+#   geom_point(aes(x = Date, y = tests_ma_percentdiff, color = 'Tests % Difference (14 Day MA)'), size = 2) +
+#   geom_line(aes(x = Date, y = tests_ma_percentdiff, color = 'Tests % Difference (14 Day MA)'), size = 1) +
+#   facet_wrap(~Level, scales = 'free_y') +
+#   scale_x_date(date_labels = '%m/%d') +
+#   theme_pubr() + 
+#   labs(y = '% Difference from Baseline (9/30)') +
+#   theme(axis.text.x = element_text(angle = -90))
+```
+
+
+# TSA TPR
+
+```{r}
+county_link = county %>% dplyr::select(County, TSA) %>% distinct()
+
+tpr_tsa = read.csv('tableau/county_TPR.csv') %>% 
+  left_join(., county_link, by = 'County') %>% 
+  group_by(Date, TSA) %>%
+  summarize(TPR = mean(TPR_CMS, na.rm = TRUE)) %>% 
+  mutate(Date = as.Date(Date))
+
+el_paso = read.csv('tableau/county_TPR.csv') %>% 
+  left_join(., county_link, by = 'County') %>% 
+  filter(TSA == 'I - El Paso')
+
+ggplot(tpr_tsa, aes(x = Date, y = TPR, group = TSA)) + 
+  geom_point(size = 2) + 
+  geom_line(size = 1) +
+  facet_wrap(~ TSA) + 
+  scale_x_date(date_labels = '%m/%d') +
+  theme_pubr() + 
+  theme(axis.text.x = element_text(angle = -90))
+
+```
+
+
 # Performance review
 
 ```{r, fig.width=12, fig.height=6}
