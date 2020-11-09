@@ -3,7 +3,9 @@ title: "diagnostics"
 author: "Jeffrey Brennan"
 output: html_document
 knit: (function(inputFile, encoding) {
-  rmarkdown::render(inputFile, encoding = encoding, output_dir = "diagnostics/") })
+  rmarkdown::render(inputFile, encoding = encoding,
+  knit_root_dir = "C:/Users/jeffb/Desktop/Life/personal-projects/COVID",
+  output_dir = "diagnostics/")})
 ---
 
 # SETUP
