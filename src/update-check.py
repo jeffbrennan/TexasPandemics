@@ -62,8 +62,8 @@ def weekly_updates(today):
   day = today.weekday()
   district_date = (today - timedelta(days=2)).strftime('%m%d%Y')
   return { 
-    3: [f'https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/district-level-data-file_{district_date}.xls', 0],
-    4: ['https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics.xlsx.asp', 3]
+    3: [[f'https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/district-level-data-file_{district_date}.xls', 0]],
+    4: [['https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics.xlsx.asp', 3]]
   }.get(day, [])
 
 
@@ -81,7 +81,7 @@ def run_daily():
   daily_bat = [r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID\scrape.bat']
   daily_url = [['https://dshs.texas.gov/coronavirus/TexasCOVID19CaseCountData.xlsx', 0],
               ['https://dshs.texas.gov/coronavirus/CombinedHospitalDataoverTimebyTSA.xlsx', 2]]
-  daily_url.append(weekly_updates(today.date()))
+  daily_url.extend(weekly_updates(today.date()))
 
   print('\nChecking dashboard files...')
   check_update(daily_url)
