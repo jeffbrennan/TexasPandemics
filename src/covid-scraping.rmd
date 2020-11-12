@@ -257,12 +257,15 @@ colnames(DSHS_deaths_time)[1] = 'County'
 
 colnames(DSHS_deaths_time) = trimws(gsub('Fatalities', '', colnames(DSHS_deaths_time)))
 
-dates = colnames(DSHS_deaths_time)[2:length(colnames(DSHS_deaths_time))]
-dates = format(as.Date(dates, format = '%m-%d'), '%Y-%m-%d')
+dates_raw = colnames(DSHS_deaths_time)[2:length(colnames(DSHS_deaths_time))]
+dates_is_num = which(!is.na(as.numeric(dates_raw)))
+dates_num = as.Date(as.numeric(dates_raw[dates_is_num]), origin = '1899-12-30')
+dates_char = as.Date(dates_raw[-dates_is_num], '%m/%d/%Y')
+
+dates = sort(c(dates_num, dates_char))
 
 # replace date values
 colnames(DSHS_deaths_time)[2:ncol(DSHS_deaths_time)] = dates
-
 # melt
 DSHS_deaths_long = reshape2::melt(DSHS_deaths_time, id = c('County'))
 colnames(DSHS_deaths_long) = c('County', 'Date', 'Deaths_Cumulative')
@@ -284,14 +287,16 @@ length(setdiff(unique(DSHS_deaths_long$County), unique(DSHS_cases_long$County)))
 # calculate daily deaths & fill cumulative deaths
 DSHS_deaths_long$Deaths_Cumulative = as.integer(as.character(DSHS_deaths_long$Deaths_Cumulative))
 
+# date converted from date to factor during wide -> long reformat
 DSHS_deaths_long = 
   DSHS_deaths_long %>%
-  mutate(Date = as.Date(Date)) %>%
+  mutate(Date = as.Date(as.numeric(Date), origin = '2020-03-06')) %>%
   group_by(County) %>%
   tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
   mutate(Deaths_Cumulative_NA = Deaths_Cumulative) %>%
   tidyr::fill(Deaths_Cumulative, .direction = "down") %>%
-  mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))
+  mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative))) %>% 
+  ungroup()
 ```
 
 ## testing
