@@ -584,7 +584,9 @@ Get_TPR = function() {
   
 # TODO: find out which day the new file is added
 TPR_dates = seq(as.Date('2020-08-19'), by = 'week', length.out = 52)
-if (date_out %in% (TPR_dates + 5)) {Get_TPR()}
+# if (date_out %in% (TPR_dates + 5)) {Get_TPR()}
+
+Get_TPR()
 
 tpr_df = rbindlist(
          lapply(list.files('original-sources/historical/TPR', full.names = TRUE), read.csv),
