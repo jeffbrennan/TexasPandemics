@@ -166,7 +166,21 @@ DSHS_school_df = DSHS_school_df %>%
   mutate(District = gsub('  ', ' ', District)) %>% 
   mutate(District = gsub('Lighthouse Charter School', 'Lighthouse Public Schools', District)) %>% 
   distinct()
-  
+#  
+# 
+# district_wide = read.csv('original-sources/helpers/county_isd_wide.csv')
+# str_count(district_wide$County, ',') %>% max()
+# district_long = district_wide %>%
+#   separate(., County, paste("County", c(1:9), sep="_"), sep=",", extra="drop") %>%
+#   reshape2::melt(id = c('District', 'LEA')) %>%
+#   na.omit() %>%
+#   dplyr::select(-variable) %>%
+#   rename(County = value)
+# # 
+# write.csv(district_long, 'original-sources/helpers/county_isd_long.csv', row.names = FALSE)
+# 
+
+
 write_xlsx(list('school_data' = DSHS_school_df,
                 'helper' = read.csv('original-sources/helpers/county_isd_long.csv')),
            'tableau/district_school_reopening.xlsx',
