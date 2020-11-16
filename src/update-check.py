@@ -6,7 +6,7 @@ import re
 from bs4 import BeautifulSoup
 import pandas as pd
 from subprocess import Popen
-
+import sys
 
 def run_bat(bat_file): 
   p = Popen(bat_file)
@@ -50,7 +50,7 @@ def check_update(files):
         print(f'Attempt #{attempts} | New file!')
         break
       elif attempts == 20: 
-        break
+        sys.exit('Too many attempts. Manually check https://dshs.texas.gov/coronavirus/additionaldata/')
       else:
         print(f'Attempt #{attempts} | File not updated yet. Retrying in 5 minutes...')
         time.sleep(300)
