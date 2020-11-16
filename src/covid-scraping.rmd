@@ -165,6 +165,10 @@ DSHS_school_df = DSHS_school_df %>%
   mutate(District = gsub('\n', ' ', District, fixed = TRUE)) %>% 
   mutate(District = gsub('  ', ' ', District)) %>% 
   mutate(District = gsub('Lighthouse Charter School', 'Lighthouse Public Schools', District)) %>% 
+  mutate(Total_Enrollment = as.numeric(Total_Enrollment)) %>% 
+  mutate(Approximate_Enrollment = as.numeric(Approximate_Enrollment)) %>% 
+  mutate(Total_Enrollment = ifelse(Total_Enrollment == 0, NA, Total_Enrollment)) %>% 
+  mutate(Approximate_Enrollment = ifelse(Approximate_Enrollment == 0, NA, Approximate_Enrollment)) %>%
   distinct()
 #  
 # 
