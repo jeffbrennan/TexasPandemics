@@ -378,9 +378,9 @@ download.file(new_case_url, temp, mode = 'wb')
 
 
 # MANUALLY ADD MONTGOMERY CASES PER MISTI WILLINGHAM (11/20)
-# 11/1 - 11/18 [added 0 to 11/19 and 11/20 as that data is not available yet]
-montgomery_new_cases = c(32, 61, 78, 110, 98, 124, 78, 77, 144, 97, 146, 133, 124, 103, 90, 109, 33, 3, 0, 0)
-montgomery_case_dates = seq(as.Date('2020-11-01'), as.Date('2020-11-20'), by = 'day')
+# 11/1 - 11/20 [manual entry] | 11/21 DSHS value
+montgomery_new_cases = c(32, 61, 78, 110, 98, 124, 78, 77, 144, 97, 146, 133, 124, 103, 90, 109, 33, 3, 330, 162, 484)
+montgomery_case_dates = seq(as.Date('2020-11-01'), as.Date('2020-11-21'), by = 'day')
 
 
 DSHS_new_cases_long = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) %>%
