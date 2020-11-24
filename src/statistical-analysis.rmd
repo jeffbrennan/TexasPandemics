@@ -196,7 +196,7 @@ covid.rt = function(mydata, threshold) {
   
   # get case average from past month
   recent_case_avg = mydata %>% 
-    filter(Date > seq(max(Date), length = 2, by = "-1 month")[2]) %>%
+    filter(Date > seq(max(Date), length = 2, by = "-3 weeks")[2]) %>%
     summarize(mean(Cases_Daily, na.rm = TRUE)) %>% 
     unlist()
   
@@ -386,7 +386,7 @@ covid.arima.forecast=function(mydata, prediction.period = 10, mindate, threshold
   model.length = as.numeric(length(mydata$Date) + prediction.period)
   
   recent_case_avg = mydata %>%
-    filter(Date > seq(max(Date), length = 2, by = "-1 month")[2]) %>%
+    filter(Date > seq(max(Date), length = 2, by = "-3 weeks")[2]) %>%
     summarize(mean(Cases_Daily, na.rm = TRUE)) %>% 
     unlist()
   
