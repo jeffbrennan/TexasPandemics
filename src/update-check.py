@@ -68,7 +68,7 @@ def weekly_updates(today):
 
 
 def run_tmc(): 
-  tmc_bat = r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID\TMC.bat'
+  tmc_bat = r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID\requests.bat'
   tmc_url = [['https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx', 2]]
 
   print('Checking new cases...')

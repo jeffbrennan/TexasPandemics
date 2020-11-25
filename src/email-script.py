@@ -26,27 +26,31 @@ def post_slack_message(text, blocks = None):
 
 
 def build_slack_message(email_details): 
-
     return [(f'{" & ".join(detail[0])} received data from {detail[1]} '
              f'file(s) regarding {detail[2]} in the following regions: \n{", ".join(detail[3])}')
             for detail in email_details]
 
 
-def build_file_details(receiver, file):
-    body = []    
-    text_part = (f'<br><b>{file["Name"]}</b>'
-                 f'<br>Regional Level: {receiver["region_level"]}'
-                 f'<br>Regions: {", ".join(receiver["regions"])}'
-                 f'<br>Date: {file["Date"]}'  
-                 f'<br>Value (95% CI): {file["Value"]} ({file["Low_CI"]}, {file["Upper_CI"]})')
+def build_file_details(receiver, file, get_values):
+    body = []
 
+    if get_values == 'yes':
+        text_part = (f'<br><b>{file["Name"]}</b>'
+                    f'<br>Regional Level: {receiver["region_level"]}'
+                    f'<br>Regions: {", ".join(receiver["regions"])}'
+                    f'<br>Date: {file["Date"]}'  
+                    f'<br>Value (95% CI): {file["Value"]} ({file["Low_CI"]}, {file["Upper_CI"]})')
+    elif get_values == 'no':
+        text_part = (f'<br><b>{file["Name"]}</b>'
+                    f'<br>Regional Level: {receiver["region_level"]}'
+                    f'<br>Regions: {", ".join(receiver["regions"])}'
+                    f'<br>Date: {file["Date"]}')
     body.append(text_part)
 
     return ''.join(body)
 
 
 def build_body_text(receiver, file_details): 
-
     message = (f'Hello,<br>Here is your requested data:<br>'
                f'{"<br>".join(file_details)}'
                f'<br>Notes: {receiver["notes"]}'
@@ -55,7 +59,7 @@ def build_body_text(receiver, file_details):
     return message
 
 
-def send_email(credentials, receiver, file_paths, parsed_files):
+def send_email(credentials, receiver, file_paths, parsed_files, get_values):
     message = MIMEMultipart()
     message['From'] = credentials['sender']
     message['To'] = ','.join(receiver['address'])
@@ -66,7 +70,7 @@ def send_email(credentials, receiver, file_paths, parsed_files):
 
 
     # for each .csv, construct file details and combine together into message out
-    file_details = [build_file_details(receiver, file) for file in parsed_files if file]
+    file_details = [build_file_details(receiver, file, get_values) for file in parsed_files if file]
     message_out = build_body_text(receiver, file_details)
 
     message.attach(MIMEText(message_out, 'html'))
@@ -99,7 +103,7 @@ def send_email(credentials, receiver, file_paths, parsed_files):
 
 
 # extract most recent values from files to be used in email body text
-def parse_file(file):
+def parse_file(file, get_values):
     file_name = file[0]
     file_path = file[1]
 
@@ -107,19 +111,22 @@ def parse_file(file):
     if file_path.endswith('csv'):
         df = pd.read_csv(file_path)
         max_date = max(df['Date'])
-        df_new = df[(df.Date == max_date)]
-        
-        value = round(df_new.iloc[0, 1], 3)
-        low_CI = round(df_new.iloc[0, 2], 3)
-        upper_CI = round(df_new.iloc[0, 3], 3)
+            
+        if get_values == 'yes': 
+            df_new = df[(df.Date == max_date)]
+            
+            value = round(df_new.iloc[0, 1], 3)
+            low_CI = round(df_new.iloc[0, 2], 3)
+            upper_CI = round(df_new.iloc[0, 3], 3)
 
-        file_values = {'Name':file_name, 'Date':max_date, 'Value':value,
-                       'Low_CI':low_CI, 'Upper_CI': upper_CI}
-
+            parsed_data = {'Name': file_name, 'Date': max_date, 'Value': value,
+                        'Low_CI': low_CI, 'Upper_CI': upper_CI}
+        elif get_values == 'no':
+            parsed_data = {'Name': file_name, 'Date': max_date}
     else: 
-        file_values = None
+        parsed_data = None
 
-    return file_values
+    return parsed_data
 
 
 # set wd
@@ -128,15 +135,17 @@ os.chdir(r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID')
 # read in data
 credentials = pd.read_csv('backend/email_credentials.csv').squeeze()
 recipients = json.load(open('backend/mailing_list.json', 'r'))
+# recipients = json.load(open('backend/test_mailing_list.json', 'r'))
 auth = pd.read_csv('backend/auth.csv').squeeze() 
 
 # send emails
 email_details = []
 for receiver in recipients:
-    parsed_files = [parse_file(file) for file in receiver['files']]
+    get_values = receiver['get_values']
+    parsed_files = [parse_file(file, get_values) for file in receiver['files']]
     file_paths = [file[1] for file in receiver['files']]
 
-    send_email(credentials, receiver, file_paths, parsed_files)
+    send_email(credentials, receiver, file_paths, parsed_files, get_values)
     email_details.append([receiver['address'], len(receiver['files']), receiver['data_type'], receiver['regions']])
 
 # build & send slack message

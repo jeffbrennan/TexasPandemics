@@ -12,7 +12,7 @@ backend/
 .vscode
 *.html
 diagnostics/
-estimates-TMC/
+special-requests/
 src/dshs-selenium-scrape.py
 debug.log
 Rplots.pdf
