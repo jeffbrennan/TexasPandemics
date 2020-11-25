@@ -914,7 +914,7 @@ DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %>%
 
 ```{r}
 # selects covid hospitalization time series, drops footnote, formates date and sets colnames
-DSHS_hospitalizations = DSHS_state[[8]][, c(2:3)] %>%
+DSHS_hospitalizations = DSHS_state[[7]][, c(2:3)] %>%
   filter(rowSums(is.na(.)) < ncol(.)) %>% 
   setNames(c('Date', 'Hospitalizations_Total')) %>%
   mutate(Date = as.Date(Date))
@@ -935,11 +935,11 @@ list(DSHS_specimen_tests, DSHS_lab_tests, DSHS_hospitalizations))
 DSHS_state_day = data.frame(Antigen_Tests_Total = DSHS_state[[6]][1,2],
                             Antigen_Tests_Positive = DSHS_state[[6]][2,2],
                             Antibody_Tests_Total = DSHS_state[[5]][1,2],
-                            Antibody_tests_Positive = DSHS_state[[5]][2,2],
-                            Hospital_Bed_Total = DSHS_state[[7]][2,2],
-                            Hospital_Bed_Available = DSHS_state[[7]][3,2],
-                            ICU_Bed_Available = DSHS_state[[7]][4,2],
-                            Ventilator_Available = DSHS_state[[7]][5,2])
+                            Antibody_tests_Positive = DSHS_state[[5]][2,2])
+                            # Hospital_Bed_Total = DSHS_state[[7]][2,2],
+                            # Hospital_Bed_Available = DSHS_state[[7]][3,2],
+                            # ICU_Bed_Available = DSHS_state[[7]][4,2],
+                            # Ventilator_Available = DSHS_state[[7]][5,2])
 ```
 
 ## DSHS Demographics
