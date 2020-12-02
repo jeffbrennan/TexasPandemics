@@ -279,6 +279,11 @@ colnames(DSHS_deaths_time)[1] = 'County'
 colnames(DSHS_deaths_time) = trimws(gsub('Fatalities', '', colnames(DSHS_deaths_time)))
 
 dates_raw = colnames(DSHS_deaths_time)[2:length(colnames(DSHS_deaths_time))]
+
+# TODO: CHECK on 12/2, 12/3 etc. for update 
+# temp fix DSHS typo 12/30 -> 11/30
+dates_raw = gsub('12-30', '11-30', dates_raw)
+
 dates = format(as.Date(dates_raw, '%m-%d'), '%Y-%m-%d')
 
 # 11/13: DSHS reverted 11/12 change to date format (addressed below)
@@ -287,6 +292,7 @@ dates = format(as.Date(dates_raw, '%m-%d'), '%Y-%m-%d')
 # dates_num = as.Date(as.numeric(dates_raw[dates_is_num]), origin = '1899-12-30')
 # dates_char = as.Date(dates_raw[-dates_is_num], '%m/%d/%Y')
 # dates = sort(c(dates_num, dates_char))
+
 
 # replace date values
 colnames(DSHS_deaths_time)[2:ncol(DSHS_deaths_time)] = dates
