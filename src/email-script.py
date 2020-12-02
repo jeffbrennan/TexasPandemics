@@ -1,14 +1,17 @@
-import requests
 import os
-import pandas as pd
+import glob
+import requests
+import sys
 import json
+import time
 import smtplib
+import pandas as pd
+from datetime import datetime as dt
 from pathlib import Path
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
-from datetime import datetime as dt
 
 # sources
 # https://stackoverflow.com/questions/3362600/how-to-send-email-attachments
@@ -134,9 +137,18 @@ os.chdir(r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID')
 
 # read in data
 credentials = pd.read_csv('backend/email_credentials.csv').squeeze()
-recipients = json.load(open('backend/mailing_list.json', 'r'))
-# recipients = json.load(open('backend/test_mailing_list.json', 'r'))
+all_recipients = json.load(open('backend/mailing_list.json', 'r'))
+# all_recipients = json.load(open('backend/test_mailing_list.json', 'r'))
 auth = pd.read_csv('backend/auth.csv').squeeze() 
+
+
+# check file modification date, drop recipient if file is too old
+# if all files are old, abort email script
+daily_update = 60 * 60 * 12
+start_time = time.time()
+recipients = [x for x in all_recipients if (start_time - os.path.getmtime(x['files'][0][1])) < daily_update]
+if not recipients: sys.exit()
+
 
 # send emails
 email_details = []
