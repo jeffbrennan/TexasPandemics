@@ -94,71 +94,62 @@ nyt_schools = rbindlist(lapply(list.files('original-sources/historical/nyt/archi
 ## Texas school districts
 
 ```{r}
-# data ending on Sunday posted on Thursday (4 day lag)
-# DSHS updated to Fridays starting 12/4
-# TODO: uncomment on 12/4
-# school_dates = seq(as.Date('2020-12-04'), by = 'week', length.out = 52)
+# data ending on Sunday posted on Friday (5 day lag)
+school_dates = seq(as.Date('2020-10-11'), by = 'week', length.out = 52)
 # no 11/22 update due to Thanksgiving
 # school_dates = school_dates[-10]
-# school_date = max(school_dates[which(school_dates <= date_out - 4)])
-# 
-# 
-# # download files posted either with _ or - before date
-# tryCatch({ 
-#   school_url = paste0('https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/District-level-data-file-',
-#                     format(school_date+2, '%m%d%Y'), '.xls')
-#   # school_url = 'https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/District-level-data.xlsx'
-#   temp = tempfile()
-#   download.file(school_url, temp, mode = 'wb')
-#   DSHS_schools_raw = data.frame(read_excel(temp, sheet = 1))
-#   },
-#   error = function(e) { 
-#    school_url = paste0('https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/District-level-data-file_',
-#                     format(school_date+2, '%m%d%Y'), '.xls')
-#   temp = tempfile()
-#   download.file(school_url, temp, mode = 'wb')
-#   DSHS_schools_raw <<- data.frame(read_excel(temp, sheet = 1))
-#   
-#   })
-# 
-# 
-# first_row = which(DSHS_schools_raw[, 1] == 'District Name') + 1
-# last_row = which(DSHS_schools_raw[, 1] == 'ZEPHYR ISD')
-# colnames(DSHS_schools_raw)[1:2] = c('District', 'LEA')
-# 
-# 
-# # read in matching county data (overlapping counties available for public, but not private ISDs)
-# # public school source: http://tea-texas.maps.arcgis.com/sharing/rest/content/items/87c957f2ec334c83bc2b952bf6e64344/data
-# # private school source: http://mansfield.tea.state.tx.us/Tea.AskTed.Web/Forms/DownloadDefault.aspx
-# county_isd_wide = read.csv('original-sources/helpers/county_isd_wide.csv')
-# 
-# DSHS_schools_clean = DSHS_schools_raw[first_row:last_row, ] %>%
-#   mutate(LEA = as.numeric(gsub("'", '', LEA))) %>%
-#   # left_join(., county_isd_wide, by = 'LEA') %>%
-#   # mutate(District.x = District.y) %>% 
-#   # dplyr::select(-District.y) %>% 
-#   # rename(District = District.x) %>%
-#   mutate(District = str_to_title(District)) %>% 
-#   mutate(District = gsub('Isd', 'ISD', District)) %>%
-#   mutate(District = gsub('\n', ' ', District)) %>% 
-#   mutate(Date = school_date) %>%
-#   # dplyr::select(District, Date, County, LEA, everything()) %>%
-#   dplyr::select(District, Date, LEA, everything()) %>%
-#   mutate_at(5:ncol(.), as.numeric) %>%
-#   setNames(c('District', 'Date', 'LEA', 'Total_Enrollment', 'Approximate_Enrollment',
-#              'Cases_Weekly_GRADE_EE_3', 'Cases_Weekly_GRADE_4_6', 'Cases_Weekly_GRADE_7_12',
-#              'Cases_Weekly_Staff', 'Infections_Weekly_On_Campus',
-#              'Infections_Weekly_Off_Campus', 'Infections_Weekly_Unknown',
-# 
-#              'Cases_Cumulative_GRADE_EE_3', 'Cases_Cumulative_GRADE_4_6',
-#              'Cases_Cumulative_GRADE_7_12', 'Cases_Cumulative_Staff',
-#              'Infections_Cumulative_On_Campus', 'Infections_Cumulative_Off_Campus',
-#              'Infections_Cumulative_Unknown'))
+school_date = max(school_dates[which(school_dates <= date_out - 5)])
+
+tryCatch({
+  school_url = paste0('https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/campus-level-Data-',
+                    format(school_date+2, '%m%d%Y'), '.xls')
+  # school_url = 'https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/District-level-data.xlsx'
+  temp = tempfile()
+  download.file(school_url, temp, mode = 'wb')
+  DSHS_schools_raw = data.frame(read_excel(temp, sheet = 1))
+  },
+  error = function(e) {
+   school_url = paste0('https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/campus-level-Data_',
+                    format(school_date+2, '%m%d%Y'), '.xls')
+  temp = tempfile()
+  download.file(school_url, temp, mode = 'wb')
+  DSHS_schools_raw <<- data.frame(read_excel(temp, sheet = 1))
+  })
+
+
+first_row = which(DSHS_schools_raw[, 1] == 'District Name') + 1
+last_row = which(DSHS_schools_raw[, 1] == 'ZEPHYR ISD')
+colnames(DSHS_schools_raw)[1:2] = c('District', 'LEA')
+
+
+# read in matching county data (overlapping counties available for public, but not private ISDs)
+# public school source: http://tea-texas.maps.arcgis.com/sharing/rest/content/items/87c957f2ec334c83bc2b952bf6e64344/data
+# private school source: http://mansfield.tea.state.tx.us/Tea.AskTed.Web/Forms/DownloadDefault.aspx
+county_isd_wide = read.csv('original-sources/helpers/county_isd_wide.csv')
+
+DSHS_schools_clean = DSHS_schools_raw[first_row:last_row, ] %>%
+  mutate(LEA = as.numeric(gsub("'", '', LEA))) %>%
+  mutate(District = str_to_title(District)) %>%
+  mutate(District = gsub('Isd', 'ISD', District)) %>%
+  mutate(District = gsub('\n', ' ', District)) %>%
+  mutate(Date = school_date) %>%
+  # dplyr::select(District, Date, County, LEA, everything()) %>%
+  dplyr::select(District, Date, LEA, everything()) %>%
+  mutate_at(5:ncol(.), as.numeric) %>%
+  setNames(c('District', 'Date', 'LEA', 'Total_Enrollment', 'Approximate_Enrollment',
+             'Cases_Weekly_GRADE_EE_3', 'Cases_Weekly_GRADE_4_6', 'Cases_Weekly_GRADE_7_12',
+             'Cases_Weekly_Staff', 'Infections_Weekly_On_Campus',
+             'Infections_Weekly_Off_Campus', 'Infections_Weekly_Unknown',
+
+             'Cases_Cumulative_GRADE_EE_3', 'Cases_Cumulative_GRADE_4_6',
+             'Cases_Cumulative_GRADE_7_12', 'Cases_Cumulative_Staff',
+             'Infections_Cumulative_On_Campus', 'Infections_Cumulative_Off_Campus',
+             'Infections_Cumulative_Unknown'))
 
 # save for future combinations - avoids cleaning on every run
-# write.csv(DSHS_schools_clean,
-#           paste0('original-sources/historical/dshs-schools/DSHS_Schools_', school_date, '.csv'),
-#           row.names = FALSE)
+write.csv(DSHS_schools_clean,
+          paste0('original-sources/historical/dshs-schools/DSHS_Schools_', school_date, '.csv'),
+          row.names = FALSE)
 ```
 
 
@@ -175,20 +166,6 @@ DSHS_school_df = DSHS_school_df %>%
   mutate(Total_Enrollment = ifelse(Total_Enrollment == 0, NA, Total_Enrollment)) %>% 
   mutate(Approximate_Enrollment = ifelse(Approximate_Enrollment == 0, NA, Approximate_Enrollment)) %>%
   distinct()
-#  
-# 
-# district_wide = read.csv('original-sources/helpers/county_isd_wide.csv')
-# str_count(district_wide$County, ',') %>% max()
-# district_long = district_wide %>%
-#   separate(., County, paste("County", c(1:9), sep="_"), sep=",", extra="drop") %>%
-#   reshape2::melt(id = c('District', 'LEA')) %>%
-#   na.omit() %>%
-#   dplyr::select(-variable) %>%
-#   rename(County = value)
-# # 
-# write.csv(district_long, 'original-sources/helpers/county_isd_long.csv', row.names = FALSE)
-# 
-
 
 write_xlsx(list('school_data' = DSHS_school_df,
                 'helper' = read.csv('original-sources/helpers/county_isd_long.csv')),
@@ -906,7 +883,7 @@ DSHS_state = read_excel_allsheets(temp)
 ```
 
 ```{r}
-DSHS_tests = DSHS_state[[3]]
+DSHS_tests = DSHS_state[[4]]
 
 # # LAB TESTS
 # select lab tests & remove rows where all rows are NA
