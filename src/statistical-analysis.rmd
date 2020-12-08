@@ -236,12 +236,10 @@ covid.rt = function(mydata, threshold) {
   mydata = mydata %>% slice(minrow:maxrow)
   
   ### R0 ESTIMATION ###
-  if(!is.na(minrow) & recent_case_avg > threshold) {
-     
-    #reduce the vector to be rows from min date (March 9 or first nonzero case) to current date
-    mydata.newest = mydata.new[minrow:maxrow]
+  #reduce the vector to be rows from min date (March 9 or first nonzero case) to current date
+  mydata.newest = mydata.new[minrow:maxrow]
     
-    tryCatch({
+  tryCatch({
     rt.DSHS = estimate.R(mydata.newest, 
                         gen.time, 
                         begin=as.integer(1),
@@ -250,30 +248,22 @@ covid.rt = function(mydata, threshold) {
                         pop.size=pop.DSHS,
                         nsim=1000)
   
-    rt.DSHS.df = rt.df.extraction(rt.DSHS) %>% 
-                    # mutate(TPR_CMS = mydata$TPR_CMS,
-                    #        Cases_100K_7Day_MA = mydata$Cases_100K_7Day_MA) %>% 
+    rt.DSHS.df <<- rt.df.extraction(rt.DSHS) %>% 
                     dplyr::select(Date, Rt, lower, upper)
+    
+    rt.DSHS.df$case_avg = recent_case_avg
+    rt.DSHS.df$threshold = ifelse(recent_case_avg > threshold, 'Above', 'Below')
+    
     },
     error = function(e) {
-    writeLines(paste0('Rt generation error (despite sufficient cases)', '\n'))
-    rt.DSHS.df = data.frame(Date = as.Date(mydata$Date),
-                             # TPR_CMS = mydata$TPR_CMS,
-                             # Cases_100K_7Day_MA = mydata$Cases_100K_7Day_MA,
-                             Rt = rep(NA, length(mydata$Date)),
-                             lower = rep(NA, length(mydata$Date)),
-                             upper = rep(NA, length(mydata$Date)))
+      writeLines(paste0('Rt generation error (despite sufficient cases)', '\n'))
+      rt.DSHS.df <<- data.frame(Date = as.Date(mydata$Date),
+                               Rt = rep(NA, length(mydata$Date)),
+                               lower = rep(NA, length(mydata$Date)),
+                               upper = rep(NA, length(mydata$Date)),
+                               case_avg = NA,
+                               threshold = NA)
     })
-  } else {
-    writeLines(paste0('Below required case threshold of ', round(threshold, 2), '\n'))
-    # error catch small regions & na values for minrow
-    rt.DSHS.df = data.frame(Date = as.Date(mydata$Date),
-                            # TPR_CMS = mydata$TPR_CMS,
-                            # Cases_100K_7Day_MA = mydata$Cases_100K_7Day_MA,
-                            Rt = rep(NA, length(mydata$Date)),
-                            lower = rep(NA, length(mydata$Date)),
-                            upper = rep(NA, length(mydata$Date)))
-  }
   return(rt.DSHS.df)
 }
 ```
@@ -285,9 +275,36 @@ covid.rt = function(mydata, threshold) {
 county.rt.output = nlme::gapply(County_df, FUN = covid.rt,
                                  groups = County_df$County, threshold = case_quant)
 # combine list of dataframes (1 for each county) to single dataframe
-RT_County_df = rbindlist(county.rt.output, idcol = 'County') %>% 
+RT_County_df_all = rbindlist(county.rt.output, idcol = 'County') %>% 
   mutate(Date = as.Date(Date))
 
+RT_County_df_all$County %>% unique() %>% length()
+
+# remove errors
+min_date = seq(max(RT_County_df_all$Date), length = 2, by = "-3 weeks")[2]
+error_counties = RT_County_df_all %>%
+  group_by(County) %>%
+  mutate(CI_error = factor(ifelse(lower == 0 & upper == 0, 1, 0))) %>%
+  mutate(Rt_error = factor(ifelse(is.na(Rt) | Rt == 0 | Rt > 10, 1, 0))) %>%
+  filter(Date > min_date & Date != max(Date)) %>%
+  filter(is.na(CI_error) | CI_error == 1 | Rt_error == 1) %>%
+  dplyr::select(County) %>% 
+  distinct() %>%
+  unlist()
+
+
+RT_County_df = RT_County_df_all %>% 
+  mutate(Rt = ifelse(County %in% error_counties, NA, Rt)) %>% 
+  mutate(lower = ifelse(County %in% error_counties, NA, lower)) %>% 
+  mutate(upper = ifelse(County %in% error_counties, NA, upper))
+good_counties = RT_County_df$County %>% unique() %>% length()
+good_counties/254 # = 0.744
+```
+
+
+
+
+```{r}
 district = readxl::read_xlsx('tableau/district_school_reopening.xlsx', sheet=1) %>%
              mutate(LEA = as.character(LEA),
                     Date = as.Date(Date))
@@ -320,12 +337,6 @@ write.csv(county_TPR, 'tableau/county_TPR.csv', row.names = FALSE)
 write.csv(county_TPR_sd, 'tableau/county_TPR_sd.csv', row.names = FALSE)
 ```
 
-## Metro
-
-```{r}
-RT_Metro_output = nlme::gapply(Metro_df, FUN=covid.rt, groups=Metro_df$Metro, threshold = case_quant)
-RT_Metro_df = rbindlist(RT_Metro_output, idcol = 'Metro')
-```
 
 ## TSA
 
@@ -341,6 +352,12 @@ RT_PHR_output = nlme::gapply(PHR_df, FUN=covid.rt, groups=PHR_df$PHR, threshold 
 RT_PHR_df = rbindlist(RT_PHR_output, idcol = 'PHR')
 ```
 
+## Metro
+
+```{r}
+RT_Metro_output = nlme::gapply(Metro_df, FUN=covid.rt, groups=Metro_df$Metro, threshold = case_quant)
+RT_Metro_df = rbindlist(RT_Metro_output, idcol = 'Metro')
+```
 
 ## State
 
@@ -353,7 +370,6 @@ RT_State_df = covid.rt(State_df, threshold = case_quant)
 ```{r}
 # Rename levels for easier parsing in tableau
 colnames(RT_County_df)[1] = 'Level'
-# colnames(RT_District_df)[1] = 'Level'
 colnames(RT_Metro_df)[1] = 'Level'
 colnames(RT_TSA_df)[1] = 'Level'
 colnames(RT_PHR_df)[1] = 'Level'
@@ -368,7 +384,8 @@ RT_State_df$Level_Type = 'State'
 
 RT_Combined_df = 
   rbind(RT_County_df, RT_TSA_df, RT_PHR_df, RT_Metro_df, RT_State_df) %>% 
-  filter(Date != max(Date))
+  filter(Date != max(Date)) %>% 
+  dplyr::select(-c(threshold, case_avg))
 
 write.csv(RT_Combined_df, 'tableau/stacked_rt.csv', row.names = FALSE)
 ```
