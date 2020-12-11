@@ -707,11 +707,11 @@ DSHS_hosp_clean = function(df, var_name) {
   return(df_long)
 }
 # 1,2,3 references the 3 sheets produced by DSHS
-hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[[4]], 'Hospitalizations_Total')
-hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[[6]], 'Hospitalizations_General')
-hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[[7]], 'Hospitalizations_ICU')
-hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp[[8]], 'Beds_Available_Total')
-hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp[[9]], 'Beds_Available_ICU')
+hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[[1]], 'Hospitalizations_Total')
+hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[[8]], 'Hospitalizations_General')
+hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[[9]], 'Hospitalizations_ICU')
+hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp[[4]], 'Beds_Available_Total')
+hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp[[5]], 'Beds_Available_ICU')
 hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp[[10]], 'Beds_Occupied_Total')
 hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp[[11]], 'Beds_Occupied_ICU')
 ```
