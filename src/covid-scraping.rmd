@@ -81,6 +81,29 @@ date_out = ifelse((Sys.time() < as.POSIXct(paste0(Sys.Date(), '16:00'), tz = 'Am
 date_out = as.Date(date_out, origin = '1970-1-1')
 ```
 
+# HOSPITAL LEVEL
+
+```{r}
+# TODO: finalize metrics of interest and add to tableau folder
+
+# hosp_dates = seq(as.Date('2020-12-07'), length = 52, by = 'week')
+# hosp_date = max(hosp_dates[which(hosp_dates <= date_out)])
+# hosp_date_f = format(hosp_date, '%Y%m%d')
+# 
+# 
+# hosp_df = read.csv(paste0('https://healthdata.gov/sites/default/files/reported_hospital_capacity_admissions_facility-level_weekly_average_timeseries_', hosp_date_f, '.csv'))
+
+# hosp_df_parsed = hosp_df %>% 
+#   filter(state == 'TX') %>%
+#   filter(length(ZIP) < 5)
+
+
+# TODO:
+#   - link county, tsa etc.
+#   - 
+```
+
+
 # SCHOOL LEVEL
 
 ```{r}
@@ -902,7 +925,7 @@ DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %>%
 
 ```{r}
 # selects covid hospitalization time series, drops footnote, formates date and sets colnames
-DSHS_hospitalizations = DSHS_state[[8]][, c(2:3)] %>%
+DSHS_hospitalizations = DSHS_state[[9]][, c(2:3)] %>%
   filter(rowSums(is.na(.)) < ncol(.)) %>% 
   setNames(c('Date', 'Hospitalizations_Total')) %>%
   mutate(Date = as.Date(Date))
@@ -920,14 +943,15 @@ list(DSHS_specimen_tests, DSHS_lab_tests, DSHS_hospitalizations))
 
 ```{r}
 # avoids duplication of results between sheets
-DSHS_state_day = data.frame(Antigen_Tests_Total = DSHS_state[[6]][1,2],
-                            Antigen_Tests_Positive = DSHS_state[[6]][2,2],
-                            Antibody_Tests_Total = DSHS_state[[5]][1,2],
-                            Antibody_tests_Positive = DSHS_state[[5]][2,2],
-                            Hospital_Bed_Total = DSHS_state[[7]][2,2],
-                            Hospital_Bed_Available = DSHS_state[[7]][3,2],
-                            ICU_Bed_Available = DSHS_state[[7]][4,2],
-                            Ventilator_Available = DSHS_state[[7]][5,2])
+DSHS_state_day = data.frame(Molecular_Tests_Total = DSHS_state[[5]][1,2],
+                            Antigen_Tests_Total = DSHS_state[[7]][1,2],
+                            Antigen_Tests_Positive = DSHS_state[[7]][2,2],
+                            Antibody_Tests_Total = DSHS_state[[6]][1,2],
+                            Antibody_tests_Positive = DSHS_state[[6]][2,2],
+                            Hospital_Bed_Total = DSHS_state[[8]][2,2],
+                            Hospital_Bed_Available = DSHS_state[[8]][4,2],
+                            ICU_Bed_Available = DSHS_state[[8]][5,2],
+                            Ventilator_Available = DSHS_state[[8]][6,2])
 ```
 
 ## DSHS Demographics
