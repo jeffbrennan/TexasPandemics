@@ -81,6 +81,47 @@ date_out = ifelse((Sys.time() < as.POSIXct(paste0(Sys.Date(), '16:00'), tz = 'Am
 date_out = as.Date(date_out, origin = '1970-1-1')
 ```
 
+## Classifications
+
+```{r}
+# add metro and PHR code designations
+# source: https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls
+# add PHR readable names from https://dshs.texas.gov/regions/default.shtm
+PHR_helper = data.frame(PHR = c( "1", "11", "2/3", "4/5N", "6/5S", "7", "8", "9/10"),
+                        PHR_Name = c('Tyler PHR', 'El Paso PHR', 'Harlingen PHR', 
+                                     'Arlington PHR', 'Lubbock PHR', 'San Antonio PHR',
+                                     'Houston PHR', 'Temple PHR'))
+
+county_classifications = read_xlsx('original-sources/helpers/county_classifications.xlsx', sheet = 1)[1:254, c(1, 5, 8)] %>% 
+  setNames(c('County', 'PHR', 'Metro_Area')) %>% 
+  left_join(., PHR_helper, by = 'PHR') %>%
+  mutate(PHR_Combined = paste0(PHR, ' - ', PHR_Name))
+```
+
+```{r}
+# TSA levels
+tsa_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx'
+temp = tempfile()
+download.file(tsa_url, temp, mode = 'wb')
+DSHS_tsa_names = readxl::read_xlsx(temp)[3:24, 1:2]
+
+colnames(DSHS_tsa_names) = c('TSA', 'TSA_Name')
+
+# drop . suffix from TSA codes
+DSHS_tsa_names$TSA = gsub('.', '', DSHS_tsa_names$TSA, fixed = TRUE)
+
+# get list of counties per TSA
+tsa = read.csv('original-sources/helpers/tsa_list.csv', header = F)[-1]
+tsa_long = reshape::melt(tsa, id = c('V2', 'V3'))
+tsa_long_complete = subset(tsa_long, value != '')[, c(1, 4)] %>% 
+  setNames(c('TSA', 'County')) %>%
+  mutate(County = trimws(County)) %>% 
+  left_join(DSHS_tsa_names, by = 'TSA') %>% 
+  distinct() %>% 
+  mutate(TSA_Combined = paste0(TSA, ' - ', TSA_Name))
+```
+
+
 # HOSPITAL LEVEL
 
 ```{r}
@@ -90,18 +131,47 @@ date_out = as.Date(date_out, origin = '1970-1-1')
 # hosp_date = max(hosp_dates[which(hosp_dates <= date_out)])
 # hosp_date_f = format(hosp_date, '%Y%m%d')
 # 
+
+# https://healthdata.gov/sites/default/files/reported_hospital_capacity_admissions_facility_level_weekly_average_timeseries_20201214.csv
+# base_hosp_url = 'https://healthdata.gov/sites/default/files/reported_hospital_capacity_admissions_facility_level_weekly_average_timeseries_' 
+# hosp_df = fread(paste0(base_hosp_url, hosp_date_f, '.csv'), na.strings = c('-999999', '-999999.0'))
 # 
-# hosp_df = read.csv(paste0('https://healthdata.gov/sites/default/files/reported_hospital_capacity_admissions_facility-level_weekly_average_timeseries_', hosp_date_f, '.csv'))
-
-# hosp_df_parsed = hosp_df %>% 
-#   filter(state == 'TX') %>%
-#   filter(length(ZIP) < 5)
-
-
-# TODO:
-#   - link county, tsa etc.
-#   - 
+# fips_link = read.csv('original-sources/helpers/unpublished/county_fips.csv') %>% 
+#   dplyr::select(fips, county_name) %>% 
+#   setNames(c('fips_code', 'County'))
+# 
+# hosp_df_parsed = hosp_df %>%
+#   filter(state == 'TX') %>% 
+#   left_join(fips_link, by = 'fips_code') %>%
+#   mutate(County = gsub(' County', '', County)) %>%
+#   left_join(tsa_long_complete %>% dplyr::select(County, TSA_Combined), by = 'County') %>%
+#   left_join(county_classifications %>% dplyr::select(County, PHR_Combined), by = 'County') %>%
+#   relocate(County, .after = collection_week) %>% 
+#   relocate(TSA_Combined, .after = County) %>% 
+#   relocate(PHR_Combined, .after = TSA_Combined) %>% 
+#   relocate(fips_code, .after = PHR_Combined)
+#   
 ```
+
+# hosp investigation
+
+```{r}
+# harris_hosp = hosp_df_parsed %>% filter(County == 'Harris') %>% 
+#   dplyr::select(-c(hospital_pk, collection_week, County, TSA_Combined, PHR_Combined,
+#                    fips_code, state, ccn, hospital_name, address, zip))
+# 
+# harris_hosp_table = tableby(hospital_subtype ~ .,  data = harris_hosp)
+#   
+# # summary(harris_hosp_table, ')
+# 
+# # write2html(harris_hosp_table, 'original-sources/helpers/unpublished/harris_hospitals.html',
+# #            title = 'City Hospital Comparison in Harris County')
+# 
+# write2html(harris_hosp_table,
+#            file = "C:/Users/jeffb/Desktop/Life/personal-projects/COVID/original-sources/helpers/unpublished/harris_hospitals.html",
+#            title = 'City Hospital Comparison in Harris County')
+```
+
 
 
 # SCHOOL LEVEL
@@ -393,10 +463,11 @@ download.file(new_case_url, temp, mode = 'wb')
 montgomery_new_cases = c(32, 61, 78, 110, 98, 124, 78, 77, 144, 97, 146, 133, 124, 103, 90, 109, 33, 3, 330, 162, 484)
 montgomery_case_dates = seq(as.Date('2020-11-01'), as.Date('2020-11-21'), by = 'day')
 
-
 DSHS_new_cases_long = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) %>%
+  slice(1:254) %>%
   reshape2::melt('County') %>% 
-  setNames(c('County', 'Date', 'Cases_Daily')) %>% 
+  setNames(c('County', 'Date', 'Cases_Daily')) %>%
+  mutate(Date = gsub('New Cases ', '', Date)) %>%
   mutate(Date = Date_Parser(Date)) %>% 
   mutate(Cases_Daily = ifelse(Cases_Daily < 0, 0, Cases_Daily)) %>%
   mutate(Cases_Daily = replace(Cases_Daily, 
@@ -498,48 +569,6 @@ county_counts = Reduce(function(x, y) merge(x, y, by = c('Date', 'County'), all=
             DSHS_active_cases_long))
 ```
 
-## Classifications
-
-```{r}
-# add metro and PHR code designations
-# source: https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls
-# county_classifications = read_xlsx('original-sources/county_classifications.xlsx', sheet = 1)[1:254, c(1, 5, 8, 13:14)]
-county_classifications = read_xlsx('original-sources/helpers/county_classifications.xlsx', sheet = 1)[1:254, c(1, 5, 8)]
-
-# set colnames
-# colnames(county_classifications) = c('County', 'PHR', 'Metro_Area', 'HHSC', 'HHSC_Name')
-colnames(county_classifications) = c('County', 'PHR', 'Metro_Area')
-
-# add PHR readable names from https://dshs.texas.gov/regions/default.shtm
-PHR_helper = data.frame(PHR = unique(county_classifications$PHR),
-                        PHR_Name = c('Tyler PHR', 'El Paso PHR', 'Harlingen PHR', 
-                                     'Arlington PHR', 'Lubbock PHR', 'San Antonio PHR',
-                                     'Houston PHR', 'Temple PHR'))
-
-county_classifications = merge(county_classifications, PHR_helper, by = 'PHR')
-```
-
-```{r}
-# TSA levels
-tsa_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx'
-temp = tempfile()
-download.file(tsa_url, temp, mode = 'wb')
-DSHS_tsa_names = readxl::read_xlsx(temp)[3:24, 1:2]
-
-colnames(DSHS_tsa_names) = c('TSA', 'TSA_Name')
-
-# drop . suffix from TSA codes
-DSHS_tsa_names$TSA = gsub('.', '', DSHS_tsa_names$TSA, fixed = TRUE)
-
-# get list of counties per TSA
-tsa = read.csv('original-sources/helpers/tsa_list.csv', header = F)[-1]
-tsa_long = reshape::melt(tsa, id = c('V2', 'V3'))
-tsa_long_complete = subset(tsa_long, value != '')[, c(1, 4)]
-colnames(tsa_long_complete) = c('TSA', 'County')
-
-tsa_long_complete$County = trimws(tsa_long_complete$County)
-tsa_long_complete = merge(tsa_long_complete, DSHS_tsa_names, by = 'TSA') %>% distinct()
-```
 
 ## merge
 
