@@ -480,15 +480,50 @@ DSHS_new_cases_long = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) 
 ## active cases
 
 ```{r}
-active_case_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19ActiveCaseDatabyCounty.xlsx'
+# historic 
+old_case_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19LegacyActiveCasesbyCounty.xlsx'
 temp = tempfile()
-download.file(active_case_url, temp, mode = 'wb') 
-DSHS_active_cases_time = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) %>%
+download.file(old_case_url, temp, mode = 'wb') 
+old_active_cases = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) %>%
   slice(which(County == 'Anderson'):which(County == 'Zavala')) %>% 
   dplyr::select(-Notes)
 
+
+# temp fix duplicate cols - default to .x
+if (length(grep('.x', colnames(old_active_cases)) > 0)) { 
+    old_active_cases = old_active_cases[, -grep('\\.y', colnames(old_active_cases))]
+    colnames(old_active_cases) = gsub('\\.y', '', colnames(old_active_cases))
+}
+
+
 # melt
-DSHS_active_cases_long = reshape::melt(DSHS_active_cases_time, id = 'County') %>% 
+old_active_cases_long = reshape::melt(old_active_cases, id = 'County') %>% 
+  setNames(c('County', 'Date', 'Active_Cases_Cumulative')) %>%
+  group_by(Date) %>%
+  mutate(Date = as.Date(paste(str_extract_all(Date, '\\d+')[[1]], collapse = ' '), '%m%d')) %>% 
+  ungroup() %>%
+  group_by(County) %>% 
+  distinct() %>%
+  mutate(Active_Cases_Cumulative = as.integer(as.character(Active_Cases_Cumulative))) %>%
+  tidyr::complete(Date = seq.Date(min(Date), as.Date('2020-12-10'), by="day")) %>%
+  mutate(Active_Cases_Cumulative_NA = Active_Cases_Cumulative) %>%
+  tidyr::fill(Active_Cases_Cumulative, .direction = "down") %>%
+  mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative))) %>%
+  filter(!is.na(County))
+
+
+
+# current
+new_case_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19ActiveCaseDatabyCounty.xlsx'
+temp = tempfile()
+download.file(new_case_url, temp, mode = 'wb') 
+new_active_cases = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) %>%
+  slice(which(County == 'Anderson'):which(County == 'Zavala')) %>% 
+  dplyr::select(-Notes) %>% 
+  select_if(function(x) all(!is.na(x)))
+
+# melt
+new_active_cases_long = reshape::melt(new_active_cases, id = 'County') %>% 
   setNames(c('County', 'Date', 'Active_Cases_Cumulative')) %>%
   group_by(Date) %>%
   mutate(Date = as.Date(paste(str_extract_all(Date, '\\d+')[[1]], collapse = ' '), '%m%d')) %>% 
@@ -501,6 +536,11 @@ DSHS_active_cases_long = reshape::melt(DSHS_active_cases_time, id = 'County') %>
   tidyr::fill(Active_Cases_Cumulative, .direction = "down") %>%
   mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative))) %>%
   filter(!is.na(County))
+
+
+
+DSHS_active_cases_long = rbind(old_active_cases_long, new_active_cases_long) %>% 
+  arrange(Date, County)
 ```
 
 ## childcare
