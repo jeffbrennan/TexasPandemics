@@ -90,8 +90,8 @@ def run_daily():
 
 
 # data updates at ~ 5PM EST
-# if running after midnight (4 UTC) or before 5 (22 UTC), subtract 1 day
-if datetime.utcnow().hour > 4 and datetime.utcnow().hour < 22: 
+# if running after midnight (4 UTC) or before noon (16 UTC), subtract 1 day
+if datetime.utcnow().hour > 4 and datetime.utcnow().hour < 16: 
   today = datetime.now() - timedelta(days=1)
 else:
   today = datetime.now()
