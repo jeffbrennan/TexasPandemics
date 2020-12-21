@@ -121,7 +121,6 @@ tsa_long_complete = subset(tsa_long, value != '')[, c(1, 4)] %>%
   mutate(TSA_Combined = paste0(TSA, ' - ', TSA_Name))
 ```
 
-
 # HOSPITAL LEVEL
 
 ```{r}
@@ -267,6 +266,38 @@ write_xlsx(list('school_data' = DSHS_school_df,
 ```
 
 # COUNTY LEVEL
+
+## healthdata gov
+
+
+```{r}
+# page = read_html('https://beta.healthdata.gov/National/COVID-19-Community-Profile-Report/gqxm-d9w9')
+# file_text = page %>% 
+#   html_nodes('script') %>%
+#   str_detect('.xlsx') %>%
+#   .[which()] %>%
+#   html_text() %>% 
+#   gsub('\n    var initialState =\n      ', '', .) %>% 
+#   gsub('\n   ;\n  ', '', .)
+# 
+# newest_file = fromJSON(file_text)$view$attachments %>% 
+#   filter(href %>% str_detect('.xlsx')) %>% 
+#   dplyr::select(href) %>%
+#   unlist() %>% 
+#   .[length(.)]
+# 
+# file_date = as.Date(str_match(newest_file, '(Report )(.*)(_)')[3], '%Y%m%d')
+# file_url = (paste0('https://beta.healthdata.gov', newest_file))
+#                   
+# download.file(file_url,
+#               paste0('original-sources/historical/healthdata/healthdata_', file_date, '.xlsx'),
+#               mode = 'wb') 
+# 
+# 
+# # TODO: COMBINE & CLEAN FILES
+```
+
+
 
 ## Google mobility
 
