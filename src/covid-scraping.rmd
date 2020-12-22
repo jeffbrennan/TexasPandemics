@@ -126,46 +126,69 @@ tsa_long_complete = subset(tsa_long, value != '')[, c(1, 4)] %>%
 ```{r}
 # TODO: finalize metrics of interest and add to tableau folder
 
-# hosp_dates = seq(as.Date('2020-12-07'), length = 52, by = 'week')
-# hosp_date = max(hosp_dates[which(hosp_dates <= date_out)])
-# hosp_date_f = format(hosp_date, '%Y%m%d')
-# 
+hosp_dates = seq(as.Date('2020-12-07'), length = 52, by = 'week')
+hosp_date = max(hosp_dates[which(hosp_dates <= date_out)])
+hosp_date_f = format(hosp_date, '%Y%m%d')
+#
 
 # https://healthdata.gov/sites/default/files/reported_hospital_capacity_admissions_facility_level_weekly_average_timeseries_20201214.csv
-# base_hosp_url = 'https://healthdata.gov/sites/default/files/reported_hospital_capacity_admissions_facility_level_weekly_average_timeseries_' 
-# hosp_df = fread(paste0(base_hosp_url, hosp_date_f, '.csv'), na.strings = c('-999999', '-999999.0'))
-# 
-# fips_link = read.csv('original-sources/helpers/unpublished/county_fips.csv') %>% 
-#   dplyr::select(fips, county_name) %>% 
-#   setNames(c('fips_code', 'County'))
-# 
-# hosp_df_parsed = hosp_df %>%
-#   filter(state == 'TX') %>% 
-#   left_join(fips_link, by = 'fips_code') %>%
-#   mutate(County = gsub(' County', '', County)) %>%
-#   left_join(tsa_long_complete %>% dplyr::select(County, TSA_Combined), by = 'County') %>%
-#   left_join(county_classifications %>% dplyr::select(County, PHR_Combined), by = 'County') %>%
-#   relocate(County, .after = collection_week) %>% 
-#   relocate(TSA_Combined, .after = County) %>% 
-#   relocate(PHR_Combined, .after = TSA_Combined) %>% 
-#   relocate(fips_code, .after = PHR_Combined)
-#   
+base_hosp_url = 'https://healthdata.gov/sites/default/files/reported_hospital_capacity_admissions_facility_level_weekly_average_timeseries_'
+hosp_df = fread(paste0(base_hosp_url, hosp_date_f, '.csv'), na.strings = c('-999999', '-999999.0'))
+
+fips_link = read.csv('original-sources/helpers/unpublished/county_fips.csv') %>%
+  dplyr::select(fips, county_name) %>%
+  setNames(c('fips_code', 'County'))
+
+hosp_df_parsed = hosp_df %>%
+  filter(state == 'TX') %>%
+  left_join(fips_link, by = 'fips_code') %>%
+  mutate(County = gsub(' County', '', County)) %>%
+  left_join(tsa_long_complete %>% dplyr::select(County, TSA_Combined), by = 'County') %>%
+  left_join(county_classifications %>% dplyr::select(County, PHR_Combined), by = 'County') %>%
+  relocate(County, .after = collection_week) %>%
+  relocate(TSA_Combined, .after = County) %>%
+  relocate(PHR_Combined, .after = TSA_Combined) %>%
+  relocate(fips_code, .after = PHR_Combined)
 ```
 
 # hosp investigation
 
 ```{r}
-# harris_hosp = hosp_df_parsed %>% filter(County == 'Harris') %>% 
-#   dplyr::select(-c(hospital_pk, collection_week, County, TSA_Combined, PHR_Combined,
-#                    fips_code, state, ccn, hospital_name, address, zip))
-# 
+harris_hosp = hosp_df_parsed %>% filter(County == 'Harris') %>%
+  dplyr::select(-c(hospital_pk, County, TSA_Combined, PHR_Combined,
+                   fips_code, state, ccn, address, zip))
+
+tmc_hospital_list = c('HARRIS HEALTH SYSTEM', 'HOUSTON METHODIST HOSPITAL',
+                  'UNIVERSITY OF TEXAS M D ANDERSON CANCER CENTER,THE', 'MEMORIAL HERMANN TEXAS MEDICAL CENTER',
+                  "ST LUKE'S PATIENTS MEDICAL CENTER", 'TEXAS CHILDRENS HOSP')
+
+childrens = hosp_df_parsed %>% 
+  filter(hospital_name == 'TEXAS CHILDRENS HOSP') %>% 
+  dplyr::select(c(collection_week, total_staffed_adult_icu_beds_7_day_avg, total_icu_beds_7_day_avg))
+
+coverage = hosp_df_parsed %>% 
+  dplyr::select(hospital_name, collection_week, contains('_coverage'))
+
+hhs_tmc = hosp_df_parsed %>% 
+  filter(hospital_name %in% tmc_hospital_list)
+
+# TODO: save each as its own csv
+write.csv(hhs_tmc,
+          'C:/Users/jeffb/Desktop/Life/personal-projects/COVID/original-sources/helpers/unpublished/hhs_tmc_comparison.csv',
+          row.names = FALSE)
+
+# missing_tmc = c('UTHEALTH')
+
+
+# ggplot(comparison_df, aes(x = ))
+
+# memorial = harris_hosp %>% 
+#   filter(hospital_name == 'UNITED MEMORIAL MEDICAL CENTER')%>%
+#   filter(collection_week == as.Date('2020-12-11'))
+
+# TODO: compare hospital list against TMC data
+
 # harris_hosp_table = tableby(hospital_subtype ~ .,  data = harris_hosp)
-#   
-# # summary(harris_hosp_table, ')
-# 
-# # write2html(harris_hosp_table, 'original-sources/helpers/unpublished/harris_hospitals.html',
-# #            title = 'City Hospital Comparison in Harris County')
-# 
 # write2html(harris_hosp_table,
 #            file = "C:/Users/jeffb/Desktop/Life/personal-projects/COVID/original-sources/helpers/unpublished/harris_hospitals.html",
 #            title = 'City Hospital Comparison in Harris County')
@@ -272,29 +295,32 @@ write_xlsx(list('school_data' = DSHS_school_df,
 
 ```{r}
 # page = read_html('https://beta.healthdata.gov/National/COVID-19-Community-Profile-Report/gqxm-d9w9')
-# file_text = page %>% 
+# files = page %>%
 #   html_nodes('script') %>%
-#   str_detect('.xlsx') %>%
-#   .[which()] %>%
-#   html_text() %>% 
-#   gsub('\n    var initialState =\n      ', '', .) %>% 
+#   str_detect('.xlsx')
+# 
+#   [which()] %>%
+#   html_text() %>%
+#   gsub('\n    var initialState =\n      ', '', .) %>%
 #   gsub('\n   ;\n  ', '', .)
-# 
-# newest_file = fromJSON(file_text)$view$attachments %>% 
-#   filter(href %>% str_detect('.xlsx')) %>% 
+# # 
+# newest_file = fromJSON(file_text)$view$attachments %>%
+#   filter(href %>% str_detect('.xlsx')) %>%
 #   dplyr::select(href) %>%
-#   unlist() %>% 
+#   unlist() %>%
 #   .[length(.)]
-# 
+# # 
 # file_date = as.Date(str_match(newest_file, '(Report )(.*)(_)')[3], '%Y%m%d')
 # file_url = (paste0('https://beta.healthdata.gov', newest_file))
-#                   
+# 
 # download.file(file_url,
 #               paste0('original-sources/historical/healthdata/healthdata_', file_date, '.xlsx'),
-#               mode = 'wb') 
+#               mode = 'wb')
 # 
 # 
-# # TODO: COMBINE & CLEAN FILES
+
+# # TODO: COMBINE & CLEAN FILE
+
 ```
 
 
