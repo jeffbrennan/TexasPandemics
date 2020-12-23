@@ -87,12 +87,17 @@ date_out = as.Date(date_out, origin = '1970-1-1')
 # add metro and PHR code designations
 # source: https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls
 # add PHR readable names from https://dshs.texas.gov/regions/default.shtm
-PHR_helper = data.frame(PHR = c( "1", "11", "2/3", "4/5N", "6/5S", "7", "8", "9/10"),
-                        PHR_Name = c('Tyler PHR', 'El Paso PHR', 'Harlingen PHR', 
-                                     'Arlington PHR', 'Lubbock PHR', 'San Antonio PHR',
-                                     'Houston PHR', 'Temple PHR'))
+PHR_helper = data.frame(PHR = c("1", "2/3", "4/5N",
+                                "6/5S", "7", "8",
+                                "9/10", "11"),
+                        PHR_Name = c('Lubbock PHR', 'Arlington PHR', 'Tyler PHR',
+                                     'Houston PHR', 'Temple PHR', 'San Antonio PHR',
+                                     'El Paso PHR', 'Harlingen PHR'))
 
-county_classifications = read_xlsx('original-sources/helpers/county_classifications.xlsx', sheet = 1)[1:254, c(1, 5, 8)] %>% 
+
+county_classifications = read_xlsx('original-sources/helpers/county_classifications.xlsx', sheet = 1) %>% 
+  slice(1:254) %>% 
+  select(1, 5, 8) %>%
   setNames(c('County', 'PHR', 'Metro_Area')) %>% 
   left_join(., PHR_helper, by = 'PHR') %>%
   mutate(PHR_Combined = paste0(PHR, ' - ', PHR_Name))
@@ -141,6 +146,26 @@ fips_link = read.csv('original-sources/helpers/unpublished/county_fips.csv') %>%
 
 hosp_df_parsed = hosp_df %>%
   filter(state == 'TX') %>%
+  dplyr::select(-ccn, -state, -hospital_subtype, -is_metro_micro,
+                -total_patients_hospitalized_confirmed_influenza_and_covid_7_day_avg,
+                -contains('_sum'), -contains('_coverage')) %>%
+  mutate(inpatient_beds_used_pct = inpatient_beds_used_7_day_avg / all_adult_hospital_inpatient_beds_7_day_avg) %>% 
+  mutate(total_patients_hospitalized_confirmed_and_suspected_covid_7_day_avg
+           = total_adult_patients_hospitalized_confirmed_and_suspected_covid_7_day_avg
+           + total_pediatric_patients_hospitalized_confirmed_and_suspected_covid_7_day_avg) %>% 
+  mutate(total_patients_hospitalized_confirmed_covid_7_day_avg
+           = total_adult_patients_hospitalized_confirmed_covid_7_day_avg
+           + total_pediatric_patients_hospitalized_confirmed_covid_7_day_avg) %>% 
+  mutate(total_pediatric_icu_beds_7_day_avg
+           = icu_beds_used_7_day_avg
+           - total_staffed_adult_icu_beds_7_day_avg) %>% 
+  relocate(inpatient_beds_used_pct, .after = inpatient_beds_used_7_day_avg) %>%
+  relocate(total_patients_hospitalized_confirmed_and_suspected_covid_7_day_avg,
+           .after = total_pediatric_patients_hospitalized_confirmed_and_suspected_covid_7_day_avg) %>% 
+  relocate(total_patients_hospitalized_confirmed_covid_7_day_avg, 
+           .after = total_pediatric_patients_hospitalized_confirmed_covid_7_day_avg) %>% 
+  relocate(total_pediatric_icu_beds_7_day_avg, .after = icu_beds_used_7_day_avg) %>%
+  setNames(gsub('_7_day_avg', '', names(.))) %>%
   left_join(fips_link, by = 'fips_code') %>%
   mutate(County = gsub(' County', '', County)) %>%
   left_join(tsa_long_complete %>% dplyr::select(County, TSA_Combined), by = 'County') %>%
@@ -154,25 +179,29 @@ hosp_df_parsed = hosp_df %>%
 # hosp investigation
 
 ```{r}
-harris_hosp = hosp_df_parsed %>% filter(County == 'Harris') %>%
-  dplyr::select(-c(hospital_pk, County, TSA_Combined, PHR_Combined,
-                   fips_code, state, ccn, address, zip))
+# harris_hosp = hosp_df_parsed %>% filter(County == 'Harris')
+
 
 tmc_hospital_list = c('HARRIS HEALTH SYSTEM', 'HOUSTON METHODIST HOSPITAL',
                   'UNIVERSITY OF TEXAS M D ANDERSON CANCER CENTER,THE', 'MEMORIAL HERMANN TEXAS MEDICAL CENTER',
                   "ST LUKE'S PATIENTS MEDICAL CENTER", 'TEXAS CHILDRENS HOSP')
 
-childrens = hosp_df_parsed %>% 
-  filter(hospital_name == 'TEXAS CHILDRENS HOSP') %>% 
-  dplyr::select(c(collection_week, total_staffed_adult_icu_beds_7_day_avg, total_icu_beds_7_day_avg))
-
-coverage = hosp_df_parsed %>% 
-  dplyr::select(hospital_name, collection_week, contains('_coverage'))
+# childrens = hosp_df_parsed %>% 
+#   filter(hospital_name == 'TEXAS CHILDRENS HOSP') %>% 
+#   dplyr::select(c(collection_week, total_staffed_adult_icu_beds_7_day_avg, total_icu_beds_7_day_avg))
+# 
+# coverage = hosp_df_parsed %>% 
+#   dplyr::select(hospital_name, collection_week, contains('_coverage'))
 
 hhs_tmc = hosp_df_parsed %>% 
   filter(hospital_name %in% tmc_hospital_list)
 
-# TODO: save each as its own csv
+
+write.csv(hosp_df_parsed,
+          'C:/Users/jeffb/Desktop/Life/personal-projects/COVID/original-sources/helpers/unpublished/hhs_hospitals.csv',
+          row.names = FALSE)
+
+
 write.csv(hhs_tmc,
           'C:/Users/jeffb/Desktop/Life/personal-projects/COVID/original-sources/helpers/unpublished/hhs_tmc_comparison.csv',
           row.names = FALSE)
