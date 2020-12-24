@@ -1274,8 +1274,6 @@ if (date_out %in% demo_releases) {
   daily_demo_stack = rbindlist(lapply(seq(1,3), Clean_Demographics))
   write.csv(daily_demo_stack, paste0('original-sources/historical/demo/dshs_', date_out, '.csv'), row.names = FALSE)
 }
-
-
 ```
 
 
@@ -1290,7 +1288,7 @@ daily_demo_stack_all = rbindlist(lapply(list.files('original-sources/historical/
 
 legacy_demo = read.csv('original-sources/helpers/legacy_demographics.csv') %>% mutate(Date = as.Date(Date))
 
-demo_stacked_combined = rbind(demo_stack, daily_demo_stack_all) %>% 
+demo_stacked_combined = rbind(legacy_demo, daily_demo_stack_all) %>% 
   group_by(Group_Type, Group) %>% 
   mutate(Cases_Daily = as.numeric(c(Cases_Cumulative[1], diff(Cases_Cumulative)))) %>%
   mutate(Cases_Daily_NO_NEGATIVE = ifelse(Cases_Daily < 0, 0, Cases_Daily)) %>%
