@@ -149,7 +149,7 @@ start_time = time.time()
 recipients = [x for x in all_recipients if (start_time - os.path.getmtime(x['files'][0][1])) < daily_update]
 if not recipients: sys.exit()
 
-recipients = [recipients[0]]
+# recipients = [recipients[0]]
 
 
 # send emails
