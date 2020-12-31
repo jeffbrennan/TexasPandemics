@@ -37,7 +37,7 @@ def parse_file(file_url, header_loc):
   return 1 if max_date == today.date() else 0
 
 
-def check_update(files): 
+def check_update(files, check_interval=900):
   for file in files:
     attempts = 1
     new_file = 0
@@ -52,8 +52,8 @@ def check_update(files):
       elif attempts == 20: 
         sys.exit('Too many attempts. Manually check https://dshs.texas.gov/coronavirus/additionaldata/')
       else:
-        print(f'Attempt #{attempts} | File not updated yet. Retrying in 5 minutes...')
-        time.sleep(300)
+        print(f'Attempt #{attempts} | File not updated yet. Retrying in {check_interval / 60} minutes...')
+        time.sleep(check_interval)
         attempts+=1
 
 
