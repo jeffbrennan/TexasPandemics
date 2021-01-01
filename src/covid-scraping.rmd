@@ -96,7 +96,7 @@ PHR_helper = data.frame(PHR = c("1", "2/3", "4/5N",
 
 county_classifications = read_xlsx('original-sources/helpers/county_classifications.xlsx', sheet = 1) %>% 
   slice(1:254) %>% 
-  select(1, 5, 8) %>%
+  dplyr::select(1, 5, 8) %>%
   setNames(c('County', 'PHR', 'Metro_Area')) %>% 
   left_join(., PHR_helper, by = 'PHR') %>%
   mutate(PHR_Combined = paste0(PHR, ' - ', PHR_Name))
@@ -623,15 +623,15 @@ ggplot(daily_tests, aes(x = Date, y = Tests_Daily)) +
   labs(title = 'Daily Tests since 9/1 in Harris County') + 
   theme_pubr()
 
-
-# tpr calculation
-merged_county %>%
-  dplyr::select(Date, County, Cases_Cumulative, Cases_Daily, Tests_Daily) %>%
-  group_by(County) %>% 
-  mutate(Cases_Cumulative_daily = as.numeric(c(Cases_Cumulative[1], diff(Cases_Cumulative)))) %>%
-  filter(County == 'Harris' & Date > Sys.Date() - 14) %>% 
-  summarize(TPR_new_cases = sum(Cases_Daily) / sum(Tests_Daily),
-            TPR_cumulative_cases = sum(Cases_Cumulative_daily) / sum(Tests_Daily))
+# 
+# # tpr calculation
+# merged_county %>%
+#   dplyr::select(Date, County, Cases_Cumulative, Cases_Daily, Tests_Daily) %>%
+#   group_by(County) %>% 
+#   mutate(Cases_Cumulative_daily = as.numeric(c(Cases_Cumulative[1], diff(Cases_Cumulative)))) %>%
+#   filter(County == 'Harris' & Date > Sys.Date() - 14) %>% 
+#   summarize(TPR_new_cases = sum(Cases_Daily) / sum(Tests_Daily),
+#             TPR_cumulative_cases = sum(Cases_Cumulative_daily) / sum(Tests_Daily))
 
 ```
 
@@ -660,7 +660,7 @@ Get_TPR = function() {
     setNames(c('County', 'Tests', 'TPR_CMS')) %>% 
     mutate(Date = tpr_date) %>% 
     dplyr::select(County, Date, Tests, TPR_CMS)
-  write.csv(tpr_out, paste0('original-sources/historical/TPR/TPR_', tpr_date, '.csv'),
+  write.csv(tpr_out, paste0('original-sources/historical/cms_tpr/TPR_', tpr_date,  '.csv'),
             row.names = FALSE) 
   }
   
@@ -669,11 +669,15 @@ TPR_dates = seq(as.Date('2020-08-19'), by = 'week', length.out = 52)
 # if (date_out %in% (TPR_dates + 5)) {Get_TPR()}
 Get_TPR()
 tpr_df = rbindlist(
-         lapply(list.files('original-sources/historical/TPR', full.names = TRUE), read.csv),
+         lapply(list.files('original-sources/historical/cms_tpr/', full.names = TRUE), read.csv),
          fill = TRUE) %>% 
          mutate(Date = as.Date(Date)) %>% 
   rename(TPR = TPR_CMS) %>%  
   mutate(TPR = ifelse(Date >= '2020-12-16', NA, TPR))
+
+# write.csv(tpr_df, paste0('original-sources/historical/cms_archive/cms_tpr_archive.csv'),
+#             row.names = FALSE) 
+
   # filter(Date < '2020-12-16')
 tpr_cases = merged_county %>% 
   dplyr::select(County, Date, Cases_Daily, Population_DSHS) %>%
@@ -736,7 +740,7 @@ cpr_date = read_xlsx(temp, sheet = 6) %>%
 
 cpr_tpr = read_xlsx(temp, sheet = 6, skip = 1) %>% 
   filter(`State Abbreviation` == 'TX') %>% 
-  select('County',
+  dplyr::select('County',
          contains('lab test positivity rate - last 7 days'),
          contains('diagnostic tests - last 7 days')) %>% 
   filter(County != 'Unallocated, TX') %>%
@@ -761,7 +765,7 @@ all_cpr_tpr = rbindlist(lapply(list.files('original-sources/historical/cpr/', fu
   mutate(Tests = NA)
   
 cms_archive = tpr_df %>% filter(Date < '2020-12-16')
-cms_new = tpr_df %>% filter(Date >= '2020-12-16') %>% select(-TPR)
+cms_new = tpr_df %>% filter(Date >= '2020-12-16') %>% dplyr::select(-TPR)
 
 tpr_out = all_cpr_tpr %>% 
   rbind(cms_archive, fill = TRUE) %>%
@@ -769,8 +773,8 @@ tpr_out = all_cpr_tpr %>%
   left_join(cms_new, by = c('County', 'Date')) %>% 
   mutate(Tests.x = ifelse(is.na(Tests.y), Tests.x, Tests.y)) %>% 
   rename(Tests = Tests.x) %>%
-  select(-Tests.y) %>% 
-  select(County, Date, TPR, Tests, Cases_100K_7Day_MA) %>%
+  dplyr::select(-Tests.y) %>% 
+  dplyr::select(County, Date, TPR, Tests, Cases_100K_7Day_MA) %>%
   arrange(County, Date)
 
 write.csv(tpr_out, 'tableau/county_TPR.csv', row.names = FALSE)

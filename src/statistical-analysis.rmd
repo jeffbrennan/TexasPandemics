@@ -317,21 +317,35 @@ TPR_df = read.csv('tableau/county_TPR.csv') %>%
   dplyr::select(-contains('Rt')) %>%
   mutate(Date = as.Date(Date))
 
-county_TPR_padded = 
-  TPR_df %>%
-  left_join(., RT_County_df[, c('County', 'Date', 'Rt')], by = c('County', 'Date')) %>%
-  full_join(., district_dates, by = c('County', 'Date')) %>% 
-  group_by(County) %>% 
-  arrange(County, Date) %>%
-  tidyr::fill(TPR, .direction = 'up') %>%
-  tidyr::fill(Tests, .direction = 'up') %>% 
-  # tidyr::fill(Cases_100K_7Day_MA, .direction = 'up') %>% 
-  tidyr::fill(Rt, .direction = 'up') %>% 
-  ungroup() %>% 
-  mutate(Tests = ifelse(Date < as.Date('2020-09-09'), NA, Tests))
+cms_dates = list.files('C:/Users/jeffb/Desktop/Life/personal-projects/COVID/original-sources/historical/cms_tpr') %>%
+  gsub('TPR_', '', .) %>%
+  gsub('.csv', '', .) %>%
+  as.Date()
 
-county_TPR = county_TPR_padded %>% filter(!(Date %in% district_dates$Date))
-county_TPR_sd = county_TPR_padded %>%  filter(Date %in% district_dates$Date)
+
+cms_TPR_padded = 
+  TPR_df %>%
+    filter(Date %in% cms_dates) %>%
+    left_join(., RT_County_df[, c('County', 'Date', 'Rt')], by = c('County', 'Date')) %>%
+    full_join(., district_dates, by = c('County', 'Date')) %>% 
+    group_by(County) %>% 
+    arrange(County, Date) %>%
+    tidyr::fill(TPR, .direction = 'up') %>%
+    tidyr::fill(Tests, .direction = 'up') %>%
+    tidyr::fill(Rt, .direction = 'up') %>% 
+    arrange(County, Date) %>% 
+    ungroup() %>% 
+    mutate(Tests = ifelse(Date < as.Date('2020-09-09'), NA, Tests))
+
+
+cpr_TPR = TPR_df %>% 
+  filter(!(Date %in% cms_dates)) %>%
+  left_join(., RT_County_df[, c('County', 'Date', 'Rt')], by = c('County', 'Date'))
+
+
+
+county_TPR = cms_TPR_padded %>% filter(!(Date %in% district_dates$Date)) %>% rbind(cpr_TPR) %>% arrange(County, Date)
+county_TPR_sd = cms_TPR_padded %>%  filter(Date %in% district_dates$Date) %>% rbind(cpr_TPR) %>% arrange(County, Date)
 
 write.csv(county_TPR, 'tableau/county_TPR.csv', row.names = FALSE)
 write.csv(county_TPR_sd, 'tableau/county_TPR_sd.csv', row.names = FALSE)
