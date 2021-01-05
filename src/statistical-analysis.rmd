@@ -709,7 +709,7 @@ write.csv(stacked_ratio_out, 'tableau/stacked_case_ratio.csv', row.names = FALSE
 ## % CHANGE
 
 ```{r}
-create.case.test = function(level, dat, region){
+new_pct_change = function(level, dat, region){
   # creates the % difference in cases and tests and smooth line with CIs 
   # level: either "TSA", "County", or "Metro". Note that "county" won't work for many counties unless have enough cases.
   # dat: dataset (e.g. "county", "metro", "tsa")
@@ -773,11 +773,24 @@ TPR_State = TPR_merge %>% group_by(Date) %>% summarize_if(is.numeric, sum, na.rm
 ### Calculations
 
 ```{r}
-PCT_County_df = rbindlist(lapply(unique(TPR_county$County), function(x) create.case.test('County', TPR_county, x)))
-PCT_TSA_df = rbindlist(lapply(unique(TPR_TSA$TSA), function(x) create.case.test('TSA', TPR_TSA, x)))
-PCT_PHR_df = rbindlist(lapply(unique(TPR_PHR$PHR), function(x) create.case.test('PHR', TPR_PHR, x)))
-PCT_Metro_df = rbindlist(lapply(unique(TPR_Metro$Metro), function(x) create.case.test('Metro', TPR_Metro, x)))
-PCT_State_df = create.case.test('State', TPR_State, 'Texas')
+PCT_County_df = rbindlist(lapply(unique(TPR_county$County), function(x) new_pct_change('County', TPR_county, x)))
+PCT_TSA_df = rbindlist(lapply(unique(TPR_TSA$TSA), function(x) new_pct_change('TSA', TPR_TSA, x))) %>% 
+  mutate(tests_ma_percentdiff = ifelse(Date > min(Date) & tests_ma_percentdiff == -100, NA, tests_ma_percentdiff)) %>% 
+  mutate(tests_total_percentdiff = ifelse(Date > min(Date) & tests_total_percentdiff == -100, NA, tests_total_percentdiff))
+
+PCT_PHR_df = rbindlist(lapply(unique(TPR_PHR$PHR), function(x) new_pct_change('PHR', TPR_PHR, x))) %>%
+  mutate(tests_ma_percentdiff = ifelse(Date > min(Date) & tests_ma_percentdiff == -100, NA, tests_ma_percentdiff)) %>% 
+  mutate(tests_total_percentdiff = ifelse(Date > min(Date) & tests_total_percentdiff == -100, NA, tests_total_percentdiff))
+
+
+PCT_Metro_df = rbindlist(lapply(unique(TPR_Metro$Metro), function(x) new_pct_change('Metro', TPR_Metro, x))) %>%
+  mutate(tests_ma_percentdiff = ifelse(Date > min(Date) & tests_ma_percentdiff == -100, NA, tests_ma_percentdiff)) %>% 
+  mutate(tests_total_percentdiff = ifelse(Date > min(Date) & tests_total_percentdiff == -100, NA, tests_total_percentdiff))
+
+
+PCT_State_df = new_pct_change('State', TPR_State, 'Texas') %>%
+  mutate(tests_ma_percentdiff = ifelse(Date > min(Date) & tests_ma_percentdiff == -100, NA, tests_ma_percentdiff)) %>% 
+  mutate(tests_total_percentdiff = ifelse(Date > min(Date) & tests_total_percentdiff == -100, NA, tests_total_percentdiff))
 ```
 
 ### grouping
@@ -791,7 +804,7 @@ write.csv(PCT_Combined_df, 'tableau/stacked_pct_change_new.csv', row.names = FAL
 ## % CHANGE (old)
 
 ```{r}
-create.case.test = function(level, dat, region){
+old_pct_change = function(level, dat, region){
   # creates the % difference in cases and tests and smooth line with CIs 
   # level: either "TSA", "County", or "Metro". Note that "county" won't work for many counties unless have enough cases.
   # dat: dataset (e.g. "county", "metro", "tsa")
@@ -867,34 +880,14 @@ create.case.test = function(level, dat, region){
 }
 ```
 
-### County
+### Calculations
 
 ```{r}
-PCT_County_df = rbindlist(lapply(unique(County_df$County), function(x) create.case.test('County', County_df, x)))
-```
-
-### TSA
-
-```{r}
-PCT_TSA_df = rbindlist(lapply(unique(TSA_df$TSA), function(x) create.case.test('TSA', TSA_df, x)))
-```
-
-### PHR
-
-```{r}
-PCT_PHR_df = rbindlist(lapply(unique(PHR_df$PHR), function(x) create.case.test('PHR', PHR_df, x)))
-```
-
-### Metro
-
-```{r}
-PCT_Metro_df = rbindlist(lapply(unique(Metro_df$Metro), function(x) create.case.test('Metro', Metro_df, x)))
-```
-
-### State
-
-```{r}
-PCT_State_df = create.case.test('State', State_df, 'Texas')
+PCT_County_df = rbindlist(lapply(unique(County_df$County), function(x) old_pct_change('County', County_df, x)))
+PCT_TSA_df = rbindlist(lapply(unique(TSA_df$TSA), function(x) old_pct_change('TSA', TSA_df, x)))
+PCT_PHR_df = rbindlist(lapply(unique(PHR_df$PHR), function(x) old_pct_change('PHR', PHR_df, x)))
+PCT_Metro_df = rbindlist(lapply(unique(Metro_df$Metro), function(x) old_pct_change('Metro', Metro_df, x)))
+PCT_State_df = old_pct_change('State', State_df, 'Texas')
 ```
 
 ### grouping
