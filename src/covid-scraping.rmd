@@ -169,50 +169,50 @@ tsa_long_complete = subset(tsa_long, value != '')[, c(1, 4)] %>%
 
 ```{r}
 # TODO: finalize metrics of interest and add to tableau folder
-
-hosp_dates = seq(as.Date('2020-12-07'), length = 52, by = 'week')
-hosp_date = max(hosp_dates[which(hosp_dates <= date_out)])
-hosp_date_f = format(hosp_date, '%Y%m%d')
-#
-
-# https://healthdata.gov/sites/default/files/reported_hospital_capacity_admissions_facility_level_weekly_average_timeseries_20201214.csv
-base_hosp_url = 'https://healthdata.gov/sites/default/files/reported_hospital_capacity_admissions_facility_level_weekly_average_timeseries_'
-hosp_df = fread(paste0(base_hosp_url, hosp_date_f, '.csv'), na.strings = c('-999999', '-999999.0'))
-
-fips_link = read.csv('original-sources/helpers/unpublished/county_fips.csv') %>%
-  dplyr::select(fips, county_name) %>%
-  setNames(c('fips_code', 'County'))
-
-hosp_df_parsed = hosp_df %>%
-  filter(state == 'TX') %>%
-  dplyr::select(-ccn, -state, -hospital_subtype, -is_metro_micro,
-                -total_patients_hospitalized_confirmed_influenza_and_covid_7_day_avg,
-                -contains('_sum'), -contains('_coverage')) %>%
-  mutate(inpatient_beds_used_pct = inpatient_beds_used_7_day_avg / all_adult_hospital_inpatient_beds_7_day_avg) %>% 
-  mutate(total_patients_hospitalized_confirmed_and_suspected_covid_7_day_avg
-           = total_adult_patients_hospitalized_confirmed_and_suspected_covid_7_day_avg
-           + total_pediatric_patients_hospitalized_confirmed_and_suspected_covid_7_day_avg) %>% 
-  mutate(total_patients_hospitalized_confirmed_covid_7_day_avg
-           = total_adult_patients_hospitalized_confirmed_covid_7_day_avg
-           + total_pediatric_patients_hospitalized_confirmed_covid_7_day_avg) %>% 
-  mutate(total_pediatric_icu_beds_7_day_avg
-           = icu_beds_used_7_day_avg
-           - total_staffed_adult_icu_beds_7_day_avg) %>% 
-  relocate(inpatient_beds_used_pct, .after = inpatient_beds_used_7_day_avg) %>%
-  relocate(total_patients_hospitalized_confirmed_and_suspected_covid_7_day_avg,
-           .after = total_pediatric_patients_hospitalized_confirmed_and_suspected_covid_7_day_avg) %>% 
-  relocate(total_patients_hospitalized_confirmed_covid_7_day_avg, 
-           .after = total_pediatric_patients_hospitalized_confirmed_covid_7_day_avg) %>% 
-  relocate(total_pediatric_icu_beds_7_day_avg, .after = icu_beds_used_7_day_avg) %>%
-  setNames(gsub('_7_day_avg', '', names(.))) %>%
-  left_join(fips_link, by = 'fips_code') %>%
-  mutate(County = gsub(' County', '', County)) %>%
-  left_join(tsa_long_complete %>% dplyr::select(County, TSA_Combined), by = 'County') %>%
-  left_join(county_classifications %>% dplyr::select(County, PHR_Combined), by = 'County') %>%
-  relocate(County, .after = collection_week) %>%
-  relocate(TSA_Combined, .after = County) %>%
-  relocate(PHR_Combined, .after = TSA_Combined) %>%
-  relocate(fips_code, .after = PHR_Combined)
+# 
+# hosp_dates = seq(as.Date('2020-12-07'), length = 52, by = 'week')
+# hosp_date = max(hosp_dates[which(hosp_dates <= date_out)])
+# hosp_date_f = format(hosp_date, '%Y%m%d')
+# #
+# 
+# # https://healthdata.gov/sites/default/files/reported_hospital_capacity_admissions_facility_level_weekly_average_timeseries_20201214.csv
+# base_hosp_url = 'https://healthdata.gov/sites/default/files/reported_hospital_capacity_admissions_facility_level_weekly_average_timeseries_'
+# hosp_df = fread(paste0(base_hosp_url, hosp_date_f, '.csv'), na.strings = c('-999999', '-999999.0'))
+# 
+# fips_link = read.csv('original-sources/helpers/unpublished/county_fips.csv') %>%
+#   dplyr::select(fips, county_name) %>%
+#   setNames(c('fips_code', 'County'))
+# 
+# hosp_df_parsed = hosp_df %>%
+#   filter(state == 'TX') %>%
+#   dplyr::select(-ccn, -state, -hospital_subtype, -is_metro_micro,
+#                 -total_patients_hospitalized_confirmed_influenza_and_covid_7_day_avg,
+#                 -contains('_sum'), -contains('_coverage')) %>%
+#   mutate(inpatient_beds_used_pct = inpatient_beds_used_7_day_avg / all_adult_hospital_inpatient_beds_7_day_avg) %>% 
+#   mutate(total_patients_hospitalized_confirmed_and_suspected_covid_7_day_avg
+#            = total_adult_patients_hospitalized_confirmed_and_suspected_covid_7_day_avg
+#            + total_pediatric_patients_hospitalized_confirmed_and_suspected_covid_7_day_avg) %>% 
+#   mutate(total_patients_hospitalized_confirmed_covid_7_day_avg
+#            = total_adult_patients_hospitalized_confirmed_covid_7_day_avg
+#            + total_pediatric_patients_hospitalized_confirmed_covid_7_day_avg) %>% 
+#   mutate(total_pediatric_icu_beds_7_day_avg
+#            = icu_beds_used_7_day_avg
+#            - total_staffed_adult_icu_beds_7_day_avg) %>% 
+#   relocate(inpatient_beds_used_pct, .after = inpatient_beds_used_7_day_avg) %>%
+#   relocate(total_patients_hospitalized_confirmed_and_suspected_covid_7_day_avg,
+#            .after = total_pediatric_patients_hospitalized_confirmed_and_suspected_covid_7_day_avg) %>% 
+#   relocate(total_patients_hospitalized_confirmed_covid_7_day_avg, 
+#            .after = total_pediatric_patients_hospitalized_confirmed_covid_7_day_avg) %>% 
+#   relocate(total_pediatric_icu_beds_7_day_avg, .after = icu_beds_used_7_day_avg) %>%
+#   setNames(gsub('_7_day_avg', '', names(.))) %>%
+#   left_join(fips_link, by = 'fips_code') %>%
+#   mutate(County = gsub(' County', '', County)) %>%
+#   left_join(tsa_long_complete %>% dplyr::select(County, TSA_Combined), by = 'County') %>%
+#   left_join(county_classifications %>% dplyr::select(County, PHR_Combined), by = 'County') %>%
+#   relocate(County, .after = collection_week) %>%
+#   relocate(TSA_Combined, .after = County) %>%
+#   relocate(PHR_Combined, .after = TSA_Combined) %>%
+#   relocate(fips_code, .after = PHR_Combined)
 ```
 
 <!-- # hosp investigation -->
@@ -733,7 +733,7 @@ Get_TPR = function() {
   temp_file = tempfile()
   download.file(tpr_url, temp_file, mode = 'wb')
   tpr_df = read_excel(unzip(temp_file, exdir = temp_dir)[[1]])
-  tpr_date = as.Date(str_match(tpr_df[2,2], '-(.*)')[2], '%B %d')
+  tpr_date = Date_Parser(as.Date(str_match(tpr_df[2,2], '-(.*)')[2], '%B %d'))
   print(tpr_date)
   
   tpr_out = tpr_df %>% 
@@ -807,21 +807,20 @@ newest_file = fromJSON(file_text)$view$attachments %>%
 file_date = as.Date(str_match(newest_file, '(Report )(.*)(_)')[3], '%Y%m%d')
 file_url = (paste0('https://beta.healthdata.gov', newest_file))
 
-  
-
 # clean newest file
 temp = tempfile()
 download.file(file_url, temp, mode = 'wb')
 
 cpr_date = read_xlsx(temp, sheet = 6) %>%
   slice(1) %>% 
-  select(contains('VIRAL (RT-PCR) LAB TESTING: LAST WEEK')) %>% 
+  dplyr::select(contains('VIRAL (RT-PCR) LAB TESTING: LAST WEEK')) %>% 
   names() %>% 
   str_match(., '(\\w+ (?=\\d{1,2})).*((?<=\\-)\\d{1,2})') %>% 
   .[2:3] %>% 
-  paste0(., collapse = '') %>% 
-  paste(., format(Sys.time(), '%Y')) %>% 
-  as.Date(., '%B %d %Y')
+  paste0(., collapse = '') %>%
+  as.Date(., '%B %d') %>%
+  Date_Parser(.) %>% 
+  as.Date(.)
 
 cpr_tpr = read_xlsx(temp, sheet = 6, skip = 1) %>% 
   filter(`State Abbreviation` == 'TX') %>% 
