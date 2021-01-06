@@ -801,101 +801,101 @@ write.csv(PCT_Combined_df, 'tableau/stacked_pct_change_new.csv', row.names = FAL
 ```
 
 
-## % CHANGE (old)
+<!-- ## % CHANGE (old) -->
 
-```{r}
-old_pct_change = function(level, dat, region){
-  # creates the % difference in cases and tests and smooth line with CIs 
-  # level: either "TSA", "County", or "Metro". Note that "county" won't work for many counties unless have enough cases.
-  # dat: dataset (e.g. "county", "metro", "tsa")
-  # region: the region within the dataset (county, metro region, or tsa)
-  if(level != 'State') {dat = dat %>% filter(!!as.name(level) == region)}
-  # restrict data to first test date (for % test increase)
-  first.test.date = as.Date("2020-04-22")
-  dat$Date = as.Date(dat$Date)
-  dat$Date2 = as.numeric(dat$Date)
-  
-  # get 14 day rolling avg for instances where initial cases or tests are 0
-  dat$cases_avg14 = rollmean(dat$Cases_Daily, k=14, fill = NA, align = 'right', na.rm = TRUE)
-  dat$tests_avg14 = rollmean(dat$Tests_Daily, k=14, fill = NA, align = 'right', na.rm = TRUE)
-  
-  # restrict new df to first.test.date forward  
-  slopedata.tests = data.frame(subset(dat, select=c(Date, Date2, Cases_Daily,
-                                                     Tests_Daily, cases_avg14, tests_avg14))) %>%
-    subset(Date >= first.test.date)
-  
-  tests_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=Tests_Daily))
-  cases_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=Cases_Daily))
-  
-  # numeric date for gam                         
-  tmpdata = data.frame(Date2=slopedata.tests$Date2)
-  if (cases_start != 0 & tests_start != 0) {
-    
-    # Calc splines if cases and tests will produce non Inf values
-    slopedata.tests$newtestsY = 100*(as.vector(slopedata.tests$Tests_Daily / tests_start) - 1)
-    slopedata.tests$newcasesY = 100*(as.vector(slopedata.tests$Cases_Daily / cases_start) - 1)
-    
-    # fit and predict w/ gam for spline vals
-    cases.gam = gam(newcasesY~s(Date2,bs="cs", k=5), data=slopedata.tests)
-    tests.gam = gam(newtestsY~s(Date2,bs="cs",k=5), data=slopedata.tests)
-    
-    cases.fit = predict(cases.gam, tmpdata, se.fit=TRUE)
-    tests.fit = predict(tests.gam, tmpdata, se.fit=TRUE)
-    
-    # Use 95% CI for splines
-    tmp.df = data.frame(Level = region,
-                        Date = slopedata.tests$Date,
-                        Data_Type = 'Raw',
-                        cases_percentdiff = slopedata.tests$newcasesY,
-                        tests_percentdiff = slopedata.tests$newtestsY,
-                        cases_percentdiff_spline = cases.fit$fit, 
-                        cases_percentdiff_spline_lower = cases.fit$fit-1.96*cases.fit$se, 
-                        cases_percentdiff_spline_upper = cases.fit$fit+1.96*cases.fit$se,
-                        tests_percentdiff_spline = tests.fit$fit,
-                        tests_percentdiff_spline_lower = tests.fit$fit-1.96*tests.fit$se,
-                        tests_percentdiff_spline_upper = tests.fit$fit+1.96*tests.fit$se,
-                        Level_Type = level)
-  } else {
-    # only calc % increase for regions w/ sparse cases
-    cases_avg_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=cases_avg14))
-    tests_avg_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=tests_avg14))
-    slopedata.tests$newcasesY = 100*(as.vector(slopedata.tests$cases_avg14 / cases_avg_start) - 1)
-    slopedata.tests$newtestsY = 100*(as.vector(slopedata.tests$tests_avg14 / tests_avg_start) - 1)
-    
-    tmp.df = data.frame(Level = region,
-                        Date = slopedata.tests$Date,
-                        Data_Type = '14-Day Average',
-                        cases_percentdiff = slopedata.tests$newcasesY,
-                        tests_percentdiff = slopedata.tests$newtestsY,
-                        cases_percentdiff_spline = rep(NA, times = nrow(slopedata.tests)),
-                        cases_percentdiff_spline_lower = rep(NA, times = nrow(slopedata.tests)),
-                        cases_percentdiff_spline_upper = rep(NA, times = nrow(slopedata.tests)),
-                        tests_percentdiff_spline = rep(NA, times = nrow(slopedata.tests)),
-                        tests_percentdiff_spline_lower = rep(NA, times = nrow(slopedata.tests)),
-                        tests_percentdiff_spline_upper = rep(NA, times = nrow(slopedata.tests)),
-                        Level_Type = level)  
-    }
-  
-  return(tmp.df)  
-}
-```
+<!-- ```{r} -->
+<!-- old_pct_change = function(level, dat, region){ -->
+<!--   # creates the % difference in cases and tests and smooth line with CIs  -->
+<!--   # level: either "TSA", "County", or "Metro". Note that "county" won't work for many counties unless have enough cases. -->
+<!--   # dat: dataset (e.g. "county", "metro", "tsa") -->
+<!--   # region: the region within the dataset (county, metro region, or tsa) -->
+<!--   if(level != 'State') {dat = dat %>% filter(!!as.name(level) == region)} -->
+<!--   # restrict data to first test date (for % test increase) -->
+<!--   first.test.date = as.Date("2020-04-22") -->
+<!--   dat$Date = as.Date(dat$Date) -->
+<!--   dat$Date2 = as.numeric(dat$Date) -->
 
-### Calculations
+<!--   # get 14 day rolling avg for instances where initial cases or tests are 0 -->
+<!--   dat$cases_avg14 = rollmean(dat$Cases_Daily, k=14, fill = NA, align = 'right', na.rm = TRUE) -->
+<!--   dat$tests_avg14 = rollmean(dat$Tests_Daily, k=14, fill = NA, align = 'right', na.rm = TRUE) -->
 
-```{r}
-PCT_County_df = rbindlist(lapply(unique(County_df$County), function(x) old_pct_change('County', County_df, x)))
-PCT_TSA_df = rbindlist(lapply(unique(TSA_df$TSA), function(x) old_pct_change('TSA', TSA_df, x)))
-PCT_PHR_df = rbindlist(lapply(unique(PHR_df$PHR), function(x) old_pct_change('PHR', PHR_df, x)))
-PCT_Metro_df = rbindlist(lapply(unique(Metro_df$Metro), function(x) old_pct_change('Metro', Metro_df, x)))
-PCT_State_df = old_pct_change('State', State_df, 'Texas')
-```
+<!--   # restrict new df to first.test.date forward   -->
+<!--   slopedata.tests = data.frame(subset(dat, select=c(Date, Date2, Cases_Daily, -->
+<!--                                                      Tests_Daily, cases_avg14, tests_avg14))) %>% -->
+<!--     subset(Date >= first.test.date) -->
 
-### grouping
+<!--   tests_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=Tests_Daily)) -->
+<!--   cases_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=Cases_Daily)) -->
 
-```{r}
-PCT_Combined_df = rbind(PCT_County_df, PCT_TSA_df, PCT_PHR_df, PCT_Metro_df, PCT_State_df)
-write.csv(PCT_Combined_df, 'tableau/stacked_pct_change.csv', row.names = FALSE)
-```
+<!--   # numeric date for gam                          -->
+<!--   tmpdata = data.frame(Date2=slopedata.tests$Date2) -->
+<!--   if (cases_start != 0 & tests_start != 0) { -->
+
+<!--     # Calc splines if cases and tests will produce non Inf values -->
+<!--     slopedata.tests$newtestsY = 100*(as.vector(slopedata.tests$Tests_Daily / tests_start) - 1) -->
+<!--     slopedata.tests$newcasesY = 100*(as.vector(slopedata.tests$Cases_Daily / cases_start) - 1) -->
+
+<!--     # fit and predict w/ gam for spline vals -->
+<!--     cases.gam = gam(newcasesY~s(Date2,bs="cs", k=5), data=slopedata.tests) -->
+<!--     tests.gam = gam(newtestsY~s(Date2,bs="cs",k=5), data=slopedata.tests) -->
+
+<!--     cases.fit = predict(cases.gam, tmpdata, se.fit=TRUE) -->
+<!--     tests.fit = predict(tests.gam, tmpdata, se.fit=TRUE) -->
+
+<!--     # Use 95% CI for splines -->
+<!--     tmp.df = data.frame(Level = region, -->
+<!--                         Date = slopedata.tests$Date, -->
+<!--                         Data_Type = 'Raw', -->
+<!--                         cases_percentdiff = slopedata.tests$newcasesY, -->
+<!--                         tests_percentdiff = slopedata.tests$newtestsY, -->
+<!--                         cases_percentdiff_spline = cases.fit$fit,  -->
+<!--                         cases_percentdiff_spline_lower = cases.fit$fit-1.96*cases.fit$se,  -->
+<!--                         cases_percentdiff_spline_upper = cases.fit$fit+1.96*cases.fit$se, -->
+<!--                         tests_percentdiff_spline = tests.fit$fit, -->
+<!--                         tests_percentdiff_spline_lower = tests.fit$fit-1.96*tests.fit$se, -->
+<!--                         tests_percentdiff_spline_upper = tests.fit$fit+1.96*tests.fit$se, -->
+<!--                         Level_Type = level) -->
+<!--   } else { -->
+<!--     # only calc % increase for regions w/ sparse cases -->
+<!--     cases_avg_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=cases_avg14)) -->
+<!--     tests_avg_start = as.numeric(subset(slopedata.tests, Date==first.test.date, select=tests_avg14)) -->
+<!--     slopedata.tests$newcasesY = 100*(as.vector(slopedata.tests$cases_avg14 / cases_avg_start) - 1) -->
+<!--     slopedata.tests$newtestsY = 100*(as.vector(slopedata.tests$tests_avg14 / tests_avg_start) - 1) -->
+
+<!--     tmp.df = data.frame(Level = region, -->
+<!--                         Date = slopedata.tests$Date, -->
+<!--                         Data_Type = '14-Day Average', -->
+<!--                         cases_percentdiff = slopedata.tests$newcasesY, -->
+<!--                         tests_percentdiff = slopedata.tests$newtestsY, -->
+<!--                         cases_percentdiff_spline = rep(NA, times = nrow(slopedata.tests)), -->
+<!--                         cases_percentdiff_spline_lower = rep(NA, times = nrow(slopedata.tests)), -->
+<!--                         cases_percentdiff_spline_upper = rep(NA, times = nrow(slopedata.tests)), -->
+<!--                         tests_percentdiff_spline = rep(NA, times = nrow(slopedata.tests)), -->
+<!--                         tests_percentdiff_spline_lower = rep(NA, times = nrow(slopedata.tests)), -->
+<!--                         tests_percentdiff_spline_upper = rep(NA, times = nrow(slopedata.tests)), -->
+<!--                         Level_Type = level)   -->
+<!--     } -->
+
+<!--   return(tmp.df)   -->
+<!-- } -->
+<!-- ``` -->
+
+<!-- ### Calculations -->
+
+<!-- ```{r} -->
+<!-- PCT_County_df = rbindlist(lapply(unique(County_df$County), function(x) old_pct_change('County', County_df, x))) -->
+<!-- PCT_TSA_df = rbindlist(lapply(unique(TSA_df$TSA), function(x) old_pct_change('TSA', TSA_df, x))) -->
+<!-- PCT_PHR_df = rbindlist(lapply(unique(PHR_df$PHR), function(x) old_pct_change('PHR', PHR_df, x))) -->
+<!-- PCT_Metro_df = rbindlist(lapply(unique(Metro_df$Metro), function(x) old_pct_change('Metro', Metro_df, x))) -->
+<!-- PCT_State_df = old_pct_change('State', State_df, 'Texas') -->
+<!-- ``` -->
+
+<!-- ### grouping -->
+
+<!-- ```{r} -->
+<!-- PCT_Combined_df = rbind(PCT_County_df, PCT_TSA_df, PCT_PHR_df, PCT_Metro_df, PCT_State_df) -->
+<!-- write.csv(PCT_Combined_df, 'tableau/stacked_pct_change.csv', row.names = FALSE) -->
+<!-- ``` -->
 
 # STACK COMBINATIONS
 
