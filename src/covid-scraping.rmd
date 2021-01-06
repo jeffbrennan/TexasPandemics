@@ -750,7 +750,7 @@ Get_TPR = function() {
   }
   
 # TODO: find out which day the new file is added
-TPR_dates = seq(as.Date('2020-08-19'), by = 'week', length.out = 52)
+# TPR_dates = seq(as.Date('2020-08-19'), by = 'week', length.out = 52)
 # if (date_out %in% (TPR_dates + 5)) {Get_TPR()}
 Get_TPR()
 tpr_df = rbindlist(
@@ -764,18 +764,6 @@ tpr_df = rbindlist(
 #             row.names = FALSE) 
 
   # filter(Date < '2020-12-16')
-tpr_cases = merged_county %>% 
-  dplyr::select(County, Date, Cases_Daily, Population_DSHS) %>%
-  filter(Date >= as.Date(min(TPR_dates)) - 13 & Date <= max(tpr_df$Date)) %>%
-  group_by(County) %>%
-  mutate(Cases_100K_7Day_MA = (rollmean(Cases_Daily, k = 7, align = 'right',
-                                        na.pad = TRUE, na.rm = TRUE)
-                               / Population_DSHS) * 100000) %>%
-  mutate(Cases_100K_14Day_MA = (rollmean(Cases_Daily, k = 14, align = 'right',
-                                         na.rm = TRUE, na.pad = TRUE)
-                                / Population_DSHS) * 100000) %>% 
-  filter(Date %in% TPR_dates) %>% 
-  dplyr::select(-Cases_Daily, -Population_DSHS, -Cases_100K_14Day_MA)
 ```
 
 
@@ -804,7 +792,7 @@ newest_file = fromJSON(file_text)$view$attachments %>%
   unlist() %>%
   .[length(.)]
 
-file_date = as.Date(str_match(newest_file, '(Report )(.*)(_)')[3], '%Y%m%d')
+file_date = as.Date(str_match(newest_file, '(Report |Report_)(.*)(_)')[3], '%Y%m%d')
 file_url = (paste0('https://beta.healthdata.gov', newest_file))
 
 # clean newest file
@@ -815,9 +803,10 @@ cpr_date = read_xlsx(temp, sheet = 6) %>%
   slice(1) %>% 
   dplyr::select(contains('VIRAL (RT-PCR) LAB TESTING: LAST WEEK')) %>% 
   names() %>% 
-  str_match(., '(\\w+ (?=\\d{1,2})).*((?<=\\-)\\d{1,2})') %>% 
+  str_match(., '(\\w+ (?=\\d{1,2})).*((?<=\\-).*)(\\))') %>% 
   .[2:3] %>% 
   paste0(., collapse = '') %>%
+  str_extract(., '\\w+.(?=\\d).') %>%
   as.Date(., '%B %d') %>%
   Date_Parser(.) %>% 
   as.Date(.)
@@ -842,6 +831,19 @@ write.csv(cpr_tpr,
 # add cms archive (8/19 - 12/09) (data represented 2 weeks of cases)
 # cms_archive = read.csv('original-sources/historical/CMS/cms_tpr_archive.csv')
 
+cpr_dates = list.files('original-sources/historical/cpr') %>% 
+  gsub('cpr_tpr_', '', .) %>% 
+  gsub('.csv', '', .) %>% 
+  as.Date(.)
+
+cms_dates = list.files('original-sources/historical/cms_tpr/') %>% 
+  gsub('TPR_', '', .) %>% 
+  gsub('.csv', '', .) %>% 
+  as.Date(.)
+
+TPR_dates = sort(unique(c(cpr_dates, cms_dates)))
+
+
 # combine cpr archive
 all_cpr_tpr = rbindlist(lapply(list.files('original-sources/historical/cpr/', full.names = TRUE), read.csv)) %>% 
   rename(TPR = TPR_CPR) %>% 
@@ -851,10 +853,24 @@ all_cpr_tpr = rbindlist(lapply(list.files('original-sources/historical/cpr/', fu
 cms_archive = tpr_df %>% filter(Date < '2020-12-16')
 cms_new = tpr_df %>% filter(Date >= '2020-12-16') %>% dplyr::select(-TPR)
 
+tpr_cases = merged_county %>% 
+  dplyr::select(County, Date, Cases_Daily, Population_DSHS) %>%
+  filter(Date >= as.Date(min(TPR_dates)) - 13 & Date <= max(TPR_dates)) %>%
+  group_by(County) %>%
+  mutate(Cases_100K_7Day_MA = (rollmean(Cases_Daily, k = 7, align = 'right',
+                                        na.pad = TRUE, na.rm = TRUE)
+                               / Population_DSHS) * 100000) %>%
+  mutate(Cases_100K_14Day_MA = (rollmean(Cases_Daily, k = 14, align = 'right',
+                                         na.rm = TRUE, na.pad = TRUE)
+                                / Population_DSHS) * 100000) %>% 
+  filter(Date %in% TPR_dates) %>% 
+  dplyr::select(-Cases_Daily, -Population_DSHS, -Cases_100K_14Day_MA)
+
+
 tpr_out = all_cpr_tpr %>% 
   rbind(cms_archive, fill = TRUE) %>%
   left_join(tpr_cases, by = c('County', 'Date')) %>%
-  left_join(cms_new, by = c('County', 'Date')) %>% 
+  left_join(cms_new, by = c('County', 'Date')) %>%
   mutate(Tests.x = ifelse(is.na(Tests.y), Tests.x, Tests.y)) %>% 
   rename(Tests = Tests.x) %>%
   dplyr::select(-Tests.y) %>% 
