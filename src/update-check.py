@@ -96,5 +96,5 @@ if datetime.utcnow().hour > 4 and datetime.utcnow().hour < 16:
 else:
   today = datetime.now()
 
-run_tmc()
 run_daily()
+run_tmc()
