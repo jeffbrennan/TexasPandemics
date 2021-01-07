@@ -13,7 +13,7 @@ def build_selenium():
     options.add_argument('--disable-gpu')
     options.add_argument("--log-level=3")  # suppresses console errors
 
-    driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=options)
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
     return driver
 
 

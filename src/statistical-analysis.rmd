@@ -747,7 +747,10 @@ TPR = read.csv('tableau/county_TPR.csv') %>%
   mutate(Date = as.Date(Date)) %>% 
   dplyr::select(Date, County, Tests)
 
-TPR_dates = unique(TPR$Date)
+TPR_dates = list.files('original-sources/historical/cms_tpr/') %>% 
+  gsub('TPR_', '', .) %>% 
+  gsub('.csv', '', .) %>% 
+  as.Date(.)
 
 TPR_merge = county %>% 
   dplyr::select(-Tests_Daily, -Population_DSHS) %>%
@@ -774,6 +777,7 @@ TPR_State = TPR_merge %>% group_by(Date) %>% summarize_if(is.numeric, sum, na.rm
 
 ```{r}
 PCT_County_df = rbindlist(lapply(unique(TPR_county$County), function(x) new_pct_change('County', TPR_county, x)))
+
 PCT_TSA_df = rbindlist(lapply(unique(TPR_TSA$TSA), function(x) new_pct_change('TSA', TPR_TSA, x))) %>% 
   mutate(tests_ma_percentdiff = ifelse(Date > min(Date) & tests_ma_percentdiff == -100, NA, tests_ma_percentdiff)) %>% 
   mutate(tests_total_percentdiff = ifelse(Date > min(Date) & tests_total_percentdiff == -100, NA, tests_total_percentdiff))
