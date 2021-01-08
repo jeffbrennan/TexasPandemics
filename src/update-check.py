@@ -28,11 +28,13 @@ def parse_file(file_url, header_loc):
 
     elif 'district-level' in file_url:
         # url updates weekly, if pandas can read and rows are approx expected, then file is updated
-        df = pd.ExcelFile(file_url, engine='xlrd').parse(
-            sheet_name=0, header=header_loc)
-        if len(df.index) > 1000:
-            max_date = today.date()
-
+        try:
+            df = pd.ExcelFile(file_url, engine='xlrd').parse(
+                sheet_name=0, header=header_loc)
+            if len(df.index) > 1000:
+                max_date = today.date()
+        except:
+            pass
     else:
         df = pd.ExcelFile(file_url, engine='xlrd').parse(
             sheet_name=0, header=header_loc)
@@ -69,8 +71,9 @@ def weekly_updates(today):
     day = today.weekday()
     district_date = (today - timedelta(days=2)).strftime('%m%d%Y')
     return {
-        3: [[f'https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/district-level-data-file_{district_date}.xls', 0]],
-        4: [['https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics.xlsx.asp', 3]]
+        4: [['https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics.xlsx.asp', 3],
+            [f'https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/district-level-data-file_{district_date}.xls', 0]
+            ]
     }.get(day, [])
 
 
@@ -88,8 +91,7 @@ def run_requests():
 def run_daily():
     daily_bat = [
         r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID\scrape.bat']
-    daily_url = [['https://dshs.texas.gov/coronavirus/TexasCOVID19CaseCountData.xlsx', 0],
-                 ['https://dshs.texas.gov/coronavirus/CombinedHospitalDataoverTimebyTSA.xlsx', 2]]
+    daily_url = [['https://dshs.texas.gov/coronavirus/TexasCOVID19CaseCountData.xlsx', 0]]
     daily_url.extend(weekly_updates(today.date()))
 
     print('\nChecking dashboard files...')
