@@ -83,7 +83,7 @@ def run_requests():
         ['https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx', 2]]
 
     print('Checking new cases...')
-    check_update(tmc_url, max_attempts=20)
+    check_update(tmc_url, max_attempts=30)
     run_bat(tmc_bat)
     print('\nNew cases are ready!')
 
