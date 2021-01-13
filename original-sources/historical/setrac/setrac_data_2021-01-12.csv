@@ -1,0 +1,2297 @@
+Date,Level,COVID_ICU
+2020-04-01,Angelina,4
+2020-04-02,Angelina,3
+2020-04-03,Angelina,1
+2020-04-04,Angelina,2
+2020-04-05,Angelina,1
+2020-04-06,Angelina,0
+2020-04-07,Angelina,1
+2020-04-08,Angelina,2
+2020-04-09,Angelina,0
+2020-04-10,Angelina,2
+2020-04-11,Angelina,4
+2020-04-12,Angelina,2
+2020-04-13,Angelina,1
+2020-04-14,Angelina,1
+2020-04-15,Angelina,4
+2020-04-16,Angelina,1
+2020-04-17,Angelina,11
+2020-04-18,Angelina,5
+2020-04-19,Angelina,3
+2020-04-20,Angelina,2
+2020-04-21,Angelina,3
+2020-04-22,Angelina,6
+2020-04-23,Angelina,2
+2020-04-24,Angelina,7
+2020-04-25,Angelina,4
+2020-04-26,Angelina,2
+2020-04-27,Angelina,2
+2020-04-28,Angelina,5
+2020-04-29,Angelina,3
+2020-04-30,Angelina,5
+2020-05-01,Angelina,4
+2020-05-02,Angelina,2
+2020-05-03,Angelina,6
+2020-05-04,Angelina,6
+2020-05-05,Angelina,5
+2020-05-06,Angelina,6
+2020-05-07,Angelina,7
+2020-05-08,Angelina,2
+2020-05-09,Angelina,8
+2020-05-10,Angelina,3
+2020-05-11,Angelina,0
+2020-05-12,Angelina,4
+2020-05-13,Angelina,1
+2020-05-14,Angelina,2
+2020-05-15,Angelina,2
+2020-05-16,Angelina,3
+2020-05-17,Angelina,0
+2020-05-18,Angelina,0
+2020-05-19,Angelina,0
+2020-05-20,Angelina,0
+2020-05-21,Angelina,1
+2020-05-22,Angelina,N/A
+2020-05-23,Angelina,1
+2020-05-24,Angelina,0
+2020-05-25,Angelina,0
+2020-05-26,Angelina,1
+2020-05-27,Angelina,0
+2020-05-28,Angelina,0
+2020-05-29,Angelina,0
+2020-05-30,Angelina,0
+2020-05-31,Angelina,0
+2020-06-01,Angelina,1
+2020-06-02,Angelina,1
+2020-06-03,Angelina,1
+2020-06-04,Angelina,0
+2020-06-05,Angelina,0
+2020-06-06,Angelina,0
+2020-06-07,Angelina,5
+2020-06-08,Angelina,0
+2020-06-09,Angelina,0
+2020-06-10,Angelina,0
+2020-06-11,Angelina,1
+2020-06-12,Angelina,3
+2020-06-13,Angelina,4
+2020-06-14,Angelina,9
+2020-06-15,Angelina,6
+2020-06-16,Angelina,8
+2020-06-17,Angelina,4
+2020-06-18,Angelina,0
+2020-06-19,Angelina,3
+2020-06-20,Angelina,1
+2020-06-21,Angelina,10
+2020-06-22,Angelina,5
+2020-06-23,Angelina,6
+2020-06-24,Angelina,3
+2020-06-25,Angelina,7
+2020-06-26,Angelina,3
+2020-06-27,Angelina,2
+2020-06-28,Angelina,1
+2020-06-29,Angelina,4
+2020-06-30,Angelina,6
+2020-07-01,Angelina,3
+2020-07-02,Angelina,3
+2020-07-03,Angelina,8
+2020-07-04,Angelina,1
+2020-07-05,Angelina,0
+2020-07-06,Angelina,16
+2020-07-07,Angelina,4
+2020-07-08,Angelina,16
+2020-07-09,Angelina,21
+2020-07-10,Angelina,15
+2020-07-11,Angelina,6
+2020-07-12,Angelina,6
+2020-07-13,Angelina,5
+2020-07-14,Angelina,13
+2020-07-15,Angelina,16
+2020-07-16,Angelina,15
+2020-07-17,Angelina,16
+2020-07-18,Angelina,15
+2020-07-19,Angelina,16
+2020-07-20,Angelina,18
+2020-07-21,Angelina,12
+2020-07-22,Angelina,21
+2020-07-23,Angelina,27
+2020-07-24,Angelina,27
+2020-07-25,Angelina,10
+2020-07-26,Angelina,37
+2020-07-27,Angelina,2
+2020-07-28,Angelina,14
+2020-07-29,Angelina,19
+2020-07-30,Angelina,15
+2020-07-31,Angelina,5
+2020-08-01,Angelina,12
+2020-08-02,Angelina,17
+2020-08-03,Angelina,17
+2020-08-04,Angelina,17
+2020-08-05,Angelina,15
+2020-08-06,Angelina,13
+2020-08-07,Angelina,4
+2020-08-08,Angelina,14
+2020-08-09,Angelina,14
+2020-08-10,Angelina,16
+2020-08-11,Angelina,3
+2020-08-12,Angelina,12
+2020-08-13,Angelina,14
+2020-08-14,Angelina,14
+2020-08-15,Angelina,15
+2020-08-16,Angelina,14
+2020-08-17,Angelina,29
+2020-08-18,Angelina,5
+2020-08-19,Angelina,11
+2020-08-20,Angelina,14
+2020-08-21,Angelina,11
+2020-08-22,Angelina,13
+2020-08-23,Angelina,5
+2020-08-24,Angelina,11
+2020-08-25,Angelina,6
+2020-08-26,Angelina,13
+2020-08-27,Angelina,12
+2020-08-28,Angelina,12
+2020-08-29,Angelina,6
+2020-08-30,Angelina,12
+2020-08-31,Angelina,13
+2020-09-01,Angelina,13
+2020-09-02,Angelina,16
+2020-09-03,Angelina,14
+2020-09-04,Angelina,19
+2020-09-05,Angelina,16
+2020-09-06,Angelina,14
+2020-09-07,Angelina,8
+2020-09-08,Angelina,14
+2020-09-09,Angelina,11
+2020-09-10,Angelina,11
+2020-09-11,Angelina,8
+2020-09-12,Angelina,6
+2020-09-13,Angelina,7
+2020-09-14,Angelina,10
+2020-09-15,Angelina,8
+2020-09-16,Angelina,5
+2020-09-17,Angelina,11
+2020-09-18,Angelina,4
+2020-09-19,Angelina,8
+2020-09-20,Angelina,18
+2020-09-21,Angelina,16
+2020-09-22,Angelina,17
+2020-09-23,Angelina,14
+2020-09-24,Angelina,14
+2020-09-25,Angelina,9
+2020-09-26,Angelina,11
+2020-09-27,Angelina,5
+2020-09-28,Angelina,9
+2020-09-29,Angelina,8
+2020-09-30,Angelina,9
+2020-10-01,Angelina,6
+2020-10-02,Angelina,11
+2020-10-03,Angelina,7
+2020-10-04,Angelina,20
+2020-10-05,Angelina,5
+2020-10-06,Angelina,5
+2020-10-07,Angelina,6
+2020-10-08,Angelina,6
+2020-10-09,Angelina,4
+2020-10-10,Angelina,3
+2020-10-11,Angelina,3
+2020-10-12,Angelina,3
+2020-10-13,Angelina,4
+2020-10-14,Angelina,5
+2020-10-15,Angelina,5
+2020-10-16,Angelina,4
+2020-10-17,Angelina,3
+2020-10-18,Angelina,3
+2020-10-19,Angelina,3
+2020-10-20,Angelina,3
+2020-10-21,Angelina,2
+2020-10-22,Angelina,2
+2020-10-23,Angelina,2
+2020-10-24,Angelina,2
+2020-10-25,Angelina,2
+2020-10-26,Angelina,2
+2020-10-27,Angelina,2
+2020-10-28,Angelina,2
+2020-10-29,Angelina,2
+2020-10-30,Angelina,3
+2020-10-31,Angelina,3
+2020-11-01,Angelina,3
+2020-11-02,Angelina,11
+2020-11-03,Angelina,8
+2020-11-04,Angelina,4
+2020-11-05,Angelina,4
+2020-11-06,Angelina,4
+2020-11-07,Angelina,4
+2020-11-08,Angelina,4
+2020-11-09,Angelina,7
+2020-11-10,Angelina,8
+2020-11-11,Angelina,4
+2020-11-12,Angelina,7
+2020-11-13,Angelina,7
+2020-11-14,Angelina,7
+2020-11-15,Angelina,8
+2020-11-16,Angelina,7
+2020-11-17,Angelina,3
+2020-11-18,Angelina,11
+2020-11-19,Angelina,8
+2020-11-20,Angelina,8
+2020-11-21,Angelina,11
+2020-11-22,Angelina,14
+2020-11-23,Angelina,6
+2020-11-24,Angelina,12
+2020-11-25,Angelina,14
+2020-11-26,Angelina,13
+2020-11-27,Angelina,14
+2020-11-28,Angelina,15
+2020-11-29,Angelina,15
+2020-11-30,Angelina,15
+2020-12-01,Angelina,16
+2020-12-02,Angelina,17
+2020-12-03,Angelina,14
+2020-12-04,Angelina,17
+2020-12-05,Angelina,17
+2020-12-06,Angelina,14
+2020-12-07,Angelina,7
+2020-12-08,Angelina,16
+2020-12-09,Angelina,17
+2020-12-10,Angelina,13
+2020-12-11,Angelina,15
+2020-12-12,Angelina,16
+2020-12-13,Angelina,17
+2020-12-14,Angelina,13
+2020-12-15,Angelina,20
+2020-12-16,Angelina,17
+2020-12-17,Angelina,13
+2020-12-18,Angelina,14
+2020-12-19,Angelina,13
+2020-12-20,Angelina,14
+2020-12-21,Angelina,19
+2020-12-22,Angelina,16
+2020-12-23,Angelina,13
+2020-12-24,Angelina,15
+2020-12-25,Angelina,17
+2020-12-26,Angelina,12
+2020-12-27,Angelina,12
+2020-12-28,Angelina,16
+2020-12-29,Angelina,18
+2020-12-30,Angelina,18
+2020-12-31,Angelina,18
+2021-01-01,Angelina,17
+2021-01-02,Angelina,17
+2021-01-03,Angelina,16
+2021-01-04,Angelina,11
+2021-01-05,Angelina,24
+2021-01-06,Angelina,14
+2021-01-07,Angelina,15
+2021-01-08,Angelina,14
+2021-01-09,Angelina,12
+2021-01-10,Angelina,16
+2021-01-11,Angelina,16
+2021-01-12,Angelina,9
+2020-04-01,Brazoria,1
+2020-04-02,Brazoria,1
+2020-04-03,Brazoria,6
+2020-04-04,Brazoria,4
+2020-04-05,Brazoria,4
+2020-04-06,Brazoria,7
+2020-04-07,Brazoria,4
+2020-04-08,Brazoria,4
+2020-04-09,Brazoria,5
+2020-04-10,Brazoria,5
+2020-04-11,Brazoria,4
+2020-04-12,Brazoria,4
+2020-04-13,Brazoria,7
+2020-04-14,Brazoria,8
+2020-04-15,Brazoria,4
+2020-04-16,Brazoria,4
+2020-04-17,Brazoria,5
+2020-04-18,Brazoria,4
+2020-04-19,Brazoria,3
+2020-04-20,Brazoria,4
+2020-04-21,Brazoria,5
+2020-04-22,Brazoria,3
+2020-04-23,Brazoria,4
+2020-04-24,Brazoria,5
+2020-04-25,Brazoria,2
+2020-04-26,Brazoria,7
+2020-04-27,Brazoria,4
+2020-04-28,Brazoria,2
+2020-04-29,Brazoria,2
+2020-04-30,Brazoria,2
+2020-05-01,Brazoria,0
+2020-05-02,Brazoria,2
+2020-05-03,Brazoria,2
+2020-05-04,Brazoria,1
+2020-05-05,Brazoria,0
+2020-05-06,Brazoria,2
+2020-05-07,Brazoria,2
+2020-05-08,Brazoria,1
+2020-05-09,Brazoria,2
+2020-05-10,Brazoria,4
+2020-05-11,Brazoria,2
+2020-05-12,Brazoria,0
+2020-05-13,Brazoria,0
+2020-05-14,Brazoria,3
+2020-05-15,Brazoria,5
+2020-05-16,Brazoria,3
+2020-05-17,Brazoria,6
+2020-05-18,Brazoria,5
+2020-05-19,Brazoria,8
+2020-05-20,Brazoria,7
+2020-05-21,Brazoria,7
+2020-05-22,Brazoria,0
+2020-05-23,Brazoria,5
+2020-05-24,Brazoria,6
+2020-05-25,Brazoria,5
+2020-05-26,Brazoria,5
+2020-05-27,Brazoria,1
+2020-05-28,Brazoria,7
+2020-05-29,Brazoria,5
+2020-05-30,Brazoria,6
+2020-05-31,Brazoria,6
+2020-06-01,Brazoria,8
+2020-06-02,Brazoria,8
+2020-06-03,Brazoria,7
+2020-06-04,Brazoria,6
+2020-06-05,Brazoria,6
+2020-06-06,Brazoria,7
+2020-06-07,Brazoria,5
+2020-06-08,Brazoria,11
+2020-06-09,Brazoria,6
+2020-06-10,Brazoria,9
+2020-06-11,Brazoria,7
+2020-06-12,Brazoria,8
+2020-06-13,Brazoria,8
+2020-06-14,Brazoria,6
+2020-06-15,Brazoria,5
+2020-06-16,Brazoria,6
+2020-06-17,Brazoria,7
+2020-06-18,Brazoria,4
+2020-06-19,Brazoria,7
+2020-06-20,Brazoria,8
+2020-06-21,Brazoria,22
+2020-06-22,Brazoria,8
+2020-06-23,Brazoria,11
+2020-06-24,Brazoria,8
+2020-06-25,Brazoria,12
+2020-06-26,Brazoria,14
+2020-06-27,Brazoria,16
+2020-06-28,Brazoria,20
+2020-06-29,Brazoria,18
+2020-06-30,Brazoria,13
+2020-07-01,Brazoria,15
+2020-07-02,Brazoria,15
+2020-07-03,Brazoria,11
+2020-07-04,Brazoria,22
+2020-07-05,Brazoria,26
+2020-07-06,Brazoria,17
+2020-07-07,Brazoria,27
+2020-07-08,Brazoria,25
+2020-07-09,Brazoria,18
+2020-07-10,Brazoria,17
+2020-07-11,Brazoria,24
+2020-07-12,Brazoria,23
+2020-07-13,Brazoria,16
+2020-07-14,Brazoria,17
+2020-07-15,Brazoria,17
+2020-07-16,Brazoria,16
+2020-07-17,Brazoria,14
+2020-07-18,Brazoria,16
+2020-07-19,Brazoria,27
+2020-07-20,Brazoria,19
+2020-07-21,Brazoria,23
+2020-07-22,Brazoria,18
+2020-07-23,Brazoria,21
+2020-07-24,Brazoria,21
+2020-07-25,Brazoria,27
+2020-07-26,Brazoria,22
+2020-07-27,Brazoria,19
+2020-07-28,Brazoria,20
+2020-07-29,Brazoria,19
+2020-07-30,Brazoria,15
+2020-07-31,Brazoria,20
+2020-08-01,Brazoria,21
+2020-08-02,Brazoria,30
+2020-08-03,Brazoria,23
+2020-08-04,Brazoria,21
+2020-08-05,Brazoria,16
+2020-08-06,Brazoria,15
+2020-08-07,Brazoria,14
+2020-08-08,Brazoria,18
+2020-08-09,Brazoria,13
+2020-08-10,Brazoria,13
+2020-08-11,Brazoria,20
+2020-08-12,Brazoria,12
+2020-08-13,Brazoria,20
+2020-08-14,Brazoria,20
+2020-08-15,Brazoria,22
+2020-08-16,Brazoria,14
+2020-08-17,Brazoria,14
+2020-08-18,Brazoria,16
+2020-08-19,Brazoria,12
+2020-08-20,Brazoria,15
+2020-08-21,Brazoria,12
+2020-08-22,Brazoria,17
+2020-08-23,Brazoria,15
+2020-08-24,Brazoria,12
+2020-08-25,Brazoria,15
+2020-08-26,Brazoria,14
+2020-08-27,Brazoria,12
+2020-08-28,Brazoria,13
+2020-08-29,Brazoria,11
+2020-08-30,Brazoria,13
+2020-08-31,Brazoria,10
+2020-09-01,Brazoria,12
+2020-09-02,Brazoria,14
+2020-09-03,Brazoria,7
+2020-09-04,Brazoria,10
+2020-09-05,Brazoria,9
+2020-09-06,Brazoria,8
+2020-09-07,Brazoria,7
+2020-09-08,Brazoria,9
+2020-09-09,Brazoria,7
+2020-09-10,Brazoria,6
+2020-09-11,Brazoria,7
+2020-09-12,Brazoria,10
+2020-09-13,Brazoria,14
+2020-09-14,Brazoria,13
+2020-09-15,Brazoria,8
+2020-09-16,Brazoria,8
+2020-09-17,Brazoria,8
+2020-09-18,Brazoria,8
+2020-09-19,Brazoria,9
+2020-09-20,Brazoria,10
+2020-09-21,Brazoria,9
+2020-09-22,Brazoria,8
+2020-09-23,Brazoria,6
+2020-09-24,Brazoria,12
+2020-09-25,Brazoria,13
+2020-09-26,Brazoria,10
+2020-09-27,Brazoria,12
+2020-09-28,Brazoria,11
+2020-09-29,Brazoria,9
+2020-09-30,Brazoria,8
+2020-10-01,Brazoria,7
+2020-10-02,Brazoria,5
+2020-10-03,Brazoria,5
+2020-10-04,Brazoria,6
+2020-10-05,Brazoria,6
+2020-10-06,Brazoria,7
+2020-10-07,Brazoria,7
+2020-10-08,Brazoria,8
+2020-10-09,Brazoria,6
+2020-10-10,Brazoria,6
+2020-10-11,Brazoria,4
+2020-10-12,Brazoria,3
+2020-10-13,Brazoria,5
+2020-10-14,Brazoria,6
+2020-10-15,Brazoria,4
+2020-10-16,Brazoria,5
+2020-10-17,Brazoria,5
+2020-10-18,Brazoria,6
+2020-10-19,Brazoria,7
+2020-10-20,Brazoria,8
+2020-10-21,Brazoria,11
+2020-10-22,Brazoria,8
+2020-10-23,Brazoria,12
+2020-10-24,Brazoria,12
+2020-10-25,Brazoria,15
+2020-10-26,Brazoria,16
+2020-10-27,Brazoria,9
+2020-10-28,Brazoria,7
+2020-10-29,Brazoria,8
+2020-10-30,Brazoria,6
+2020-10-31,Brazoria,7
+2020-11-01,Brazoria,6
+2020-11-02,Brazoria,4
+2020-11-03,Brazoria,5
+2020-11-04,Brazoria,6
+2020-11-05,Brazoria,6
+2020-11-06,Brazoria,9
+2020-11-07,Brazoria,8
+2020-11-08,Brazoria,7
+2020-11-09,Brazoria,16
+2020-11-10,Brazoria,13
+2020-11-11,Brazoria,9
+2020-11-12,Brazoria,10
+2020-11-13,Brazoria,12
+2020-11-14,Brazoria,10
+2020-11-15,Brazoria,14
+2020-11-16,Brazoria,11
+2020-11-17,Brazoria,6
+2020-11-18,Brazoria,8
+2020-11-19,Brazoria,11
+2020-11-20,Brazoria,6
+2020-11-21,Brazoria,12
+2020-11-22,Brazoria,6
+2020-11-23,Brazoria,9
+2020-11-24,Brazoria,9
+2020-11-25,Brazoria,7
+2020-11-26,Brazoria,9
+2020-11-27,Brazoria,13
+2020-11-28,Brazoria,11
+2020-11-29,Brazoria,12
+2020-11-30,Brazoria,11
+2020-12-01,Brazoria,13
+2020-12-02,Brazoria,11
+2020-12-03,Brazoria,14
+2020-12-04,Brazoria,13
+2020-12-05,Brazoria,13
+2020-12-06,Brazoria,7
+2020-12-07,Brazoria,14
+2020-12-08,Brazoria,15
+2020-12-09,Brazoria,15
+2020-12-10,Brazoria,13
+2020-12-11,Brazoria,15
+2020-12-12,Brazoria,17
+2020-12-13,Brazoria,17
+2020-12-14,Brazoria,15
+2020-12-15,Brazoria,16
+2020-12-16,Brazoria,17
+2020-12-17,Brazoria,12
+2020-12-18,Brazoria,13
+2020-12-19,Brazoria,14
+2020-12-20,Brazoria,12
+2020-12-21,Brazoria,13
+2020-12-22,Brazoria,12
+2020-12-23,Brazoria,15
+2020-12-24,Brazoria,18
+2020-12-25,Brazoria,16
+2020-12-26,Brazoria,17
+2020-12-27,Brazoria,16
+2020-12-28,Brazoria,14
+2020-12-29,Brazoria,16
+2020-12-30,Brazoria,19
+2020-12-31,Brazoria,16
+2021-01-01,Brazoria,22
+2021-01-02,Brazoria,19
+2021-01-03,Brazoria,19
+2021-01-04,Brazoria,22
+2021-01-05,Brazoria,22
+2021-01-06,Brazoria,23
+2021-01-07,Brazoria,25
+2021-01-08,Brazoria,22
+2021-01-09,Brazoria,25
+2021-01-10,Brazoria,24
+2021-01-11,Brazoria,22
+2021-01-12,Brazoria,18
+2020-04-01,Fort Bend,5
+2020-04-02,Fort Bend,5
+2020-04-03,Fort Bend,16
+2020-04-04,Fort Bend,38
+2020-04-05,Fort Bend,40
+2020-04-06,Fort Bend,15
+2020-04-07,Fort Bend,20
+2020-04-08,Fort Bend,33
+2020-04-09,Fort Bend,20
+2020-04-10,Fort Bend,65
+2020-04-11,Fort Bend,17
+2020-04-12,Fort Bend,22
+2020-04-13,Fort Bend,55
+2020-04-14,Fort Bend,17
+2020-04-15,Fort Bend,28
+2020-04-16,Fort Bend,24
+2020-04-17,Fort Bend,27
+2020-04-18,Fort Bend,36
+2020-04-19,Fort Bend,23
+2020-04-20,Fort Bend,22
+2020-04-21,Fort Bend,20
+2020-04-22,Fort Bend,23
+2020-04-23,Fort Bend,10
+2020-04-24,Fort Bend,11
+2020-04-25,Fort Bend,13
+2020-04-26,Fort Bend,10
+2020-04-27,Fort Bend,14
+2020-04-28,Fort Bend,16
+2020-04-29,Fort Bend,10
+2020-04-30,Fort Bend,14
+2020-05-01,Fort Bend,12
+2020-05-02,Fort Bend,6
+2020-05-03,Fort Bend,18
+2020-05-04,Fort Bend,17
+2020-05-05,Fort Bend,17
+2020-05-06,Fort Bend,17
+2020-05-07,Fort Bend,17
+2020-05-08,Fort Bend,14
+2020-05-09,Fort Bend,16
+2020-05-10,Fort Bend,12
+2020-05-11,Fort Bend,14
+2020-05-12,Fort Bend,8
+2020-05-13,Fort Bend,11
+2020-05-14,Fort Bend,9
+2020-05-15,Fort Bend,11
+2020-05-16,Fort Bend,8
+2020-05-17,Fort Bend,8
+2020-05-18,Fort Bend,11
+2020-05-19,Fort Bend,15
+2020-05-20,Fort Bend,14
+2020-05-21,Fort Bend,11
+2020-05-22,Fort Bend,7
+2020-05-23,Fort Bend,5
+2020-05-24,Fort Bend,8
+2020-05-25,Fort Bend,7
+2020-05-26,Fort Bend,11
+2020-05-27,Fort Bend,15
+2020-05-28,Fort Bend,11
+2020-05-29,Fort Bend,12
+2020-05-30,Fort Bend,12
+2020-05-31,Fort Bend,18
+2020-06-01,Fort Bend,19
+2020-06-02,Fort Bend,21
+2020-06-03,Fort Bend,22
+2020-06-04,Fort Bend,12
+2020-06-05,Fort Bend,24
+2020-06-06,Fort Bend,12
+2020-06-07,Fort Bend,14
+2020-06-08,Fort Bend,14
+2020-06-09,Fort Bend,17
+2020-06-10,Fort Bend,13
+2020-06-11,Fort Bend,13
+2020-06-12,Fort Bend,11
+2020-06-13,Fort Bend,12
+2020-06-14,Fort Bend,16
+2020-06-15,Fort Bend,12
+2020-06-16,Fort Bend,17
+2020-06-17,Fort Bend,15
+2020-06-18,Fort Bend,22
+2020-06-19,Fort Bend,20
+2020-06-20,Fort Bend,29
+2020-06-21,Fort Bend,29
+2020-06-22,Fort Bend,27
+2020-06-23,Fort Bend,32
+2020-06-24,Fort Bend,39
+2020-06-25,Fort Bend,42
+2020-06-26,Fort Bend,43
+2020-06-27,Fort Bend,50
+2020-06-28,Fort Bend,55
+2020-06-29,Fort Bend,56
+2020-06-30,Fort Bend,43
+2020-07-01,Fort Bend,51
+2020-07-02,Fort Bend,55
+2020-07-03,Fort Bend,46
+2020-07-04,Fort Bend,60
+2020-07-05,Fort Bend,55
+2020-07-06,Fort Bend,49
+2020-07-07,Fort Bend,45
+2020-07-08,Fort Bend,55
+2020-07-09,Fort Bend,52
+2020-07-10,Fort Bend,57
+2020-07-11,Fort Bend,58
+2020-07-12,Fort Bend,66
+2020-07-13,Fort Bend,64
+2020-07-14,Fort Bend,66
+2020-07-15,Fort Bend,63
+2020-07-16,Fort Bend,73
+2020-07-17,Fort Bend,71
+2020-07-18,Fort Bend,69
+2020-07-19,Fort Bend,73
+2020-07-20,Fort Bend,67
+2020-07-21,Fort Bend,70
+2020-07-22,Fort Bend,68
+2020-07-23,Fort Bend,64
+2020-07-24,Fort Bend,63
+2020-07-25,Fort Bend,59
+2020-07-26,Fort Bend,60
+2020-07-27,Fort Bend,62
+2020-07-28,Fort Bend,63
+2020-07-29,Fort Bend,52
+2020-07-30,Fort Bend,51
+2020-07-31,Fort Bend,44
+2020-08-01,Fort Bend,40
+2020-08-02,Fort Bend,33
+2020-08-03,Fort Bend,39
+2020-08-04,Fort Bend,46
+2020-08-05,Fort Bend,41
+2020-08-06,Fort Bend,43
+2020-08-07,Fort Bend,45
+2020-08-08,Fort Bend,35
+2020-08-09,Fort Bend,32
+2020-08-10,Fort Bend,28
+2020-08-11,Fort Bend,25
+2020-08-12,Fort Bend,37
+2020-08-13,Fort Bend,36
+2020-08-14,Fort Bend,28
+2020-08-15,Fort Bend,27
+2020-08-16,Fort Bend,34
+2020-08-17,Fort Bend,37
+2020-08-18,Fort Bend,31
+2020-08-19,Fort Bend,24
+2020-08-20,Fort Bend,18
+2020-08-21,Fort Bend,23
+2020-08-22,Fort Bend,20
+2020-08-23,Fort Bend,25
+2020-08-24,Fort Bend,20
+2020-08-25,Fort Bend,21
+2020-08-26,Fort Bend,21
+2020-08-27,Fort Bend,20
+2020-08-28,Fort Bend,21
+2020-08-29,Fort Bend,18
+2020-08-30,Fort Bend,17
+2020-08-31,Fort Bend,16
+2020-09-01,Fort Bend,19
+2020-09-02,Fort Bend,18
+2020-09-03,Fort Bend,20
+2020-09-04,Fort Bend,19
+2020-09-05,Fort Bend,10
+2020-09-06,Fort Bend,16
+2020-09-07,Fort Bend,15
+2020-09-08,Fort Bend,8
+2020-09-09,Fort Bend,12
+2020-09-10,Fort Bend,6
+2020-09-11,Fort Bend,6
+2020-09-12,Fort Bend,7
+2020-09-13,Fort Bend,6
+2020-09-14,Fort Bend,11
+2020-09-15,Fort Bend,7
+2020-09-16,Fort Bend,7
+2020-09-17,Fort Bend,6
+2020-09-18,Fort Bend,4
+2020-09-19,Fort Bend,8
+2020-09-20,Fort Bend,6
+2020-09-21,Fort Bend,7
+2020-09-22,Fort Bend,7
+2020-09-23,Fort Bend,13
+2020-09-24,Fort Bend,7
+2020-09-25,Fort Bend,8
+2020-09-26,Fort Bend,7
+2020-09-27,Fort Bend,6
+2020-09-28,Fort Bend,5
+2020-09-29,Fort Bend,11
+2020-09-30,Fort Bend,11
+2020-10-01,Fort Bend,7
+2020-10-02,Fort Bend,5
+2020-10-03,Fort Bend,4
+2020-10-04,Fort Bend,4
+2020-10-05,Fort Bend,5
+2020-10-06,Fort Bend,14
+2020-10-07,Fort Bend,7
+2020-10-08,Fort Bend,9
+2020-10-09,Fort Bend,9
+2020-10-10,Fort Bend,9
+2020-10-11,Fort Bend,10
+2020-10-12,Fort Bend,9
+2020-10-13,Fort Bend,7
+2020-10-14,Fort Bend,15
+2020-10-15,Fort Bend,12
+2020-10-16,Fort Bend,10
+2020-10-17,Fort Bend,6
+2020-10-18,Fort Bend,7
+2020-10-19,Fort Bend,11
+2020-10-20,Fort Bend,9
+2020-10-21,Fort Bend,10
+2020-10-22,Fort Bend,5
+2020-10-23,Fort Bend,6
+2020-10-24,Fort Bend,12
+2020-10-25,Fort Bend,10
+2020-10-26,Fort Bend,9
+2020-10-27,Fort Bend,7
+2020-10-28,Fort Bend,10
+2020-10-29,Fort Bend,8
+2020-10-30,Fort Bend,13
+2020-10-31,Fort Bend,12
+2020-11-01,Fort Bend,13
+2020-11-02,Fort Bend,18
+2020-11-03,Fort Bend,13
+2020-11-04,Fort Bend,13
+2020-11-05,Fort Bend,14
+2020-11-06,Fort Bend,15
+2020-11-07,Fort Bend,16
+2020-11-08,Fort Bend,15
+2020-11-09,Fort Bend,15
+2020-11-10,Fort Bend,18
+2020-11-11,Fort Bend,19
+2020-11-12,Fort Bend,20
+2020-11-13,Fort Bend,26
+2020-11-14,Fort Bend,18
+2020-11-15,Fort Bend,22
+2020-11-16,Fort Bend,20
+2020-11-17,Fort Bend,16
+2020-11-18,Fort Bend,20
+2020-11-19,Fort Bend,11
+2020-11-20,Fort Bend,25
+2020-11-21,Fort Bend,27
+2020-11-22,Fort Bend,18
+2020-11-23,Fort Bend,18
+2020-11-24,Fort Bend,21
+2020-11-25,Fort Bend,26
+2020-11-26,Fort Bend,19
+2020-11-27,Fort Bend,21
+2020-11-28,Fort Bend,22
+2020-11-29,Fort Bend,20
+2020-11-30,Fort Bend,24
+2020-12-01,Fort Bend,20
+2020-12-02,Fort Bend,33
+2020-12-03,Fort Bend,25
+2020-12-04,Fort Bend,32
+2020-12-05,Fort Bend,34
+2020-12-06,Fort Bend,33
+2020-12-07,Fort Bend,30
+2020-12-08,Fort Bend,29
+2020-12-09,Fort Bend,35
+2020-12-10,Fort Bend,30
+2020-12-11,Fort Bend,38
+2020-12-12,Fort Bend,28
+2020-12-13,Fort Bend,29
+2020-12-14,Fort Bend,35
+2020-12-15,Fort Bend,33
+2020-12-16,Fort Bend,37
+2020-12-17,Fort Bend,33
+2020-12-18,Fort Bend,30
+2020-12-19,Fort Bend,26
+2020-12-20,Fort Bend,26
+2020-12-21,Fort Bend,26
+2020-12-22,Fort Bend,28
+2020-12-23,Fort Bend,30
+2020-12-24,Fort Bend,28
+2020-12-25,Fort Bend,36
+2020-12-26,Fort Bend,30
+2020-12-27,Fort Bend,32
+2020-12-28,Fort Bend,24
+2020-12-29,Fort Bend,30
+2020-12-30,Fort Bend,37
+2020-12-31,Fort Bend,31
+2021-01-01,Fort Bend,31
+2021-01-02,Fort Bend,34
+2021-01-03,Fort Bend,37
+2021-01-04,Fort Bend,40
+2021-01-05,Fort Bend,37
+2021-01-06,Fort Bend,30
+2021-01-07,Fort Bend,43
+2021-01-08,Fort Bend,37
+2021-01-09,Fort Bend,40
+2021-01-10,Fort Bend,45
+2021-01-11,Fort Bend,43
+2021-01-12,Fort Bend,49
+2020-04-01,Harris,73
+2020-04-02,Harris,57
+2020-04-03,Harris,229
+2020-04-04,Harris,232
+2020-04-05,Harris,233
+2020-04-06,Harris,222
+2020-04-07,Harris,281
+2020-04-08,Harris,274
+2020-04-09,Harris,306
+2020-04-10,Harris,252
+2020-04-11,Harris,255
+2020-04-12,Harris,178
+2020-04-13,Harris,278
+2020-04-14,Harris,307
+2020-04-15,Harris,265
+2020-04-16,Harris,285
+2020-04-17,Harris,185
+2020-04-18,Harris,296
+2020-04-19,Harris,261
+2020-04-20,Harris,259
+2020-04-21,Harris,245
+2020-04-22,Harris,237
+2020-04-23,Harris,243
+2020-04-24,Harris,241
+2020-04-25,Harris,243
+2020-04-26,Harris,262
+2020-04-27,Harris,247
+2020-04-28,Harris,232
+2020-04-29,Harris,233
+2020-04-30,Harris,246
+2020-05-01,Harris,221
+2020-05-02,Harris,174
+2020-05-03,Harris,229
+2020-05-04,Harris,221
+2020-05-05,Harris,220
+2020-05-06,Harris,211
+2020-05-07,Harris,214
+2020-05-08,Harris,213
+2020-05-09,Harris,228
+2020-05-10,Harris,194
+2020-05-11,Harris,224
+2020-05-12,Harris,209
+2020-05-13,Harris,229
+2020-05-14,Harris,196
+2020-05-15,Harris,199
+2020-05-16,Harris,196
+2020-05-17,Harris,204
+2020-05-18,Harris,232
+2020-05-19,Harris,236
+2020-05-20,Harris,254
+2020-05-21,Harris,252
+2020-05-22,Harris,219
+2020-05-23,Harris,235
+2020-05-24,Harris,213
+2020-05-25,Harris,216
+2020-05-26,Harris,199
+2020-05-27,Harris,219
+2020-05-28,Harris,250
+2020-05-29,Harris,214
+2020-05-30,Harris,216
+2020-05-31,Harris,214
+2020-06-01,Harris,249
+2020-06-02,Harris,250
+2020-06-03,Harris,244
+2020-06-04,Harris,259
+2020-06-05,Harris,229
+2020-06-06,Harris,240
+2020-06-07,Harris,235
+2020-06-08,Harris,236
+2020-06-09,Harris,272
+2020-06-10,Harris,242
+2020-06-11,Harris,254
+2020-06-12,Harris,248
+2020-06-13,Harris,232
+2020-06-14,Harris,274
+2020-06-15,Harris,261
+2020-06-16,Harris,315
+2020-06-17,Harris,334
+2020-06-18,Harris,384
+2020-06-19,Harris,357
+2020-06-20,Harris,361
+2020-06-21,Harris,370
+2020-06-22,Harris,382
+2020-06-23,Harris,441
+2020-06-24,Harris,485
+2020-06-25,Harris,479
+2020-06-26,Harris,497
+2020-06-27,Harris,520
+2020-06-28,Harris,582
+2020-06-29,Harris,540
+2020-06-30,Harris,564
+2020-07-01,Harris,581
+2020-07-02,Harris,596
+2020-07-03,Harris,591
+2020-07-04,Harris,667
+2020-07-05,Harris,675
+2020-07-06,Harris,695
+2020-07-07,Harris,710
+2020-07-08,Harris,708
+2020-07-09,Harris,777
+2020-07-10,Harris,766
+2020-07-11,Harris,725
+2020-07-12,Harris,760
+2020-07-13,Harris,752
+2020-07-14,Harris,699
+2020-07-15,Harris,749
+2020-07-16,Harris,726
+2020-07-17,Harris,735
+2020-07-18,Harris,841
+2020-07-19,Harris,659
+2020-07-20,Harris,725
+2020-07-21,Harris,720
+2020-07-22,Harris,613
+2020-07-23,Harris,686
+2020-07-24,Harris,687
+2020-07-25,Harris,652
+2020-07-26,Harris,661
+2020-07-27,Harris,665
+2020-07-28,Harris,664
+2020-07-29,Harris,653
+2020-07-30,Harris,661
+2020-07-31,Harris,631
+2020-08-01,Harris,609
+2020-08-02,Harris,592
+2020-08-03,Harris,630
+2020-08-04,Harris,599
+2020-08-05,Harris,574
+2020-08-06,Harris,548
+2020-08-07,Harris,551
+2020-08-08,Harris,513
+2020-08-09,Harris,497
+2020-08-10,Harris,463
+2020-08-11,Harris,502
+2020-08-12,Harris,505
+2020-08-13,Harris,483
+2020-08-14,Harris,491
+2020-08-15,Harris,439
+2020-08-16,Harris,430
+2020-08-17,Harris,441
+2020-08-18,Harris,436
+2020-08-19,Harris,372
+2020-08-20,Harris,376
+2020-08-21,Harris,376
+2020-08-22,Harris,361
+2020-08-23,Harris,314
+2020-08-24,Harris,318
+2020-08-25,Harris,311
+2020-08-26,Harris,278
+2020-08-27,Harris,316
+2020-08-28,Harris,282
+2020-08-29,Harris,272
+2020-08-30,Harris,276
+2020-08-31,Harris,260
+2020-09-01,Harris,279
+2020-09-02,Harris,267
+2020-09-03,Harris,283
+2020-09-04,Harris,259
+2020-09-05,Harris,250
+2020-09-06,Harris,245
+2020-09-07,Harris,227
+2020-09-08,Harris,222
+2020-09-09,Harris,223
+2020-09-10,Harris,217
+2020-09-11,Harris,222
+2020-09-12,Harris,206
+2020-09-13,Harris,195
+2020-09-14,Harris,197
+2020-09-15,Harris,190
+2020-09-16,Harris,198
+2020-09-17,Harris,171
+2020-09-18,Harris,186
+2020-09-19,Harris,171
+2020-09-20,Harris,170
+2020-09-21,Harris,167
+2020-09-22,Harris,170
+2020-09-23,Harris,161
+2020-09-24,Harris,164
+2020-09-25,Harris,169
+2020-09-26,Harris,168
+2020-09-27,Harris,170
+2020-09-28,Harris,159
+2020-09-29,Harris,157
+2020-09-30,Harris,149
+2020-10-01,Harris,171
+2020-10-02,Harris,166
+2020-10-03,Harris,157
+2020-10-04,Harris,161
+2020-10-05,Harris,164
+2020-10-06,Harris,151
+2020-10-07,Harris,167
+2020-10-08,Harris,169
+2020-10-09,Harris,169
+2020-10-10,Harris,157
+2020-10-11,Harris,154
+2020-10-12,Harris,158
+2020-10-13,Harris,149
+2020-10-14,Harris,175
+2020-10-15,Harris,178
+2020-10-16,Harris,161
+2020-10-17,Harris,144
+2020-10-18,Harris,165
+2020-10-19,Harris,162
+2020-10-20,Harris,191
+2020-10-21,Harris,176
+2020-10-22,Harris,191
+2020-10-23,Harris,181
+2020-10-24,Harris,184
+2020-10-25,Harris,180
+2020-10-26,Harris,193
+2020-10-27,Harris,186
+2020-10-28,Harris,196
+2020-10-29,Harris,181
+2020-10-30,Harris,182
+2020-10-31,Harris,158
+2020-11-01,Harris,183
+2020-11-02,Harris,199
+2020-11-03,Harris,180
+2020-11-04,Harris,194
+2020-11-05,Harris,193
+2020-11-06,Harris,199
+2020-11-07,Harris,199
+2020-11-08,Harris,181
+2020-11-09,Harris,200
+2020-11-10,Harris,205
+2020-11-11,Harris,203
+2020-11-12,Harris,212
+2020-11-13,Harris,193
+2020-11-14,Harris,213
+2020-11-15,Harris,224
+2020-11-16,Harris,234
+2020-11-17,Harris,228
+2020-11-18,Harris,241
+2020-11-19,Harris,232
+2020-11-20,Harris,232
+2020-11-21,Harris,198
+2020-11-22,Harris,242
+2020-11-23,Harris,259
+2020-11-24,Harris,330
+2020-11-25,Harris,314
+2020-11-26,Harris,287
+2020-11-27,Harris,292
+2020-11-28,Harris,314
+2020-11-29,Harris,322
+2020-11-30,Harris,320
+2020-12-01,Harris,351
+2020-12-02,Harris,342
+2020-12-03,Harris,380
+2020-12-04,Harris,371
+2020-12-05,Harris,332
+2020-12-06,Harris,372
+2020-12-07,Harris,382
+2020-12-08,Harris,361
+2020-12-09,Harris,383
+2020-12-10,Harris,352
+2020-12-11,Harris,374
+2020-12-12,Harris,362
+2020-12-13,Harris,359
+2020-12-14,Harris,360
+2020-12-15,Harris,382
+2020-12-16,Harris,392
+2020-12-17,Harris,403
+2020-12-18,Harris,370
+2020-12-19,Harris,416
+2020-12-20,Harris,387
+2020-12-21,Harris,390
+2020-12-22,Harris,437
+2020-12-23,Harris,407
+2020-12-24,Harris,409
+2020-12-25,Harris,508
+2020-12-26,Harris,437
+2020-12-27,Harris,438
+2020-12-28,Harris,463
+2020-12-29,Harris,454
+2020-12-30,Harris,462
+2020-12-31,Harris,464
+2021-01-01,Harris,476
+2021-01-02,Harris,481
+2021-01-03,Harris,466
+2021-01-04,Harris,502
+2021-01-05,Harris,522
+2021-01-06,Harris,531
+2021-01-07,Harris,518
+2021-01-08,Harris,537
+2021-01-09,Harris,514
+2021-01-10,Harris,530
+2021-01-11,Harris,549
+2021-01-12,Harris,575
+2020-04-01,Galveston,4
+2020-04-02,Galveston,4
+2020-04-03,Galveston,7
+2020-04-04,Galveston,12
+2020-04-05,Galveston,15
+2020-04-06,Galveston,9
+2020-04-07,Galveston,16
+2020-04-08,Galveston,19
+2020-04-09,Galveston,22
+2020-04-10,Galveston,18
+2020-04-11,Galveston,15
+2020-04-12,Galveston,21
+2020-04-13,Galveston,17
+2020-04-14,Galveston,19
+2020-04-15,Galveston,20
+2020-04-16,Galveston,25
+2020-04-17,Galveston,28
+2020-04-18,Galveston,22
+2020-04-19,Galveston,22
+2020-04-20,Galveston,17
+2020-04-21,Galveston,33
+2020-04-22,Galveston,32
+2020-04-23,Galveston,27
+2020-04-24,Galveston,35
+2020-04-25,Galveston,25
+2020-04-26,Galveston,30
+2020-04-27,Galveston,24
+2020-04-28,Galveston,24
+2020-04-29,Galveston,24
+2020-04-30,Galveston,27
+2020-05-01,Galveston,17
+2020-05-02,Galveston,16
+2020-05-03,Galveston,13
+2020-05-04,Galveston,19
+2020-05-05,Galveston,24
+2020-05-06,Galveston,10
+2020-05-07,Galveston,12
+2020-05-08,Galveston,11
+2020-05-09,Galveston,9
+2020-05-10,Galveston,4
+2020-05-11,Galveston,10
+2020-05-12,Galveston,10
+2020-05-13,Galveston,12
+2020-05-14,Galveston,23
+2020-05-15,Galveston,27
+2020-05-16,Galveston,27
+2020-05-17,Galveston,30
+2020-05-18,Galveston,32
+2020-05-19,Galveston,30
+2020-05-20,Galveston,33
+2020-05-21,Galveston,26
+2020-05-22,Galveston,N/A
+2020-05-23,Galveston,21
+2020-05-24,Galveston,25
+2020-05-25,Galveston,25
+2020-05-26,Galveston,26
+2020-05-27,Galveston,29
+2020-05-28,Galveston,24
+2020-05-29,Galveston,27
+2020-05-30,Galveston,30
+2020-05-31,Galveston,28
+2020-06-01,Galveston,36
+2020-06-02,Galveston,37
+2020-06-03,Galveston,22
+2020-06-04,Galveston,36
+2020-06-05,Galveston,30
+2020-06-06,Galveston,49
+2020-06-07,Galveston,34
+2020-06-08,Galveston,32
+2020-06-09,Galveston,38
+2020-06-10,Galveston,41
+2020-06-11,Galveston,37
+2020-06-12,Galveston,37
+2020-06-13,Galveston,46
+2020-06-14,Galveston,43
+2020-06-15,Galveston,32
+2020-06-16,Galveston,32
+2020-06-17,Galveston,30
+2020-06-18,Galveston,34
+2020-06-19,Galveston,42
+2020-06-20,Galveston,40
+2020-06-21,Galveston,20
+2020-06-22,Galveston,32
+2020-06-23,Galveston,31
+2020-06-24,Galveston,36
+2020-06-25,Galveston,29
+2020-06-26,Galveston,37
+2020-06-27,Galveston,48
+2020-06-28,Galveston,58
+2020-06-29,Galveston,32
+2020-06-30,Galveston,39
+2020-07-01,Galveston,27
+2020-07-02,Galveston,35
+2020-07-03,Galveston,34
+2020-07-04,Galveston,48
+2020-07-05,Galveston,46
+2020-07-06,Galveston,29
+2020-07-07,Galveston,43
+2020-07-08,Galveston,43
+2020-07-09,Galveston,42
+2020-07-10,Galveston,55
+2020-07-11,Galveston,46
+2020-07-12,Galveston,55
+2020-07-13,Galveston,54
+2020-07-14,Galveston,60
+2020-07-15,Galveston,56
+2020-07-16,Galveston,66
+2020-07-17,Galveston,60
+2020-07-18,Galveston,65
+2020-07-19,Galveston,50
+2020-07-20,Galveston,57
+2020-07-21,Galveston,59
+2020-07-22,Galveston,67
+2020-07-23,Galveston,65
+2020-07-24,Galveston,65
+2020-07-25,Galveston,66
+2020-07-26,Galveston,59
+2020-07-27,Galveston,59
+2020-07-28,Galveston,59
+2020-07-29,Galveston,59
+2020-07-30,Galveston,67
+2020-07-31,Galveston,45
+2020-08-01,Galveston,52
+2020-08-02,Galveston,51
+2020-08-03,Galveston,48
+2020-08-04,Galveston,49
+2020-08-05,Galveston,63
+2020-08-06,Galveston,54
+2020-08-07,Galveston,54
+2020-08-08,Galveston,54
+2020-08-09,Galveston,48
+2020-08-10,Galveston,50
+2020-08-11,Galveston,52
+2020-08-12,Galveston,50
+2020-08-13,Galveston,48
+2020-08-14,Galveston,45
+2020-08-15,Galveston,44
+2020-08-16,Galveston,37
+2020-08-17,Galveston,43
+2020-08-18,Galveston,39
+2020-08-19,Galveston,38
+2020-08-20,Galveston,41
+2020-08-21,Galveston,35
+2020-08-22,Galveston,33
+2020-08-23,Galveston,16
+2020-08-24,Galveston,19
+2020-08-25,Galveston,31
+2020-08-26,Galveston,20
+2020-08-27,Galveston,15
+2020-08-28,Galveston,22
+2020-08-29,Galveston,20
+2020-08-30,Galveston,19
+2020-08-31,Galveston,17
+2020-09-01,Galveston,22
+2020-09-02,Galveston,28
+2020-09-03,Galveston,21
+2020-09-04,Galveston,22
+2020-09-05,Galveston,28
+2020-09-06,Galveston,27
+2020-09-07,Galveston,23
+2020-09-08,Galveston,21
+2020-09-09,Galveston,21
+2020-09-10,Galveston,19
+2020-09-11,Galveston,16
+2020-09-12,Galveston,13
+2020-09-13,Galveston,20
+2020-09-14,Galveston,19
+2020-09-15,Galveston,20
+2020-09-16,Galveston,17
+2020-09-17,Galveston,19
+2020-09-18,Galveston,16
+2020-09-19,Galveston,16
+2020-09-20,Galveston,17
+2020-09-21,Galveston,18
+2020-09-22,Galveston,14
+2020-09-23,Galveston,18
+2020-09-24,Galveston,12
+2020-09-25,Galveston,13
+2020-09-26,Galveston,11
+2020-09-27,Galveston,12
+2020-09-28,Galveston,10
+2020-09-29,Galveston,13
+2020-09-30,Galveston,19
+2020-10-01,Galveston,17
+2020-10-02,Galveston,12
+2020-10-03,Galveston,15
+2020-10-04,Galveston,12
+2020-10-05,Galveston,14
+2020-10-06,Galveston,10
+2020-10-07,Galveston,14
+2020-10-08,Galveston,9
+2020-10-09,Galveston,10
+2020-10-10,Galveston,11
+2020-10-11,Galveston,12
+2020-10-12,Galveston,14
+2020-10-13,Galveston,13
+2020-10-14,Galveston,10
+2020-10-15,Galveston,13
+2020-10-16,Galveston,14
+2020-10-17,Galveston,11
+2020-10-18,Galveston,9
+2020-10-19,Galveston,8
+2020-10-20,Galveston,7
+2020-10-21,Galveston,6
+2020-10-22,Galveston,9
+2020-10-23,Galveston,9
+2020-10-24,Galveston,8
+2020-10-25,Galveston,8
+2020-10-26,Galveston,11
+2020-10-27,Galveston,8
+2020-10-28,Galveston,8
+2020-10-29,Galveston,6
+2020-10-30,Galveston,6
+2020-10-31,Galveston,8
+2020-11-01,Galveston,8
+2020-11-02,Galveston,7
+2020-11-03,Galveston,8
+2020-11-04,Galveston,10
+2020-11-05,Galveston,6
+2020-11-06,Galveston,10
+2020-11-07,Galveston,13
+2020-11-08,Galveston,10
+2020-11-09,Galveston,11
+2020-11-10,Galveston,17
+2020-11-11,Galveston,18
+2020-11-12,Galveston,19
+2020-11-13,Galveston,17
+2020-11-14,Galveston,21
+2020-11-15,Galveston,19
+2020-11-16,Galveston,17
+2020-11-17,Galveston,17
+2020-11-18,Galveston,19
+2020-11-19,Galveston,18
+2020-11-20,Galveston,13
+2020-11-21,Galveston,16
+2020-11-22,Galveston,16
+2020-11-23,Galveston,18
+2020-11-24,Galveston,19
+2020-11-25,Galveston,19
+2020-11-26,Galveston,20
+2020-11-27,Galveston,20
+2020-11-28,Galveston,19
+2020-11-29,Galveston,32
+2020-11-30,Galveston,19
+2020-12-01,Galveston,21
+2020-12-02,Galveston,13
+2020-12-03,Galveston,15
+2020-12-04,Galveston,21
+2020-12-05,Galveston,16
+2020-12-06,Galveston,16
+2020-12-07,Galveston,24
+2020-12-08,Galveston,25
+2020-12-09,Galveston,25
+2020-12-10,Galveston,25
+2020-12-11,Galveston,32
+2020-12-12,Galveston,31
+2020-12-13,Galveston,15
+2020-12-14,Galveston,29
+2020-12-15,Galveston,32
+2020-12-16,Galveston,29
+2020-12-17,Galveston,29
+2020-12-18,Galveston,28
+2020-12-19,Galveston,27
+2020-12-20,Galveston,26
+2020-12-21,Galveston,28
+2020-12-22,Galveston,24
+2020-12-23,Galveston,28
+2020-12-24,Galveston,13
+2020-12-25,Galveston,26
+2020-12-26,Galveston,26
+2020-12-27,Galveston,26
+2020-12-28,Galveston,31
+2020-12-29,Galveston,37
+2020-12-30,Galveston,38
+2020-12-31,Galveston,39
+2021-01-01,Galveston,25
+2021-01-02,Galveston,33
+2021-01-03,Galveston,37
+2021-01-04,Galveston,36
+2021-01-05,Galveston,41
+2021-01-06,Galveston,42
+2021-01-07,Galveston,36
+2021-01-08,Galveston,39
+2021-01-09,Galveston,31
+2021-01-10,Galveston,27
+2021-01-11,Galveston,30
+2021-01-12,Galveston,29
+2020-04-01,Jefferson,1
+2020-04-02,Jefferson,5
+2020-04-03,Jefferson,18
+2020-04-04,Jefferson,12
+2020-04-05,Jefferson,13
+2020-04-06,Jefferson,12
+2020-04-07,Jefferson,15
+2020-04-08,Jefferson,12
+2020-04-09,Jefferson,20
+2020-04-10,Jefferson,14
+2020-04-11,Jefferson,14
+2020-04-12,Jefferson,17
+2020-04-13,Jefferson,19
+2020-04-14,Jefferson,18
+2020-04-15,Jefferson,18
+2020-04-16,Jefferson,18
+2020-04-17,Jefferson,18
+2020-04-18,Jefferson,11
+2020-04-19,Jefferson,23
+2020-04-20,Jefferson,16
+2020-04-21,Jefferson,16
+2020-04-22,Jefferson,15
+2020-04-23,Jefferson,18
+2020-04-24,Jefferson,18
+2020-04-25,Jefferson,17
+2020-04-26,Jefferson,15
+2020-04-27,Jefferson,14
+2020-04-28,Jefferson,16
+2020-04-29,Jefferson,13
+2020-04-30,Jefferson,9
+2020-05-01,Jefferson,6
+2020-05-02,Jefferson,7
+2020-05-03,Jefferson,9
+2020-05-04,Jefferson,7
+2020-05-05,Jefferson,7
+2020-05-06,Jefferson,8
+2020-05-07,Jefferson,7
+2020-05-08,Jefferson,9
+2020-05-09,Jefferson,8
+2020-05-10,Jefferson,10
+2020-05-11,Jefferson,9
+2020-05-12,Jefferson,11
+2020-05-13,Jefferson,15
+2020-05-14,Jefferson,10
+2020-05-15,Jefferson,11
+2020-05-16,Jefferson,11
+2020-05-17,Jefferson,10
+2020-05-18,Jefferson,13
+2020-05-19,Jefferson,13
+2020-05-20,Jefferson,15
+2020-05-21,Jefferson,13
+2020-05-22,Jefferson,N/A
+2020-05-23,Jefferson,12
+2020-05-24,Jefferson,14
+2020-05-25,Jefferson,6
+2020-05-26,Jefferson,12
+2020-05-27,Jefferson,6
+2020-05-28,Jefferson,14
+2020-05-29,Jefferson,9
+2020-05-30,Jefferson,6
+2020-05-31,Jefferson,11
+2020-06-01,Jefferson,13
+2020-06-02,Jefferson,16
+2020-06-03,Jefferson,15
+2020-06-04,Jefferson,12
+2020-06-05,Jefferson,11
+2020-06-06,Jefferson,13
+2020-06-07,Jefferson,12
+2020-06-08,Jefferson,13
+2020-06-09,Jefferson,18
+2020-06-10,Jefferson,17
+2020-06-11,Jefferson,18
+2020-06-12,Jefferson,18
+2020-06-13,Jefferson,14
+2020-06-14,Jefferson,19
+2020-06-15,Jefferson,17
+2020-06-16,Jefferson,21
+2020-06-17,Jefferson,20
+2020-06-18,Jefferson,18
+2020-06-19,Jefferson,17
+2020-06-20,Jefferson,17
+2020-06-21,Jefferson,22
+2020-06-22,Jefferson,28
+2020-06-23,Jefferson,34
+2020-06-24,Jefferson,24
+2020-06-25,Jefferson,28
+2020-06-26,Jefferson,26
+2020-06-27,Jefferson,30
+2020-06-28,Jefferson,26
+2020-06-29,Jefferson,25
+2020-06-30,Jefferson,25
+2020-07-01,Jefferson,24
+2020-07-02,Jefferson,28
+2020-07-03,Jefferson,30
+2020-07-04,Jefferson,32
+2020-07-05,Jefferson,36
+2020-07-06,Jefferson,49
+2020-07-07,Jefferson,41
+2020-07-08,Jefferson,38
+2020-07-09,Jefferson,27
+2020-07-10,Jefferson,49
+2020-07-11,Jefferson,45
+2020-07-12,Jefferson,46
+2020-07-13,Jefferson,45
+2020-07-14,Jefferson,42
+2020-07-15,Jefferson,38
+2020-07-16,Jefferson,41
+2020-07-17,Jefferson,40
+2020-07-18,Jefferson,41
+2020-07-19,Jefferson,44
+2020-07-20,Jefferson,40
+2020-07-21,Jefferson,37
+2020-07-22,Jefferson,46
+2020-07-23,Jefferson,46
+2020-07-24,Jefferson,48
+2020-07-25,Jefferson,43
+2020-07-26,Jefferson,39
+2020-07-27,Jefferson,46
+2020-07-28,Jefferson,41
+2020-07-29,Jefferson,36
+2020-07-30,Jefferson,26
+2020-07-31,Jefferson,39
+2020-08-01,Jefferson,36
+2020-08-02,Jefferson,37
+2020-08-03,Jefferson,37
+2020-08-04,Jefferson,40
+2020-08-05,Jefferson,42
+2020-08-06,Jefferson,42
+2020-08-07,Jefferson,43
+2020-08-08,Jefferson,24
+2020-08-09,Jefferson,36
+2020-08-10,Jefferson,32
+2020-08-11,Jefferson,37
+2020-08-12,Jefferson,34
+2020-08-13,Jefferson,33
+2020-08-14,Jefferson,35
+2020-08-15,Jefferson,33
+2020-08-16,Jefferson,34
+2020-08-17,Jefferson,33
+2020-08-18,Jefferson,35
+2020-08-19,Jefferson,35
+2020-08-20,Jefferson,33
+2020-08-21,Jefferson,31
+2020-08-22,Jefferson,28
+2020-08-23,Jefferson,26
+2020-08-24,Jefferson,27
+2020-08-25,Jefferson,26
+2020-08-26,Jefferson,15
+2020-08-27,Jefferson,14
+2020-08-28,Jefferson,14
+2020-08-29,Jefferson,19
+2020-08-30,Jefferson,22
+2020-08-31,Jefferson,22
+2020-09-01,Jefferson,27
+2020-09-02,Jefferson,20
+2020-09-03,Jefferson,25
+2020-09-04,Jefferson,29
+2020-09-05,Jefferson,21
+2020-09-06,Jefferson,22
+2020-09-07,Jefferson,23
+2020-09-08,Jefferson,21
+2020-09-09,Jefferson,25
+2020-09-10,Jefferson,27
+2020-09-11,Jefferson,22
+2020-09-12,Jefferson,20
+2020-09-13,Jefferson,16
+2020-09-14,Jefferson,21
+2020-09-15,Jefferson,20
+2020-09-16,Jefferson,21
+2020-09-17,Jefferson,23
+2020-09-18,Jefferson,29
+2020-09-19,Jefferson,22
+2020-09-20,Jefferson,17
+2020-09-21,Jefferson,21
+2020-09-22,Jefferson,22
+2020-09-23,Jefferson,23
+2020-09-24,Jefferson,17
+2020-09-25,Jefferson,16
+2020-09-26,Jefferson,17
+2020-09-27,Jefferson,19
+2020-09-28,Jefferson,20
+2020-09-29,Jefferson,18
+2020-09-30,Jefferson,17
+2020-10-01,Jefferson,22
+2020-10-02,Jefferson,17
+2020-10-03,Jefferson,20
+2020-10-04,Jefferson,20
+2020-10-05,Jefferson,17
+2020-10-06,Jefferson,17
+2020-10-07,Jefferson,20
+2020-10-08,Jefferson,21
+2020-10-09,Jefferson,18
+2020-10-10,Jefferson,19
+2020-10-11,Jefferson,26
+2020-10-12,Jefferson,25
+2020-10-13,Jefferson,24
+2020-10-14,Jefferson,19
+2020-10-15,Jefferson,19
+2020-10-16,Jefferson,16
+2020-10-17,Jefferson,15
+2020-10-18,Jefferson,14
+2020-10-19,Jefferson,17
+2020-10-20,Jefferson,16
+2020-10-21,Jefferson,15
+2020-10-22,Jefferson,17
+2020-10-23,Jefferson,19
+2020-10-24,Jefferson,20
+2020-10-25,Jefferson,19
+2020-10-26,Jefferson,20
+2020-10-27,Jefferson,23
+2020-10-28,Jefferson,21
+2020-10-29,Jefferson,22
+2020-10-30,Jefferson,23
+2020-10-31,Jefferson,14
+2020-11-01,Jefferson,19
+2020-11-02,Jefferson,19
+2020-11-03,Jefferson,18
+2020-11-04,Jefferson,12
+2020-11-05,Jefferson,16
+2020-11-06,Jefferson,15
+2020-11-07,Jefferson,17
+2020-11-08,Jefferson,17
+2020-11-09,Jefferson,18
+2020-11-10,Jefferson,19
+2020-11-11,Jefferson,19
+2020-11-12,Jefferson,18
+2020-11-13,Jefferson,22
+2020-11-14,Jefferson,18
+2020-11-15,Jefferson,21
+2020-11-16,Jefferson,40
+2020-11-17,Jefferson,19
+2020-11-18,Jefferson,17
+2020-11-19,Jefferson,22
+2020-11-20,Jefferson,20
+2020-11-21,Jefferson,21
+2020-11-22,Jefferson,23
+2020-11-23,Jefferson,22
+2020-11-24,Jefferson,32
+2020-11-25,Jefferson,36
+2020-11-26,Jefferson,30
+2020-11-27,Jefferson,33
+2020-11-28,Jefferson,34
+2020-11-29,Jefferson,39
+2020-11-30,Jefferson,41
+2020-12-01,Jefferson,40
+2020-12-02,Jefferson,40
+2020-12-03,Jefferson,32
+2020-12-04,Jefferson,32
+2020-12-05,Jefferson,32
+2020-12-06,Jefferson,30
+2020-12-07,Jefferson,36
+2020-12-08,Jefferson,39
+2020-12-09,Jefferson,33
+2020-12-10,Jefferson,35
+2020-12-11,Jefferson,36
+2020-12-12,Jefferson,40
+2020-12-13,Jefferson,40
+2020-12-14,Jefferson,55
+2020-12-15,Jefferson,42
+2020-12-16,Jefferson,46
+2020-12-17,Jefferson,41
+2020-12-18,Jefferson,44
+2020-12-19,Jefferson,38
+2020-12-20,Jefferson,45
+2020-12-21,Jefferson,44
+2020-12-22,Jefferson,60
+2020-12-23,Jefferson,47
+2020-12-24,Jefferson,44
+2020-12-25,Jefferson,42
+2020-12-26,Jefferson,44
+2020-12-27,Jefferson,44
+2020-12-28,Jefferson,43
+2020-12-29,Jefferson,46
+2020-12-30,Jefferson,28
+2020-12-31,Jefferson,48
+2021-01-01,Jefferson,51
+2021-01-02,Jefferson,38
+2021-01-03,Jefferson,39
+2021-01-04,Jefferson,40
+2021-01-05,Jefferson,50
+2021-01-06,Jefferson,52
+2021-01-07,Jefferson,34
+2021-01-08,Jefferson,25
+2021-01-09,Jefferson,33
+2021-01-10,Jefferson,36
+2021-01-11,Jefferson,46
+2021-01-12,Jefferson,46
+2020-04-01,Montgomery,3
+2020-04-02,Montgomery,4
+2020-04-03,Montgomery,18
+2020-04-04,Montgomery,15
+2020-04-05,Montgomery,14
+2020-04-06,Montgomery,12
+2020-04-07,Montgomery,18
+2020-04-08,Montgomery,28
+2020-04-09,Montgomery,10
+2020-04-10,Montgomery,16
+2020-04-11,Montgomery,15
+2020-04-12,Montgomery,14
+2020-04-13,Montgomery,21
+2020-04-14,Montgomery,15
+2020-04-15,Montgomery,19
+2020-04-16,Montgomery,17
+2020-04-17,Montgomery,15
+2020-04-18,Montgomery,13
+2020-04-19,Montgomery,15
+2020-04-20,Montgomery,16
+2020-04-21,Montgomery,18
+2020-04-22,Montgomery,18
+2020-04-23,Montgomery,15
+2020-04-24,Montgomery,13
+2020-04-25,Montgomery,18
+2020-04-26,Montgomery,11
+2020-04-27,Montgomery,14
+2020-04-28,Montgomery,13
+2020-04-29,Montgomery,13
+2020-04-30,Montgomery,19
+2020-05-01,Montgomery,11
+2020-05-02,Montgomery,8
+2020-05-03,Montgomery,12
+2020-05-04,Montgomery,17
+2020-05-05,Montgomery,22
+2020-05-06,Montgomery,15
+2020-05-07,Montgomery,14
+2020-05-08,Montgomery,11
+2020-05-09,Montgomery,10
+2020-05-10,Montgomery,10
+2020-05-11,Montgomery,6
+2020-05-12,Montgomery,9
+2020-05-13,Montgomery,9
+2020-05-14,Montgomery,10
+2020-05-15,Montgomery,11
+2020-05-16,Montgomery,8
+2020-05-17,Montgomery,8
+2020-05-18,Montgomery,5
+2020-05-19,Montgomery,9
+2020-05-20,Montgomery,9
+2020-05-21,Montgomery,12
+2020-05-22,Montgomery,7
+2020-05-23,Montgomery,8
+2020-05-24,Montgomery,14
+2020-05-25,Montgomery,9
+2020-05-26,Montgomery,10
+2020-05-27,Montgomery,9
+2020-05-28,Montgomery,5
+2020-05-29,Montgomery,6
+2020-05-30,Montgomery,5
+2020-05-31,Montgomery,7
+2020-06-01,Montgomery,5
+2020-06-02,Montgomery,7
+2020-06-03,Montgomery,10
+2020-06-04,Montgomery,11
+2020-06-05,Montgomery,8
+2020-06-06,Montgomery,11
+2020-06-07,Montgomery,12
+2020-06-08,Montgomery,12
+2020-06-09,Montgomery,13
+2020-06-10,Montgomery,10
+2020-06-11,Montgomery,12
+2020-06-12,Montgomery,10
+2020-06-13,Montgomery,12
+2020-06-14,Montgomery,15
+2020-06-15,Montgomery,12
+2020-06-16,Montgomery,13
+2020-06-17,Montgomery,13
+2020-06-18,Montgomery,20
+2020-06-19,Montgomery,20
+2020-06-20,Montgomery,25
+2020-06-21,Montgomery,27
+2020-06-22,Montgomery,31
+2020-06-23,Montgomery,26
+2020-06-24,Montgomery,23
+2020-06-25,Montgomery,31
+2020-06-26,Montgomery,42
+2020-06-27,Montgomery,41
+2020-06-28,Montgomery,46
+2020-06-29,Montgomery,48
+2020-06-30,Montgomery,57
+2020-07-01,Montgomery,59
+2020-07-02,Montgomery,57
+2020-07-03,Montgomery,53
+2020-07-04,Montgomery,51
+2020-07-05,Montgomery,55
+2020-07-06,Montgomery,60
+2020-07-07,Montgomery,96
+2020-07-08,Montgomery,62
+2020-07-09,Montgomery,56
+2020-07-10,Montgomery,66
+2020-07-11,Montgomery,55
+2020-07-12,Montgomery,50
+2020-07-13,Montgomery,62
+2020-07-14,Montgomery,72
+2020-07-15,Montgomery,70
+2020-07-16,Montgomery,68
+2020-07-17,Montgomery,66
+2020-07-18,Montgomery,66
+2020-07-19,Montgomery,63
+2020-07-20,Montgomery,63
+2020-07-21,Montgomery,64
+2020-07-22,Montgomery,42
+2020-07-23,Montgomery,62
+2020-07-24,Montgomery,63
+2020-07-25,Montgomery,58
+2020-07-26,Montgomery,54
+2020-07-27,Montgomery,58
+2020-07-28,Montgomery,54
+2020-07-29,Montgomery,52
+2020-07-30,Montgomery,53
+2020-07-31,Montgomery,51
+2020-08-01,Montgomery,52
+2020-08-02,Montgomery,48
+2020-08-03,Montgomery,46
+2020-08-04,Montgomery,50
+2020-08-05,Montgomery,42
+2020-08-06,Montgomery,45
+2020-08-07,Montgomery,46
+2020-08-08,Montgomery,41
+2020-08-09,Montgomery,45
+2020-08-10,Montgomery,45
+2020-08-11,Montgomery,41
+2020-08-12,Montgomery,34
+2020-08-13,Montgomery,31
+2020-08-14,Montgomery,35
+2020-08-15,Montgomery,36
+2020-08-16,Montgomery,38
+2020-08-17,Montgomery,38
+2020-08-18,Montgomery,39
+2020-08-19,Montgomery,38
+2020-08-20,Montgomery,40
+2020-08-21,Montgomery,24
+2020-08-22,Montgomery,30
+2020-08-23,Montgomery,32
+2020-08-24,Montgomery,33
+2020-08-25,Montgomery,31
+2020-08-26,Montgomery,33
+2020-08-27,Montgomery,34
+2020-08-28,Montgomery,34
+2020-08-29,Montgomery,27
+2020-08-30,Montgomery,28
+2020-08-31,Montgomery,26
+2020-09-01,Montgomery,22
+2020-09-02,Montgomery,21
+2020-09-03,Montgomery,21
+2020-09-04,Montgomery,25
+2020-09-05,Montgomery,22
+2020-09-06,Montgomery,25
+2020-09-07,Montgomery,28
+2020-09-08,Montgomery,20
+2020-09-09,Montgomery,18
+2020-09-10,Montgomery,19
+2020-09-11,Montgomery,19
+2020-09-12,Montgomery,15
+2020-09-13,Montgomery,16
+2020-09-14,Montgomery,17
+2020-09-15,Montgomery,16
+2020-09-16,Montgomery,18
+2020-09-17,Montgomery,18
+2020-09-18,Montgomery,14
+2020-09-19,Montgomery,17
+2020-09-20,Montgomery,17
+2020-09-21,Montgomery,14
+2020-09-22,Montgomery,6
+2020-09-23,Montgomery,13
+2020-09-24,Montgomery,12
+2020-09-25,Montgomery,15
+2020-09-26,Montgomery,14
+2020-09-27,Montgomery,18
+2020-09-28,Montgomery,17
+2020-09-29,Montgomery,15
+2020-09-30,Montgomery,14
+2020-10-01,Montgomery,18
+2020-10-02,Montgomery,17
+2020-10-03,Montgomery,15
+2020-10-04,Montgomery,9
+2020-10-05,Montgomery,10
+2020-10-06,Montgomery,13
+2020-10-07,Montgomery,15
+2020-10-08,Montgomery,21
+2020-10-09,Montgomery,17
+2020-10-10,Montgomery,21
+2020-10-11,Montgomery,14
+2020-10-12,Montgomery,14
+2020-10-13,Montgomery,16
+2020-10-14,Montgomery,19
+2020-10-15,Montgomery,19
+2020-10-16,Montgomery,16
+2020-10-17,Montgomery,18
+2020-10-18,Montgomery,15
+2020-10-19,Montgomery,18
+2020-10-20,Montgomery,17
+2020-10-21,Montgomery,15
+2020-10-22,Montgomery,13
+2020-10-23,Montgomery,17
+2020-10-24,Montgomery,18
+2020-10-25,Montgomery,17
+2020-10-26,Montgomery,19
+2020-10-27,Montgomery,15
+2020-10-28,Montgomery,20
+2020-10-29,Montgomery,21
+2020-10-30,Montgomery,18
+2020-10-31,Montgomery,17
+2020-11-01,Montgomery,18
+2020-11-02,Montgomery,16
+2020-11-03,Montgomery,21
+2020-11-04,Montgomery,23
+2020-11-05,Montgomery,26
+2020-11-06,Montgomery,22
+2020-11-07,Montgomery,23
+2020-11-08,Montgomery,23
+2020-11-09,Montgomery,26
+2020-11-10,Montgomery,25
+2020-11-11,Montgomery,25
+2020-11-12,Montgomery,20
+2020-11-13,Montgomery,23
+2020-11-14,Montgomery,18
+2020-11-15,Montgomery,33
+2020-11-16,Montgomery,28
+2020-11-17,Montgomery,29
+2020-11-18,Montgomery,34
+2020-11-19,Montgomery,37
+2020-11-20,Montgomery,35
+2020-11-21,Montgomery,38
+2020-11-22,Montgomery,38
+2020-11-23,Montgomery,40
+2020-11-24,Montgomery,38
+2020-11-25,Montgomery,40
+2020-11-26,Montgomery,42
+2020-11-27,Montgomery,41
+2020-11-28,Montgomery,36
+2020-11-29,Montgomery,43
+2020-11-30,Montgomery,38
+2020-12-01,Montgomery,41
+2020-12-02,Montgomery,42
+2020-12-03,Montgomery,43
+2020-12-04,Montgomery,41
+2020-12-05,Montgomery,35
+2020-12-06,Montgomery,41
+2020-12-07,Montgomery,41
+2020-12-08,Montgomery,34
+2020-12-09,Montgomery,35
+2020-12-10,Montgomery,31
+2020-12-11,Montgomery,32
+2020-12-12,Montgomery,34
+2020-12-13,Montgomery,35
+2020-12-14,Montgomery,36
+2020-12-15,Montgomery,37
+2020-12-16,Montgomery,30
+2020-12-17,Montgomery,33
+2020-12-18,Montgomery,31
+2020-12-19,Montgomery,31
+2020-12-20,Montgomery,34
+2020-12-21,Montgomery,36
+2020-12-22,Montgomery,36
+2020-12-23,Montgomery,46
+2020-12-24,Montgomery,37
+2020-12-25,Montgomery,43
+2020-12-26,Montgomery,45
+2020-12-27,Montgomery,48
+2020-12-28,Montgomery,38
+2020-12-29,Montgomery,47
+2020-12-30,Montgomery,42
+2020-12-31,Montgomery,52
+2021-01-01,Montgomery,47
+2021-01-02,Montgomery,56
+2021-01-03,Montgomery,49
+2021-01-04,Montgomery,55
+2021-01-05,Montgomery,53
+2021-01-06,Montgomery,56
+2021-01-07,Montgomery,60
+2021-01-08,Montgomery,61
+2021-01-09,Montgomery,59
+2021-01-10,Montgomery,58
+2021-01-11,Montgomery,69
+2021-01-12,Montgomery,66
+2020-04-01,Nacogdoches,0
+2020-04-02,Nacogdoches,2
+2020-04-03,Nacogdoches,10
+2020-04-04,Nacogdoches,6
+2020-04-05,Nacogdoches,3
+2020-04-06,Nacogdoches,5
+2020-04-07,Nacogdoches,2
+2020-04-08,Nacogdoches,5
+2020-04-09,Nacogdoches,9
+2020-04-10,Nacogdoches,5
+2020-04-11,Nacogdoches,3
+2020-04-12,Nacogdoches,4
+2020-04-13,Nacogdoches,5
+2020-04-14,Nacogdoches,3
+2020-04-15,Nacogdoches,7
+2020-04-16,Nacogdoches,7
+2020-04-17,Nacogdoches,10
+2020-04-18,Nacogdoches,7
+2020-04-19,Nacogdoches,6
+2020-04-20,Nacogdoches,6
+2020-04-21,Nacogdoches,7
+2020-04-22,Nacogdoches,5
+2020-04-23,Nacogdoches,5
+2020-04-24,Nacogdoches,5
+2020-04-25,Nacogdoches,5
+2020-04-26,Nacogdoches,2
+2020-04-27,Nacogdoches,2
+2020-04-28,Nacogdoches,2
+2020-04-29,Nacogdoches,3
+2020-04-30,Nacogdoches,2
+2020-05-01,Nacogdoches,4
+2020-05-02,Nacogdoches,2
+2020-05-03,Nacogdoches,4
+2020-05-04,Nacogdoches,2
+2020-05-05,Nacogdoches,1
+2020-05-06,Nacogdoches,2
+2020-05-07,Nacogdoches,3
+2020-05-08,Nacogdoches,1
+2020-05-09,Nacogdoches,5
+2020-05-10,Nacogdoches,1
+2020-05-11,Nacogdoches,2
+2020-05-12,Nacogdoches,2
+2020-05-13,Nacogdoches,5
+2020-05-14,Nacogdoches,1
+2020-05-15,Nacogdoches,2
+2020-05-16,Nacogdoches,0
+2020-05-17,Nacogdoches,3
+2020-05-18,Nacogdoches,3
+2020-05-19,Nacogdoches,1
+2020-05-20,Nacogdoches,1
+2020-05-21,Nacogdoches,1
+2020-05-22,Nacogdoches,N/A
+2020-05-23,Nacogdoches,3
+2020-05-24,Nacogdoches,3
+2020-05-25,Nacogdoches,4
+2020-05-26,Nacogdoches,4
+2020-05-27,Nacogdoches,3
+2020-05-28,Nacogdoches,6
+2020-05-29,Nacogdoches,4
+2020-05-30,Nacogdoches,6
+2020-05-31,Nacogdoches,3
+2020-06-01,Nacogdoches,3
+2020-06-02,Nacogdoches,3
+2020-06-03,Nacogdoches,5
+2020-06-04,Nacogdoches,3
+2020-06-05,Nacogdoches,3
+2020-06-06,Nacogdoches,3
+2020-06-07,Nacogdoches,2
+2020-06-08,Nacogdoches,2
+2020-06-09,Nacogdoches,5
+2020-06-10,Nacogdoches,5
+2020-06-11,Nacogdoches,4
+2020-06-12,Nacogdoches,5
+2020-06-13,Nacogdoches,4
+2020-06-14,Nacogdoches,5
+2020-06-15,Nacogdoches,6
+2020-06-16,Nacogdoches,7
+2020-06-17,Nacogdoches,6
+2020-06-18,Nacogdoches,4
+2020-06-19,Nacogdoches,4
+2020-06-20,Nacogdoches,4
+2020-06-21,Nacogdoches,4
+2020-06-22,Nacogdoches,4
+2020-06-23,Nacogdoches,2
+2020-06-24,Nacogdoches,4
+2020-06-25,Nacogdoches,4
+2020-06-26,Nacogdoches,3
+2020-06-27,Nacogdoches,3
+2020-06-28,Nacogdoches,6
+2020-06-29,Nacogdoches,12
+2020-06-30,Nacogdoches,7
+2020-07-01,Nacogdoches,5
+2020-07-02,Nacogdoches,6
+2020-07-03,Nacogdoches,6
+2020-07-04,Nacogdoches,6
+2020-07-05,Nacogdoches,9
+2020-07-06,Nacogdoches,6
+2020-07-07,Nacogdoches,3
+2020-07-08,Nacogdoches,4
+2020-07-09,Nacogdoches,6
+2020-07-10,Nacogdoches,4
+2020-07-11,Nacogdoches,6
+2020-07-12,Nacogdoches,5
+2020-07-13,Nacogdoches,8
+2020-07-14,Nacogdoches,6
+2020-07-15,Nacogdoches,8
+2020-07-16,Nacogdoches,11
+2020-07-17,Nacogdoches,8
+2020-07-18,Nacogdoches,8
+2020-07-19,Nacogdoches,8
+2020-07-20,Nacogdoches,10
+2020-07-21,Nacogdoches,10
+2020-07-22,Nacogdoches,15
+2020-07-23,Nacogdoches,10
+2020-07-24,Nacogdoches,10
+2020-07-25,Nacogdoches,10
+2020-07-26,Nacogdoches,8
+2020-07-27,Nacogdoches,0
+2020-07-28,Nacogdoches,10
+2020-07-29,Nacogdoches,12
+2020-07-30,Nacogdoches,11
+2020-07-31,Nacogdoches,10
+2020-08-01,Nacogdoches,9
+2020-08-02,Nacogdoches,10
+2020-08-03,Nacogdoches,13
+2020-08-04,Nacogdoches,10
+2020-08-05,Nacogdoches,7
+2020-08-06,Nacogdoches,6
+2020-08-07,Nacogdoches,7
+2020-08-08,Nacogdoches,7
+2020-08-09,Nacogdoches,7
+2020-08-10,Nacogdoches,12
+2020-08-11,Nacogdoches,7
+2020-08-12,Nacogdoches,8
+2020-08-13,Nacogdoches,11
+2020-08-14,Nacogdoches,8
+2020-08-15,Nacogdoches,8
+2020-08-16,Nacogdoches,6
+2020-08-17,Nacogdoches,9
+2020-08-18,Nacogdoches,9
+2020-08-19,Nacogdoches,8
+2020-08-20,Nacogdoches,7
+2020-08-21,Nacogdoches,11
+2020-08-22,Nacogdoches,9
+2020-08-23,Nacogdoches,10
+2020-08-24,Nacogdoches,10
+2020-08-25,Nacogdoches,11
+2020-08-26,Nacogdoches,10
+2020-08-27,Nacogdoches,10
+2020-08-28,Nacogdoches,10
+2020-08-29,Nacogdoches,11
+2020-08-30,Nacogdoches,7
+2020-08-31,Nacogdoches,7
+2020-09-01,Nacogdoches,8
+2020-09-02,Nacogdoches,7
+2020-09-03,Nacogdoches,7
+2020-09-04,Nacogdoches,5
+2020-09-05,Nacogdoches,6
+2020-09-06,Nacogdoches,5
+2020-09-07,Nacogdoches,8
+2020-09-08,Nacogdoches,11
+2020-09-09,Nacogdoches,11
+2020-09-10,Nacogdoches,9
+2020-09-11,Nacogdoches,10
+2020-09-12,Nacogdoches,9
+2020-09-13,Nacogdoches,10
+2020-09-14,Nacogdoches,8
+2020-09-15,Nacogdoches,8
+2020-09-16,Nacogdoches,6
+2020-09-17,Nacogdoches,5
+2020-09-18,Nacogdoches,5
+2020-09-19,Nacogdoches,4
+2020-09-20,Nacogdoches,5
+2020-09-21,Nacogdoches,4
+2020-09-22,Nacogdoches,8
+2020-09-23,Nacogdoches,8
+2020-09-24,Nacogdoches,6
+2020-09-25,Nacogdoches,4
+2020-09-26,Nacogdoches,4
+2020-09-27,Nacogdoches,3
+2020-09-28,Nacogdoches,4
+2020-09-29,Nacogdoches,4
+2020-09-30,Nacogdoches,4
+2020-10-01,Nacogdoches,2
+2020-10-02,Nacogdoches,2
+2020-10-03,Nacogdoches,3
+2020-10-04,Nacogdoches,4
+2020-10-05,Nacogdoches,4
+2020-10-06,Nacogdoches,3
+2020-10-07,Nacogdoches,3
+2020-10-08,Nacogdoches,3
+2020-10-09,Nacogdoches,4
+2020-10-10,Nacogdoches,6
+2020-10-11,Nacogdoches,7
+2020-10-12,Nacogdoches,8
+2020-10-13,Nacogdoches,6
+2020-10-14,Nacogdoches,5
+2020-10-15,Nacogdoches,6
+2020-10-16,Nacogdoches,5
+2020-10-17,Nacogdoches,4
+2020-10-18,Nacogdoches,3
+2020-10-19,Nacogdoches,3
+2020-10-20,Nacogdoches,2
+2020-10-21,Nacogdoches,3
+2020-10-22,Nacogdoches,6
+2020-10-23,Nacogdoches,5
+2020-10-24,Nacogdoches,4
+2020-10-25,Nacogdoches,7
+2020-10-26,Nacogdoches,7
+2020-10-27,Nacogdoches,8
+2020-10-28,Nacogdoches,9
+2020-10-29,Nacogdoches,8
+2020-10-30,Nacogdoches,5
+2020-10-31,Nacogdoches,6
+2020-11-01,Nacogdoches,8
+2020-11-02,Nacogdoches,6
+2020-11-03,Nacogdoches,6
+2020-11-04,Nacogdoches,6
+2020-11-05,Nacogdoches,7
+2020-11-06,Nacogdoches,6
+2020-11-07,Nacogdoches,7
+2020-11-08,Nacogdoches,5
+2020-11-09,Nacogdoches,5
+2020-11-10,Nacogdoches,6
+2020-11-11,Nacogdoches,5
+2020-11-12,Nacogdoches,7
+2020-11-13,Nacogdoches,2
+2020-11-14,Nacogdoches,4
+2020-11-15,Nacogdoches,3
+2020-11-16,Nacogdoches,6
+2020-11-17,Nacogdoches,4
+2020-11-18,Nacogdoches,4
+2020-11-19,Nacogdoches,5
+2020-11-20,Nacogdoches,5
+2020-11-21,Nacogdoches,5
+2020-11-22,Nacogdoches,5
+2020-11-23,Nacogdoches,6
+2020-11-24,Nacogdoches,3
+2020-11-25,Nacogdoches,3
+2020-11-26,Nacogdoches,3
+2020-11-27,Nacogdoches,3
+2020-11-28,Nacogdoches,2
+2020-11-29,Nacogdoches,2
+2020-11-30,Nacogdoches,3
+2020-12-01,Nacogdoches,6
+2020-12-02,Nacogdoches,3
+2020-12-03,Nacogdoches,3
+2020-12-04,Nacogdoches,3
+2020-12-05,Nacogdoches,3
+2020-12-06,Nacogdoches,4
+2020-12-07,Nacogdoches,4
+2020-12-08,Nacogdoches,7
+2020-12-09,Nacogdoches,4
+2020-12-10,Nacogdoches,7
+2020-12-11,Nacogdoches,6
+2020-12-12,Nacogdoches,6
+2020-12-13,Nacogdoches,7
+2020-12-14,Nacogdoches,8
+2020-12-15,Nacogdoches,10
+2020-12-16,Nacogdoches,8
+2020-12-17,Nacogdoches,7
+2020-12-18,Nacogdoches,7
+2020-12-19,Nacogdoches,8
+2020-12-20,Nacogdoches,10
+2020-12-21,Nacogdoches,9
+2020-12-22,Nacogdoches,12
+2020-12-23,Nacogdoches,10
+2020-12-24,Nacogdoches,10
+2020-12-25,Nacogdoches,8
+2020-12-26,Nacogdoches,10
+2020-12-27,Nacogdoches,11
+2020-12-28,Nacogdoches,13
+2020-12-29,Nacogdoches,13
+2020-12-30,Nacogdoches,14
+2020-12-31,Nacogdoches,13
+2021-01-01,Nacogdoches,13
+2021-01-02,Nacogdoches,14
+2021-01-03,Nacogdoches,15
+2021-01-04,Nacogdoches,15
+2021-01-05,Nacogdoches,16
+2021-01-06,Nacogdoches,15
+2021-01-07,Nacogdoches,15
+2021-01-08,Nacogdoches,16
+2021-01-09,Nacogdoches,15
+2021-01-10,Nacogdoches,14
+2021-01-11,Nacogdoches,18
+2021-01-12,Nacogdoches,18
