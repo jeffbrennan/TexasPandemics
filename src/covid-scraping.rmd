@@ -58,6 +58,8 @@ library(ggpubr)
 # web scraping
 library(rvest)
 library(jsonlite)
+library(glue)
+
 ```
 
 ```{r}
@@ -875,10 +877,27 @@ tpr_out = all_cpr_tpr %>%
   rename(Tests = Tests.x) %>%
   dplyr::select(-Tests.y) %>% 
   dplyr::select(County, Date, TPR, Tests, Cases_100K_7Day_MA) %>%
+  mutate(TPR = ifelse(TPR == 0 | TPR == 1, NA, TPR)) %>%
   arrange(County, Date)
 
 write.csv(tpr_out, 'tableau/county_TPR.csv', row.names = FALSE)
 ```
+
+## vaccinations
+
+```{r}
+download.file('https://www.dshs.texas.gov/immunize/covid19/COVID-19-Vaccine-Data-by-County.xls', mode = 'wb', 
+              glue('original-sources/historical/vaccinations/vaccinations_{date_out}.xlsx'))
+```
+
+## vaccine providers
+
+```{r}
+download.file('https://genesis.soc.texas.gov/files/accessibility/vaccineprovideraccessibilitydata.csv', mode = 'wb', 
+              glue('original-sources/historical/vaccine-providers/vaccination-providers_{date_out}.csv'))
+```
+
+
 
 # TSA LEVEL
 
@@ -1133,7 +1152,7 @@ DSHS_state = read_excel_allsheets(temp)
 ```
 
 ```{r}
-DSHS_tests = DSHS_state[[4]]
+DSHS_tests = DSHS_state[[3]]
 
 # # LAB TESTS
 # select lab tests & remove rows where all rows are NA
