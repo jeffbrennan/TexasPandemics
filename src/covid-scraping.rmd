@@ -1152,7 +1152,7 @@ DSHS_state = read_excel_allsheets(temp)
 ```
 
 ```{r}
-DSHS_tests = DSHS_state[[3]]
+DSHS_tests = DSHS_state[[4]]
 
 # # LAB TESTS
 # select lab tests & remove rows where all rows are NA
