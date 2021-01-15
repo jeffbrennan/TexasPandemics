@@ -769,7 +769,7 @@ tpr_df = rbindlist(
 ```
 
 
-## cpr
+## TPR cpr
 
 Source for TPR data post 12/16. Still use CMS tests and dates for case averages to keep % change section of stat analysis rmd the same
 
@@ -808,7 +808,7 @@ cpr_date = read_xlsx(temp, sheet = 6) %>%
   str_match(., '(\\w+ (?=\\d{1,2})).*((?<=\\-).*)(\\))') %>% 
   .[2:3] %>% 
   paste0(., collapse = '') %>%
-  str_extract(., '\\w+.(?=\\d).') %>%
+  # str_extract(., '\\w+.(?=\\d{1,2}).') %>%
   as.Date(., '%B %d') %>%
   Date_Parser(.) %>% 
   as.Date(.)
