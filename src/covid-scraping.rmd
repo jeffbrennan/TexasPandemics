@@ -1040,101 +1040,101 @@ merged_tsa = merged_tsa %>%
 
 # STATE LEVEL
 
-## HHS facility reporting
+<!-- ## HHS facility reporting -->
 
-```{r}
-# read in files
-hhs_fac_reporting_raw = read.csv(url('https://opendata.arcgis.com/datasets/adf5753521ed4e2199d6a4c246e08f84_0.csv'))
+<!-- ```{r} -->
+<!-- # read in files -->
+<!-- hhs_fac_reporting_raw = read.csv(url('https://opendata.arcgis.com/datasets/adf5753521ed4e2199d6a4c246e08f84_0.csv')) -->
 
-hhs_date = as.Date(hhs_fac_reporting_raw$last_updated)
-hhs_fac_reporting_raw$Date = hhs_date
-hhs_fac_reporting_raw$last_updated = NULL
+<!-- hhs_date = as.Date(hhs_fac_reporting_raw$last_updated) -->
+<!-- hhs_fac_reporting_raw$Date = hhs_date -->
+<!-- hhs_fac_reporting_raw$last_updated = NULL -->
 
-# combine csv for archival
-write_xlsx(list('1' = hhs_fac_reporting_raw),
-           path = paste0('original-sources/historical/hhs/hhs_data_', hhs_date, '.xlsx'))
+<!-- # combine csv for archival -->
+<!-- write_xlsx(list('1' = hhs_fac_reporting_raw), -->
+<!--            path = paste0('original-sources/historical/hhs/hhs_data_', hhs_date, '.xlsx')) -->
 
-# read in archival sources
-hhs_list <- paste0('original-sources/historical/hhs/',
-                    list.files(path = 'original-sources/historical/hhs',
-                               pattern = '*.xlsx'))
+<!-- # read in archival sources -->
+<!-- hhs_list <- paste0('original-sources/historical/hhs/', -->
+<!--                     list.files(path = 'original-sources/historical/hhs', -->
+<!--                                pattern = '*.xlsx')) -->
 
-HHS_fac_clean = function(df) { 
-    df$Date = format(as.Date(df$Date, origin = '1899-12-30'), '%Y-%m-%d')
-    
-    if (df$Date[1] <= as.Date('2020-08-03')) {
-    
-    clean_df = df %>% 
-      filter(state_name == 'Texas') %>% 
-      dplyr::select(-c('ï..OBJECTID', 'Shape__Area', 'Shape__Length', 'state_fips',
-                'state_abbr', 'hhs_region', 'state_name'))
-    
-    names(clean_df)[1:3] = c('reporting_hospitals', 'total_hospitals', 'percent_reporting')
-    names(clean_df)[1:3] = paste0('HHS_', names(clean_df)[1:3])
-    
-    # drop date from colnames (will likely change over time)
-    names(clean_df) = gsub('_*\\d', '', names(clean_df))
-    
-  } else { 
-    clean_df = df %>% 
-      filter(state_name == 'Texas') %>% 
-      dplyr::select(-c('ï..OBJECTID', 'state_name'))
-    
-    names(clean_df)[1:3] = paste0('HHS_', names(clean_df)[1:3])
-    }
-  return(clean_df)
-}
+<!-- HHS_fac_clean = function(df) {  -->
+<!--     df$Date = format(as.Date(df$Date, origin = '1899-12-30'), '%Y-%m-%d') -->
 
-# 1st lapply: read excel sheets
-# 2nd: clean all of them
-# rbind cleaned sheets together
-HHS_fac_reporting <- rbindlist(lapply(lapply(hhs_list, read_xlsx, sheet = 1), HHS_fac_clean))
-```
+<!--     if (df$Date[1] <= as.Date('2020-08-03')) { -->
 
-## HHS hospitalization
+<!--     clean_df = df %>%  -->
+<!--       filter(state_name == 'Texas') %>%  -->
+<!--       dplyr::select(-c('ï..OBJECTID', 'Shape__Area', 'Shape__Length', 'state_fips', -->
+<!--                 'state_abbr', 'hhs_region', 'state_name')) -->
 
-```{r}
-HHS_hosp_clean = function(df, data_type) { 
-  clean_df = df %>% 
-    filter(state == 'TX') %>% 
-    dplyr::select(-c('state'))
-  
-  # append type of data to colnames
-  names(clean_df)[c(3:4, 6:7)] = paste0(data_type, names(clean_df[c(3:4, 6:7)]))
-  names(clean_df) = paste0('HHS_', names(clean_df))
-  
-  clean_df$Date = as.Date(clean_df$HHS_collection_date)
-  clean_df$HHS_collection_date = NULL
+<!--     names(clean_df)[1:3] = c('reporting_hospitals', 'total_hospitals', 'percent_reporting') -->
+<!--     names(clean_df)[1:3] = paste0('HHS_', names(clean_df)[1:3]) -->
 
-  return(clean_df)
-}
-# timeseries files 
-HHS_all_inpatient = 
-  HHS_hosp_clean(
-    read.csv(url('https://healthdata.gov/sites/default/files/reported_inpatient_all_20200720_0537.csv')),
-    'All.Inpatient.')
+<!--     # drop date from colnames (will likely change over time) -->
+<!--     names(clean_df) = gsub('_*\\d', '', names(clean_df)) -->
 
-HHS_covid_inpatient = 
-  HHS_hosp_clean(
-    read.csv(url('https://healthdata.gov/sites/default/files/inpatient_covid_final_20200720_0537.csv')),
-    'COVID.Inpatient.')
+<!--   } else {  -->
+<!--     clean_df = df %>%  -->
+<!--       filter(state_name == 'Texas') %>%  -->
+<!--       dplyr::select(-c('ï..OBJECTID', 'state_name')) -->
 
-HHS_all_icu = 
-  HHS_hosp_clean(
-    read.csv(url('https://healthdata.gov/sites/default/files/icu_final_20200720_0537.csv')),
-    'All.ICU.')
-```
+<!--     names(clean_df)[1:3] = paste0('HHS_', names(clean_df)[1:3]) -->
+<!--     } -->
+<!--   return(clean_df) -->
+<!-- } -->
 
-### merge
+<!-- # 1st lapply: read excel sheets -->
+<!-- # 2nd: clean all of them -->
+<!-- # rbind cleaned sheets together -->
+<!-- HHS_fac_reporting <- rbindlist(lapply(lapply(hhs_list, read_xlsx, sheet = 1), HHS_fac_clean)) -->
+<!-- ``` -->
 
-```{r}
-# merge together for combination with other state data
-hhs_df = Reduce(function(x, y) merge(x, y, by = 'Date', all = TRUE),
-                list(HHS_all_inpatient, HHS_covid_inpatient, HHS_all_icu, HHS_fac_reporting))
+<!-- ## HHS hospitalization -->
 
-```
+<!-- ```{r} -->
+<!-- HHS_hosp_clean = function(df, data_type) {  -->
+<!--   clean_df = df %>%  -->
+<!--     filter(state == 'TX') %>%  -->
+<!--     dplyr::select(-c('state')) -->
 
-## DSHS (time series)
+<!--   # append type of data to colnames -->
+<!--   names(clean_df)[c(3:4, 6:7)] = paste0(data_type, names(clean_df[c(3:4, 6:7)])) -->
+<!--   names(clean_df) = paste0('HHS_', names(clean_df)) -->
+
+<!--   clean_df$Date = as.Date(clean_df$HHS_collection_date) -->
+<!--   clean_df$HHS_collection_date = NULL -->
+
+<!--   return(clean_df) -->
+<!-- } -->
+<!-- # timeseries files  -->
+<!-- HHS_all_inpatient =  -->
+<!--   HHS_hosp_clean( -->
+<!--     read.csv(url('https://healthdata.gov/sites/default/files/reported_inpatient_all_20200720_0537.csv')), -->
+<!--     'All.Inpatient.') -->
+
+<!-- HHS_covid_inpatient =  -->
+<!--   HHS_hosp_clean( -->
+<!--     read.csv(url('https://healthdata.gov/sites/default/files/inpatient_covid_final_20200720_0537.csv')), -->
+<!--     'COVID.Inpatient.') -->
+
+<!-- HHS_all_icu =  -->
+<!--   HHS_hosp_clean( -->
+<!--     read.csv(url('https://healthdata.gov/sites/default/files/icu_final_20200720_0537.csv')), -->
+<!--     'All.ICU.') -->
+<!-- ``` -->
+
+<!-- <!-- ### merge --> -->
+
+<!-- ```{r} -->
+<!-- # merge together for combination with other state data -->
+<!-- hhs_df = Reduce(function(x, y) merge(x, y, by = 'Date', all = TRUE), -->
+<!--                 list(HHS_all_inpatient, HHS_covid_inpatient, HHS_all_icu, HHS_fac_reporting)) -->
+
+<!-- ``` -->
+
+<!-- ## DSHS (time series) -->
 
 ```{r}
 state_url = 'https://www.dshs.state.tx.us/coronavirus/TexasCOVID19CaseCountData.xlsx'
@@ -1149,74 +1149,75 @@ dshs_date = format(as.Date(dshs_date), '%Y_%m_%d')
 # save state level file to historical database for longitudinal demo
 download.file(state_url, paste0('original-sources/historical/state/dshs_',
                                 dshs_date, '.xlsx'), mode = 'wb')
-
-DSHS_state = read_excel_allsheets(temp)
+ # DSHS_state = read_excel_allsheets(temp)
 ```
 
-```{r}
-tryCatch({
-  DSHS_tests = DSHS_state[[3]]
-  
-  # # LAB TESTS
-  # select lab tests & remove rows where all rows are NA
-  DSHS_lab_tests = DSHS_tests[2:nrow(DSHS_tests), 1:4] %>%
-    setNames(c('Date', 'LAB_Tests_Daily', 'LAB_Positive_Tests_Daily','LAB_Positivity_Rate')) %>%
-    filter(rowSums(is.na(.)) < ncol(.)) %>%
-    mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
-  #
-  # # SPECIMEN TESTS
-  DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %>%
-    setNames(c('Date', 'SPECIMEN_Tests_Daily','SPECIMEN_Positive_Tests_Daily',
-               'SPECIMEN_Positivity_Rate')) %>%
-    filter(rowSums(is.na(.)) < ncol(.)) %>%
-    mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
-  },
-  error = function(e) {
-  DSHS_tests = DSHS_state[[4]]
-  
-  # # LAB TESTS
-  # select lab tests & remove rows where all rows are NA
-  DSHS_lab_tests = DSHS_tests[2:nrow(DSHS_tests), 1:4] %>%
-    setNames(c('Date', 'LAB_Tests_Daily', 'LAB_Positive_Tests_Daily','LAB_Positivity_Rate')) %>%
-    filter(rowSums(is.na(.)) < ncol(.)) %>%
-    mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
-  # # SPECIMEN TESTS
-  DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %>%
-    setNames(c('Date', 'SPECIMEN_Tests_Daily','SPECIMEN_Positive_Tests_Daily',
-               'SPECIMEN_Positivity_Rate')) %>%
-    filter(rowSums(is.na(.)) < ncol(.)) %>%
-    mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
-  })
-```
 
-```{r}
-# selects covid hospitalization time series, drops footnote, formates date and sets colnames
-DSHS_hospitalizations = DSHS_state[[9]][, c(2:3)] %>%
-  filter(rowSums(is.na(.)) < ncol(.)) %>% 
-  setNames(c('Date', 'Hospitalizations_Total')) %>%
-  mutate(Date = as.Date(Date))
-```
 
-```{r}
-# merge tests & hospitalizations
-DSHS_state_time = Reduce(function(x, y) merge(x, y, by = c('Date')),
-list(DSHS_specimen_tests, DSHS_lab_tests, DSHS_hospitalizations))
-```
+<!-- ```{r} -->
+<!-- tryCatch({ -->
+<!--   DSHS_tests = DSHS_state[[3]] -->
 
-## DSHS (day counts)
+<!--   # # LAB TESTS -->
+<!--   # select lab tests & remove rows where all rows are NA -->
+<!--   DSHS_molecular_tests = DSHS_tests[2:nrow(DSHS_tests), c(1, 3, 4, 5)] %>% -->
+<!--     setNames(c('Date', 'Molecular_tests_Daily', 'LAB_Positive_Tests_Daily','LAB_Positivity_Rate')) %>% -->
+<!--     filter(rowSums(is.na(.)) < ncol(.)) %>% -->
+<!--     mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30')) -->
+<!--   # -->
+<!--   # # SPECIMEN TESTS -->
+<!--   DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %>% -->
+<!--     setNames(c('Date', 'SPECIMEN_Tests_Daily','SPECIMEN_Positive_Tests_Daily', -->
+<!--                'SPECIMEN_Positivity_Rate')) %>% -->
+<!--     filter(rowSums(is.na(.)) < ncol(.)) %>% -->
+<!--     mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30')) -->
+<!--   }, -->
+<!--   error = function(e) { -->
+<!--   DSHS_tests = DSHS_state[[4]] -->
 
-```{r}
-# avoids duplication of results between sheets
-DSHS_state_day = data.frame(Molecular_Tests_Total = DSHS_state[[5]][1,2],
-                            Antigen_Tests_Total = DSHS_state[[7]][1,2],
-                            Antigen_Tests_Positive = DSHS_state[[7]][2,2],
-                            Antibody_Tests_Total = DSHS_state[[6]][1,2],
-                            Antibody_tests_Positive = DSHS_state[[6]][2,2],
-                            Hospital_Bed_Total = DSHS_state[[8]][2,2],
-                            Hospital_Bed_Available = DSHS_state[[8]][4,2],
-                            ICU_Bed_Available = DSHS_state[[8]][5,2],
-                            Ventilator_Available = DSHS_state[[8]][6,2])
-```
+<!--   # # LAB TESTS -->
+<!--   # select lab tests & remove rows where all rows are NA -->
+<!--   DSHS_molecular_tests = DSHS_tests[2:nrow(DSHS_tests), 1:4] %>% -->
+<!--     setNames(c('Date', 'molecular_tests_Daily', 'LAB_Positive_Tests_Daily','LAB_Positivity_Rate')) %>% -->
+<!--     filter(rowSums(is.na(.)) < ncol(.)) %>% -->
+<!--     mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30')) -->
+<!--   # # SPECIMEN TESTS -->
+<!--   DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %>% -->
+<!--     setNames(c('Date', 'SPECIMEN_Tests_Daily','SPECIMEN_Positive_Tests_Daily', -->
+<!--                'SPECIMEN_Positivity_Rate')) %>% -->
+<!--     filter(rowSums(is.na(.)) < ncol(.)) %>% -->
+<!--     mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30')) -->
+<!--   }) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # selects covid hospitalization time series, drops footnote, formates date and sets colnames -->
+<!-- DSHS_hospitalizations = DSHS_state[[9]][, c(2:3)] %>% -->
+<!--   filter(rowSums(is.na(.)) < ncol(.)) %>%  -->
+<!--   setNames(c('Date', 'Hospitalizations_Total')) %>% -->
+<!--   mutate(Date = as.Date(Date)) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # merge tests & hospitalizations -->
+<!-- DSHS_state_time = Reduce(function(x, y) merge(x, y, by = c('Date')), -->
+<!-- list(DSHS_specimen_tests, DSHS_molecular_tests, DSHS_hospitalizations)) -->
+<!-- ``` -->
+
+<!-- ## DSHS (day counts) -->
+
+<!-- ```{r} -->
+<!-- # avoids duplication of results between sheets -->
+<!-- DSHS_state_day = data.frame(Molecular_Tests_Total = DSHS_state[[5]][1,2], -->
+<!--                             Antigen_Tests_Total = DSHS_state[[7]][1,2], -->
+<!--                             Antigen_Tests_Positive = DSHS_state[[7]][2,2], -->
+<!--                             Antibody_Tests_Total = DSHS_state[[6]][1,2], -->
+<!--                             Antibody_tests_Positive = DSHS_state[[6]][2,2], -->
+<!--                             Hospital_Bed_Total = DSHS_state[[8]][2,2], -->
+<!--                             Hospital_Bed_Available = DSHS_state[[8]][4,2], -->
+<!--                             ICU_Bed_Available = DSHS_state[[8]][5,2], -->
+<!--                             Ventilator_Available = DSHS_state[[8]][6,2]) -->
+<!-- ``` -->
 
 ## DSHS Demographics
 
@@ -1287,53 +1288,53 @@ demo_stacked_combined = rbind(legacy_demo, daily_demo_stack_all) %>%
   arrange(Date)
 ```
 
-## Computed
+<!-- ## Computed -->
 
-```{r}
-state_counts =
-    merged_county %>%
-    group_by(Date) %>%
-    summarize_at(vars(Cases_Cumulative, Cases_Daily,
-                      Deaths_Cumulative, Deaths_Daily,
-                      Tests_Cumulative, Tests_Daily,
-                      Active_Cases_Cumulative, Active_Cases_Daily),
-                 funs(sum(., na.rm = TRUE)))
+<!-- ```{r} -->
+<!-- state_counts = -->
+<!--     merged_county %>% -->
+<!--     group_by(Date) %>% -->
+<!--     summarize_at(vars(Cases_Cumulative, Cases_Daily, -->
+<!--                       Deaths_Cumulative, Deaths_Daily, -->
+<!--                       Tests_Cumulative, Tests_Daily, -->
+<!--                       Active_Cases_Cumulative, Active_Cases_Daily), -->
+<!--                  funs(sum(., na.rm = TRUE))) -->
 
-state_pops = 
-  subset(merged_county, Date == '2020-03-04') %>%
-  group_by(Date) %>%
-  summarize_at(vars(Population_DSHS),
-               funs(sum))
+<!-- state_pops =  -->
+<!--   subset(merged_county, Date == '2020-03-04') %>% -->
+<!--   group_by(Date) %>% -->
+<!--   summarize_at(vars(Population_DSHS), -->
+<!--                funs(sum)) -->
 
-state_google = 
-  merged_county %>%
-  group_by(Date) %>%
-  summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
-                    Parks, Transit,
-                    Workplaces, Residential),
-               funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)
+<!-- state_google =  -->
+<!--   merged_county %>% -->
+<!--   group_by(Date) %>% -->
+<!--   summarize_at(vars(Retail_Recreation, Grocery_Pharmacy, -->
+<!--                     Parks, Transit, -->
+<!--                     Workplaces, Residential), -->
+<!--                funs(weighted.mean(., Population_DSHS)), na.rm = TRUE) -->
 
-state_hosp_detail = 
-  merged_tsa %>% 
-  group_by(Date) %>%
-  summarize_at(vars(Hospitalizations_Total, Hospitalizations_General, Hospitalizations_ICU,
-                    Beds_Available_Total, Beds_Available_ICU,  Beds_Occupied_Total, Beds_Occupied_ICU,
-                    Ventilators_Available),
-               funs(sum))
-```
+<!-- state_hosp_detail =  -->
+<!--   merged_tsa %>%  -->
+<!--   group_by(Date) %>% -->
+<!--   summarize_at(vars(Hospitalizations_Total, Hospitalizations_General, Hospitalizations_ICU, -->
+<!--                     Beds_Available_Total, Beds_Available_ICU,  Beds_Occupied_Total, Beds_Occupied_ICU, -->
+<!--                     Ventilators_Available), -->
+<!--                funs(sum)) -->
+<!-- ``` -->
 
-## merge
+<!-- ## merge -->
 
-```{r}
-merged_state = Reduce(function(x, y) merge(x, y, by = c('Date'), all=TRUE),
-       list(state_counts, state_google, DSHS_state_time, state_hosp_detail, hhs_df))
+<!-- ```{r} -->
+<!-- merged_state = Reduce(function(x, y) merge(x, y, by = c('Date'), all=TRUE), -->
+<!--        list(state_counts, state_google, DSHS_state_time, state_hosp_detail, hhs_df)) -->
 
-merged_state$Population_DSHS = state_pops$Population_DSHS
+<!-- merged_state$Population_DSHS = state_pops$Population_DSHS -->
 
-merged_state = merged_state %>% 
-  filter(Date >= as.Date('2020-03-04')) %>% 
-  distinct()
-```
+<!-- merged_state = merged_state %>%  -->
+<!--   filter(Date >= as.Date('2020-03-04')) %>%  -->
+<!--   distinct() -->
+<!-- ``` -->
 
 # OUTPUT
 
