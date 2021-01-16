@@ -581,96 +581,96 @@ write(validation_json, file = 'diagnostics/validation.json')
 # Q_expected / Q_ICU
 ```
 
-```{r}
-county = read.csv('tableau/county.csv') 
-county %>% 
-  filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend',
-                              'Galveston', 'Harris', 'Liberty', 'Montgomery', 'Waller')) %>% 
-  group_by(Date) %>% 
-  summarize(sum(Cases_Daily)) %>% 
-  tail(14)
+<!-- ```{r} -->
+<!-- county = read.csv('tableau/county.csv')  -->
+<!-- county %>%  -->
+<!--   filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend', -->
+<!--                               'Galveston', 'Harris', 'Liberty', 'Montgomery', 'Waller')) %>%  -->
+<!--   group_by(Date) %>%  -->
+<!--   summarize(sum(Cases_Daily)) %>%  -->
+<!--   tail(14) -->
 
-recent_tmc_cases = county %>% 
-  filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend',
-                       'Galveston', 'Harris', 'Liberty', 'Montgomery', 'Waller')) %>% 
-  filter(as.Date(Date) >= max(as.Date(Date)) - 2) %>% 
-  group_by(Date, County) %>%
-  summarize(Cases_Daily)
-```
-
-
-# Regional comparisons
-
-```{r}
-# northeast
-northeast = county %>% 
-  filter(County %in% c('Rains', 'Wood', 'Van Zandt', 'Smith', 'Gregg', 'Henderson', 'Anderson')) %>%
-  # filter(as.Date(Date) >= Sys.Date()-7) %>%
-  dplyr::select(Date, County, Cases_Cumulative, Cases_Daily) %>% 
-  arrange(County, Date)
-
-write.csv(northeast, 'diagnostics/northeast.csv', row.names = F)
-
-# south
-county %>% 
-  filter(County %in% c('Cameron')) %>%
-  filter(as.Date(Date) >= Sys.Date()-7) %>%
-  dplyr::select(Date, County, Cases_Cumulative, Cases_Daily) %>% 
-  arrange(County, Date)
-```
-
-# School districts
-
-```{r}
-schools = readxl::read_xlsx('tableau/district_school_reopening.xlsx', sheet = 1)
-
-weekly = schools %>% 
-  mutate(Total_Enrollment = as.numeric(Total_Enrollment),
-         Weekly_Cases = (Cases_Weekly_GRADE_EE_3 + Cases_Weekly_GRADE_4_6 + Cases_Weekly_GRADE_7_12),
-         Weekly_total_Ratio = Weekly_Cases / Total_Enrollment,
-         Weekly_Approx_Ratio = Weekly_Cases / Approximate_Enrollment)
-
-weekly %>% filter(Weekly_total_Ratio > 1 | Weekly_Approx_Ratio > 1)
-
-summary(weekly$Weekly_total_Ratio)
-summary(weekly$Weekly_Approx_Ratio)
+<!-- recent_tmc_cases = county %>%  -->
+<!--   filter(County %in% c('Austin', 'Brazoria', 'Chambers', 'Fort Bend', -->
+<!--                        'Galveston', 'Harris', 'Liberty', 'Montgomery', 'Waller')) %>%  -->
+<!--   filter(as.Date(Date) >= max(as.Date(Date)) - 2) %>%  -->
+<!--   group_by(Date, County) %>% -->
+<!--   summarize(Cases_Daily) -->
+<!-- ``` -->
 
 
-cumulative = schools %>% 
-  filter(Date == max(as.Date(Date))) %>% 
-  mutate(Total_Enrollment = as.numeric(Total_Enrollment),
-         Cumulative_Cases = (Cases_Cumulative_GRADE_EE_3 + Cases_Cumulative_GRADE_4_6 + Cases_Cumulative_GRADE_7_12),
-         Cumulative_total_Ratio = Cumulative_Cases / Total_Enrollment,
-         Cumulative_Approx_Ratio = Cumulative_Cases / Approximate_Enrollment)
+<!-- # Regional comparisons -->
 
-cumulative %>% filter(Cumulative_total_Ratio > 1 | Cumulative_Approx_Ratio > 1)
+<!-- ```{r} -->
+<!-- # northeast -->
+<!-- northeast = county %>%  -->
+<!--   filter(County %in% c('Rains', 'Wood', 'Van Zandt', 'Smith', 'Gregg', 'Henderson', 'Anderson')) %>% -->
+<!--   # filter(as.Date(Date) >= Sys.Date()-7) %>% -->
+<!--   dplyr::select(Date, County, Cases_Cumulative, Cases_Daily) %>%  -->
+<!--   arrange(County, Date) -->
 
-summary(cumulative$Cumulative_total_Ratio)
-summary(cumulative$Cumulative_Approx_Ratio)
+<!-- write.csv(northeast, 'diagnostics/northeast.csv', row.names = F) -->
+
+<!-- # south -->
+<!-- county %>%  -->
+<!--   filter(County %in% c('Cameron')) %>% -->
+<!--   filter(as.Date(Date) >= Sys.Date()-7) %>% -->
+<!--   dplyr::select(Date, County, Cases_Cumulative, Cases_Daily) %>%  -->
+<!--   arrange(County, Date) -->
+<!-- ``` -->
+
+<!-- # School districts -->
+
+<!-- ```{r} -->
+<!-- schools = readxl::read_xlsx('tableau/district_school_reopening.xlsx', sheet = 1) -->
+
+<!-- weekly = schools %>%  -->
+<!--   mutate(Total_Enrollment = as.numeric(Total_Enrollment), -->
+<!--          Weekly_Cases = (Cases_Weekly_GRADE_EE_3 + Cases_Weekly_GRADE_4_6 + Cases_Weekly_GRADE_7_12), -->
+<!--          Weekly_total_Ratio = Weekly_Cases / Total_Enrollment, -->
+<!--          Weekly_Approx_Ratio = Weekly_Cases / Approximate_Enrollment) -->
+
+<!-- weekly %>% filter(Weekly_total_Ratio > 1 | Weekly_Approx_Ratio > 1) -->
+
+<!-- summary(weekly$Weekly_total_Ratio) -->
+<!-- summary(weekly$Weekly_Approx_Ratio) -->
 
 
-# schools %>% 
-#   filter(District == 'Houston ISD') %>% 
-#   dplyr::select(Total_Enrollment, Cases_Cumulative_GRADE_4_6, Cases_Cumulative_GRADE_EE_3, Cases_Cumulative_GRADE_7_12, Cases_Cumulative_Staff)
-```
+<!-- cumulative = schools %>%  -->
+<!--   filter(Date == max(as.Date(Date))) %>%  -->
+<!--   mutate(Total_Enrollment = as.numeric(Total_Enrollment), -->
+<!--          Cumulative_Cases = (Cases_Cumulative_GRADE_EE_3 + Cases_Cumulative_GRADE_4_6 + Cases_Cumulative_GRADE_7_12), -->
+<!--          Cumulative_total_Ratio = Cumulative_Cases / Total_Enrollment, -->
+<!--          Cumulative_Approx_Ratio = Cumulative_Cases / Approximate_Enrollment) -->
+
+<!-- cumulative %>% filter(Cumulative_total_Ratio > 1 | Cumulative_Approx_Ratio > 1) -->
+
+<!-- summary(cumulative$Cumulative_total_Ratio) -->
+<!-- summary(cumulative$Cumulative_Approx_Ratio) -->
 
 
-# TSA Hosp check
+<!-- # schools %>%  -->
+<!-- #   filter(District == 'Houston ISD') %>%  -->
+<!-- #   dplyr::select(Total_Enrollment, Cases_Cumulative_GRADE_4_6, Cases_Cumulative_GRADE_EE_3, Cases_Cumulative_GRADE_7_12, Cases_Cumulative_Staff) -->
+<!-- ``` -->
 
-```{r}
-hosp = read.csv('tableau/hospitalizations_tsa.csv')
 
-test = hosp %>% 
-  mutate(Date = as.Date(Date)) %>%
-  group_by(TSA, Date) %>%
-  summarize(pct_cap = Beds_Occupied_ICU / (Beds_Occupied_ICU + Beds_Available_ICU))
+<!-- # TSA Hosp check -->
 
-ggplot(test, aes(x=Date, y = pct_cap, group=TSA)) + 
-  geom_point() + 
-  scale_x_date(breaks = '1 month', date_labels = '%b') + 
-  facet_wrap(~TSA, scales = 'free') + 
-  theme(axis.text.x = element_text(angle = -45))
-```
+<!-- ```{r} -->
+<!-- hosp = read.csv('tableau/hospitalizations_tsa.csv') -->
+
+<!-- test = hosp %>%  -->
+<!--   mutate(Date = as.Date(Date)) %>% -->
+<!--   group_by(TSA, Date) %>% -->
+<!--   summarize(pct_cap = Beds_Occupied_ICU / (Beds_Occupied_ICU + Beds_Available_ICU)) -->
+
+<!-- ggplot(test, aes(x=Date, y = pct_cap, group=TSA)) +  -->
+<!--   geom_point() +  -->
+<!--   scale_x_date(breaks = '1 month', date_labels = '%b') +  -->
+<!--   facet_wrap(~TSA, scales = 'free') +  -->
+<!--   theme(axis.text.x = element_text(angle = -45)) -->
+<!-- ``` -->
 
 
 # TPR comparison
@@ -723,103 +723,103 @@ ggplot(test, aes(x=Date, y = pct_cap, group=TSA)) +
 #   round(3)
 ```
 
-# New PCT Calcs
+<!-- # New PCT Calcs -->
 
-```{r}
-pct_df = read.csv("tableau/stacked_pct_change_new.csv")
-pct_tsa = pct_df %>%
-  dplyr::select(Level, Level_Type, Date, cases_total_14, tests_total_14,
-                cases_total_percentdiff, tests_total_percentdiff) %>% 
-  filter(Level_Type == 'TSA') %>%
-  mutate(Date = as.Date(Date))
-
-
-
-ggplot(pct_tsa, aes(group = Level)) + 
-  geom_point(aes(x = Date, y = cases_total_percentdiff, color = 'Cases % Difference (14 Day Total)'), size = 2) + 
-  geom_line(aes(x = Date, y = cases_total_percentdiff, color = 'Cases % Difference (14 Day Total)'), size = 1) + 
-  geom_point(aes(x = Date, y = tests_total_percentdiff, color = 'Tests % Difference (14 Day Total)'), size = 2) +
-  geom_line(aes(x = Date, y = tests_total_percentdiff, color = 'Tests % Difference (14 Day Total)'), size = 1) +
-  facet_wrap(~Level) +
-  scale_x_date(date_labels = '%m/%d', breaks = seq(as.Date('2020-09-30'), max(pct_tsa$Date), by = '1 week')) +
-  labs(y = '% Difference from Baseline (9/30)') +
-  theme_pubr() + 
-  theme(axis.text.x = element_text(size = 10, angle = -45))
-
-# ggplot(pct_tsa, aes(group = Level)) + 
-#   geom_point(aes(x = Date, y = cases_ma_percentdiff, color = 'Cases % Difference (14 Day MA)'), size = 2) + 
-#   geom_line(aes(x = Date, y = cases_ma_percentdiff, color = 'Cases % Difference (14 Day MA)'), size = 1) + 
-#   geom_point(aes(x = Date, y = tests_ma_percentdiff, color = 'Tests % Difference (14 Day MA)'), size = 2) +
-#   geom_line(aes(x = Date, y = tests_ma_percentdiff, color = 'Tests % Difference (14 Day MA)'), size = 1) +
-#   facet_wrap(~Level, scales = 'free_y') +
-#   scale_x_date(date_labels = '%m/%d') +
-#   theme_pubr() + 
-#   labs(y = '% Difference from Baseline (9/30)') +
-#   theme(axis.text.x = element_text(angle = -90))
-```
+<!-- ```{r} -->
+<!-- pct_df = read.csv("tableau/stacked_pct_change_new.csv") -->
+<!-- pct_tsa = pct_df %>% -->
+<!--   dplyr::select(Level, Level_Type, Date, cases_total_14, tests_total_14, -->
+<!--                 cases_total_percentdiff, tests_total_percentdiff) %>%  -->
+<!--   filter(Level_Type == 'TSA') %>% -->
+<!--   mutate(Date = as.Date(Date)) -->
 
 
-# TSA TPR
 
-```{r}
-county_link = county %>% dplyr::select(County, TSA) %>% distinct()
+<!-- ggplot(pct_tsa, aes(group = Level)) +  -->
+<!--   geom_point(aes(x = Date, y = cases_total_percentdiff, color = 'Cases % Difference (14 Day Total)'), size = 2) +  -->
+<!--   geom_line(aes(x = Date, y = cases_total_percentdiff, color = 'Cases % Difference (14 Day Total)'), size = 1) +  -->
+<!--   geom_point(aes(x = Date, y = tests_total_percentdiff, color = 'Tests % Difference (14 Day Total)'), size = 2) + -->
+<!--   geom_line(aes(x = Date, y = tests_total_percentdiff, color = 'Tests % Difference (14 Day Total)'), size = 1) + -->
+<!--   facet_wrap(~Level) + -->
+<!--   scale_x_date(date_labels = '%m/%d', breaks = seq(as.Date('2020-09-30'), max(pct_tsa$Date), by = '1 week')) + -->
+<!--   labs(y = '% Difference from Baseline (9/30)') + -->
+<!--   theme_pubr() +  -->
+<!--   theme(axis.text.x = element_text(size = 10, angle = -45)) -->
 
-tpr_tsa = read.csv('tableau/county_TPR.csv') %>% 
-  left_join(., county_link, by = 'County') %>% 
-  group_by(Date, TSA) %>%
-  summarize(TPR = mean(TPR_CMS, na.rm = TRUE)) %>% 
-  mutate(Date = as.Date(Date))
-
-el_paso = read.csv('tableau/county_TPR.csv') %>% 
-  left_join(., county_link, by = 'County') %>% 
-  filter(TSA == 'I - El Paso')
-
-ggplot(tpr_tsa, aes(x = Date, y = TPR, group = TSA)) + 
-  geom_point(size = 2) + 
-  geom_line(size = 1) +
-  facet_wrap(~ TSA) + 
-  scale_x_date(date_labels = '%m/%d') +
-  theme_pubr() + 
-  theme(axis.text.x = element_text(angle = -90))
-
-```
-
-
-# Performance review
-
-```{r, fig.width=12, fig.height=6}
-time_flat = unlist(all_times)
-print(time_flat)
-
-names(time_flat) = NULL
-
-time_df = data.frame('time_sec' = time_flat) %>%
-  mutate(chunk = as.numeric(rownames(.)) + 2) %>%
-  mutate(version = refactor_version) %>%
-  mutate(script = 'covid-scraping.rmd') %>%
-  arrange(desc(time_sec))
-
-ggplot(time_df, aes(y = time_sec, x = chunk, fill = time_sec)) + 
-  geom_bar(stat = 'identity') + 
-  geom_text(aes(label = chunk), position=position_dodge(width = 0.9), vjust = -0.25) + 
-  labs(x = 'chunk #', y = 'runtime (seconds)') + 
-  scale_fill_gradient(low = 'gray80', high = 'tomato1') + 
-  theme_pubr() + 
-  theme(axis.text.x = element_blank(),
-        legend.position = 'none')
-```
-
-## total run time
-
-```{r}
-time_df %>% summarize(sum(time_sec))
-```
+<!-- # ggplot(pct_tsa, aes(group = Level)) +  -->
+<!-- #   geom_point(aes(x = Date, y = cases_ma_percentdiff, color = 'Cases % Difference (14 Day MA)'), size = 2) +  -->
+<!-- #   geom_line(aes(x = Date, y = cases_ma_percentdiff, color = 'Cases % Difference (14 Day MA)'), size = 1) +  -->
+<!-- #   geom_point(aes(x = Date, y = tests_ma_percentdiff, color = 'Tests % Difference (14 Day MA)'), size = 2) + -->
+<!-- #   geom_line(aes(x = Date, y = tests_ma_percentdiff, color = 'Tests % Difference (14 Day MA)'), size = 1) + -->
+<!-- #   facet_wrap(~Level, scales = 'free_y') + -->
+<!-- #   scale_x_date(date_labels = '%m/%d') + -->
+<!-- #   theme_pubr() +  -->
+<!-- #   labs(y = '% Difference from Baseline (9/30)') + -->
+<!-- #   theme(axis.text.x = element_text(angle = -90)) -->
+<!-- ``` -->
 
 
-```{r}
-write.csv(time_df, paste0('diagnostics/diagnostics_runtime_', refactor_version, '.csv'),
-          row.names = FALSE)
-```
+<!-- # TSA TPR -->
+
+<!-- ```{r} -->
+<!-- county_link = county %>% dplyr::select(County, TSA) %>% distinct() -->
+
+<!-- tpr_tsa = read.csv('tableau/county_TPR.csv') %>%  -->
+<!--   left_join(., county_link, by = 'County') %>%  -->
+<!--   group_by(Date, TSA) %>% -->
+<!--   summarize(TPR = mean(TPR_CMS, na.rm = TRUE)) %>%  -->
+<!--   mutate(Date = as.Date(Date)) -->
+
+<!-- el_paso = read.csv('tableau/county_TPR.csv') %>%  -->
+<!--   left_join(., county_link, by = 'County') %>%  -->
+<!--   filter(TSA == 'I - El Paso') -->
+
+<!-- ggplot(tpr_tsa, aes(x = Date, y = TPR, group = TSA)) +  -->
+<!--   geom_point(size = 2) +  -->
+<!--   geom_line(size = 1) + -->
+<!--   facet_wrap(~ TSA) +  -->
+<!--   scale_x_date(date_labels = '%m/%d') + -->
+<!--   theme_pubr() +  -->
+<!--   theme(axis.text.x = element_text(angle = -90)) -->
+
+<!-- ``` -->
+
+
+<!-- # Performance review -->
+
+<!-- ```{r, fig.width=12, fig.height=6} -->
+<!-- time_flat = unlist(all_times) -->
+<!-- print(time_flat) -->
+
+<!-- names(time_flat) = NULL -->
+
+<!-- time_df = data.frame('time_sec' = time_flat) %>% -->
+<!--   mutate(chunk = as.numeric(rownames(.)) + 2) %>% -->
+<!--   mutate(version = refactor_version) %>% -->
+<!--   mutate(script = 'covid-scraping.rmd') %>% -->
+<!--   arrange(desc(time_sec)) -->
+
+<!-- ggplot(time_df, aes(y = time_sec, x = chunk, fill = time_sec)) +  -->
+<!--   geom_bar(stat = 'identity') +  -->
+<!--   geom_text(aes(label = chunk), position=position_dodge(width = 0.9), vjust = -0.25) +  -->
+<!--   labs(x = 'chunk #', y = 'runtime (seconds)') +  -->
+<!--   scale_fill_gradient(low = 'gray80', high = 'tomato1') +  -->
+<!--   theme_pubr() +  -->
+<!--   theme(axis.text.x = element_blank(), -->
+<!--         legend.position = 'none') -->
+<!-- ``` -->
+
+<!-- ## total run time -->
+
+<!-- ```{r} -->
+<!-- time_df %>% summarize(sum(time_sec)) -->
+<!-- ``` -->
+
+
+<!-- ```{r} -->
+<!-- write.csv(time_df, paste0('diagnostics/diagnostics_runtime_', refactor_version, '.csv'), -->
+<!--           row.names = FALSE) -->
+<!-- ``` -->
 
 
 

@@ -262,9 +262,10 @@ school_dates = school_dates[-12]
 school_date = max(school_dates[which(school_dates <= date_out - 5)])
 
 tryCatch({
-  school_url = paste0('https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/campus-level-Data-',
-                    format(school_date+2, '%m%d%Y'), '.xls')
+  # school_url = paste0('https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/campus-level-Data-',
+  #                   format(school_date+2, '%m%d%Y'), '.xls')
   # school_url = 'https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/District-level-data.xlsx'
+  school_url = 'https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/campus-level-Data_01122021v3.xls'
   temp = tempfile()
   download.file(school_url, temp, mode = 'wb')
   DSHS_schools_raw = data.frame(read_excel(temp, sheet = 1))
@@ -798,6 +799,7 @@ file_date = as.Date(str_match(newest_file, '(Report |Report_)(.*)(_)')[3], '%Y%m
 file_url = (paste0('https://beta.healthdata.gov', newest_file))
 
 # clean newest file
+file_url = 'https://beta.healthdata.gov/api/views/gqxm-d9w9/files/ed514221-8fb0-4ba9-84b2-27282646efad?download=true&filename=Community_Profile_Report_20210113_Public.xlsx'
 temp = tempfile()
 download.file(file_url, temp, mode = 'wb')
 
@@ -1152,21 +1154,39 @@ DSHS_state = read_excel_allsheets(temp)
 ```
 
 ```{r}
-DSHS_tests = DSHS_state[[4]]
-
-# # LAB TESTS
-# select lab tests & remove rows where all rows are NA
-DSHS_lab_tests = DSHS_tests[2:nrow(DSHS_tests), 1:4] %>%
-  setNames(c('Date', 'LAB_Tests_Daily', 'LAB_Positive_Tests_Daily','LAB_Positivity_Rate')) %>%
-  filter(rowSums(is.na(.)) < ncol(.)) %>%
-  mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
-#
-# # SPECIMEN TESTS
-DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %>%
-  setNames(c('Date', 'SPECIMEN_Tests_Daily','SPECIMEN_Positive_Tests_Daily',
-             'SPECIMEN_Positivity_Rate')) %>%
-  filter(rowSums(is.na(.)) < ncol(.)) %>%
-  mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
+tryCatch({
+  DSHS_tests = DSHS_state[[3]]
+  
+  # # LAB TESTS
+  # select lab tests & remove rows where all rows are NA
+  DSHS_lab_tests = DSHS_tests[2:nrow(DSHS_tests), 1:4] %>%
+    setNames(c('Date', 'LAB_Tests_Daily', 'LAB_Positive_Tests_Daily','LAB_Positivity_Rate')) %>%
+    filter(rowSums(is.na(.)) < ncol(.)) %>%
+    mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
+  #
+  # # SPECIMEN TESTS
+  DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %>%
+    setNames(c('Date', 'SPECIMEN_Tests_Daily','SPECIMEN_Positive_Tests_Daily',
+               'SPECIMEN_Positivity_Rate')) %>%
+    filter(rowSums(is.na(.)) < ncol(.)) %>%
+    mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
+  },
+  error = function(e) {
+  DSHS_tests = DSHS_state[[4]]
+  
+  # # LAB TESTS
+  # select lab tests & remove rows where all rows are NA
+  DSHS_lab_tests = DSHS_tests[2:nrow(DSHS_tests), 1:4] %>%
+    setNames(c('Date', 'LAB_Tests_Daily', 'LAB_Positive_Tests_Daily','LAB_Positivity_Rate')) %>%
+    filter(rowSums(is.na(.)) < ncol(.)) %>%
+    mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
+  # # SPECIMEN TESTS
+  DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %>%
+    setNames(c('Date', 'SPECIMEN_Tests_Daily','SPECIMEN_Positive_Tests_Daily',
+               'SPECIMEN_Positivity_Rate')) %>%
+    filter(rowSums(is.na(.)) < ncol(.)) %>%
+    mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30'))
+  })
 ```
 
 ```{r}
