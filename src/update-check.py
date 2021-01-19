@@ -16,7 +16,7 @@ def run_bat(bat_file):
 
 def parse_file(file_url, header_loc):
     # match 2/4 digits, separator, 2/4 digits, optional separator, optional 2/4 digits
-    date_regex = r'((\d{1}|\d{2}|\d{4})(\.|\-|\/)(\d{1}|\d{2}|\d{4})?(\.|\-|\/)?(\d{2}|\d{4}))'
+    date_regex = r'((\d{4}|\d{2}|\d{1})(\.|\-|\/)(\d{4}|\d{2}|\d{1})?(\.|\-|\/)?(\d{4}|\d{2}))'
 
     if 'Demographics' in file_url:
         r = get('https://dshs.texas.gov/coronavirus/additionaldata/')

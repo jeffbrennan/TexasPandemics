@@ -82,44 +82,70 @@ date_out = ifelse((Sys.time() < as.POSIXct(paste0(Sys.Date(), '16:00'), tz = 'Am
 # convert numeric sys.date() to yyyy-mm-dd
 date_out = as.Date(date_out, origin = '1970-1-1')
 
+# Date_Parser = function(Date) { 
+#   #Matches 2 or 4 digits, separator, 2 or 4 digits, optional separator, optional 2 or 4 digits
+#   # Coerces all common separators to "-" 
+#   date_regex = '(\\d{2}|\\d{4})(\\.|\\-|\\/)(\\d{2}|\\d{4})?(\\.|\\-|\\/)?(\\d{2}|\\d{4})'
+#   clean_dates = str_extract(Date, date_regex) %>% str_replace_all(., '\\/|\\.', '\\-')
+# 
+# 
+#   
+#   # find location of 1/1, everything before prepend 2020
+#   
+#   
+#   
+#   
+#   # works, but slow
+#   # TODO: evaluate performance difference between lookup table and individual assignment
+#   md_dates = which(!is.na(as.Date(clean_dates, format = '%m-%d')))
+#   clean_dates[md_dates] = format(as.Date(clean_dates[md_dates], '%m-%d'), '%Y-%m-%d')
+#   clean_dates = as.Date(format(as.Date(clean_dates), '%Y-%m-%d'))
+#   fix_years = sapply(clean_dates, function(x) x = ifelse(x > Sys.Date(), seq(x, length=2, by="-1 years")[2], x))
+#   
+#   dates_out = format(as.Date(fix_years), '%Y-%m-%d')
+#   
+#   
+#   
+#   # fix md dates erroneously assigned to 2021
+#   # dates_out = format(as.Date(test, '%Y-%m-%d'))
+#   
+#   # md_dates_2020 = which(format(as.Date(clean_dates[md_dates], '%m-%d'), '%m') %in% (c('10', '11', '12')))
+#   # 
+#   # clean_dates[md_dates[md_dates_2020]] = paste0('2020-', clean_dates[md_dates[md_dates_2020]])
+#   # clean_dates[md_dates[-md_dates_2020]] = format(as.Date(clean_dates[md_dates[-md_dates_2020]],
+#   #                                                        '%m-%d'), '%Y-%m-%d')
+# 
+#   
+#   
+#   # dates_out = as.Date(clean_dates)
+#   return(dates_out)
+# }
 Date_Parser = function(Date) { 
   #Matches 2 or 4 digits, separator, 2 or 4 digits, optional separator, optional 2 or 4 digits
   # Coerces all common separators to "-" 
-  date_regex = '(\\d{2}|\\d{4})(\\.|\\-|\\/)(\\d{2}|\\d{4})?(\\.|\\-|\\/)?(\\d{2}|\\d{4})'
+  date_regex = '(\\d{4}|\\d{2})(\\.|\\-|\\/)(\\d{4}|\\d{2})?(\\.|\\-|\\/)?(\\d{4}|\\d{2})'
   clean_dates = str_extract(Date, date_regex) %>% str_replace_all(., '\\/|\\.', '\\-')
 
 
-  
-  # find location of 1/1, everything before prepend 2020
-  
-  
-  
-  
-  # works, but slow
-  # TODO: evaluate performance difference between lookup table and individual assignment
+  mdy_dates = which(!is.na(as.Date(clean_dates, format = '%m-%d-%y')))
   md_dates = which(!is.na(as.Date(clean_dates, format = '%m-%d')))
-  clean_dates[md_dates] = format(as.Date(clean_dates[md_dates], '%m-%d'), '%Y-%m-%d')
-  clean_dates = as.Date(format(as.Date(clean_dates), '%Y-%m-%d'))
-  fix_years = sapply(clean_dates, function(x) x = ifelse(x > Sys.Date(), seq(x, length=2, by="-1 years")[2], x))
-  
-  dates_out = format(as.Date(fix_years), '%Y-%m-%d')
-  
-  
-  
-  # fix md dates erroneously assigned to 2021
-  # dates_out = format(as.Date(test, '%Y-%m-%d'))
-  
-  # md_dates_2020 = which(format(as.Date(clean_dates[md_dates], '%m-%d'), '%m') %in% (c('10', '11', '12')))
-  # 
-  # clean_dates[md_dates[md_dates_2020]] = paste0('2020-', clean_dates[md_dates[md_dates_2020]])
-  # clean_dates[md_dates[-md_dates_2020]] = format(as.Date(clean_dates[md_dates[-md_dates_2020]],
-  #                                                        '%m-%d'), '%Y-%m-%d')
-
+  if (length(mdy_dates) == length(md_dates)) { 
+    md_dates = c()
+    }
+  md_dates_2020 = which(format(as.Date(clean_dates[md_dates], '%m-%d'), '%m') %in% (c('10', '11', '12')))
+  clean_dates[md_dates[md_dates_2020]] = paste0('2020-', clean_dates[md_dates[md_dates_2020]])
+  clean_dates[md_dates[-md_dates_2020]] = format(as.Date(clean_dates[md_dates[-md_dates_2020]],
+                                                         '%m-%d'), '%Y-%m-%d')
+  dates_out = format(as.Date(clean_dates, '%m-%d-%Y'), '%Y-%m-%d')
+  if (sum(is.na(dates_out)) > 0){ 
+    dates_out = format(as.Date(clean_dates, '%Y-%m-%d'), '%Y-%m-%d')
+    }
   
   
-  # dates_out = as.Date(clean_dates)
   return(dates_out)
 }
+
+
 ```
 
 ## Classifications
@@ -389,34 +415,6 @@ DSHS_cases_long = DSHS_cases_wide %>%
   tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
   mutate(Cases_Cumulative_NA = Cases_Cumulative) %>% 
   tidyr::fill(Cases_Cumulative, .direction = "down")
-
-# 
-# DSHS_cases_time = data.frame(read_excel(temp, sheet = 1))
-# 
-# # fix colnames & select correct rows
-# # names(DSHS_cases_time) = DSHS_cases_time[2, ]
-# DSHS_cases_time = DSHS_cases_time[3:(nrow(DSHS_cases_time) - 11), ]
-# names(DSHS_cases_time)[1] = 'County'
-# 
-# # convert wide data to long
-# DSHS_cases_long = reshape::melt(DSHS_cases_time, id = c('County'))
-# names(DSHS_cases_long) = c('County', 'Date', 'Cases_Cumulative')
-# 
-# # fix dates (remove linebreaks and return characters from column, then interpret as %m-%d)
-# # DSHS_cases_long$Date = as.Date(gsub('Cases|\r|\r|\n', '', DSHS_cases_long$Date), format = '%m-%d')
-# 
-# # force as integer -> coerce -- to NA
-# # if a date is missing, fill using previous cumulative cases
-# # calculate daily cases by padding the initial cumulative value, then reporting the difference between successive values by county
-# DSHS_cases_long$Cases_Cumulative = as.integer(as.character(DSHS_cases_long$Cases_Cumulative))
-# 
-# DSHS_cases_long = 
-#   DSHS_cases_long %>%
-#     group_by(County) %>%
-#     tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
-#     mutate(Cases_Cumulative_NA = Cases_Cumulative) %>% 
-#     tidyr::fill(Cases_Cumulative, .direction = "down")
-#     # mutate(Cases_Daily = c(Cases_Cumulative[1], diff(Cases_Cumulative)))
 ```
 
 ## deaths
@@ -564,13 +562,10 @@ DSHS_new_cases_long = DSHS_new_cases_wide %>%
   reshape2::melt('County') %>% 
   setNames(c('County', 'Date', 'Cases_Daily')) %>%
   mutate(Date = as.Date(Date)) %>%
-    # mutate(Date = gsub('New Cases ', '', Date)) %>%
-  # mutate(Date = Date_Parser(Date)) %>% 
   mutate(Cases_Daily = ifelse(Cases_Daily < 0, 0, Cases_Daily)) %>%
   mutate(Cases_Daily = replace(Cases_Daily, 
                                County == 'Montgomery' & Date %in% montgomery_case_dates,
                                montgomery_new_cases)) %>%
-  # rbind(., new_cases_archive) %>% 
   arrange(Date, County)
 ```
 
