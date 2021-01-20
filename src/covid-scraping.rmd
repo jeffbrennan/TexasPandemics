@@ -37,12 +37,10 @@ knitr::opts_chunk$set(comment = NA)
 ```
 
 ```{r, echo = FALSE}
-refactor_version = '2'
+refactor_version = '3'
 ```
 
 ```{r}
-
-
 # data manipulation
 library(tidyverse)
 library(data.table)
@@ -59,7 +57,6 @@ library(ggpubr)
 library(rvest)
 library(jsonlite)
 library(glue)
-
 ```
 
 ```{r}
@@ -74,7 +71,7 @@ read_excel_allsheets = function(filename, tibble = FALSE, col_option = TRUE) {
 }
 
 # set date for writing files
-# If before 5 PM, then record as last date since DSHS data will not be updated yet
+# If before 5 PM EST, then record as last date since DSHS data will not be updated yet
 date_out = ifelse((Sys.time() < as.POSIXct(paste0(Sys.Date(), '16:00'), tz = 'America/Chicago')),
                    Sys.Date() - 1,
                    Sys.Date())
@@ -82,44 +79,7 @@ date_out = ifelse((Sys.time() < as.POSIXct(paste0(Sys.Date(), '16:00'), tz = 'Am
 # convert numeric sys.date() to yyyy-mm-dd
 date_out = as.Date(date_out, origin = '1970-1-1')
 
-# Date_Parser = function(Date) { 
-#   #Matches 2 or 4 digits, separator, 2 or 4 digits, optional separator, optional 2 or 4 digits
-#   # Coerces all common separators to "-" 
-#   date_regex = '(\\d{2}|\\d{4})(\\.|\\-|\\/)(\\d{2}|\\d{4})?(\\.|\\-|\\/)?(\\d{2}|\\d{4})'
-#   clean_dates = str_extract(Date, date_regex) %>% str_replace_all(., '\\/|\\.', '\\-')
-# 
-# 
-#   
-#   # find location of 1/1, everything before prepend 2020
-#   
-#   
-#   
-#   
-#   # works, but slow
-#   # TODO: evaluate performance difference between lookup table and individual assignment
-#   md_dates = which(!is.na(as.Date(clean_dates, format = '%m-%d')))
-#   clean_dates[md_dates] = format(as.Date(clean_dates[md_dates], '%m-%d'), '%Y-%m-%d')
-#   clean_dates = as.Date(format(as.Date(clean_dates), '%Y-%m-%d'))
-#   fix_years = sapply(clean_dates, function(x) x = ifelse(x > Sys.Date(), seq(x, length=2, by="-1 years")[2], x))
-#   
-#   dates_out = format(as.Date(fix_years), '%Y-%m-%d')
-#   
-#   
-#   
-#   # fix md dates erroneously assigned to 2021
-#   # dates_out = format(as.Date(test, '%Y-%m-%d'))
-#   
-#   # md_dates_2020 = which(format(as.Date(clean_dates[md_dates], '%m-%d'), '%m') %in% (c('10', '11', '12')))
-#   # 
-#   # clean_dates[md_dates[md_dates_2020]] = paste0('2020-', clean_dates[md_dates[md_dates_2020]])
-#   # clean_dates[md_dates[-md_dates_2020]] = format(as.Date(clean_dates[md_dates[-md_dates_2020]],
-#   #                                                        '%m-%d'), '%Y-%m-%d')
-# 
-#   
-#   
-#   # dates_out = as.Date(clean_dates)
-#   return(dates_out)
-# }
+
 Date_Parser = function(Date) { 
   #Matches 2 or 4 digits, separator, 2 or 4 digits, optional separator, optional 2 or 4 digits
   # Coerces all common separators to "-" 
@@ -144,8 +104,6 @@ Date_Parser = function(Date) {
   
   return(dates_out)
 }
-
-
 ```
 
 ## Classifications
@@ -264,8 +222,6 @@ tsa_long_complete = subset(tsa_long, value != '')[, c(1, 4)] %>%
 <!--           row.names = FALSE) -->
 <!-- ``` -->
 
-
-
 # SCHOOL LEVEL
 
 ```{r}
@@ -363,8 +319,6 @@ write_xlsx(list('school_data' = DSHS_school_df,
 
 # COUNTY LEVEL
 
-
-
 ## Google mobility
 
 ```{r}
@@ -444,70 +398,6 @@ DSHS_deaths_long = DSHS_deaths_wide %>%
   tidyr::fill(Deaths_Cumulative, .direction = "down") %>%
   mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative))) %>% 
   ungroup()
-  
-
-# 
-# DSHS_deaths_time = data.frame(readxl::read_excel(temp, sheet = 1))
-# 
-# # fix colnames
-# names(DSHS_deaths_time) = DSHS_deaths_time[2, ]
-# last_row = grep('Zavala|ZAVALA', DSHS_deaths_time$County)
-# 
-# DSHS_deaths_time = DSHS_deaths_time[3:last_row, ]
-# names(DSHS_deaths_time)[1] = 'County'
-# 
-# names(DSHS_deaths_time) = trimws(gsub('Fatalities', '', names(DSHS_deaths_time)))
-# 
-# dates_raw = names(DSHS_deaths_time)[2:length(names(DSHS_deaths_time))]
-# 
-# # TODO: CHECK on 12/2, 12/3 etc. for update 
-# # temp fix DSHS typo 12/30 -> 11/30
-# dates_raw = gsub('12-30', '11-30', dates_raw)
-# 
-# dates = format(as.Date(dates_raw, '%m-%d'), '%Y-%m-%d')
-
-# 11/13: DSHS reverted 11/12 change to date format (addressed below)
-# dates_raw = names(DSHS_deaths_time)[2:length(names(DSHS_deaths_time))]
-# dates_is_num = which(!is.na(as.numeric(dates_raw)))
-# dates_num = as.Date(as.numeric(dates_raw[dates_is_num]), origin = '1899-12-30')
-# dates_char = as.Date(dates_raw[-dates_is_num], '%m/%d/%Y')
-# dates = sort(c(dates_num, dates_char))
-
-# 
-# # replace date values
-# names(DSHS_deaths_time)[2:ncol(DSHS_deaths_time)] = dates
-# # melt
-# DSHS_deaths_long = reshape2::melt(DSHS_deaths_time, id = c('County'))
-# names(DSHS_deaths_long) = c('County', 'Date', 'Deaths_Cumulative')
-# 
-# # fix most county names (ex: HARRIS -> Harris)
-# DSHS_deaths_long$County = stringr::str_to_title(DSHS_deaths_long$County)
-# 
-# # manually fix exceptions using DSHS_cases_long as dictionary
-# mismatched_counties = setdiff(unique(DSHS_deaths_long$County), unique(DSHS_cases_long$County))
-# DSHS_deaths_long$County = gsub('De Witt', 'DeWitt', DSHS_deaths_long$County)
-# DSHS_deaths_long$County = gsub('Dewitt', 'DeWitt', DSHS_deaths_long$County)
-# DSHS_deaths_long$County = gsub('Mcculloch', 'McCulloch', DSHS_deaths_long$County)
-# DSHS_deaths_long$County = gsub('Mclennan', 'McLennan', DSHS_deaths_long$County)
-# DSHS_deaths_long$County = gsub('Mcmullen', 'McMullen', DSHS_deaths_long$County)
-# 
-# # check again - 0 indicates all fixed
-# length(setdiff(unique(DSHS_deaths_long$County), unique(DSHS_cases_long$County)))
-# 
-# # calculate daily deaths & fill cumulative deaths
-# DSHS_deaths_long$Deaths_Cumulative = as.integer(as.character(DSHS_deaths_long$Deaths_Cumulative))
-# 
-# # date converted from date to factor during wide -> long reformat
-# DSHS_deaths_long = 
-#   DSHS_deaths_long %>%
-#   mutate(Date = as.Date(Date)) %>%
-#   # mutate(Date = as.Date(as.numeric(Date), origin = '2020-03-06')) %>%
-#   group_by(County) %>%
-#   tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
-#   mutate(Deaths_Cumulative_NA = Deaths_Cumulative) %>%
-#   tidyr::fill(Deaths_Cumulative, .direction = "down") %>%
-#   mutate(Deaths_Daily = c(Deaths_Cumulative[1], diff(Deaths_Cumulative))) %>% 
-#   ungroup()
 ```
 
 ## testing
@@ -572,48 +462,6 @@ DSHS_new_cases_long = DSHS_new_cases_wide %>%
 ## active cases
 
 ```{r}
-# historic 
-# old_case_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19LegacyActiveCasesbyCounty.xlsx'
-# temp = tempfile()
-# download.file(old_case_url, temp, mode = 'wb') 
-# old_active_cases = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) %>%
-#   slice(which(County == 'Anderson'):which(County == 'Zavala')) %>% 
-#   dplyr::select(-Notes)
-# 
-# 
-# # temp fix duplicate cols - default to .x
-# if (length(grep('.x', names(old_active_cases)) > 0)) { 
-#     old_active_cases = old_active_cases[, -grep('\\.y', names(old_active_cases))]
-#     names(old_active_cases) = gsub('\\.y', '', names(old_active_cases))
-# }
-# 
-
-# names(old_active_cases)[2:ncol(old_active_cases)] = Date_Parser(names(old_active_cases)[2:ncol(old_active_cases)])
-
-
-# melt
-# old_active_cases_long = reshape::melt(old_active_cases, id = 'County') %>% 
-#   setNames(c('County', 'Date', 'Active_Cases_Cumulative')) %>%
-#   group_by(Date) %>%
-#   mutate(Date = as.Date(paste(str_extract_all(Date, '\\d+')[[1]], collapse = ' '), '%m%d')) %>%
-#   mutate(Date = Date_Parser(Date)) %>%
-#   mutate(Date = as.Date(Date)) %>%
-#   ungroup() %>%
-#   group_by(County) %>% 
-#   distinct() %>%
-#   mutate(Active_Cases_Cumulative = as.integer(as.character(Active_Cases_Cumulative))) %>%
-#   tidyr::complete(Date = seq.Date(min(Date), as.Date('2020-12-10'), by="day")) %>%
-#   mutate(Active_Cases_Cumulative_NA = Active_Cases_Cumulative) %>%
-#   tidyr::fill(Active_Cases_Cumulative, .direction = "down") %>%
-#   mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative))) %>%
-#   filter(!is.na(County))
-# 
-
-
-# write.csv(old_active_cases_long,
-#           'original-sources/historical/active-cases/active_case_archive.csv',
-#           row.names = FALSE)
-
 old_active_cases_long = read.csv('original-sources/historical/active-cases/active_case_archive.csv') %>% 
   mutate(Date = as.Date(Date))
 
@@ -628,7 +476,6 @@ new_active_cases = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) %>%
   select_if(function(x) all(!is.na(x)))
 
 names(new_active_cases)[2:ncol(new_active_cases)] = Date_Parser(names(new_active_cases)[2:ncol(new_active_cases)])
-
 
 
 # melt
@@ -646,8 +493,6 @@ new_active_cases_long = reshape::melt(new_active_cases, id = 'County') %>%
   tidyr::fill(Active_Cases_Cumulative, .direction = "down") %>%
   mutate(Active_Cases_Daily = c(Active_Cases_Cumulative[1], diff(Active_Cases_Cumulative))) %>%
   filter(!is.na(County))
-
-
 
 DSHS_active_cases_long = rbind(old_active_cases_long, new_active_cases_long) %>% arrange(Date, County)
 ```
@@ -694,30 +539,6 @@ merged_county = merged_county %>%
   distinct() 
 ```
 
-```{r}
-# data dump investigation - move to diagnostics 
-daily_tests = merged_county %>% 
-  dplyr::select(Date, County, Tests_Cumulative, Tests_Daily) %>% 
-  filter(County == 'Harris' & Date > as.Date('2020-09-01'))
-
-ggplot(daily_tests, aes(x = Date, y = Tests_Daily)) + 
-  geom_point() +
-  geom_line(color = 'red') +
-  labs(title = 'Daily Tests since 9/1 in Harris County') + 
-  theme_pubr()
-
-# 
-# # tpr calculation
-# merged_county %>%
-#   dplyr::select(Date, County, Cases_Cumulative, Cases_Daily, Tests_Daily) %>%
-#   group_by(County) %>% 
-#   mutate(Cases_Cumulative_daily = as.numeric(c(Cases_Cumulative[1], diff(Cases_Cumulative)))) %>%
-#   filter(County == 'Harris' & Date > Sys.Date() - 14) %>% 
-#   summarize(TPR_new_cases = sum(Cases_Daily) / sum(Tests_Daily),
-#             TPR_cumulative_cases = sum(Cases_Cumulative_daily) / sum(Tests_Daily))
-
-```
-
 ## TPR 
 
 ```{r}
@@ -747,9 +568,6 @@ Get_TPR = function() {
             row.names = FALSE) 
   }
   
-# TODO: find out which day the new file is added
-# TPR_dates = seq(as.Date('2020-08-19'), by = 'week', length.out = 52)
-# if (date_out %in% (TPR_dates + 5)) {Get_TPR()}
 Get_TPR()
 tpr_df = rbindlist(
          lapply(list.files('original-sources/historical/cms_tpr/', full.names = TRUE), read.csv),
@@ -757,11 +575,6 @@ tpr_df = rbindlist(
          mutate(Date = as.Date(Date)) %>% 
   rename(TPR = TPR_CMS) %>%  
   mutate(TPR = ifelse(Date >= '2020-12-16', NA, TPR))
-
-# write.csv(tpr_df, paste0('original-sources/historical/cms_archive/cms_tpr_archive.csv'),
-#             row.names = FALSE) 
-
-  # filter(Date < '2020-12-16')
 ```
 
 
@@ -774,7 +587,7 @@ Source for TPR data post 12/16. Still use CMS tests and dates for case averages 
 page = read_html('https://beta.healthdata.gov/National/COVID-19-Community-Profile-Report/gqxm-d9w9')
 file_loc = page %>%
   html_nodes('script') %>%
-  str_detect('.xlsx') %>% 
+  str_detect('.xlsx') %>%
   which()
 
 file_text = page %>% html_nodes('script') %>%
@@ -793,8 +606,6 @@ newest_file = fromJSON(file_text)$view$attachments %>%
 file_date = as.Date(str_match(newest_file, '(Report |Report_)(.*)(_)')[3], '%Y%m%d')
 file_url = (paste0('https://beta.healthdata.gov', newest_file))
 
-# clean newest file
-file_url = 'https://beta.healthdata.gov/api/views/gqxm-d9w9/files/ed514221-8fb0-4ba9-84b2-27282646efad?download=true&filename=Community_Profile_Report_20210113_Public.xlsx'
 temp = tempfile()
 download.file(file_url, temp, mode = 'wb')
 
@@ -828,7 +639,6 @@ write.csv(cpr_tpr,
 
 
 # add cms archive (8/19 - 12/09) (data represented 2 weeks of cases)
-# cms_archive = read.csv('original-sources/historical/CMS/cms_tpr_archive.csv')
 
 cpr_dates = list.files('original-sources/historical/cpr') %>% 
   gsub('cpr_tpr_', '', .) %>% 
@@ -841,7 +651,6 @@ cms_dates = list.files('original-sources/historical/cms_tpr/') %>%
   as.Date(.)
 
 TPR_dates = sort(unique(c(cpr_dates, cms_dates)))
-
 
 # combine cpr archive
 all_cpr_tpr = rbindlist(lapply(list.files('original-sources/historical/cpr/', full.names = TRUE), read.csv)) %>% 
@@ -885,6 +694,31 @@ write.csv(tpr_out, 'tableau/county_TPR.csv', row.names = FALSE)
 ```{r}
 download.file('https://www.dshs.texas.gov/immunize/covid19/COVID-19-Vaccine-Data-by-County.xls', mode = 'wb', 
               glue('original-sources/historical/vaccinations/vaccinations_{date_out}.xlsx'))
+
+Clean_Vaccines = function(x) { 
+  file_date = Date_Parser(x)
+  df = read_excel(x, sheet = 2) %>%
+    mutate(Date = file_date) %>% 
+    setNames(c('County', 'PHR',
+               'Doses_Allocated', 'Doses_Administered',
+               'People_Vaccinated_Partial', 'People_Vaccinated_Full',
+               'Population_Over_16', 'Population_Over_65',
+               'Population_Phase_1A_Healthcare',
+               'Population_Phase1A_Care_Residents',
+               'Population_Phase_1B_Medical_Condition', 'Date')) %>% 
+    filter(!(County %in% c('Texas', '*Other', 'Federal Long-Term Care Vaccination Program'))) %>% 
+    dplyr::select(Date, everything())
+} 
+
+vaccine_files = list.files('original-sources/historical/vaccinations/', full.names = TRUE)
+
+county_vaccine = rbindlist(lapply(vaccine_files, Clean_Vaccines))
+demographics_vaccine = read_excel(vaccine_files[length(vaccine_files)], sheet = 3) %>% 
+  setNames(c('Gender', 'Age', 'Race', 'Ethnicity', 'Doses_Administered', 'People_Vaccinated_Partial', 'People_Vaccinated_Full'))
+  
+
+write.csv(county_vaccine, 'tableau/county_vaccine.csv', row.names = FALSE)
+write.csv(demographics_vaccine, 'tableau/demographics_vaccine.csv', row.names = FALSE)
 ```
 
 ## vaccine providers
@@ -893,7 +727,6 @@ download.file('https://www.dshs.texas.gov/immunize/covid19/COVID-19-Vaccine-Data
 download.file('https://genesis.soc.texas.gov/files/accessibility/vaccineprovideraccessibilitydata.csv', mode = 'wb', 
               glue('original-sources/historical/vaccine-providers/vaccination-providers_{date_out}.csv'))
 ```
-
 
 
 # TSA LEVEL
@@ -1035,102 +868,6 @@ merged_tsa = merged_tsa %>%
 
 # STATE LEVEL
 
-<!-- ## HHS facility reporting -->
-
-<!-- ```{r} -->
-<!-- # read in files -->
-<!-- hhs_fac_reporting_raw = read.csv(url('https://opendata.arcgis.com/datasets/adf5753521ed4e2199d6a4c246e08f84_0.csv')) -->
-
-<!-- hhs_date = as.Date(hhs_fac_reporting_raw$last_updated) -->
-<!-- hhs_fac_reporting_raw$Date = hhs_date -->
-<!-- hhs_fac_reporting_raw$last_updated = NULL -->
-
-<!-- # combine csv for archival -->
-<!-- write_xlsx(list('1' = hhs_fac_reporting_raw), -->
-<!--            path = paste0('original-sources/historical/hhs/hhs_data_', hhs_date, '.xlsx')) -->
-
-<!-- # read in archival sources -->
-<!-- hhs_list <- paste0('original-sources/historical/hhs/', -->
-<!--                     list.files(path = 'original-sources/historical/hhs', -->
-<!--                                pattern = '*.xlsx')) -->
-
-<!-- HHS_fac_clean = function(df) {  -->
-<!--     df$Date = format(as.Date(df$Date, origin = '1899-12-30'), '%Y-%m-%d') -->
-
-<!--     if (df$Date[1] <= as.Date('2020-08-03')) { -->
-
-<!--     clean_df = df %>%  -->
-<!--       filter(state_name == 'Texas') %>%  -->
-<!--       dplyr::select(-c('ï..OBJECTID', 'Shape__Area', 'Shape__Length', 'state_fips', -->
-<!--                 'state_abbr', 'hhs_region', 'state_name')) -->
-
-<!--     names(clean_df)[1:3] = c('reporting_hospitals', 'total_hospitals', 'percent_reporting') -->
-<!--     names(clean_df)[1:3] = paste0('HHS_', names(clean_df)[1:3]) -->
-
-<!--     # drop date from colnames (will likely change over time) -->
-<!--     names(clean_df) = gsub('_*\\d', '', names(clean_df)) -->
-
-<!--   } else {  -->
-<!--     clean_df = df %>%  -->
-<!--       filter(state_name == 'Texas') %>%  -->
-<!--       dplyr::select(-c('ï..OBJECTID', 'state_name')) -->
-
-<!--     names(clean_df)[1:3] = paste0('HHS_', names(clean_df)[1:3]) -->
-<!--     } -->
-<!--   return(clean_df) -->
-<!-- } -->
-
-<!-- # 1st lapply: read excel sheets -->
-<!-- # 2nd: clean all of them -->
-<!-- # rbind cleaned sheets together -->
-<!-- HHS_fac_reporting <- rbindlist(lapply(lapply(hhs_list, read_xlsx, sheet = 1), HHS_fac_clean)) -->
-<!-- ``` -->
-
-<!-- ## HHS hospitalization -->
-
-<!-- ```{r} -->
-<!-- HHS_hosp_clean = function(df, data_type) {  -->
-<!--   clean_df = df %>%  -->
-<!--     filter(state == 'TX') %>%  -->
-<!--     dplyr::select(-c('state')) -->
-
-<!--   # append type of data to colnames -->
-<!--   names(clean_df)[c(3:4, 6:7)] = paste0(data_type, names(clean_df[c(3:4, 6:7)])) -->
-<!--   names(clean_df) = paste0('HHS_', names(clean_df)) -->
-
-<!--   clean_df$Date = as.Date(clean_df$HHS_collection_date) -->
-<!--   clean_df$HHS_collection_date = NULL -->
-
-<!--   return(clean_df) -->
-<!-- } -->
-<!-- # timeseries files  -->
-<!-- HHS_all_inpatient =  -->
-<!--   HHS_hosp_clean( -->
-<!--     read.csv(url('https://healthdata.gov/sites/default/files/reported_inpatient_all_20200720_0537.csv')), -->
-<!--     'All.Inpatient.') -->
-
-<!-- HHS_covid_inpatient =  -->
-<!--   HHS_hosp_clean( -->
-<!--     read.csv(url('https://healthdata.gov/sites/default/files/inpatient_covid_final_20200720_0537.csv')), -->
-<!--     'COVID.Inpatient.') -->
-
-<!-- HHS_all_icu =  -->
-<!--   HHS_hosp_clean( -->
-<!--     read.csv(url('https://healthdata.gov/sites/default/files/icu_final_20200720_0537.csv')), -->
-<!--     'All.ICU.') -->
-<!-- ``` -->
-
-<!-- <!-- ### merge --> -->
-
-<!-- ```{r} -->
-<!-- # merge together for combination with other state data -->
-<!-- hhs_df = Reduce(function(x, y) merge(x, y, by = 'Date', all = TRUE), -->
-<!--                 list(HHS_all_inpatient, HHS_covid_inpatient, HHS_all_icu, HHS_fac_reporting)) -->
-
-<!-- ``` -->
-
-<!-- ## DSHS (time series) -->
-
 ```{r}
 state_url = 'https://www.dshs.state.tx.us/coronavirus/TexasCOVID19CaseCountData.xlsx'
 temp = tempfile()
@@ -1144,75 +881,7 @@ dshs_date = format(as.Date(dshs_date), '%Y_%m_%d')
 # save state level file to historical database for longitudinal demo
 download.file(state_url, paste0('original-sources/historical/state/dshs_',
                                 dshs_date, '.xlsx'), mode = 'wb')
- # DSHS_state = read_excel_allsheets(temp)
 ```
-
-
-
-<!-- ```{r} -->
-<!-- tryCatch({ -->
-<!--   DSHS_tests = DSHS_state[[3]] -->
-
-<!--   # # LAB TESTS -->
-<!--   # select lab tests & remove rows where all rows are NA -->
-<!--   DSHS_molecular_tests = DSHS_tests[2:nrow(DSHS_tests), c(1, 3, 4, 5)] %>% -->
-<!--     setNames(c('Date', 'Molecular_tests_Daily', 'LAB_Positive_Tests_Daily','LAB_Positivity_Rate')) %>% -->
-<!--     filter(rowSums(is.na(.)) < ncol(.)) %>% -->
-<!--     mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30')) -->
-<!--   # -->
-<!--   # # SPECIMEN TESTS -->
-<!--   DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %>% -->
-<!--     setNames(c('Date', 'SPECIMEN_Tests_Daily','SPECIMEN_Positive_Tests_Daily', -->
-<!--                'SPECIMEN_Positivity_Rate')) %>% -->
-<!--     filter(rowSums(is.na(.)) < ncol(.)) %>% -->
-<!--     mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30')) -->
-<!--   }, -->
-<!--   error = function(e) { -->
-<!--   DSHS_tests = DSHS_state[[4]] -->
-
-<!--   # # LAB TESTS -->
-<!--   # select lab tests & remove rows where all rows are NA -->
-<!--   DSHS_molecular_tests = DSHS_tests[2:nrow(DSHS_tests), 1:4] %>% -->
-<!--     setNames(c('Date', 'molecular_tests_Daily', 'LAB_Positive_Tests_Daily','LAB_Positivity_Rate')) %>% -->
-<!--     filter(rowSums(is.na(.)) < ncol(.)) %>% -->
-<!--     mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30')) -->
-<!--   # # SPECIMEN TESTS -->
-<!--   DSHS_specimen_tests = DSHS_tests[2:nrow(DSHS_tests), c(6,7,9,11)] %>% -->
-<!--     setNames(c('Date', 'SPECIMEN_Tests_Daily','SPECIMEN_Positive_Tests_Daily', -->
-<!--                'SPECIMEN_Positivity_Rate')) %>% -->
-<!--     filter(rowSums(is.na(.)) < ncol(.)) %>% -->
-<!--     mutate(Date = as.Date(as.integer(Date), origin = '1899-12-30')) -->
-<!--   }) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- # selects covid hospitalization time series, drops footnote, formates date and sets colnames -->
-<!-- DSHS_hospitalizations = DSHS_state[[9]][, c(2:3)] %>% -->
-<!--   filter(rowSums(is.na(.)) < ncol(.)) %>%  -->
-<!--   setNames(c('Date', 'Hospitalizations_Total')) %>% -->
-<!--   mutate(Date = as.Date(Date)) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- # merge tests & hospitalizations -->
-<!-- DSHS_state_time = Reduce(function(x, y) merge(x, y, by = c('Date')), -->
-<!-- list(DSHS_specimen_tests, DSHS_molecular_tests, DSHS_hospitalizations)) -->
-<!-- ``` -->
-
-<!-- ## DSHS (day counts) -->
-
-<!-- ```{r} -->
-<!-- # avoids duplication of results between sheets -->
-<!-- DSHS_state_day = data.frame(Molecular_Tests_Total = DSHS_state[[5]][1,2], -->
-<!--                             Antigen_Tests_Total = DSHS_state[[7]][1,2], -->
-<!--                             Antigen_Tests_Positive = DSHS_state[[7]][2,2], -->
-<!--                             Antibody_Tests_Total = DSHS_state[[6]][1,2], -->
-<!--                             Antibody_tests_Positive = DSHS_state[[6]][2,2], -->
-<!--                             Hospital_Bed_Total = DSHS_state[[8]][2,2], -->
-<!--                             Hospital_Bed_Available = DSHS_state[[8]][4,2], -->
-<!--                             ICU_Bed_Available = DSHS_state[[8]][5,2], -->
-<!--                             Ventilator_Available = DSHS_state[[8]][6,2]) -->
-<!-- ``` -->
 
 ## DSHS Demographics
 
@@ -1262,7 +931,6 @@ if (date_out %in% demo_releases) {
 ```
 
 
-
 ### merge
 
 ```{r}
@@ -1283,53 +951,6 @@ demo_stacked_combined = rbind(legacy_demo, daily_demo_stack_all) %>%
   arrange(Date)
 ```
 
-<!-- ## Computed -->
-
-<!-- ```{r} -->
-<!-- state_counts = -->
-<!--     merged_county %>% -->
-<!--     group_by(Date) %>% -->
-<!--     summarize_at(vars(Cases_Cumulative, Cases_Daily, -->
-<!--                       Deaths_Cumulative, Deaths_Daily, -->
-<!--                       Tests_Cumulative, Tests_Daily, -->
-<!--                       Active_Cases_Cumulative, Active_Cases_Daily), -->
-<!--                  funs(sum(., na.rm = TRUE))) -->
-
-<!-- state_pops =  -->
-<!--   subset(merged_county, Date == '2020-03-04') %>% -->
-<!--   group_by(Date) %>% -->
-<!--   summarize_at(vars(Population_DSHS), -->
-<!--                funs(sum)) -->
-
-<!-- state_google =  -->
-<!--   merged_county %>% -->
-<!--   group_by(Date) %>% -->
-<!--   summarize_at(vars(Retail_Recreation, Grocery_Pharmacy, -->
-<!--                     Parks, Transit, -->
-<!--                     Workplaces, Residential), -->
-<!--                funs(weighted.mean(., Population_DSHS)), na.rm = TRUE) -->
-
-<!-- state_hosp_detail =  -->
-<!--   merged_tsa %>%  -->
-<!--   group_by(Date) %>% -->
-<!--   summarize_at(vars(Hospitalizations_Total, Hospitalizations_General, Hospitalizations_ICU, -->
-<!--                     Beds_Available_Total, Beds_Available_ICU,  Beds_Occupied_Total, Beds_Occupied_ICU, -->
-<!--                     Ventilators_Available), -->
-<!--                funs(sum)) -->
-<!-- ``` -->
-
-<!-- ## merge -->
-
-<!-- ```{r} -->
-<!-- merged_state = Reduce(function(x, y) merge(x, y, by = c('Date'), all=TRUE), -->
-<!--        list(state_counts, state_google, DSHS_state_time, state_hosp_detail, hhs_df)) -->
-
-<!-- merged_state$Population_DSHS = state_pops$Population_DSHS -->
-
-<!-- merged_state = merged_state %>%  -->
-<!--   filter(Date >= as.Date('2020-03-04')) %>%  -->
-<!--   distinct() -->
-<!-- ``` -->
 
 # OUTPUT
 
@@ -1345,17 +966,12 @@ write.csv(nyt_schools, file = 'original-sources/historical/nyt/nyt_colleges.csv'
 merged_county_out = merged_county %>% 
   dplyr::select(-c(Cases_Cumulative_NA, Deaths_Cumulative_NA,
                    Tests_Cumulative_NA, Active_Cases_Cumulative_NA))
-
-# write.csv(merged_county_out, file = 'combined-datasets/county.csv', row.names = F)
 write.csv(merged_county_out, 'tableau/county.csv', row.names = FALSE)
-# write.csv(county_demo_2018, file = 'combined-datasets/county_demo.csv', row.names = F)
 ```
 
 ## TSA
 
 ```{r}
-# write.csv(merged_tsa, file = 'combined-datasets/tsa.csv', row.names = F)
-
 hosp_tsa = merged_tsa %>% 
   dplyr::select(Date, TSA, TSA_Name, TSA_Combined, Population_DSHS, Ventilators_Available,
                 Hospitalizations_Total, Hospitalizations_General, Hospitalizations_ICU,
@@ -1368,39 +984,4 @@ write.csv(hosp_tsa, file = 'tableau/hospitalizations_tsa.csv', row.names = F)
 
 ```{r}
 write.csv(demo_stacked_combined, file = 'tableau/stacked_demographics.csv', row.names = FALSE)
-```
-
-# Performance review
-
-```{r, fig.width=12, fig.height=6}
-time_flat = unlist(all_times)
-print(time_flat)
-names(time_flat) = NULL
-
-time_df = data.frame('time_sec' = time_flat) %>%
-  mutate(chunk = as.numeric(rownames(.)) + 2) %>%
-  mutate(version = refactor_version) %>%
-  mutate(script = 'covid-scraping.rmd') %>%
-  arrange(desc(time_sec))
-
-ggplot(time_df, aes(y = time_sec, x = chunk, fill = time_sec)) + 
-  geom_bar(stat = 'identity') + 
-  geom_text(aes(label = chunk), position=position_dodge(width = 0.9), vjust = -0.25) + 
-  labs(x = 'chunk #', y = 'runtime (seconds)') + 
-  scale_fill_gradient(low = 'gray80', high = 'tomato1') + 
-  theme_pubr() + 
-  theme(axis.text.x = element_blank(),
-        legend.position = 'none')
-```
-
-## total run time
-
-```{r}
-time_df %>% summarize(sum(time_sec))
-```
-
-
-```{r}
-write.csv(time_df, paste0('diagnostics/scrape_runtime_', refactor_version, '.csv'),
-          row.names = FALSE)
 ```
