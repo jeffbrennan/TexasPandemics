@@ -378,7 +378,8 @@ death_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyFatalityC
 temp = tempfile()
 download.file(death_url, temp, mode = 'wb') 
 
-DSHS_deaths_wide = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) %>% slice(1:254)
+DSHS_deaths_wide = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) %>% slice(1:254) %>% 
+  dplyr::select(contains('County'), contains('Fatalities'))
 names(DSHS_deaths_wide)[2:ncol(DSHS_deaths_wide)] = Date_Parser(names(DSHS_deaths_wide)[2:ncol(DSHS_deaths_wide)])
 
 DSHS_deaths_long = DSHS_deaths_wide %>% 
