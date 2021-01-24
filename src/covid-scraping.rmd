@@ -714,7 +714,7 @@ vaccine_files = list.files('original-sources/historical/vaccinations/', full.nam
 
 county_vaccine = rbindlist(lapply(vaccine_files, Clean_Vaccines))
 demographics_vaccine = read_excel(vaccine_files[length(vaccine_files)], sheet = 3) %>% 
-  setNames(c('Gender', 'Age', 'Race', 'Ethnicity', 'Doses_Administered', 'People_Vaccinated_Partial', 'People_Vaccinated_Full'))
+  setNames(c('Gender', 'Age', 'Race_Ethnicity', 'Doses_Administered', 'People_Vaccinated_Partial', 'People_Vaccinated_Full'))
   
 
 write.csv(county_vaccine, 'tableau/county_vaccine.csv', row.names = FALSE)
