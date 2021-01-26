@@ -80,29 +80,60 @@ date_out = ifelse((Sys.time() < as.POSIXct(paste0(Sys.Date(), '16:00'), tz = 'Am
 date_out = as.Date(date_out, origin = '1970-1-1')
 
 
-Date_Parser = function(Date) { 
+Fix_Num_Dates = function(dates) { 
+  # TODO: add more checks for different int dates
+  clean_dates = as.Date(as.numeric(dates), '1899-12-30')
+
+  if (sum(is.na(clean_dates)) > 0) {
+    clean_dates[which(is.na(clean_dates))] = as.Date(clean_dates[which(is.na(clean_dates))], origin = '1970-1-1')
+  }
+  return(format(clean_dates, '%Y-%m-%d'))
+}
+  
+Fix_Char_Dates = function(dates) { 
   #Matches 2 or 4 digits, separator, 2 or 4 digits, optional separator, optional 2 or 4 digits
   # Coerces all common separators to "-" 
-  date_regex = '(\\d{4}|\\d{2})(\\.|\\-|\\/)(\\d{4}|\\d{2})?(\\.|\\-|\\/)?(\\d{4}|\\d{2})'
-  clean_dates = str_extract(Date, date_regex) %>% str_replace_all(., '\\/|\\.', '\\-')
-
-
+  date_regex = '(\\d{4}|\\d{2}|\\d{1})(\\.|\\-|\\/)(\\d{4}|\\d{2}|\\d{1})?(\\.|\\-|\\/)?(\\d{4}|\\d{2})'
+  clean_dates = str_extract(dates, date_regex) %>% str_replace_all(., '\\/|\\.', '\\-')
+  
   mdy_dates = which(!is.na(as.Date(clean_dates, format = '%m-%d-%y')))
-  md_dates = which(!is.na(as.Date(clean_dates, format = '%m-%d')))
-  if (length(mdy_dates) == length(md_dates)) { 
-    md_dates = c()
-    }
-  md_dates_2020 = which(format(as.Date(clean_dates[md_dates], '%m-%d'), '%m') %in% (c('10', '11', '12')))
-  clean_dates[md_dates[md_dates_2020]] = paste0('2020-', clean_dates[md_dates[md_dates_2020]])
-  clean_dates[md_dates[-md_dates_2020]] = format(as.Date(clean_dates[md_dates[-md_dates_2020]],
-                                                         '%m-%d'), '%Y-%m-%d')
-  dates_out = format(as.Date(clean_dates, '%m-%d-%Y'), '%Y-%m-%d')
-  if (sum(is.na(dates_out)) > 0){ 
-    dates_out = format(as.Date(clean_dates, '%Y-%m-%d'), '%Y-%m-%d')
-    }
+  md_dates = which(is.na(as.Date(clean_dates, format = '%m-%d-%Y')))
+  # if (length(mdy_dates) == length(md_dates)) { 
+  #   md_dates = c()
+  # }
   
+
+  if (length(md_dates > 0)){
+      md_dates_2020 = which(format(as.Date(clean_dates[md_dates], '%m-%d'), '%m') %in% as.character(seq(as.numeric(format(date_out, '%m')) + 1, 12)))
+    
+    if (length(md_dates_2020) > 0) { 
+      clean_dates[md_dates[md_dates_2020]] = paste0('2020-', clean_dates[md_dates[md_dates_2020]])
+      clean_dates[md_dates[-md_dates_2020]] = format(as.Date(clean_dates[md_dates[-md_dates_2020]],
+                                                             '%m-%d'), '%Y-%m-%d')
+    } else { 
+      clean_dates[md_dates] = format(as.Date(clean_dates, '%m-%d'), '%Y-%m-%d')
+    }
+  }
   
-  return(dates_out)
+  if (length(mdy_dates > 0)) { 
+    clean_dates[mdy_dates] = format(as.Date(clean_dates[mdy_dates], '%m-%d-%Y'), '%Y-%m-%d')
+  }
+
+  return(clean_dates)
+}
+
+
+Date_Parser = function(raw_date) { 
+  numeric_loc = which(!is.na(as.numeric(raw_date)))
+
+    if (length(numeric_loc) == 0){
+      clean_dates = Fix_Char_Dates(raw_date)
+    } else {
+      clean_num_date = Fix_Num_Dates(raw_date[numeric_loc])
+      clean_char_date = Fix_Char_Dates(raw_date[-numeric_loc])
+      clean_dates = sort(c(clean_num_date, clean_char_date))
+    }
+  return(clean_dates)
 }
 ```
 
@@ -378,8 +409,9 @@ death_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyFatalityC
 temp = tempfile()
 download.file(death_url, temp, mode = 'wb') 
 
-DSHS_deaths_wide = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) %>% slice(1:254) %>% 
-  dplyr::select(contains('County'), contains('Fatalities'))
+DSHS_deaths_wide = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) %>% slice(1:254)
+names(DSHS_deaths_wide) = gsub('X', '', names(DSHS_deaths_wide))
+
 names(DSHS_deaths_wide)[2:ncol(DSHS_deaths_wide)] = Date_Parser(names(DSHS_deaths_wide)[2:ncol(DSHS_deaths_wide)])
 
 DSHS_deaths_long = DSHS_deaths_wide %>% 
@@ -553,7 +585,7 @@ Get_TPR = function() {
   temp_file = tempfile()
   download.file(tpr_url, temp_file, mode = 'wb')
   tpr_df = read_excel(unzip(temp_file, exdir = temp_dir)[[1]])
-  tpr_date = Date_Parser(as.Date(str_match(tpr_df[2,2], '-(.*)')[2], '%B %d'))
+  tpr_date = Date_Parser(format(as.Date(str_match(tpr_df[2,2], '-(.*)')[2], '%B %d'), '%m-%d'))
   print(tpr_date)
   
   tpr_out = tpr_df %>% 
@@ -619,6 +651,7 @@ cpr_date = read_xlsx(temp, sheet = 6) %>%
   paste0(., collapse = '') %>%
   # str_extract(., '\\w+.(?=\\d{1,2}).') %>%
   as.Date(., '%B %d') %>%
+  format(., '%m-%d') %>%
   Date_Parser(.) %>% 
   as.Date(.)
 
