@@ -5,6 +5,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from base64 import b64decode
 import datetime
+import numpy as np
 
 
 def convert_date(date_num): 
@@ -32,14 +33,20 @@ def parse_data(data_location, level_type):
     complete_dates = pd.period_range('04-01-2020', df['Date'].max())
     complete_dates = complete_dates.strftime('%Y-%m-%d').to_series().to_list()
 
+    # fill missing dates
     df = df.set_index('Date')
-    df = df.reindex(complete_dates, fill_value='N/A')
-    df.loc[df['Level'] == 'N/A', 'Level'] = level_type
-
+    df = df.reindex(complete_dates, fill_value=np.nan)
+    df.loc[df['Level'].isna(), 'Level'] = level_type
     df['Date'] = df.index
     df = df.reset_index(drop=True)
     df = df[['Date', 'Level', 'values']]
+
+    # fix N/As: only real NA date is 5/22 for certain counties
+    # other N/As are presented as repeat values of previous day value on the site
     
+    df.loc[(df['Date'] == '2020-05-22') & (df['values'].isna()), 'values'] = 'N/A'
+    df.fillna(method='ffill', inplace=True)
+
     return df
 
 
@@ -54,10 +61,10 @@ def get_tokens(page_url):
 
     return resource_key, activity_id, request_id
 
+
 # old url
 # page_url = 'https://app.powerbi.com/view?r=eyJrIjoiOWU1ZTQ0MmQtYjEzNi00N2FlLTg0OTYtMjkzYjU4OWEwMzY5IiwidCI6ImI3MjgwODdjLTgwZTgtNGQzMS04YjZmLTdlMGUzYmUxMGUwOCIsImMiOjN9&pageName=ReportSectionc4498c097c625609dc1d'
 page_url = 'https://app.powerbi.com/view?r=eyJrIjoiNDBlNmRlNzEtYWE2Ny00ZmM3LWEwY2YtMDE5NzliZTE5Y2ZjIiwidCI6ImI3MjgwODdjLTgwZTgtNGQzMS04YjZmLTdlMGUzYmUxMGUwOCIsImMiOjN9&pageName=ReportSectiondb4e38c4c14ac93c1c08'
-
 resource_key, activity_id, request_id = get_tokens(page_url)
 headers = {
     'Connection': 'keep-alive',
@@ -85,173 +92,173 @@ def get_icu_data(county):
     payload = {
         "version": "1.0.0",
         "queries": [
-        {
-            "Query": {
-                "Commands": [
-                    {
-                        "SemanticQueryDataShapeCommand": {
-                            "Query": {
-                                "Version": 2,
-                                "From": [
-                                    {
-                                        "Name": "h",
-                                        "Entity": "Hospital_Info",
-                                        "Type": 0
-                                    },
-                                    {
-                                        "Name": "d",
-                                        "Entity": "Date",
-                                        "Type": 0
-                                    },
-                                    {
-                                        "Name": "s1",
-                                        "Entity": "SETRAC Measures",
-                                        "Type": 0
-                                    },
-                                    {
-                                        "Name": "t",
-                                        "Entity": "TSA_County",
-                                        "Type": 0
-                                    }
-                                ],
-                                "Select": [
-                                    {
-                                        "Column": {
-                                            "Expression": {
-                                                "SourceRef": {
-                                                    "Source": "d"
-                                                }
-                                            },
-                                            "Property": "Date"
+            {
+                "Query": {
+                    "Commands": [
+                        {
+                            "SemanticQueryDataShapeCommand": {
+                                "Query": {
+                                    "Version": 2,
+                                    "From": [
+                                        {
+                                            "Name": "h",
+                                            "Entity": "Hospital_Info",
+                                            "Type": 0
                                         },
-                                        "Name": "Date.Date"
-                                    },
-                                    {
-                                        "Measure": {
-                                            "Expression": {
-                                                "SourceRef": {
-                                                    "Source": "s1"
-                                                }
-                                            },
-                                            "Property": "Patients in Intensive Care Beds (Suspected + Confirmed)"
+                                        {
+                                            "Name": "d",
+                                            "Entity": "Date",
+                                            "Type": 0
                                         },
-                                        "Name": "SurvData.Patients in Intensive Care Beds (Suspected + Confirmed)"
-                                    }
-                                ],
-                                "Where": [
-                                    {
-                                        "Condition": {
-                                            "Comparison": {
-                                                "ComparisonKind": 2,
-                                                "Left": {
-                                                    "Column": {
-                                                        "Expression": {
-                                                            "SourceRef": {
-                                                                "Source": "d"
-                                                            }
-                                                        },
-                                                        "Property": "Date"
+                                        {
+                                            "Name": "s1",
+                                            "Entity": "SETRAC Measures",
+                                            "Type": 0
+                                        },
+                                        {
+                                            "Name": "t",
+                                            "Entity": "TSA_County",
+                                            "Type": 0
+                                        }
+                                    ],
+                                    "Select": [
+                                        {
+                                            "Column": {
+                                                "Expression": {
+                                                    "SourceRef": {
+                                                        "Source": "d"
                                                     }
                                                 },
-                                                "Right": {
-                                                    "Literal": {
-                                                        "Value": "datetime'2020-04-01T00:00:00'"
+                                                "Property": "Date"
+                                            },
+                                            "Name": "Date.Date"
+                                        },
+                                        {
+                                            "Measure": {
+                                                "Expression": {
+                                                    "SourceRef": {
+                                                        "Source": "s1"
                                                     }
-                                                }
-                                            }
+                                                },
+                                                "Property": "Patients in Intensive Care Beds (Suspected + Confirmed)"
+                                            },
+                                            "Name": "SurvData.Patients in Intensive Care Beds (Suspected + Confirmed)"
                                         }
-                                    },
-                                    {
-                                        "Condition": {
-                                            "In": {
-                                                "Expressions": [
-                                                    {
+                                    ],
+                                    "Where": [
+                                        {
+                                            "Condition": {
+                                                "Comparison": {
+                                                    "ComparisonKind": 2,
+                                                    "Left": {
                                                         "Column": {
                                                             "Expression": {
                                                                 "SourceRef": {
-                                                                    "Source": "t"
+                                                                    "Source": "d"
                                                                 }
                                                             },
-                                                            "Property": "County"
+                                                            "Property": "Date"
+                                                        }
+                                                    },
+                                                    "Right": {
+                                                        "Literal": {
+                                                            "Value": "datetime'2020-04-01T00:00:00'"
                                                         }
                                                     }
-                                                ],
-                                                "Values": [
-                                                    [
-                                                        {
-                                                            "Literal": {
-                                                                "Value": f"'{county}'"
-                                                            }
-                                                        }
-                                                    ]
-                                                ]
+                                                }
                                             }
-                                        }
-                                    },
-                                    {
-                                        "Condition": {
-                                            "Not": {
-                                                "Expression": {
-                                                    "Comparison": {
-                                                        "ComparisonKind": 0,
-                                                        "Left": {
+                                        },
+                                        {
+                                            "Condition": {
+                                                "In": {
+                                                    "Expressions": [
+                                                        {
                                                             "Column": {
                                                                 "Expression": {
                                                                     "SourceRef": {
-                                                                        "Source": "h"
+                                                                        "Source": "t"
                                                                     }
                                                                 },
-                                                                "Property": "Hospital Name"
+                                                                "Property": "County"
                                                             }
-                                                        },
-                                                        "Right": {
-                                                            "Literal": {
-                                                                "Value": "null"
+                                                        }
+                                                    ],
+                                                    "Values": [
+                                                        [
+                                                            {
+                                                                "Literal": {
+                                                                    "Value": f"'{county}'"
+                                                                }
+                                                            }
+                                                        ]
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "Condition": {
+                                                "Not": {
+                                                    "Expression": {
+                                                        "Comparison": {
+                                                            "ComparisonKind": 0,
+                                                            "Left": {
+                                                                "Column": {
+                                                                    "Expression": {
+                                                                        "SourceRef": {
+                                                                            "Source": "h"
+                                                                        }
+                                                                    },
+                                                                    "Property": "Hospital Name"
+                                                                }
+                                                            },
+                                                            "Right": {
+                                                                "Literal": {
+                                                                    "Value": "null"
+                                                                }
                                                             }
                                                         }
                                                     }
                                                 }
                                             }
                                         }
-                                    }
-                                ]
-                            },
-                            "Binding": {
-                                "Primary": {
-                                    "Groupings": [
-                                        {
-                                            "Projections": [
-                                                0,
-                                                1
-                                            ]
-                                        }
                                     ]
                                 },
-                                "DataReduction": {
-                                    "DataVolume": 2,
+                                "Binding": {
                                     "Primary": {
-                                        "BinnedLineSample": {}
-                                    }
-                                },
-                                "Version": 1
+                                        "Groupings": [
+                                            {
+                                                "Projections": [
+                                                    0,
+                                                    1
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "DataReduction": {
+                                        "DataVolume": 2,
+                                        "Primary": {
+                                            "BinnedLineSample": {}
+                                        }
+                                    },
+                                    "Version": 1
+                                }
                             }
                         }
-                    }
-                ]
-            },
-            "QueryId": "",
-            "ApplicationContext": {
-                "DatasetId": "d31709e8-3813-4fe6-9ed5-68720a203fa2",
-                "Sources": [
-                    {
-                        "ReportId": "7f7a5d35-838d-48ce-9db5-547dc585fdfd"
-                    }
-                ]
+                    ]
+                },
+                "QueryId": "",
+                "ApplicationContext": {
+                    "DatasetId": "d31709e8-3813-4fe6-9ed5-68720a203fa2",
+                    "Sources": [
+                        {
+                            "ReportId": "7f7a5d35-838d-48ce-9db5-547dc585fdfd"
+                        }
+                    ]
+                }
             }
-        }
         ],
-            "cancelQueries": [],
-            "modelId": 12388057
+        "cancelQueries": [],
+        "modelId": 12388057
     }
     
     response = requests.post(query_url, json=payload, headers=headers).json()
@@ -456,6 +463,10 @@ gen_df.columns = ['Date', 'Level', 'COVID_General']
 
 combined_df = pd.merge(icu_df, gen_df, on=['Date', 'Level'], how='outer')
 date_max = combined_df['Date'].max()
+
+# address instances where NA present in most recent date of df (excludes 5/22)
+# done here instead of in parse_data to prevent creation of recent date when data isn't available
+combined_df.fillna(method='ffill', inplace=True)
 
 base_directory = 'C:/Users/jeffb/Desktop/Life/personal-projects/COVID/original-sources/historical/setrac/'
 combined_df.to_csv(f'{base_directory}setrac_data_{date_max}.csv', index=False)
