@@ -1,91 +1,91 @@
 "Gender","Age","Race_Ethnicity","Doses_Administered","People_Vaccinated_Partial","People_Vaccinated_Full"
-"Female","16-49 years","Asian",37235,25141,12094
-"Female","16-49 years","Black",24985,17998,6987
-"Female","16-49 years","Hispanic",71586,51264,20322
-"Female","16-49 years","White",147279,100597,46682
-"Female","16-49 years","Other",46065,35431,10634
-"Female","16-49 years","Unknown",245085,181585,63500
-"Female","50-64 years","Asian",16379,11999,4380
-"Female","50-64 years","Black",19116,14313,4803
-"Female","50-64 years","Hispanic",32054,25053,7001
-"Female","50-64 years","White",88320,65638,22682
-"Female","50-64 years","Other",26201,21117,5084
-"Female","50-64 years","Unknown",149719,118792,30927
-"Female","65-79 years","Asian",12663,11356,1307
-"Female","65-79 years","Black",12646,11698,948
-"Female","65-79 years","Hispanic",20136,18259,1877
-"Female","65-79 years","White",109116,99174,9942
-"Female","65-79 years","Other",25571,22206,3365
-"Female","65-79 years","Unknown",153377,138477,14900
-"Female","80+ years","Asian",2627,2441,186
-"Female","80+ years","Black",2652,2582,70
-"Female","80+ years","Hispanic",4222,3963,259
-"Female","80+ years","White",31460,29380,2080
-"Female","80+ years","Other",28455,23247,5208
-"Female","80+ years","Unknown",55545,49694,5851
+"Female","16-49 years","Asian",37985,25404,12581
+"Female","16-49 years","Black",25485,18194,7291
+"Female","16-49 years","Hispanic",72367,51629,20738
+"Female","16-49 years","White",150551,101820,48731
+"Female","16-49 years","Other",48481,36469,12012
+"Female","16-49 years","Unknown",249890,184197,65693
+"Female","50-64 years","Asian",16671,12143,4528
+"Female","50-64 years","Black",19483,14501,4982
+"Female","50-64 years","Hispanic",32435,25306,7129
+"Female","50-64 years","White",90730,66885,23845
+"Female","50-64 years","Other",27869,21919,5950
+"Female","50-64 years","Unknown",153490,121255,32235
+"Female","65-79 years","Asian",13077,11675,1402
+"Female","65-79 years","Black",13091,12031,1060
+"Female","65-79 years","Hispanic",20476,18535,1941
+"Female","65-79 years","White",112656,101766,10890
+"Female","65-79 years","Other",27173,23013,4160
+"Female","65-79 years","Unknown",160082,143657,16425
+"Female","80+ years","Asian",2787,2580,207
+"Female","80+ years","Black",2744,2660,84
+"Female","80+ years","Hispanic",4292,4017,275
+"Female","80+ years","White",32743,30403,2340
+"Female","80+ years","Other",30887,24049,6838
+"Female","80+ years","Unknown",57930,51252,6678
 "Female","Unknown","Asian",16,15,1
 "Female","Unknown","Black",18,15,3
-"Female","Unknown","Hispanic",39,35,4
-"Female","Unknown","White",142,130,12
+"Female","Unknown","Hispanic",40,36,4
+"Female","Unknown","White",143,131,12
 "Female","Unknown","Other",18,15,3
-"Female","Unknown","Unknown",808,764,44
-"Male","16-49 years","Asian",24302,16625,7677
-"Male","16-49 years","Black",10702,7823,2879
-"Male","16-49 years","Hispanic",37291,27146,10145
-"Male","16-49 years","White",74516,52164,22352
-"Male","16-49 years","Other",21888,16736,5152
-"Male","16-49 years","Unknown",146226,109573,36653
-"Male","50-64 years","Asian",11548,8739,2809
-"Male","50-64 years","Black",9914,7786,2128
-"Male","50-64 years","Hispanic",20466,16388,4078
-"Male","50-64 years","White",55467,42766,12701
-"Male","50-64 years","Other",14160,11421,2739
-"Male","50-64 years","Unknown",99560,80433,19127
-"Male","65-79 years","Asian",11327,10183,1144
-"Male","65-79 years","Black",8159,7583,576
-"Male","65-79 years","Hispanic",15377,13935,1442
-"Male","65-79 years","White",93849,85010,8839
-"Male","65-79 years","Other",18189,15898,2291
-"Male","65-79 years","Unknown",127637,114972,12665
-"Male","80+ years","Asian",2376,2173,203
-"Male","80+ years","Black",1435,1373,62
-"Male","80+ years","Hispanic",2832,2627,205
-"Male","80+ years","White",26144,24285,1859
-"Male","80+ years","Other",11425,9502,1923
-"Male","80+ years","Unknown",36710,33013,3697
+"Female","Unknown","Unknown",830,774,56
+"Male","16-49 years","Asian",24723,16786,7937
+"Male","16-49 years","Black",10888,7907,2981
+"Male","16-49 years","Hispanic",37643,27336,10307
+"Male","16-49 years","White",76046,52918,23128
+"Male","16-49 years","Other",22911,17206,5705
+"Male","16-49 years","Unknown",149586,111230,38356
+"Male","50-64 years","Asian",11762,8861,2901
+"Male","50-64 years","Black",10096,7889,2207
+"Male","50-64 years","Hispanic",20697,16561,4136
+"Male","50-64 years","White",56834,43628,13206
+"Male","50-64 years","Other",14981,11825,3156
+"Male","50-64 years","Unknown",102322,82183,20139
+"Male","65-79 years","Asian",11664,10429,1235
+"Male","65-79 years","Black",8470,7790,680
+"Male","65-79 years","Hispanic",15627,14130,1497
+"Male","65-79 years","White",96963,87206,9757
+"Male","65-79 years","Other",19246,16437,2809
+"Male","65-79 years","Unknown",132850,119057,13793
+"Male","80+ years","Asian",2500,2282,218
+"Male","80+ years","Black",1487,1414,73
+"Male","80+ years","Hispanic",2885,2671,214
+"Male","80+ years","White",27120,25034,2086
+"Male","80+ years","Other",12383,9845,2538
+"Male","80+ years","Unknown",38100,33992,4108
 "Male","Unknown","Asian",18,14,4
 "Male","Unknown","Black",8,8,0
-"Male","Unknown","Hispanic",27,27,0
+"Male","Unknown","Hispanic",29,28,1
 "Male","Unknown","White",111,100,11
 "Male","Unknown","Other",13,11,2
-"Male","Unknown","Unknown",529,497,32
-"Unknown","16-49 years","Asian",789,594,195
-"Unknown","16-49 years","Black",429,352,77
-"Unknown","16-49 years","Hispanic",1141,913,228
-"Unknown","16-49 years","White",2395,1876,519
+"Male","Unknown","Unknown",540,503,37
+"Unknown","16-49 years","Asian",790,595,195
+"Unknown","16-49 years","Black",431,354,77
+"Unknown","16-49 years","Hispanic",1145,917,228
+"Unknown","16-49 years","White",2405,1885,520
 "Unknown","16-49 years","Other",1866,1382,484
-"Unknown","16-49 years","Unknown",3207,2902,305
+"Unknown","16-49 years","Unknown",3540,3224,316
 "Unknown","50-64 years","Asian",521,421,100
-"Unknown","50-64 years","Black",417,373,44
-"Unknown","50-64 years","Hispanic",477,427,50
-"Unknown","50-64 years","White",1951,1657,294
+"Unknown","50-64 years","Black",419,375,44
+"Unknown","50-64 years","Hispanic",479,428,51
+"Unknown","50-64 years","White",1957,1661,296
 "Unknown","50-64 years","Other",1047,851,196
-"Unknown","50-64 years","Unknown",3294,3137,157
-"Unknown","65-79 years","Asian",1463,1353,110
+"Unknown","50-64 years","Unknown",3598,3432,166
+"Unknown","65-79 years","Asian",1464,1354,110
 "Unknown","65-79 years","Black",865,827,38
-"Unknown","65-79 years","Hispanic",958,911,47
-"Unknown","65-79 years","White",9281,8602,679
-"Unknown","65-79 years","Other",3723,3455,268
-"Unknown","65-79 years","Unknown",7434,7310,124
+"Unknown","65-79 years","Hispanic",962,915,47
+"Unknown","65-79 years","White",9294,8610,684
+"Unknown","65-79 years","Other",3722,3454,268
+"Unknown","65-79 years","Unknown",7852,7715,137
 "Unknown","80+ years","Asian",251,232,19
-"Unknown","80+ years","Black",131,128,3
-"Unknown","80+ years","Hispanic",166,159,7
-"Unknown","80+ years","White",1654,1549,105
+"Unknown","80+ years","Black",132,128,4
+"Unknown","80+ years","Hispanic",167,160,7
+"Unknown","80+ years","White",1659,1554,105
 "Unknown","80+ years","Other",637,604,33
-"Unknown","80+ years","Unknown",1064,1048,16
+"Unknown","80+ years","Unknown",1134,1115,19
 "Unknown","Unknown","Asian",1,1,0
 "Unknown","Unknown","Hispanic",5,5,0
 "Unknown","Unknown","White",7,7,0
 "Unknown","Unknown","Other",1,1,0
-"Unknown","Unknown","Unknown",20,20,0
-"Texas","Total","Total",2290936,1842287,448649
+"Unknown","Unknown","Unknown",29,28,1
+"Texas","Total","Total",2359323,1883862,475461
