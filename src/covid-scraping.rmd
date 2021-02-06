@@ -642,18 +642,20 @@ file_url = (paste0('https://beta.healthdata.gov', newest_file))
 temp = tempfile()
 download.file(file_url, temp, mode = 'wb')
 
-cpr_date = read_xlsx(temp, sheet = 6) %>%
+cpr_day = read_xlsx(temp, sheet = 6) %>%
   slice(1) %>% 
   dplyr::select(contains('VIRAL (RT-PCR) LAB TESTING: LAST WEEK')) %>% 
   names() %>% 
-  str_match(., '(\\w+ (?=\\d{1,2})).*((?<=\\-).*)(\\))') %>% 
-  .[2:3] %>% 
-  paste0(., collapse = '') %>%
-  # str_extract(., '\\w+.(?=\\d{1,2}).') %>%
-  as.Date(., '%B %d') %>%
-  format(., '%m-%d') %>%
-  Date_Parser(.) %>% 
-  as.Date(.)
+  str_match(., '(\\d{1,2}).(?<=\\))') %>% 
+  .[2] %>% 
+  as.numeric()
+
+if (cpr_day > as.numeric(format(Sys.Date(), '%d'))) { 
+  cpr_month = format(seq.Date(Sys.Date(), length.out = 2, by = '-1 month')[2], '%m')
+  cpr_date = as.Date(glue('{cpr_month}/{cpr_day}'), '%m/%d')  
+} else { 
+  cpr_date = as.Date(glue('{format(Sys.Date(), "%m")}/{cpr_day}'), '%m/%d')  
+  }
 
 cpr_tpr = read_xlsx(temp, sheet = 6, skip = 1) %>% 
   filter(`State Abbreviation` == 'TX') %>% 
