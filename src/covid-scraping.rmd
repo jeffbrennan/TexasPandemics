@@ -639,6 +639,8 @@ newest_file = fromJSON(file_text)$view$attachments %>%
 file_date = as.Date(str_match(newest_file, '(Report |Report_)(.*)(_)')[3], '%Y%m%d')
 file_url = (paste0('https://beta.healthdata.gov', newest_file))
 
+file_url = 'https://beta.healthdata.gov/api/views/gqxm-d9w9/files/ae46b5fc-8e03-4e7d-95a0-6f9205720abb?download=true&filename=Community_Profile_Report_20210205_Public.xlsx'
+
 temp = tempfile()
 download.file(file_url, temp, mode = 'wb')
 
