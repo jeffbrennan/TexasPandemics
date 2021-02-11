@@ -182,6 +182,52 @@ tsa_long_complete = subset(tsa_long, value != '')[, c(1, 4)] %>%
   mutate(TSA_Combined = paste0(TSA, ' - ', TSA_Name))
 ```
 
+```{r}
+# https://www.nrcs.usda.gov/wps/portal/nrcs/detail/tx/technical/dma/rwa/?cid=nrcs143_013697
+# fips = read_csv('original-sources/helpers/fips_county.csv')
+# dshs_pops = 
+#   read_csv('https://raw.githubusercontent.com/jeffbrennan/COVID-19/d03d476f7fb060dfd2e1a600a6a1e449df0ab8df/original-sources/DSHS_county_cases.csv') %>% 
+#   distinct() %>%
+#   select(County, Population) %>% 
+#   rename(Population_DSHS = Population)
+# 
+# 
+# # https://www.huduser.gov/portal/datasets/usps_crosswalk.html#codebook
+# zip_crosswalk = read_csv('original-sources/helpers/zip_county.csv') %>%
+#   inner_join(fips, by = c('COUNTY'= 'FIPS')) %>%
+#   left_join(tsa_long_complete %>% dplyr::select(County, TSA_Combined), by = 'County') %>% 
+#   left_join(county_classifications %>% dplyr::select(County, PHR_Combined)) %>%
+#   left_join(dshs_pops) %>% 
+#   group_by(ZIP) %>% 
+#   mutate(dupe = n())
+# 
+# dupe_zips = zip_crosswalk %>% 
+#   filter(dupe > 1) %>%
+#   arrange(ZIP, -Population_DSHS) %>% 
+#   slice(1)
+# 
+# zips_out = zip_crosswalk %>% 
+#   filter(dupe == 1) %>% 
+#   rbind(dupe_zips) %>% 
+#   arrange(ZIP) %>% 
+#   select(-dupe, -COUNTY, -Population_DSHS)
+
+# https://www.zip-codes.com/state/tx.asp
+zip_crosswalk = read_csv('original-sources/helpers/zips_com_list.csv') %>%
+  # inner_join(fips, by = c('COUNTY'= 'FIPS')) %>%
+  left_join(tsa_long_complete %>% dplyr::select(County, TSA_Combined), by = 'County') %>%
+  left_join(county_classifications %>% dplyr::select(County, PHR_Combined)) %>%
+  left_join(dshs_pops) %>%
+  group_by(ZIP) %>%
+  mutate(dupe = n()) %>%
+  dplyr::select(-Population_DSHS, -dupe)
+
+
+# write_csv(dupe_zips, 'original-sources/helpers/dupe_zips.csv')
+write_csv(zip_crosswalk, 'original-sources/helpers/zip_crosswalk.csv')
+```
+
+
 # HOSPITAL LEVEL
 
 ```{r}
@@ -547,9 +593,6 @@ county_counts = Reduce(function(x, y) merge(x, y, by = c('Date', 'County'), all=
 
 ```{r}
 # DSHS pop - removed by DSHS 07/30 - defaulting to previous file
-dshs_pops = unique(read.csv('https://raw.githubusercontent.com/jeffbrennan/COVID-19/d03d476f7fb060dfd2e1a600a6a1e449df0ab8df/original-sources/DSHS_county_cases.csv')[, c('County', 'Population')])
-names(dshs_pops) = c('County', 'Population_DSHS')
-
 merged_dshs = Reduce(function(x, y) merge(x, y, by = 'County', all = TRUE),
                        list(county_counts, tsa_long_complete, dshs_pops, county_classifications))
 
@@ -639,7 +682,7 @@ newest_file = fromJSON(file_text)$view$attachments %>%
 file_date = as.Date(str_match(newest_file, '(Report |Report_)(.*)(_)')[3], '%Y%m%d')
 file_url = (paste0('https://beta.healthdata.gov', newest_file))
 
-file_url = 'https://beta.healthdata.gov/api/views/gqxm-d9w9/files/ae46b5fc-8e03-4e7d-95a0-6f9205720abb?download=true&filename=Community_Profile_Report_20210205_Public.xlsx'
+# file_url  = 'https://beta.healthdata.gov/api/views/gqxm-d9w9/files/21868753-66c9-4249-ac7c-0563170f8771?download=true&filename=Community_Profile_Report_20210207_Public.xlsx'
 
 temp = tempfile()
 download.file(file_url, temp, mode = 'wb')
@@ -770,82 +813,85 @@ download.file('https://genesis.soc.texas.gov/files/accessibility/vaccineprovider
 ## vaccine dashboard
 
 
+
 ```{r}
-vax_dir = 'original-sources/historical/vax-dashboard/temp/'
-vax_allocation = rbindlist(lapply(list.files(glue('{vax_dir}allocation/'), full.names = TRUE),
-                              read.csv, fileEncoding="UTF-16LE", sep = '\t'),
-                       fill = TRUE) %>% 
-  reshape2::melt(id = c('Allocation.Week.Range', 'CountyNameDisplay', 'Dose.Number')) %>%
-  dplyr::select(-variable) %>%
-  setNames(c('Date', 'County', 'Dose', 'Count')) %>%
-  mutate(Count = ifelse(Count == '', NA, Count)) %>% 
-  mutate(Count = as.numeric(gsub(',', '', Count))) %>% 
-  na.omit() %>% 
-  mutate(County = gsub(' County', '', County)) %>%
-  mutate(Date = as.Date(Date, '%m/%d/%Y')) %>%
-  reshape(idvar = c('Date', 'County'), timevar = 'Dose', direction = 'wide') %>% 
-  rename('Doses_Allocated_1' = `Count.First Doses`,
-         'Doses_Allocated_2' = `Count.Second Doses`)
-
-vax_admin = rbindlist(lapply(list.files(glue('{vax_dir}admin/'), full.names = TRUE),
-                              read.csv, fileEncoding="UTF-16LE", sep = '\t'),
-                       fill = TRUE) %>% 
-  reshape2::melt(id = c('Week.Start.End', 'CountyNameDisplay')) %>%
-  dplyr::select(-variable) %>%
-  setNames(c('Date', 'County', 'Doses_Administered')) %>%
-  mutate(Doses_Administered) %>% 
-  mutate(Doses_Administered = as.numeric(gsub(',', '', Doses_Administered))) %>% 
-  na.omit() %>% 
-  mutate(County = gsub(' County', '', County)) %>%
-  mutate(Date = str_extract(Date, '(.*) \\-')) %>% 
-  mutate(Date = gsub(' -', '', Date)) %>% 
-  mutate(Date = as.Date(Date, '%m/%d/%Y'))
-
-
-vax_age = rbindlist(lapply(list.files(glue('{vax_dir}demo_age/'), full.names = TRUE),
-                              read.csv, fileEncoding="UTF-16LE", sep = '\t'),
-                       fill = TRUE) %>% 
-  dplyr::select(-'X.1') %>%
-  reshape2::melt(id = c('X', 'X.2')) %>%
-  setNames(c('Age', 'County', 'Gender', 'Fully_Vaccinated')) %>% 
-  mutate(Date = max(vax_admin$Date)) %>%
-  mutate(County = gsub(' County', '', County)) %>%
-  dplyr::select(Date, County, everything())
-
-
-Read_Race = function(x) { 
-  county_name = str_match(x, '\\/race_(.*)\\.csv')[2]
-  x_out = read.csv(x, fileEncoding="UTF-16LE", sep = '\t') %>% 
-            mutate(County = county_name)
-  return(x_out)
-  }
-
-
-vax_race = rbindlist(lapply(list.files(glue('{vax_dir}/demo_race/'), full.names = TRUE),
-                             Read_Race),
-                       fill = TRUE) %>% 
-  setNames(c('Race', 'Fully_Vaccinated', 'dump1', 'dump2', 'County')) %>% 
-  mutate(Date = max(vax_admin$Date)) %>%
-  dplyr::select(Date, County, Race, Fully_Vaccinated, -dump1, -dump2)
-
-
-pop_files = list.files('original-sources/historical/vaccinations/', full.names = TRUE)
-
-vax_pop_counts = read_xlsx(pop_files[length(pop_files)], sheet = 2) %>% 
-  dplyr::select(1, 7, 8, 9, 10, 11) %>% 
-    setNames(c('County', 
-               'Population_Over_16', 'Population_Over_65',
-               'Population_Phase_1A_Healthcare',
-               'Population_Phase1A_Care_Residents',
-               'Population_Phase_1B_Medical_Condition', 'Date')) %>%
-    filter(!(County %in% c('Texas', '*Other', 'Federal Long-Term Care Vaccination Program')))
-
-vax_out = vax_allocation %>% full_join(vax_admin, by = c('Date', 'County')) %>% left_join(vax_pop_counts, by = 'County')
-
-write.csv(vax_out, 'tableau/county_vaccine.csv', row.names = FALSE)
-
-write.csv(vax_age, 'tableau/demographics_vax_age.csv', row.names = FALSE)
-write.csv(vax_race, 'tableau/demographics_vax_race.csv', row.names = FALSE)
+if (format(date_out, '%A') == 'Monday') { 
+  vax_dir = 'original-sources/historical/vax-dashboard/temp/'
+  vax_allocation = rbindlist(lapply(list.files(glue('{vax_dir}allocation/'), full.names = TRUE),
+                                read.csv, fileEncoding="UTF-16LE", sep = '\t'),
+                         fill = TRUE) %>% 
+    reshape2::melt(id = c('Allocation.Week.Range', 'CountyNameDisplay', 'Dose.Number')) %>%
+    dplyr::select(-variable) %>%
+    setNames(c('Date', 'County', 'Dose', 'Count')) %>%
+    mutate(Count = ifelse(Count == '', NA, Count)) %>% 
+    mutate(Count = as.numeric(gsub(',', '', Count))) %>% 
+    na.omit() %>% 
+    mutate(County = gsub(' County', '', County)) %>%
+    mutate(Date = as.Date(Date, '%m/%d/%Y')) %>%
+    reshape(idvar = c('Date', 'County'), timevar = 'Dose', direction = 'wide') %>% 
+    rename('Doses_Allocated_1' = `Count.First Doses`,
+           'Doses_Allocated_2' = `Count.Second Doses`)
+  
+  vax_admin = rbindlist(lapply(list.files(glue('{vax_dir}admin/'), full.names = TRUE),
+                                read.csv, fileEncoding="UTF-16LE", sep = '\t'),
+                         fill = TRUE) %>% 
+    reshape2::melt(id = c('Week.Start.End', 'CountyNameDisplay')) %>%
+    dplyr::select(-variable) %>%
+    setNames(c('Date', 'County', 'Doses_Administered')) %>%
+    mutate(Doses_Administered) %>% 
+    mutate(Doses_Administered = as.numeric(gsub(',', '', Doses_Administered))) %>% 
+    na.omit() %>% 
+    mutate(County = gsub(' County', '', County)) %>%
+    mutate(Date = str_extract(Date, '(.*) \\-')) %>% 
+    mutate(Date = gsub(' -', '', Date)) %>% 
+    mutate(Date = as.Date(Date, '%m/%d/%Y'))
+  
+  
+  vax_age = rbindlist(lapply(list.files(glue('{vax_dir}demo_age/'), full.names = TRUE),
+                                read.csv, fileEncoding="UTF-16LE", sep = '\t'),
+                         fill = TRUE) %>% 
+    dplyr::select(-'X.1') %>%
+    reshape2::melt(id = c('X', 'X.2')) %>%
+    setNames(c('Age', 'County', 'Gender', 'Fully_Vaccinated')) %>% 
+    mutate(Date = max(vax_admin$Date)) %>%
+    mutate(County = gsub(' County', '', County)) %>%
+    dplyr::select(Date, County, everything())
+  
+  
+  Read_Race = function(x) { 
+    county_name = str_match(x, '\\/race_(.*)\\.csv')[2]
+    x_out = read.csv(x, fileEncoding="UTF-16LE", sep = '\t') %>% 
+              mutate(County = county_name)
+    return(x_out)
+    }
+  
+  
+  vax_race = rbindlist(lapply(list.files(glue('{vax_dir}/demo_race/'), full.names = TRUE),
+                               Read_Race),
+                         fill = TRUE) %>% 
+    setNames(c('Race', 'Fully_Vaccinated', 'dump1', 'dump2', 'County')) %>% 
+    mutate(Date = max(vax_admin$Date)) %>%
+    dplyr::select(Date, County, Race, Fully_Vaccinated, -dump1, -dump2)
+  
+  
+  pop_files = list.files('original-sources/historical/vaccinations/', full.names = TRUE)
+  
+  vax_pop_counts = read_xlsx(pop_files[length(pop_files)], sheet = 2) %>% 
+    dplyr::select(1, 7, 8, 9, 10, 11) %>% 
+      setNames(c('County', 
+                 'Population_Over_16', 'Population_Over_65',
+                 'Population_Phase_1A_Healthcare',
+                 'Population_Phase1A_Care_Residents',
+                 'Population_Phase_1B_Medical_Condition', 'Date')) %>%
+      filter(!(County %in% c('Texas', '*Other', 'Federal Long-Term Care Vaccination Program')))
+  
+  vax_out = vax_allocation %>% full_join(vax_admin, by = c('Date', 'County')) %>% left_join(vax_pop_counts, by = 'County')
+  
+  write.csv(vax_out, 'tableau/county_vaccine.csv', row.names = FALSE)
+  
+  write.csv(vax_age, 'tableau/demographics_vax_age.csv', row.names = FALSE)
+  write.csv(vax_race, 'tableau/demographics_vax_race.csv', row.names = FALSE)
+}
 ```
 
 
