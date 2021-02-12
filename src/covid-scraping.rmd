@@ -180,16 +180,19 @@ tsa_long_complete = subset(tsa_long, value != '')[, c(1, 4)] %>%
   left_join(DSHS_tsa_names, by = 'TSA') %>% 
   distinct() %>% 
   mutate(TSA_Combined = paste0(TSA, ' - ', TSA_Name))
+
+
+dshs_pops =
+  read_csv('https://raw.githubusercontent.com/jeffbrennan/COVID-19/d03d476f7fb060dfd2e1a600a6a1e449df0ab8df/original-sources/DSHS_county_cases.csv') %>%
+  distinct() %>%
+  select(County, Population) %>%
+  rename(Population_DSHS = Population)
 ```
 
 ```{r}
 # https://www.nrcs.usda.gov/wps/portal/nrcs/detail/tx/technical/dma/rwa/?cid=nrcs143_013697
 # fips = read_csv('original-sources/helpers/fips_county.csv')
-# dshs_pops = 
-#   read_csv('https://raw.githubusercontent.com/jeffbrennan/COVID-19/d03d476f7fb060dfd2e1a600a6a1e449df0ab8df/original-sources/DSHS_county_cases.csv') %>% 
-#   distinct() %>%
-#   select(County, Population) %>% 
-#   rename(Population_DSHS = Population)
+
 # 
 # 
 # # https://www.huduser.gov/portal/datasets/usps_crosswalk.html#codebook
@@ -213,18 +216,22 @@ tsa_long_complete = subset(tsa_long, value != '')[, c(1, 4)] %>%
 #   select(-dupe, -COUNTY, -Population_DSHS)
 
 # https://www.zip-codes.com/state/tx.asp
-zip_crosswalk = read_csv('original-sources/helpers/zips_com_list.csv') %>%
-  # inner_join(fips, by = c('COUNTY'= 'FIPS')) %>%
-  left_join(tsa_long_complete %>% dplyr::select(County, TSA_Combined), by = 'County') %>%
-  left_join(county_classifications %>% dplyr::select(County, PHR_Combined)) %>%
-  left_join(dshs_pops) %>%
-  group_by(ZIP) %>%
-  mutate(dupe = n()) %>%
-  dplyr::select(-Population_DSHS, -dupe)
-
-
-# write_csv(dupe_zips, 'original-sources/helpers/dupe_zips.csv')
-write_csv(zip_crosswalk, 'original-sources/helpers/zip_crosswalk.csv')
+# zip_crosswalk = read_csv('original-sources/helpers/zips_com_list.csv') %>%
+#   mutate(County = gsub('Mcculloch', 'McCulloch', County)) %>% 
+#   mutate(County = gsub('Mclennan', 'McLennan', County)) %>% 
+#   mutate(County = gsub('De Witt', 'DeWitt', County)) %>% 
+#   mutate(County = gsub('Mcmullen', 'McMullen', County)) %>%
+#   # inner_join(fips, by = c('COUNTY'= 'FIPS')) %>%
+#   left_join(tsa_long_complete %>% dplyr::select(County, TSA_Combined), by = 'County') %>%
+#   left_join(county_classifications %>% dplyr::select(County, PHR_Combined)) %>%
+#   left_join(dshs_pops) %>%
+#   group_by(ZIP) %>%
+#   mutate(dupe = n()) %>%
+#   dplyr::select(-Population_DSHS, -dupe)
+# 
+# 
+# # write_csv(dupe_zips, 'original-sources/helpers/dupe_zips.csv')
+# write_csv(zip_crosswalk, 'original-sources/helpers/zip_crosswalk.csv')
 ```
 
 
