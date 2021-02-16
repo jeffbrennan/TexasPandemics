@@ -411,26 +411,39 @@ mobility_data = fread('https://www.gstatic.com/covid19/mobility/Global_Mobility_
 ```
 
 ```{r}
-# filter mobility
-mobility_texas = subset(mobility_data, sub_region_1 == 'Texas')
+mobility_texas = mobility_data %>% 
+  filter(sub_region_1 == 'Texas') %>% 
+  dplyr::select(sub_region_2, date, 
+                retail_and_recreation_percent_change_from_baseline,
+                grocery_and_pharmacy_percent_change_from_baseline,
+                parks_percent_change_from_baseline,
+                transit_stations_percent_change_from_baseline,
+                workplaces_percent_change_from_baseline,
+                residential_percent_change_from_baseline) %>% 
+  setNames(c('County', 'Date', 'Retail_Recreation', 'Grocery_Pharmacy',
+             'Parks', 'Transit', 'Workplaces', 'Residential')) %>% 
+  mutate(County =  sub('^$', 'Unallocated', County)) %>% 
+  mutate(County = as.factor(gsub(' County', '', County))) %>% 
+  filter(County != 'Unallocated') %>% 
+  mutate(Date = as.Date(Date))
 
-# drop cols
-mobility_texas = mobility_texas[, -c(1:3, 5:7)]
-
-# fix colnames
-names(mobility_texas) = c('County', 'Date', 'Retail_Recreation', 'Grocery_Pharmacy',
-                             'Parks', 'Transit', 'Workplaces', 'Residential')
-
-# Add name for blank county cells & drop 'county' suffix
-mobility_texas$County = sub('^$', 'Unallocated', mobility_texas$County)
-mobility_texas$County = gsub(' County', '', mobility_texas$County)
-
-# drop blank cells
-mobility_texas = subset(mobility_texas, County != 'Unallocated')
-
-#fix types
-mobility_texas$County = as.factor(mobility_texas$County)
-mobility_texas$Date = as.Date(mobility_texas$Date)
+# # drop cols
+# mobility_texas = mobility_texas[, -c(1:3, 5:7)]
+# 
+# # fix colnames
+# names(mobility_texas) = c('County', 'Date', 'Retail_Recreation', 'Grocery_Pharmacy',
+#                              'Parks', 'Transit', 'Workplaces', 'Residential')
+# 
+# # Add name for blank county cells & drop 'county' suffix
+# mobility_texas$County = sub('^$', 'Unallocated', mobility_texas$County)
+# mobility_texas$County = gsub(' County', '', mobility_texas$County)
+# 
+# # drop blank cells
+# mobility_texas = subset(mobility_texas, County != 'Unallocated')
+# 
+# #fix types
+# mobility_texas$County = as.factor(mobility_texas$County)
+# mobility_texas$Date = as.Date(mobility_texas$Date)
 ```
 
 ## cases
@@ -689,8 +702,6 @@ newest_file = fromJSON(file_text)$view$attachments %>%
 file_date = as.Date(str_match(newest_file, '(Report |Report_)(.*)(_)')[3], '%Y%m%d')
 file_url = (paste0('https://beta.healthdata.gov', newest_file))
 
-# file_url  = 'https://beta.healthdata.gov/api/views/gqxm-d9w9/files/21868753-66c9-4249-ac7c-0563170f8771?download=true&filename=Community_Profile_Report_20210207_Public.xlsx'
-
 temp = tempfile()
 download.file(file_url, temp, mode = 'wb')
 
@@ -817,85 +828,85 @@ download.file('https://genesis.soc.texas.gov/files/accessibility/vaccineprovider
 ```
 
 
-## vaccine dashboard
+%## vaccine dashboard
 
 
 
 ```{r}
-if (format(date_out, '%A') == 'Monday') { 
-  vax_dir = 'original-sources/historical/vax-dashboard/temp/'
+if (format(date_out, '%A') == 'Monday') {
+  vax_dir = 'original-sources/historical/vax-dashboard/'
   vax_allocation = rbindlist(lapply(list.files(glue('{vax_dir}allocation/'), full.names = TRUE),
                                 read.csv, fileEncoding="UTF-16LE", sep = '\t'),
-                         fill = TRUE) %>% 
+                         fill = TRUE) %>%
     reshape2::melt(id = c('Allocation.Week.Range', 'CountyNameDisplay', 'Dose.Number')) %>%
     dplyr::select(-variable) %>%
     setNames(c('Date', 'County', 'Dose', 'Count')) %>%
-    mutate(Count = ifelse(Count == '', NA, Count)) %>% 
-    mutate(Count = as.numeric(gsub(',', '', Count))) %>% 
-    na.omit() %>% 
+    mutate(Count = ifelse(Count == '', NA, Count)) %>%
+    mutate(Count = as.numeric(gsub(',', '', Count))) %>%
+    na.omit() %>%
     mutate(County = gsub(' County', '', County)) %>%
     mutate(Date = as.Date(Date, '%m/%d/%Y')) %>%
-    reshape(idvar = c('Date', 'County'), timevar = 'Dose', direction = 'wide') %>% 
+    reshape(idvar = c('Date', 'County'), timevar = 'Dose', direction = 'wide') %>%
     rename('Doses_Allocated_1' = `Count.First Doses`,
            'Doses_Allocated_2' = `Count.Second Doses`)
-  
+
   vax_admin = rbindlist(lapply(list.files(glue('{vax_dir}admin/'), full.names = TRUE),
                                 read.csv, fileEncoding="UTF-16LE", sep = '\t'),
-                         fill = TRUE) %>% 
+                         fill = TRUE) %>%
     reshape2::melt(id = c('Week.Start.End', 'CountyNameDisplay')) %>%
     dplyr::select(-variable) %>%
     setNames(c('Date', 'County', 'Doses_Administered')) %>%
-    mutate(Doses_Administered) %>% 
-    mutate(Doses_Administered = as.numeric(gsub(',', '', Doses_Administered))) %>% 
-    na.omit() %>% 
+    mutate(Doses_Administered) %>%
+    mutate(Doses_Administered = as.numeric(gsub(',', '', Doses_Administered))) %>%
+    na.omit() %>%
     mutate(County = gsub(' County', '', County)) %>%
-    mutate(Date = str_extract(Date, '(.*) \\-')) %>% 
-    mutate(Date = gsub(' -', '', Date)) %>% 
+    mutate(Date = str_extract(Date, '(.*) \\-')) %>%
+    mutate(Date = gsub(' -', '', Date)) %>%
     mutate(Date = as.Date(Date, '%m/%d/%Y'))
-  
-  
+
+
   vax_age = rbindlist(lapply(list.files(glue('{vax_dir}demo_age/'), full.names = TRUE),
                                 read.csv, fileEncoding="UTF-16LE", sep = '\t'),
-                         fill = TRUE) %>% 
+                         fill = TRUE) %>%
     dplyr::select(-'X.1') %>%
     reshape2::melt(id = c('X', 'X.2')) %>%
-    setNames(c('Age', 'County', 'Gender', 'Fully_Vaccinated')) %>% 
+    setNames(c('Age', 'County', 'Gender', 'Fully_Vaccinated')) %>%
     mutate(Date = max(vax_admin$Date)) %>%
     mutate(County = gsub(' County', '', County)) %>%
     dplyr::select(Date, County, everything())
-  
-  
-  Read_Race = function(x) { 
+
+
+  Read_Race = function(x) {
     county_name = str_match(x, '\\/race_(.*)\\.csv')[2]
-    x_out = read.csv(x, fileEncoding="UTF-16LE", sep = '\t') %>% 
+    x_out = read.csv(x, fileEncoding="UTF-16LE", sep = '\t') %>%
               mutate(County = county_name)
     return(x_out)
     }
-  
-  
+
+
   vax_race = rbindlist(lapply(list.files(glue('{vax_dir}/demo_race/'), full.names = TRUE),
                                Read_Race),
-                         fill = TRUE) %>% 
-    setNames(c('Race', 'Fully_Vaccinated', 'dump1', 'dump2', 'County')) %>% 
+                         fill = TRUE) %>%
+    setNames(c('Race', 'Fully_Vaccinated', 'dump1', 'County')) %>%
     mutate(Date = max(vax_admin$Date)) %>%
-    dplyr::select(Date, County, Race, Fully_Vaccinated, -dump1, -dump2)
-  
-  
+    dplyr::select(Date, County, Race, Fully_Vaccinated, -dump1)
+
+
   pop_files = list.files('original-sources/historical/vaccinations/', full.names = TRUE)
-  
-  vax_pop_counts = read_xlsx(pop_files[length(pop_files)], sheet = 2) %>% 
-    dplyr::select(1, 7, 8, 9, 10, 11) %>% 
-      setNames(c('County', 
+
+  vax_pop_counts = read_xlsx(pop_files[length(pop_files)], sheet = 2) %>%
+    dplyr::select(1, 7, 8, 9, 10, 11) %>%
+      setNames(c('County',
                  'Population_Over_16', 'Population_Over_65',
                  'Population_Phase_1A_Healthcare',
                  'Population_Phase1A_Care_Residents',
                  'Population_Phase_1B_Medical_Condition', 'Date')) %>%
       filter(!(County %in% c('Texas', '*Other', 'Federal Long-Term Care Vaccination Program')))
-  
+
   vax_out = vax_allocation %>% full_join(vax_admin, by = c('Date', 'County')) %>% left_join(vax_pop_counts, by = 'County')
-  
+
   write.csv(vax_out, 'tableau/county_vaccine.csv', row.names = FALSE)
-  
+
   write.csv(vax_age, 'tableau/demographics_vax_age.csv', row.names = FALSE)
   write.csv(vax_race, 'tableau/demographics_vax_race.csv', row.names = FALSE)
 }

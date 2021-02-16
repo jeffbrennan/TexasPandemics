@@ -14,7 +14,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from joblib import Parallel, delayed
-
+from selenium.common.exceptions import ElementClickInterceptedException
 
 def build_selenium():
     chrome_options = webdriver.ChromeOptions()
@@ -23,7 +23,7 @@ def build_selenium():
 
     # enable headless downloading
     chrome_options.add_experimental_option("prefs", {
-            "download.default_directory": r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID\orignal-sources\historical\vax-dashboard\',
+            "download.default_directory": r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID\original-sources\historical\vax-dashboard',
             "download.prompt_for_download": False,
             "safebrowsing_for_trusted_sources_enabled": False,
             "safebrowsing.enabled": False
@@ -33,8 +33,13 @@ def build_selenium():
     return driver
 
 
-def scrape_alloc(county, i, driver, sleep_time, start_files):
-    site_url = f"https://tabexternal.dshs.texas.gov/t/THD/views/COVID-19VaccineinTexasDashboard/VaccineDosesAllocated?County={county}&:isGuestRedirectFromVizportal=y&:embed=y"
+def scrape_vax(county, i, driver, sleep_time, start_files, file_type, child, wrapper):
+    if file_type == 'allocation':
+        file_text = 'By Allocated Wk_crosstab.csv'
+        site_url = f"https://tabexternal.dshs.texas.gov/t/THD/views/COVID-19VaccineinTexasDashboard/VaccineDosesAllocated?County={county}&:isGuestRedirectFromVizportal=y&:embed=y" 
+    else:
+        file_text = 'Doses by Week_crosstab.csv'
+        site_url = f"https://tabexternal.dshs.texas.gov/t/THD/views/COVID-19VaccineinTexasDashboard/VaccineDosesAdministered?County={county}&%3AisGuestRedirectFromVizportal=y&%3Aembed=y"
 
     if (i == 1) or (i % n_tabs == 0):
         driver.get(site_url)
@@ -42,10 +47,12 @@ def scrape_alloc(county, i, driver, sleep_time, start_files):
         driver.execute_script(f'''window.open("{site_url}","_blank");''')
         driver.switch_to.window(driver.window_handles[-1])
 
-    wait = WebDriverWait(driver, 1)
+    # time.sleep(2)
+
+    wait = WebDriverWait(driver, 5)
     wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "#download-ToolbarButton"))).click()
     wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".fppw03o:nth-child(4)"))).click()
-    wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".thumbnail-wrapper_f1b6thlj:nth-child(3) .hidden-icon-wrapper_f72siau"))).click()
+    wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, f".thumbnail-wrapper_f1b6thlj:nth-child({child}) .{wrapper}"))).click()
     wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".fdiufnn"))).click()
 
     while True:
@@ -54,43 +61,17 @@ def scrape_alloc(county, i, driver, sleep_time, start_files):
         else:
             break
 
-    while True:
-        if any(['By Allocated Wk_crosstab' in i for i in os.listdir(vax_directory)]):
-            time.sleep(sleep_time)
-            os.rename(f'{vax_directory}/By Allocated Wk_crosstab.csv',
-                      f'{vax_directory}/alloc/allocation_week_{county}.csv')
-        else:
-            break
-
-
-def scrape_admin(county, i, driver, sleep_time, start_files):
-    vax_directory = 'C:/Users/jeffb/Desktop/Life/personal-projects/COVID-testing/vax_scrape/'
-    site_url = f"https://tabexternal.dshs.texas.gov/t/THD/views/COVID-19VaccineinTexasDashboard/VaccineDosesAdministered?County={county}&%3AisGuestRedirectFromVizportal=y&%3Aembed=y"
-
-    if (i == 1) or (i % n_tabs == 0):
-        driver.get(site_url)
-    else:
-        driver.execute_script(f'''window.open("{site_url}","_blank");''')
-        driver.switch_to.window(driver.window_handles[-1])
-
-    wait = WebDriverWait(driver, 1)
-    wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "#download-ToolbarButton"))).click()
-    wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".fppw03o:nth-child(4)"))).click()
-    wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".thumbnail-wrapper_f1b6thlj:nth-child(3) .hidden-icon-wrapper_f72siau"))).click()
-    wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".fdiufnn"))).click()
+    time.sleep(1)
 
     while True:
-        if len([i for i in os.listdir(vax_directory) if i.endswith('.csv')]) == start_files:
-            time.sleep(sleep_time)
-        else:
-            break
-
-    while True:
-        if any(['Doses by Week_crosstab' in i for i in os.listdir(vax_directory)]):
-            time.sleep(sleep_time)
-            os.rename(f'{vax_directory}/Doses by Week_crosstab.csv',
-                      f'{vax_directory}/admin/admin_week_{county}.csv')
-        else:
+        try:
+            os.rename(f'{vax_directory}/{file_text}',
+                    f'{vax_directory}/{file_type}/{file_type}_{county}.csv')
+            if any(['By Allocated Wk_crosstab' in i for i in os.listdir(vax_directory)]):
+                time.sleep(sleep_time)
+            else:
+                break
+        except FileNotFoundError:
             break
 
 
@@ -103,7 +84,7 @@ def scrape_demo(county, i, driver, sleep_time, start_files):
         driver.execute_script(f'''window.open("{site_url}","_blank");''')
         driver.switch_to.window(driver.window_handles[-1])
 
-    time.sleep(3)
+    time.sleep(2)
     driver.find_element_by_css_selector("#\[Parameters\]\.\[Parameter\ 1\]_1 > div.facetOverflow > input").click()
     wait = WebDriverWait(driver, 5)
     wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "#download-ToolbarButton"))).click()
@@ -128,6 +109,8 @@ def scrape_demo(county, i, driver, sleep_time, start_files):
         else:
             break
 
+    time.sleep(1)
+
     while True:
         if any(['People by Age_crosstab' in i for i in os.listdir(vax_directory)]):
             time.sleep(sleep_time)
@@ -135,8 +118,6 @@ def scrape_demo(county, i, driver, sleep_time, start_files):
                       f'{vax_directory}/demo_age/age_{county}.csv')
         else:
             break
-
-    time.sleep(1)
 
     wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "#download-ToolbarButton"))).click()
     wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".fppw03o:nth-child(4)"))).click()
@@ -159,18 +140,24 @@ def run_scraper(county, i, sleep_time=1):
     start_files = len([i for i in os.listdir(vax_directory) if i.endswith('.csv')])
 
     try:
-        scrape_alloc(county, i, driver, sleep_time, start_files)
-        scrape_admin(county, i, driver, sleep_time, start_files)
+        scrape_vax(county, i, driver, sleep_time, start_files, 'allocation', '3', 'hidden-icon-wrapper_f72siau')
+        scrape_vax(county, i, driver, sleep_time, start_files, 'admin', '3', 'hidden-icon-wrapper_f72siau')
         scrape_demo(county, i, driver, sleep_time, start_files)
-        print(f'Finished: {county}')
+        print(f'[{i + start_index - 1:03d}] Finished: {county}')
 
     except TimeoutError:
         print(f'Failed: {county}')
         pass
 
+    except ElementClickInterceptedException:
+        print(f'Failed: {county}')
+        pass
+
+
 
 if __name__ == '__main__':
-    n_tabs = 60
+    n_tabs = 15
+    start_index = 0
 
     vax_directory = 'C:/Users/jeffb/Desktop/Life/personal-projects/COVID/original-sources/historical/vax-dashboard'
     counties = pd.read_csv('C:/Users/jeffb/Desktop/Life/personal-projects/COVID/tableau/county_vaccine.csv')['County']
@@ -181,9 +168,9 @@ if __name__ == '__main__':
     start_time = time.time()
     expiration_time = 6 * 24 * 60 * 60
 
-    [os.remove(f) for f in county_files if ((start_time - os.path.getctime(f)) > expiration_time]
+    # [os.remove(f) for f in county_files if ((start_time - os.path.getctime(f)) > expiration_time]
 
-    for i, county in enumerate(county_list, 1):
+    for i, county in enumerate(county_list[start_index:], 1):
         if i == 1:
             driver = build_selenium()
         elif i % n_tabs == 0:
