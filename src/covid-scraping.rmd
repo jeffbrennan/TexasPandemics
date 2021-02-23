@@ -828,16 +828,17 @@ download.file('https://genesis.soc.texas.gov/files/accessibility/vaccineprovider
 ```
 
 
-%## vaccine dashboard
-
-
+## vaccine dashboard
 
 ```{r}
+
+# TODO: update to only run when its monday and the files are new 
 if (format(date_out, '%A') == 'Monday') {
   vax_dir = 'original-sources/historical/vax-dashboard/'
   vax_allocation = rbindlist(lapply(list.files(glue('{vax_dir}allocation/'), full.names = TRUE),
                                 read.csv, fileEncoding="UTF-16LE", sep = '\t'),
                          fill = TRUE) %>%
+    filter(X != 'DosesAllocatedWindow along Dose Number') %>%
     reshape2::melt(id = c('Allocation.Week.Range', 'CountyNameDisplay', 'Dose.Number')) %>%
     dplyr::select(-variable) %>%
     setNames(c('Date', 'County', 'Dose', 'Count')) %>%
@@ -845,6 +846,7 @@ if (format(date_out, '%A') == 'Monday') {
     mutate(Count = as.numeric(gsub(',', '', Count))) %>%
     na.omit() %>%
     mutate(County = gsub(' County', '', County)) %>%
+    filter(County != 'Texas') %>%
     mutate(Date = as.Date(Date, '%m/%d/%Y')) %>%
     reshape(idvar = c('Date', 'County'), timevar = 'Dose', direction = 'wide') %>%
     rename('Doses_Allocated_1' = `Count.First Doses`,
@@ -865,6 +867,11 @@ if (format(date_out, '%A') == 'Monday') {
     mutate(Date = as.Date(Date, '%m/%d/%Y'))
 
 
+  demo_archive = list.files(glue('{vax_dir}archive/'), full.names = TRUE)
+  age_archive = rbindlist(lapply(demo_archive %>% .[str_detect(., 'age')], read_csv))
+  race_archive = rbindlist(lapply(demo_archive %>% .[str_detect(., 'race')], read_csv))
+  
+  
   vax_age = rbindlist(lapply(list.files(glue('{vax_dir}demo_age/'), full.names = TRUE),
                                 read.csv, fileEncoding="UTF-16LE", sep = '\t'),
                          fill = TRUE) %>%
@@ -873,7 +880,10 @@ if (format(date_out, '%A') == 'Monday') {
     setNames(c('Age', 'County', 'Gender', 'Fully_Vaccinated')) %>%
     mutate(Date = max(vax_admin$Date)) %>%
     mutate(County = gsub(' County', '', County)) %>%
-    dplyr::select(Date, County, everything())
+    dplyr::select(Date, County, everything()) %>% 
+    rbind(age_archive) %>% 
+    mutate(Date = as.Date(Date)) %>%
+    arrange(Date, County)
 
 
   Read_Race = function(x) {
@@ -889,8 +899,11 @@ if (format(date_out, '%A') == 'Monday') {
                          fill = TRUE) %>%
     setNames(c('Race', 'Fully_Vaccinated', 'dump1', 'County')) %>%
     mutate(Date = max(vax_admin$Date)) %>%
-    dplyr::select(Date, County, Race, Fully_Vaccinated, -dump1)
-
+    dplyr::select(Date, County, Race, Fully_Vaccinated, -dump1) %>% 
+    rbind(race_archive) %>% 
+    mutate(Date = as.Date(Date)) %>%
+    arrange(Date, County)
+ 
 
   pop_files = list.files('original-sources/historical/vaccinations/', full.names = TRUE)
 
@@ -902,13 +915,15 @@ if (format(date_out, '%A') == 'Monday') {
                  'Population_Phase1A_Care_Residents',
                  'Population_Phase_1B_Medical_Condition', 'Date')) %>%
       filter(!(County %in% c('Texas', '*Other', 'Federal Long-Term Care Vaccination Program')))
-
+  
   vax_out = vax_allocation %>% full_join(vax_admin, by = c('Date', 'County')) %>% left_join(vax_pop_counts, by = 'County')
 
   write.csv(vax_out, 'tableau/county_vaccine.csv', row.names = FALSE)
-
   write.csv(vax_age, 'tableau/demographics_vax_age.csv', row.names = FALSE)
+  write.csv(vax_age, glue('{vax_dir}archive/{max(vax_admin$Date)}_demographics_vax_age.csv'), row.names = FALSE)
   write.csv(vax_race, 'tableau/demographics_vax_race.csv', row.names = FALSE)
+  write.csv(vax_race, glue('{vax_dir}archive/{max(vax_admin$Date)}_demographics_vax_race.csv'), row.names = FALSE)
+
 }
 ```
 
