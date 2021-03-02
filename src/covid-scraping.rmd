@@ -833,7 +833,7 @@ download.file('https://genesis.soc.texas.gov/files/accessibility/vaccineprovider
 
 ```{r}
 # TODO: update to only run when its monday and the files are new 
-if (format(date_out, '%A') == 'Tuesday') {
+if (format(date_out, '%A') == 'Monday') {
   vax_dir = 'original-sources/historical/vax-dashboard/'
   vax_allocation = rbindlist(lapply(list.files(glue('{vax_dir}allocation/'), full.names = TRUE),
                                 read.csv, fileEncoding="UTF-16LE", sep = '\t'),
@@ -869,10 +869,10 @@ if (format(date_out, '%A') == 'Tuesday') {
 ## FULL
   demo_archive = list.files(glue('{vax_dir}archive/'), full.names = TRUE)
   
-  age_archive_full = rbindlist(lapply(demo_archive %>% .[str_detect(., 'age_full')], read_csv))
-  race_archive_full = rbindlist(lapply(demo_archive %>% .[str_detect(., 'race_full')], read_csv))
+  age_archive = rbindlist(lapply(demo_archive %>% .[str_detect(., 'age')], read_csv)) %>% distinct()
+  race_archive = rbindlist(lapply(demo_archive %>% .[str_detect(., 'race')], read_csv)) %>% distinct()
   
-  vax_age_full = rbindlist(lapply(list.files(glue('{vax_dir}demo_age/'), full.names = TRUE),
+  vax_age_full = rbindlist(lapply(list.files(glue('{vax_dir}demo_age_full/'), full.names = TRUE),
                                   read.csv, fileEncoding="UTF-16LE", sep = '\t'),
                            fill = TRUE) %>%
     dplyr::select(-'X.1') %>%
@@ -881,8 +881,8 @@ if (format(date_out, '%A') == 'Tuesday') {
     mutate(Date = max(vax_admin$Date)) %>%
     mutate(County = gsub(' County', '', County)) %>%
     dplyr::select(Date, County, everything()) %>% 
-    rbind(age_archive) %>% 
     mutate(Date = as.Date(Date)) %>%
+    mutate(Fully_Vaccinated = as.numeric(gsub(',', '', Fully_Vaccinated)))
     arrange(Date, County)
 
 
@@ -894,49 +894,54 @@ if (format(date_out, '%A') == 'Tuesday') {
     }
 
 
-  vax_race_full = rbindlist(lapply(list.files(glue('{vax_dir}/demo_race/'), full.names = TRUE),
+  vax_race_full = rbindlist(lapply(list.files(glue('{vax_dir}/demo_race_full/'), full.names = TRUE),
                                Read_Race),
                          fill = TRUE) %>%
     setNames(c('Race', 'Fully_Vaccinated', 'dump1', 'County')) %>%
     mutate(Date = max(vax_admin$Date)) %>%
     dplyr::select(Date, County, Race, Fully_Vaccinated, -dump1) %>% 
-    rbind(race_archive) %>% 
     mutate(Date = as.Date(Date)) %>%
+    mutate(Fully_Vaccinated = as.numeric(gsub(',', '', Fully_Vaccinated)))
     arrange(Date, County)
 
   
 # PARTIAL
-  age_archive_partial = rbindlist(lapply(demo_archive %>% .[str_detect(., 'age_partial')], read_csv))
-  race_archive_partial = rbindlist(lapply(demo_archive %>% .[str_detect(., 'race_partiaL')], read_csv))
-  
-  vax_age_partial = rbindlist(lapply(list.files(glue('{vax_dir}demo_age/'), full.names = TRUE),
+  vax_age_partial = rbindlist(lapply(list.files(glue('{vax_dir}demo_age_partial/'), full.names = TRUE),
                                   read.csv, fileEncoding="UTF-16LE", sep = '\t'),
                            fill = TRUE) %>%
     dplyr::select(-'X.1') %>%
     reshape2::melt(id = c('X', 'X.2')) %>%
-    setNames(c('Age', 'County', 'Gender', 'Fully_Vaccinated')) %>%
+    setNames(c('Age', 'County', 'Gender', 'All_Vaccinated')) %>%
     mutate(Date = max(vax_admin$Date)) %>%
     mutate(County = gsub(' County', '', County)) %>%
     dplyr::select(Date, County, everything()) %>% 
-    rbind(age_archive_partial) %>% 
     mutate(Date = as.Date(Date)) %>%
+    mutate(All_Vaccinated = as.numeric(gsub(',', '', All_Vaccinated))) %>%
     arrange(Date, County)
 
 
-  vax_race_partial = rbindlist(lapply(list.files(glue('{vax_dir}/demo_race/'), full.names = TRUE),
+  vax_race_partial = rbindlist(lapply(list.files(glue('{vax_dir}/demo_race_partial/'), full.names = TRUE),
                                Read_Race),
                          fill = TRUE) %>%
     setNames(c('Race', 'All_Vaccinated', 'dump1', 'County')) %>%
     mutate(Date = max(vax_admin$Date)) %>%
     dplyr::select(Date, County, Race, All_Vaccinated, -dump1) %>% 
-    rbind(race_archive_partial) %>% 
     mutate(Date = as.Date(Date)) %>%
+    mutate(All_Vaccinated = as.numeric(gsub(',', '', All_Vaccinated))) %>%
     arrange(Date, County)
  
-  vax_age = vax_age_full %>% left_join(vax_age_partial, by = c('County', 'Date'))
-  vax_race = vax_race_full %>% left_join(vax_race_partial, by = c('County', 'Date'))
-
+  vax_age = vax_age_full %>% 
+    left_join(vax_age_partial, by = c('County', 'Date', 'Age', 'Gender')) %>% 
+    plyr::rbind.fill(age_archive) %>% 
+    arrange(County, Date)
   
+  vax_race = vax_race_full %>% 
+    left_join(vax_race_partial, by = c('County', 'Date', 'Race')) %>% 
+    plyr::rbind.fill(race_archive) %>% 
+    arrange(County, Date)
+
+  pop_files = list.files('original-sources/historical/vaccinations/', full.names = TRUE)
+
   vax_pop_counts = read_xlsx(pop_files[length(pop_files)], sheet = 2) %>%
     dplyr::select(1, 7, 8, 9, 10, 11) %>%
       setNames(c('County',
@@ -949,13 +954,16 @@ if (format(date_out, '%A') == 'Tuesday') {
   vax_out = vax_allocation %>% 
     full_join(vax_admin, by = c('Date', 'County')) %>% 
     left_join(vax_pop_counts, by = 'County') %>% 
+    full_join(vax_age_partial %>% 
+                group_by(Date, County) %>%
+                summarize(All_Vaccinated = sum(All_Vaccinated, na.rm = TRUE))) %>% 
     full_join(vax_age_full %>% 
-                group_by(Age, Gender) %>%
-                mutate(All_Vaccinated = sum(All_Vaccinated)) %>% 
-                dplyr::select(Date, County, All_Vaccinated))
+                group_by(Date, County) %>%
+                summarize(Fully_Vaccinated = sum(Fully_Vaccinated, na.rm = TRUE))) %>% 
+    dplyr::select(Date, County, Doses_Allocated_1, Doses_Allocated_2,
+                  Doses_Administered, All_Vaccinated, Fully_Vaccinated,
+                  everything())
 
-  
-  
   
   write.csv(vax_out, 'tableau/county_vaccine.csv', row.names = FALSE)
   write.csv(vax_age, 'tableau/demographics_vax_age.csv', row.names = FALSE)
