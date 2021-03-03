@@ -1,4 +1,4 @@
-"Date","County","Doses_Allocated_1","Doses_Allocated_2","Doses_Administered","All_Vaccinated","Fully_Vaccinated","Population_Over_16","Population_Over_65","Population_Phase_1A_Healthcare","Population_Phase1A_Care_Residents","Population_Phase_1B_Medical_Condition"
+"Date","County","Doses_Allocated_1","Doses_Allocated_2","Doses_Administered","At_Least_One_Vaccinated","Fully_Vaccinated","Population_Over_16","Population_Over_65","Population_Phase_1A_Healthcare","Population_Phase1A_Care_Residents","Population_Phase_1B_Medical_Condition"
 2020-12-21,"Anderson",1800,NA,35,NA,NA,"48045","8658","2051","833","20206"
 2020-12-21,"Andrews",500,NA,234,NA,NA,"13503","1833","309","106","5450"
 2020-12-21,"Angelina",5000,NA,441,NA,NA,"67056","14422","6534","1752","28054"

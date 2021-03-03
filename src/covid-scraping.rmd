@@ -869,8 +869,8 @@ if (format(date_out, '%A') == 'Monday') {
 ## FULL
   demo_archive = list.files(glue('{vax_dir}archive/'), full.names = TRUE)
   
-  age_archive = rbindlist(lapply(demo_archive %>% .[str_detect(., 'age')], read_csv)) %>% distinct()
-  race_archive = rbindlist(lapply(demo_archive %>% .[str_detect(., 'race')], read_csv)) %>% distinct()
+  age_archive = rbindlist(lapply(demo_archive %>% .[str_detect(., 'age')], read_csv), fill = TRUE) %>% distinct()
+  race_archive = rbindlist(lapply(demo_archive %>% .[str_detect(., 'race')], read_csv), fill = TRUE) %>% distinct()
   
   vax_age_full = rbindlist(lapply(list.files(glue('{vax_dir}demo_age_full/'), full.names = TRUE),
                                   read.csv, fileEncoding="UTF-16LE", sep = '\t'),
@@ -901,7 +901,7 @@ if (format(date_out, '%A') == 'Monday') {
     mutate(Date = max(vax_admin$Date)) %>%
     dplyr::select(Date, County, Race, Fully_Vaccinated, -dump1) %>% 
     mutate(Date = as.Date(Date)) %>%
-    mutate(Fully_Vaccinated = as.numeric(gsub(',', '', Fully_Vaccinated)))
+    mutate(Fully_Vaccinated = as.numeric(gsub(',', '', Fully_Vaccinated))) %>%
     arrange(Date, County)
 
   
@@ -911,23 +911,23 @@ if (format(date_out, '%A') == 'Monday') {
                            fill = TRUE) %>%
     dplyr::select(-'X.1') %>%
     reshape2::melt(id = c('X', 'X.2')) %>%
-    setNames(c('Age', 'County', 'Gender', 'All_Vaccinated')) %>%
+    setNames(c('Age', 'County', 'Gender', 'At_Least_One_Vaccinated')) %>%
     mutate(Date = max(vax_admin$Date)) %>%
     mutate(County = gsub(' County', '', County)) %>%
     dplyr::select(Date, County, everything()) %>% 
     mutate(Date = as.Date(Date)) %>%
-    mutate(All_Vaccinated = as.numeric(gsub(',', '', All_Vaccinated))) %>%
+    mutate(At_Least_One_Vaccinated = as.numeric(gsub(',', '', At_Least_One_Vaccinated))) %>%
     arrange(Date, County)
 
 
   vax_race_partial = rbindlist(lapply(list.files(glue('{vax_dir}/demo_race_partial/'), full.names = TRUE),
                                Read_Race),
                          fill = TRUE) %>%
-    setNames(c('Race', 'All_Vaccinated', 'dump1', 'County')) %>%
+    setNames(c('Race', 'At_Least_One_Vaccinated', 'dump1', 'County')) %>%
     mutate(Date = max(vax_admin$Date)) %>%
-    dplyr::select(Date, County, Race, All_Vaccinated, -dump1) %>% 
+    dplyr::select(Date, County, Race, At_Least_One_Vaccinated, -dump1) %>% 
     mutate(Date = as.Date(Date)) %>%
-    mutate(All_Vaccinated = as.numeric(gsub(',', '', All_Vaccinated))) %>%
+    mutate(At_Least_One_Vaccinated = as.numeric(gsub(',', '', At_Least_One_Vaccinated))) %>%
     arrange(Date, County)
  
   vax_age = vax_age_full %>% 
@@ -956,12 +956,12 @@ if (format(date_out, '%A') == 'Monday') {
     left_join(vax_pop_counts, by = 'County') %>% 
     full_join(vax_age_partial %>% 
                 group_by(Date, County) %>%
-                summarize(All_Vaccinated = sum(All_Vaccinated, na.rm = TRUE))) %>% 
+                summarize(At_Least_One_Vaccinated = sum(At_Least_One_Vaccinated, na.rm = TRUE))) %>% 
     full_join(vax_age_full %>% 
                 group_by(Date, County) %>%
                 summarize(Fully_Vaccinated = sum(Fully_Vaccinated, na.rm = TRUE))) %>% 
     dplyr::select(Date, County, Doses_Allocated_1, Doses_Allocated_2,
-                  Doses_Administered, All_Vaccinated, Fully_Vaccinated,
+                  Doses_Administered, At_Least_One_Vaccinated, Fully_Vaccinated,
                   everything())
 
   
