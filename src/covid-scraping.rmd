@@ -828,6 +828,37 @@ download.file('https://genesis.soc.texas.gov/files/accessibility/vaccineprovider
               glue('original-sources/historical/vaccine-providers/vaccination-providers_{date_out}.csv'))
 ```
 
+## vaccines zip
+
+```{r}
+temp = tempfile()
+download.file('https://dshs.texas.gov/coronavirus/TexasCOVID19VaccinesbyZIP.xlsx',
+              temp, mode = 'wb') 
+vaccines_zip = read_excel_allsheets(temp, col_option = FALSE)
+
+vaccine_date = vaccines_zip[[1]] %>% slice(1) %>% select(2) %>% Date_Parser()
+
+if (!is.na(vaccine_date)) {
+
+vaccines_zip_out = vaccines_zip[[2]] %>% 
+  setNames(c('ZIP', 'Doses_Administered', 'At_Least_One_Dose', 'Fully_Vaccinated')) %>% 
+  mutate_all(as.numeric) %>% 
+  filter(!is.na(ZIP)) %>% 
+  mutate(Date = vaccine_date) %>% 
+  select(Date, ZIP, everything())
+write_csv(vaccines_zip_out, glue('original-sources/historical/vaccine-zip/vaccination-zip_{date_out}.csv'))
+}
+
+
+zip_archive = list.files(glue('original-sources/historical/vaccine-zip'), full.names = TRUE)
+
+vaccines_zip_all = rbindlist(lapply(zip_archive, read_csv), fill = TRUE) %>% distinct() %>% 
+  mutate(Date = as.Date(Date))
+
+write_csv(vaccines_zip_all, 'tableau/zip_vaccine.csv')
+```
+
+
 
 ## vaccine dashboard
 
