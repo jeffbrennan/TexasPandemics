@@ -62,11 +62,18 @@ library(glue)
 ```{r}
 # Grab every sheet from an excel file and convert to list of dataframes
 # https://stackoverflow.com/questions/12945687/read-all-worksheets-in-an-excel-workbook-into-an-r-list-with-data-frames
-read_excel_allsheets = function(filename, tibble = FALSE, col_option = TRUE) {
+read_excel_allsheets = function(filename, col_option = TRUE, add_date = FALSE, skip_option = 1) {
     sheets = readxl::excel_sheets(filename)
-    x = lapply(sheets, function(X) read_excel(filename, sheet = X, skip = 1,
+    x = lapply(sheets, function(X) read_excel(filename, sheet = X,
+                                              skip = skip_option,
                                               col_names = col_option, na = '.'))
+    names(x) = sheets
     x = lapply(x, as.data.frame)
+    
+    if (add_date == TRUE) { 
+      file_date = str_extract(filename, '\\d.*\\d')
+      x = lapply(x, function(z) return(mutate(z, Date = as.Date(file_date))))
+    }
     return(x)
 }
 
@@ -783,7 +790,7 @@ tpr_out = all_cpr_tpr %>%
   rename(Tests = Tests.x) %>%
   dplyr::select(-Tests.y) %>% 
   dplyr::select(County, Date, TPR, Tests, Cases_100K_7Day_MA) %>%
-  mutate(TPR = ifelse(TPR == 0 | TPR == 1, NA, TPR)) %>%
+  # mutate(TPR = ifelse(TPR == 0 | TPR == 1, NA, TPR)) %>%
   arrange(County, Date)
 
 write.csv(tpr_out, 'tableau/county_TPR.csv', row.names = FALSE)
@@ -1020,6 +1027,78 @@ if (format(date_out, '%A') == 'Monday' & (date_out - date_modified == -1)) {
 ```
 
 
+## vax dashboard redux
+
+```{r}
+dashboard_archive = list.files('C:/Users/jeffb/Desktop/Life/personal-projects/COVID/original-sources/historical/vaccinations', full.names = TRUE)
+
+# combine all sheets, obtain unique date, count combos, save
+all_dashboard_files = lapply(dashboard_archive, read_excel_allsheets, add_date = TRUE, col_option = FALSE, skip_option = 0)
+
+county_cases = 
+  rbindlist(
+  lapply(
+    lapply(all_dashboard_files, `[[`, 'By County'),
+           function(x) return(x %>%
+                                setNames(slice(., 1)) %>%
+                                slice(2:nrow(.)) %>%
+                                rename('Date' = ncol(.)))
+    )
+    , fill = TRUE) %>% 
+  filter(!(`County Name` %in% c('*Other' ,'Texas',
+                                'Federal Long-Term Care Vaccination Program',
+                                'Federal Pharmacy Retail Vaccination Program'))) %>%
+  distinct_at(vars(-c(`County Name`, Date)), .keep_all = TRUE)
+
+write_csv(county_cases, 'tableau/sandbox/county_daily_vaccine.csv')
+```
+
+
+```{r}
+state_demo  = 
+  rbindlist(
+  lapply(
+    lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>% discard(is.null),
+           function(x) return(x %>%
+                                setNames(slice(., 1)) %>%
+                                slice(2:nrow(.)) %>%
+                                rename('Date' = ncol(.)))
+    )
+    , fill = TRUE) %>% 
+      distinct_at(vars(-Date), .keep_all = TRUE)
+write_csv(state_demo, 'tableau/sandbox/state_vaccine_demographics.csv')
+```
+
+
+```{r}
+county_vax_race = 
+  rbindlist(
+  lapply(
+    lapply(all_dashboard_files, `[[`,  'By County, Race') %>% discard(is.null),
+           function(x) return(x %>%
+                                setNames(slice(., 1)) %>%
+                                slice(2:nrow(.)) %>%
+                                rename('Date' = ncol(.)))
+    )
+    , fill = TRUE) %>% 
+  distinct_at(vars(-c(`County Name`, Date)), .keep_all = TRUE)
+write_csv(county_vax_race, 'tableau/sandbox/county_vax_race.csv')
+```
+
+```{r}
+county_vax_age = 
+  rbindlist(
+  lapply(
+    lapply(all_dashboard_files, `[[`,  'By County, Age') %>% discard(is.null),
+           function(x) return(x %>%
+                                setNames(slice(., 1)) %>%
+                                slice(2:nrow(.)) %>%
+                                rename('Date' = ncol(.)))
+    )
+    , fill = TRUE) %>% 
+  distinct_at(vars(-c(`County Name`, Date)), .keep_all = TRUE)
+write_csv(county_vax_age, 'tableau/sandbox/county_vax_age.csv')
+```
 
 
 # TSA LEVEL
