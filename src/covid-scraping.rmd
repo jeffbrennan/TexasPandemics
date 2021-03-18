@@ -717,7 +717,8 @@ cpr_day = read_xlsx(temp, sheet = 6) %>%
   slice(1) %>% 
   dplyr::select(contains('VIRAL (RT-PCR) LAB TESTING: LAST WEEK')) %>% 
   names() %>% 
-  str_match(., '(\\d{1,2}).(?<=\\))') %>% 
+  # str_match(., '(\\d{1,2}).(?<=\\))') %>% 
+  str_match(., '-(\\d{1,2})') %>% 
   .[2] %>% 
   as.numeric()
 
