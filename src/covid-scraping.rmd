@@ -196,6 +196,109 @@ dshs_pops =
   rename(Population_DSHS = Population)
 ```
 
+## County level demographics
+
+### race
+
+```{r}
+# 2019 county level race estimates
+# collapse into asian, black, hispanic, white, other 
+# exclude totals to avoid double counting
+#  convert hispanic asian -> hispanic & non hispanic asian -> asian
+# race_group_df = data.frame(race = 
+#                              c('AA', 'AAC', 'BA', 'BAC', 'H', 'HAA',
+#                                'HAAC', 'HBA', 'HBAC', 'HIA', 'HIAC', 'HNA',
+#                                'HNAC', 'HTOM', 'HWA', 'HWAC', 'IA', 'IAC',
+#                                'NA', 'NAC', 'NH', 'NHAA', 'NHAAC', 'NHBA', 'NHBAC',
+#                                'NHIA', 'NHIAC', 'NHNA', 'NHNAC', 'NHTOM', 'NHWA',
+#                                'NHWAC', 'TOM', 'WA', 'WAC'),
+#                            race_group = 
+#                              c( NA, NA, NA, NA, NA, 'Hispanic',
+#                                'Hispanic', 'Hispanic', 'Hispanic', 'Hispanic', 'Hispanic' , 'Hispanic',
+#                                'Hispanic', 'Hispanic', 'Hispanic', 'Hispanic', NA, NA,
+#                                 NA, NA, NA, 'Asian', 'Asian', 'Black', 'Black',
+#                                'Other', 'Other', 'Other', 'Other', 'Other', 'White',
+#                                'White', NA, NA, NA
+#                                ))
+
+race_group_df = data.frame(race = 
+                             c('AA', 'AAC', 'BA', 'BAC', 'H', 'HAA',
+                               'HAAC', 'HBA', 'HBAC', 'HIA', 'HIAC', 'HNA',
+                               'HNAC', 'HTOM', 'HWA', 'HWAC', 'IA', 'IAC',
+                               'NA', 'NAC', 'NH', 'NHAA', 'NHAAC', 'NHBA', 'NHBAC',
+                               'NHIA', 'NHIAC', 'NHNA', 'NHNAC', 'NHTOM', 'NHWA',
+                               'NHWAC', 'TOM', 'WA', 'WAC'),
+                           race_group = 
+                             c(NA, NA, NA, NA, 'Hispanic', NA,
+                               NA, NA, NA, NA, NA , NA,
+                               NA, NA, NA, NA, NA, NA,
+                               NA, NA, NA, 'Asian', 'Asian', 'Black', 'Black',
+                              'Other', 'Other', 'Other', 'Other', 'Other', 'White',
+                              'White', NA, NA, NA))
+
+
+
+county_demo_race = read_csv('original-sources/helpers/demographics/county/county_pop_race.csv') %>% 
+  filter(YEAR == '12' & AGEGRP == '0') %>% 
+  select(-c(SUMLEV, STATE, COUNTY, STNAME, YEAR, AGEGRP, TOT_POP, TOT_MALE, TOT_FEMALE)) %>% 
+  reshape2::melt(idvars = 'CTYNAME') %>% 
+  separate(variable, c('race', 'gender')) %>% 
+  group_by(CTYNAME, race) %>% 
+  summarize(Total = sum(value, na.rm = TRUE)) %>% 
+  left_join(race_group_df) %>% 
+  group_by(CTYNAME, race_group) %>% 
+  summarize(Total = sum(Total, na.rm = TRUE)) %>% 
+  filter(!is.na(race_group)) %>% 
+  ungroup() %>% 
+  mutate(CTYNAME = gsub(' County', '', CTYNAME)) %>% 
+  setNames(c('County', 'Race/Ethnicity', 'Population_Total'))
+```
+
+
+### age & sex
+
+```{r}
+age_lookup = data.frame(age = 
+                          c('POPEST', 'UNDER5', 'AGE513', 'AGE1417', 'AGE1824',
+                            'AGE16PLUS', 'AGE18PLUS', 'AGE1544', 'AGE2544',
+                            'AGE4564', 'AGE65PLUS', 'AGE04', 'AGE59', 'AGE1014',
+                            'AGE1519', 'AGE2024', 'AGE2529', 'AGE3034', 'AGE3539',
+                            'AGE4044', 'AGE4549', 'AGE5054', 'AGE5559', 'AGE6064',
+                            'AGE6569', 'AGE7074', 'AGE7579', 'AGE8084', 'AGE85PLUS'),
+                        age_group = 
+                          c('Total', NA, NA, NA, NA,
+                            '16+', NA, NA, NA,
+                            NA, NA, NA, NA, NA,
+                            NA, NA, NA, NA, NA,
+                            NA, NA, '50-64 years', '50-64 years', '50-64 years',
+                            '65-79 years', '65-79 years', '65-79 years', '80+ years', '80+ years'))
+
+
+county_demo_agesex = read_csv('original-sources/helpers/demographics/county/county_pop_age_sex.csv') %>%
+  filter(YEAR == '12') %>% 
+  select(-c(SUMLEV, STATE, COUNTY, STNAME, YEAR,
+            POPESTIMATE,
+            MEDIAN_AGE_TOT, MEDIAN_AGE_MALE, MEDIAN_AGE_FEM )) %>%
+  reshape2::melt(idvars = 'CTYNAME') %>% 
+  separate(variable, c('age', 'gender')) %>%
+  filter(gender != 'TOT') %>% 
+  left_join(age_lookup) %>% 
+  group_by(CTYNAME, age_group, gender) %>% 
+  summarize(Total = sum(value, na.rm = TRUE)) %>%
+  filter(!is.na(age_group)) %>%
+  spread(age_group, Total) %>%
+  mutate('<16' = Total - `16+`) %>%
+  mutate(`16-49 years` = `16+` - `50-64 years` - `65-79 years` - `80+ years`) %>% 
+  select(-Total) %>% 
+  reshape2::melt(idvars = c('CTYNAME', 'gender')) %>% 
+  setNames(c('County', 'Gender', 'Age Group', 'Population_Total')) %>% 
+  mutate(County = gsub(' County', '', County)) %>% 
+  mutate(Gender = recode(Gender, 'FEM' = 'Female', 'MALE' = 'Male'))
+```
+
+
+
+
 ```{r}
 # https://www.nrcs.usda.gov/wps/portal/nrcs/detail/tx/technical/dma/rwa/?cid=nrcs143_013697
 # fips = read_csv('original-sources/helpers/fips_county.csv')
@@ -1023,7 +1126,6 @@ if (format(date_out, '%A') == 'Monday' & (date_out - date_modified == -1)) {
   write.csv(vax_race, 'tableau/demographics_vax_race.csv', row.names = FALSE)
   write.csv(vax_race %>% filter(Date == max(Date)),
             glue('{vax_dir}/archive/{max(vax_admin$Date)}_demographics_vax_race.csv'), row.names = FALSE)
-
 }
 ```
 
@@ -1046,58 +1148,135 @@ county_cases =
                                 rename('Date' = ncol(.)))
     )
     , fill = TRUE) %>% 
-  filter(!(`County Name` %in% c('*Other' ,'Texas',
+  filter(!(`County Name` %in% c('*Other','Texas','Other', '* Other',
                                 'Federal Long-Term Care Vaccination Program',
                                 'Federal Pharmacy Retail Vaccination Program'))) %>%
-  distinct_at(vars(-c(`County Name`, Date)), .keep_all = TRUE)
+  distinct_at(vars(-c(`County Name`, Date)), .keep_all = TRUE) %>% 
+  select(Date, `County Name`, `Total Doses Allocated`,
+         `Vaccine Doses Administered`, `People Fully Vaccinated`,
+         `Population, 16+`, `Population, 65+`) %>%
+  setNames(c('Date', 'County', 'Doses_Allocated',
+             'Doses_Administered', 'Fully_Vaccinated',
+             'Population_16', 'Population_65')) %>%
+  mutate_at(vars(-County, -Date), as.numeric) %>%
+  mutate(Doses_Allocated_Per_16 = Doses_Allocated / Population_16,
+         Doses_Allocated_Per_65 = Doses_Allocated / Population_65,
+         Doses_Administered_Per_16 = Doses_Administered / Population_16,
+         Doses_Administered_Per_65 = Doses_Administered / Population_65,
+         Fully_Vaccinated_Per_16 = Fully_Vaccinated / Population_16,
+         Fully_Vaccinated_Per_65 = Fully_Vaccinated / Population_65) %>% 
+  arrange(Date, County)
 
 write_csv(county_cases, 'tableau/sandbox/county_daily_vaccine.csv')
 ```
 
 
 ```{r}
-state_demo  = 
-  rbindlist(
-  lapply(
-    lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>% discard(is.null),
-           function(x) return(x %>%
-                                setNames(slice(., 1)) %>%
-                                slice(2:nrow(.)) %>%
-                                rename('Date' = ncol(.)))
-    )
-    , fill = TRUE) %>% 
-      distinct_at(vars(-Date), .keep_all = TRUE)
+# state_demo  = 
+#   rbindlist(
+#   lapply(
+#     lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>% discard(is.null),
+#            function(x) return(x %>%
+#                                 setNames(slice(., 1)) %>%
+#                                 slice(2:nrow(.)) %>%
+#                                 rename('Date' = ncol(.)))
+#     )
+#     , fill = TRUE) %>% 
+#       distinct_at(vars(-Date), .keep_all = TRUE)
+
+state_demo = lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>%
+  discard(is.null) %>%
+  .[[length(.)]] %>% 
+  setNames(slice(., 1)) %>%
+  slice(2:nrow(.)) %>%
+  select(1:(ncol(.)-1)) %>%
+  filter(`Age Group` != 'Total') %>%
+  setNames(c('Gender', 'Age_Group', 'Race/Ethnicity',
+             'Doses_Administered', 'At_Least_One_Vaccinated', 'Fully_Vaccinated')) %>%
+  left_join(county_demo_race %>%
+              group_by(`Race/Ethnicity`) %>%
+              summarize(State_Race_Total = sum(Population_Total, na.rm = TRUE))) %>% 
+  left_join(county_demo_agesex %>%
+              group_by(Gender) %>% 
+              summarize(State_Gender_Total = sum(Population_Total, na.rm = TRUE))) %>% 
+ left_join(county_demo_agesex %>%
+              group_by(`Age Group`) %>% 
+              summarize(State_Age_Total = sum(Population_Total, na.rm = TRUE)) %>%
+              rename('Age_Group' = `Age Group`)) %>%
+  mutate_at(vars(-Gender, -Age_Group, -`Race/Ethnicity`), as.numeric) %>% 
+  mutate(Doses_Administered_Per_Race = Doses_Administered / State_Race_Total,
+         Doses_Administered_Per_Gender = Doses_Administered / State_Gender_Total,
+         Doses_Administered_Per_Age = Doses_Administered / State_Age_Total,
+         At_Least_One_Vaccinated_Per_Race = At_Least_One_Vaccinated / State_Race_Total,
+         At_Least_One_Vaccinated_Per_Gender = At_Least_One_Vaccinated / State_Gender_Total,
+         At_Least_One_Vaccinated_Per_Age = At_Least_One_Vaccinated / State_Age_Total,
+         Fully_Vaccinated_Per_Race = Fully_Vaccinated / State_Race_Total,
+         Fully_Vaccinated_Per_Gender = Fully_Vaccinated / State_Gender_Total,
+         Fully_Vaccinated_Per_Age = Fully_Vaccinated / State_Age_Total)
 write_csv(state_demo, 'tableau/sandbox/state_vaccine_demographics.csv')
 ```
 
 
 ```{r}
-county_vax_race = 
-  rbindlist(
-  lapply(
-    lapply(all_dashboard_files, `[[`,  'By County, Race') %>% discard(is.null),
-           function(x) return(x %>%
-                                setNames(slice(., 1)) %>%
-                                slice(2:nrow(.)) %>%
-                                rename('Date' = ncol(.)))
-    )
-    , fill = TRUE) %>% 
-  distinct_at(vars(-c(`County Name`, Date)), .keep_all = TRUE)
+# county_vax_race = 
+#   rbindlist(
+#   lapply(
+#     lapply(all_dashboard_files, `[[`,  'By County, Race') %>% discard(is.null),
+#            function(x) return(x %>%
+#                                 setNames(slice(., 1)) %>%
+#                                 slice(2:nrow(.)) %>%
+#                                 rename('Date' = ncol(.)))
+#     )
+#     , fill = TRUE) %>% 
+#   distinct_at(vars(-c(`County Name`, Date)), .keep_all = TRUE)
+
+county_vax_race = lapply(all_dashboard_files, `[[`, 'By County, Race') %>%
+  discard(is.null) %>%
+  .[[length(.)]] %>% 
+  setNames(slice(., 1)) %>%
+  slice(2:nrow(.)) %>%
+  select(1:(ncol(.)-1)) %>% 
+  setNames(c('County', 'Race/Ethnicity',
+             'Doses_Administered', 'At_Least_One_Vaccinated', 'Fully_Vaccinated')) %>% 
+  left_join(county_demo_race) %>% 
+  mutate_at(vars(-County, -`Race/Ethnicity`), as.numeric) %>%
+  mutate(Doses_Administered_Per_Race = Doses_Administered / Population_Total) %>% 
+  mutate(At_Least_One_Vaccinated_Per_Race = At_Least_One_Vaccinated / Population_Total) %>% 
+  mutate(Fully_Vaccinated_Per_Race = Fully_Vaccinated / Population_Total) 
+
+
 write_csv(county_vax_race, 'tableau/sandbox/county_vax_race.csv')
 ```
 
 ```{r}
-county_vax_age = 
-  rbindlist(
-  lapply(
-    lapply(all_dashboard_files, `[[`,  'By County, Age') %>% discard(is.null),
-           function(x) return(x %>%
-                                setNames(slice(., 1)) %>%
-                                slice(2:nrow(.)) %>%
-                                rename('Date' = ncol(.)))
-    )
-    , fill = TRUE) %>% 
-  distinct_at(vars(-c(`County Name`, Date)), .keep_all = TRUE)
+# county_vax_age = 
+#   rbindlist(
+#   lapply(
+#     lapply(all_dashboard_files, `[[`,  'By County, Age') %>% discard(is.null),
+#            function(x) return(x %>%
+#                                 setNames(slice(., 1)) %>%
+#                                 slice(2:nrow(.)) %>%
+#                                 rename('Date' = ncol(.)))
+#     )
+#     , fill = TRUE) %>% 
+#   distinct_at(vars(-c(`County Name`, Date)), .keep_all = TRUE)
+county_vax_age = lapply(all_dashboard_files, `[[`, 'By County, Age') %>%
+  discard(is.null) %>%
+  .[[length(.)]] %>% 
+  setNames(slice(., 1)) %>%
+  slice(2:nrow(.)) %>%
+  select(1:(ncol(.)-1)) %>% 
+  setNames(c('County', 'Age_Group',
+             'Doses_Administered', 'At_Least_One_Vaccinated', 'Fully_Vaccinated')) %>% 
+  left_join(county_demo_agesex %>%
+              group_by(County, `Age Group`) %>% 
+              summarize(Population_Total = sum(Population_Total, na.rm = TRUE)) %>%
+              rename('Age_Group' = `Age Group`)) %>%  
+  mutate_at(vars(-County, -`Age_Group`), as.numeric) %>%
+  mutate(Doses_Administered_Per_Age = Doses_Administered / Population_Total) %>% 
+  mutate(At_Least_One_Vaccinated_Per_Age = At_Least_One_Vaccinated / Population_Total) %>% 
+  mutate(Fully_Vaccinated_Per_Age = Fully_Vaccinated / Population_Total) 
+
 write_csv(county_vax_age, 'tableau/sandbox/county_vax_age.csv')
 ```
 
@@ -1296,7 +1475,7 @@ if (date_out %in% demo_releases) {
   demo_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics.xlsx.asp'
   temp = tempfile()
   download.file(demo_url, temp, mode = 'wb')
-  weekly_demo = read_excel_allsheets(temp, tibble = FALSE, col_option = FALSE)
+  weekly_demo = read_excel_allsheets(temp, col_option = FALSE)
   download.file(demo_url, glue('original-sources/historical/demo-archive/demo_{date_out}.xlsx'))
   
   
