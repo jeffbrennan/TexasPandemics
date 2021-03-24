@@ -1130,7 +1130,7 @@ if (format(date_out, '%A') == 'Monday' & (date_out - date_modified == -1)) {
 ```
 
 
-## vax dashboard redux
+## vax dashboard new
 
 ```{r}
 dashboard_archive = list.files('C:/Users/jeffb/Desktop/Life/personal-projects/COVID/original-sources/historical/vaccinations', full.names = TRUE)
@@ -1242,7 +1242,8 @@ county_vax_race = lapply(all_dashboard_files, `[[`, 'By County, Race') %>%
   mutate_at(vars(-County, -`Race/Ethnicity`), as.numeric) %>%
   mutate(Doses_Administered_Per_Race = Doses_Administered / Population_Total) %>% 
   mutate(At_Least_One_Vaccinated_Per_Race = At_Least_One_Vaccinated / Population_Total) %>% 
-  mutate(Fully_Vaccinated_Per_Race = Fully_Vaccinated / Population_Total) 
+  mutate(Fully_Vaccinated_Per_Race = Fully_Vaccinated / Population_Total) %>% 
+  filter(!(County %in% c('Other', 'Grand Total')))
 
 
 write_csv(county_vax_race, 'tableau/sandbox/county_vax_race.csv')
@@ -1275,7 +1276,8 @@ county_vax_age = lapply(all_dashboard_files, `[[`, 'By County, Age') %>%
   mutate_at(vars(-County, -`Age_Group`), as.numeric) %>%
   mutate(Doses_Administered_Per_Age = Doses_Administered / Population_Total) %>% 
   mutate(At_Least_One_Vaccinated_Per_Age = At_Least_One_Vaccinated / Population_Total) %>% 
-  mutate(Fully_Vaccinated_Per_Age = Fully_Vaccinated / Population_Total) 
+  mutate(Fully_Vaccinated_Per_Age = Fully_Vaccinated / Population_Total) %>% 
+  filter(!(County %in% c('Other', 'Grand Total')))
 
 write_csv(county_vax_age, 'tableau/sandbox/county_vax_age.csv')
 ```
