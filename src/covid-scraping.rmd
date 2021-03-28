@@ -205,22 +205,6 @@ dshs_pops =
 # collapse into asian, black, hispanic, white, other 
 # exclude totals to avoid double counting
 #  convert hispanic asian -> hispanic & non hispanic asian -> asian
-# race_group_df = data.frame(race = 
-#                              c('AA', 'AAC', 'BA', 'BAC', 'H', 'HAA',
-#                                'HAAC', 'HBA', 'HBAC', 'HIA', 'HIAC', 'HNA',
-#                                'HNAC', 'HTOM', 'HWA', 'HWAC', 'IA', 'IAC',
-#                                'NA', 'NAC', 'NH', 'NHAA', 'NHAAC', 'NHBA', 'NHBAC',
-#                                'NHIA', 'NHIAC', 'NHNA', 'NHNAC', 'NHTOM', 'NHWA',
-#                                'NHWAC', 'TOM', 'WA', 'WAC'),
-#                            race_group = 
-#                              c( NA, NA, NA, NA, NA, 'Hispanic',
-#                                'Hispanic', 'Hispanic', 'Hispanic', 'Hispanic', 'Hispanic' , 'Hispanic',
-#                                'Hispanic', 'Hispanic', 'Hispanic', 'Hispanic', NA, NA,
-#                                 NA, NA, NA, 'Asian', 'Asian', 'Black', 'Black',
-#                                'Other', 'Other', 'Other', 'Other', 'Other', 'White',
-#                                'White', NA, NA, NA
-#                                ))
-
 race_group_df = data.frame(race = 
                              c('AA', 'AAC', 'BA', 'BAC', 'H', 'HAA',
                                'HAAC', 'HBA', 'HBAC', 'HIA', 'HIAC', 'HNA',
@@ -232,11 +216,9 @@ race_group_df = data.frame(race =
                              c(NA, NA, NA, NA, 'Hispanic', NA,
                                NA, NA, NA, NA, NA , NA,
                                NA, NA, NA, NA, NA, NA,
-                               NA, NA, NA, 'Asian', 'Asian', 'Black', 'Black',
-                              'Other', 'Other', 'Other', 'Other', 'Other', 'White',
-                              'White', NA, NA, NA))
-
-
+                               NA, NA, NA, 'Asian', NA, 'Black', NA,
+                              'Other', NA, 'Other', NA, 'Other', 'White',
+                              NA, NA, NA, NA))
 
 county_demo_race = read_csv('original-sources/helpers/demographics/county/county_pop_race.csv') %>% 
   filter(YEAR == '12' & AGEGRP == '0') %>% 
@@ -258,21 +240,20 @@ county_demo_race = read_csv('original-sources/helpers/demographics/county/county
 ### age & sex
 
 ```{r}
-age_lookup = data.frame(age = 
+age_lookup = data.frame(age =
                           c('POPEST', 'UNDER5', 'AGE513', 'AGE1417', 'AGE1824',
                             'AGE16PLUS', 'AGE18PLUS', 'AGE1544', 'AGE2544',
                             'AGE4564', 'AGE65PLUS', 'AGE04', 'AGE59', 'AGE1014',
                             'AGE1519', 'AGE2024', 'AGE2529', 'AGE3034', 'AGE3539',
                             'AGE4044', 'AGE4549', 'AGE5054', 'AGE5559', 'AGE6064',
                             'AGE6569', 'AGE7074', 'AGE7579', 'AGE8084', 'AGE85PLUS'),
-                        age_group = 
+                        age_group =
                           c('Total', NA, NA, NA, NA,
                             '16+', NA, NA, NA,
                             NA, NA, NA, NA, NA,
                             NA, NA, NA, NA, NA,
                             NA, NA, '50-64 years', '50-64 years', '50-64 years',
                             '65-79 years', '65-79 years', '65-79 years', '80+ years', '80+ years'))
-
 
 county_demo_agesex = read_csv('original-sources/helpers/demographics/county/county_pop_age_sex.csv') %>%
   filter(YEAR == '12') %>% 
@@ -1197,10 +1178,11 @@ state_demo = lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>%
               group_by(`Race/Ethnicity`) %>%
               summarize(State_Race_Total = sum(Population_Total, na.rm = TRUE))) %>% 
   left_join(county_demo_agesex %>%
+              filter(`Age Group` == '<16' | `Age Group` == '16+') %>%
               group_by(Gender) %>% 
               summarize(State_Gender_Total = sum(Population_Total, na.rm = TRUE))) %>% 
  left_join(county_demo_agesex %>%
-              group_by(`Age Group`) %>% 
+              group_by(`Age Group`) %>%
               summarize(State_Age_Total = sum(Population_Total, na.rm = TRUE)) %>%
               rename('Age_Group' = `Age Group`)) %>%
   mutate_at(vars(-Gender, -Age_Group, -`Race/Ethnicity`), as.numeric) %>% 
