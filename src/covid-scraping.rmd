@@ -191,8 +191,8 @@ tsa_long_complete = subset(tsa_long, value != '')[, c(1, 4)] %>%
 
 dshs_pops =
   read_csv('https://raw.githubusercontent.com/jeffbrennan/COVID-19/d03d476f7fb060dfd2e1a600a6a1e449df0ab8df/original-sources/DSHS_county_cases.csv') %>%
-  distinct() %>%
   select(County, Population) %>%
+  distinct() %>%
   rename(Population_DSHS = Population)
 ```
 
@@ -1119,7 +1119,7 @@ dashboard_archive = list.files('C:/Users/jeffb/Desktop/Life/personal-projects/CO
 # combine all sheets, obtain unique date, count combos, save
 all_dashboard_files = lapply(dashboard_archive, read_excel_allsheets, add_date = TRUE, col_option = FALSE, skip_option = 0)
 
-county_cases = 
+county_vaccinations = 
   rbindlist(
   lapply(
     lapply(all_dashboard_files, `[[`, 'By County'),
@@ -1148,7 +1148,7 @@ county_cases =
          Fully_Vaccinated_Per_65 = Fully_Vaccinated / Population_65) %>% 
   arrange(Date, County)
 
-write_csv(county_cases, 'tableau/sandbox/county_daily_vaccine.csv')
+write_csv(county_vaccinations, 'tableau/sandbox/county_daily_vaccine.csv')
 ```
 
 
@@ -1196,6 +1196,36 @@ state_demo = lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>%
          Fully_Vaccinated_Per_Gender = Fully_Vaccinated / State_Gender_Total,
          Fully_Vaccinated_Per_Age = Fully_Vaccinated / State_Age_Total)
 write_csv(state_demo, 'tableau/sandbox/state_vaccine_demographics.csv')
+
+state_demo %>% summarize(sum(State_Gender_Total, na.rm = TRUE))
+
+```
+
+
+
+```{r}
+read_csv('tableau/sandbox/county_daily_vaccine.csv') %>% 
+  filter(County %in% c('Jefferson', 'Liberty', 'Orange', 'Jasper', 'Tyler', 'Polk')) %>%
+  select(Date, County, Doses_Administered, Doses_Allocated) %>% 
+  # reshape2::melt(id.vars = c('Date', 'County'))
+  ggplot(aes(x = Date)) +
+  geom_point(aes(y = Doses_Administered, color = 'Doses Administered')) + 
+  geom_point(aes(y = Doses_Allocated, color = 'Doses Allocated')) + 
+  geom_line(aes(y = Doses_Administered, color = 'Doses Administered')) + 
+  geom_line(aes(y = Doses_Allocated, color = 'Doses Allocated')) +
+  scale_color_manual('', values = c(`Doses Administered` = 'dodgerblue',
+                                `Doses Allocated` = 'orange')) +
+  facet_wrap(~ County, scales = 'free') + 
+  theme_pubr()
+
+
+read_csv('tableau/sandbox/county_daily_vaccine.csv') %>% 
+  filter(County %in% c('Jefferson', 'Liberty', 'Orange', 'Jasper', 'Tyler', 'Polk')) %>%
+  select(Date, County, Doses_Administered, Doses_Allocated) %>% 
+  filter(Date == max(Date)) %>% 
+  filter(County == 'Jefferson')
+
+
 ```
 
 
@@ -1263,6 +1293,88 @@ county_vax_age = lapply(all_dashboard_files, `[[`, 'By County, Age') %>%
 
 write_csv(county_vax_age, 'tableau/sandbox/county_vax_age.csv')
 ```
+
+## vax viz
+
+```{r}
+
+vaccination_quartile = county_vaccinations %>%
+  mutate(Vaccination_Rate = Fully_Vaccinated / Population_16) %>%
+  select(Date, County, Vaccination_Rate) %>%
+  na.omit() %>% 
+  group_by(Date) %>%
+  mutate(Vaccination_Quartile = ntile(Vaccination_Rate, 4)) %>%
+  mutate(Vaccination_Quartile_raw = Vaccination_Quartile) %>%
+  select(-Vaccination_Rate)
+  
+
+
+vax_cases = DSHS_new_cases_long %>% 
+  left_join(county_vaccinations %>% 
+              mutate(Vaccination_Rate = Fully_Vaccinated / Population_16) %>%
+              left_join(vaccination_quartile, by = c('County', 'Date')) %>%
+              select(Date, County, Vaccination_Rate, Vaccination_Quartile, Vaccination_Quartile_raw, Population_16) %>%
+              na.omit()) %>% 
+  group_by(County) %>% 
+  fill(Vaccination_Quartile, .direction = 'updown') %>% 
+  fill(Population_16, .direction = 'updown') %>% 
+  mutate(Cases_100K_16_14Day_MA = (rollmean(Cases_Daily, k = 14, align = 'right',
+                                         na.rm = TRUE, na.pad = TRUE)
+                                / Population_16) * 100000) %>% 
+  mutate(Cases_100K_14Day_MA = (rollmean(Cases_Daily, k = 14, align = 'right',
+                                         na.rm = TRUE, na.pad = TRUE))) %>%
+  filter(Date >= '2021-01-01') %>%
+  ungroup() %>% 
+  mutate(Vaccination_Quartile = as.factor(Vaccination_Quartile)) %>%
+  left_join(tsa_long_complete %>% select(County, TSA))
+
+
+
+# individual counties colored by group
+# ggplot(vax_cases %>% filter(!is.na(Vaccination_Quartile)),
+#        aes(x = Date, y = Cases_100K_16_14Day_MA, color = Vaccination_Quartile, group = County)) + 
+#   geom_line(alpha = 0.5, size = 0.5) +
+#   scale_color_brewer(palette = 'Greens') +
+#   theme_pubr()
+
+# vax_cases %>% group_by(Date, Vaccination_Quartile) %>% 
+#   summarize(Cases = median(Cases_100K_16_14Day_MA, na.rm = TRUE)) %>% 
+#   na.omit() %>%
+#   ggplot(aes(x = Date, y = Cases, color = Vaccination_Quartile, fill = Vaccination_Quartile)) + 
+#   geom_smooth(alpha = 0.5) + 
+#   # geom_point(size = 1.5, alpha = 0.8) + 
+#   scale_color_brewer('Vaccination Quartile', palette = 'RdBu') +
+#   scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') +
+#   scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
+#   theme_pubr()
+
+vax_cases %>% group_by(Date, Vaccination_Quartile) %>%
+  summarize(Cases = median(Cases_100K_16_14Day_MA, na.rm = TRUE)) %>%
+  na.omit() %>%
+  ggplot(aes(x = Date, y = Cases, color = Vaccination_Quartile, fill = Vaccination_Quartile)) +
+  geom_smooth(alpha = 0.5) +
+  labs(y = 'Cases Per 100K (14 Day MA)',
+       title = 'COVID Cases by Vaccination Quartile', 
+       subtitle = 'daily cases adjusted per 100k population > 16 years old') +
+  scale_color_brewer('Vaccination Quartile', palette = 'RdBu') +
+  scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') +
+  scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
+  theme_pubr()
+
+
+vax_cases %>% group_by(Date, Vaccination_Quartile) %>% 
+  summarize(Cases = median(Cases_100K_14Day_MA, na.rm = TRUE)) %>% 
+  na.omit() %>%
+  ggplot(aes(x = Date, y = Cases, color = Vaccination_Quartile, fill = Vaccination_Quartile)) + 
+  geom_smooth(alpha = 0.5) +
+  labs(y = 'Cases (14 Day MA)',
+       title = 'COVID Cases by Vaccination Quartile') + 
+  scale_color_brewer('Vaccination Quartile', palette = 'RdBu') +
+  scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') +
+  scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
+  theme_pubr()
+```
+
 
 
 # TSA LEVEL
