@@ -1486,7 +1486,8 @@ download.file(state_url, temp, mode = 'wb')
 dshs_header = names(read_excel(temp, sheet = 1)[1])
 
 current_year =  substr(Sys.Date(), 1, 4)
-dshs_date = paste0(current_year, '/',  str_extract_all(dshs_header, '\\d*\\/\\d*')[[1]])
+dshs_date = str_extract(dshs_header, '\\d{4}\\/\\d{2}\\/\\d{2}')
+# dshs_date = paste0(current_year, '/',  str_extract_all(dshs_header, '\\d*\\/\\d*')[[1]])
 dshs_date = format(as.Date(dshs_date), '%Y_%m_%d')
 
 # save state level file to historical database for longitudinal demo
@@ -1908,7 +1909,7 @@ p1 = vax_hospitalizations %>%
   na.omit() %>%
   ggplot(aes(x = Date, y = Hosp_100K_14Day_MA, color = TSA, fill = TSA)) +
   geom_smooth(alpha = 0.5) +
-  labs(y = 'COVID Hospitalizations Per 100K (14 Day MA)',
+  labs(y = 'Hosp Per 100K (14 Day MA)',
        title = 'Hospitalizations by Vaccination Rate Outliers (Top 5)', 
        subtitle = 'COVID Hospitalizations adjusted per 100k population > 16 years old') +
   # scale_color_brewer('Vaccination Quartile', palette = 'RdBu') +
@@ -1923,7 +1924,7 @@ p2 = vax_hospitalizations %>%
   na.omit() %>%
   ggplot(aes(x = Date, y = Hosp_100K_14Day_MA, color = TSA, fill = TSA)) +
   geom_smooth(alpha = 0.5) +
-  labs(y = 'COVID Hospitalizations Per 100K (14 Day MA)',
+  labs(y = 'Hosp Per 100K (14 Day MA)',
        title = 'Hospitalizations by Vaccination Rate Outliers (Bottom 5)', 
        subtitle = 'COVID Hospitalizations adjusted per 100k population > 16 years old') +
   # scale_color_brewer('Vaccination Quartile', palette = 'RdBu') +
