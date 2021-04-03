@@ -1532,7 +1532,7 @@ Clean_Demographics = function(index) {
 demo_releases = seq(as.Date('2020-09-25'), by = 'week', length = 52)
 
 if (date_out %in% demo_releases) {
-  demo_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics.xlsx.asp'
+  demo_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics.xlsx'
   temp = tempfile()
   download.file(demo_url, temp, mode = 'wb')
   weekly_demo = read_excel_allsheets(temp, col_option = FALSE)
