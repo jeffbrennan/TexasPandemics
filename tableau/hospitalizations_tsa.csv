@@ -7662,8 +7662,8 @@
 2021-03-14,"Brazos Valley RAC",NA,"Brazos Valley RAC - NA",NA,43,NA,NA,NA,NA,NA,NA,NA
 2021-03-14,"C","Wichita Falls","C - Wichita Falls",219793,NA,14,11,3,382,14,780,24
 2021-03-14,"Capital Area Trauma RAC",NA,"Capital Area Trauma RAC - NA",NA,236,NA,NA,NA,NA,NA,NA,NA
-2021-03-14,"Central Texas RAC",NA,"Central Texas RAC - NA",NA,27,NA,NA,NA,NA,NA,NA,NA
 2021-03-14,"Central Texas RAC",NA,"Central Texas RAC - NA",NA,45,NA,NA,NA,NA,NA,NA,NA
+2021-03-14,"Central Texas RAC",NA,"Central Texas RAC - NA",NA,27,NA,NA,NA,NA,NA,NA,NA
 2021-03-14,"Coastal Bend RAC",NA,"Coastal Bend RAC - NA",NA,100,NA,NA,NA,NA,NA,NA,NA
 2021-03-14,"Concho Valley RAC",NA,"Concho Valley RAC - NA",NA,9,NA,NA,NA,NA,NA,NA,NA
 2021-03-14,"D","Abilene","D - Abilene",306972,NA,15,7,8,292,8,514,45
@@ -8447,47 +8447,91 @@
 2021-03-31,"Texas ""J"" RAC",NA,"Texas ""J"" RAC - NA",NA,33,NA,NA,NA,NA,NA,NA,NA
 2021-03-31,"U","Corpus Christi","U - Corpus Christi",630897,NA,86,59,27,571,19,1042,183
 2021-03-31,"V","Lower Rio Grande Valley","V - Lower Rio Grande Valley",1385112,NA,161,100,58,998,133,2223,310
-2021-04-01,"A","Amarillo","A - Amarillo",440127,NA,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"B","Lubbock","B - Lubbock",513580,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-01,"A","Amarillo","A - Amarillo",440127,NA,27,20,7,297,37,645,84
+2021-04-01,"B","Lubbock","B - Lubbock",513580,NA,32,25,6,389,37,1037,175
 2021-04-01,"Big Country RAC",NA,"Big Country RAC - NA",NA,14,NA,NA,NA,NA,NA,NA,NA
 2021-04-01,"BRAC",NA,"BRAC - NA",NA,34,NA,NA,NA,NA,NA,NA,NA
 2021-04-01,"Brazos Valley RAC",NA,"Brazos Valley RAC - NA",NA,38,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"C","Wichita Falls","C - Wichita Falls",219793,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-01,"C","Wichita Falls","C - Wichita Falls",219793,NA,9,9,0,302,6,861,30
 2021-04-01,"Capital Area Trauma RAC",NA,"Capital Area Trauma RAC - NA",NA,192,NA,NA,NA,NA,NA,NA,NA
 2021-04-01,"Central Texas RAC",NA,"Central Texas RAC - NA",NA,21,NA,NA,NA,NA,NA,NA,NA
 2021-04-01,"Central Texas RAC",NA,"Central Texas RAC - NA",NA,47,NA,NA,NA,NA,NA,NA,NA
 2021-04-01,"Coastal Bend RAC",NA,"Coastal Bend RAC - NA",NA,86,NA,NA,NA,NA,NA,NA,NA
 2021-04-01,"Concho Valley RAC",NA,"Concho Valley RAC - NA",NA,5,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"D","Abilene","D - Abilene",306972,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-01,"D","Abilene","D - Abilene",306972,NA,15,5,10,271,8,599,50
 2021-04-01,"Deep East Texas RAC",NA,"Deep East Texas RAC - NA",NA,24,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"E","Dallas/Ft. Worth","E - Dallas/Ft. Worth",8080080,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-01,"E","Dallas/Ft. Worth","E - Dallas/Ft. Worth",8080080,NA,548,383,154,2018,245,13062,1639
 2021-04-01,"East Texas Gulf Coast RAC",NA,"East Texas Gulf Coast RAC - NA",NA,160,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"F","Paris","F - Paris",273329,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-01,"F","Paris","F - Paris",273329,NA,21,15,6,421,31,537,71
 2021-04-01,"Far West Texas & Southern New Mexico RAC",NA,"Far West Texas & Southern New Mexico RAC - NA",NA,164,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"G","Longview/Tyler","G - Longview/Tyler",968611,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-01,"G","Longview/Tyler","G - Longview/Tyler",968611,NA,66,44,22,909,62,1889,244
 2021-04-01,"Golden Crescent RAC",NA,"Golden Crescent RAC - NA",NA,25,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"H","Lufkin","H - Lufkin",272151,NA,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"I","El Paso","I - El Paso",881765,NA,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"J","Midland/Odessa","J - Midland/Odessa",526736,NA,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"K","San Angelo","K - San Angelo",179457,NA,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"L","Belton/Killeen","L - Belton/Killeen",507311,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-01,"H","Lufkin","H - Lufkin",272151,NA,24,16,8,192,8,373,68
+2021-04-01,"I","El Paso","I - El Paso",881765,NA,163,106,55,374,59,1536,279
+2021-04-01,"J","Midland/Odessa","J - Midland/Odessa",526736,NA,25,14,10,657,34,845,61
+2021-04-01,"K","San Angelo","K - San Angelo",179457,NA,5,5,0,340,15,338,28
+2021-04-01,"L","Belton/Killeen","L - Belton/Killeen",507311,NA,49,37,11,143,14,887,100
 2021-04-01,"Lower Rio Grande Valley RAC",NA,"Lower Rio Grande Valley RAC - NA",NA,161,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"M","Waco","M - Waco",330048,NA,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"N","Bryan/College Station","N - Bryan/College Station",360335,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-01,"M","Waco","M - Waco",330048,NA,20,14,6,118,10,452,76
+2021-04-01,"N","Bryan/College Station","N - Bryan/College Station",360335,NA,39,30,9,120,6,366,44
 2021-04-01,"North Central Texas RAC",NA,"North Central Texas RAC - NA",NA,542,NA,NA,NA,NA,NA,NA,NA
 2021-04-01,"North Texas RAC",NA,"North Texas RAC - NA",NA,9,NA,NA,NA,NA,NA,NA,NA
 2021-04-01,"Northeast Texas RAC",NA,"Northeast Texas RAC - NA",NA,18,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"O","Austin","O - Austin",2375407,NA,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"P","San Antonio","P - San Antonio",2945792,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-01,"O","Austin","O - Austin",2375407,NA,182,109,68,837,94,3444,435
+2021-04-01,"P","San Antonio","P - San Antonio",2945792,NA,218,120,89,823,110,4903,782
 2021-04-01,"Panhandle RAC",NA,"Panhandle RAC - NA",NA,25,NA,NA,NA,NA,NA,NA,NA
 2021-04-01,"Piney Woods RAC",NA,"Piney Woods RAC - NA",NA,62,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"Q","Houston","Q - Houston",6688587,NA,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"R","Galveston","R - Galveston",1309237,NA,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"S","Victoria","S - Victoria",186672,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-01,"Q","Houston","Q - Houston",6688587,NA,1052,764,266,1866,139,11610,2000
+2021-04-01,"R","Galveston","R - Galveston",1309237,NA,165,115,50,304,17,1493,252
+2021-04-01,"S","Victoria","S - Victoria",186672,NA,26,14,12,322,24,282,40
 2021-04-01,"Seven Flags RAC",NA,"Seven Flags RAC - NA",NA,9,NA,NA,NA,NA,NA,NA,NA
 2021-04-01,"Southeast Texas Trauma RAC",NA,"Southeast Texas Trauma RAC - NA",NA,1064,NA,NA,NA,NA,NA,NA,NA
 2021-04-01,"Southwest Texas RAC",NA,"Southwest Texas RAC - NA",NA,227,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"T","Laredo","T - Laredo",295669,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-01,"T","Laredo","T - Laredo",295669,NA,8,3,5,64,9,331,53
 2021-04-01,"Texas ""J"" RAC",NA,"Texas ""J"" RAC - NA",NA,27,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"U","Corpus Christi","U - Corpus Christi",630897,NA,NA,NA,NA,NA,NA,NA,NA
-2021-04-01,"V","Lower Rio Grande Valley","V - Lower Rio Grande Valley",1385112,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-01,"U","Corpus Christi","U - Corpus Christi",630897,NA,78,53,25,559,22,1025,176
+2021-04-01,"V","Lower Rio Grande Valley","V - Lower Rio Grande Valley",1385112,NA,156,98,56,984,125,2208,327
+2021-04-02,"A","Amarillo","A - Amarillo",440127,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"B","Lubbock","B - Lubbock",513580,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"Big Country RAC",NA,"Big Country RAC - NA",NA,15,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"BRAC",NA,"BRAC - NA",NA,32,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"Brazos Valley RAC",NA,"Brazos Valley RAC - NA",NA,39,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"C","Wichita Falls","C - Wichita Falls",219793,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"Capital Area Trauma RAC",NA,"Capital Area Trauma RAC - NA",NA,182,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"Central Texas RAC",NA,"Central Texas RAC - NA",NA,20,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"Central Texas RAC",NA,"Central Texas RAC - NA",NA,49,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"Coastal Bend RAC",NA,"Coastal Bend RAC - NA",NA,78,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"Concho Valley RAC",NA,"Concho Valley RAC - NA",NA,5,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"D","Abilene","D - Abilene",306972,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"Deep East Texas RAC",NA,"Deep East Texas RAC - NA",NA,24,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"E","Dallas/Ft. Worth","E - Dallas/Ft. Worth",8080080,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"East Texas Gulf Coast RAC",NA,"East Texas Gulf Coast RAC - NA",NA,165,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"F","Paris","F - Paris",273329,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"Far West Texas & Southern New Mexico RAC",NA,"Far West Texas & Southern New Mexico RAC - NA",NA,163,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"G","Longview/Tyler","G - Longview/Tyler",968611,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"Golden Crescent RAC",NA,"Golden Crescent RAC - NA",NA,26,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"H","Lufkin","H - Lufkin",272151,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"I","El Paso","I - El Paso",881765,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"J","Midland/Odessa","J - Midland/Odessa",526736,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"K","San Angelo","K - San Angelo",179457,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"L","Belton/Killeen","L - Belton/Killeen",507311,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"Lower Rio Grande Valley RAC",NA,"Lower Rio Grande Valley RAC - NA",NA,156,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"M","Waco","M - Waco",330048,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"N","Bryan/College Station","N - Bryan/College Station",360335,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"North Central Texas RAC",NA,"North Central Texas RAC - NA",NA,548,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"North Texas RAC",NA,"North Texas RAC - NA",NA,9,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"Northeast Texas RAC",NA,"Northeast Texas RAC - NA",NA,21,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"O","Austin","O - Austin",2375407,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"P","San Antonio","P - San Antonio",2945792,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"Panhandle RAC",NA,"Panhandle RAC - NA",NA,27,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"Piney Woods RAC",NA,"Piney Woods RAC - NA",NA,66,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"Q","Houston","Q - Houston",6688587,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"R","Galveston","R - Galveston",1309237,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"S","Victoria","S - Victoria",186672,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"Seven Flags RAC",NA,"Seven Flags RAC - NA",NA,8,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"Southeast Texas Trauma RAC",NA,"Southeast Texas Trauma RAC - NA",NA,1052,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"Southwest Texas RAC",NA,"Southwest Texas RAC - NA",NA,218,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"T","Laredo","T - Laredo",295669,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"Texas ""J"" RAC",NA,"Texas ""J"" RAC - NA",NA,25,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"U","Corpus Christi","U - Corpus Christi",630897,NA,NA,NA,NA,NA,NA,NA,NA
+2021-04-02,"V","Lower Rio Grande Valley","V - Lower Rio Grande Valley",1385112,NA,NA,NA,NA,NA,NA,NA,NA
