@@ -790,7 +790,6 @@ newest_file = fromJSON(file_text)$view$attachments %>%
   slice(1) %>% 
   unlist()
 
-
 file_date = as.Date(str_match(newest_file, '(Report |Report_)(.*)(_)')[3], '%Y%m%d')
 file_url = (paste0('https://beta.healthdata.gov', newest_file))
 
@@ -802,7 +801,8 @@ cpr_day = read_xlsx(temp, sheet = 6) %>%
   dplyr::select(contains('VIRAL (RT-PCR) LAB TESTING: LAST WEEK')) %>% 
   names() %>% 
   # str_match(., '(\\d{1,2}).(?<=\\))') %>% 
-  str_match(., '-(\\d{1,2})') %>% 
+  # str_match(., '-(\\d{1,2})') %>% 
+  str_match(., '(\\d{1,2}),') %>%
   .[2] %>% 
   as.numeric()
 
@@ -1602,355 +1602,495 @@ write.csv(demo_stacked_combined, file = 'tableau/stacked_demographics.csv', row.
 
 
 
-## vax viz
+<!-- ## vax viz -->
 
-### cases
+<!-- ### cases -->
 
-```{r}
-vaccination_quartile = county_vaccinations %>%
-  mutate(Vaccination_Rate = Fully_Vaccinated / Population_16) %>%
-  select(Date, County, Vaccination_Rate, Population_16) %>%
-  na.omit() %>% 
-  group_by(Date) %>%
-  mutate(Vaccination_Quartile = ntile(Vaccination_Rate, 4)) %>%
-  mutate(Vaccination_Quartile_raw = Vaccination_Quartile)
-  # select(-Vaccination_Rate)
-  
-
-
-vax_cases = DSHS_new_cases_long %>% 
-  left_join(county_vaccinations %>%
-              select(-Population_16) %>%
-              # mutate(Vaccination_Rate = Fully_Vaccinated / Population_16) %>%
-              left_join(vaccination_quartile, by = c('County', 'Date')) %>%
-              select(Date, County, Vaccination_Rate,
-                     Vaccination_Quartile, Vaccination_Quartile_raw, Population_16) %>%
-              na.omit()) %>% 
-  group_by(County) %>% 
-  fill(Vaccination_Quartile, .direction = 'updown') %>% 
-  fill(Population_16, .direction = 'updown') %>% 
-  mutate(Cases_100K_16_14Day_MA = (rollmean(Cases_Daily, k = 14, align = 'right',
-                                         na.rm = TRUE, na.pad = TRUE)
-                                / Population_16) * 100000) %>% 
-  mutate(Cases_100K_14Day_MA = (rollmean(Cases_Daily, k = 14, align = 'right',
-                                         na.rm = TRUE, na.pad = TRUE))) %>%
-  filter(Date >= '2021-01-01') %>%
-  ungroup() %>% 
-  mutate(Vaccination_Quartile = as.factor(Vaccination_Quartile)) %>%
-  left_join(tsa_long_complete %>% select(County, TSA))
+<!-- ```{r} -->
+<!-- vaccination_quartile = county_vaccinations %>% -->
+<!--   filter(Date == max(Date)) %>% -->
+<!--   mutate(Vaccination_Rate = Fully_Vaccinated / Population_16) %>% -->
+<!--   select(County, Vaccination_Rate) %>% -->
+<!--   na.omit() %>%  -->
+<!--   mutate(Vaccination_Quartile = ntile(Vaccination_Rate, 4)) %>%  -->
+<!--   select(County, Vaccination_Quartile) -->
+<!-- # select(-Vaccination_Rate) -->
 
 
 
-# individual counties colored by group
-# ggplot(vax_cases %>% filter(!is.na(Vaccination_Quartile)),
-#        aes(x = Date, y = Cases_100K_16_14Day_MA, color = Vaccination_Quartile, group = County)) + 
-#   geom_line(alpha = 0.5, size = 0.5) +
-#   scale_color_brewer(palette = 'Greens') +
-#   theme_pubr()
+<!-- vax_cases = DSHS_new_cases_long %>%  -->
+<!--   left_join(county_vaccinations %>% -->
+<!--               # select(-Population_16) %>% -->
+<!--               mutate(Vaccination_Rate = Fully_Vaccinated / Population_16) %>% -->
+<!--               left_join(vaccination_quartile, by = c('County')) %>% -->
+<!--               select(Date, County, Vaccination_Rate, -->
+<!--                      Vaccination_Quartile, Population_16) %>% -->
+<!--               na.omit()) %>%  -->
+<!--   group_by(County) %>%  -->
+<!--   fill(Vaccination_Quartile, .direction = 'updown') %>%  -->
+<!--   fill(Population_16, .direction = 'updown') %>% -->
+<!--   left_join(dshs_pops) %>% -->
+<!--   mutate(Cases_14Day_MA = rollmean(Cases_Daily, k = 14, align = 'right', na.rm = TRUE, na.pad = TRUE)) %>% -->
+<!--   mutate(Cases_100K_16_14Day_MA = (rollmean(Cases_Daily, k = 14, align = 'right', -->
+<!--                                          na.rm = TRUE, na.pad = TRUE) -->
+<!--                                 / Population_16) * 100000) %>%  -->
+<!--   mutate(Cases_100K_14Day_MA = (rollmean(Cases_Daily, k = 14, align = 'right', -->
+<!--                                          na.rm = TRUE, na.pad = TRUE) -->
+<!--                                 / Population_DSHS) * 100000) %>% -->
+<!--   filter(Date >= as.Date('2021-01-01')) %>% -->
+<!--   ungroup() %>%  -->
+<!--   mutate(Vaccination_Quartile = as.factor(Vaccination_Quartile)) %>% -->
+<!--   left_join(tsa_long_complete %>% select(County, TSA)) %>%  -->
+<!--   arrange(Date, County) %>% -->
+<!--   group_by(County) %>% -->
+<!--   mutate(Cases_14Day_MA_PCT = (Cases_14Day_MA / (Cases_14Day_MA)[1] - 1) * 100) %>%  -->
+<!--   ungroup() -->
+<!-- # individua -->
+<!-- l counties colored by group -->
+<!-- # ggplot(vax_cases %>% filter(!is.na(Vaccination_Quartile)), -->
+<!-- #        aes(x = Date, y = Cases_100K_16_14Day_MA, color = Vaccination_Quartile, group = County)) +  -->
+<!-- #   geom_line(alpha = 0.5, size = 0.5) + -->
+<!-- #   scale_color_brewer(palette = 'Greens') + -->
+<!-- #   theme_pubr() -->
 
-# vax_cases %>% group_by(Date, Vaccination_Quartile) %>% 
-#   summarize(Cases = median(Cases_100K_16_14Day_MA, na.rm = TRUE)) %>% 
-#   na.omit() %>%
-#   ggplot(aes(x = Date, y = Cases, color = Vaccination_Quartile, fill = Vaccination_Quartile)) + 
-#   geom_smooth(alpha = 0.5) + 
-#   # geom_point(size = 1.5, alpha = 0.8) + 
-#   scale_color_brewer('Vaccination Quartile', palette = 'RdBu') +
-#   scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') +
-#   scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
-#   theme_pubr()
+<!-- # vax_cases %>% group_by(Date, Vaccination_Quartile) %>%  -->
+<!-- #   summarize(Cases = median(Cases_100K_16_14Day_MA, na.rm = TRUE)) %>%  -->
+<!-- #   na.omit() %>% -->
+<!-- #   ggplot(aes(x = Date, y = Cases, color = Vaccination_Quartile, fill = Vaccination_Quartile)) +  -->
+<!-- #   geom_smooth(alpha = 0.5) +  -->
+<!-- #   # geom_point(size = 1.5, alpha = 0.8) +  -->
+<!-- #   scale_color_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!-- #   scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!-- #   scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') + -->
+<!-- #   theme_pubr() -->
 
-vax_cases %>% group_by(Date, Vaccination_Quartile) %>%
-  summarize(Cases = median(Cases_100K_16_14Day_MA, na.rm = TRUE)) %>%
-  na.omit() %>%
-  ggplot(aes(x = Date, y = Cases, color = Vaccination_Quartile, fill = Vaccination_Quartile)) +
-  geom_smooth(alpha = 0.5) +
-  labs(y = 'Cases Per 100K (14 Day MA)',
-       title = 'COVID Cases by Vaccination Quartile', 
-       subtitle = 'daily cases adjusted per 100k population > 16 years old') +
-  scale_color_brewer('Vaccination Quartile', palette = 'RdBu') +
-  scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') +
-  scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
-  theme_pubr()
-
-
-vax_cases %>% group_by(Date, Vaccination_Quartile) %>% 
-  mutate(Cases = median(Cases_100K_14Day_MA, na.rm = TRUE)) %>% 
-  na.omit() %>%
-  ggplot(aes(x = Date, y = Cases, color = Vaccination_Quartile, fill = Vaccination_Quartile)) + 
-  geom_smooth(alpha = 0.5) +
-  labs(y = 'Cases (14 Day MA)',
-       title = 'COVID Cases by Vaccination Quartile') + 
-  scale_color_brewer('Vaccination Quartile', palette = 'RdBu') +
-  scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') +
-  scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
-  theme_pubr()
-```
-
-### cases - tsa
-
-```{r}
-vax_cases %>% group_by(Date, Vaccination_Quartile) %>%
-  mutate(Cases = median(Cases_100K_16_14Day_MA, na.rm = TRUE)) %>%
-  na.omit() %>%
-  ggplot(aes(x = Date, y = Cases, color = Vaccination_Quartile, fill = Vaccination_Quartile)) +
-  geom_smooth(alpha = 0.5, size = 2) +
-  labs(y = 'Cases Per 100K (14 Day MA)',
-       title = 'COVID Cases by Vaccination Quartile', 
-       subtitle = 'daily cases adjusted per 100k population > 16 years old') +
-  scale_color_brewer('Vaccination Quartile', palette = 'RdBu') +
-  scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') +
-  # scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
-  facet_wrap(~TSA, scales = 'free') +
-  theme_pubr()
+<!-- vax_cases %>% group_by(Date, Vaccination_Quartile) %>% -->
+<!--   summarize(Cases = median(Cases_100K_16_14Day_MA, na.rm = TRUE)) %>% -->
+<!--   na.omit() %>% -->
+<!--   ggplot(aes(x = Date, y = Cases, color = Vaccination_Quartile, fill = Vaccination_Quartile)) + -->
+<!--   geom_smooth(alpha = 0.5) + -->
+<!--   labs(y = 'Cases Per 100K > 16 (14 Day MA)', -->
+<!--        title = 'COVID Cases by Vaccination Quartile',  -->
+<!--        subtitle = 'daily cases adjusted per 100k population > 16 years old') + -->
+<!--   scale_color_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') + -->
+<!--   theme_pubr() -->
 
 
-vax_cases %>% group_by(Date, Vaccination_Quartile) %>% 
-  mutate(Cases = median(Cases_100K_14Day_MA, na.rm = TRUE)) %>% 
-  na.omit() %>%
-  ggplot(aes(x = Date, y = Cases, color = Vaccination_Quartile, fill = Vaccination_Quartile)) + 
-  geom_smooth(alpha = 0.5, size = 2) +
-  labs(y = 'Cases (14 Day MA)',
-       title = 'COVID Cases by Vaccination Quartile') + 
-  scale_color_brewer('Vaccination Quartile', palette = 'RdBu') +
-  scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') +
-  facet_wrap(~TSA, scales = 'free') +
-  theme_pubr()
-```
+<!-- vax_cases %>% group_by(Date, Vaccination_Quartile) %>%  -->
+<!--   summarize(Cases = median(Cases_100K_14Day_MA, na.rm = TRUE)) %>%  -->
+<!--   na.omit() %>% -->
+<!--   ggplot(aes(x = Date, y = Cases, color = Vaccination_Quartile, fill = Vaccination_Quartile)) +  -->
+<!--   geom_smooth(alpha = 0.5) + -->
+<!--   labs(y = 'Cases Per 100K (14 Day MA)', -->
+<!--        title = 'COVID Cases by Vaccination Quartile') +  -->
+<!--   scale_color_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') + -->
+<!--   theme_pubr() -->
 
-### hospitalizations
+<!-- vax_cases %>% group_by(Date, Vaccination_Quartile) %>% -->
+<!--   summarize(Cases = median(Cases_100K_16_14Day_MA, na.rm = TRUE)) %>% -->
+<!--   na.omit() %>% -->
+<!--   ggplot(aes(x = Date, y = Cases, color = Vaccination_Quartile, fill = Vaccination_Quartile)) + -->
+<!--   geom_smooth(alpha = 0.5) + -->
+<!--   labs(y = 'Cases Per 100K > 16 (14 Day MA)', -->
+<!--        title = 'COVID Cases by Vaccination Quartile',  -->
+<!--        subtitle = 'daily cases adjusted per 100k population > 16 years old') + -->
+<!--   scale_color_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') + -->
+<!--   theme_pubr() -->
 
-```{r}
-vaccination_tsa_quartile = county_vaccinations %>%
-  left_join(tsa_long_complete %>% select(County, TSA)) %>% 
-  group_by(Date, TSA) %>%
-  mutate(Fully_Vaccinated = sum(Fully_Vaccinated, na.rm = TRUE),
-         Population_16 = sum(Population_16, na.rm = TRUE)) %>%
-  mutate(Vaccination_Rate = Fully_Vaccinated / Population_16) %>%
-  # select(Date, TSA, Vaccination_Rate) %>%
-  select(Date, TSA, Vaccination_Rate, Population_16) %>%
-  na.omit() %>%
-  distinct() %>%
-  group_by(Date) %>%
-  mutate(Vaccination_Quartile = ntile(Vaccination_Rate, 4)) %>%
-  mutate(Vaccination_Quartile_raw = Vaccination_Quartile)
-# select(-Vaccination_Rate)
-  
-vax_hospitalizations = hosp_1 %>% 
-  left_join(county_vaccinations %>%
-              select(-Population_16) %>%
-              left_join(tsa_long_complete %>% select(County, TSA)) %>% 
-              left_join(vaccination_tsa_quartile, by = c('TSA', 'Date')) %>%
-              select(Date, TSA, Vaccination_Rate,
-                     Vaccination_Quartile, Vaccination_Quartile_raw, Population_16) %>%
-              na.omit() %>% 
-              distinct()) %>%
-  mutate(Hospitalizations_Total = as.numeric(Hospitalizations_Total)) %>%
-  group_by(TSA) %>%
-  fill(Vaccination_Quartile, .direction = 'updown') %>% 
-  fill(Population_16, .direction = 'updown') %>% 
-  group_by(TSA) %>%
-  mutate(Hosp_100K_16_14Day_MA = (rollmean(Hospitalizations_Total, k = 14, align = 'right',
-                                         na.rm = TRUE, na.pad = TRUE)
-                                / Population_16) * 100000) %>%
-  mutate(Hosp_100K_14Day_MA = (rollmean(Hospitalizations_Total, k = 14, align = 'right',
-                                         na.rm = TRUE, na.pad = TRUE))) %>%
-  filter(Date >= '2021-01-01') %>%
-  ungroup() %>% 
-  mutate(Vaccination_Quartile = as.factor(Vaccination_Quartile))
+<!-- # percent diff -->
+<!-- vax_cases %>% group_by(Date, Vaccination_Quartile) %>%  -->
+<!--   summarize(Cases = median(Cases_14Day_MA_PCT, na.rm = TRUE)) %>%  -->
+<!--   na.omit() %>% -->
+<!--   ggplot(aes(x = Date, y = Cases, color = Vaccination_Quartile, fill = Vaccination_Quartile)) +  -->
+<!--   geom_smooth(alpha = 0.5) + -->
+<!--   labs(y = 'Cases (14 Day MA) Percent Difference', -->
+<!--        title = 'COVID Cases by Vaccination Quartile') +  -->
+<!--   scale_color_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') + -->
+<!--   theme_pubr() -->
 
+<!-- ``` -->
 
+<!-- ### cases - tsa -->
 
-vax_hospitalizations %>% group_by(Date, Vaccination_Quartile) %>%
-  mutate(Hosp = mean(Hosp_100K_16_14Day_MA, na.rm = TRUE)) %>%
-  na.omit() %>%
-  ggplot(aes(x = Date, y = Hosp, color = Vaccination_Quartile, fill = Vaccination_Quartile)) +
-  geom_smooth(alpha = 0.5) +
-  labs(y = 'COVID Hospitalizations Per 100K (14 Day MA)',
-       title = 'COVID Hosp by Vaccination Quartile', 
-       subtitle = 'daily covid hospitalizations adjusted per 100k population > 16 years old') +
-  scale_color_brewer('Vaccination Quartile', palette = 'RdBu') +
-  scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') +
-  scale_x_date(date_breaks = '1 month', date_labels = '%b', expand = c(0,0)) +
-  theme_pubr()
+<!-- ```{r} -->
+<!-- vax_cases %>% group_by(Date, Vaccination_Quartile) %>% -->
+<!--   mutate(Cases = median(Cases_100K_16_14Day_MA, na.rm = TRUE)) %>% -->
+<!--   na.omit() %>% -->
+<!--   ggplot(aes(x = Date, y = Cases, color = Vaccination_Quartile, fill = Vaccination_Quartile)) + -->
+<!--   geom_smooth(alpha = 0.5, size = 2) + -->
+<!--   labs(y = 'Cases Per 100K (14 Day MA) Percent Difference', -->
+<!--        title = 'COVID Cases by Vaccination Quartile',  -->
+<!--        subtitle = 'daily cases adjusted per 100k population > 16 years old') + -->
+<!--   scale_color_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   # scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') + -->
+<!--   facet_wrap(~TSA, scales = 'free') + -->
+<!--   theme_pubr() -->
 
 
-vax_hospitalizations %>% group_by(Date, Vaccination_Quartile) %>% 
-  mutate(Hosp = mean(Hosp_100K_14Day_MA, na.rm = TRUE)) %>% 
-  na.omit() %>%
-  ggplot(aes(x = Date, y = Hosp, color = Vaccination_Quartile, fill = Vaccination_Quartile)) + 
-  geom_smooth(alpha = 0.5) +
-  labs(y = 'Hosp (14 Day MA)',
-       title = 'COVID Hospitalization by Vaccination Quartile') + 
-  scale_color_brewer('Vaccination Quartile', palette = 'RdBu') +
-  scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') +
-  # scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
-  theme_pubr()
-```
+<!-- vax_cases %>% group_by(Date, Vaccination_Quartile) %>%  -->
+<!--   mutate(Cases = median(Cases_100K_14Day_MA, na.rm = TRUE)) %>%  -->
+<!--   na.omit() %>% -->
+<!--   ggplot(aes(x = Date, y = Cases, color = Vaccination_Quartile, fill = Vaccination_Quartile)) +  -->
+<!--   geom_smooth(alpha = 0.5, size = 2) + -->
+<!--   labs(y = 'Cases (14 Day MA)', -->
+<!--        title = 'COVID Cases by Vaccination Quartile') +  -->
+<!--   scale_color_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   facet_wrap(~TSA, scales = 'free') + -->
+<!--   theme_pubr() -->
+<!-- ``` -->
 
-### tsa
-```{r}
-vax_hospitalizations %>%
-  na.omit() %>%
-  ggplot(aes(x = Date, y = Hosp_100K_14Day_MA, color = Vaccination_Quartile, fill = Vaccination_Quartile)) + 
-  geom_line() +
-  labs(y = 'Hosp (14 Day MA)',
-       title = 'COVID Hospitalization by Vaccination Quartile') + 
-  scale_color_brewer('Vaccination Quartile', palette = 'RdBu') +
-  scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') +
-  # scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
-  facet_wrap(~TSA, scales = 'free') + 
-  theme_pubr()
-```
+<!-- ### hospitalizations -->
 
-### Top 5 and Bottom 5 Outliers
+<!-- ```{r} -->
+<!-- vaccination_tsa_quartile = county_vaccinations %>% -->
+<!--   left_join(tsa_long_complete %>% select(County, TSA)) %>%  -->
+<!--   group_by(Date, TSA) %>% -->
+<!--   mutate(Fully_Vaccinated = sum(Fully_Vaccinated, na.rm = TRUE), -->
+<!--          Population_16 = sum(Population_16, na.rm = TRUE)) %>% -->
+<!--   mutate(Vaccination_Rate = Fully_Vaccinated / Population_16) %>% -->
+<!--   # select(Date, TSA, Vaccination_Rate) %>% -->
+<!--   select(Date, TSA, Vaccination_Rate, Population_16) %>% -->
+<!--   na.omit() %>% -->
+<!--   distinct() %>% -->
+<!--   group_by(Date) %>% -->
+<!--   mutate(Vaccination_Quartile = ntile(Vaccination_Rate, 4)) %>% -->
+<!--   mutate(Vaccination_Quartile_raw = Vaccination_Quartile) -->
+<!-- # select(-Vaccination_Rate) -->
 
-```{r}
-
-# counties
-top_5_counties = county_vaccinations %>% 
-  mutate(Vaccination_Rate = Fully_Vaccinated / Population_16) %>% 
-  select(Date, County, Vaccination_Rate) %>% 
-  na.omit() %>% 
-  filter(Date == max(Date)) %>% 
-  arrange(-Vaccination_Rate) %>% 
-  slice(1:5) %>% 
-  select(County) %>% 
-  unlist()
-
-bottom_5_counties = county_vaccinations %>% 
-  mutate(Vaccination_Rate = Fully_Vaccinated / Population_16) %>% 
-  select(Date, County, Vaccination_Rate) %>% 
-  na.omit() %>% 
-  filter(Date == max(Date)) %>% 
-  arrange(Vaccination_Rate) %>% 
-  slice(1:5) %>% 
-  select(County) %>% 
-  unlist()
-
-# tsa
-top_5_tsa = vax_hospitalizations %>% 
-  select(Date, TSA, Vaccination_Rate) %>% 
-  na.omit() %>% 
-  filter(Date == max(Date)) %>% 
-  arrange(-Vaccination_Rate) %>% 
-  slice(1:5) %>% 
-  select(TSA) %>% 
-  unlist()
-
-bottom_5_tsa = vax_hospitalizations %>% 
-  select(Date, TSA, Vaccination_Rate) %>% 
-  na.omit() %>% 
-  filter(Date == max(Date)) %>% 
-  arrange(Vaccination_Rate) %>% 
-  slice(1:5) %>% 
-  select(TSA) %>% 
-  unlist()
-
-```
-
-#### cases
-
-```{r}
-p1 = vax_cases %>%
-  filter(County %in% c(top_5_counties)) %>%
-  # mutate(Vax_Category = ifelse(County %in% top_5_counties, 'Top_5', 'Bottom_5')) %>%
-  na.omit() %>%
-  ggplot(aes(x = Date, y = Cases_100K_14Day_MA, color = County, fill = County)) +
-  geom_smooth(alpha = 0.5) +
-  labs(y = 'Cases Per 100K (14 Day MA)',
-       title = 'COVID Cases by Vaccination Rate Outliers (Top 5)', 
-       subtitle = 'daily cases adjusted per 100k population > 16 years old') +
-  # scale_color_brewer('Vaccination Quartile', palette = 'RdBu') +
-  # scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') +
-  scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
-  # facet_wrap(~Vax_Category, scales = 'free', ncol = 1) + 
-  theme_pubr()
-
-p2 = vax_cases %>%
-  filter(County %in% c(bottom_5_counties)) %>%
-  # mutate(Vax_Category = ifelse(County %in% top_5_counties, 'Top_5', 'Bottom_5')) %>%
-  na.omit() %>%
-  ggplot(aes(x = Date, y = Cases_100K_14Day_MA, color = County, fill = County)) +
-  geom_smooth(alpha = 0.5) +
-  labs(y = 'Cases Per 100K (14 Day MA)',
-       title = 'COVID Cases by Vaccination Rate Outliers (Bottom 5)', 
-       subtitle = 'daily cases adjusted per 100k population > 16 years old') +
-  # scale_color_brewer('Vaccination Quartile', palette = 'RdBu') +
-  # scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') +
-  scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
-  # facet_wrap(~Vax_Category, scales = 'free', ncol = 1) + 
-  theme_pubr()
-
-gridExtra::grid.arrange(p1, p2)
-
-
-# pops
-vax_cases %>% 
-  select(Date, County, Population_16, Vaccination_Rate) %>%
-  na.omit() %>%
-  filter(Date == max(Date)) %>%
-  select(-Date) %>%
-  distinct() %>%
-  filter(County %in% c(top_5_counties, bottom_5_counties)) %>%
-  mutate(Vax_Category = ifelse(County %in% top_5_counties, 'Top_5', 'Bottom_5')) %>%
-  # group_by(County, Vax_Category) %>% 
-  # summarize(Population_16 = max(Population_16)) %>% 
-  arrange(Vaccination_Rate) 
-
-
-```
-
-#### hosp
-
-```{r}
-p1 = vax_hospitalizations %>%
-  filter(TSA %in% c(top_5_tsa)) %>%
-  # mutate(Vax_Category = ifelse(County %in% top_5_counties, 'Top_5', 'Bottom_5')) %>%
-  na.omit() %>%
-  ggplot(aes(x = Date, y = Hosp_100K_14Day_MA, color = TSA, fill = TSA)) +
-  geom_smooth(alpha = 0.5) +
-  labs(y = 'Hosp Per 100K (14 Day MA)',
-       title = 'Hospitalizations by Vaccination Rate Outliers (Top 5)', 
-       subtitle = 'COVID Hospitalizations adjusted per 100k population > 16 years old') +
-  # scale_color_brewer('Vaccination Quartile', palette = 'RdBu') +
-  # scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') +
-  scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
-  # facet_wrap(~Vax_Category, scales = 'free', ncol = 1) + 
-  theme_pubr()
-
-p2 = vax_hospitalizations %>%
-  filter(TSA %in% c(bottom_5_tsa)) %>%
-  # mutate(Vax_Category = ifelse(County %in% top_5_counties, 'Top_5', 'Bottom_5')) %>%
-  na.omit() %>%
-  ggplot(aes(x = Date, y = Hosp_100K_14Day_MA, color = TSA, fill = TSA)) +
-  geom_smooth(alpha = 0.5) +
-  labs(y = 'Hosp Per 100K (14 Day MA)',
-       title = 'Hospitalizations by Vaccination Rate Outliers (Bottom 5)', 
-       subtitle = 'COVID Hospitalizations adjusted per 100k population > 16 years old') +
-  # scale_color_brewer('Vaccination Quartile', palette = 'RdBu') +
-  # scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') +
-  scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') +
-  # facet_wrap(~Vax_Category, scales = 'free', ncol = 1) + 
-  theme_pubr()
-
-
-gridExtra::grid.arrange(p1, p2)
+<!-- vax_hospitalizations = hosp_1 %>%  -->
+<!--   left_join(county_vaccinations %>% -->
+<!--               select(-Population_16) %>% -->
+<!--               left_join(tsa_long_complete %>% select(County, TSA)) %>%  -->
+<!--               left_join(vaccination_tsa_quartile, by = c('TSA', 'Date')) %>% -->
+<!--               select(Date, TSA, Vaccination_Rate, -->
+<!--                      Vaccination_Quartile, Vaccination_Quartile_raw, Population_16) %>% -->
+<!--               na.omit() %>%  -->
+<!--               distinct()) %>% -->
+<!--   mutate(Hospitalizations_Total = as.numeric(Hospitalizations_Total)) %>% -->
+<!--   group_by(TSA) %>% -->
+<!--   fill(Vaccination_Quartile, .direction = 'updown') %>%  -->
+<!--   fill(Population_16, .direction = 'updown') %>%  -->
+<!--   group_by(TSA) %>% -->
+<!--   mutate(Hosp_14Day_MA = (rollmean(Hospitalizations_Total, k = 14, align = 'right', -->
+<!--                                            na.rm = TRUE, na.pad = TRUE))) %>% -->
+<!--   mutate(Hosp_100K_16_14Day_MA = (rollmean(Hospitalizations_Total, k = 14, align = 'right', -->
+<!--                                          na.rm = TRUE, na.pad = TRUE) -->
+<!--                                 / Population_16) * 100000) %>% -->
+<!--   mutate(Hosp_100K_14Day_MA = (rollmean(Hospitalizations_Total, k = 14, align = 'right', -->
+<!--                                          na.rm = TRUE, na.pad = TRUE))) %>% -->
+<!--   filter(Date >= '2021-01-01') %>% -->
+<!--   ungroup() %>%  -->
+<!--   mutate(Vaccination_Quartile = as.factor(Vaccination_Quartile)) %>%  -->
+<!--   arrange(Date, TSA) %>% -->
+<!--   group_by(TSA) %>% -->
+<!--   mutate(Hosp_14Day_MA_PCT = ((Hosp_14Day_MA / (Hosp_14Day_MA)[1] - 1)) * 100) %>%  -->
+<!--   ungroup() -->
 
 
 
-# pops
-vax_hospitalizations %>% 
-  select(Date, TSA, Population_16, Vaccination_Rate) %>%
-  na.omit() %>%
-  filter(Date == max(Date)) %>%
-  select(-Date) %>%
-  distinct() %>%
-  filter(TSA %in% c(top_5_tsa, bottom_5_tsa)) %>%
-  mutate(Vax_Category = ifelse(TSA %in% top_5_tsa, 'Top_5', 'Bottom_5')) %>%
-  # group_by(County, Vax_Category) %>% 
-  # summarize(Population_16 = max(Population_16)) %>% 
-  arrange(Vaccination_Rate) 
 
 
-```
+<!-- vax_hospitalizations %>% group_by(Date, Vaccination_Quartile) %>% -->
+<!--   mutate(Hosp = mean(Hosp_100K_16_14Day_MA, na.rm = TRUE)) %>% -->
+<!--   na.omit() %>% -->
+<!--   ggplot(aes(x = Date, y = Hosp, color = Vaccination_Quartile, fill = Vaccination_Quartile)) + -->
+<!--   geom_smooth(alpha = 0.5) + -->
+<!--   labs(y = 'COVID Hospitalizations Per 100K (14 Day MA)', -->
+<!--        title = 'COVID Hosp by Vaccination Quartile',  -->
+<!--        subtitle = 'daily covid hospitalizations adjusted per 100k population > 16 years old') + -->
+<!--   scale_color_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_x_date(date_breaks = '1 month', date_labels = '%b', expand = c(0,0)) + -->
+<!--   theme_pubr() -->
+
+
+<!-- vax_hospitalizations %>% group_by(Date, Vaccination_Quartile) %>%  -->
+<!--   mutate(Hosp = mean(Hosp_100K_14Day_MA, na.rm = TRUE)) %>%  -->
+<!--   na.omit() %>% -->
+<!--   ggplot(aes(x = Date, y = Hosp, color = Vaccination_Quartile, fill = Vaccination_Quartile)) +  -->
+<!--   geom_smooth(alpha = 0.5) + -->
+<!--   labs(y = 'Hosp (14 Day MA)', -->
+<!--        title = 'COVID Hospitalization by Vaccination Quartile') +  -->
+<!--   scale_color_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   # scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') + -->
+<!--   theme_pubr() -->
+<!-- ``` -->
+
+<!-- ### tsa -->
+<!-- ```{r} -->
+<!-- vax_hospitalizations %>% -->
+<!--   na.omit() %>% -->
+<!--   ggplot(aes(x = Date, y = Hosp_100K_14Day_MA, color = Vaccination_Quartile, fill = Vaccination_Quartile)) +  -->
+<!--   geom_line() + -->
+<!--   labs(y = 'Hosp (14 Day MA)', -->
+<!--        title = 'COVID Hospitalization by Vaccination Quartile') +  -->
+<!--   scale_color_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   # scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') + -->
+<!--   facet_wrap(~TSA, scales = 'free') +  -->
+<!--   theme_pubr() -->
+<!-- ``` -->
+
+<!-- ### Top 5 and Bottom 5 Outliers -->
+
+<!-- ```{r} -->
+
+<!-- # counties -->
+<!-- top_5_counties = county_vaccinations %>%  -->
+<!--   mutate(Vaccination_Rate = Fully_Vaccinated / Population_16) %>%  -->
+<!--   select(Date, County, Vaccination_Rate) %>%  -->
+<!--   na.omit() %>%  -->
+<!--   filter(Date == max(Date) & County != 'Kenedy') %>%  -->
+<!--   arrange(-Vaccination_Rate) %>%  -->
+<!--   slice(1:5) %>%  -->
+<!--   select(County) %>%  -->
+<!--   unlist() -->
+
+<!-- bottom_5_counties = county_vaccinations %>%  -->
+<!--   mutate(Vaccination_Rate = Fully_Vaccinated / Population_16) %>%  -->
+<!--   select(Date, County, Vaccination_Rate) %>%  -->
+<!--   na.omit() %>%  -->
+<!--   filter(Date == max(Date)) %>%  -->
+<!--   arrange(Vaccination_Rate) %>%  -->
+<!--   slice(1:5) %>%  -->
+<!--   select(County) %>%  -->
+<!--   unlist() -->
+
+<!-- # tsa -->
+<!-- top_5_tsa = vax_hospitalizations %>%  -->
+<!--   select(Date, TSA, Vaccination_Rate) %>%  -->
+<!--   na.omit() %>%  -->
+<!--   filter(Date == max(Date)) %>%  -->
+<!--   arrange(-Vaccination_Rate) %>%  -->
+<!--   slice(1:5) %>%  -->
+<!--   select(TSA) %>%  -->
+<!--   unlist() -->
+
+<!-- bottom_5_tsa = vax_hospitalizations %>%  -->
+<!--   select(Date, TSA, Vaccination_Rate) %>%  -->
+<!--   na.omit() %>%  -->
+<!--   filter(Date == max(Date)) %>%  -->
+<!--   arrange(Vaccination_Rate) %>%  -->
+<!--   slice(1:5) %>%  -->
+<!--   select(TSA) %>%  -->
+<!--   unlist() -->
+
+<!-- ``` -->
+
+<!-- #### cases -->
+
+<!-- ```{r} -->
+<!-- p1 = vax_cases %>% -->
+<!--   filter(County %in% c(top_5_counties)) %>% -->
+<!--   # mutate(Vax_Category = ifelse(County %in% top_5_counties, 'Top_5', 'Bottom_5')) %>% -->
+<!--   na.omit() %>% -->
+<!--   ggplot(aes(x = Date, y = Cases_100K_16_14Day_MA, color = County, fill = County)) + -->
+<!--   geom_smooth(alpha = 0.5) + -->
+<!--   labs(y = 'Cases Per 100K (14 Day MA)', -->
+<!--        title = 'COVID Cases by Vaccination Rate Outliers (Top 5)',  -->
+<!--        subtitle = 'daily cases adjusted per 100k population > 16 years old') + -->
+<!--   # scale_color_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   # scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') + -->
+<!--   # facet_wrap(~Vax_Category, scales = 'free', ncol = 1) +  -->
+<!--   theme_pubr() -->
+
+<!-- p2 = vax_cases %>% -->
+<!--   filter(County %in% c(bottom_5_counties)) %>% -->
+<!--   # mutate(Vax_Category = ifelse(County %in% top_5_counties, 'Top_5', 'Bottom_5')) %>% -->
+<!--   na.omit() %>% -->
+<!--   ggplot(aes(x = Date, y = Cases_100K_16_14Day_MA, color = County, fill = County)) + -->
+<!--   geom_smooth(alpha = 0.5) + -->
+<!--   labs(y = 'Cases Per 100K (14 Day MA)', -->
+<!--        title = 'COVID Cases by Vaccination Rate Outliers (Bottom 5)',  -->
+<!--        subtitle = 'daily cases adjusted per 100k population > 16 years old') + -->
+<!--   # scale_color_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   # scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') + -->
+<!--   # facet_wrap(~Vax_Category, scales = 'free', ncol = 1) +  -->
+<!--   theme_pubr() -->
+
+<!-- gridExtra::grid.arrange(p1, p2) -->
+
+
+<!-- # pct diff -->
+<!-- p1 = vax_cases %>% -->
+<!--   filter(County %in% c(top_5_counties)) %>% -->
+<!--   # mutate(Vax_Category = ifelse(County %in% top_5_counties, 'Top_5', 'Bottom_5')) %>% -->
+<!--   ggplot(aes(x = Date, y = Cases_14Day_MA_PCT, color = County, fill = County)) + -->
+<!--   geom_line(size = 1) + -->
+<!--   labs(y = 'Cases (14 Day MA) Percent Difference', -->
+<!--        title = 'COVID Cases by Vaccination Rate Outliers (Top 5)') + -->
+<!--   # scale_color_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   # scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') + -->
+<!--   # facet_wrap(~Vax_Category, scales = 'free', ncol = 1) +  -->
+<!--   theme_pubr() -->
+
+<!-- p2 = vax_cases %>% -->
+<!--   filter(County %in% c(bottom_5_counties)) %>% -->
+<!--   # mutate(Vax_Category = ifelse(County %in% top_5_counties, 'Top_5', 'Bottom_5')) %>% -->
+<!--   ggplot(aes(x = Date, y = Cases_14Day_MA_PCT, color = County, fill = County)) + -->
+<!--   geom_line(size = 1)+ -->
+<!--   labs(y = 'Cases (14 Day MA) Percent Difference', -->
+<!--        title = 'COVID Cases by Vaccination Rate Outliers (Bottom 5)') + -->
+<!--   # scale_color_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   # scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') + -->
+<!--   # facet_wrap(~Vax_Category, scales = 'free', ncol = 1) +  -->
+<!--   theme_pubr() -->
+<!-- gridExtra::grid.arrange(p1, p2) -->
+
+
+
+<!-- # pops -->
+<!-- vax_cases %>%  -->
+<!--   select(Date, County, Population_16, Vaccination_Rate) %>% -->
+<!--   na.omit() %>% -->
+<!--   filter(Date == max(Date)) %>% -->
+<!--   select(-Date) %>% -->
+<!--   distinct() %>% -->
+<!--   filter(County %in% c(top_5_counties, bottom_5_counties)) %>% -->
+<!--   mutate(Vax_Category = ifelse(County %in% top_5_counties, 'Top_5', 'Bottom_5')) %>% -->
+<!--   # group_by(County, Vax_Category) %>%  -->
+<!--   # summarize(Population_16 = max(Population_16)) %>%  -->
+<!--   arrange(Vaccination_Rate)  -->
+
+
+<!-- ``` -->
+
+<!-- #### hosp -->
+
+<!-- ```{r} -->
+<!-- p1 = vax_hospitalizations %>% -->
+<!--   filter(TSA %in% c(top_5_tsa)) %>% -->
+<!--   # mutate(Vax_Category = ifelse(County %in% top_5_counties, 'Top_5', 'Bottom_5')) %>% -->
+<!--   na.omit() %>% -->
+<!--   ggplot(aes(x = Date, y = Hosp_100K_16_14Day_MA, color = TSA, fill = TSA)) + -->
+<!--   geom_smooth(alpha = 0.5) + -->
+<!--   labs(y = 'Hosp Per 100K (14 Day MA)', -->
+<!--        title = 'Hospitalizations by Vaccination Rate Outliers (Top 5)',  -->
+<!--        subtitle = 'COVID Hospitalizations adjusted per 100k population > 16 years old') + -->
+<!--   # scale_color_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   # scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') + -->
+<!--   # facet_wrap(~Vax_Category, scales = 'free', ncol = 1) +  -->
+<!--   theme_pubr() -->
+
+<!-- p2 = vax_hospitalizations %>% -->
+<!--   filter(TSA %in% c(bottom_5_tsa)) %>% -->
+<!--   # mutate(Vax_Category = ifelse(County %in% top_5_counties, 'Top_5', 'Bottom_5')) %>% -->
+<!--   na.omit() %>% -->
+<!--   ggplot(aes(x = Date, y = Hosp_100K_16_14Day_MA, color = TSA, fill = TSA)) + -->
+<!--   geom_smooth(alpha = 0.5) + -->
+<!--   labs(y = 'Hosp Per 100K (14 Day MA)', -->
+<!--        title = 'Hospitalizations by Vaccination Rate Outliers (Bottom 5)',  -->
+<!--        subtitle = 'COVID Hospitalizations adjusted per 100k population > 16 years old') + -->
+<!--   # scale_color_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   # scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') + -->
+<!--   # facet_wrap(~Vax_Category, scales = 'free', ncol = 1) +  -->
+<!--   theme_pubr() -->
+
+
+<!-- gridExtra::grid.arrange(p1, p2) -->
+
+
+<!-- # pct diff -->
+<!-- p1 = vax_hospitalizations %>% -->
+<!--   filter(TSA %in% c(top_5_tsa)) %>% -->
+<!--   # mutate(Vax_Category = ifelse(County %in% top_5_counties, 'Top_5', 'Bottom_5')) %>% -->
+<!--   ggplot(aes(x = Date, y = Hosp_14Day_MA_PCT, color = TSA, fill = TSA)) + -->
+<!--   geom_line(size = 1) + -->
+<!--   # geom_smooth(a'lpha = 0.5) + -->
+<!--   labs(y = 'Hosp (14 Day MA) Percent Difference', -->
+<!--        title = 'Hospitalizations by Vaccination Rate Outliers (Top 5)') +  -->
+<!--   # scale_color_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   # scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') + -->
+<!--   # facet_wrap(~Vax_Category, scales = 'free', ncol = 1) +  -->
+<!--   theme_pubr() -->
+
+<!-- p2 = vax_hospitalizations %>% -->
+<!--   filter(TSA %in% c(bottom_5_tsa)) %>% -->
+<!--   # mutate(Vax_Category = ifelse(County %in% top_5_counties, 'Top_5', 'Bottom_5')) %>% -->
+<!--   ggplot(aes(x = Date, y = Hosp_14Day_MA_PCT, color = TSA, fill = TSA)) + -->
+<!--   geom_line(size = 1) +  -->
+<!--   # geom_smooth(alpha = 0.5) + -->
+<!--   labs(y = 'Hosp (14 Day MA) Percent Difference', -->
+<!--        title = 'Hospitalizations by Vaccination Rate Outliers (Bottom 5)') + -->
+<!--   # scale_color_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   # scale_fill_brewer('Vaccination Quartile', palette = 'RdBu') + -->
+<!--   scale_x_date(date_breaks = '2 weeks', date_labels = '%b %d') + -->
+<!--   # facet_wrap(~Vax_Category, scales = 'free', ncol = 1) +  -->
+<!--   theme_pubr() -->
+
+
+<!-- gridExtra::grid.arrange(p1, p2) -->
+
+
+
+
+
+<!-- # pops -->
+<!-- vax_hospitalizations %>%  -->
+<!--   select(Date, TSA, Population_16, Vaccination_Rate) %>% -->
+<!--   na.omit() %>% -->
+<!--   filter(Date == max(Date)) %>% -->
+<!--   select(-Date) %>% -->
+<!--   distinct() %>% -->
+<!--   filter(TSA %in% c(top_5_tsa, bottom_5_tsa)) %>% -->
+<!--   mutate(Vax_Category = ifelse(TSA %in% top_5_tsa, 'Top_5', 'Bottom_5')) %>% -->
+<!--   # group_by(County, Vax_Category) %>%  -->
+<!--   # summarize(Population_16 = max(Population_16)) %>%  -->
+<!--   arrange(Vaccination_Rate)  -->
+
+
+<!-- ``` -->
+
+<!-- # Animation -->
+
+<!-- ```{r} -->
+<!-- library(gganimate) -->
+<!-- library(gifski) -->
+<!-- p = ggplot( -->
+<!--   vax_cases %>% -->
+<!--     left_join(county_classifications %>% select(County, PHR_Combined)) %>% -->
+<!--     select(Date, County, Vaccination_Rate, Cases_100K_16_14Day_MA, Population_16, PHR_Combined) %>% -->
+<!--     na.omit() %>%  -->
+<!--     filter(Cases_100K_16_14Day_MA > 0), -->
+<!--   aes(x = Cases_100K_16_14Day_MA, y=Vaccination_Rate, size = Population_16, color = PHR_Combined)) + -->
+<!--   geom_point() + -->
+<!--   # geom_text(aes(label = County), color = 'black') +  -->
+<!--   scale_size('Population Over 16', range = c(8, 15)) + -->
+<!--   scale_x_log10() +  -->
+<!--   scale_color_viridis_d('') +  -->
+<!--   guides(color = guide_legend(override.aes = list(size=8))) +  -->
+<!--   labs(x = "COVID-19 Cases Per 100K Over 16 (log)", y = "Vaccination Rate") +  -->
+<!--   theme_pubr() +  -->
+<!--   theme(legend.position = 'right') -->
+
+<!-- p_anim = p + transition_time(Date) + -->
+<!--   labs(title = 'Date: {frame_time}') + -->
+<!--   theme(plot.title = element_text(size = 24), -->
+<!--         axis.text.x = element_text(size = 20), -->
+<!--         axis.text.y = element_text(size = 20), -->
+<!--         axis.title.x = element_text(size = 24), -->
+<!--         axis.title.y = element_text(size = 24), -->
+<!--         legend.text = element_text(size = 20), -->
+<!--         legend.title = element_text(size = 20)) -->
+<!-- animate(p_anim, duration = 15, width = 1200, height = 800, renderer = gifski_renderer()) -->
+<!-- anim_save('C:/Users/jeffb/Desktop/Life/personal-projects/COVID/diagnostics/animation.gif') -->
+<!-- ``` -->
 
