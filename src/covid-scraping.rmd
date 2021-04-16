@@ -205,7 +205,24 @@ dshs_pops =
 # collapse into asian, black, hispanic, white, other 
 # exclude totals to avoid double counting
 #  convert hispanic asian -> hispanic & non hispanic asian -> asian
-race_group_df = data.frame(race = 
+# race_group_df = data.frame(race = 
+#                              c('AA', 'AAC', 'BA', 'BAC', 'H', 'HAA',
+#                                'HAAC', 'HBA', 'HBAC', 'HIA', 'HIAC', 'HNA',
+#                                'HNAC', 'HTOM', 'HWA', 'HWAC', 'IA', 'IAC',
+#                                'NA', 'NAC', 'NH', 'NHAA', 'NHAAC', 'NHBA', 'NHBAC',
+#                                'NHIA', 'NHIAC', 'NHNA', 'NHNAC', 'NHTOM', 'NHWA',
+#                                'NHWAC', 'TOM', 'WA', 'WAC'),
+#                            race_group = 
+#                              c(NA, NA, NA, NA, 'Hispanic', NA,
+#                                NA, NA, NA, NA, NA , NA,
+#                                NA, NA, NA, NA, NA, NA,
+#                                NA, NA, NA, 'Asian', NA, 'Black', NA,
+#                               'Other', NA, 'Other', NA, 'Other', 'White',
+#                               NA, NA, NA, NA))
+
+Get_County_Race = function(age_groups) { 
+
+  race_group_df = data.frame(race = 
                              c('AA', 'AAC', 'BA', 'BAC', 'H', 'HAA',
                                'HAAC', 'HBA', 'HBAC', 'HIA', 'HIAC', 'HNA',
                                'HNAC', 'HTOM', 'HWA', 'HWAC', 'IA', 'IAC',
@@ -215,13 +232,15 @@ race_group_df = data.frame(race =
                            race_group = 
                              c(NA, NA, NA, NA, 'Hispanic', NA,
                                NA, NA, NA, NA, NA , NA,
-                               NA, NA, NA, NA, NA, NA,
-                               NA, NA, NA, 'Asian', NA, 'Black', NA,
-                              'Other', NA, 'Other', NA, 'Other', 'White',
-                              NA, NA, NA, NA))
+                               NA, NA, NA, NA, NA, 'Other',
+                               NA, 'Other', NA, 'Asian', NA, 'Black', NA,
+                               NA, NA, NA, NA, NA, 'White',
+                               NA, 'Other', NA, NA))
 
-county_demo_race = read_csv('original-sources/helpers/demographics/county/county_pop_race.csv') %>% 
-  filter(YEAR == '12' & AGEGRP == '0') %>% 
+  
+    
+  county_demo_race_prelim = read_csv('original-sources/helpers/demographics/county/county_pop_race.csv') %>% 
+  filter(YEAR == '12' & AGEGRP %in% age_groups) %>% 
   select(-c(SUMLEV, STATE, COUNTY, STNAME, YEAR, AGEGRP, TOT_POP, TOT_MALE, TOT_FEMALE)) %>% 
   reshape2::melt(idvars = 'CTYNAME') %>% 
   separate(variable, c('race', 'gender')) %>% 
@@ -235,22 +254,66 @@ county_demo_race = read_csv('original-sources/helpers/demographics/county/county
   mutate(CTYNAME = gsub(' County', '', CTYNAME)) %>% 
   setNames(c('County', 'Race/Ethnicity', 'Population_Total'))
 
-
-
-county_demo_race_age_15 = read_csv('original-sources/helpers/demographics/county/county_pop_race.csv') %>% 
-  filter(YEAR == '12' & !AGEGRP %in% c('0', '1', '2', '3')) %>%
-  select(-c(SUMLEV, STATE, COUNTY, STNAME, YEAR, TOT_POP, TOT_MALE, TOT_FEMALE)) %>% 
-  reshape2::melt(id.vars = c('CTYNAME', 'AGEGRP')) %>% 
+  
+  county_demo_other_race  = read_csv('original-sources/helpers/demographics/county/county_pop_race.csv') %>% 
+  filter(YEAR == '12' & AGEGRP %in% age_groups) %>% 
+  select(-c(SUMLEV, STATE, COUNTY, STNAME, YEAR, AGEGRP, TOT_POP, TOT_MALE, TOT_FEMALE)) %>% 
+  reshape2::melt(idvars = 'CTYNAME') %>% 
   separate(variable, c('race', 'gender')) %>% 
+  filter(race %in% c('AA', 'AAC', 'BA', 'BAC', 'NA', 'NAC', 'IA', 'IAC', 'WA', 'WAC')) %>% 
   group_by(CTYNAME, race) %>% 
   summarize(Total = sum(value, na.rm = TRUE)) %>% 
-  left_join(race_group_df) %>% 
-  group_by(CTYNAME, race_group) %>% 
-  summarize(Population_16 = sum(Total, na.rm = TRUE)) %>% 
-  filter(!is.na(race_group)) %>% 
-  ungroup() %>% 
-  mutate(CTYNAME = gsub(' County', '', CTYNAME)) %>% 
-  setNames(c('County', 'Race/Ethnicity', 'Population_16'))
+  mutate(Total_combo = Total-lag(Total)) %>% 
+  filter(str_detect(race, 'C')) %>% 
+  mutate(`Race/Ethnicity` = 'Other') %>% 
+  select(CTYNAME, `Race/Ethnicity`, Total_combo) %>% 
+  setNames(c('County', 'Race/Ethnicity', 'Population_Total'))
+  
+  county_demo_race = rbind(county_demo_race_prelim, county_demo_other_race) %>%
+    group_by(County, `Race/Ethnicity`) %>%
+    summarize(Population_Total = sum(Population_Total)) %>%
+    ungroup() %>%
+    arrange(County, `Race/Ethnicity`)
+    
+  
+  return (county_demo_race)
+  
+}
+
+
+county_demo_race = Get_County_Race(c('0'))
+county_demo_race_age_15 = Get_County_Race(as.character(seq(4, 18))) %>% rename('Population_16' = 'Population_Total')
+
+
+503443 / county_demo_race %>%
+  group_by(`Race/Ethnicity`) %>%
+  summarize(sum(Population_Total)) %>%
+  filter(`Race/Ethnicity` == 'Other') %>%
+  select(2)
+
+503443 / county_demo_race_age_15 %>%
+  group_by(`Race/Ethnicity`) %>%
+  summarize(sum(Population_16)) %>%
+  filter(`Race/Ethnicity` == 'Other') %>%
+  select(2)
+
+# white
+2499249 / 10034155
+
+# county_demo_race_age_15 = read_csv('original-sources/helpers/demographics/county/county_pop_race.csv') %>% 
+#   filter(YEAR == '12' & !AGEGRP %in% c('0', '1', '2', '3')) %>%
+#   select(-c(SUMLEV, STATE, COUNTY, STNAME, YEAR, TOT_POP, TOT_MALE, TOT_FEMALE)) %>% 
+#   reshape2::melt(id.vars = c('CTYNAME', 'AGEGRP')) %>% 
+#   separate(variable, c('race', 'gender')) %>% 
+#   group_by(CTYNAME, race) %>% 
+#   summarize(Total = sum(value, na.rm = TRUE)) %>% 
+#   left_join(race_group_df) %>% 
+#   group_by(CTYNAME, race_group) %>% 
+#   summarize(Population_16 = sum(Total, na.rm = TRUE)) %>% 
+#   filter(!is.na(race_group)) %>% 
+#   ungroup() %>% 
+#   mutate(CTYNAME = gsub(' County', '', CTYNAME)) %>% 
+#   setNames(c('County', 'Race/Ethnicity', 'Population_16'))
 ```
 
 
