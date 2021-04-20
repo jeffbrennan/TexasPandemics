@@ -21157,3 +21157,250 @@ Date,County,Doses_Allocated,Doses_Administered,Fully_Vaccinated,Population_16,Po
 2021-04-18,Young,7900,8479,4215,14219,3774,18010,C - Wichita Falls,2/3 - Arlington PHR,Non-Metro
 2021-04-18,Zapata,7400,10091,4736,9981,1866,14179,T - Laredo,11 - Harlingen PHR,Non-Metro
 2021-04-18,Zavala,1700,7288,3165,8840,1723,11840,P - San Antonio,8 - San Antonio PHR,Non-Metro
+2021-04-19,Anderson,15970,14761,6054,48045,8658,57735,G - Longview/Tyler,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Andrews,6100,10227,4771,13503,1833,18705,J - Midland/Odessa,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Angelina,53800,37665,15293,67056,14422,86715,H - Lufkin,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Aransas,6640,16730,7003,19803,6791,23510,U - Corpus Christi,11 - Harlingen PHR,Metro
+2021-04-19,Archer,2900,4984,2411,6921,1677,8553,C - Wichita Falls,2/3 - Arlington PHR,Metro
+2021-04-19,Armstrong,2000,972,420,1499,470,1887,A - Amarillo,1 - Lubbock PHR,Metro
+2021-04-19,Atascosa,17400,20294,8409,38768,7605,51153,P - San Antonio,8 - San Antonio PHR,Metro
+2021-04-19,Austin,7300,17073,6518,23704,5933,30032,Q - Houston,6/5S - Houston PHR,Metro
+2021-04-19,Bailey,23435,3712,1776,5089,1036,7000,B - Lubbock,1 - Lubbock PHR,Non-Metro
+2021-04-19,Bandera,4100,11820,5102,19763,6439,23112,P - San Antonio,8 - San Antonio PHR,Metro
+2021-04-19,Bastrop,47400,47619,16975,68839,13865,88723,O - Austin,7 - Temple PHR,Metro
+2021-04-19,Baylor,5450,2365,989,2793,844,3509,C - Wichita Falls,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Bee,77850,16482,7615,26496,4091,32565,U - Corpus Christi,11 - Harlingen PHR,Non-Metro
+2021-04-19,Bell,202590,113619,46892,272969,40534,362924,L - Belton/Killeen,7 - Temple PHR,Metro
+2021-04-19,Bexar,1349190,1114143,443645,1552823,247843,2003554,P - San Antonio,8 - San Antonio PHR,Metro
+2021-04-19,Blanco,4700,7540,3000,10092,3004,11931,O - Austin,7 - Temple PHR,Non-Metro
+2021-04-19,Borden,0,288,150,543,174,654,B - Lubbock,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Bosque,10000,9869,4434,15224,4741,18685,M - Waco,7 - Temple PHR,Non-Metro
+2021-04-19,Bowie,59210,30223,13973,73689,15832,93245,F - Paris,4/5N - Tyler PHR,Metro
+2021-04-19,Brazoria,194220,214525,91923,287683,45752,374264,R - Galveston,6/5S - Houston PHR,Metro
+2021-04-19,Brazos,153600,121626,45990,186843,21693,229211,N - Bryan/College Station,7 - Temple PHR,Metro
+2021-04-19,Brewster,5100,7290,3399,7706,2231,9203,J - Midland/Odessa,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Briscoe,1200,890,431,1272,404,1546,A - Amarillo,1 - Lubbock PHR,Non-Metro
+2021-04-19,Brooks,3300,5213,2372,5317,1308,7093,U - Corpus Christi,11 - Harlingen PHR,Non-Metro
+2021-04-19,Brown,14500,14757,8084,30883,7720,37864,D - Abilene,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Burleson,4500,8806,3723,14869,3867,18443,N - Bryan/College Station,7 - Temple PHR,Metro
+2021-04-19,Burnet,33435,22840,9663,39239,10999,48155,O - Austin,7 - Temple PHR,Non-Metro
+2021-04-19,Caldwell,13600,19001,7811,34853,6512,43664,O - Austin,7 - Temple PHR,Metro
+2021-04-19,Calhoun,6100,12355,5555,16817,3981,21290,S - Victoria,8 - San Antonio PHR,Non-Metro
+2021-04-19,Callahan,3400,5861,2811,11263,2958,13943,D - Abilene,2/3 - Arlington PHR,Metro
+2021-04-19,Cameron,321075,285724,113673,311689,58607,423163,V - Lower Rio Grande Valley,11 - Harlingen PHR,Metro
+2021-04-19,Camp,1800,5393,2156,10031,2494,13094,G - Longview/Tyler,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Cass,5100,10419,4797,24182,6856,30026,F - Paris,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Castro,2900,3475,1514,5607,1236,7530,B - Lubbock,1 - Lubbock PHR,Non-Metro
+2021-04-19,Chambers,34100,17432,6563,33062,5259,43837,R - Galveston,6/5S - Houston PHR,Metro
+2021-04-19,Cherokee,16170,17520,7705,40876,9444,52646,G - Longview/Tyler,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Childress,4700,3577,1827,6094,1165,7306,A - Amarillo,1 - Lubbock PHR,Non-Metro
+2021-04-19,Clay,13645,5813,2783,8666,2484,10471,C - Wichita Falls,2/3 - Arlington PHR,Metro
+2021-04-19,Cochran,1400,4695,1811,2188,468,2853,B - Lubbock,1 - Lubbock PHR,Non-Metro
+2021-04-19,Coke,0,1721,757,2756,947,3387,K - San Angelo,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Coleman,3400,3686,1720,6721,2119,8175,D - Abilene,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Collin,653250,694042,271487,801716,116575,1034730,E - Dallas/Ft. Worth,2/3 - Arlington PHR,Metro
+2021-04-19,Collingsworth,2200,1363,683,2263,555,2920,A - Amarillo,1 - Lubbock PHR,Non-Metro
+2021-04-19,Colorado,11000,11913,5455,17107,4850,21493,Q - Houston,6/5S - Houston PHR,Non-Metro
+2021-04-19,Comal,80520,88368,35964,125307,28528,156209,P - San Antonio,8 - San Antonio PHR,Metro
+2021-04-19,Comanche,6690,7186,3498,10944,3330,13635,D - Abilene,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Concho,1900,1554,731,2288,689,2726,K - San Angelo,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Cooke,17900,15001,6193,32675,7804,41257,E - Dallas/Ft. Worth,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Coryell,33485,20538,8696,60428,8040,75951,L - Belton/Killeen,7 - Temple PHR,Metro
+2021-04-19,Cottle,0,750,373,1123,339,1398,B - Lubbock,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Crane,3450,2001,768,3554,594,4797,J - Midland/Odessa,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Crockett,0,1787,792,2694,612,3464,K - San Angelo,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Crosby,4050,3383,1553,4421,1085,5737,B - Lubbock,1 - Lubbock PHR,Metro
+2021-04-19,Culberson,1900,1564,657,1746,480,2171,I - El Paso,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Dallam,27140,3852,1617,5217,857,7287,A - Amarillo,1 - Lubbock PHR,Non-Metro
+2021-04-19,Dallas,1675275,1442181,556059,2028105,292117,2635516,E - Dallas/Ft. Worth,2/3 - Arlington PHR,Metro
+2021-04-19,Dawson,4200,4019,1811,9789,1898,12728,B - Lubbock,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Deaf Smith,4600,7393,3471,13439,2423,18546,A - Amarillo,1 - Lubbock PHR,Non-Metro
+2021-04-19,Delta,1500,2019,914,4222,1118,5331,F - Paris,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Denton,520070,545460,220505,697330,93499,887207,E - Dallas/Ft. Worth,2/3 - Arlington PHR,Metro
+2021-04-19,DeWitt,6500,9363,4287,16110,4035,20160,S - Victoria,8 - San Antonio PHR,Non-Metro
+2021-04-19,Dickens,0,949,464,1858,525,2211,B - Lubbock,1 - Lubbock PHR,Non-Metro
+2021-04-19,Dimmit,23265,7383,3152,7539,1749,10124,P - San Antonio,8 - San Antonio PHR,Non-Metro
+2021-04-19,Donley,1400,1680,713,2716,804,3278,A - Amarillo,1 - Lubbock PHR,Non-Metro
+2021-04-19,Duval,3400,7762,3590,8600,2031,11157,U - Corpus Christi,11 - Harlingen PHR,Non-Metro
+2021-04-19,Eastland,6070,7754,3633,14970,4054,18360,D - Abilene,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Ector,113190,74018,33205,120896,15970,166223,J - Midland/Odessa,9/10 - El Paso PHR,Metro
+2021-04-19,Edwards,0,971,424,1555,561,1932,P - San Antonio,8 - San Antonio PHR,Non-Metro
+2021-04-19,El Paso,584940,564559,223755,640180,105175,839238,I - El Paso,9/10 - El Paso PHR,Metro
+2021-04-19,Ellis,110140,99275,41438,141665,24288,184826,E - Dallas/Ft. Worth,2/3 - Arlington PHR,Metro
+2021-04-19,Erath,22400,17112,7496,34875,6256,42698,E - Dallas/Ft. Worth,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Falls,29285,6928,2780,14049,3226,17297,L - Belton/Killeen,7 - Temple PHR,Metro
+2021-04-19,Fannin,33485,13536,6412,28874,6588,35514,E - Dallas/Ft. Worth,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Fayette,6900,12665,5610,20879,6679,25346,O - Austin,7 - Temple PHR,Non-Metro
+2021-04-19,Fisher,2200,1598,748,3088,961,3830,D - Abilene,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Floyd,2200,3057,1413,4371,1070,5712,B - Lubbock,1 - Lubbock PHR,Non-Metro
+2021-04-19,Foard,1700,774,353,962,315,1155,C - Wichita Falls,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Fort Bend,452600,569387,237433,616413,93851,811688,Q - Houston,6/5S - Houston PHR,Metro
+2021-04-19,Franklin,3200,4031,1782,8554,2367,10725,G - Longview/Tyler,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Freestone,3800,6447,2860,15808,3996,19717,G - Longview/Tyler,7 - Temple PHR,Non-Metro
+2021-04-19,Frio,11450,8037,3725,16121,2499,20306,P - San Antonio,8 - San Antonio PHR,Non-Metro
+2021-04-19,Gaines,4700,4570,2166,14548,1907,21492,B - Lubbock,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Galveston,270940,220313,93762,269280,50987,342139,R - Galveston,6/5S - Houston PHR,Metro
+2021-04-19,Garza,3600,2273,1231,5325,719,6229,B - Lubbock,1 - Lubbock PHR,Non-Metro
+2021-04-19,Gillespie,29800,16710,7069,22307,8110,26988,P - San Antonio,8 - San Antonio PHR,Non-Metro
+2021-04-19,Glasscock,0,928,482,1099,210,1409,J - Midland/Odessa,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Goliad,2300,3946,1880,6281,1832,7658,S - Victoria,8 - San Antonio PHR,Metro
+2021-04-19,Gonzales,9700,10204,4935,15937,3572,20837,P - San Antonio,8 - San Antonio PHR,Non-Metro
+2021-04-19,Gray,4800,8604,3763,16924,3531,21886,A - Amarillo,1 - Lubbock PHR,Non-Metro
+2021-04-19,Grayson,60100,56935,26527,107521,24182,136212,E - Dallas/Ft. Worth,2/3 - Arlington PHR,Metro
+2021-04-19,Gregg,109185,60756,26841,95544,19451,123945,G - Longview/Tyler,4/5N - Tyler PHR,Metro
+2021-04-19,Grimes,4300,13799,5444,23245,5134,28880,N - Bryan/College Station,7 - Temple PHR,Non-Metro
+2021-04-19,Guadalupe,84495,77916,35546,130517,23614,166847,P - San Antonio,8 - San Antonio PHR,Metro
+2021-04-19,Hale,12000,13375,6171,25476,4604,33406,B - Lubbock,1 - Lubbock PHR,Non-Metro
+2021-04-19,Hamilton,5300,4861,2358,6832,2146,8461,L - Belton/Killeen,7 - Temple PHR,Non-Metro
+2021-04-19,Hansford,3300,2780,1484,3987,812,5399,A - Amarillo,1 - Lubbock PHR,Non-Metro
+2021-04-19,Hardeman,3500,2299,1163,3190,912,3933,C - Wichita Falls,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Hardin,11300,23315,10024,45112,9762,57602,R - Galveston,6/5S - Houston PHR,Metro
+2021-04-19,Harris,2923900,2553246,1016535,3601939,514167,4713325,Q - Houston,6/5S - Houston PHR,Metro
+2021-04-19,Harrison,16770,24199,11134,51900,11607,66553,G - Longview/Tyler,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Hartley,1475,2828,1121,4561,861,5576,A - Amarillo,1 - Lubbock PHR,Non-Metro
+2021-04-19,Haskell,2900,3104,1418,4831,1266,5658,D - Abilene,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Hays,149690,127152,49953,183380,26187,230191,O - Austin,7 - Temple PHR,Metro
+2021-04-19,Hemphill,3000,2075,1112,2827,606,3819,A - Amarillo,1 - Lubbock PHR,Non-Metro
+2021-04-19,Henderson,21070,33382,14695,67238,18534,82737,G - Longview/Tyler,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Hidalgo,560300,557167,222951,620824,98328,868707,V - Lower Rio Grande Valley,11 - Harlingen PHR,Metro
+2021-04-19,Hill,8200,16104,7632,29198,7684,36649,M - Waco,7 - Temple PHR,Non-Metro
+2021-04-19,Hockley,5400,11220,5320,17799,3453,23021,B - Lubbock,1 - Lubbock PHR,Non-Metro
+2021-04-19,Hood,29170,37469,16489,50193,15416,61643,E - Dallas/Ft. Worth,2/3 - Arlington PHR,Metro
+2021-04-19,Hopkins,12640,14502,6342,29175,6887,37084,F - Paris,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Houston,6200,9147,4134,18929,5176,22968,G - Longview/Tyler,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Howard,7700,11875,5616,29544,4813,36664,J - Midland/Odessa,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Hudspeth,1800,2533,1105,3979,775,4886,I - El Paso,9/10 - El Paso PHR,Metro
+2021-04-19,Hunt,35870,35545,15095,77878,15810,98594,E - Dallas/Ft. Worth,2/3 - Arlington PHR,Metro
+2021-04-19,Hutchinson,4600,8796,3886,16258,3581,20938,A - Amarillo,1 - Lubbock PHR,Non-Metro
+2021-04-19,Irion,0,850,384,1234,328,1536,K - San Angelo,9/10 - El Paso PHR,Metro
+2021-04-19,Jack,3700,3776,1803,7230,1515,8935,C - Wichita Falls,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Jackson,10660,7318,3055,11425,2720,14760,S - Victoria,8 - San Antonio PHR,Non-Metro
+2021-04-19,Jasper,14000,14938,7010,28056,7187,35529,R - Galveston,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Jeff Davis,1400,1874,885,2180,812,2274,J - Midland/Odessa,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Jefferson,224660,113775,45945,197382,37595,251565,R - Galveston,6/5S - Houston PHR,Metro
+2021-04-19,Jim Hogg,1400,3970,1712,3791,890,5200,T - Laredo,11 - Harlingen PHR,Non-Metro
+2021-04-19,Jim Wells,33085,26249,11835,30579,6358,40482,U - Corpus Christi,11 - Harlingen PHR,Non-Metro
+2021-04-19,Johnson,90020,78752,33380,135345,25151,175817,E - Dallas/Ft. Worth,2/3 - Arlington PHR,Metro
+2021-04-19,Jones,3100,6066,2836,17011,3188,20083,D - Abilene,2/3 - Arlington PHR,Metro
+2021-04-19,Karnes,14420,6792,3231,12669,2211,15601,P - San Antonio,8 - San Antonio PHR,Non-Metro
+2021-04-19,Kaufman,56550,61721,24509,102341,16113,136154,E - Dallas/Ft. Worth,2/3 - Arlington PHR,Metro
+2021-04-19,Kendall,15400,30405,12509,37890,9152,47431,P - San Antonio,8 - San Antonio PHR,Metro
+2021-04-19,Kent,0,386,188,615,201,762,B - Lubbock,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Kerr,19000,25277,10915,43793,14769,52600,P - San Antonio,8 - San Antonio PHR,Non-Metro
+2021-04-19,Kimble,2700,2439,1151,3651,1288,4337,K - San Angelo,9/10 - El Paso PHR,Non-Metro
+2021-04-19,King,0,101,33,205,51,272,B - Lubbock,1 - Lubbock PHR,Non-Metro
+2021-04-19,Kinney,2200,1793,695,3050,910,3667,P - San Antonio,8 - San Antonio PHR,Non-Metro
+2021-04-19,Kleberg,54685,23879,10810,24188,4046,30680,U - Corpus Christi,11 - Harlingen PHR,Non-Metro
+2021-04-19,Knox,2300,1959,976,2808,736,3664,D - Abilene,2/3 - Arlington PHR,Non-Metro
+2021-04-19,La Salle,23935,5070,2349,6212,1018,7520,P - San Antonio,8 - San Antonio PHR,Non-Metro
+2021-04-19,Lamar,26700,22484,10515,39402,9726,49859,F - Paris,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Lamb,2300,6071,2888,9740,2240,12893,B - Lubbock,1 - Lubbock PHR,Non-Metro
+2021-04-19,Lampasas,5000,8902,3835,17366,4322,21428,L - Belton/Killeen,7 - Temple PHR,Metro
+2021-04-19,Lavaca,7900,10029,4752,16004,4775,20154,S - Victoria,8 - San Antonio PHR,Non-Metro
+2021-04-19,Lee,4900,7870,3268,13993,3219,17239,O - Austin,7 - Temple PHR,Non-Metro
+2021-04-19,Leon,3500,7340,3466,13946,4334,17404,N - Bryan/College Station,7 - Temple PHR,Non-Metro
+2021-04-19,Liberty,36585,28506,11887,66868,11399,88219,R - Galveston,6/5S - Houston PHR,Metro
+2021-04-19,Limestone,6700,8672,3834,18871,4670,23437,M - Waco,7 - Temple PHR,Non-Metro
+2021-04-19,Lipscomb,1300,1340,633,2520,617,3233,A - Amarillo,1 - Lubbock PHR,Non-Metro
+2021-04-19,Live Oak,3100,4817,2182,10055,2533,12207,U - Corpus Christi,11 - Harlingen PHR,Non-Metro
+2021-04-19,Llano,6100,11454,4899,18908,8119,21795,O - Austin,7 - Temple PHR,Non-Metro
+2021-04-19,Lubbock,220950,171202,74651,244992,39476,310569,B - Lubbock,1 - Lubbock PHR,Metro
+2021-04-19,Lynn,1700,2837,1251,4496,974,5951,B - Lubbock,1 - Lubbock PHR,Metro
+2021-04-19,Madison,3300,4651,1953,11595,2264,14284,N - Bryan/College Station,7 - Temple PHR,Non-Metro
+2021-04-19,Marion,1300,4094,1918,8277,2697,9854,G - Longview/Tyler,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Martin,2200,2310,1027,4136,659,5771,J - Midland/Odessa,9/10 - El Paso PHR,Metro
+2021-04-19,Mason,2000,2742,1300,3521,1250,4274,K - San Angelo,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Matagorda,15550,17136,6817,28247,6391,36643,Q - Houston,6/5S - Houston PHR,Non-Metro
+2021-04-19,Maverick,42500,36160,11715,42606,7003,58722,P - San Antonio,8 - San Antonio PHR,Non-Metro
+2021-04-19,McCulloch,4300,3452,1540,6435,1792,7984,K - San Angelo,9/10 - El Paso PHR,Non-Metro
+2021-04-19,McLennan,134560,120965,52518,200781,37728,256623,M - Waco,7 - Temple PHR,Metro
+2021-04-19,McMullen,1100,391,192,616,189,743,U - Corpus Christi,11 - Harlingen PHR,Non-Metro
+2021-04-19,Medina,16400,25497,11368,41263,8757,51584,P - San Antonio,8 - San Antonio PHR,Metro
+2021-04-19,Menard,1400,1382,699,1790,699,2138,K - San Angelo,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Midland,131525,82649,36395,131025,18438,176832,J - Midland/Odessa,9/10 - El Paso PHR,Metro
+2021-04-19,Milam,9400,11642,5106,19689,5245,24823,L - Belton/Killeen,7 - Temple PHR,Non-Metro
+2021-04-19,Mills,2500,2550,1147,4006,1416,4873,L - Belton/Killeen,7 - Temple PHR,Non-Metro
+2021-04-19,Mitchell,3800,2536,1058,6958,1259,8545,D - Abilene,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Montague,4350,8419,3872,15872,4444,19818,C - Wichita Falls,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Montgomery,360910,282376,108553,467232,81457,607391,Q - Houston,6/5S - Houston PHR,Metro
+2021-04-19,Moore,6940,11768,5080,14986,2372,20940,A - Amarillo,1 - Lubbock PHR,Non-Metro
+2021-04-19,Morris,2000,4892,2231,9830,2730,12388,F - Paris,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Nacogdoches,28400,29614,14106,51773,9953,65204,H - Lufkin,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Navarro,32800,25627,11169,38360,8651,50113,E - Dallas/Ft. Worth,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Newton,2900,4046,1864,11298,2878,13595,R - Galveston,4/5N - Tyler PHR,Metro
+2021-04-19,Nolan,8200,6622,3379,11321,2737,14714,D - Abilene,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Nueces,248045,214334,90855,284366,54069,362294,U - Corpus Christi,11 - Harlingen PHR,Metro
+2021-04-19,Ochiltree,4600,4554,2246,7106,1148,9836,A - Amarillo,1 - Lubbock PHR,Non-Metro
+2021-04-19,Oldham,1500,785,354,1728,316,2112,A - Amarillo,1 - Lubbock PHR,Metro
+2021-04-19,Orange,4300,27902,11834,65087,13729,83396,R - Galveston,6/5S - Houston PHR,Metro
+2021-04-19,Other,NA,163097,57683,NA,NA,NA,NA,NA,NA
+2021-04-19,Palo Pinto,5100,11651,5278,23207,5893,29189,E - Dallas/Ft. Worth,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Panola,3900,6906,3162,18462,4589,23194,G - Longview/Tyler,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Parker,66410,69500,30092,111686,22331,142878,E - Dallas/Ft. Worth,2/3 - Arlington PHR,Metro
+2021-04-19,Parmer,2400,4896,2429,7222,1366,9605,A - Amarillo,1 - Lubbock PHR,Non-Metro
+2021-04-19,Pecos,6000,9321,4420,12317,2141,15823,J - Midland/Odessa,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Polk,9600,20669,9212,42276,9733,51353,H - Lufkin,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Potter,178495,51470,21473,88673,15203,117415,A - Amarillo,1 - Lubbock PHR,Metro
+2021-04-19,Presidio,5300,7852,3604,5069,1601,6704,J - Midland/Odessa,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Rains,1900,4453,1926,10277,3123,12514,G - Longview/Tyler,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Randall,15670,71902,32350,108431,21424,137713,A - Amarillo,1 - Lubbock PHR,Metro
+2021-04-19,Reagan,1400,1660,877,2841,427,3849,K - San Angelo,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Real,1800,2225,1032,2943,1053,3452,P - San Antonio,8 - San Antonio PHR,Non-Metro
+2021-04-19,Red River,3400,5166,2496,9965,3044,12023,F - Paris,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Reeves,28205,8549,3995,12781,1878,15976,J - Midland/Odessa,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Refugio,2700,4440,2026,5583,1617,6948,U - Corpus Christi,11 - Harlingen PHR,Non-Metro
+2021-04-19,Roberts,0,320,155,672,193,854,A - Amarillo,1 - Lubbock PHR,Non-Metro
+2021-04-19,Robertson,3700,7562,3581,13474,3412,17074,N - Bryan/College Station,7 - Temple PHR,Metro
+2021-04-19,Rockwall,55395,66238,25355,80325,13395,104915,E - Dallas/Ft. Worth,2/3 - Arlington PHR,Metro
+2021-04-19,Runnels,6900,5511,2685,8184,2153,10264,K - San Angelo,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Rusk,10870,17946,7954,43777,9197,54406,G - Longview/Tyler,4/5N - Tyler PHR,Metro
+2021-04-19,Sabine,3700,5073,2420,8871,3267,10542,H - Lufkin,4/5N - Tyler PHR,Non-Metro
+2021-04-19,San Augustine,3700,4187,1812,6811,2227,8237,H - Lufkin,4/5N - Tyler PHR,Non-Metro
+2021-04-19,San Jacinto,4000,9358,4436,23444,6488,28859,H - Lufkin,4/5N - Tyler PHR,Non-Metro
+2021-04-19,San Patricio,19370,34513,15013,51116,10209,66730,U - Corpus Christi,11 - Harlingen PHR,Metro
+2021-04-19,San Saba,2000,1815,638,5000,1465,6055,O - Austin,7 - Temple PHR,Non-Metro
+2021-04-19,Schleicher,1800,1511,716,2218,559,2793,K - San Angelo,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Scurry,6895,7595,3605,13000,2566,16703,B - Lubbock,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Shelby,10050,7967,3610,19449,4532,25274,G - Longview/Tyler,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Smith,195410,110127,46165,182283,39337,232751,G - Longview/Tyler,4/5N - Tyler PHR,Metro
+2021-04-19,Somervell,4400,4429,2070,7386,1770,9128,E - Dallas/Ft. Worth,2/3 - Arlington PHR,Metro
+2021-04-19,Starr,35100,52000,25163,45765,7370,64633,V - Lower Rio Grande Valley,11 - Harlingen PHR,Non-Metro
+2021-04-19,Stephens,3400,3397,1652,7542,1890,9366,D - Abilene,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Sterling,700,587,247,975,186,1291,K - San Angelo,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Stonewall,1700,758,376,1095,361,1350,D - Abilene,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Sutton,2200,2062,917,2992,723,3776,K - San Angelo,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Swisher,2300,3020,1546,5764,1305,7397,A - Amarillo,1 - Lubbock PHR,Non-Metro
+2021-04-19,Tarrant,1293630,1095128,442007,1617160,244511,2102515,E - Dallas/Ft. Worth,2/3 - Arlington PHR,Metro
+2021-04-19,Taylor,91035,72442,33135,107257,20131,138034,D - Abilene,2/3 - Arlington PHR,Metro
+2021-04-19,Terrell,0,638,278,639,255,776,J - Midland/Odessa,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Terry,8490,6181,2932,9307,1858,12337,B - Lubbock,1 - Lubbock PHR,Non-Metro
+2021-04-19,Throckmorton,2000,947,441,1247,445,1501,D - Abilene,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Titus,17950,11368,4506,24323,4845,32750,F - Paris,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Tom Green,90060,64445,29126,93752,18625,119200,K - San Angelo,9/10 - El Paso PHR,Metro
+2021-04-19,Travis,1447990,853753,332515,1032386,129553,1273954,O - Austin,7 - Temple PHR,Metro
+2021-04-19,Trinity,4850,6323,2824,12104,3956,14651,G - Longview/Tyler,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Tyler,8500,7716,3499,17963,4895,21672,H - Lufkin,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Upshur,5200,13993,6374,33011,7825,41753,G - Longview/Tyler,4/5N - Tyler PHR,Metro
+2021-04-19,Upton,3200,2111,963,2730,537,3657,J - Midland/Odessa,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Uvalde,29475,16085,7231,20379,4508,26741,P - San Antonio,8 - San Antonio PHR,Non-Metro
+2021-04-19,Val Verde,39790,25133,9461,36546,7003,49025,P - San Antonio,8 - San Antonio PHR,Non-Metro
+2021-04-19,Van Zandt,11900,20517,8990,45216,11495,56590,G - Longview/Tyler,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Victoria,54350,45173,18354,71388,15242,92084,S - Victoria,8 - San Antonio PHR,Metro
+2021-04-19,Walker,33170,26704,10975,63471,10049,72971,Q - Houston,6/5S - Houston PHR,Non-Metro
+2021-04-19,Waller,13270,19211,7718,43350,6546,55246,Q - Houston,6/5S - Houston PHR,Metro
+2021-04-19,Ward,4840,6172,2948,8921,1629,11998,J - Midland/Odessa,9/10 - El Paso PHR,Non-Metro
+2021-04-19,Washington,60000,19196,7552,29086,7889,35882,N - Bryan/College Station,7 - Temple PHR,Non-Metro
+2021-04-19,Webb,175240,197234,79428,196916,26921,276652,T - Laredo,11 - Harlingen PHR,Metro
+2021-04-19,Wharton,17120,17542,7057,32110,7239,41556,Q - Houston,6/5S - Houston PHR,Non-Metro
+2021-04-19,Wheeler,2900,2253,1118,3915,1002,5056,A - Amarillo,1 - Lubbock PHR,Non-Metro
+2021-04-19,Wichita,67040,60082,27742,105631,19854,132230,C - Wichita Falls,2/3 - Arlington PHR,Metro
+2021-04-19,Wilbarger,10200,7609,3877,10361,2421,12769,C - Wichita Falls,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Willacy,5800,13725,5981,16897,3057,21358,V - Lower Rio Grande Valley,11 - Harlingen PHR,Non-Metro
+2021-04-19,Williamson,356690,374870,146403,458433,73202,590551,O - Austin,7 - Temple PHR,Metro
+2021-04-19,Wilson,18800,22296,9529,40488,8411,51070,P - San Antonio,8 - San Antonio PHR,Metro
+2021-04-19,Wise,26140,26868,11795,54722,10598,69984,E - Dallas/Ft. Worth,2/3 - Arlington PHR,Metro
+2021-04-19,Wood,6500,20784,9522,38005,12527,45539,G - Longview/Tyler,4/5N - Tyler PHR,Non-Metro
+2021-04-19,Yoakum,3200,3521,1655,6135,1033,8713,B - Lubbock,1 - Lubbock PHR,Non-Metro
+2021-04-19,Young,8200,8486,4221,14219,3774,18010,C - Wichita Falls,2/3 - Arlington PHR,Non-Metro
+2021-04-19,Zapata,8000,10124,4770,9981,1866,14179,T - Laredo,11 - Harlingen PHR,Non-Metro
+2021-04-19,Zavala,1800,7296,3169,8840,1723,11840,P - San Antonio,8 - San Antonio PHR,Non-Metro
