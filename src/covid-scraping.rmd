@@ -929,7 +929,8 @@ TPR_dates = sort(unique(c(cpr_dates, cms_dates)))
 # combine cpr archive
 all_cpr_tpr = rbindlist(lapply(list.files('original-sources/historical/cpr/', full.names = TRUE), read.csv)) %>% 
   rename(TPR = TPR_CPR) %>% 
-  mutate(Date = as.Date(Date)) %>% 
+  mutate(Date = as.Date(Date)) %>%
+  mutate(TPR = ifelse(is.na(TPR), 0, TPR)) %>%
   mutate(Tests = NA)
   
 cms_archive = tpr_df %>% filter(Date < '2020-12-16')
@@ -1214,7 +1215,7 @@ county_vaccinations =
   filter(!(`County Name` %in% c('Texas',
                                 'Federal Long-Term Care Vaccination Program',
                                 'Federal Pharmacy Retail Vaccination Program'))) %>%
-  distinct_at(vars(-c(`County Name`, Date)), .keep_all = TRUE) %>% 
+  # distinct_at(vars(-c(`County Name`, Date)), .keep_all = TRUE) %>%
   select(Date, `County Name`, `Total Doses Allocated`,
          `Vaccine Doses Administered`, `People Fully Vaccinated`,
          `Population, 16+`, `Population, 65+`) %>%
@@ -1241,7 +1242,7 @@ vaccinations_312 =
                               'Federal Pharmacy Retail Vaccination Program'))) %>%
   select(- `People Fully Vaccinated`) %>% 
   rename(`People Fully Vaccinated` = `People Vaccinated with at least One Dose`) %>%
-  distinct_at(vars(-c(`County Name`, Date)), .keep_all = TRUE) %>% 
+  # distinct_at(vars(-c(`County Name`, Date)), .keep_all = TRUE) %>% 
   select(Date, `County Name`, `Total Doses Allocated`,
          `Vaccine Doses Administered`, `People Fully Vaccinated`,
          `Population, 16+`, `Population, 65+`) %>%
@@ -1271,7 +1272,6 @@ county_vaccinations_out = county_vaccinations %>%
               summarize(Population_Total = sum(Population_Total)) %>%
               arrange(-Population_Total)) %>%
   relocate(Population_Total, .before = TSA_Combined)
-
 
 write_csv(county_vaccinations_out, 'tableau/sandbox/county_daily_vaccine.csv')
 ```
