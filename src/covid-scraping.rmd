@@ -789,7 +789,7 @@ merged_dshs = Reduce(function(x, y) merge(x, y, by = 'County', all = TRUE),
                        list(county_counts, tsa_long_complete, dshs_pops, county_classifications))
 
 # add TSA, PHR & HHSC combination
-merged_dshs$TSA_Combined = paste0(merged_dshs$TSA, ' - ', merged_dshs$TSA_Name)
+ merged_dshs$TSA_Combined = paste0(merged_dshs$TSA, ' - ', merged_dshs$TSA_Name)
 merged_dshs$PHR_Combined = paste0(merged_dshs$PHR, ' - ', merged_dshs$PHR_Name)
 # merged_dshs$HHSC_Combined = paste0(merged_dshs$HHSC, ' - ', merged_dshs$HHSC_Name)
 
@@ -1231,8 +1231,7 @@ county_vaccinations =
          Fully_Vaccinated_Per_65 = Fully_Vaccinated / Population_65)
 
 
-# DSHS swapped counts of full and partial vaccinations on 3/12. Below is temp dirty fix 
-# TODO: clean up code
+# DSHS swapped counts of full and partial vaccinations on 3/12 [duplicated on 3/13].
 vaccinations_312 = 
   read_xlsx("original-sources/historical/vaccinations/vaccinations_2021-03-12.xlsx", sheet = 2) %>% 
   slice(2:nrow(.)) %>%
@@ -1257,9 +1256,20 @@ vaccinations_312 =
          Fully_Vaccinated_Per_16 = Fully_Vaccinated / Population_16,
          Fully_Vaccinated_Per_65 = Fully_Vaccinated / Population_65)
 
+
+vaccinations_312 = vaccinations_312 %>% rbind(vaccinations_312 %>% mutate(Date = as.Date('2021-03-13')))
+
+# Average between 4/6 and 4/8 for missing 4/7 file
+vaccinations_407 = county_vaccinations %>%
+  filter(Date == '2021-04-06' | Date == '2021-04-08') %>% 
+  group_by(County) %>% 
+  summarize(across(Doses_Allocated:Fully_Vaccinated_Per_65, ~round(mean(.x, na.rm = TRUE), 0))) %>% 
+  mutate(Date = as.Date('2021-04-07'))
+
 county_vaccinations_out = county_vaccinations %>% 
-  filter(Date != '2021-03-12') %>% 
-  rbind(vaccinations_312) %>% 
+  filter(Date != '2021-03-12' & Date != '2021-03-13') %>% 
+  rbind(vaccinations_312) %>%
+  rbind(vaccinations_407) %>%
   arrange(Date, County) %>%
   mutate(County = gsub('\\*Other|\\* Other', 'Other', County)) %>%
   left_join(tsa_long_complete %>% select(County, TSA_Combined)) %>% 
@@ -1272,6 +1282,29 @@ county_vaccinations_out = county_vaccinations %>%
               summarize(Population_Total = sum(Population_Total)) %>%
               arrange(-Population_Total)) %>%
   relocate(Population_Total, .before = TSA_Combined)
+
+
+
+county_vaccinations_out %>%
+  filter(County == 'Harris') %>% 
+  filter(Date > as.Date('2021-04-05') & Date <= as.Date('2021-04-10')) %>%
+  ggplot(aes(x = Date, y = Fully_Vaccinated)) + 
+  geom_point() + 
+  theme_pubr()
+
+
+county_vaccinations_out %>%
+  filter(County == 'Harris') %>%
+  arrange(County, Date) %>%
+  group_by(County) %>%
+  mutate(date_check = ifelse(Date - lag(Date) > 1, TRUE, FALSE)) %>% 
+  filter(date_check == TRUE)
+
+
+county_vaccinations_out %>% 
+  filter(County == 'Harris') %>% 
+  filter(Date >= as.Date('2021-04-01')) %>% 
+  View()
 
 write_csv(county_vaccinations_out, 'tableau/sandbox/county_daily_vaccine.csv')
 ```
@@ -1523,14 +1556,17 @@ hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp[[11]], 'Beds_Occupied_ICU')
 # pull DSHS dashboard data using link found from inspect element -> network
 DSHS_json_hosp_tsa = jsonlite::fromJSON("https://services5.arcgis.com/ACaLB9ifngzawspq/arcgis/rest/services/DSHS_COVID_Hospital_Data/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outSR=102100&resultOffset=0&resultRecordCount=25&resultType=standard&cacheHint=true")[['features']][['attributes']]
 
-DSHS_json_hosp_tsa = DSHS_json_hosp_tsa[, c(2,5:9)]
-# 
-names(DSHS_json_hosp_tsa) = c('TSA', 'Hospital_Beds_Staffed', 'Hospital_Beds_Available',
-                                 'ICU_Beds_Available', 'Ventilators_Available', 'Current_Cases')
+rac_xwalk = DSHS_json_hosp_tsa %>% select(TSA, RAC) %>% rename(TSA_Fixed = TSA)
+
+DSHS_json_hosp_tsa = DSHS_json_hosp_tsa %>% 
+  select(TSA, TotalStaff, AvailHospi, AvailICUBe, AvailVenti, COVIDPatie) %>% 
+  rename(Hospital_Beds_Staffed = TotalStaff,
+         ICU_Beds_Available = AvailICUBe,
+         Ventilators_Available = AvailVenti,
+         Current_Cases = COVIDPatie)
 
 # export today's file
-write.csv(DSHS_json_hosp_tsa, paste0('original-sources/historical/hosp/tsa_hosp_', date_out, '.csv'),
-          row.names = FALSE)
+write_csv(DSHS_json_hosp_tsa, glue('original-sources/historical/hosp/tsa_hosp_{date_out}.csv'))
 
 # read in all files
 hosp_list = list.files('original-sources/historical/hosp', pattern = '*.csv', full.names = TRUE)
@@ -1538,10 +1574,50 @@ hosp_dates = sapply(hosp_list, function(x) str_extract(x, '\\d{4}-\\d{2}-\\d{2}'
 tsa_all_hosp = lapply(hosp_list, read.csv, fileEncoding = 'UTF-8-BOM')
 names(tsa_all_hosp) = hosp_dates
 
-tsa_combined_hosp = rbindlist(tsa_all_hosp, fill = TRUE, idcol = TRUE) %>% 
+tsa_combined_hosp_orig = rbindlist(tsa_all_hosp, fill = TRUE, idcol = TRUE) %>% 
   dplyr::select(-Date) %>% 
   rename(Date = .id) %>% 
-  dplyr::select(TSA, Date, Ventilators_Available)
+  # dplyr::select(TSA, Date, Ventilators_Available) %>%
+  left_join(rac_xwalk, by = c('TSA' = 'RAC')) %>% 
+  mutate(TSA_Fixed = ifelse(is.na(TSA_Fixed), TSA, TSA_Fixed)) %>% 
+  select(-TSA) %>% 
+  rename(TSA = TSA_Fixed) %>% 
+  relocate(TSA, .before = Date) %>% 
+  mutate(Date = as.Date(Date, '%Y-%m-%d'))
+
+wrong_dates_icu = tsa_combined_hosp_orig %>%
+  filter(TSA == 'D' & Date <= '2021-05-06') %>%
+  arrange(Ventilators_Available) %>%
+  mutate(n = row_number()) %>%
+  filter (n < 66) %>%
+  select(Date) %>%
+  filter(Date != '2021-02-04' & Date != '2021-01-05') %>% 
+  unlist()
+
+wrong_dates_cases = c('2021-02-04', '2021-01-05') %>% as.Date()
+
+tsa_combined_hosp = 
+  tsa_combined_hosp_orig %>%
+  filter(!Date %in% wrong_dates_icu & !Date %in% wrong_dates_cases) %>%
+  rbind(tsa_combined_hosp_orig %>%
+          filter(Date %in% wrong_dates_icu) %>%
+          select(-Ventilators_Available) %>%
+          rename(Ventilators_Available = ICU_Beds_Available),
+        fill = TRUE) %>%
+  rbind(tsa_combined_hosp_orig %>%
+          filter(Date %in% wrong_dates_cases) %>%
+          select(-Ventilators_Available) %>%
+          rename(Ventilators_Available = Current_Cases),
+        fill = TRUE) %>% 
+  select(TSA, Date, Ventilators_Available) %>% 
+  filter(Date != '2020-07-23')
+
+# diagnostic
+# tsa_combined_hosp %>% filter(TSA == 'E') %>% 
+#   ggplot(., aes(x = as.Date(Date), y = Ventilators_Available)) + 
+#   # geom_point() +
+#   geom_text(aes(label = Date)) + 
+#   theme_pubr()
 ```
 
 ## merge
@@ -1677,11 +1753,20 @@ write.csv(merged_county_out, 'tableau/county.csv', row.names = FALSE)
 ## TSA
 
 ```{r}
+# TODO: fix names
 hosp_tsa = merged_tsa %>% 
   dplyr::select(Date, TSA, TSA_Name, TSA_Combined, Population_DSHS, Ventilators_Available,
                 Hospitalizations_Total, Hospitalizations_General, Hospitalizations_ICU,
                 Beds_Available_Total, Beds_Available_ICU, Beds_Occupied_Total, Beds_Occupied_ICU) %>% 
   filter(Date >= min(hosp_cap1$Date))
+
+# diagnostics
+hosp_tsa %>% select(TSA) %>% distinct()
+hosp_tsa %>% select(Date, TSA, Ventilators_Available) %>% filter(TSA == 'D') %>%
+  ggplot(aes(x = Date, y = Ventilators_Available)) + 
+  geom_point() + 
+  theme_pubr()
+
 write.csv(hosp_tsa, file = 'tableau/hospitalizations_tsa.csv', row.names = F)
 ```
 
