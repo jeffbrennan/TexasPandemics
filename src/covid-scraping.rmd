@@ -359,8 +359,6 @@ county_demo_agesex = read_csv('original-sources/helpers/demographics/county/coun
 ```
 
 
-
-
 ```{r}
 # https://www.nrcs.usda.gov/wps/portal/nrcs/detail/tx/technical/dma/rwa/?cid=nrcs143_013697
 # fips = read_csv('original-sources/helpers/fips_county.csv')
@@ -913,7 +911,6 @@ write.csv(cpr_tpr,
 
 
 # add cms archive (8/19 - 12/09) (data represented 2 weeks of cases)
-
 cpr_dates = list.files('original-sources/historical/cpr') %>% 
   gsub('cpr_tpr_', '', .) %>% 
   gsub('.csv', '', .) %>% 
@@ -932,9 +929,21 @@ all_cpr_tpr = rbindlist(lapply(list.files('original-sources/historical/cpr/', fu
   mutate(Date = as.Date(Date)) %>%
   mutate(TPR = ifelse(is.na(TPR), 0, TPR)) %>%
   mutate(Tests = NA)
-  
-cms_archive = tpr_df %>% filter(Date < '2020-12-16')
-cms_new = tpr_df %>% filter(Date >= '2020-12-16') %>% dplyr::select(-TPR)
+
+TPR_all_dates = data.frame(County = rep(county_classifications$County %>% unique(), length(TPR_dates)),
+                                        Date = rep(TPR_dates, length(county_classifications$County %>% unique())))
+
+
+cms_archive = tpr_df %>% filter(Date < '2020-12-16') %>% select(Date, County, Tests, TPR)
+cms_new = tpr_df %>% filter(Date >= '2020-12-16') %>%
+  rbind(TPR_all_dates %>%
+        filter(Date >= '2020-12-16'),
+      fill = TRUE) %>% 
+  group_by(County) %>% 
+  arrange(County, Date) %>%
+  tidyr::fill(Tests, .direction = 'down') %>% 
+  distinct() %>% 
+  select(Date, County, Tests)
 
 tpr_cases = merged_county %>% 
   dplyr::select(County, Date, Cases_Daily, Population_DSHS) %>%
@@ -950,16 +959,21 @@ tpr_cases = merged_county %>%
   dplyr::select(-Cases_Daily, -Population_DSHS, -Cases_100K_14Day_MA)
 
 
-tpr_out = all_cpr_tpr %>% 
-  rbind(cms_archive, fill = TRUE) %>%
-  left_join(tpr_cases, by = c('County', 'Date')) %>%
+tpr_out = all_cpr_tpr %>%
+  rbind(TPR_all_dates %>% filter(Date >= '2020-12-16'), fill = TRUE) %>%
+  arrange(County, Date) %>%
+  fill(Tests, .direction = 'down') %>% 
+  fill(TPR, .direction = 'down') %>%
+  rbind(cms_archive) %>%
   left_join(cms_new, by = c('County', 'Date')) %>%
+  left_join(tpr_cases, by = c('County', 'Date')) %>%
   mutate(Tests.x = ifelse(is.na(Tests.y), Tests.x, Tests.y)) %>% 
   rename(Tests = Tests.x) %>%
-  dplyr::select(-Tests.y) %>% 
+  dplyr::select(-Tests.y) %>%
   dplyr::select(County, Date, TPR, Tests, Cases_100K_7Day_MA) %>%
-  # mutate(TPR = ifelse(TPR == 0 | TPR == 1, NA, TPR)) %>%
-  arrange(County, Date)
+  mutate(TPR = ifelse(TPR == 0 | TPR == 1, NA, TPR)) %>%
+  arrange(County, Date) %>% 
+  distinct()
 
 write.csv(tpr_out, 'tableau/county_TPR.csv', row.names = FALSE)
 ```
@@ -1563,7 +1577,8 @@ DSHS_json_hosp_tsa = DSHS_json_hosp_tsa %>%
   rename(Hospital_Beds_Staffed = TotalStaff,
          ICU_Beds_Available = AvailICUBe,
          Ventilators_Available = AvailVenti,
-         Current_Cases = COVIDPatie)
+         Current_Cases = COVIDPatie,
+         Hospital_Beds_Available = AvailHospi)
 
 # export today's file
 write_csv(DSHS_json_hosp_tsa, glue('original-sources/historical/hosp/tsa_hosp_{date_out}.csv'))
@@ -1576,14 +1591,21 @@ names(tsa_all_hosp) = hosp_dates
 
 tsa_combined_hosp_orig = rbindlist(tsa_all_hosp, fill = TRUE, idcol = TRUE) %>% 
   dplyr::select(-Date) %>% 
-  rename(Date = .id) %>% 
+  rename(Date = .id) %>%
   # dplyr::select(TSA, Date, Ventilators_Available) %>%
-  left_join(rac_xwalk, by = c('TSA' = 'RAC')) %>% 
-  mutate(TSA_Fixed = ifelse(is.na(TSA_Fixed), TSA, TSA_Fixed)) %>% 
+  left_join(rac_xwalk, by = c('TSA' = 'RAC')) %>%
+  mutate(TSA_Fixed = ifelse(is.na(TSA_Fixed), TSA, TSA_Fixed)) %>%
   select(-TSA) %>% 
   rename(TSA = TSA_Fixed) %>% 
   relocate(TSA, .before = Date) %>% 
-  mutate(Date = as.Date(Date, '%Y-%m-%d'))
+  mutate(Date = as.Date(Date, '%Y-%m-%d')) %>% 
+  distinct() %>% 
+  group_by(TSA, Date) %>% 
+  mutate(delete_flag = ifelse(TSA == 'L' & row_number() == 2 | TSA == 'M' & row_number() == 1 & n() == 2, 1, 0)) %>% 
+  filter(delete_flag != 1) %>% 
+  select(-delete_flag) %>% 
+  ungroup()
+
 
 wrong_dates_icu = tsa_combined_hosp_orig %>%
   filter(TSA == 'D' & Date <= '2021-05-06') %>%
@@ -1592,32 +1614,31 @@ wrong_dates_icu = tsa_combined_hosp_orig %>%
   filter (n < 66) %>%
   select(Date) %>%
   filter(Date != '2021-02-04' & Date != '2021-01-05') %>% 
-  unlist()
+  unlist() %>% 
+  as.Date()
 
 wrong_dates_cases = c('2021-02-04', '2021-01-05') %>% as.Date()
 
-tsa_combined_hosp = 
-  tsa_combined_hosp_orig %>%
-  filter(!Date %in% wrong_dates_icu & !Date %in% wrong_dates_cases) %>%
-  rbind(tsa_combined_hosp_orig %>%
+wrong_dates_icu_df = tsa_combined_hosp_orig %>%
           filter(Date %in% wrong_dates_icu) %>%
           select(-Ventilators_Available) %>%
-          rename(Ventilators_Available = ICU_Beds_Available),
-        fill = TRUE) %>%
-  rbind(tsa_combined_hosp_orig %>%
+          rename(Ventilators_Available = ICU_Beds_Available) %>%
+          select(TSA, Date, Ventilators_Available)
+
+wrong_dates_cases_df = tsa_combined_hosp_orig %>%
           filter(Date %in% wrong_dates_cases) %>%
           select(-Ventilators_Available) %>%
-          rename(Ventilators_Available = Current_Cases),
-        fill = TRUE) %>% 
-  select(TSA, Date, Ventilators_Available) %>% 
-  filter(Date != '2020-07-23')
+          rename(Ventilators_Available = Current_Cases) %>%
+          select(TSA, Date, Ventilators_Available)
 
-# diagnostic
-# tsa_combined_hosp %>% filter(TSA == 'E') %>% 
-#   ggplot(., aes(x = as.Date(Date), y = Ventilators_Available)) + 
-#   # geom_point() +
-#   geom_text(aes(label = Date)) + 
-#   theme_pubr()
+
+tsa_combined_hosp = 
+  tsa_combined_hosp_orig %>%
+  select(TSA, Date, Ventilators_Available) %>% 
+  filter(!Date %in% wrong_dates_icu & !Date %in% wrong_dates_cases) %>%
+  rbind(wrong_dates_icu_df) %>% 
+  rbind(wrong_dates_cases_df) %>%
+  filter(Date != '2020-07-23')
 ```
 
 ## merge
@@ -1627,6 +1648,8 @@ merged_tsa = Reduce(function(x, y) merge(x, y, by = c('Date', 'TSA'), all = TRUE
                     list(DSHS_tsa, tsa_combined_hosp,
                          hosp_1, hosp_2, hosp_3,
                          hosp_cap1, hosp_cap2, hosp_cap3, hosp_cap4))
+
+
 
 # fix types & ensure TSA values are valid
 merged_tsa = merged_tsa %>% 
@@ -1747,6 +1770,22 @@ write.csv(nyt_schools, file = 'original-sources/historical/nyt/nyt_colleges.csv'
 merged_county_out = merged_county %>% 
   dplyr::select(-c(Cases_Cumulative_NA, Deaths_Cumulative_NA,
                    Tests_Cumulative_NA, Active_Cases_Cumulative_NA))
+
+
+merged_county_out %>% 
+  group_by(County) %>% 
+  summarize(n()) %>% 
+  View()
+
+
+merged_county_out %>%
+  select(Date, TSA, Cases_Daily, Tests_Daily, Population_DSHS) %>%
+  group_by(Date, TSA) %>% 
+  summarize_if(is.numeric, sum, na.rm = TRUE) %>% 
+  group_by(Date, TSA) %>%
+  summarize(n()) %>%
+  View()
+
 write.csv(merged_county_out, 'tableau/county.csv', row.names = FALSE)
 ```
 
@@ -1760,6 +1799,8 @@ hosp_tsa = merged_tsa %>%
                 Beds_Available_Total, Beds_Available_ICU, Beds_Occupied_Total, Beds_Occupied_ICU) %>% 
   filter(Date >= min(hosp_cap1$Date))
 
+
+hosp_tsa %>% select(Date, TSA) %>% group_by(Date, TSA) %>% summarize(n()) %>% View()
 # diagnostics
 hosp_tsa %>% select(TSA) %>% distinct()
 hosp_tsa %>% select(Date, TSA, Ventilators_Available) %>% filter(TSA == 'D') %>%
