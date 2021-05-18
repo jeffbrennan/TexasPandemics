@@ -309,12 +309,42 @@ age_lookup = data.frame(age =
                             'AGE4044', 'AGE4549', 'AGE5054', 'AGE5559', 'AGE6064',
                             'AGE6569', 'AGE7074', 'AGE7579', 'AGE8084', 'AGE85PLUS'),
                         age_group =
-                          c('Total', '< 12 years', '< 12 years', NA, NA,
+                          c('Total', NA, NA, NA, NA,
                             '16+', NA, NA, NA,
-                            NA, NA, NA, NA, '12-15 years',
+                            NA, NA, NA, NA, NA,
                             NA, NA, NA, NA, NA,
                             NA, NA, '50-64 years', '50-64 years', '50-64 years',
                             '65-79 years', '65-79 years', '65-79 years', '80+ years', '80+ years'))
+
+demo_12_15 =  read_csv('original-sources/helpers/demographics/county/county_pop_age_sex.csv') %>%
+  filter(YEAR == '12') %>% 
+  select(-c(SUMLEV, STATE, COUNTY, STNAME, YEAR,
+            POPESTIMATE,
+            MEDIAN_AGE_TOT, MEDIAN_AGE_MALE, MEDIAN_AGE_FEM )) %>%
+  reshape2::melt(idvars = 'CTYNAME') %>% 
+  separate(variable, c('age', 'gender')) %>%
+  filter(gender != 'TOT') %>% 
+  filter(age %in% c('AGE1014', 'AGE1519')) %>% 
+  mutate(value = ifelse(age == 'AGE1014', value * 0.6, value * 0.2)) %>% 
+  group_by(CTYNAME, gender) %>% 
+  summarize(Population_Total = round(sum(value), 0)) %>% 
+  mutate(`Age Group` = '12-15 years') %>%
+  rename(County = CTYNAME, Gender = gender)
+
+demo_under_12 = read_csv('original-sources/helpers/demographics/county/county_pop_age_sex.csv') %>%
+  filter(YEAR == '12') %>% 
+  select(-c(SUMLEV, STATE, COUNTY, STNAME, YEAR,
+            POPESTIMATE,
+            MEDIAN_AGE_TOT, MEDIAN_AGE_MALE, MEDIAN_AGE_FEM )) %>%
+  reshape2::melt(idvars = 'CTYNAME') %>% 
+  separate(variable, c('age', 'gender')) %>%
+  filter(gender != 'TOT') %>% 
+  filter(age %in% c('UNDER5', 'AGE513')) %>% 
+  mutate(value = ifelse(age == 'AGE513', value * (8/9), value)) %>% 
+  group_by(CTYNAME, gender) %>% 
+  summarize(Population_Total = round(sum(value), 0)) %>% 
+  mutate(`Age Group` = '< 12 years') %>%
+  rename(County = CTYNAME, Gender = gender)
 
 county_demo_agesex = read_csv('original-sources/helpers/demographics/county/county_pop_age_sex.csv') %>%
   filter(YEAR == '12') %>% 
@@ -332,8 +362,10 @@ county_demo_agesex = read_csv('original-sources/helpers/demographics/county/coun
   mutate('<16' = Total - `16+`) %>%
   mutate(`16-49 years` = `16+` - `50-64 years` - `65-79 years` - `80+ years`) %>% 
   select(-Total) %>% 
-  reshape2::melt(idvars = c('CTYNAME', 'gender')) %>% 
+  reshape2::melt(idvars = c('CTYNAME', 'gender')) %>%
   setNames(c('County', 'Gender', 'Age Group', 'Population_Total')) %>% 
+  rbind(demo_12_15) %>%
+  rbind(demo_under_12) %>%
   mutate(County = gsub(' County', '', County)) %>% 
   mutate(Gender = recode(Gender, 'FEM' = 'Female', 'MALE' = 'Male'))
 ```
@@ -1376,7 +1408,6 @@ under_12 = data.frame(Group_Type = 'Age',
               group_by(`Age Group`) %>%
               summarize(Population_Total = sum(Population_Total)) %>% 
               rename(Age_Group = `Age Group`) %>%
-              # mutate(Age_Group = gsub('<16', '< 16 years', `Age Group`, fixed = TRUE)) %>% 
               select(Age_Group, Population_Total),
             by = c('Group' = 'Age_Group'))
 
