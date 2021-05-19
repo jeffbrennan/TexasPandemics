@@ -942,19 +942,22 @@ all_cpr_tpr = rbindlist(lapply(list.files('original-sources/historical/cpr/', fu
   mutate(TPR = ifelse(is.na(TPR), 0, TPR)) %>%
   mutate(Tests = NA)
 
-TPR_all_dates = data.frame(County = rep(county_classifications$County %>% unique(), length(TPR_dates)),
-                                        Date = rep(TPR_dates, length(county_classifications$County %>% unique())))
+TPR_all_dates = data.frame(
+  County = rep(county_classifications$County %>% unique(), each = length(TPR_dates)),
+  Date = rep(TPR_dates, times = length(county_classifications$County %>% unique())))
 
 
-cms_archive = tpr_df %>% filter(Date < '2020-12-16') %>% select(Date, County, Tests, TPR)
+cms_archive = tpr_df %>% filter(Date < '2020-12-16') %>%
+  select(Date, County, Tests, TPR)
+
 cms_new = tpr_df %>% filter(Date >= '2020-12-16') %>%
   rbind(TPR_all_dates %>%
         filter(Date >= '2020-12-16'),
       fill = TRUE) %>% 
   group_by(County) %>% 
   arrange(County, Date) %>%
-  tidyr::fill(Tests, .direction = 'down') %>% 
-  distinct() %>% 
+  tidyr::fill(Tests, .direction = 'down') %>%
+  distinct() %>%
   select(Date, County, Tests)
 
 tpr_cases = merged_county %>% 
@@ -972,18 +975,21 @@ tpr_cases = merged_county %>%
 
 
 tpr_out = all_cpr_tpr %>%
-  left_join(TPR_all_dates %>% filter(Date >= '2020-12-16')) %>%
+  rbind(TPR_all_dates %>% filter(Date >= '2020-12-16'), fill = TRUE) %>%
+  distinct() %>%
   arrange(County, Date) %>%
-  fill(Tests, .direction = 'down') %>% 
-  fill(TPR, .direction = 'down') %>%
+  # fill(Tests, .direction = 'down') %>% 
+  # fill(TPR, .direction = 'down') %>%
   rbind(cms_archive) %>%
   left_join(cms_new, by = c('County', 'Date')) %>%
   left_join(tpr_cases, by = c('County', 'Date')) %>%
-  mutate(Tests.x = ifelse(is.na(Tests.y), Tests.x, Tests.y)) %>% 
+  mutate(Tests.x = ifelse(is.na(Tests.y), Tests.x, Tests.y)) %>%
   rename(Tests = Tests.x) %>%
   dplyr::select(-Tests.y) %>%
   dplyr::select(County, Date, TPR, Tests, Cases_100K_7Day_MA) %>%
-  arrange(County, Date) %>% 
+  arrange(County, Date) %>%
+  group_by(County, Date) %>% 
+  slice(1) %>% 
   distinct()
 
 write.csv(tpr_out, 'tableau/county_TPR.csv', row.names = FALSE)
