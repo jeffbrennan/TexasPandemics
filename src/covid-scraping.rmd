@@ -1247,11 +1247,12 @@ county_vaccinations =
                                 'Federal Long-Term Care Vaccination Program',
                                 'Federal Pharmacy Retail Vaccination Program'))) %>%
   # distinct_at(vars(-c(`County Name`, Date)), .keep_all = TRUE) %>%
-  select(Date, `County Name`, `Total Doses Allocated`,
-         `Vaccine Doses Administered`, `People Fully Vaccinated`,
-         `Population, 16+`, `Population, 65+`) %>%
+  select(Date, `County Name`,
+         `Total Doses Allocated`, `Vaccine Doses Administered`,
+         `People Vaccinated with at least One Dose`, `People Fully Vaccinated`,
+        `Population, 16+`, `Population, 65+`) %>%
   setNames(c('Date', 'County', 'Doses_Allocated',
-             'Doses_Administered', 'Fully_Vaccinated',
+             'Doses_Administered', 'At_Least_One_Dose', 'Fully_Vaccinated',
              'Population_16', 'Population_65')) %>%
   mutate_at(vars(-County, -Date), as.numeric) %>%
   mutate(Doses_Allocated_Per_16 = Doses_Allocated / Population_16,
@@ -1270,14 +1271,16 @@ vaccinations_312 =
   filter(!(`County Name` %in% c('Texas',
                               'Federal Long-Term Care Vaccination Program',
                               'Federal Pharmacy Retail Vaccination Program'))) %>%
-  select(- `People Fully Vaccinated`) %>% 
-  rename(`People Fully Vaccinated` = `People Vaccinated with at least One Dose`) %>%
+  # select(- `People Fully Vaccinated`) %>% 
+  rename(At_Least_One_Dose = `People Fully Vaccinated`,
+         `People Fully Vaccinated` = `People Vaccinated with at least One Dose`) %>%
   # distinct_at(vars(-c(`County Name`, Date)), .keep_all = TRUE) %>% 
-  select(Date, `County Name`, `Total Doses Allocated`,
-         `Vaccine Doses Administered`, `People Fully Vaccinated`,
+  select(Date, `County Name`,
+         `Total Doses Allocated`, `Vaccine Doses Administered`,
+         `At_Least_One_Dose`, `People Fully Vaccinated`,
          `Population, 16+`, `Population, 65+`) %>%
   setNames(c('Date', 'County', 'Doses_Allocated',
-             'Doses_Administered', 'Fully_Vaccinated',
+             'Doses_Administered', 'At_Least_One_Dose', 'Fully_Vaccinated',
              'Population_16', 'Population_65')) %>%
   mutate_at(vars(-County, -Date), as.numeric) %>%
   mutate(Doses_Allocated_Per_16 = Doses_Allocated / Population_16,
@@ -1297,6 +1300,20 @@ vaccinations_407 = county_vaccinations %>%
   summarize(across(Doses_Allocated:Fully_Vaccinated_Per_65, ~round(mean(.x, na.rm = TRUE), 0))) %>% 
   mutate(Date = as.Date('2021-04-07'))
 
+
+population_12 = all_dashboard_files[[length(all_dashboard_files)]][[2]] %>%
+  setNames(slice(., 1)) %>%
+  select(`County Name`, `Population\r\n12+`) %>% 
+  filter() %>% 
+  filter(!(`County Name` %in% c('Texas',
+                                'Federal Long-Term Care Vaccination Program',
+                                'Federal Pharmacy Retail Vaccination Program',
+                                'County Name'))) %>% 
+  rename(County = `County Name`, Population_12 = `Population\r\n12+`) %>% 
+  filter(!is.na(County))
+
+
+
 county_vaccinations_out = county_vaccinations %>% 
   filter(Date != '2021-03-12' & Date != '2021-03-13') %>% 
   rbind(vaccinations_312) %>%
@@ -1312,8 +1329,9 @@ county_vaccinations_out = county_vaccinations %>%
               group_by(County) %>%
               summarize(Population_Total = sum(Population_Total)) %>%
               arrange(-Population_Total)) %>%
+  left_join(population_12) %>% 
+  relocate(Population_12, .before = Population_16) %>%
   relocate(Population_Total, .before = TSA_Combined)
-
 
 
 county_vaccinations_out %>%
