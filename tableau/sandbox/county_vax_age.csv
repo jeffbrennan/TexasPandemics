@@ -1,126 +1,126 @@
 County,Age_Group,Doses_Administered,At_Least_One_Vaccinated,Fully_Vaccinated,Population_Total
-Anderson,12-15 years,6,6,0,2491
-Anderson,16-49 years,7646,5909,2068,28862
-Anderson,50-64 years,6809,4631,2634,10525
-Anderson,65-79 years,6557,3927,3112,6824
-Anderson,80+ years,2059,1194,986,1834
-Andrews,12-15 years,1,1,0,1276
-Andrews,16-49 years,4878,2702,2250,8732
-Andrews,50-64 years,3281,1791,1578,2938
-Andrews,65-79 years,2054,1093,988,1401
+Anderson,12-15 years,16,16,0,2491
+Anderson,16-49 years,7780,5995,2123,28862
+Anderson,50-64 years,6880,4663,2677,10525
+Anderson,65-79 years,6574,3937,3121,6824
+Anderson,80+ years,2065,1198,989,1834
+Andrews,12-15 years,12,12,0,1276
+Andrews,16-49 years,4897,2714,2258,8732
+Andrews,50-64 years,3284,1793,1579,2938
+Andrews,65-79 years,2056,1095,988,1401
 Andrews,80+ years,661,363,307,432
 Angelina,12-15 years,16,16,0,5036
-Angelina,16-49 years,13970,8327,6302,36593
-Angelina,50-64 years,14055,8013,6623,16041
-Angelina,65-79 years,14172,7698,6797,10861
-Angelina,80+ years,4390,2375,2111,3561
+Angelina,16-49 years,14065,8371,6353,36593
+Angelina,50-64 years,14101,8030,6656,16041
+Angelina,65-79 years,14191,7702,6813,10861
+Angelina,80+ years,4399,2381,2116,3561
 Angelina,Unknown,15,11,4,NA
-Aransas,12-15 years,1,1,0,948
-Aransas,16-49 years,3628,2187,1612,7746
-Aransas,50-64 years,5704,3283,2637,5266
-Aransas,65-79 years,8034,4417,3815,5258
-Aransas,80+ years,2265,1243,1069,1533
+Aransas,12-15 years,9,9,0,948
+Aransas,16-49 years,3659,2199,1632,7746
+Aransas,50-64 years,5717,3292,2644,5266
+Aransas,65-79 years,8043,4422,3821,5258
+Aransas,80+ years,2267,1244,1070,1533
 Aransas,Unknown,4,2,2,NA
-Archer,12-15 years,4,4,0,443
-Archer,16-49 years,1540,889,772,3239
-Archer,50-64 years,1734,963,877,2005
-Archer,65-79 years,1728,915,868,1287
-Archer,80+ years,554,287,282,390
-Armstrong,16-49 years,231,134,105,669
+Archer,12-15 years,3,3,0,443
+Archer,16-49 years,1543,890,774,3239
+Archer,50-64 years,1741,967,880,2005
+Archer,65-79 years,1732,917,870,1287
+Archer,80+ years,558,289,284,390
+Armstrong,16-49 years,232,135,105,669
 Armstrong,50-64 years,282,162,128,360
-Armstrong,65-79 years,413,226,195,353
+Armstrong,65-79 years,414,227,196,353
 Armstrong,80+ years,130,70,60,117
 Armstrong,Unknown,1,1,0,NA
-Atascosa,12-15 years,55,54,2,3102
-Atascosa,16-49 years,9962,6167,4244,22350
-Atascosa,50-64 years,8622,5079,3887,8813
-Atascosa,65-79 years,6950,3943,3209,5915
-Atascosa,80+ years,1694,975,766,1690
+Atascosa,12-15 years,77,76,2,3102
+Atascosa,16-49 years,10062,6202,4316,22350
+Atascosa,50-64 years,8689,5102,3934,8813
+Atascosa,65-79 years,6962,3946,3218,5915
+Atascosa,80+ years,1703,979,771,1690
 Atascosa,Unknown,6,5,1,NA
-Austin,12-15 years,8,8,0,1676
-Austin,16-49 years,4911,3032,2251,11654
-Austin,50-64 years,5073,2998,2460,6117
-Austin,65-79 years,6240,3474,3055,4700
-Austin,80+ years,1801,1008,866,1233
+Austin,12-15 years,15,15,0,1676
+Austin,16-49 years,4960,3063,2274,11654
+Austin,50-64 years,5110,3017,2481,6117
+Austin,65-79 years,6254,3481,3063,4700
+Austin,80+ years,1803,1008,868,1233
 Austin,Unknown,2,2,0,NA
-Bailey,16-49 years,1414,831,684,2921
+Bailey,16-49 years,1415,832,684,2921
 Bailey,50-64 years,1157,638,562,1132
 Bailey,65-79 years,955,515,471,756
 Bailey,80+ years,376,204,183,280
 Bailey,Unknown,3,2,1,NA
-Bandera,12-15 years,6,6,0,894
-Bandera,16-49 years,2645,1631,1193,7303
-Bandera,50-64 years,3885,2305,1847,6021
-Bandera,65-79 years,5335,3005,2594,5209
+Bandera,12-15 years,7,7,0,894
+Bandera,16-49 years,2680,1649,1221,7303
+Bandera,50-64 years,3902,2316,1860,6021
+Bandera,65-79 years,5353,3014,2606,5209
 Bandera,80+ years,1245,724,588,1230
 Bandera,Unknown,7,6,1,NA
-Bastrop,12-15 years,102,102,0,5202
-Bastrop,16-49 years,21830,13730,8872,37059
-Bastrop,50-64 years,17868,10567,7835,17915
-Bastrop,65-79 years,14363,8414,6321,11197
-Bastrop,80+ years,3307,1940,1467,2668
+Bastrop,12-15 years,148,148,0,5202
+Bastrop,16-49 years,22191,13894,9076,37059
+Bastrop,50-64 years,18012,10633,7919,17915
+Bastrop,65-79 years,14412,8437,6348,11197
+Bastrop,80+ years,3315,1944,1471,2668
 Bastrop,Unknown,8,8,0,NA
-Baylor,16-49 years,431,258,206,1258
-Baylor,50-64 years,552,304,278,691
-Baylor,65-79 years,873,462,436,587
-Baylor,80+ years,272,143,136,257
+Baylor,16-49 years,442,258,217,1258
+Baylor,50-64 years,559,304,285,691
+Baylor,65-79 years,879,462,442,587
+Baylor,80+ years,275,143,139,257
 Baylor,Unknown,2,1,1,NA
-Bee,12-15 years,27,26,1,1610
-Bee,16-49 years,7545,4840,2881,17288
-Bee,50-64 years,6172,3637,2659,5117
-Bee,65-79 years,4727,2510,2300,3109
+Bee,12-15 years,29,28,1,1610
+Bee,16-49 years,7567,4852,2891,17288
+Bee,50-64 years,6186,3643,2668,5117
+Bee,65-79 years,4730,2512,2302,3109
 Bee,80+ years,1318,713,635,982
 Bee,Unknown,8,8,0,NA
-Bell,12-15 years,259,257,2,21044
-Bell,16-49 years,61777,38087,26413,178468
-Bell,50-64 years,41414,24436,19145,53967
-Bell,65-79 years,38180,20967,18579,31590
-Bell,80+ years,10692,5913,5138,8944
+Bell,12-15 years,350,348,2,21044
+Bell,16-49 years,62596,38470,26883,178468
+Bell,50-64 years,41750,24564,19371,53967
+Bell,65-79 years,38301,21015,18659,31590
+Bell,80+ years,10714,5923,5151,8944
 Bell,Unknown,25,24,2,NA
-Bexar,12-15 years,6422,6384,41,114163
-Bexar,16-49 years,741911,431900,333847,980564
-Bexar,50-64 years,388330,218252,180726,324416
-Bexar,65-79 years,270599,147498,127408,191056
-Bexar,80+ years,67509,37944,30602,56787
-Bexar,Unknown,234,214,24,NA
-Blanco,12-15 years,2,2,0,536
-Blanco,16-49 years,1927,1150,873,4114
-Blanco,50-64 years,2711,1541,1281,2974
-Blanco,65-79 years,3646,1957,1771,2410
-Blanco,80+ years,817,439,402,594
+Bexar,12-15 years,7801,7760,44,114163
+Bexar,16-49 years,747822,434635,337421,980564
+Bexar,50-64 years,390388,219078,182071,324416
+Bexar,65-79 years,271325,147728,127936,191056
+Bexar,80+ years,67695,37986,30750,56787
+Bexar,Unknown,240,220,24,NA
+Blanco,12-15 years,3,3,0,536
+Blanco,16-49 years,1938,1156,879,4114
+Blanco,50-64 years,2723,1548,1289,2974
+Blanco,65-79 years,3649,1960,1772,2410
+Blanco,80+ years,819,440,403,594
 Blanco,Unknown,2,2,0,NA
 Borden,16-49 years,75,44,39,227
-Borden,50-64 years,67,40,33,142
+Borden,50-64 years,68,41,34,142
 Borden,65-79 years,97,53,50,116
 Borden,80+ years,26,13,13,58
-Bosque,12-15 years,7,7,0,931
-Bosque,16-49 years,2350,1413,1081,6536
-Bosque,50-64 years,3208,1885,1576,3947
-Bosque,65-79 years,4242,2369,2075,3595
-Bosque,80+ years,1360,752,658,1146
+Bosque,12-15 years,8,8,0,931
+Bosque,16-49 years,2390,1423,1111,6536
+Bosque,50-64 years,3250,1900,1605,3947
+Bosque,65-79 years,4266,2372,2096,3595
+Bosque,80+ years,1362,753,659,1146
 Bosque,Unknown,2,2,1,NA
-Bowie,12-15 years,35,35,0,4892
-Bowie,16-49 years,9969,6063,4752,40715
-Bowie,50-64 years,10457,6125,5166,17142
-Bowie,65-79 years,11927,6709,5758,11985
-Bowie,80+ years,3991,2237,1885,3847
+Bowie,12-15 years,47,47,0,4892
+Bowie,16-49 years,10064,6124,4791,40715
+Bowie,50-64 years,10500,6145,5191,17142
+Bowie,65-79 years,11955,6727,5772,11985
+Bowie,80+ years,3994,2239,1887,3847
 Bowie,Unknown,13,11,6,NA
-Brazoria,12-15 years,1000,995,6,22169
-Brazoria,16-49 years,122569,71617,56604,175461
-Brazoria,50-64 years,75264,42725,36008,66470
-Brazoria,65-79 years,53886,29079,26098,36273
-Brazoria,80+ years,13885,7476,6696,9479
+Brazoria,12-15 years,1261,1256,6,22169
+Brazoria,16-49 years,123488,72032,57132,175461
+Brazoria,50-64 years,75601,42870,36210,66470
+Brazoria,65-79 years,54004,29131,26166,36273
+Brazoria,80+ years,13907,7488,6707,9479
 Brazoria,Unknown,25,21,4,NA
-Brazos,12-15 years,231,230,1,12085
-Brazos,16-49 years,90973,52957,40708,135960
-Brazos,50-64 years,32670,18543,15693,29190
-Brazos,65-79 years,26453,14333,12734,16689
-Brazos,80+ years,8107,4500,3722,5004
+Brazos,12-15 years,373,372,1,12085
+Brazos,16-49 years,91376,53163,40932,135960
+Brazos,50-64 years,32719,18567,15724,29190
+Brazos,65-79 years,26469,14333,12752,16689
+Brazos,80+ years,8114,4504,3725,5004
 Brazos,Unknown,30,28,3,NA
-Brewster,12-15 years,2,2,0,374
-Brewster,16-49 years,2736,1593,1310,3702
-Brewster,50-64 years,2131,1210,1047,1773
-Brewster,65-79 years,2277,1254,1121,1714
+Brewster,12-15 years,6,6,0,374
+Brewster,16-49 years,2747,1597,1317,3702
+Brewster,50-64 years,2132,1210,1048,1773
+Brewster,65-79 years,2279,1255,1122,1714
 Brewster,80+ years,515,299,244,517
 Brewster,Unknown,11,8,3,NA
 Briscoe,16-49 years,173,97,83,561
@@ -128,604 +128,608 @@ Briscoe,50-64 years,214,116,102,307
 Briscoe,65-79 years,364,191,179,294
 Briscoe,80+ years,132,70,64,110
 Brooks,12-15 years,5,5,0,408
-Brooks,16-49 years,2023,1151,933,2866
-Brooks,50-64 years,1630,889,764,1143
-Brooks,65-79 years,1506,799,719,957
+Brooks,16-49 years,2035,1154,942,2866
+Brooks,50-64 years,1635,888,770,1143
+Brooks,65-79 years,1510,800,722,957
 Brooks,80+ years,466,256,214,351
 Brooks,Unknown,1,1,0,NA
-Brown,12-15 years,4,4,1,1963
-Brown,16-49 years,4131,2814,2215,15735
-Brown,50-64 years,4371,2939,2608,7428
-Brown,65-79 years,6016,3592,3226,5810
-Brown,80+ years,2004,1166,1013,1910
+Brown,12-15 years,5,5,1,1963
+Brown,16-49 years,4174,2844,2234,15735
+Brown,50-64 years,4397,2958,2617,7428
+Brown,65-79 years,6023,3596,3231,5810
+Brown,80+ years,2007,1166,1016,1910
 Brown,Unknown,9,7,4,NA
-Burleson,12-15 years,8,8,0,902
-Burleson,16-49 years,2476,1486,1157,6866
-Burleson,50-64 years,3607,2082,1784,4136
-Burleson,65-79 years,3932,2184,1970,2898
-Burleson,80+ years,1104,618,535,969
+Burleson,12-15 years,10,10,0,902
+Burleson,16-49 years,2506,1509,1170,6866
+Burleson,50-64 years,3623,2090,1793,4136
+Burleson,65-79 years,3934,2184,1973,2898
+Burleson,80+ years,1106,619,537,969
 Burleson,Unknown,4,4,0,NA
-Burnet,12-15 years,8,8,0,2344
-Burnet,16-49 years,6581,4317,2929,17928
-Burnet,50-64 years,8359,5089,3964,10312
-Burnet,65-79 years,11700,6596,5602,8570
-Burnet,80+ years,3793,2122,1792,2429
+Burnet,12-15 years,12,12,0,2344
+Burnet,16-49 years,6627,4344,2951,17928
+Burnet,50-64 years,8398,5108,3990,10312
+Burnet,65-79 years,11715,6600,5614,8570
+Burnet,80+ years,3795,2123,1793,2429
 Burnet,Unknown,6,5,3,NA
-Caldwell,12-15 years,61,60,1,2414
-Caldwell,16-49 years,10069,6522,4137,20348
-Caldwell,50-64 years,7598,4616,3493,7993
-Caldwell,65-79 years,6529,3726,3146,5029
-Caldwell,80+ years,1788,1036,857,1483
-Caldwell,Unknown,6,5,2,NA
-Calhoun,12-15 years,11,9,2,1134
-Calhoun,16-49 years,4006,2467,1990,8762
-Calhoun,50-64 years,4304,2486,2192,4074
-Calhoun,65-79 years,3982,2220,1994,3034
+Caldwell,12-15 years,73,72,1,2414
+Caldwell,16-49 years,9922,6328,4188,20348
+Caldwell,50-64 years,7585,4580,3522,7993
+Caldwell,65-79 years,6524,3719,3151,5029
+Caldwell,80+ years,1789,1036,860,1483
+Caldwell,Unknown,7,6,2,NA
+Calhoun,12-15 years,17,15,2,1134
+Calhoun,16-49 years,4042,2494,2013,8762
+Calhoun,50-64 years,4310,2486,2199,4074
+Calhoun,65-79 years,3985,2221,1996,3034
 Calhoun,80+ years,1257,681,619,947
 Calhoun,Unknown,11,6,5,NA
-Callahan,12-15 years,1,1,0,695
-Callahan,16-49 years,1485,869,686,5337
-Callahan,50-64 years,1920,1106,959,2968
-Callahan,65-79 years,2351,1310,1203,2225
+Callahan,12-15 years,2,2,0,695
+Callahan,16-49 years,1489,872,688,5337
+Callahan,50-64 years,1923,1108,961,2968
+Callahan,65-79 years,2353,1310,1205,2225
 Callahan,80+ years,755,418,372,733
-Cameron,12-15 years,1515,1495,20,28524
-Cameron,16-49 years,192224,114289,84577,189346
-Cameron,50-64 years,96687,55125,44866,63736
-Cameron,65-79 years,72318,39391,34650,43588
-Cameron,80+ years,19181,10691,9043,15019
-Cameron,Unknown,187,152,42,NA
-Camp,12-15 years,1,1,0,763
-Camp,16-49 years,1674,1011,723,5115
-Camp,50-64 years,1825,1050,839,2422
-Camp,65-79 years,2204,1220,1046,1917
-Camp,80+ years,741,409,349,577
+Cameron,12-15 years,2080,2060,20,28524
+Cameron,16-49 years,194024,115021,85698,189346
+Cameron,50-64 years,97228,55294,45253,63736
+Cameron,65-79 years,72519,39453,34796,43588
+Cameron,80+ years,19232,10711,9075,15019
+Cameron,Unknown,188,153,42,NA
+Camp,12-15 years,6,6,0,763
+Camp,16-49 years,1697,1029,728,5115
+Camp,50-64 years,1832,1052,844,2422
+Camp,65-79 years,2206,1221,1047,1917
+Camp,80+ years,742,409,350,577
 Camp,Unknown,3,2,1,NA
-Carson,16-49 years,626,363,280,2280
-Carson,50-64 years,839,469,403,1188
-Carson,65-79 years,931,491,449,945
+Carson,16-49 years,629,366,281,2280
+Carson,50-64 years,840,470,404,1188
+Carson,65-79 years,932,491,450,945
 Carson,80+ years,329,181,152,305
 Carson,Unknown,1,1,0,NA
 Cass,12-15 years,2,2,0,1518
-Cass,16-49 years,2166,1353,1020,11115
-Cass,50-64 years,3670,2207,1818,6211
-Cass,65-79 years,4678,2704,2311,5177
-Cass,80+ years,1495,864,719,1679
+Cass,16-49 years,2191,1362,1036,11115
+Cass,50-64 years,3684,2215,1827,6211
+Cass,65-79 years,4689,2710,2317,5177
+Cass,80+ years,1498,866,720,1679
 Cass,Unknown,2,1,1,NA
-Castro,12-15 years,1,1,0,489
-Castro,16-49 years,1292,796,577,3095
+Castro,12-15 years,3,3,0,489
+Castro,16-49 years,1301,801,582,3095
 Castro,50-64 years,1061,605,481,1276
 Castro,65-79 years,1123,608,533,885
 Castro,80+ years,462,245,220,351
 Castro,Unknown,3,2,1,NA
-Chambers,12-15 years,42,42,0,2793
-Chambers,16-49 years,8679,5470,3423,20349
-Chambers,50-64 years,6641,4190,2671,7454
-Chambers,65-79 years,5607,3284,2423,4278
-Chambers,80+ years,1235,698,553,981
+Chambers,12-15 years,52,52,0,2793
+Chambers,16-49 years,8777,5506,3489,20349
+Chambers,50-64 years,6695,4205,2712,7454
+Chambers,65-79 years,5615,3281,2434,4278
+Chambers,80+ years,1237,698,555,981
 Chambers,Unknown,20,16,4,NA
-Cherokee,12-15 years,5,5,0,3026
-Cherokee,16-49 years,5767,3720,2423,21976
-Cherokee,50-64 years,6312,3763,3022,9456
-Cherokee,65-79 years,7565,4205,3738,7298
-Cherokee,80+ years,2200,1231,1068,2146
+Cherokee,12-15 years,14,14,0,3026
+Cherokee,16-49 years,5819,3745,2459,21976
+Cherokee,50-64 years,6348,3786,3052,9456
+Cherokee,65-79 years,7575,4212,3743,7298
+Cherokee,80+ years,2207,1236,1071,2146
 Cherokee,Unknown,17,13,4,NA
 Childress,12-15 years,2,1,1,334
-Childress,16-49 years,1584,1095,614,3865
-Childress,50-64 years,1057,628,546,1064
-Childress,65-79 years,1126,626,579,865
+Childress,16-49 years,1586,1097,614,3865
+Childress,50-64 years,1059,629,548,1064
+Childress,65-79 years,1127,627,580,865
 Childress,80+ years,402,218,197,300
 Childress,Unknown,3,2,1,NA
-Clay,12-15 years,1,1,0,511
-Clay,16-49 years,1257,713,610,3765
-Clay,50-64 years,2030,1099,1029,2417
-Clay,65-79 years,2425,1269,1213,1887
-Clay,80+ years,717,373,357,597
+Clay,12-15 years,3,3,0,511
+Clay,16-49 years,1260,714,612,3765
+Clay,50-64 years,2032,1101,1029,2417
+Clay,65-79 years,2428,1271,1214,1887
+Clay,80+ years,719,374,358,597
 Clay,Unknown,3,3,0,NA
 Cochran,12-15 years,4,2,2,166
-Cochran,16-49 years,405,256,210,1199
-Cochran,50-64 years,469,278,251,521
+Cochran,16-49 years,409,260,212,1199
+Cochran,50-64 years,471,280,251,521
 Cochran,65-79 years,373,204,198,330
 Cochran,80+ years,128,73,67,138
-Coke,16-49 years,317,185,139,1150
-Coke,50-64 years,554,314,264,659
-Coke,65-79 years,687,370,324,701
-Coke,80+ years,271,153,118,246
-Coleman,16-49 years,610,354,289,2753
+Coke,16-49 years,319,186,140,1150
+Coke,50-64 years,557,315,266,659
+Coke,65-79 years,689,371,325,701
+Coke,80+ years,273,154,119,246
+Coleman,16-49 years,612,356,289,2753
 Coleman,50-64 years,1092,616,546,1849
 Coleman,65-79 years,1740,953,851,1606
 Coleman,80+ years,603,345,274,513
 Coleman,Unknown,1,1,0,NA
-Collin,12-15 years,3124,3095,29,63154
-Collin,16-49 years,470063,268305,215631,496845
-Collin,50-64 years,243724,135266,115293,188296
-Collin,65-79 years,148110,79542,70555,93373
-Collin,80+ years,37299,20327,17426,23202
-Collin,Unknown,154,129,26,NA
-Collingsworth,16-49 years,282,174,146,1153
-Collingsworth,50-64 years,410,240,210,555
+Collin,12-15 years,4301,4271,30,63154
+Collin,16-49 years,473564,269635,217917,496845
+Collin,50-64 years,244588,135612,115850,188296
+Collin,65-79 years,148321,79621,70696,93373
+Collin,80+ years,37348,20345,17457,23202
+Collin,Unknown,155,130,26,NA
+Collingsworth,16-49 years,285,175,148,1153
+Collingsworth,50-64 years,411,241,211,555
 Collingsworth,65-79 years,500,277,247,409
-Collingsworth,80+ years,195,102,93,146
+Collingsworth,80+ years,196,103,93,146
 Collingsworth,Unknown,3,3,0,NA
-Colorado,12-15 years,2,2,0,1078
-Colorado,16-49 years,3305,2135,1597,7881
-Colorado,50-64 years,4225,2576,2182,4376
-Colorado,65-79 years,5177,2902,2636,3609
-Colorado,80+ years,1712,969,842,1241
+Colorado,12-15 years,3,3,0,1078
+Colorado,16-49 years,3327,2149,1614,7881
+Colorado,50-64 years,4237,2582,2189,4376
+Colorado,65-79 years,5181,2905,2638,3609
+Colorado,80+ years,1716,972,843,1241
 Colorado,Unknown,2,2,0,NA
-Comal,12-15 years,228,226,2,8064
-Comal,16-49 years,39877,24443,17991,63692
-Comal,50-64 years,33332,19716,15641,33087
-Comal,65-79 years,33230,18533,15860,22780
-Comal,80+ years,7629,4427,3468,5748
+Comal,12-15 years,317,315,2,8064
+Comal,16-49 years,40595,24641,18535,63692
+Comal,50-64 years,34064,19819,16297,33087
+Comal,65-79 years,33523,18569,16124,22780
+Comal,80+ years,7695,4432,3530,5748
 Comal,Unknown,22,17,9,NA
-Comanche,12-15 years,1,1,0,717
-Comanche,16-49 years,1601,977,798,4822
-Comanche,50-64 years,2251,1304,1157,2792
-Comanche,65-79 years,3006,1638,1500,2486
+Comanche,12-15 years,2,2,0,717
+Comanche,16-49 years,1613,979,808,4822
+Comanche,50-64 years,2258,1306,1162,2792
+Comanche,65-79 years,3010,1641,1503,2486
 Comanche,80+ years,1064,570,523,844
 Comanche,Unknown,1,1,0,NA
-Concho,16-49 years,389,245,166,957
-Concho,50-64 years,494,287,243,642
-Concho,65-79 years,681,363,334,510
+Concho,16-49 years,392,247,167,957
+Concho,50-64 years,492,286,242,642
+Concho,65-79 years,683,364,335,510
 Concho,80+ years,233,126,113,179
-Cooke,12-15 years,11,11,0,2084
-Cooke,16-49 years,4848,2956,2170,16550
-Cooke,50-64 years,6114,3561,2825,8321
-Cooke,65-79 years,7046,3971,3282,6013
-Cooke,80+ years,2237,1253,1027,1791
+Cooke,12-15 years,13,13,0,2084
+Cooke,16-49 years,4892,2976,2201,16550
+Cooke,50-64 years,6158,3581,2852,8321
+Cooke,65-79 years,7071,3979,3300,6013
+Cooke,80+ years,2242,1254,1031,1791
 Cooke,Unknown,4,3,1,NA
-Coryell,12-15 years,26,26,0,3535
-Coryell,16-49 years,11605,7994,4098,42041
-Coryell,50-64 years,8049,4999,3390,10347
-Coryell,65-79 years,7293,4025,3489,6348
-Coryell,80+ years,2167,1175,1018,1692
-Coryell,Unknown,16,16,0,NA
+Coryell,12-15 years,33,33,0,3535
+Coryell,16-49 years,11729,8061,4162,42041
+Coryell,50-64 years,8102,5017,3427,10347
+Coryell,65-79 years,7317,4036,3504,6348
+Coryell,80+ years,2173,1177,1022,1692
+Coryell,Unknown,15,15,0,NA
 Cottle,16-49 years,124,72,59,501
-Cottle,50-64 years,261,149,134,283
+Cottle,50-64 years,263,151,136,283
 Cottle,65-79 years,288,158,145,254
 Cottle,80+ years,101,57,50,85
-Crane,12-15 years,2,2,0,316
-Crane,16-49 years,869,546,334,2129
-Crane,50-64 years,640,402,248,831
+Crane,12-15 years,3,3,0,316
+Crane,16-49 years,872,547,336,2129
+Crane,50-64 years,641,403,248,831
 Crane,65-79 years,500,302,199,422
 Crane,80+ years,134,77,57,172
 Crockett,16-49 years,495,284,223,1381
-Crockett,50-64 years,654,371,295,701
+Crockett,50-64 years,655,372,295,701
 Crockett,65-79 years,693,376,320,483
 Crockett,80+ years,167,88,80,129
-Crosby,16-49 years,968,549,450,2285
+Crosby,16-49 years,970,549,452,2285
 Crosby,50-64 years,1177,641,552,1051
-Crosby,65-79 years,1091,578,523,786
+Crosby,65-79 years,1093,579,524,786
 Crosby,80+ years,379,196,184,299
+Culberson,12-15 years,2,2,0,113
 Culberson,16-49 years,661,357,305,826
 Culberson,50-64 years,578,308,274,440
 Culberson,65-79 years,493,257,236,339
 Culberson,80+ years,100,50,50,141
-Dallam,16-49 years,2192,1291,920,3212
-Dallam,50-64 years,1016,581,452,1148
-Dallam,65-79 years,707,396,315,672
-Dallam,80+ years,262,146,116,185
+Dallam,16-49 years,2202,1301,920,3212
+Dallam,50-64 years,1020,584,453,1148
+Dallam,65-79 years,706,395,315,672
+Dallam,80+ years,264,147,117,185
 Dallam,Unknown,6,5,1,NA
-Dallas,12-15 years,4987,4961,28,150186
-Dallas,16-49 years,940679,556973,422633,1289222
-Dallas,50-64 years,505095,291483,230171,446766
-Dallas,65-79 years,326980,181980,150691,228505
-Dallas,80+ years,85836,48410,38741,63612
-Dallas,Unknown,257,210,55,NA
-Dawson,16-49 years,1319,874,501,5917
-Dawson,50-64 years,1472,893,648,1974
-Dawson,65-79 years,1561,863,732,1402
+Dallas,12-15 years,6605,6578,29,150186
+Dallas,16-49 years,948486,561098,426709,1289222
+Dallas,50-64 years,507571,292678,231583,446766
+Dallas,65-79 years,327781,182330,151177,228505
+Dallas,80+ years,85996,48476,38845,63612
+Dallas,Unknown,260,212,56,NA
+Dawson,16-49 years,1325,878,504,5917
+Dawson,50-64 years,1479,898,652,1974
+Dawson,65-79 years,1561,864,731,1402
 Dawson,80+ years,525,289,242,496
 Dawson,Unknown,7,6,1,NA
-Deaf Smith,12-15 years,2,2,0,1279
-Deaf Smith,16-49 years,2931,1839,1316,8160
-Deaf Smith,50-64 years,2691,1603,1289,2856
-Deaf Smith,65-79 years,2237,1273,1078,1800
+Deaf Smith,12-15 years,3,3,0,1279
+Deaf Smith,16-49 years,2954,1849,1331,8160
+Deaf Smith,50-64 years,2705,1608,1298,2856
+Deaf Smith,65-79 years,2248,1276,1086,1800
 Deaf Smith,80+ years,763,419,363,623
 Deaf Smith,Unknown,4,4,1,NA
-Delta,16-49 years,495,293,223,2008
-Delta,50-64 years,586,331,284,1096
-Delta,65-79 years,978,534,473,882
-Delta,80+ years,287,155,138,236
+Delta,16-49 years,498,293,226,2008
+Delta,50-64 years,590,331,288,1096
+Delta,65-79 years,979,535,473,882
+Delta,80+ years,288,156,138,236
 Delta,Unknown,4,3,1,NA
-Denton,12-15 years,2075,2063,13,50744
-Denton,16-49 years,362279,207852,166083,443041
-Denton,50-64 years,194752,108124,92268,160790
-Denton,65-79 years,118170,64850,55216,76333
-Denton,80+ years,26277,14443,12259,17166
+Denton,12-15 years,2580,2568,13,50744
+Denton,16-49 years,364192,208770,167188,443041
+Denton,50-64 years,195292,108368,92609,160790
+Denton,65-79 years,118296,64906,55294,76333
+Denton,80+ years,26295,14450,12270,17166
 Denton,Unknown,37,31,8,NA
-DeWitt,16-49 years,2468,1630,1024,8040
-DeWitt,50-64 years,3371,1978,1605,4035
-DeWitt,65-79 years,3843,2093,1864,2911
-DeWitt,80+ years,1207,654,590,1124
+DeWitt,12-15 years,3,3,0,999
+DeWitt,16-49 years,2474,1636,1026,8040
+DeWitt,50-64 years,3382,1984,1611,4035
+DeWitt,65-79 years,3850,2098,1868,2911
+DeWitt,80+ years,1208,654,591,1124
 DeWitt,Unknown,6,5,1,NA
-Dickens,16-49 years,173,104,86,943
-Dickens,50-64 years,269,154,141,390
-Dickens,65-79 years,416,223,211,398
+Dickens,16-49 years,175,106,88,943
+Dickens,50-64 years,274,158,145,390
+Dickens,65-79 years,418,224,213,398
 Dickens,80+ years,131,71,61,127
 Dickens,Unknown,1,1,0,NA
-Dimmit,12-15 years,12,12,0,662
-Dimmit,16-49 years,3369,2010,1381,4216
-Dimmit,50-64 years,2282,1280,1011,1574
-Dimmit,65-79 years,1941,1056,892,1293
+Dimmit,12-15 years,24,24,0,662
+Dimmit,16-49 years,3393,2028,1387,4216
+Dimmit,50-64 years,2292,1288,1013,1574
+Dimmit,65-79 years,1945,1056,896,1293
 Dimmit,80+ years,469,252,217,456
 Dimmit,Unknown,5,5,0,NA
+Donley,12-15 years,2,2,0,187
 Donley,16-49 years,320,195,142,1286
 Donley,50-64 years,488,298,210,626
-Donley,65-79 years,687,381,320,607
-Donley,80+ years,253,140,115,197
+Donley,65-79 years,689,381,322,607
+Donley,80+ years,254,140,116,197
 Donley,Unknown,1,1,0,NA
 Duval,12-15 years,3,3,0,618
-Duval,16-49 years,3145,1947,1352,4737
-Duval,50-64 years,2655,1519,1254,1832
-Duval,65-79 years,2163,1202,1044,1495
+Duval,16-49 years,3155,1954,1357,4737
+Duval,50-64 years,2659,1521,1256,1832
+Duval,65-79 years,2165,1202,1046,1495
 Duval,80+ years,717,412,348,536
 Duval,Unknown,8,8,1,NA
 Eastland,12-15 years,3,3,1,949
-Eastland,16-49 years,1810,1107,858,7221
-Eastland,50-64 years,2357,1427,1183,3695
-Eastland,65-79 years,3097,1792,1501,3003
-Eastland,80+ years,1148,652,529,1051
+Eastland,16-49 years,1823,1114,865,7221
+Eastland,50-64 years,2359,1429,1184,3695
+Eastland,65-79 years,3103,1795,1506,3003
+Eastland,80+ years,1151,654,530,1051
 Eastland,Unknown,3,2,1,NA
-Ector,12-15 years,101,97,4,10494
-Ector,16-49 years,37413,21502,16980,80817
-Ector,50-64 years,25322,14056,11985,24109
-Ector,65-79 years,16723,9041,8016,12309
-Ector,80+ years,4415,2403,2103,3661
-Ector,Unknown,16,14,3,NA
-Edwards,16-49 years,161,92,74,616
-Edwards,50-64 years,287,156,136,378
+Ector,12-15 years,154,150,4,10494
+Ector,16-49 years,37718,21676,17123,80817
+Ector,50-64 years,25431,14113,12041,24109
+Ector,65-79 years,16762,9062,8036,12309
+Ector,80+ years,4418,2405,2104,3661
+Ector,Unknown,17,15,3,NA
+Edwards,16-49 years,160,91,74,616
+Edwards,50-64 years,288,157,136,378
 Edwards,65-79 years,429,232,206,429
 Edwards,80+ years,116,60,57,132
-El Paso,12-15 years,3479,3439,41,50074
-El Paso,16-49 years,387289,230744,168980,402156
-El Paso,50-64 years,201017,113368,93372,132849
-El Paso,65-79 years,135089,73346,64108,78489
-El Paso,80+ years,40398,21910,19045,26686
+El Paso,12-15 years,4463,4423,41,50074
+El Paso,16-49 years,389840,232017,170353,402156
+El Paso,50-64 years,201730,113715,93795,132849
+El Paso,65-79 years,135427,73441,64370,78489
+El Paso,80+ years,40489,21935,19115,26686
 El Paso,Unknown,351,271,96,NA
-Ellis,12-15 years,167,166,1,11395
-Ellis,16-49 years,44314,26277,19773,82968
-Ellis,50-64 years,34137,19904,15753,34409
-Ellis,65-79 years,27993,15245,13385,19404
-Ellis,80+ years,7193,3945,3407,4884
+Ellis,12-15 years,243,242,1,11395
+Ellis,16-49 years,44638,26460,19934,82968
+Ellis,50-64 years,34272,19969,15830,34409
+Ellis,65-79 years,28042,15259,13420,19404
+Ellis,80+ years,7203,3949,3413,4884
 Ellis,Unknown,15,12,3,NA
-Erath,12-15 years,3,3,0,2416
-Erath,16-49 years,6553,3857,2979,21724
-Erath,50-64 years,5410,3102,2601,6895
-Erath,65-79 years,5883,3185,2816,4714
-Erath,80+ years,1888,1012,911,1542
+Erath,12-15 years,4,4,0,2416
+Erath,16-49 years,6576,3866,2995,21724
+Erath,50-64 years,5421,3107,2608,6895
+Erath,65-79 years,5885,3185,2818,4714
+Erath,80+ years,1888,1011,912,1542
 Erath,Unknown,3,2,2,NA
 Falls,12-15 years,7,7,0,777
-Falls,16-49 years,2617,1821,875,7454
-Falls,50-64 years,2627,1566,1143,3369
-Falls,65-79 years,2671,1473,1252,2398
-Falls,80+ years,862,473,406,828
+Falls,16-49 years,2631,1828,884,7454
+Falls,50-64 years,2636,1572,1146,3369
+Falls,65-79 years,2676,1476,1254,2398
+Falls,80+ years,863,474,406,828
 Falls,Unknown,2,1,1,NA
-Fannin,12-15 years,12,12,0,1802
-Fannin,16-49 years,4153,2663,1803,15069
-Fannin,50-64 years,4818,2875,2400,7217
-Fannin,65-79 years,5763,3185,2889,5027
-Fannin,80+ years,1917,1053,933,1561
+Fannin,12-15 years,14,14,0,1802
+Fannin,16-49 years,4195,2678,1834,15069
+Fannin,50-64 years,4839,2879,2418,7217
+Fannin,65-79 years,5775,3190,2897,5027
+Fannin,80+ years,1919,1055,933,1561
 Fannin,Unknown,2,2,0,NA
-Fayette,12-15 years,2,2,0,1199
-Fayette,16-49 years,3387,2176,1549,8774
-Fayette,50-64 years,4466,2711,2177,5426
-Fayette,65-79 years,6269,3571,3061,4909
-Fayette,80+ years,2142,1206,1040,1770
+Fayette,12-15 years,9,9,0,1199
+Fayette,16-49 years,3405,2188,1556,8774
+Fayette,50-64 years,4476,2719,2182,5426
+Fayette,65-79 years,6276,3576,3065,4909
+Fayette,80+ years,2140,1205,1039,1770
 Fayette,Unknown,9,9,3,NA
 Fisher,12-15 years,2,2,0,189
-Fisher,16-49 years,346,209,168,1361
-Fisher,50-64 years,516,297,264,766
-Fisher,65-79 years,705,384,357,645
+Fisher,16-49 years,348,211,168,1361
+Fisher,50-64 years,519,299,265,766
+Fisher,65-79 years,706,384,358,645
 Fisher,80+ years,252,135,123,316
-Floyd,16-49 years,927,542,447,2299
-Floyd,50-64 years,998,562,485,1002
-Floyd,65-79 years,1016,542,498,760
+Floyd,16-49 years,933,544,451,2299
+Floyd,50-64 years,1003,564,488,1002
+Floyd,65-79 years,1018,543,499,760
 Floyd,80+ years,415,225,196,310
 Floyd,Unknown,1,1,0,NA
 Foard,16-49 years,121,74,55,382
 Foard,50-64 years,243,141,110,265
-Foard,65-79 years,249,139,120,211
+Foard,65-79 years,247,138,119,211
 Foard,80+ years,94,50,47,104
-Fort Bend,12-15 years,2912,2898,16,51782
-Fort Bend,16-49 years,366869,214649,166167,375365
-Fort Bend,50-64 years,200869,113891,93654,147197
-Fort Bend,65-79 years,134698,72668,63924,77335
-Fort Bend,80+ years,26303,14271,12422,16516
+Fort Bend,12-15 years,4136,4122,16,51782
+Fort Bend,16-49 years,370530,215562,168995,375365
+Fort Bend,50-64 years,201987,113949,94741,147197
+Fort Bend,65-79 years,134970,72732,64144,77335
+Fort Bend,80+ years,26356,14284,12463,16516
 Fort Bend,Unknown,102,89,20,NA
-Franklin,16-49 years,912,580,410,3970
-Franklin,50-64 years,1378,805,669,2217
-Franklin,65-79 years,1866,1073,895,1813
-Franklin,80+ years,632,355,304,554
+Franklin,16-49 years,920,586,412,3970
+Franklin,50-64 years,1384,810,670,2217
+Franklin,65-79 years,1871,1077,896,1813
+Franklin,80+ years,633,356,304,554
 Franklin,Unknown,1,1,1,NA
-Freestone,12-15 years,3,3,0,1018
-Freestone,16-49 years,1740,1245,644,8038
-Freestone,50-64 years,2416,1572,1068,3774
-Freestone,65-79 years,2889,1657,1390,3030
-Freestone,80+ years,934,533,444,966
+Freestone,12-15 years,4,4,0,1018
+Freestone,16-49 years,1748,1250,648,8038
+Freestone,50-64 years,2422,1575,1072,3774
+Freestone,65-79 years,2893,1659,1392,3030
+Freestone,80+ years,936,534,445,966
 Freestone,Unknown,2,2,1,NA
-Frio,12-15 years,7,6,1,1067
-Frio,16-49 years,4201,2740,1717,10808
-Frio,50-64 years,2899,1749,1414,2814
-Frio,65-79 years,2304,1330,1152,1906
-Frio,80+ years,609,360,303,593
+Frio,12-15 years,9,8,1,1067
+Frio,16-49 years,4265,2756,1765,10808
+Frio,50-64 years,2928,1753,1439,2814
+Frio,65-79 years,2316,1334,1160,1906
+Frio,80+ years,611,361,304,593
 Frio,Unknown,1,1,1,NA
-Gaines,12-15 years,2,2,1,1666
-Gaines,16-49 years,2040,1232,991,9498
-Gaines,50-64 years,1707,993,855,3143
-Gaines,65-79 years,1151,644,569,1411
-Gaines,80+ years,430,241,203,496
+Gaines,12-15 years,5,5,1,1666
+Gaines,16-49 years,2055,1246,1002,9498
+Gaines,50-64 years,1715,998,860,3143
+Gaines,65-79 years,1155,648,572,1411
+Gaines,80+ years,433,244,204,496
 Gaines,Unknown,2,1,1,NA
-Galveston,12-15 years,924,922,2,18986
-Galveston,16-49 years,108281,60651,50509,151034
-Galveston,50-64 years,79495,43375,38084,67259
-Galveston,65-79 years,61827,32507,30167,40230
-Galveston,80+ years,15612,8259,7545,10757
+Galveston,12-15 years,1137,1135,2,18986
+Galveston,16-49 years,109037,61035,50920,151034
+Galveston,50-64 years,79835,43528,38285,67259
+Galveston,65-79 years,61924,32548,30225,40230
+Galveston,80+ years,15633,8265,7560,10757
 Galveston,Unknown,34,29,6,NA
-Garza,16-49 years,1347,1106,547,3538
-Garza,50-64 years,950,661,527,1068
+Garza,12-15 years,1,1,0,267
+Garza,16-49 years,1436,1189,626,3538
+Garza,50-64 years,961,671,536,1068
 Garza,65-79 years,705,396,356,498
 Garza,80+ years,257,140,119,221
-Gillespie,12-15 years,11,10,1,1224
-Gillespie,16-49 years,4006,2450,1725,8718
-Gillespie,50-64 years,4973,2877,2323,5479
-Gillespie,65-79 years,8379,4501,4084,5862
-Gillespie,80+ years,2884,1586,1344,2248
+Gillespie,12-15 years,33,32,1,1224
+Gillespie,16-49 years,4082,2470,1783,8718
+Gillespie,50-64 years,5032,2893,2369,5479
+Gillespie,65-79 years,8403,4508,4101,5862
+Gillespie,80+ years,2890,1588,1348,2248
 Gillespie,Unknown,4,3,1,NA
 Glasscock,12-15 years,1,1,0,83
-Glasscock,16-49 years,341,191,159,649
+Glasscock,16-49 years,345,192,162,649
 Glasscock,50-64 years,258,147,122,240
 Glasscock,65-79 years,190,104,90,160
 Glasscock,80+ years,61,32,31,50
 Glasscock,Unknown,1,1,0,NA
-Goliad,12-15 years,1,1,0,367
-Goliad,16-49 years,822,481,404,2811
-Goliad,50-64 years,1304,732,651,1638
-Goliad,65-79 years,1659,893,819,1392
+Goliad,12-15 years,2,2,0,367
+Goliad,16-49 years,825,484,405,2811
+Goliad,50-64 years,1308,735,652,1638
+Goliad,65-79 years,1661,893,821,1392
 Goliad,80+ years,488,266,241,440
 Goliad,Unknown,1,1,0,NA
 Gonzales,12-15 years,1,1,0,1267
-Gonzales,16-49 years,3558,2206,1773,8482
-Gonzales,50-64 years,3614,2172,1902,3883
-Gonzales,65-79 years,3415,1888,1732,2658
-Gonzales,80+ years,1198,651,598,914
-Gray,12-15 years,2,2,0,1261
-Gray,16-49 years,3176,1971,1324,9489
-Gray,50-64 years,2870,1672,1365,3904
-Gray,65-79 years,2987,1669,1423,2591
-Gray,80+ years,1090,599,526,940
-Grayson,12-15 years,31,27,4,7361
-Grayson,16-49 years,20067,12381,9624,56114
-Grayson,50-64 years,20942,12592,10625,27225
-Grayson,65-79 years,22834,12997,11577,18628
-Grayson,80+ years,6559,3751,3262,5554
+Gonzales,16-49 years,3595,2231,1787,8482
+Gonzales,50-64 years,3628,2177,1912,3883
+Gonzales,65-79 years,3427,1894,1739,2658
+Gonzales,80+ years,1200,651,600,914
+Gray,12-15 years,7,7,0,1261
+Gray,16-49 years,3197,1986,1331,9489
+Gray,50-64 years,2877,1675,1369,3904
+Gray,65-79 years,2992,1670,1427,2591
+Gray,80+ years,1092,600,528,940
+Grayson,12-15 years,48,44,4,7361
+Grayson,16-49 years,20235,12464,9726,56114
+Grayson,50-64 years,21045,12644,10694,27225
+Grayson,65-79 years,22888,13029,11603,18628
+Grayson,80+ years,6573,3760,3269,5554
 Grayson,Unknown,30,25,6,NA
-Gregg,12-15 years,78,78,0,7080
-Gregg,16-49 years,20898,12010,9546,54085
-Gregg,50-64 years,19670,10978,9380,22008
-Gregg,65-79 years,19225,10448,9235,14348
-Gregg,80+ years,6744,3642,3218,5103
+Gregg,12-15 years,141,141,0,7080
+Gregg,16-49 years,21032,12109,9585,54085
+Gregg,50-64 years,19742,11020,9416,22008
+Gregg,65-79 years,19266,10469,9256,14348
+Gregg,80+ years,6750,3644,3222,5103
 Gregg,Unknown,18,14,6,NA
-Grimes,12-15 years,6,5,1,1476
-Grimes,16-49 years,4914,3156,1993,12183
-Grimes,50-64 years,5276,3225,2376,5928
-Grimes,65-79 years,5747,3208,2783,4055
-Grimes,80+ years,1338,744,639,1079
+Grimes,12-15 years,11,10,1,1476
+Grimes,16-49 years,4966,3192,2013,12183
+Grimes,50-64 years,5304,3239,2391,5928
+Grimes,65-79 years,5752,3210,2787,4055
+Grimes,80+ years,1340,744,641,1079
 Grimes,Unknown,3,3,0,NA
-Guadalupe,12-15 years,429,422,7,9623
-Guadalupe,16-49 years,44169,26875,20991,76576
-Guadalupe,50-64 years,29410,17575,14689,30327
-Guadalupe,65-79 years,23146,13206,11519,18405
-Guadalupe,80+ years,5794,3373,2830,5209
+Guadalupe,12-15 years,549,542,7,9623
+Guadalupe,16-49 years,44630,27080,21269,76576
+Guadalupe,50-64 years,29627,17632,14863,30327
+Guadalupe,65-79 years,23235,13226,11591,18405
+Guadalupe,80+ years,5815,3380,2845,5209
 Guadalupe,Unknown,23,20,4,NA
-Hale,12-15 years,1,1,0,2121
-Hale,16-49 years,5266,3200,2441,15413
-Hale,50-64 years,4665,2684,2319,5459
-Hale,65-79 years,4199,2330,2072,3441
-Hale,80+ years,1403,770,692,1163
+Hale,12-15 years,10,10,0,2121
+Hale,16-49 years,5307,3229,2454,15413
+Hale,50-64 years,4677,2694,2321,5459
+Hale,65-79 years,4202,2331,2074,3441
+Hale,80+ years,1405,772,692,1163
 Hale,Unknown,1,1,0,NA
-Hall,16-49 years,351,213,168,1083
-Hall,50-64 years,535,324,265,612
+Hall,16-49 years,352,214,168,1083
+Hall,50-64 years,536,325,266,612
 Hall,65-79 years,673,361,338,513
 Hall,80+ years,223,124,109,198
 Hall,Unknown,6,4,2,NA
-Hamilton,16-49 years,1132,725,563,3022
-Hamilton,50-64 years,1426,863,754,1664
-Hamilton,65-79 years,1977,1115,981,1510
-Hamilton,80+ years,750,399,373,636
+Hamilton,16-49 years,1133,726,563,3022
+Hamilton,50-64 years,1427,864,755,1664
+Hamilton,65-79 years,1978,1116,981,1510
+Hamilton,80+ years,751,400,373,636
 Hamilton,Unknown,1,1,0,NA
-Hansford,16-49 years,889,568,514,2239
-Hansford,50-64 years,899,533,488,936
+Hansford,16-49 years,890,568,515,2239
+Hansford,50-64 years,901,534,489,936
 Hansford,65-79 years,824,449,425,575
-Hansford,80+ years,317,173,155,237
-Hardeman,16-49 years,688,410,347,1533
+Hansford,80+ years,319,175,155,237
+Hardeman,16-49 years,691,411,350,1533
 Hardeman,50-64 years,608,356,324,745
 Hardeman,65-79 years,859,464,436,671
 Hardeman,80+ years,224,121,115,241
 Hardeman,Unknown,1,1,0,NA
-Hardin,12-15 years,11,11,0,3175
-Hardin,16-49 years,6716,3990,2954,23999
-Hardin,50-64 years,7418,4232,3435,11351
-Hardin,65-79 years,9046,4925,4320,7561
-Hardin,80+ years,2792,1550,1286,2201
+Hardin,12-15 years,17,17,0,3175
+Hardin,16-49 years,6770,4021,2978,23999
+Hardin,50-64 years,7451,4248,3453,11351
+Hardin,65-79 years,9065,4932,4334,7561
+Hardin,80+ years,2799,1551,1292,2201
 Hardin,Unknown,26,22,5,NA
-Harris,12-15 years,10678,10645,36,273903
-Harris,16-49 years,1688275,1017336,753312,2305051
-Harris,50-64 years,916281,532684,424060,782721
-Harris,65-79 years,606659,335773,283470,408490
-Harris,80+ years,144516,79638,67783,105677
-Harris,Unknown,576,467,147,NA
-Harrison,12-15 years,19,18,2,3870
-Harrison,16-49 years,7734,4788,3676,27600
-Harrison,50-64 years,8905,5297,4446,12693
-Harrison,65-79 years,9491,5388,4674,8956
-Harrison,80+ years,2705,1502,1333,2651
+Harris,12-15 years,13527,13492,38,273903
+Harris,16-49 years,1707155,1025562,764830,2305051
+Harris,50-64 years,922626,535208,428094,782721
+Harris,65-79 years,608322,336462,284508,408490
+Harris,80+ years,144784,79753,67940,105677
+Harris,Unknown,581,472,147,NA
+Harrison,12-15 years,31,30,2,3870
+Harrison,16-49 years,7779,4809,3701,27600
+Harrison,50-64 years,8931,5305,4465,12693
+Harrison,65-79 years,9507,5394,4687,8956
+Harrison,80+ years,2706,1503,1333,2651
 Harrison,Unknown,9,7,3,NA
-Hartley,12-15 years,1,1,0,258
-Hartley,16-49 years,1770,1115,665,2708
+Hartley,12-15 years,2,2,0,258
+Hartley,16-49 years,1775,1119,666,2708
 Hartley,50-64 years,887,486,402,992
-Hartley,65-79 years,617,339,284,629
-Hartley,80+ years,204,111,93,232
-Haskell,16-49 years,821,504,361,2406
-Haskell,50-64 years,880,520,428,1159
+Hartley,65-79 years,618,340,284,629
+Hartley,80+ years,202,110,92,232
+Haskell,16-49 years,823,504,363,2406
+Haskell,50-64 years,881,521,428,1159
 Haskell,65-79 years,1093,607,512,936
 Haskell,80+ years,426,239,194,330
 Haskell,Unknown,1,1,0,NA
-Hays,12-15 years,767,755,12,12764
-Hays,16-49 years,92055,55002,41516,121220
-Hays,50-64 years,42303,24502,20192,35973
-Hays,65-79 years,34968,19432,16813,21472
-Hays,80+ years,7804,4373,3684,4715
-Hays,Unknown,61,47,19,NA
-Hemphill,16-49 years,768,496,435,1604
+Hays,12-15 years,954,941,13,12764
+Hays,16-49 years,93305,55583,42227,121220
+Hays,50-64 years,42591,24637,20356,35973
+Hays,65-79 years,35063,19469,16872,21472
+Hays,80+ years,7825,4382,3696,4715
+Hays,Unknown,62,48,19,NA
+Hemphill,16-49 years,769,496,436,1604
 Hemphill,50-64 years,554,329,308,617
 Hemphill,65-79 years,628,346,321,453
 Hemphill,80+ years,221,120,103,153
 Hemphill,Unknown,1,1,0,NA
-Henderson,12-15 years,16,16,0,4106
-Henderson,16-49 years,7999,4863,3494,31210
-Henderson,50-64 years,11934,7042,5628,17494
-Henderson,65-79 years,15540,8721,7545,14270
-Henderson,80+ years,4736,2639,2301,4264
+Henderson,12-15 years,43,43,0,4106
+Henderson,16-49 years,8080,4913,3533,31210
+Henderson,50-64 years,12015,7082,5675,17494
+Henderson,65-79 years,15583,8738,7572,14270
+Henderson,80+ years,4743,2643,2306,4264
 Henderson,Unknown,6,5,1,NA
-Hidalgo,12-15 years,5169,5144,26,61560
-Hidalgo,16-49 years,402291,237179,179802,405019
-Hidalgo,50-64 years,178383,101639,82952,117477
-Hidalgo,65-79 years,120796,66440,57281,73054
-Hidalgo,80+ years,32894,18434,15262,25274
-Hidalgo,Unknown,173,142,36,NA
-Hill,12-15 years,4,4,0,1994
-Hill,16-49 years,4233,2579,1986,14182
-Hill,50-64 years,5565,3384,2820,7332
-Hill,65-79 years,6690,3838,3389,5855
-Hill,80+ years,2071,1181,1033,1829
+Hidalgo,12-15 years,6358,6331,28,61560
+Hidalgo,16-49 years,406711,238861,182707,405019
+Hidalgo,50-64 years,179506,102052,83706,117477
+Hidalgo,65-79 years,121277,66566,57657,73054
+Hidalgo,80+ years,33014,18479,15343,25274
+Hidalgo,Unknown,172,142,35,NA
+Hill,12-15 years,5,5,0,1994
+Hill,16-49 years,4267,2596,2003,14182
+Hill,50-64 years,5588,3397,2831,7332
+Hill,65-79 years,6700,3842,3396,5855
+Hill,80+ years,2074,1181,1036,1829
 Hill,Unknown,6,6,0,NA
 Hockley,12-15 years,11,9,2,1417
-Hockley,16-49 years,4295,2530,2082,10375
-Hockley,50-64 years,3717,2109,1885,3971
-Hockley,65-79 years,3316,1813,1655,2579
+Hockley,16-49 years,4306,2535,2090,10375
+Hockley,50-64 years,3720,2111,1886,3971
+Hockley,65-79 years,3318,1814,1657,2579
 Hockley,80+ years,1123,602,543,874
 Hockley,Unknown,1,1,0,NA
-Hood,12-15 years,25,25,0,2950
-Hood,16-49 years,8625,4979,3948,21771
-Hood,50-64 years,11418,6323,5476,13006
-Hood,65-79 years,16807,8915,8228,11784
-Hood,80+ years,5370,2860,2617,3632
+Hood,12-15 years,32,32,0,2950
+Hood,16-49 years,8656,4995,3963,21771
+Hood,50-64 years,11444,6340,5488,13006
+Hood,65-79 years,16821,8922,8237,11784
+Hood,80+ years,5374,2862,2619,3632
 Hood,Unknown,13,12,1,NA
-Hopkins,12-15 years,8,8,0,2042
-Hopkins,16-49 years,4429,2676,1987,15107
-Hopkins,50-64 years,4997,2828,2396,7181
-Hopkins,65-79 years,5932,3250,2890,5247
-Hopkins,80+ years,2046,1109,990,1640
+Hopkins,12-15 years,14,14,0,2042
+Hopkins,16-49 years,4464,2697,2008,15107
+Hopkins,50-64 years,5015,2839,2405,7181
+Hopkins,65-79 years,5945,3255,2898,5247
+Hopkins,80+ years,2049,1110,992,1640
 Hopkins,Unknown,14,10,4,NA
-Houston,12-15 years,4,4,1,1050
-Houston,16-49 years,2459,1668,961,9087
-Houston,50-64 years,3083,1923,1411,4666
-Houston,65-79 years,3935,2237,1931,3764
+Houston,12-15 years,6,6,1,1050
+Houston,16-49 years,2510,1692,988,9087
+Houston,50-64 years,3102,1936,1417,4666
+Houston,65-79 years,3938,2239,1932,3764
 Houston,80+ years,1286,717,635,1412
 Houston,Unknown,2,2,0,NA
 Howard,12-15 years,3,3,0,1772
-Howard,16-49 years,4911,3036,2279,17809
-Howard,50-64 years,4162,2455,2015,6922
-Howard,65-79 years,3403,1924,1659,3556
-Howard,80+ years,1102,613,527,1257
+Howard,16-49 years,5062,3184,2283,17809
+Howard,50-64 years,4202,2493,2017,6922
+Howard,65-79 years,3411,1932,1659,3556
+Howard,80+ years,1105,614,529,1257
 Howard,Unknown,4,3,1,NA
-Hudspeth,12-15 years,7,6,1,210
-Hudspeth,16-49 years,2048,1213,916,2487
-Hudspeth,50-64 years,901,501,431,717
+Hudspeth,12-15 years,10,9,1,210
+Hudspeth,16-49 years,2060,1217,924,2487
+Hudspeth,50-64 years,905,502,434,717
 Hudspeth,65-79 years,695,378,334,595
-Hudspeth,80+ years,132,72,60,180
+Hudspeth,80+ years,133,72,61,180
 Hudspeth,Unknown,1,1,0,NA
-Hunt,12-15 years,35,33,2,5483
-Hunt,16-49 years,14620,8784,6542,42660
-Hunt,50-64 years,14204,8215,6807,19408
-Hunt,65-79 years,13923,7687,6752,12210
-Hunt,80+ years,4216,2330,2054,3600
+Hunt,12-15 years,53,51,2,5483
+Hunt,16-49 years,14814,8869,6663,42660
+Hunt,50-64 years,14316,8253,6892,19408
+Hunt,65-79 years,13969,7702,6788,12210
+Hunt,80+ years,4219,2330,2057,3600
 Hunt,Unknown,18,10,8,NA
-Hutchinson,12-15 years,6,6,0,1234
-Hutchinson,16-49 years,2741,1577,1232,8839
-Hutchinson,50-64 years,2991,1689,1393,3838
-Hutchinson,65-79 years,3037,1667,1429,2700
+Hutchinson,12-15 years,9,9,0,1234
+Hutchinson,16-49 years,2750,1581,1237,8839
+Hutchinson,50-64 years,3001,1693,1399,3838
+Hutchinson,65-79 years,3046,1672,1433,2700
 Hutchinson,80+ years,927,517,426,881
 Hutchinson,Unknown,2,2,0,NA
 Irion,12-15 years,1,1,0,70
-Irion,16-49 years,154,93,68,589
-Irion,50-64 years,309,170,143,317
+Irion,16-49 years,157,94,70,589
+Irion,50-64 years,310,171,144,317
 Irion,65-79 years,301,159,147,261
 Irion,80+ years,87,47,41,67
 Irion,Unknown,2,1,1,NA
-Jack,12-15 years,1,1,0,452
-Jack,16-49 years,1051,690,461,4013
-Jack,50-64 years,1156,696,549,1702
-Jack,65-79 years,1285,692,642,1160
-Jack,80+ years,525,277,258,355
-Jackson,12-15 years,4,4,0,848
-Jackson,16-49 years,2329,1360,1083,6020
-Jackson,50-64 years,2516,1421,1206,2685
-Jackson,65-79 years,2834,1506,1401,1986
-Jackson,80+ years,861,455,416,734
+Jack,12-15 years,2,2,0,452
+Jack,16-49 years,1055,691,464,4013
+Jack,50-64 years,1160,697,552,1702
+Jack,65-79 years,1286,693,642,1160
+Jack,80+ years,523,276,257,355
+Jackson,12-15 years,6,6,0,848
+Jackson,16-49 years,2373,1393,1094,6020
+Jackson,50-64 years,2539,1441,1211,2685
+Jackson,65-79 years,2844,1513,1404,1986
+Jackson,80+ years,863,456,417,734
 Jackson,Unknown,4,4,1,NA
 Jasper,12-15 years,5,5,0,1923
-Jasper,16-49 years,3032,1812,1389,13594
-Jasper,50-64 years,4893,2749,2379,7275
-Jasper,65-79 years,6226,3367,3093,5562
-Jasper,80+ years,1952,1061,936,1625
+Jasper,16-49 years,3040,1816,1395,13594
+Jasper,50-64 years,4904,2756,2387,7275
+Jasper,65-79 years,6234,3373,3099,5562
+Jasper,80+ years,1955,1063,937,1625
 Jasper,Unknown,2,2,0,NA
-Jeff Davis,12-15 years,2,1,1,39
-Jeff Davis,16-49 years,513,294,237,740
-Jeff Davis,50-64 years,612,335,295,628
+Jeff Davis,12-15 years,26,25,1,39
+Jeff Davis,16-49 years,519,300,237,740
+Jeff Davis,50-64 years,610,334,294,628
 Jeff Davis,65-79 years,705,377,348,648
 Jeff Davis,80+ years,138,73,67,164
-Jefferson,12-15 years,46,44,2,13269
-Jefferson,16-49 years,46354,27992,19056,113606
-Jefferson,50-64 years,44273,25143,19722,46181
-Jefferson,65-79 years,37388,20369,17333,28059
-Jefferson,80+ years,11868,6588,5356,9536
+Jefferson,12-15 years,83,81,2,13269
+Jefferson,16-49 years,46954,28278,19384,113606
+Jefferson,50-64 years,44537,25249,19895,46181
+Jefferson,65-79 years,37487,20409,17397,28059
+Jefferson,80+ years,11896,6593,5379,9536
 Jefferson,Unknown,50,48,4,NA
 Jim Hogg,12-15 years,2,2,0,377
-Jim Hogg,16-49 years,1879,1075,814,2088
+Jim Hogg,16-49 years,1882,1077,815,2088
 Jim Hogg,50-64 years,1185,673,527,813
-Jim Hogg,65-79 years,981,525,459,689
+Jim Hogg,65-79 years,982,525,460,689
 Jim Hogg,80+ years,325,175,152,201
 Jim Hogg,Unknown,1,1,0,NA
-Jim Wells,12-15 years,24,24,0,2542
-Jim Wells,16-49 years,10850,6256,4917,17399
-Jim Wells,50-64 years,9089,5023,4321,6822
-Jim Wells,65-79 years,7248,3921,3477,4763
-Jim Wells,80+ years,1905,1086,859,1595
+Jim Wells,12-15 years,36,36,0,2542
+Jim Wells,16-49 years,10890,6286,4930,17399
+Jim Wells,50-64 years,9103,5030,4329,6822
+Jim Wells,65-79 years,7256,3926,3480,4763
+Jim Wells,80+ years,1907,1086,861,1595
 Jim Wells,Unknown,11,11,0,NA
-Johnson,12-15 years,100,100,0,10571
-Johnson,16-49 years,34215,19895,15330,77352
-Johnson,50-64 years,28805,16032,13595,32842
-Johnson,65-79 years,25623,13854,12370,19862
-Johnson,80+ years,6865,3740,3318,5289
+Johnson,12-15 years,160,160,0,10571
+Johnson,16-49 years,34511,20093,15436,77352
+Johnson,50-64 years,28936,16115,13655,32842
+Johnson,65-79 years,25664,13882,12386,19862
+Johnson,80+ years,6870,3742,3322,5289
 Johnson,Unknown,28,20,8,NA
 Jones,12-15 years,1,1,0,806
-Jones,16-49 years,2841,2138,820,10219
-Jones,50-64 years,2187,1371,1030,3604
-Jones,65-79 years,2446,1387,1203,2374
+Jones,16-49 years,2845,2140,822,10219
+Jones,50-64 years,2188,1371,1031,3604
+Jones,65-79 years,2448,1389,1203,2374
 Jones,80+ years,771,440,376,814
 Jones,Unknown,2,1,1,NA
-Karnes,12-15 years,3,2,1,761
-Karnes,16-49 years,3336,2415,1186,7992
-Karnes,50-64 years,2634,1701,1301,2466
-Karnes,65-79 years,2365,1329,1191,1578
-Karnes,80+ years,783,446,367,633
+Karnes,12-15 years,8,7,1,761
+Karnes,16-49 years,3663,2438,1491,7992
+Karnes,50-64 years,2710,1713,1365,2466
+Karnes,65-79 years,2375,1336,1195,1578
+Karnes,80+ years,790,449,371,633
 Karnes,Unknown,2,2,0,NA
-Kaufman,12-15 years,137,127,10,8667
-Kaufman,16-49 years,34058,20381,15032,62501
-Kaufman,50-64 years,23575,13684,10976,23727
-Kaufman,65-79 years,17903,10000,8456,12902
-Kaufman,80+ years,4421,2488,2071,3211
-Kaufman,Unknown,7,6,1,NA
-Kendall,12-15 years,85,83,2,2745
-Kendall,16-49 years,12778,7600,5940,18972
-Kendall,50-64 years,10793,6158,5184,9766
-Kendall,65-79 years,10681,5907,5128,6989
-Kendall,80+ years,2964,1776,1265,2163
+Kaufman,12-15 years,193,183,10,8667
+Kaufman,16-49 years,34276,20506,15149,62501
+Kaufman,50-64 years,23659,13727,11025,23727
+Kaufman,65-79 years,17952,10028,8481,12902
+Kaufman,80+ years,4425,2489,2075,3211
+Kaufman,Unknown,8,7,2,NA
+Kendall,12-15 years,107,105,2,2745
+Kendall,16-49 years,12829,7621,5974,18972
+Kendall,50-64 years,10823,6167,5208,9766
+Kendall,65-79 years,10688,5910,5133,6989
+Kendall,80+ years,2969,1779,1268,2163
 Kendall,Unknown,9,6,4,NA
-Kenedy,16-49 years,114,64,52,181
-Kenedy,50-64 years,126,66,61,72
+Kenedy,16-49 years,115,65,52,181
+Kenedy,50-64 years,127,66,62,72
 Kenedy,65-79 years,70,37,34,53
 Kenedy,80+ years,18,9,9,15
 Kent,16-49 years,74,44,39,252
@@ -733,499 +737,503 @@ Kent,50-64 years,87,52,41,162
 Kent,65-79 years,147,80,74,128
 Kent,80+ years,85,47,40,73
 Kerr,12-15 years,20,20,0,2309
-Kerr,16-49 years,7315,4495,3180,18443
-Kerr,50-64 years,7962,4741,3596,10581
-Kerr,65-79 years,11778,6613,5569,10861
-Kerr,80+ years,4070,2310,1879,3908
+Kerr,16-49 years,7393,4517,3242,18443
+Kerr,50-64 years,7993,4750,3619,10581
+Kerr,65-79 years,11806,6623,5589,10861
+Kerr,80+ years,4074,2310,1882,3908
 Kerr,Unknown,8,6,3,NA
-Kimble,16-49 years,447,294,196,1458
-Kimble,50-64 years,700,427,322,905
+Kimble,16-49 years,449,295,197,1458
+Kimble,50-64 years,705,428,326,905
 Kimble,65-79 years,1168,632,560,982
-Kimble,80+ years,337,183,162,306
+Kimble,80+ years,338,183,163,306
 Kimble,Unknown,1,1,0,NA
 King,16-49 years,19,13,10,94
 King,50-64 years,25,14,12,60
 King,65-79 years,15,8,7,33
 King,80+ years,2,1,1,18
-Kinney,16-49 years,508,310,215,1538
+Kinney,16-49 years,509,310,216,1538
 Kinney,50-64 years,519,326,200,602
 Kinney,65-79 years,698,401,307,639
 Kinney,80+ years,247,141,111,271
 Kinney,Unknown,2,2,0,NA
-Kleberg,12-15 years,122,121,1,1801
-Kleberg,16-49 years,12376,6937,5653,16066
-Kleberg,50-64 years,6927,3768,3271,4076
-Kleberg,65-79 years,5489,2924,2637,2987
-Kleberg,80+ years,1490,793,715,1059
+Kleberg,12-15 years,135,134,1,1801
+Kleberg,16-49 years,12458,6977,5696,16066
+Kleberg,50-64 years,6953,3781,3286,4076
+Kleberg,65-79 years,5491,2926,2637,2987
+Kleberg,80+ years,1494,796,716,1059
 Kleberg,Unknown,13,11,2,NA
-Knox,16-49 years,463,260,231,1362
-Knox,50-64 years,634,357,326,710
-Knox,65-79 years,625,340,318,526
+Knox,16-49 years,465,261,232,1362
+Knox,50-64 years,635,358,326,710
+Knox,65-79 years,626,340,319,526
 Knox,80+ years,320,167,158,210
-La Salle,16-49 years,2527,1462,1133,4146
+La Salle,16-49 years,2528,1462,1134,4146
 La Salle,50-64 years,1607,900,768,1048
 La Salle,65-79 years,1192,638,590,766
-La Salle,80+ years,278,153,130,252
+La Salle,80+ years,279,153,131,252
 Lamar,12-15 years,12,10,2,2553
-Lamar,16-49 years,5905,3452,2804,19947
-Lamar,50-64 years,7493,4162,3648,9729
-Lamar,65-79 years,8468,4567,4164,7339
-Lamar,80+ years,2959,1594,1443,2387
+Lamar,16-49 years,5927,3466,2812,19947
+Lamar,50-64 years,7507,4172,3654,9729
+Lamar,65-79 years,8474,4571,4166,7339
+Lamar,80+ years,2963,1596,1445,2387
 Lamar,Unknown,7,7,2,NA
-Lamb,12-15 years,5,4,1,814
-Lamb,16-49 years,1896,1139,923,5149
-Lamb,50-64 years,2307,1362,1065,2351
-Lamb,65-79 years,1831,1032,872,1573
-Lamb,80+ years,829,473,394,667
-Lampasas,12-15 years,5,5,0,1135
-Lampasas,16-49 years,2613,1643,1198,8324
-Lampasas,50-64 years,3217,1943,1552,4720
-Lampasas,65-79 years,3894,2248,1859,3317
-Lampasas,80+ years,1136,650,523,1005
+Lamb,12-15 years,6,5,1,814
+Lamb,16-49 years,1903,1143,927,5149
+Lamb,50-64 years,2310,1365,1065,2351
+Lamb,65-79 years,1833,1034,872,1573
+Lamb,80+ years,830,474,395,667
+Lampasas,12-15 years,8,8,0,1135
+Lampasas,16-49 years,2632,1653,1213,8324
+Lampasas,50-64 years,3230,1948,1563,4720
+Lampasas,65-79 years,3898,2251,1861,3317
+Lampasas,80+ years,1138,650,525,1005
 Lampasas,Unknown,14,9,5,NA
 Lavaca,12-15 years,3,3,0,1135
-Lavaca,16-49 years,2169,1390,1073,7296
-Lavaca,50-64 years,3026,1854,1583,3933
-Lavaca,65-79 years,4649,2600,2333,3415
-Lavaca,80+ years,1693,950,847,1360
+Lavaca,16-49 years,2180,1398,1077,7296
+Lavaca,50-64 years,3034,1859,1586,3933
+Lavaca,65-79 years,4651,2601,2336,3415
+Lavaca,80+ years,1695,950,849,1360
 Lavaca,Unknown,8,5,3,NA
 Lee,12-15 years,4,4,1,842
-Lee,16-49 years,2580,1543,1180,6936
-Lee,50-64 years,3025,1738,1456,3838
-Lee,65-79 years,3363,1866,1620,2469
+Lee,16-49 years,2604,1553,1195,6936
+Lee,50-64 years,3040,1746,1463,3838
+Lee,65-79 years,3366,1867,1622,2469
 Lee,80+ years,1015,555,492,750
 Lee,Unknown,4,4,0,NA
-Leon,12-15 years,6,6,0,864
-Leon,16-49 years,1394,919,686,6066
-Leon,50-64 years,2316,1429,1178,3546
-Leon,65-79 years,3613,2108,1792,3346
-Leon,80+ years,1090,616,544,988
+Leon,12-15 years,10,10,0,864
+Leon,16-49 years,1405,927,691,6066
+Leon,50-64 years,2330,1437,1186,3546
+Leon,65-79 years,3629,2117,1799,3346
+Leon,80+ years,1091,617,544,988
 Leon,Unknown,4,4,1,NA
-Liberty,12-15 years,54,54,0,5296
-Liberty,16-49 years,13546,9005,5276,39725
-Liberty,50-64 years,11511,7001,5082,15744
-Liberty,65-79 years,9961,5683,4699,9234
-Liberty,80+ years,2391,1333,1151,2165
+Liberty,12-15 years,70,70,0,5296
+Liberty,16-49 years,13738,9093,5385,39725
+Liberty,50-64 years,11618,7043,5150,15744
+Liberty,65-79 years,9998,5696,4724,9234
+Liberty,80+ years,2397,1337,1154,2165
 Liberty,Unknown,15,13,3,NA
 Limestone,12-15 years,4,4,0,1135
-Limestone,16-49 years,2565,1612,1163,9618
-Limestone,50-64 years,3009,1821,1431,4583
-Limestone,65-79 years,3682,2084,1775,3602
-Limestone,80+ years,1043,596,490,1068
+Limestone,16-49 years,2586,1623,1174,9618
+Limestone,50-64 years,3018,1825,1436,4583
+Limestone,65-79 years,3690,2088,1779,3602
+Limestone,80+ years,1045,597,491,1068
 Limestone,Unknown,2,2,0,NA
-Lipscomb,16-49 years,368,204,182,1269
+Lipscomb,16-49 years,370,206,182,1269
 Lipscomb,50-64 years,415,227,219,634
 Lipscomb,65-79 years,434,235,216,439
 Lipscomb,80+ years,180,97,86,178
 Lipscomb,Unknown,2,2,0,NA
-Live Oak,12-15 years,3,2,1,532
-Live Oak,16-49 years,1248,728,564,5078
-Live Oak,50-64 years,1722,953,819,2444
-Live Oak,65-79 years,1897,1025,907,1867
+Live Oak,12-15 years,10,9,1,532
+Live Oak,16-49 years,1272,751,565,5078
+Live Oak,50-64 years,1734,965,819,2444
+Live Oak,65-79 years,1900,1028,907,1867
 Live Oak,80+ years,503,276,237,666
 Live Oak,Unknown,6,6,0,NA
 Llano,12-15 years,1,1,0,749
-Llano,16-49 years,2122,1377,980,5954
-Llano,50-64 years,4135,2471,2020,4835
-Llano,65-79 years,7367,4051,3609,5995
-Llano,80+ years,2340,1291,1131,2124
+Llano,16-49 years,2139,1388,986,5954
+Llano,50-64 years,4145,2476,2026,4835
+Llano,65-79 years,7370,4054,3609,5995
+Llano,80+ years,2346,1294,1134,2124
 Llano,Unknown,4,4,1,NA
 Loving,16-49 years,20,12,8,76
 Loving,50-64 years,20,11,9,30
 Loving,65-79 years,9,5,4,23
 Loving,80+ years,8,4,4,0
-Lubbock,12-15 years,217,207,11,17723
-Lubbock,16-49 years,89694,51037,42394,158462
-Lubbock,50-64 years,51520,28378,24814,47054
-Lubbock,65-79 years,43929,23597,21048,29804
-Lubbock,80+ years,13083,7217,6058,9672
+Lubbock,12-15 years,288,278,11,17723
+Lubbock,16-49 years,90068,51231,42589,158462
+Lubbock,50-64 years,51640,28439,24882,47054
+Lubbock,65-79 years,43976,23621,21074,29804
+Lubbock,80+ years,13092,7218,6066,9672
 Lubbock,Unknown,37,33,4,NA
 Lynn,12-15 years,4,4,0,380
 Lynn,16-49 years,1041,590,502,2381
 Lynn,50-64 years,1080,592,514,1141
-Lynn,65-79 years,790,435,375,696
+Lynn,65-79 years,791,436,375,696
 Lynn,80+ years,304,168,140,278
 Madison,12-15 years,2,2,0,712
-Madison,16-49 years,2354,1725,789,7147
-Madison,50-64 years,1724,1059,834,2184
-Madison,65-79 years,1879,1071,942,1689
+Madison,16-49 years,2369,1733,796,7147
+Madison,50-64 years,1730,1061,839,2184
+Madison,65-79 years,1887,1075,946,1689
 Madison,80+ years,669,377,323,575
 Madison,Unknown,1,1,0,NA
 Marion,12-15 years,2,2,0,419
-Marion,16-49 years,862,520,423,3233
-Marion,50-64 years,1550,919,782,2347
-Marion,65-79 years,1819,1016,901,2121
+Marion,16-49 years,866,522,425,3233
+Marion,50-64 years,1558,921,788,2347
+Marion,65-79 years,1824,1018,904,2121
 Marion,80+ years,642,353,314,576
-Martin,16-49 years,896,548,395,2494
-Martin,50-64 years,764,447,358,983
-Martin,65-79 years,570,319,269,499
+Martin,12-15 years,1,1,0,394
+Martin,16-49 years,898,550,395,2494
+Martin,50-64 years,767,450,359,983
+Martin,65-79 years,572,320,270,499
 Martin,80+ years,186,104,84,160
 Martin,Unknown,1,1,0,NA
 Mason,16-49 years,530,310,254,1406
 Mason,50-64 years,760,423,365,865
 Mason,65-79 years,1242,654,612,939
-Mason,80+ years,445,235,216,311
+Mason,80+ years,446,235,217,311
 Mason,Unknown,1,1,1,NA
-Matagorda,12-15 years,9,9,0,2033
-Matagorda,16-49 years,6956,4241,2994,14764
-Matagorda,50-64 years,6762,3939,3127,7092
-Matagorda,65-79 years,6237,3467,2942,4899
-Matagorda,80+ years,1581,893,724,1492
+Matagorda,12-15 years,18,18,0,2033
+Matagorda,16-49 years,7008,4266,3024,14764
+Matagorda,50-64 years,6802,3962,3147,7092
+Matagorda,65-79 years,6249,3473,2948,4899
+Matagorda,80+ years,1582,894,724,1492
 Matagorda,Unknown,36,36,0,NA
-Maverick,12-15 years,14,13,2,3906
-Maverick,16-49 years,23013,15193,9310,27317
-Maverick,50-64 years,12694,7995,5317,8286
-Maverick,65-79 years,9271,5636,3875,5322
-Maverick,80+ years,2346,1544,911,1681
+Maverick,12-15 years,20,19,2,3906
+Maverick,16-49 years,23134,15254,9388,27317
+Maverick,50-64 years,12712,8004,5329,8286
+Maverick,65-79 years,9276,5637,3879,5322
+Maverick,80+ years,2349,1545,913,1681
 Maverick,Unknown,15,15,2,NA
 McCulloch,12-15 years,1,1,0,406
-McCulloch,16-49 years,695,422,317,3020
-McCulloch,50-64 years,1050,617,493,1623
-McCulloch,65-79 years,1544,872,731,1339
-McCulloch,80+ years,484,268,227,453
-McLennan,12-15 years,226,221,5,14486
-McLennan,16-49 years,59353,36072,27233,120878
-McLennan,50-64 years,39944,23442,19269,42175
-McLennan,65-79 years,38123,21306,18321,28032
-McLennan,80+ years,12009,6779,5692,9696
+McCulloch,16-49 years,697,423,318,3020
+McCulloch,50-64 years,1055,621,494,1623
+McCulloch,65-79 years,1545,872,732,1339
+McCulloch,80+ years,485,268,228,453
+McLennan,12-15 years,336,331,5,14486
+McLennan,16-49 years,59852,36315,27528,120878
+McLennan,50-64 years,40112,23528,19373,42175
+McLennan,65-79 years,38184,21337,18358,28032
+McLennan,80+ years,12030,6790,5705,9696
 McLennan,Unknown,61,59,3,NA
 McMullen,16-49 years,96,57,46,259
 McMullen,50-64 years,153,93,81,168
 McMullen,65-79 years,133,73,63,124
 McMullen,80+ years,53,30,27,65
-Medina,12-15 years,32,32,1,2793
-Medina,16-49 years,11413,7101,5155,22149
-Medina,50-64 years,10229,5987,4925,10357
-Medina,65-79 years,8698,4886,4293,6756
-Medina,80+ years,2125,1199,1031,2001
+Medina,12-15 years,41,41,1,2793
+Medina,16-49 years,11493,7141,5202,22149
+Medina,50-64 years,10263,6002,4948,10357
+Medina,65-79 years,8723,4892,4313,6756
+Medina,80+ years,2127,1200,1033,2001
 Medina,Unknown,4,4,1,NA
 Menard,12-15 years,1,1,0,97
-Menard,16-49 years,286,180,159,622
-Menard,50-64 years,407,235,213,469
+Menard,16-49 years,287,181,159,622
+Menard,50-64 years,405,234,212,469
 Menard,65-79 years,610,333,311,509
 Menard,80+ years,186,96,93,190
-Midland,12-15 years,52,49,3,10159
-Midland,16-49 years,44271,25115,20201,85837
-Midland,50-64 years,26719,14789,12479,26750
-Midland,65-79 years,18158,9946,8464,13437
-Midland,80+ years,5348,2949,2485,5001
+Midland,12-15 years,76,73,3,10159
+Midland,16-49 years,44519,25265,20305,85837
+Midland,50-64 years,26768,14815,12504,26750
+Midland,65-79 years,18171,9949,8475,13437
+Midland,80+ years,5350,2950,2486,5001
 Midland,Unknown,11,9,2,NA
-Milam,12-15 years,9,9,0,1408
-Milam,16-49 years,3173,1880,1407,9483
-Milam,50-64 years,4168,2356,1965,4961
-Milam,65-79 years,4958,2673,2438,3917
-Milam,80+ years,1567,848,755,1328
+Milam,12-15 years,13,13,0,1408
+Milam,16-49 years,3188,1890,1413,9483
+Milam,50-64 years,4186,2367,1971,4961
+Milam,65-79 years,4968,2678,2444,3917
+Milam,80+ years,1566,848,754,1328
 Milam,Unknown,9,9,0,NA
-Mills,16-49 years,546,327,242,1580
-Mills,50-64 years,704,411,341,1010
+Mills,12-15 years,1,1,0,273
+Mills,16-49 years,551,330,245,1580
+Mills,50-64 years,708,413,344,1010
 Mills,65-79 years,1159,632,547,1052
 Mills,80+ years,431,229,210,364
 Mitchell,16-49 years,1161,866,311,4330
-Mitchell,50-64 years,1031,594,463,1369
-Mitchell,65-79 years,1016,548,488,960
+Mitchell,50-64 years,1034,595,465,1369
+Mitchell,65-79 years,1017,548,489,960
 Mitchell,80+ years,320,175,152,299
-Montague,12-15 years,2,2,0,1023
-Montague,16-49 years,1748,1093,826,7334
-Montague,50-64 years,2636,1564,1263,4094
-Montague,65-79 years,3860,2105,1894,3348
-Montague,80+ years,1193,634,578,1096
-Montgomery,12-15 years,1124,1122,2,36260
-Montgomery,16-49 years,165931,102794,70441,271274
-Montgomery,50-64 years,107653,64928,46952,114501
-Montgomery,65-79 years,88676,50513,39769,65566
-Montgomery,80+ years,21313,12175,9493,15891
+Montague,12-15 years,4,4,0,1023
+Montague,16-49 years,1755,1099,829,7334
+Montague,50-64 years,2641,1565,1267,4094
+Montague,65-79 years,3865,2109,1897,3348
+Montague,80+ years,1194,635,578,1096
+Montgomery,12-15 years,1419,1417,2,36260
+Montgomery,16-49 years,167858,103698,71629,271274
+Montgomery,50-64 years,108347,65213,47401,114501
+Montgomery,65-79 years,88904,50608,39915,65566
+Montgomery,80+ years,21351,12192,9517,15891
 Montgomery,Unknown,62,56,8,NA
-Moore,12-15 years,5,4,1,1411
-Moore,16-49 years,6084,3587,2642,9337
-Moore,50-64 years,3903,2183,1783,3277
-Moore,65-79 years,2510,1346,1188,1792
+Moore,12-15 years,7,6,1,1411
+Moore,16-49 years,6115,3600,2660,9337
+Moore,50-64 years,3918,2190,1791,3277
+Moore,65-79 years,2512,1347,1189,1792
 Moore,80+ years,678,375,314,580
 Moore,Unknown,6,5,1,NA
-Morris,12-15 years,2,2,0,649
-Morris,16-49 years,1169,743,519,4656
-Morris,50-64 years,1769,1080,851,2444
-Morris,65-79 years,2246,1299,1108,2016
+Morris,12-15 years,7,7,0,649
+Morris,16-49 years,1177,746,526,4656
+Morris,50-64 years,1773,1081,854,2444
+Morris,65-79 years,2252,1301,1113,2016
 Morris,80+ years,787,447,396,714
 Morris,Unknown,3,2,2,NA
-Motley,16-49 years,77,51,29,409
-Motley,50-64 years,117,79,40,217
+Motley,16-49 years,75,50,28,409
+Motley,50-64 years,118,80,41,217
 Motley,65-79 years,252,159,98,269
 Motley,80+ years,111,64,47,99
-Nacogdoches,12-15 years,33,33,0,3791
-Nacogdoches,16-49 years,11742,7503,5817,31335
-Nacogdoches,50-64 years,9364,5779,4876,10485
-Nacogdoches,65-79 years,10278,5749,5209,7678
-Nacogdoches,80+ years,2892,1631,1411,2275
+Nacogdoches,12-15 years,44,44,0,3791
+Nacogdoches,16-49 years,11812,7548,5850,31335
+Nacogdoches,50-64 years,9396,5795,4893,10485
+Nacogdoches,65-79 years,10287,5755,5212,7678
+Nacogdoches,80+ years,2893,1632,1411,2275
 Nacogdoches,Unknown,10,10,0,NA
-Navarro,12-15 years,4,3,1,2935
-Navarro,16-49 years,8543,4896,3839,20225
-Navarro,50-64 years,9136,5132,4272,9484
-Navarro,65-79 years,9013,4877,4299,6659
-Navarro,80+ years,2469,1409,1114,1992
+Navarro,12-15 years,10,9,1,2935
+Navarro,16-49 years,8579,4917,3856,20225
+Navarro,50-64 years,9165,5148,4286,9484
+Navarro,65-79 years,9026,4881,4309,6659
+Navarro,80+ years,2471,1410,1115,1992
 Navarro,Unknown,2,2,0,NA
-Newton,12-15 years,2,2,0,631
-Newton,16-49 years,754,433,351,5491
-Newton,50-64 years,1344,735,644,2929
+Newton,12-15 years,5,5,0,631
+Newton,16-49 years,758,434,355,5491
+Newton,50-64 years,1346,736,646,2929
 Newton,65-79 years,1760,950,854,2192
 Newton,80+ years,519,285,237,686
 Newton,Unknown,1,1,0,NA
 Nolan,12-15 years,1,1,1,895
-Nolan,16-49 years,1957,1242,1055,5962
-Nolan,50-64 years,2148,1365,1224,2622
-Nolan,65-79 years,2583,1507,1395,2026
+Nolan,16-49 years,1960,1245,1055,5962
+Nolan,50-64 years,2151,1368,1225,2622
+Nolan,65-79 years,2582,1506,1395,2026
 Nolan,80+ years,885,512,463,711
 Nolan,Unknown,2,1,1,NA
-Nueces,12-15 years,668,658,12,19963
-Nueces,16-49 years,108052,62773,49122,166501
-Nueces,50-64 years,73755,41364,34864,63796
-Nueces,65-79 years,59804,32497,28462,41317
-Nueces,80+ years,15939,8720,7466,12752
-Nueces,Unknown,62,54,9,NA
+Nueces,12-15 years,870,860,12,19963
+Nueces,16-49 years,108810,63148,49529,166501
+Nueces,50-64 years,74049,41475,35062,63796
+Nueces,65-79 years,59925,32537,28548,41317
+Nueces,80+ years,15964,8727,7485,12752
+Nueces,Unknown,63,55,9,NA
 Ochiltree,12-15 years,3,2,1,705
-Ochiltree,16-49 years,2101,1168,1048,4298
-Ochiltree,50-64 years,1250,696,621,1660
-Ochiltree,65-79 years,1082,574,536,927
+Ochiltree,16-49 years,2104,1171,1048,4298
+Ochiltree,50-64 years,1254,700,621,1660
+Ochiltree,65-79 years,1078,572,534,927
 Ochiltree,80+ years,320,169,156,221
 Ochiltree,Unknown,6,4,2,NA
-Oldham,16-49 years,266,151,124,948
-Oldham,50-64 years,323,180,157,464
-Oldham,65-79 years,264,148,122,248
+Oldham,16-49 years,267,151,125,948
+Oldham,50-64 years,324,180,158,464
+Oldham,65-79 years,266,148,124,248
 Oldham,80+ years,100,53,48,68
-Orange,12-15 years,13,13,0,4529
-Orange,16-49 years,8824,5342,3795,35298
-Orange,50-64 years,10407,6054,4799,16060
-Orange,65-79 years,11492,6443,5469,10496
-Orange,80+ years,3440,1942,1615,3233
+Orange,12-15 years,24,24,0,4529
+Orange,16-49 years,8941,5404,3854,35298
+Orange,50-64 years,10469,6083,4836,16060
+Orange,65-79 years,11521,6460,5485,10496
+Orange,80+ years,3449,1944,1622,3233
 Orange,Unknown,11,11,1,NA
-Palo Pinto,12-15 years,7,6,1,1501
-Palo Pinto,16-49 years,3142,1872,1445,11318
-Palo Pinto,50-64 years,4127,2378,1995,5996
-Palo Pinto,65-79 years,5161,2809,2521,4625
-Palo Pinto,80+ years,1487,814,729,1268
+Palo Pinto,12-15 years,9,8,1,1501
+Palo Pinto,16-49 years,3169,1890,1458,11318
+Palo Pinto,50-64 years,4146,2389,2005,5996
+Palo Pinto,65-79 years,5166,2812,2525,4625
+Palo Pinto,80+ years,1488,815,729,1268
 Palo Pinto,Unknown,7,4,3,NA
 Panola,12-15 years,1,1,0,1292
-Panola,16-49 years,1635,1031,767,9345
-Panola,50-64 years,2253,1415,1121,4528
-Panola,65-79 years,3199,1874,1603,3566
-Panola,80+ years,1034,594,505,1023
+Panola,16-49 years,1652,1040,777,9345
+Panola,50-64 years,2270,1419,1135,4528
+Panola,65-79 years,3218,1881,1620,3566
+Panola,80+ years,1040,596,510,1023
 Panola,Unknown,3,3,0,NA
-Parker,12-15 years,162,161,1,8201
-Parker,16-49 years,26628,15262,12479,59949
-Parker,50-64 years,24798,13793,12070,29406
-Parker,65-79 years,23760,12761,11607,17707
-Parker,80+ years,6199,3342,2992,4624
+Parker,12-15 years,244,243,1,8201
+Parker,16-49 years,26897,15406,12627,59949
+Parker,50-64 years,24925,13857,12149,29406
+Parker,65-79 years,23818,12790,11645,17707
+Parker,80+ years,6205,3346,2994,4624
 Parker,Unknown,12,11,1,NA
-Parmer,12-15 years,1,1,0,625
-Parmer,16-49 years,1950,1124,969,4088
-Parmer,50-64 years,1585,875,781,1768
-Parmer,65-79 years,1193,660,579,1008
+Parmer,12-15 years,2,2,0,625
+Parmer,16-49 years,1953,1126,971,4088
+Parmer,50-64 years,1586,876,782,1768
+Parmer,65-79 years,1194,660,580,1008
 Parmer,80+ years,480,256,238,358
 Parmer,Unknown,1,1,0,NA
-Pecos,12-15 years,2,2,0,894
-Pecos,16-49 years,5002,3135,2083,7510
-Pecos,50-64 years,3090,1820,1376,2666
-Pecos,65-79 years,2119,1147,1037,1634
+Pecos,12-15 years,3,3,0,894
+Pecos,16-49 years,5007,3139,2084,7510
+Pecos,50-64 years,3092,1822,1376,2666
+Pecos,65-79 years,2121,1149,1037,1634
 Pecos,80+ years,626,342,294,507
 Pecos,Unknown,6,6,0,NA
-Polk,12-15 years,7,6,1,2343
-Polk,16-49 years,5151,3437,2024,20420
-Polk,50-64 years,7511,4644,3337,12123
-Polk,65-79 years,9940,5474,4789,8473
-Polk,80+ years,3006,1646,1437,1260
+Polk,12-15 years,17,16,1,2343
+Polk,16-49 years,5196,3468,2044,20420
+Polk,50-64 years,7554,4671,3364,12123
+Polk,65-79 years,9966,5489,4808,8473
+Polk,80+ years,3013,1653,1441,1260
 Polk,Unknown,7,5,2,NA
-Potter,12-15 years,82,81,2,6911
-Potter,16-49 years,22380,13761,9248,53873
-Potter,50-64 years,18610,10761,8248,19597
-Potter,65-79 years,15287,8317,7159,11378
-Potter,80+ years,5241,2971,2329,3825
+Potter,12-15 years,108,107,2,6911
+Potter,16-49 years,22596,13883,9354,53873
+Potter,50-64 years,18693,10796,8299,19597
+Potter,65-79 years,15315,8331,7174,11378
+Potter,80+ years,5246,2973,2333,3825
 Potter,Unknown,30,26,4,NA
 Presidio,12-15 years,39,38,1,393
-Presidio,16-49 years,3685,2209,1587,2443
-Presidio,50-64 years,2346,1306,1103,1025
-Presidio,65-79 years,2025,1082,962,1077
-Presidio,80+ years,599,327,276,524
-Rains,12-15 years,4,3,1,555
-Rains,16-49 years,915,566,399,4351
-Rains,50-64 years,1621,944,760,2803
-Rains,65-79 years,2375,1304,1132,2479
-Rains,80+ years,619,335,297,644
+Presidio,16-49 years,3696,2210,1597,2443
+Presidio,50-64 years,2349,1306,1106,1025
+Presidio,65-79 years,2029,1082,966,1077
+Presidio,80+ years,602,327,279,524
+Rains,12-15 years,7,6,1,555
+Rains,16-49 years,932,570,412,4351
+Rains,50-64 years,1634,947,771,2803
+Rains,65-79 years,2383,1310,1135,2479
+Rains,80+ years,620,336,298,644
 Rains,Unknown,2,1,1,NA
-Randall,12-15 years,86,86,2,7613
-Randall,16-49 years,29462,17227,13618,63316
-Randall,50-64 years,22558,12566,10720,23691
-Randall,65-79 years,22358,11959,10739,16489
-Randall,80+ years,6427,3532,2997,4935
+Randall,12-15 years,118,118,2,7613
+Randall,16-49 years,29671,17344,13717,63316
+Randall,50-64 years,22615,12595,10749,23691
+Randall,65-79 years,22383,11970,10754,16489
+Randall,80+ years,6441,3539,3008,4935
 Randall,Unknown,29,22,7,NA
-Reagan,16-49 years,669,414,361,1768
-Reagan,50-64 years,576,344,303,646
+Reagan,16-49 years,670,415,361,1768
+Reagan,50-64 years,577,345,303,646
 Reagan,65-79 years,418,229,213,325
 Reagan,80+ years,115,62,60,102
-Real,16-49 years,329,183,158,1096
-Real,50-64 years,668,367,318,794
+Real,16-49 years,331,184,159,1096
+Real,50-64 years,670,369,318,794
 Real,65-79 years,1136,592,563,814
 Real,80+ years,270,145,125,239
 Red River,12-15 years,1,1,0,526
-Red River,16-49 years,937,581,470,4330
-Red River,50-64 years,1616,962,842,2591
-Red River,65-79 years,2544,1393,1298,2264
-Red River,80+ years,712,390,357,780
+Red River,16-49 years,949,588,476,4330
+Red River,50-64 years,1624,964,849,2591
+Red River,65-79 years,2548,1394,1302,2264
+Red River,80+ years,715,391,359,780
 Red River,Unknown,1,1,0,NA
 Reeves,12-15 years,11,9,2,787
-Reeves,16-49 years,3730,2080,1699,8692
-Reeves,50-64 years,2978,1601,1415,2211
-Reeves,65-79 years,2051,1058,1005,1371
+Reeves,16-49 years,3739,2084,1704,8692
+Reeves,50-64 years,2979,1602,1415,2211
+Reeves,65-79 years,2049,1057,1004,1371
 Reeves,80+ years,580,301,281,507
 Reeves,Unknown,2,1,1,NA
-Refugio,12-15 years,1,1,0,351
-Refugio,16-49 years,1196,687,547,2547
-Refugio,50-64 years,1620,894,768,1419
-Refugio,65-79 years,1631,866,791,1198
+Refugio,12-15 years,2,2,0,351
+Refugio,16-49 years,1203,691,550,2547
+Refugio,50-64 years,1624,897,769,1419
+Refugio,65-79 years,1632,866,792,1198
 Refugio,80+ years,516,268,249,419
 Refugio,Unknown,1,1,0,NA
 Roberts,16-49 years,70,41,33,310
 Roberts,50-64 years,79,44,41,169
 Roberts,65-79 years,157,85,77,158
 Roberts,80+ years,34,17,17,35
-Robertson,12-15 years,1,1,0,909
-Robertson,16-49 years,2212,1403,1057,6691
-Robertson,50-64 years,2778,1705,1406,3371
-Robertson,65-79 years,3206,1817,1591,2571
+Robertson,12-15 years,2,2,0,909
+Robertson,16-49 years,2228,1411,1065,6691
+Robertson,50-64 years,2783,1706,1411,3371
+Robertson,65-79 years,3208,1818,1594,2571
 Robertson,80+ years,945,542,444,841
 Robertson,Unknown,3,3,0,NA
-Rockwall,12-15 years,191,182,10,6763
-Rockwall,16-49 years,32780,19766,14662,47098
-Rockwall,50-64 years,22478,12859,10549,19832
-Rockwall,65-79 years,16583,9002,7852,10606
-Rockwall,80+ years,4208,2322,1954,2789
-Rockwall,Unknown,13,10,3,NA
-Runnels,12-15 years,2,2,0,568
-Runnels,16-49 years,1331,775,669,3985
-Runnels,50-64 years,1678,939,851,2046
-Runnels,65-79 years,2075,1119,1028,1590
+Rockwall,12-15 years,239,230,10,6763
+Rockwall,16-49 years,33047,19899,14807,47098
+Rockwall,50-64 years,22565,12902,10597,19832
+Rockwall,65-79 years,16606,9009,7868,10606
+Rockwall,80+ years,4210,2323,1955,2789
+Rockwall,Unknown,14,11,3,NA
+Runnels,12-15 years,5,5,0,568
+Runnels,16-49 years,1342,784,675,3985
+Runnels,50-64 years,1683,943,855,2046
+Runnels,65-79 years,2079,1120,1033,1590
 Runnels,80+ years,764,406,376,563
 Runnels,Unknown,3,3,2,NA
-Rusk,12-15 years,12,12,0,2831
-Rusk,16-49 years,5836,3771,2469,24301
-Rusk,50-64 years,6916,4197,3362,10279
-Rusk,65-79 years,7621,4341,3766,7062
-Rusk,80+ years,2219,1251,1070,2135
+Rusk,12-15 years,19,19,0,2831
+Rusk,16-49 years,5879,3799,2487,24301
+Rusk,50-64 years,6934,4202,3375,10279
+Rusk,65-79 years,7645,4354,3777,7062
+Rusk,80+ years,2223,1253,1072,2135
 Rusk,Unknown,7,4,3,NA
-Sabine,16-49 years,527,318,253,3215
-Sabine,50-64 years,1573,896,787,2389
-Sabine,65-79 years,2534,1376,1255,2477
+Sabine,16-49 years,530,320,254,3215
+Sabine,50-64 years,1580,902,788,2389
+Sabine,65-79 years,2541,1380,1258,2477
 Sabine,80+ years,866,464,426,790
-San Augustine,12-15 years,1,1,0,370
-San Augustine,16-49 years,739,432,340,2688
-San Augustine,50-64 years,1432,809,673,1896
-San Augustine,65-79 years,1911,1043,923,1606
-San Augustine,80+ years,679,370,316,621
+San Augustine,12-15 years,2,2,0,370
+San Augustine,16-49 years,740,433,340,2688
+San Augustine,50-64 years,1441,815,679,1896
+San Augustine,65-79 years,1913,1044,925,1606
+San Augustine,80+ years,678,369,316,621
 San Augustine,Unknown,7,7,0,NA
-San Jacinto,12-15 years,4,4,0,1429
-San Jacinto,16-49 years,2161,1382,1032,10537
-San Jacinto,50-64 years,3592,2158,1778,6419
-San Jacinto,65-79 years,4547,2569,2236,5103
-San Jacinto,80+ years,1258,694,617,1385
+San Jacinto,12-15 years,6,6,0,1429
+San Jacinto,16-49 years,2176,1392,1037,10537
+San Jacinto,50-64 years,3606,2168,1788,6419
+San Jacinto,65-79 years,4558,2576,2242,5103
+San Jacinto,80+ years,1260,696,617,1385
 San Jacinto,Unknown,2,1,1,NA
-San Patricio,12-15 years,45,43,2,3958
-San Patricio,16-49 years,15555,9380,6933,29346
-San Patricio,50-64 years,13291,7679,6251,11561
-San Patricio,65-79 years,11347,6350,5460,7968
-San Patricio,80+ years,2729,1542,1283,2241
+San Patricio,12-15 years,77,75,2,3958
+San Patricio,16-49 years,15793,9455,7104,29346
+San Patricio,50-64 years,13419,7720,6342,11561
+San Patricio,65-79 years,11414,6362,5517,7968
+San Patricio,80+ years,2739,1544,1291,2241
 San Patricio,Unknown,11,10,1,NA
-San Saba,16-49 years,567,433,162,2454
-San Saba,50-64 years,615,370,277,1081
-San Saba,65-79 years,1074,584,517,1065
+San Saba,12-15 years,1,1,0,261
+San Saba,16-49 years,568,434,162,2454
+San Saba,50-64 years,618,371,280,1081
+San Saba,65-79 years,1075,584,518,1065
 San Saba,80+ years,312,176,141,400
 San Saba,Unknown,1,1,0,NA
 Schleicher,16-49 years,456,256,222,1163
-Schleicher,50-64 years,466,258,226,496
+Schleicher,50-64 years,467,258,227,496
 Schleicher,65-79 years,583,308,286,475
 Schleicher,80+ years,153,78,76,84
 Scurry,12-15 years,14,14,0,936
-Scurry,16-49 years,2872,1868,1223,7481
-Scurry,50-64 years,2424,1420,1175,2953
-Scurry,65-79 years,2389,1320,1166,1843
+Scurry,16-49 years,2885,1876,1230,7481
+Scurry,50-64 years,2427,1421,1178,2953
+Scurry,65-79 years,2394,1324,1167,1843
 Scurry,80+ years,889,496,417,723
 Scurry,Unknown,8,7,1,NA
 Shackelford,12-15 years,1,1,0,189
-Shackelford,16-49 years,332,191,153,1210
-Shackelford,50-64 years,548,303,260,711
+Shackelford,16-49 years,335,193,154,1210
+Shackelford,50-64 years,549,304,260,711
 Shackelford,65-79 years,631,337,300,511
 Shackelford,80+ years,212,114,101,180
-Shelby,12-15 years,3,3,0,1491
-Shelby,16-49 years,2057,1310,966,10182
-Shelby,50-64 years,2826,1699,1416,4735
-Shelby,65-79 years,3279,1846,1611,3427
-Shelby,80+ years,1196,665,563,1105
+Shelby,12-15 years,4,4,0,1491
+Shelby,16-49 years,2085,1329,976,10182
+Shelby,50-64 years,2852,1716,1427,4735
+Shelby,65-79 years,3289,1855,1612,3427
+Shelby,80+ years,1202,668,566,1105
 Shelby,Unknown,7,7,2,NA
-Sherman,12-15 years,1,1,0,200
+Sherman,12-15 years,2,2,0,200
 Sherman,16-49 years,568,346,266,1212
 Sherman,50-64 years,445,262,203,620
 Sherman,65-79 years,327,188,146,340
 Sherman,80+ years,121,70,52,122
 Sherman,Unknown,2,2,1,NA
-Smith,12-15 years,78,73,5,12844
-Smith,16-49 years,43965,25189,19842,101823
-Smith,50-64 years,36885,20397,17343,41123
-Smith,65-79 years,40021,21460,19277,29593
-Smith,80+ years,13741,7456,6505,9744
+Smith,12-15 years,194,189,5,12844
+Smith,16-49 years,44613,25366,20337,101823
+Smith,50-64 years,37130,20477,17518,41123
+Smith,65-79 years,40139,21483,19376,29593
+Smith,80+ years,13768,7466,6524,9744
 Smith,Unknown,20,18,2,NA
-Somervell,12-15 years,4,3,1,496
-Somervell,16-49 years,1300,755,625,3648
-Somervell,50-64 years,1518,873,770,1968
-Somervell,65-79 years,1873,1038,938,1353
+Somervell,12-15 years,6,5,1,496
+Somervell,16-49 years,1306,759,629,3648
+Somervell,50-64 years,1523,877,773,1968
+Somervell,65-79 years,1874,1039,938,1353
 Somervell,80+ years,465,254,228,417
 Somervell,Unknown,1,1,0,NA
-Starr,12-15 years,732,731,2,4325
-Starr,16-49 years,31801,19213,15928,29591
-Starr,50-64 years,15397,8896,7946,8804
-Starr,65-79 years,10067,5554,5102,5528
-Starr,80+ years,2808,1580,1430,1842
+Starr,12-15 years,828,827,2,4325
+Starr,16-49 years,31957,19285,16021,29591
+Starr,50-64 years,15437,8914,7971,8804
+Starr,65-79 years,10075,5561,5103,5528
+Starr,80+ years,2809,1580,1431,1842
 Starr,Unknown,33,27,9,NA
 Stephens,12-15 years,1,1,0,488
-Stephens,16-49 years,969,642,427,3853
-Stephens,50-64 years,1028,641,529,1799
+Stephens,16-49 years,979,647,436,3853
+Stephens,50-64 years,1033,644,533,1799
 Stephens,65-79 years,1470,846,756,1414
-Stephens,80+ years,504,282,252,476
-Sterling,16-49 years,162,96,69,559
+Stephens,80+ years,505,282,253,476
+Sterling,12-15 years,2,2,0,92
+Sterling,16-49 years,163,96,70,559
 Sterling,50-64 years,209,118,91,230
 Sterling,65-79 years,203,112,92,123
 Sterling,80+ years,57,33,24,63
-Stonewall,16-49 years,147,86,74,450
+Stonewall,16-49 years,148,87,75,450
 Stonewall,50-64 years,186,113,102,284
 Stonewall,65-79 years,313,169,153,246
 Stonewall,80+ years,146,79,71,115
 Stonewall,Unknown,2,1,1,NA
-Sutton,16-49 years,619,354,275,1489
+Sutton,16-49 years,621,355,276,1489
 Sutton,50-64 years,685,378,315,780
 Sutton,65-79 years,814,430,393,548
 Sutton,80+ years,200,104,98,175
 Swisher,12-15 years,1,1,0,427
-Swisher,16-49 years,861,571,411,3191
-Swisher,50-64 years,945,567,501,1268
-Swisher,65-79 years,1063,600,549,922
+Swisher,16-49 years,865,575,411,3191
+Swisher,50-64 years,946,568,501,1268
+Swisher,65-79 years,1065,602,550,922
 Swisher,80+ years,431,245,209,383
 Swisher,Unknown,6,6,0,NA
-Tarrant,12-15 years,4466,4455,14,125629
-Tarrant,16-49 years,658173,385164,294940,1000205
-Tarrant,50-64 years,418356,232426,197420,372444
-Tarrant,65-79 years,285768,153214,137007,192159
-Tarrant,80+ years,74996,40601,35398,52352
+Tarrant,12-15 years,6296,6284,15,125629
+Tarrant,16-49 years,663844,388184,297779,1000205
+Tarrant,50-64 years,420148,233359,198378,372444
+Tarrant,65-79 years,286297,153442,137330,192159
+Tarrant,80+ years,75109,40647,35470,52352
 Tarrant,Unknown,188,145,46,NA
-Taylor,12-15 years,75,73,2,7637
-Taylor,16-49 years,30035,17049,13851,65514
-Taylor,50-64 years,21928,12054,10595,21612
-Taylor,65-79 years,20628,10995,10139,14800
-Taylor,80+ years,7339,3938,3542,5331
+Taylor,12-15 years,91,89,2,7637
+Taylor,16-49 years,30151,17113,13912,65514
+Taylor,50-64 years,21967,12086,10615,21612
+Taylor,65-79 years,20652,11015,10146,14800
+Taylor,80+ years,7345,3942,3545,5331
 Taylor,Unknown,17,11,7,NA
 Terrell,12-15 years,1,1,0,32
-Terrell,16-49 years,146,81,66,248
-Terrell,50-64 years,181,100,84,136
+Terrell,16-49 years,144,80,65,248
+Terrell,50-64 years,182,101,84,136
 Terrell,65-79 years,217,121,105,184
 Terrell,80+ years,65,38,29,71
 Terry,12-15 years,1,1,0,739
-Terry,16-49 years,2319,1371,1118,5347
-Terry,50-64 years,2095,1192,1027,2102
+Terry,16-49 years,2334,1379,1125,5347
+Terry,50-64 years,2098,1194,1028,2102
 Terry,65-79 years,1748,965,852,1367
 Terry,80+ years,571,310,282,491
 Terry,Unknown,1,1,1,NA
@@ -1233,181 +1241,181 @@ Throckmorton,16-49 years,252,139,122,484
 Throckmorton,50-64 years,286,154,136,318
 Throckmorton,65-79 years,292,153,142,315
 Throckmorton,80+ years,171,91,80,130
-Titus,12-15 years,4,4,0,2157
-Titus,16-49 years,4710,2918,1943,13894
-Titus,50-64 years,4619,2710,2079,5584
-Titus,65-79 years,4076,2251,1948,3738
-Titus,80+ years,1307,744,598,1107
+Titus,12-15 years,6,6,0,2157
+Titus,16-49 years,4778,2949,1984,13894
+Titus,50-64 years,4657,2726,2102,5584
+Titus,65-79 years,4094,2259,1961,3738
+Titus,80+ years,1308,745,598,1107
 Titus,Unknown,10,7,5,NA
-Tom Green,12-15 years,41,41,0,6566
-Tom Green,16-49 years,25487,14122,12102,55411
-Tom Green,50-64 years,19774,10715,9535,19716
-Tom Green,65-79 years,20247,10792,9637,13854
-Tom Green,80+ years,6902,3652,3299,4771
+Tom Green,12-15 years,78,78,0,6566
+Tom Green,16-49 years,25678,14227,12207,55411
+Tom Green,50-64 years,19843,10743,9580,19716
+Tom Green,65-79 years,20284,10808,9663,13854
+Tom Green,80+ years,6903,3651,3301,4771
 Tom Green,Unknown,3,3,0,NA
-Travis,12-15 years,5529,5508,22,60230
-Travis,16-49 years,696455,408986,316548,694834
-Travis,50-64 years,257386,146895,120288,207999
-Travis,65-79 years,160141,88594,75824,104113
-Travis,80+ years,36619,20561,17080,25440
-Travis,Unknown,240,216,29,NA
+Travis,12-15 years,7209,7188,22,60230
+Travis,16-49 years,701396,410848,319863,694834
+Travis,50-64 years,258412,147252,121064,207999
+Travis,65-79 years,160475,88682,76101,104113
+Travis,80+ years,36684,20587,17126,25440
+Travis,Unknown,243,219,29,NA
 Trinity,12-15 years,2,2,0,656
-Trinity,16-49 years,1352,836,617,4952
-Trinity,50-64 years,2250,1327,1079,3196
-Trinity,65-79 years,3229,1788,1566,3099
-Trinity,80+ years,1048,571,506,857
+Trinity,16-49 years,1358,838,621,4952
+Trinity,50-64 years,2265,1337,1086,3196
+Trinity,65-79 years,3236,1793,1568,3099
+Trinity,80+ years,1049,571,507,857
 Trinity,Unknown,1,1,0,NA
 Tyler,12-15 years,3,3,0,967
-Tyler,16-49 years,1871,1311,614,8878
-Tyler,50-64 years,2646,1540,1176,4190
-Tyler,65-79 years,3745,2032,1776,3702
+Tyler,16-49 years,1876,1316,615,8878
+Tyler,50-64 years,2649,1542,1177,4190
+Tyler,65-79 years,3748,2034,1779,3702
 Tyler,80+ years,1193,646,570,1193
 Tyler,Unknown,4,4,0,NA
-Upshur,12-15 years,9,9,0,2298
-Upshur,16-49 years,3612,2150,1674,16459
-Upshur,50-64 years,4976,2835,2422,8727
-Upshur,65-79 years,5744,3168,2814,6044
-Upshur,80+ years,1722,957,845,1781
+Upshur,12-15 years,15,15,0,2298
+Upshur,16-49 years,3649,2170,1699,16459
+Upshur,50-64 years,5010,2853,2441,8727
+Upshur,65-79 years,5752,3171,2819,6044
+Upshur,80+ years,1723,958,845,1781
 Upshur,Unknown,6,6,1,NA
-Upton,12-15 years,2,2,0,234
-Upton,16-49 years,913,502,415,1562
-Upton,50-64 years,624,341,285,631
+Upton,12-15 years,3,3,0,234
+Upton,16-49 years,916,505,416,1562
+Upton,50-64 years,625,341,286,631
 Upton,65-79 years,494,264,231,395
 Upton,80+ years,164,88,77,142
-Uvalde,12-15 years,15,14,1,1635
-Uvalde,16-49 years,6284,3621,2890,11648
-Uvalde,50-64 years,5144,2890,2442,4223
-Uvalde,65-79 years,5025,2699,2442,3256
+Uvalde,12-15 years,17,16,1,1635
+Uvalde,16-49 years,6301,3633,2899,11648
+Uvalde,50-64 years,5154,2895,2449,4223
+Uvalde,65-79 years,5027,2701,2442,3256
 Uvalde,80+ years,1524,850,717,1252
 Uvalde,Unknown,3,2,1,NA
-Val Verde,12-15 years,34,33,2,2927
-Val Verde,16-49 years,14555,9448,6365,22564
-Val Verde,50-64 years,8761,5442,3864,6979
-Val Verde,65-79 years,7498,4376,3415,5098
-Val Verde,80+ years,2313,1378,1032,1905
+Val Verde,12-15 years,55,54,2,2927
+Val Verde,16-49 years,14633,9509,6387,22564
+Val Verde,50-64 years,8790,5457,3878,6979
+Val Verde,65-79 years,7516,4390,3419,5098
+Val Verde,80+ years,2311,1377,1031,1905
 Val Verde,Unknown,16,13,5,NA
-Van Zandt,12-15 years,12,12,1,3030
-Van Zandt,16-49 years,5352,3240,2409,21974
-Van Zandt,50-64 years,7430,4352,3619,11747
-Van Zandt,65-79 years,9291,5161,4587,8779
-Van Zandt,80+ years,3117,1724,1542,2716
+Van Zandt,12-15 years,17,17,1,3030
+Van Zandt,16-49 years,5420,3279,2445,21974
+Van Zandt,50-64 years,7475,4377,3647,11747
+Van Zandt,65-79 years,9313,5175,4598,8779
+Van Zandt,80+ years,3118,1726,1543,2716
 Van Zandt,Unknown,1,1,0,NA
-Victoria,12-15 years,59,57,3,5253
-Victoria,16-49 years,16953,9921,7634,40036
-Victoria,50-64 years,16475,9113,7744,16110
-Victoria,65-79 years,16440,8774,7927,11334
-Victoria,80+ years,5243,2803,2519,3908
+Victoria,12-15 years,85,83,3,5253
+Victoria,16-49 years,17079,10014,7668,40036
+Victoria,50-64 years,16530,9152,7763,16110
+Victoria,65-79 years,16460,8787,7934,11334
+Victoria,80+ years,5250,2808,2524,3908
 Victoria,Unknown,18,12,7,NA
-Walker,12-15 years,27,26,1,2818
-Walker,16-49 years,14488,10335,5404,40478
-Walker,50-64 years,10562,7034,4261,12944
-Walker,65-79 years,9560,5495,4391,7906
-Walker,80+ years,2654,1508,1217,2143
+Walker,12-15 years,46,45,1,2818
+Walker,16-49 years,14620,10424,5452,40478
+Walker,50-64 years,10632,7075,4293,12944
+Walker,65-79 years,9576,5507,4395,7906
+Walker,80+ years,2656,1509,1218,2143
 Walker,Unknown,7,7,1,NA
-Waller,12-15 years,31,31,0,3569
-Waller,16-49 years,10549,6462,4579,27820
-Waller,50-64 years,8168,4799,3858,8984
-Waller,65-79 years,6791,3800,3212,5213
-Waller,80+ years,1471,804,709,1333
+Waller,12-15 years,40,40,0,3569
+Waller,16-49 years,10655,6483,4666,27820
+Waller,50-64 years,8205,4813,3883,8984
+Waller,65-79 years,6813,3810,3224,5213
+Waller,80+ years,1470,804,708,1333
 Waller,Unknown,12,10,2,NA
 Ward,12-15 years,3,3,0,739
-Ward,16-49 years,2455,1437,1173,5315
-Ward,50-64 years,2022,1131,967,1977
-Ward,65-79 years,1604,858,795,1185
+Ward,16-49 years,2458,1440,1173,5315
+Ward,50-64 years,2024,1132,968,1977
+Ward,65-79 years,1605,859,795,1185
 Ward,80+ years,461,252,225,444
 Ward,Unknown,4,4,0,NA
-Washington,12-15 years,23,22,1,1949
-Washington,16-49 years,6309,3638,2834,14283
-Washington,50-64 years,6891,3844,3269,6914
-Washington,65-79 years,8580,4638,4097,5653
-Washington,80+ years,2926,1607,1364,2236
+Washington,12-15 years,29,28,1,1949
+Washington,16-49 years,6349,3663,2852,14283
+Washington,50-64 years,6916,3853,3286,6914
+Washington,65-79 years,8586,4641,4100,5653
+Washington,80+ years,2933,1613,1365,2236
 Washington,Unknown,12,10,2,NA
-Webb,12-15 years,979,963,17,19353
-Webb,16-49 years,150122,90714,66913,130992
-Webb,50-64 years,64766,37542,30230,39003
-Webb,65-79 years,34395,18951,16453,20633
-Webb,80+ years,8466,4832,3915,6288
-Webb,Unknown,122,108,31,NA
-Wharton,12-15 years,56,53,4,2439
-Wharton,16-49 years,7591,4784,3273,17119
-Wharton,50-64 years,7290,4390,3480,7752
-Wharton,65-79 years,7117,4027,3490,5317
-Wharton,80+ years,2287,1284,1091,1922
+Webb,12-15 years,1332,1314,19,19353
+Webb,16-49 years,152563,91155,68969,130992
+Webb,50-64 years,65173,37631,30557,39003
+Webb,65-79 years,34484,18979,16519,20633
+Webb,80+ years,8483,4835,3929,6288
+Webb,Unknown,123,108,32,NA
+Wharton,12-15 years,81,78,4,2439
+Wharton,16-49 years,7763,4828,3402,17119
+Wharton,50-64 years,7365,4412,3539,7752
+Wharton,65-79 years,7149,4037,3512,5317
+Wharton,80+ years,2299,1286,1101,1922
 Wharton,Unknown,16,10,6,NA
 Wheeler,12-15 years,6,6,0,284
-Wheeler,16-49 years,584,357,286,1935
-Wheeler,50-64 years,673,391,344,978
+Wheeler,16-49 years,587,359,287,1935
+Wheeler,50-64 years,674,392,345,978
 Wheeler,65-79 years,879,490,447,759
 Wheeler,80+ years,304,172,152,243
 Wheeler,Unknown,3,3,0,NA
-Wichita,12-15 years,98,98,0,6957
-Wichita,16-49 years,24397,14828,11546,62794
-Wichita,50-64 years,20800,11866,10375,22983
-Wichita,65-79 years,20780,11101,10353,14464
-Wichita,80+ years,7446,3968,3646,5390
+Wichita,12-15 years,115,115,0,6957
+Wichita,16-49 years,24498,14895,11584,62794
+Wichita,50-64 years,20861,11906,10402,22983
+Wichita,65-79 years,20861,11144,10392,14464
+Wichita,80+ years,7507,4000,3675,5390
 Wichita,Unknown,11,10,3,NA
 Wilbarger,12-15 years,3,2,1,639
-Wilbarger,16-49 years,2723,1639,1440,5531
-Wilbarger,50-64 years,2362,1401,1279,2409
-Wilbarger,65-79 years,2486,1344,1273,1798
+Wilbarger,16-49 years,2734,1642,1450,5531
+Wilbarger,50-64 years,2368,1402,1284,2409
+Wilbarger,65-79 years,2491,1348,1274,1798
 Wilbarger,80+ years,695,368,350,623
 Wilbarger,Unknown,5,5,0,NA
-Willacy,12-15 years,24,22,2,1157
-Willacy,16-49 years,7320,4348,3093,10776
-Willacy,50-64 years,4318,2431,1969,3064
-Willacy,65-79 years,3546,1918,1679,2290
+Willacy,12-15 years,38,36,2,1157
+Willacy,16-49 years,7344,4362,3103,10776
+Willacy,50-64 years,4326,2435,1973,3064
+Willacy,65-79 years,3549,1919,1681,2290
 Willacy,80+ years,1052,575,488,767
 Willacy,Unknown,15,14,1,NA
-Williamson,12-15 years,1720,1717,3,34028
-Williamson,16-49 years,255150,151989,114324,287235
-Williamson,50-64 years,121230,69995,56375,97996
-Williamson,65-79 years,90647,50805,42607,58371
-Williamson,80+ years,22925,12986,10609,14831
-Williamson,Unknown,98,92,10,NA
-Wilson,12-15 years,45,42,3,2841
-Wilson,16-49 years,10043,6391,4331,21389
-Wilson,50-64 years,9576,5828,4403,10688
-Wilson,65-79 years,7966,4639,3744,6567
-Wilson,80+ years,1833,1105,816,1844
+Williamson,12-15 years,2857,2852,5,34028
+Williamson,16-49 years,258017,153115,116165,287235
+Williamson,50-64 years,122100,70309,56973,97996
+Williamson,65-79 years,90962,50923,42824,58371
+Williamson,80+ years,22994,13014,10651,14831
+Williamson,Unknown,100,94,10,NA
+Wilson,12-15 years,54,51,3,2841
+Wilson,16-49 years,10145,6438,4416,21389
+Wilson,50-64 years,9657,5861,4477,10688
+Wilson,65-79 years,7989,4648,3766,6567
+Wilson,80+ years,1836,1105,819,1844
 Wilson,Unknown,5,5,0,NA
-Winkler,12-15 years,2,2,0,538
-Winkler,16-49 years,1456,879,709,3654
+Winkler,12-15 years,6,6,0,538
+Winkler,16-49 years,1458,880,710,3654
 Winkler,50-64 years,1266,704,633,1336
 Winkler,65-79 years,893,481,444,738
 Winkler,80+ years,242,131,121,226
 Winkler,Unknown,3,2,1,NA
-Wise,12-15 years,71,71,0,3970
-Wise,16-49 years,9673,5792,4437,29444
-Wise,50-64 years,10892,6298,5349,14680
-Wise,65-79 years,10178,5560,5069,8471
-Wise,80+ years,2735,1495,1356,2127
+Wise,12-15 years,78,78,0,3970
+Wise,16-49 years,9759,5822,4500,29444
+Wise,50-64 years,10945,6313,5389,14680
+Wise,65-79 years,10208,5568,5092,8471
+Wise,80+ years,2744,1498,1362,2127
 Wise,Unknown,3,3,0,NA
-Wood,12-15 years,4,4,0,2061
-Wood,16-49 years,3684,2309,1610,15819
-Wood,50-64 years,6590,3858,3232,9659
-Wood,65-79 years,11156,6269,5635,9702
-Wood,80+ years,3460,1943,1719,2825
+Wood,12-15 years,10,10,0,2061
+Wood,16-49 years,3759,2366,1635,15819
+Wood,50-64 years,6639,3889,3256,9659
+Wood,65-79 years,11192,6288,5656,9702
+Wood,80+ years,3468,1945,1725,2825
 Wood,Unknown,6,5,2,NA
 Yoakum,12-15 years,2,2,0,636
-Yoakum,16-49 years,1754,1091,881,3711
-Yoakum,50-64 years,1384,833,703,1391
+Yoakum,16-49 years,1760,1096,882,3711
+Yoakum,50-64 years,1387,834,705,1391
 Yoakum,65-79 years,998,565,510,806
 Yoakum,80+ years,301,175,149,227
 Yoakum,Unknown,3,3,0,NA
-Young,16-49 years,2234,1376,1130,6840
-Young,50-64 years,2536,1490,1339,3605
+Young,16-49 years,2239,1379,1134,6840
+Young,50-64 years,2537,1490,1340,3605
 Young,65-79 years,3272,1785,1652,2792
 Young,80+ years,1133,632,536,982
 Young,Unknown,3,3,0,NA
-Zapata,12-15 years,57,57,0,1040
-Zapata,16-49 years,5721,3376,2823,6134
-Zapata,50-64 years,2715,1570,1360,1981
-Zapata,65-79 years,2166,1195,1080,1415
-Zapata,80+ years,569,317,270,451
+Zapata,12-15 years,80,80,0,1040
+Zapata,16-49 years,5764,3393,2850,6134
+Zapata,50-64 years,2728,1573,1370,1981
+Zapata,65-79 years,2170,1196,1083,1415
+Zapata,80+ years,570,317,271,451
 Zapata,Unknown,9,8,1,NA
-Zavala,12-15 years,6,6,0,772
-Zavala,16-49 years,3271,1887,1418,5421
-Zavala,50-64 years,2274,1265,1029,1696
+Zavala,12-15 years,8,8,0,772
+Zavala,16-49 years,3288,1903,1419,5421
+Zavala,50-64 years,2284,1272,1033,1696
 Zavala,65-79 years,1955,1048,923,1332
-Zavala,80+ years,479,261,221,391
+Zavala,80+ years,480,261,222,391
 Zavala,Unknown,1,1,0,NA
