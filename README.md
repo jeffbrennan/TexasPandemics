@@ -33,14 +33,14 @@ note: "stacked" indicates file includes statistics at County, TSA, PHR, Metro & 
 ## Dashboard Element Sources
 
 ### **Vaccination**
-![Vaccination plot #1](backend\readme_images\vaccination_rate.png?raw=True)
+![Vaccination plot #1](readme_images\vaccination_rate.png?raw=True)
 
 - Fully Vaccinated: County level counts from [DSHS Vaccination Spreadsheet](https://dshs.texas.gov/immunize/covid19/COVID-19-Vaccine-Data-by-County.xls)
     - By County sheet
     - Column F: People Fully Vaccinated
     - Data is updated daily
 
-![Vaccination plot #2](backend\readme_images\vaccination_demo.png?raw=True)
+![Vaccination plot #2](readme_images\vaccination_demo.png?raw=True)
 
 - Population by Age: [Census County Population Characteristics (2019) CSV](https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/counties/asrh/cc-est2019-agesex-48.csv)
     - < 12 Years: population Under 5 + 8/9ths of population aged 5-13
@@ -64,7 +64,7 @@ note: "stacked" indicates file includes statistics at County, TSA, PHR, Metro & 
 
 ### **Hot Spots (TPR, Cases / 100k)**
 
-![TPR plot](backend\readme_images\hot_spot_tpr.png?raw=True)
+![TPR plot](readme_images\hot_spot_tpr.png?raw=True)
 
 - Test Positivity Rate: [Healthdata.gov Community Profile Report](https://beta.healthdata.gov/National/COVID-19-Community-Profile-Report/gqxm-d9w9)
 
@@ -77,7 +77,7 @@ note: "stacked" indicates file includes statistics at County, TSA, PHR, Metro & 
 ---
 
 ### **Hot Spots (Case Ratio)**
-![Case Ratio plot](backend\readme_images\hot_spot_case_ratio.png?raw=True)
+![Case Ratio plot](readme_images\hot_spot_case_ratio.png?raw=True)
 
 - Cases: [DSHS new confirmed cases](https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx)
 
@@ -85,7 +85,7 @@ note: "stacked" indicates file includes statistics at County, TSA, PHR, Metro & 
 
 ### **Cases & Fatalities**
 
-![Cases Fatalities plot](backend\readme_images\cases_fatalities.png?raw=True)
+![Cases Fatalities plot](readme_images\cases_fatalities.png?raw=True)
 
 
 - Cases [DSHS new confirmed cases spreadsheet](https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx)
@@ -100,23 +100,23 @@ note: "stacked" indicates file includes statistics at County, TSA, PHR, Metro & 
 
 ### **Critical Trends**
 
-![Case plot](backend\readme_images\critical_cases.png?raw=True)
+![Case plot](readme_images\critical_cases.png?raw=True)
 
 - Cases: [DSHS new confirmed cases](https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx)
 
-![Pct plot](backend\readme_images\critical_pct.png?raw=True)
+![Pct plot](readme_images\critical_pct.png?raw=True)
 
 - Cases % diff: [DSHS new confirmed cases spreadsheet](https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx)
 - Tests % diff: [CMS TPR Archive](https://data.cms.gov/stories/s/q5r5-gjyu)
 
-![Prediction plot](backend\readme_images\critical_prediction.png?raw=True)
+![Prediction plot](readme_images\critical_prediction.png?raw=True)
 
 - Cases: [DSHS new confirmed cases spreadsheet](https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx)
 
 - ARIMA Model
     - forecast::auto.arima() on 7 day moving average of new cases
 
-![Rt plot](backend\readme_images\critical_rt.png?raw=True)
+![Rt plot](readme_images\critical_rt.png?raw=True)
 
 - Cases: [DSHS new confirmed cases spreadsheet](https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx)
 
@@ -130,15 +130,15 @@ note: "stacked" indicates file includes statistics at County, TSA, PHR, Metro & 
 
 ### **Hospitalization**
 
-![Hospitalizations plot](backend\readme_images\hosp_daily.png?raw=True)
+![Hospitalizations plot](readme_images\hosp_daily.png?raw=True)
 
 - Hospitalizations: [DSHS TSA Level spreadsheet](https://dshs.texas.gov/coronavirus/CombinedHospitalDataoverTimebyTSA.xlsx)
 
-![Ventilator plot](backend\readme_images\hosp_vent.png?raw=True)
+![Ventilator plot](readme_images\hosp_vent.png?raw=True)
 
 - Ventilators
 
-![Bed plot](backend\readme_images\hosp_beds.png?raw=True)
+![Bed plot](readme_images\hosp_beds.png?raw=True)
 
 - ICU Hospitalizations
     - Available: Sheet #5
@@ -156,7 +156,7 @@ note: "stacked" indicates file includes statistics at County, TSA, PHR, Metro & 
 
 ### **Mobility**
 
-![Mobility plot](backend\readme_images\mobility.png?raw=True)
+![Mobility plot](readme_images\mobility.png?raw=True)
 
 - [Google mobility CSV](https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv)
 
@@ -164,10 +164,10 @@ note: "stacked" indicates file includes statistics at County, TSA, PHR, Metro & 
 
 ### **Demographics**
 
-![Demo plot](backend\readme_images\demo.png?raw=True)
+![Demo plot](readme_images\demo.png?raw=True)
 
 - Case & Fatality demographics: [DSHS demographics spreadsheet](https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics.xlsx)
 
-![Demo state plot](backend\readme_images\demo_state.png?raw=True)
+![Demo state plot](readme_images\demo_state.png?raw=True)
 
 - State level demographics: [Census quickfacts](https://www.census.gov/quickfacts/TX)
