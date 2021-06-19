@@ -752,8 +752,9 @@ new_case_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19ActiveCaseDataby
 temp = tempfile()
 download.file(new_case_url, temp, mode = 'wb') 
 new_active_cases = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) %>%
-  slice(which(County == 'Anderson'):which(County == 'Zavala')) %>% 
+  slice(which(County == 'Anderson'):nrow(.)) %>%
   dplyr::select(-Notes) %>% 
+  filter(!is.na(County)) %>%
   select_if(function(x) all(!is.na(x)))
 
 names(new_active_cases)[2:ncol(new_active_cases)] = Date_Parser(names(new_active_cases)[2:ncol(new_active_cases)])
