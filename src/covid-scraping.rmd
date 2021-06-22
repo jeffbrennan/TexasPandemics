@@ -1517,6 +1517,23 @@ write_csv(county_vax_age, 'tableau/sandbox/county_vax_age.csv')
 
 # TSA LEVEL
 
+## Variants
+
+```{r}
+variant_df = read_html('https://www.dshs.texas.gov/news/updates.shtm') %>%
+  html_table() %>%
+  .[[which(str_detect(., 'ALPHA'))]] %>%
+  filter(TSA != 'Grand Total') %>% 
+  select(-Total) %>% 
+  mutate(Date = format(Sys.Date(), '%Y-%m-%d'))
+
+write_csv(x = variant_df,
+          file = glue('original-sources\\historical\\variants\\tsa_variants_{Sys.Date()}.csv'))
+```
+
+
+
+
 ## Computed
 
 ```{r}
@@ -1548,6 +1565,10 @@ DSHS_tsa_google =
 
 DSHS_tsa = merge(DSHS_tsa_counts, DSHS_tsa_google, by = c('Date', 'TSA', 'TSA_Name'))
 DSHS_tsa = merge(DSHS_tsa, DSHS_tsa_pops, by = 'TSA', all = TRUE)
+
+
+
+
 ```
 
 ## DSHS hospitals
