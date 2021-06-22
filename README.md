@@ -10,7 +10,7 @@ Scraping, statistics, and diagnostics of Texas COVID-19 data
 | :-------------  |:--------  |:-----                                                                                   |:-----                                                                   | :-----                                                                                                                       |
 | County          | Daily     | [county.csv](tableau/county.csv)                    | Cases, Deaths, Testing, Mobility, Childcare facilities  | [DSHS](https://www.dshs.state.tx.us/coronavirus/additionaldata/) & [Google](https://www.google.com/covid19/mobility/)                                                                                  |
 | County          | Weekly    | [county_TPR.csv](tableau/county_TPR.csv)                | Test Positivity Rates                            | [Centers for Medicare & Medicaid](https://data.cms.gov/stories/s/q5r5-gjyu)                                                                                                                            |
-| TSA             | Daily     | [hospitalizations_tsa.csv](tableau/hospitalizations_tsa.csv)      | Hospitalizations & Bed Availability                     | [DSHS](https://www.dshs.state.tx.us/coronavirus/additionaldata/)                                                                                                                                       |
+| TSA             | Daily     | [hospitalizations_tsa.csv](tableau/hospitalizations_tsa.csv)      | Hospitalizations, Bed Availability, Variants                     | [DSHS](https://www.dshs.state.tx.us/coronavirus/additionaldata/)                                                                                                                                       |
 | State           | Weekly    | [stacked_demographics.csv](tableau/stacked_demographics.csv)      | Demographics from Case & Fatality Investigations        | [DSHS](https://dshs.texas.gov/coronavirus/additionaldata/)
 
 ---
@@ -26,7 +26,7 @@ Scraping, statistics, and diagnostics of Texas COVID-19 data
 | [stacked_rt.csv](tableau/stacked_rt.csv)                            | Rt estimates
 | [stacked_critical_trends.csv](tableau/stacked_critical_trends.csv)  | All statistics stacked together
 
-note: "stacked" indicates file includes statistics at County, TSA, PHR, Metro & State levels. Rt also includes school district estimates.
+note: "stacked" indicates file includes statistics at County, TSA, PHR, Metro & State levels.
 
 ---
 
@@ -68,7 +68,9 @@ note: "stacked" indicates file includes statistics at County, TSA, PHR, Metro & 
 
 - Test Positivity Rate: [Healthdata.gov Community Profile Report](https://beta.healthdata.gov/National/COVID-19-Community-Profile-Report/gqxm-d9w9)
 
-- Cases: [DSHS new confirmed cases](https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx)
+    - Sheet: Counties | Column: AK (Viral lab test positivity rate - last 7 days) 
+
+- Cases: [DSHS new confirmed cases spreadsheet](https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx)
 
 - County Population: [DSHS reported county population]('https://raw.githubusercontent.com/jeffbrennan/COVID-19/d03d476f7fb060dfd2e1a600a6a1e449df0ab8df/original-sources/DSHS_county_cases.csv')
 
@@ -79,7 +81,7 @@ note: "stacked" indicates file includes statistics at County, TSA, PHR, Metro & 
 ### **Hot Spots (Case Ratio)**
 ![Case Ratio plot](readme_images/hot_spot_case_ratio.png?raw=True)
 
-- Cases: [DSHS new confirmed cases](https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx)
+- Cases: [DSHS new confirmed cases spreadsheet](https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx)
 
 ---
 
@@ -102,12 +104,13 @@ note: "stacked" indicates file includes statistics at County, TSA, PHR, Metro & 
 
 ![Case plot](readme_images/critical_cases.png?raw=True)
 
-- Cases: [DSHS new confirmed cases](https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx)
+- Cases: [DSHS new confirmed cases spreadsheet](https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx)
 
 ![Pct plot](readme_images/critical_pct.png?raw=True)
 
 - Cases % diff: [DSHS new confirmed cases spreadsheet](https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx)
-- Tests % diff: [CMS TPR Archive](https://data.cms.gov/stories/s/q5r5-gjyu)
+- Tests % diff: [CMS Testing Archive](https://data.cms.gov/stories/s/q5r5-gjyu)
+    - Column G: Testing in prior 14 days
 
 ![Prediction plot](readme_images/critical_prediction.png?raw=True)
 
@@ -133,10 +136,13 @@ note: "stacked" indicates file includes statistics at County, TSA, PHR, Metro & 
 ![Hospitalizations plot](readme_images/hosp_daily.png?raw=True)
 
 - Hospitalizations: [DSHS TSA Level spreadsheet](https://dshs.texas.gov/coronavirus/CombinedHospitalDataoverTimebyTSA.xlsx)
+    - Sheet: COVID-19 Hospitalizations 
 
 ![Ventilator plot](readme_images/hosp_vent.png?raw=True)
 
-- Ventilators
+- Ventilators: [DSHS COVID Hospitalization dashboard](https://txdshs.maps.arcgis.com/apps/dashboards/0d8bdf9be927459d9cb11b9eaef6101f)
+
+
 
 ![Bed plot](readme_images/hosp_beds.png?raw=True)
 
@@ -158,8 +164,9 @@ note: "stacked" indicates file includes statistics at County, TSA, PHR, Metro & 
 
 ![Mobility plot](readme_images/mobility.png?raw=True)
 
-- [Google mobility CSV](https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv)
-
+- [Google mobility CSV (~ 500 mb file)](https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv)
+    - Filtered sub_region_1 for Texas
+    - Data columns: J:O (retail & recreation: residential)
 ---
 
 ### **Demographics**
@@ -167,6 +174,9 @@ note: "stacked" indicates file includes statistics at County, TSA, PHR, Metro & 
 ![Demo plot](readme_images/demo.png?raw=True)
 
 - Case & Fatality demographics: [DSHS demographics spreadsheet](https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics.xlsx)
+    - Combined data from all sheets
+    - Snapshot downloaded after weekly update and aggregated together
+    - [Snapshot archive location](https://github.com/jeffbrennan/COVID-19/tree/master/original-sources/historical/demo-archive)
 
 ![Demo state plot](readme_images/demo_state.png?raw=True)
 
