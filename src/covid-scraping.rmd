@@ -1529,10 +1529,25 @@ variant_df = read_html('https://www.dshs.texas.gov/news/updates.shtm') %>%
 
 write_csv(x = variant_df,
           file = glue('original-sources\\historical\\variants\\tsa_variants_{Sys.Date()}.csv'))
+
+
+all_variants = list.files('original-sources\\historical\\variants\\', full.names = TRUE) %>%
+  lapply(., function(x) fread(x) %>%
+           setNames(gsub('\\r\\n        ', '', names(.))) %>% 
+           setNames(gsub('DELTA\\(', 'DELTA \\(', names(.)))
+         )  %>%
+  rbindlist(fill = TRUE) %>% 
+  relocate(Date, .before = TSA)
+
+update_dates = all_variants %>% 
+  distinct_at(vars(-Date), .keep_all = TRUE) %>%
+  select(Date) %>% 
+  distinct() %>% 
+  unlist()
+
+write_csv(x = all_variants %>% filter(Date %in% update_dates), 
+          file = 'tableau\\tsa_variants.csv')
 ```
-
-
-
 
 ## Computed
 
