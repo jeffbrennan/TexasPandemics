@@ -589,25 +589,25 @@ write_xlsx(list('school_data' = DSHS_school_df,
 
 ```{r}
 # fread for faster processing
-mobility_data = fread('https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv')
+# mobility_data = fread('https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv')
 ```
 
 ```{r}
-mobility_texas = mobility_data %>% 
-  filter(sub_region_1 == 'Texas') %>% 
-  dplyr::select(sub_region_2, date, 
-                retail_and_recreation_percent_change_from_baseline,
-                grocery_and_pharmacy_percent_change_from_baseline,
-                parks_percent_change_from_baseline,
-                transit_stations_percent_change_from_baseline,
-                workplaces_percent_change_from_baseline,
-                residential_percent_change_from_baseline) %>% 
-  setNames(c('County', 'Date', 'Retail_Recreation', 'Grocery_Pharmacy',
-             'Parks', 'Transit', 'Workplaces', 'Residential')) %>% 
-  mutate(County =  sub('^$', 'Unallocated', County)) %>% 
-  mutate(County = as.factor(gsub(' County', '', County))) %>% 
-  filter(County != 'Unallocated') %>% 
-  mutate(Date = as.Date(Date))
+# mobility_texas = mobility_data %>% 
+#   filter(sub_region_1 == 'Texas') %>% 
+#   dplyr::select(sub_region_2, date, 
+#                 retail_and_recreation_percent_change_from_baseline,
+#                 grocery_and_pharmacy_percent_change_from_baseline,
+#                 parks_percent_change_from_baseline,
+#                 transit_stations_percent_change_from_baseline,
+#                 workplaces_percent_change_from_baseline,
+#                 residential_percent_change_from_baseline) %>% 
+#   setNames(c('County', 'Date', 'Retail_Recreation', 'Grocery_Pharmacy',
+#              'Parks', 'Transit', 'Workplaces', 'Residential')) %>% 
+#   mutate(County =  sub('^$', 'Unallocated', County)) %>% 
+#   mutate(County = as.factor(gsub(' County', '', County))) %>% 
+#   filter(County != 'Unallocated') %>% 
+#   mutate(Date = as.Date(Date))
 
 # # drop cols
 # mobility_texas = mobility_texas[, -c(1:3, 5:7)]
@@ -803,10 +803,12 @@ merged_dshs = Reduce(function(x, y) merge(x, y, by = 'County', all = TRUE),
  merged_dshs$TSA_Combined = paste0(merged_dshs$TSA, ' - ', merged_dshs$TSA_Name)
 merged_dshs$PHR_Combined = paste0(merged_dshs$PHR, ' - ', merged_dshs$PHR_Name)
 # merged_dshs$HHSC_Combined = paste0(merged_dshs$HHSC, ' - ', merged_dshs$HHSC_Name)
+# 
+# merged_county = as.data.frame(merge(merged_dshs, mobility_texas,
+#                                     by = c('Date', 'County'), all = TRUE)) %>% 
+#   filter(!is.na(County) & County != 'Unknown')
 
-merged_county = as.data.frame(merge(merged_dshs, mobility_texas,
-                                    by = c('Date', 'County'), all = TRUE)) %>% 
-  filter(!is.na(County) & County != 'Unknown')
+merged_county = merged_dshs
 
 # fix types
 merged_county$County = as.factor(merged_county$County)
@@ -891,13 +893,12 @@ curl::curl_download(file_url, temp, mode = 'wb')
 
 cpr_day = read_xlsx(temp, sheet = 6) %>%
   slice(1) %>% 
-  dplyr::select(contains('VIRAL (RT-PCR) LAB TESTING: LAST WEEK')) %>% 
+  dplyr::select(contains('VIRAL (RT-PCR) LAB TESTING: LAST WEEK')) %>%
   names() %>%
   # str_match(., '(\\d{1,2}).(?<=\\))') %>% 
   # str_match(., '-(\\d{1,2})') %>% 
-  str_match_all(., '\\d{1,2}') %>%
-  unlist() %>%
-  .[2] %>% 
+  str_match(., '\\-(\\d{1,2})') %>%
+  .[2] %>%
   as.numeric()
 
 if (cpr_day > as.numeric(format(Sys.Date(), '%d'))) { 
@@ -1001,7 +1002,7 @@ write.csv(tpr_out, 'tableau/county_TPR.csv', row.names = FALSE)
 
 ```{r}
 curl::curl_download('https://www.dshs.texas.gov/immunize/covid19/COVID-19-Vaccine-Data-by-County.xls', mode = 'wb', 
-              glue('original-sources/historical/vaccinations/vaccinations_{date_out}.xlsx'))
+              destfile = glue('original-sources/historical/vaccinations/vaccinations_{date_out}.xlsx'))
 
 # Clean_Vaccines = function(x) { 
 #   file_date = Date_Parser(x)
@@ -1521,12 +1522,22 @@ write_csv(county_vax_age, 'tableau/sandbox/county_vax_age.csv')
 ## Variants
 
 ```{r}
-variant_df = read_html('https://www.dshs.texas.gov/news/updates.shtm') %>%
+variant_df = 'http://www.dshs.texas.gov/news/updates.shtm' %>%
+  httr::GET(., httr::timeout(20)) %>% 
+  read_html() %>%
   html_table() %>%
   .[[which(str_detect(., 'ALPHA'))]] %>%
   filter(TSA != 'Grand Total') %>% 
   select(-Total) %>% 
   mutate(Date = format(Sys.Date(), '%Y-%m-%d'))
+
+
+# variant_df = read_html('http://www.dshs.texas.gov/news/updates.shtm') %>%
+#   html_table() %>%
+#   .[[which(str_detect(., 'ALPHA'))]] %>%
+#   filter(TSA != 'Grand Total') %>% 
+#   select(-Total) %>% 
+#   mutate(Date = format(Sys.Date(), '%Y-%m-%d'))
 
 write_csv(x = variant_df,
           file = glue('original-sources\\historical\\variants\\tsa_variants_{Sys.Date()}.csv'))
@@ -1571,19 +1582,16 @@ DSHS_tsa_pops =
                funs(sum))
 
 # longitudinal google data (mean)
-DSHS_tsa_google = 
-  merged_county %>%
-  group_by(Date, TSA, TSA_Name) %>%
-  summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
-                    Parks, Transit,
-                    Workplaces, Residential),
-               funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)
+# DSHS_tsa_google = 
+#   merged_county %>%
+#   group_by(Date, TSA, TSA_Name) %>%
+#   summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
+#                     Parks, Transit,
+#                     Workplaces, Residential),
+#                funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)
 
-DSHS_tsa = merge(DSHS_tsa_counts, DSHS_tsa_google, by = c('Date', 'TSA', 'TSA_Name'))
-DSHS_tsa = merge(DSHS_tsa, DSHS_tsa_pops, by = 'TSA', all = TRUE)
-
-
-
+# DSHS_tsa = merge(DSHS_tsa_counts, DSHS_tsa_google, by = c('Date', 'TSA', 'TSA_Name'))
+DSHS_tsa = merge(DSHS_tsa_counts, DSHS_tsa_pops, by = 'TSA', all = TRUE)
 
 ```
 
