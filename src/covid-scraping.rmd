@@ -589,43 +589,43 @@ write_xlsx(list('school_data' = DSHS_school_df,
 
 ```{r}
 # fread for faster processing
-# mobility_data = fread('https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv')
+mobility_data = fread('https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv')
 ```
 
 ```{r}
-# mobility_texas = mobility_data %>% 
-#   filter(sub_region_1 == 'Texas') %>% 
-#   dplyr::select(sub_region_2, date, 
-#                 retail_and_recreation_percent_change_from_baseline,
-#                 grocery_and_pharmacy_percent_change_from_baseline,
-#                 parks_percent_change_from_baseline,
-#                 transit_stations_percent_change_from_baseline,
-#                 workplaces_percent_change_from_baseline,
-#                 residential_percent_change_from_baseline) %>% 
-#   setNames(c('County', 'Date', 'Retail_Recreation', 'Grocery_Pharmacy',
-#              'Parks', 'Transit', 'Workplaces', 'Residential')) %>% 
-#   mutate(County =  sub('^$', 'Unallocated', County)) %>% 
-#   mutate(County = as.factor(gsub(' County', '', County))) %>% 
-#   filter(County != 'Unallocated') %>% 
-#   mutate(Date = as.Date(Date))
+mobility_texas = mobility_data %>%
+  filter(sub_region_1 == 'Texas') %>%
+  dplyr::select(sub_region_2, date,
+                retail_and_recreation_percent_change_from_baseline,
+                grocery_and_pharmacy_percent_change_from_baseline,
+                parks_percent_change_from_baseline,
+                transit_stations_percent_change_from_baseline,
+                workplaces_percent_change_from_baseline,
+                residential_percent_change_from_baseline) %>%
+  setNames(c('County', 'Date', 'Retail_Recreation', 'Grocery_Pharmacy',
+             'Parks', 'Transit', 'Workplaces', 'Residential')) %>%
+  mutate(County =  sub('^$', 'Unallocated', County)) %>%
+  mutate(County = as.factor(gsub(' County', '', County))) %>%
+  filter(County != 'Unallocated') %>%
+  mutate(Date = as.Date(Date))
 
 # # drop cols
 # mobility_texas = mobility_texas[, -c(1:3, 5:7)]
-# 
+#
 # # fix colnames
-# names(mobility_texas) = c('County', 'Date', 'Retail_Recreation', 'Grocery_Pharmacy',
-#                              'Parks', 'Transit', 'Workplaces', 'Residential')
-# 
+names(mobility_texas) = c('County', 'Date', 'Retail_Recreation', 'Grocery_Pharmacy',
+                             'Parks', 'Transit', 'Workplaces', 'Residential')
+#
 # # Add name for blank county cells & drop 'county' suffix
-# mobility_texas$County = sub('^$', 'Unallocated', mobility_texas$County)
-# mobility_texas$County = gsub(' County', '', mobility_texas$County)
-# 
+mobility_texas$County = sub('^$', 'Unallocated', mobility_texas$County)
+mobility_texas$County = gsub(' County', '', mobility_texas$County)
+#
 # # drop blank cells
-# mobility_texas = subset(mobility_texas, County != 'Unallocated')
-# 
+mobility_texas = subset(mobility_texas, County != 'Unallocated')
+#
 # #fix types
-# mobility_texas$County = as.factor(mobility_texas$County)
-# mobility_texas$Date = as.Date(mobility_texas$Date)
+mobility_texas$County = as.factor(mobility_texas$County)
+mobility_texas$Date = as.Date(mobility_texas$Date)
 ```
 
 ## cases
@@ -804,11 +804,9 @@ merged_dshs = Reduce(function(x, y) merge(x, y, by = 'County', all = TRUE),
 merged_dshs$PHR_Combined = paste0(merged_dshs$PHR, ' - ', merged_dshs$PHR_Name)
 # merged_dshs$HHSC_Combined = paste0(merged_dshs$HHSC, ' - ', merged_dshs$HHSC_Name)
 # 
-# merged_county = as.data.frame(merge(merged_dshs, mobility_texas,
-#                                     by = c('Date', 'County'), all = TRUE)) %>% 
-#   filter(!is.na(County) & County != 'Unknown')
-
-merged_county = merged_dshs
+merged_county = as.data.frame(merge(merged_dshs, mobility_texas,
+                                    by = c('Date', 'County'), all = TRUE)) %>%
+  filter(!is.na(County) & County != 'Unknown')
 
 # fix types
 merged_county$County = as.factor(merged_county$County)
@@ -879,11 +877,12 @@ file_text = page %>% html_nodes('script') %>%
 
 
 newest_file = fromJSON(file_text)$view$attachments %>%
-  filter(href %>% str_detect('.xlsx')) %>%
-  dplyr::select(href) %>%
-  slice(1) %>% 
+  filter(href %>% str_detect('.xlsx')) %>% 
+  distinct() %>%
+  arrange(desc(name)) %>%
+  slice(1) %>%
+  select(href) %>%
   unlist()
-
 
 file_date = as.Date(str_match(newest_file, '(Report |Report_)(.*)(_)')[3], '%Y%m%d')
 file_url = (paste0('https://beta.healthdata.gov', newest_file))
@@ -909,8 +908,8 @@ if (cpr_day > as.numeric(format(Sys.Date(), '%d'))) {
   }
 
 cpr_tpr = read_xlsx(temp, sheet = 6, skip = 1) %>% 
-  filter(`State Abbreviation` == 'TX') %>% 
-  dplyr::select('County',
+  filter(`State Abbreviation` == 'TX') %>%
+  select('County',
          contains('lab test positivity rate - last 7 days'),
          contains('diagnostic tests - last 7 days')) %>% 
   filter(County != 'Unallocated, TX') %>%
@@ -1529,8 +1528,7 @@ variant_df = 'http://www.dshs.texas.gov/news/updates.shtm' %>%
   .[[which(str_detect(., 'ALPHA'))]] %>%
   filter(TSA != 'Grand Total') %>% 
   select(-Total) %>% 
-  mutate(Date = format(Sys.Date(), '%Y-%m-%d'))
-
+  mutate(Date = date_out)
 
 # variant_df = read_html('http://www.dshs.texas.gov/news/updates.shtm') %>%
 #   html_table() %>%
@@ -1540,16 +1538,36 @@ variant_df = 'http://www.dshs.texas.gov/news/updates.shtm' %>%
 #   mutate(Date = format(Sys.Date(), '%Y-%m-%d'))
 
 write_csv(x = variant_df,
-          file = glue('original-sources\\historical\\variants\\tsa_variants_{Sys.Date()}.csv'))
+          file = glue('original-sources\\historical\\variants\\tsa_variants_{date_out}.csv'))
 
 
+# epsilon variants deescalated on 6/29
 all_variants = list.files('original-sources\\historical\\variants\\', full.names = TRUE) %>%
-  lapply(., function(x) fread(x) %>%
-           setNames(gsub('\\r\\n        ', '', names(.))) %>% 
-           setNames(gsub('DELTA\\(', 'DELTA \\(', names(.)))
+  lapply(., function(x) 
+           fread(x) %>%
+           setNames(c('TSA', str_extract(names(.)[2:length(names(.))], '.*[\\S]'))) %>%
+           rename_all(., recode,
+                      B.1.1.7 = 'B.1.1.7 ALPHA (UK)',
+                      B.1.351 = 'B.1.351 BETA (South Africa)',
+                      B.1.617.2 = 'B.1.617.2 DELTA (India)',
+                      B.1.427 = 'B.1.427 EPSILON (California)',
+                      B.1.429 = 'B.1.429 EPSILON (California)',
+                      P.1 = 'P.1 GAMMA (Brazil)')
          )  %>%
   rbindlist(fill = TRUE) %>% 
-  relocate(Date, .before = TSA)
+  relocate(Date, .before = TSA) %>%
+  left_join(tsa_long_complete %>%
+              select(TSA, TSA_Combined) %>%
+              distinct() %>%
+              rbind(
+                data.frame(TSA = 'Pending patient info from lab',
+                           TSA_Combined = 'Pending patient info from lab')
+                )) %>% 
+  select(-TSA) %>% 
+  rename('TSA' = 'TSA_Combined') %>% 
+  relocate(TSA, .after = Date) %>% 
+  mutate_at(vars(-Date, -TSA), function(x) gsub('\\,', '', x)) %>% 
+  mutate_at(vars(-Date, -TSA), as.numeric)
 
 update_dates = all_variants %>% 
   distinct_at(vars(-Date), .keep_all = TRUE) %>%
@@ -1582,17 +1600,16 @@ DSHS_tsa_pops =
                funs(sum))
 
 # longitudinal google data (mean)
-# DSHS_tsa_google = 
-#   merged_county %>%
-#   group_by(Date, TSA, TSA_Name) %>%
-#   summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
-#                     Parks, Transit,
-#                     Workplaces, Residential),
-#                funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)
+DSHS_tsa_google =
+  merged_county %>%
+  group_by(Date, TSA, TSA_Name) %>%
+  summarize_at(vars(Retail_Recreation, Grocery_Pharmacy,
+                    Parks, Transit,
+                    Workplaces, Residential),
+               funs(weighted.mean(., Population_DSHS)), na.rm = TRUE)
 
-# DSHS_tsa = merge(DSHS_tsa_counts, DSHS_tsa_google, by = c('Date', 'TSA', 'TSA_Name'))
-DSHS_tsa = merge(DSHS_tsa_counts, DSHS_tsa_pops, by = 'TSA', all = TRUE)
-
+DSHS_tsa = merge(DSHS_tsa_counts, DSHS_tsa_google, by = c('Date', 'TSA', 'TSA_Name'))
+DSHS_tsa = merge(DSHS_tsa, DSHS_tsa_pops, by = 'TSA', all = TRUE)
 ```
 
 ## DSHS hospitals
@@ -1731,8 +1748,6 @@ merged_tsa = Reduce(function(x, y) merge(x, y, by = c('Date', 'TSA'), all = TRUE
                          hosp_1, hosp_2, hosp_3,
                          hosp_cap1, hosp_cap2, hosp_cap3, hosp_cap4))
 
-
-
 # fix types & ensure TSA values are valid
 merged_tsa = merged_tsa %>% 
   mutate_at(vars(Beds_Available_Total, Beds_Available_ICU, Ventilators_Available,
@@ -1854,21 +1869,21 @@ merged_county_out = merged_county %>%
                    Tests_Cumulative_NA, Active_Cases_Cumulative_NA))
 
 
-merged_county_out %>% 
-  group_by(County) %>% 
-  summarize(n()) %>% 
-  View()
+# merged_county_out %>% 
+#   group_by(County) %>% 
+#   summarize(n()) %>% 
+#   View()
+# 
+# 
+# merged_county_out %>%
+#   select(Date, TSA, Cases_Daily, Tests_Daily, Population_DSHS) %>%
+#   group_by(Date, TSA) %>% 
+#   summarize_if(is.numeric, sum, na.rm = TRUE) %>% 
+#   group_by(Date, TSA) %>%
+#   summarize(n()) %>%
+#   View()
 
-
-merged_county_out %>%
-  select(Date, TSA, Cases_Daily, Tests_Daily, Population_DSHS) %>%
-  group_by(Date, TSA) %>% 
-  summarize_if(is.numeric, sum, na.rm = TRUE) %>% 
-  group_by(Date, TSA) %>%
-  summarize(n()) %>%
-  View()
-
-write.csv(merged_county_out, 'tableau/county.csv', row.names = FALSE)
+write_csv(merged_county_out %>% arrange(County, Date), 'tableau/county.csv')
 ```
 
 ## TSA
@@ -1898,6 +1913,32 @@ write.csv(hosp_tsa, file = 'tableau/hospitalizations_tsa.csv', row.names = F)
 ```{r}
 write.csv(demo_stacked_combined, file = 'tableau/stacked_demographics.csv', row.names = FALSE)
 ```
+
+
+# TEMP DIAGNOSTICS
+
+
+```{r}
+# high cases 7/6
+high_cases = merged_county %>% 
+  filter(County %in% c('Presidio', 'Hudspeth', 'Starr', 'Maverick', 'Uvalde', 'Harris')) %>% 
+  filter(Date >= as.Date('2021-06-15')) %>% 
+  select(Date, County, Cases_Cumulative, Cases_Daily, Population_DSHS) %>%
+  arrange(County, Date) %>% 
+  mutate(Cases_100K = (Cases_Daily / Population_DSHS) * 100000)
+  
+ggplot(high_cases, aes(x = Date, y = Cases_100K)) + 
+  # geom_point() + 
+  geom_line() + 
+  geom_label(aes(label = round(Cases_100K, 0))) +
+  facet_wrap(~County) + 
+  theme_pubr()
+
+
+high_cases %>% filter(County == 'Presidio')
+
+```
+
 
 
 
