@@ -884,7 +884,7 @@ newest_file = fromJSON(file_text)$view$attachments %>%
   select(href) %>%
   unlist()
 
-file_date = as.Date(str_match(newest_file, '(Report |Report_)(.*)(_)')[3], '%Y%m%d')
+file_date = as.Date(str_match(newest_file, '\\d{8}'), '%Y%m%d')
 file_url = (paste0('https://beta.healthdata.gov', newest_file))
 
 temp = tempfile()
@@ -896,7 +896,7 @@ cpr_day = read_xlsx(temp, sheet = 6) %>%
   names() %>%
   # str_match(., '(\\d{1,2}).(?<=\\))') %>% 
   # str_match(., '-(\\d{1,2})') %>% 
-  str_match(., '\\-(\\d{1,2})') %>%
+  str_match(., ' (\\d{1,2}),') %>%
   .[2] %>%
   as.numeric()
 
