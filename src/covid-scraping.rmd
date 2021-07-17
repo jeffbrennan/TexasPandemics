@@ -896,7 +896,7 @@ cpr_day = read_xlsx(temp, sheet = 6) %>%
   names() %>%
   # str_match(., '(\\d{1,2}).(?<=\\))') %>% 
   # str_match(., '-(\\d{1,2})') %>% 
-  str_match(., ' (\\d{1,2}),') %>%
+  str_match(., '(\\d{1,2}),') %>%
   .[2] %>%
   as.numeric()
 
