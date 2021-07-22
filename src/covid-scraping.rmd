@@ -822,7 +822,7 @@ merged_county = merged_county %>%
 
 ```{r}
 Get_TPR = function() { 
-  page = read_html('https://data.cms.gov/stories/s/q5r5-gjyu')
+  page = read_html('https://data.cms.gov/covid-19/covid-19-nursing-home-data')
   tpr_url = page %>% html_nodes('a') %>% html_attr('href') %>%
     .[grepl('download', .)] %>% .[1] %>% gsub('%2F', '/', .)
   
@@ -846,8 +846,8 @@ Get_TPR = function() {
   write.csv(tpr_out, paste0('original-sources/historical/cms_tpr/TPR_', tpr_date,  '.csv'),
             row.names = FALSE) 
   }
-  
-Get_TPR()
+# Get_TPR()
+# 7/22: No longer reporting TPR from this source
 tpr_df = rbindlist(
          lapply(list.files('original-sources/historical/cms_tpr/', full.names = TRUE), read.csv),
          fill = TRUE) %>% 
