@@ -10339,7 +10339,7 @@
 2021-07-24,"T","Laredo","T - Laredo",295669,77,35,19,16,45,5,364,47
 2021-07-24,"U","Corpus Christi","U - Corpus Christi",630897,191,104,73,31,538,34,1019,140
 2021-07-24,"V","Lower Rio Grande Valley","V - Lower Rio Grande Valley",1385112,389,244,167,62,721,57,2225,264
-2021-07-25,"A","Amarillo","A - Amarillo",440127,144,48,48,25,311,8,807,113
+2021-07-25,"A","Amarillo","A - Amarillo",440127,144,48,30,16,252,7,614,85
 2021-07-25,"B","Lubbock","B - Lubbock",513580,210,102,70,30,305,20,1082,173
 2021-07-25,"C","Wichita Falls","C - Wichita Falls",219793,105,31,21,10,315,4,829,25
 2021-07-25,"D","Abilene","D - Abilene",306972,88,39,26,13,214,2,522,49
@@ -10348,7 +10348,7 @@
 2021-07-25,"G","Longview/Tyler","G - Longview/Tyler",968611,238,180,121,58,740,42,1873,258
 2021-07-25,"H","Lufkin","H - Lufkin",272151,111,34,19,15,125,14,307,48
 2021-07-25,"I","El Paso","I - El Paso",881765,273,69,49,19,336,33,1444,241
-2021-07-25,"J","Midland/Odessa","J - Midland/Odessa",526736,251,64,19,18,608,32,692,35
+2021-07-25,"J","Midland/Odessa","J - Midland/Odessa",526736,251,64,37,27,667,33,885,63
 2021-07-25,"K","San Angelo","K - San Angelo",179457,82,17,15,2,371,16,336,27
 2021-07-25,"L","Belton/Killeen","L - Belton/Killeen",507311,98,127,89,37,88,5,939,102
 2021-07-25,"M","Waco","M - Waco",330048,57,60,47,13,131,5,473,68
@@ -10383,25 +10383,47 @@
 2021-07-26,"T","Laredo","T - Laredo",295669,78,40,24,16,43,1,324,51
 2021-07-26,"U","Corpus Christi","U - Corpus Christi",630897,178,131,108,23,565,55,1036,136
 2021-07-26,"V","Lower Rio Grande Valley","V - Lower Rio Grande Valley",1385112,396,257,173,69,680,36,2216,262
-2021-07-27,"A","Amarillo","A - Amarillo",440127,143,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"B","Lubbock","B - Lubbock",513580,228,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"C","Wichita Falls","C - Wichita Falls",219793,105,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"D","Abilene","D - Abilene",306972,89,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"E","Dallas/Ft. Worth","E - Dallas/Ft. Worth",8080080,2172,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"F","Paris","F - Paris",273329,59,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"G","Longview/Tyler","G - Longview/Tyler",968611,241,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"H","Lufkin","H - Lufkin",272151,112,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"I","El Paso","I - El Paso",881765,276,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"J","Midland/Odessa","J - Midland/Odessa",526736,253,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"K","San Angelo","K - San Angelo",179457,86,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"L","Belton/Killeen","L - Belton/Killeen",507311,102,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"M","Waco","M - Waco",330048,52,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"N","Bryan/College Station","N - Bryan/College Station",360335,63,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"O","Austin","O - Austin",2375407,322,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"P","San Antonio","P - San Antonio",2945792,743,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"Q","Houston","Q - Houston",6688587,1473,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"R","Galveston","R - Galveston",1309237,257,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"S","Victoria","S - Victoria",186672,51,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"T","Laredo","T - Laredo",295669,75,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"U","Corpus Christi","U - Corpus Christi",630897,184,NA,NA,NA,NA,NA,NA,NA
-2021-07-27,"V","Lower Rio Grande Valley","V - Lower Rio Grande Valley",1385112,389,NA,NA,NA,NA,NA,NA,NA
+2021-07-27,"A","Amarillo","A - Amarillo",440127,143,72,46,26,316,8,600,97
+2021-07-27,"B","Lubbock","B - Lubbock",513580,228,120,86,30,268,14,1112,166
+2021-07-27,"C","Wichita Falls","C - Wichita Falls",219793,105,32,23,9,296,6,837,28
+2021-07-27,"D","Abilene","D - Abilene",306972,89,48,34,14,222,3,576,48
+2021-07-27,"E","Dallas/Ft. Worth","E - Dallas/Ft. Worth",8080080,2172,1293,902,358,1369,134,13870,1760
+2021-07-27,"F","Paris","F - Paris",273329,59,86,65,21,326,33,618,62
+2021-07-27,"G","Longview/Tyler","G - Longview/Tyler",968611,241,201,127,72,686,41,1940,270
+2021-07-27,"H","Lufkin","H - Lufkin",272151,112,39,24,15,75,11,379,54
+2021-07-27,"I","El Paso","I - El Paso",881765,276,73,46,26,298,34,1527,250
+2021-07-27,"J","Midland/Odessa","J - Midland/Odessa",526736,253,72,41,31,649,24,910,68
+2021-07-27,"K","San Angelo","K - San Angelo",179457,86,27,24,3,373,16,329,27
+2021-07-27,"L","Belton/Killeen","L - Belton/Killeen",507311,102,150,103,45,103,9,929,111
+2021-07-27,"M","Waco","M - Waco",330048,52,61,51,10,100,5,481,66
+2021-07-27,"N","Bryan/College Station","N - Bryan/College Station",360335,63,65,47,18,50,0,402,48
+2021-07-27,"O","Austin","O - Austin",2375407,322,342,207,129,586,31,3802,683
+2021-07-27,"P","San Antonio","P - San Antonio",2945792,743,568,358,204,518,64,5291,791
+2021-07-27,"Q","Houston","Q - Houston",6688587,1473,1302,977,290,1481,86,12059,1537
+2021-07-27,"R","Galveston","R - Galveston",1309237,257,232,170,62,145,7,1480,273
+2021-07-27,"S","Victoria","S - Victoria",186672,51,59,33,26,83,6,369,62
+2021-07-27,"T","Laredo","T - Laredo",295669,75,45,28,17,35,1,346,48
+2021-07-27,"U","Corpus Christi","U - Corpus Christi",630897,184,146,115,31,529,41,1057,153
+2021-07-27,"V","Lower Rio Grande Valley","V - Lower Rio Grande Valley",1385112,389,259,178,66,656,43,2240,261
+2021-07-28,"A","Amarillo","A - Amarillo",440127,127,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"B","Lubbock","B - Lubbock",513580,226,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"C","Wichita Falls","C - Wichita Falls",219793,104,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"D","Abilene","D - Abilene",306972,91,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"E","Dallas/Ft. Worth","E - Dallas/Ft. Worth",8080080,2088,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"F","Paris","F - Paris",273329,58,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"G","Longview/Tyler","G - Longview/Tyler",968611,236,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"H","Lufkin","H - Lufkin",272151,110,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"I","El Paso","I - El Paso",881765,276,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"J","Midland/Odessa","J - Midland/Odessa",526736,254,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"K","San Angelo","K - San Angelo",179457,88,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"L","Belton/Killeen","L - Belton/Killeen",507311,101,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"M","Waco","M - Waco",330048,70,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"N","Bryan/College Station","N - Bryan/College Station",360335,63,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"O","Austin","O - Austin",2375407,314,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"P","San Antonio","P - San Antonio",2945792,750,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"Q","Houston","Q - Houston",6688587,1269,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"R","Galveston","R - Galveston",1309237,253,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"S","Victoria","S - Victoria",186672,51,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"T","Laredo","T - Laredo",295669,79,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"U","Corpus Christi","U - Corpus Christi",630897,177,NA,NA,NA,NA,NA,NA,NA
+2021-07-28,"V","Lower Rio Grande Valley","V - Lower Rio Grande Valley",1385112,383,NA,NA,NA,NA,NA,NA,NA
