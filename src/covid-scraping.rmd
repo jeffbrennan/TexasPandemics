@@ -1575,8 +1575,34 @@ update_dates = all_variants %>%
   distinct() %>% 
   unlist()
 
-write_csv(x = all_variants %>% filter(Date %in% update_dates), 
+variants_out = all_variants %>%
+  select(-contains('EPSILON')) %>%
+  filter(Date %in% update_dates) %>% 
+  arrange(Date) %>% 
+  group_by(TSA) %>%
+  mutate(alpha_Case_Ratio = `B.1.1.7 ALPHA (UK)` / lag(`B.1.1.7 ALPHA (UK)`)) %>%
+  mutate(beta_Case_Ratio = `B.1.351 BETA (South Africa)` / lag(`B.1.351 BETA (South Africa)`)) %>% 
+  mutate(delta_Case_Ratio = `B.1.617.2 DELTA (India)` / lag(`B.1.617.2 DELTA (India)`)) %>% 
+  mutate(gamma_Case_Ratio = `P.1 GAMMA (Brazil)` / lag(`P.1 GAMMA (Brazil)`)) %>% 
+  mutate(across(where(is.numeric), ~na_if(., 'NaN'))) %>% 
+  arrange(TSA, Date)
+
+variants_melt = all_variants %>%
+  select(-contains('EPSILON')) %>%
+  filter(Date %in% update_dates) %>%
+  reshape2::melt(id.vars = c('Date', 'TSA')) %>% 
+  rename('Cases' = 'value', 'Variant' = 'variable') %>% 
+  group_by(TSA, Variant) %>%
+  arrange(Date) %>% 
+  mutate(Case_Ratio = Cases / lag(Cases)) %>% 
+  mutate(across(where(is.numeric), ~na_if(., 'NaN'))) %>% 
+  arrange(TSA, Date)
+
+write_csv(x = variants_out,
           file = 'tableau\\tsa_variants.csv')
+
+write_csv(x = variants_melt, 
+          file = 'tableau\\tsa_variants_melt.csv')
 ```
 
 ## Computed
