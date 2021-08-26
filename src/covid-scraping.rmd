@@ -992,8 +992,11 @@ tpr_out = all_cpr_tpr %>%
   arrange(County, Date) %>%
   group_by(County, Date) %>% 
   slice(1) %>% 
-  distinct()
-
+  distinct() %>% 
+  group_by(Date) %>% 
+  mutate(count_0 = sum(TPR == 0)) %>%
+  filter(count_0 < 254 | is.na(count_0))
+  
 write.csv(tpr_out, 'tableau/county_TPR.csv', row.names = FALSE)
 ```
 
@@ -1585,6 +1588,7 @@ variants_out = all_variants %>%
   mutate(delta_Case_Ratio = `B.1.617.2 DELTA (India)` / lag(`B.1.617.2 DELTA (India)`)) %>% 
   mutate(gamma_Case_Ratio = `P.1 GAMMA (Brazil)` / lag(`P.1 GAMMA (Brazil)`)) %>% 
   mutate(across(where(is.numeric), ~na_if(., 'NaN'))) %>% 
+  mutate(across(where(is.numeric), ~na_if(., 'Inf'))) %>% 
   arrange(TSA, Date)
 
 variants_melt = all_variants %>%
@@ -1596,6 +1600,7 @@ variants_melt = all_variants %>%
   arrange(Date) %>% 
   mutate(Case_Ratio = Cases / lag(Cases)) %>% 
   mutate(across(where(is.numeric), ~na_if(., 'NaN'))) %>% 
+  mutate(across(where(is.numeric), ~na_if(., 'Inf'))) %>% 
   arrange(TSA, Date)
 
 write_csv(x = variants_out,
