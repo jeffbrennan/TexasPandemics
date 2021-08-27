@@ -39,6 +39,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,A - Amarillo,B.1.351 BETA (South Africa),0,NA
 2021-08-18,A - Amarillo,B.1.617.2 DELTA (India),0,NA
 2021-08-18,A - Amarillo,P.1 GAMMA (Brazil),0,NA
+2021-08-26,A - Amarillo,B.1.1.7 ALPHA (UK),2,1
+2021-08-26,A - Amarillo,B.1.351 BETA (South Africa),0,NA
+2021-08-26,A - Amarillo,B.1.617.2 DELTA (India),0,NA
+2021-08-26,A - Amarillo,P.1 GAMMA (Brazil),0,NA
 2021-06-21,B - Lubbock,B.1.1.7 ALPHA (UK),6,NA
 2021-06-21,B - Lubbock,B.1.351 BETA (South Africa),1,NA
 2021-06-21,B - Lubbock,B.1.617.2 DELTA (India),2,NA
@@ -79,6 +83,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,B - Lubbock,B.1.351 BETA (South Africa),1,1
 2021-08-18,B - Lubbock,B.1.617.2 DELTA (India),2,1
 2021-08-18,B - Lubbock,P.1 GAMMA (Brazil),0,NA
+2021-08-26,B - Lubbock,B.1.1.7 ALPHA (UK),7,1
+2021-08-26,B - Lubbock,B.1.351 BETA (South Africa),1,1
+2021-08-26,B - Lubbock,B.1.617.2 DELTA (India),2,1
+2021-08-26,B - Lubbock,P.1 GAMMA (Brazil),0,NA
 2021-06-21,D - Abilene,B.1.1.7 ALPHA (UK),4,NA
 2021-06-21,D - Abilene,B.1.351 BETA (South Africa),0,NA
 2021-06-21,D - Abilene,B.1.617.2 DELTA (India),0,NA
@@ -119,6 +127,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,D - Abilene,B.1.351 BETA (South Africa),0,NA
 2021-08-18,D - Abilene,B.1.617.2 DELTA (India),0,NA
 2021-08-18,D - Abilene,P.1 GAMMA (Brazil),0,NA
+2021-08-26,D - Abilene,B.1.1.7 ALPHA (UK),4,1
+2021-08-26,D - Abilene,B.1.351 BETA (South Africa),0,NA
+2021-08-26,D - Abilene,B.1.617.2 DELTA (India),0,NA
+2021-08-26,D - Abilene,P.1 GAMMA (Brazil),0,NA
 2021-06-21,E - Dallas/Ft. Worth,B.1.1.7 ALPHA (UK),378,NA
 2021-06-21,E - Dallas/Ft. Worth,B.1.351 BETA (South Africa),9,NA
 2021-06-21,E - Dallas/Ft. Worth,B.1.617.2 DELTA (India),6,NA
@@ -159,6 +171,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,E - Dallas/Ft. Worth,B.1.351 BETA (South Africa),9,1
 2021-08-18,E - Dallas/Ft. Worth,B.1.617.2 DELTA (India),7,1
 2021-08-18,E - Dallas/Ft. Worth,P.1 GAMMA (Brazil),15,NA
+2021-08-26,E - Dallas/Ft. Worth,B.1.1.7 ALPHA (UK),416,1
+2021-08-26,E - Dallas/Ft. Worth,B.1.351 BETA (South Africa),9,1
+2021-08-26,E - Dallas/Ft. Worth,B.1.617.2 DELTA (India),7,1
+2021-08-26,E - Dallas/Ft. Worth,P.1 GAMMA (Brazil),15,1
 2021-06-21,F - Paris,B.1.1.7 ALPHA (UK),2,NA
 2021-06-21,F - Paris,B.1.351 BETA (South Africa),0,NA
 2021-06-21,F - Paris,B.1.617.2 DELTA (India),0,NA
@@ -199,6 +215,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,F - Paris,B.1.351 BETA (South Africa),0,NA
 2021-08-18,F - Paris,B.1.617.2 DELTA (India),0,NA
 2021-08-18,F - Paris,P.1 GAMMA (Brazil),0,NA
+2021-08-26,F - Paris,B.1.1.7 ALPHA (UK),2,1
+2021-08-26,F - Paris,B.1.351 BETA (South Africa),0,NA
+2021-08-26,F - Paris,B.1.617.2 DELTA (India),0,NA
+2021-08-26,F - Paris,P.1 GAMMA (Brazil),0,NA
 2021-06-21,G - Longview/Tyler,B.1.1.7 ALPHA (UK),8,NA
 2021-06-21,G - Longview/Tyler,B.1.351 BETA (South Africa),0,NA
 2021-06-21,G - Longview/Tyler,B.1.617.2 DELTA (India),0,NA
@@ -239,6 +259,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,G - Longview/Tyler,B.1.351 BETA (South Africa),0,NA
 2021-08-18,G - Longview/Tyler,B.1.617.2 DELTA (India),0,NA
 2021-08-18,G - Longview/Tyler,P.1 GAMMA (Brazil),0,NA
+2021-08-26,G - Longview/Tyler,B.1.1.7 ALPHA (UK),10,1
+2021-08-26,G - Longview/Tyler,B.1.351 BETA (South Africa),0,NA
+2021-08-26,G - Longview/Tyler,B.1.617.2 DELTA (India),0,NA
+2021-08-26,G - Longview/Tyler,P.1 GAMMA (Brazil),0,NA
 2021-06-21,H - Lufkin,B.1.1.7 ALPHA (UK),10,NA
 2021-06-21,H - Lufkin,B.1.351 BETA (South Africa),0,NA
 2021-06-21,H - Lufkin,B.1.617.2 DELTA (India),0,NA
@@ -279,6 +303,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,H - Lufkin,B.1.351 BETA (South Africa),0,NA
 2021-08-18,H - Lufkin,B.1.617.2 DELTA (India),0,NA
 2021-08-18,H - Lufkin,P.1 GAMMA (Brazil),1,NA
+2021-08-26,H - Lufkin,B.1.1.7 ALPHA (UK),10,1
+2021-08-26,H - Lufkin,B.1.351 BETA (South Africa),0,NA
+2021-08-26,H - Lufkin,B.1.617.2 DELTA (India),0,NA
+2021-08-26,H - Lufkin,P.1 GAMMA (Brazil),1,1
 2021-06-21,I - El Paso,B.1.1.7 ALPHA (UK),43,NA
 2021-06-21,I - El Paso,B.1.351 BETA (South Africa),0,NA
 2021-06-21,I - El Paso,B.1.617.2 DELTA (India),0,NA
@@ -319,6 +347,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,I - El Paso,B.1.351 BETA (South Africa),0,NA
 2021-08-18,I - El Paso,B.1.617.2 DELTA (India),0,NA
 2021-08-18,I - El Paso,P.1 GAMMA (Brazil),1,NA
+2021-08-26,I - El Paso,B.1.1.7 ALPHA (UK),52,1
+2021-08-26,I - El Paso,B.1.351 BETA (South Africa),0,NA
+2021-08-26,I - El Paso,B.1.617.2 DELTA (India),0,NA
+2021-08-26,I - El Paso,P.1 GAMMA (Brazil),1,1
 2021-06-21,J - Midland/Odessa,B.1.1.7 ALPHA (UK),13,NA
 2021-06-21,J - Midland/Odessa,B.1.351 BETA (South Africa),0,NA
 2021-06-21,J - Midland/Odessa,B.1.617.2 DELTA (India),0,NA
@@ -359,6 +391,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,J - Midland/Odessa,B.1.351 BETA (South Africa),0,NA
 2021-08-18,J - Midland/Odessa,B.1.617.2 DELTA (India),1,1
 2021-08-18,J - Midland/Odessa,P.1 GAMMA (Brazil),1,NA
+2021-08-26,J - Midland/Odessa,B.1.1.7 ALPHA (UK),13,1
+2021-08-26,J - Midland/Odessa,B.1.351 BETA (South Africa),0,NA
+2021-08-26,J - Midland/Odessa,B.1.617.2 DELTA (India),1,1
+2021-08-26,J - Midland/Odessa,P.1 GAMMA (Brazil),1,1
 2021-06-23,K - San Angelo,B.1.1.7 ALPHA (UK),1,NA
 2021-06-23,K - San Angelo,B.1.351 BETA (South Africa),0,NA
 2021-06-23,K - San Angelo,B.1.617.2 DELTA (India),0,NA
@@ -395,6 +431,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,K - San Angelo,B.1.351 BETA (South Africa),0,NA
 2021-08-18,K - San Angelo,B.1.617.2 DELTA (India),0,NA
 2021-08-18,K - San Angelo,P.1 GAMMA (Brazil),0,NA
+2021-08-26,K - San Angelo,B.1.1.7 ALPHA (UK),1,1
+2021-08-26,K - San Angelo,B.1.351 BETA (South Africa),0,NA
+2021-08-26,K - San Angelo,B.1.617.2 DELTA (India),0,NA
+2021-08-26,K - San Angelo,P.1 GAMMA (Brazil),0,NA
 2021-06-21,L - Belton/Killeen,B.1.1.7 ALPHA (UK),94,NA
 2021-06-21,L - Belton/Killeen,B.1.351 BETA (South Africa),0,NA
 2021-06-21,L - Belton/Killeen,B.1.617.2 DELTA (India),0,NA
@@ -435,6 +475,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,L - Belton/Killeen,B.1.351 BETA (South Africa),0,NA
 2021-08-18,L - Belton/Killeen,B.1.617.2 DELTA (India),0,NA
 2021-08-18,L - Belton/Killeen,P.1 GAMMA (Brazil),1,NA
+2021-08-26,L - Belton/Killeen,B.1.1.7 ALPHA (UK),94,1
+2021-08-26,L - Belton/Killeen,B.1.351 BETA (South Africa),0,NA
+2021-08-26,L - Belton/Killeen,B.1.617.2 DELTA (India),0,NA
+2021-08-26,L - Belton/Killeen,P.1 GAMMA (Brazil),1,1
 2021-06-21,M - Waco,B.1.1.7 ALPHA (UK),32,NA
 2021-06-21,M - Waco,B.1.351 BETA (South Africa),0,NA
 2021-06-21,M - Waco,B.1.617.2 DELTA (India),0,NA
@@ -475,6 +519,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,M - Waco,B.1.351 BETA (South Africa),0,NA
 2021-08-18,M - Waco,B.1.617.2 DELTA (India),0,NA
 2021-08-18,M - Waco,P.1 GAMMA (Brazil),0,NA
+2021-08-26,M - Waco,B.1.1.7 ALPHA (UK),33,1
+2021-08-26,M - Waco,B.1.351 BETA (South Africa),0,NA
+2021-08-26,M - Waco,B.1.617.2 DELTA (India),0,NA
+2021-08-26,M - Waco,P.1 GAMMA (Brazil),0,NA
 2021-06-21,N - Bryan/College Station,B.1.1.7 ALPHA (UK),55,NA
 2021-06-21,N - Bryan/College Station,B.1.351 BETA (South Africa),0,NA
 2021-06-21,N - Bryan/College Station,B.1.617.2 DELTA (India),0,NA
@@ -515,6 +563,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,N - Bryan/College Station,B.1.351 BETA (South Africa),0,NA
 2021-08-18,N - Bryan/College Station,B.1.617.2 DELTA (India),0,NA
 2021-08-18,N - Bryan/College Station,P.1 GAMMA (Brazil),1,NA
+2021-08-26,N - Bryan/College Station,B.1.1.7 ALPHA (UK),56,1
+2021-08-26,N - Bryan/College Station,B.1.351 BETA (South Africa),0,NA
+2021-08-26,N - Bryan/College Station,B.1.617.2 DELTA (India),0,NA
+2021-08-26,N - Bryan/College Station,P.1 GAMMA (Brazil),1,1
 2021-06-21,O - Austin,B.1.1.7 ALPHA (UK),198,NA
 2021-06-21,O - Austin,B.1.351 BETA (South Africa),1,NA
 2021-06-21,O - Austin,B.1.617.2 DELTA (India),0,NA
@@ -555,6 +607,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,O - Austin,B.1.351 BETA (South Africa),1,1
 2021-08-18,O - Austin,B.1.617.2 DELTA (India),0,NA
 2021-08-18,O - Austin,P.1 GAMMA (Brazil),4,4
+2021-08-26,O - Austin,B.1.1.7 ALPHA (UK),211,1
+2021-08-26,O - Austin,B.1.351 BETA (South Africa),1,1
+2021-08-26,O - Austin,B.1.617.2 DELTA (India),0,NA
+2021-08-26,O - Austin,P.1 GAMMA (Brazil),4,1
 2021-06-21,P - San Antonio,B.1.1.7 ALPHA (UK),109,NA
 2021-06-21,P - San Antonio,B.1.351 BETA (South Africa),1,NA
 2021-06-21,P - San Antonio,B.1.617.2 DELTA (India),1,NA
@@ -595,6 +651,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,P - San Antonio,B.1.351 BETA (South Africa),1,1
 2021-08-18,P - San Antonio,B.1.617.2 DELTA (India),3,1
 2021-08-18,P - San Antonio,P.1 GAMMA (Brazil),5,NA
+2021-08-26,P - San Antonio,B.1.1.7 ALPHA (UK),156,1
+2021-08-26,P - San Antonio,B.1.351 BETA (South Africa),1,1
+2021-08-26,P - San Antonio,B.1.617.2 DELTA (India),3,1
+2021-08-26,P - San Antonio,P.1 GAMMA (Brazil),5,1
 2021-06-21,Pending patient info from lab,B.1.1.7 ALPHA (UK),1118,NA
 2021-06-21,Pending patient info from lab,B.1.351 BETA (South Africa),3,NA
 2021-06-21,Pending patient info from lab,B.1.617.2 DELTA (India),2,NA
@@ -635,6 +695,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,Pending patient info from lab,B.1.351 BETA (South Africa),8,1
 2021-08-18,Pending patient info from lab,B.1.617.2 DELTA (India),4603,1.4339563862928348
 2021-08-18,Pending patient info from lab,P.1 GAMMA (Brazil),301,301
+2021-08-26,Pending patient info from lab,B.1.1.7 ALPHA (UK),4778,1.0058947368421052
+2021-08-26,Pending patient info from lab,B.1.351 BETA (South Africa),8,1
+2021-08-26,Pending patient info from lab,B.1.617.2 DELTA (India),5840,1.2687377797088855
+2021-08-26,Pending patient info from lab,P.1 GAMMA (Brazil),312,1.0365448504983388
 2021-06-21,Q - Houston,B.1.1.7 ALPHA (UK),819,NA
 2021-06-21,Q - Houston,B.1.351 BETA (South Africa),3,NA
 2021-06-21,Q - Houston,B.1.617.2 DELTA (India),7,NA
@@ -675,6 +739,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,Q - Houston,B.1.351 BETA (South Africa),4,1
 2021-08-18,Q - Houston,B.1.617.2 DELTA (India),6,1
 2021-08-18,Q - Houston,P.1 GAMMA (Brazil),24,24
+2021-08-26,Q - Houston,B.1.1.7 ALPHA (UK),939,1
+2021-08-26,Q - Houston,B.1.351 BETA (South Africa),4,1
+2021-08-26,Q - Houston,B.1.617.2 DELTA (India),6,1
+2021-08-26,Q - Houston,P.1 GAMMA (Brazil),24,1
 2021-06-21,R - Galveston,B.1.1.7 ALPHA (UK),355,NA
 2021-06-21,R - Galveston,B.1.351 BETA (South Africa),1,NA
 2021-06-21,R - Galveston,B.1.617.2 DELTA (India),7,NA
@@ -715,6 +783,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,R - Galveston,B.1.351 BETA (South Africa),1,1
 2021-08-18,R - Galveston,B.1.617.2 DELTA (India),5,1
 2021-08-18,R - Galveston,P.1 GAMMA (Brazil),14,NA
+2021-08-26,R - Galveston,B.1.1.7 ALPHA (UK),379,1
+2021-08-26,R - Galveston,B.1.351 BETA (South Africa),1,1
+2021-08-26,R - Galveston,B.1.617.2 DELTA (India),5,1
+2021-08-26,R - Galveston,P.1 GAMMA (Brazil),14,1
 2021-06-21,S - Victoria,B.1.1.7 ALPHA (UK),3,NA
 2021-06-21,S - Victoria,B.1.351 BETA (South Africa),0,NA
 2021-06-21,S - Victoria,B.1.617.2 DELTA (India),0,NA
@@ -755,6 +827,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,S - Victoria,B.1.351 BETA (South Africa),0,NA
 2021-08-18,S - Victoria,B.1.617.2 DELTA (India),0,NA
 2021-08-18,S - Victoria,P.1 GAMMA (Brazil),0,NA
+2021-08-26,S - Victoria,B.1.1.7 ALPHA (UK),3,1
+2021-08-26,S - Victoria,B.1.351 BETA (South Africa),0,NA
+2021-08-26,S - Victoria,B.1.617.2 DELTA (India),0,NA
+2021-08-26,S - Victoria,P.1 GAMMA (Brazil),0,NA
 2021-06-23,T - Laredo,B.1.1.7 ALPHA (UK),2,NA
 2021-06-23,T - Laredo,B.1.351 BETA (South Africa),0,NA
 2021-06-23,T - Laredo,B.1.617.2 DELTA (India),0,NA
@@ -791,6 +867,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,T - Laredo,B.1.351 BETA (South Africa),0,NA
 2021-08-18,T - Laredo,B.1.617.2 DELTA (India),0,NA
 2021-08-18,T - Laredo,P.1 GAMMA (Brazil),0,NA
+2021-08-26,T - Laredo,B.1.1.7 ALPHA (UK),2,1
+2021-08-26,T - Laredo,B.1.351 BETA (South Africa),0,NA
+2021-08-26,T - Laredo,B.1.617.2 DELTA (India),0,NA
+2021-08-26,T - Laredo,P.1 GAMMA (Brazil),0,NA
 2021-06-21,U - Corpus Christi,B.1.1.7 ALPHA (UK),41,NA
 2021-06-21,U - Corpus Christi,B.1.351 BETA (South Africa),0,NA
 2021-06-21,U - Corpus Christi,B.1.617.2 DELTA (India),0,NA
@@ -831,6 +911,10 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,U - Corpus Christi,B.1.351 BETA (South Africa),0,NA
 2021-08-18,U - Corpus Christi,B.1.617.2 DELTA (India),0,NA
 2021-08-18,U - Corpus Christi,P.1 GAMMA (Brazil),0,0
+2021-08-26,U - Corpus Christi,B.1.1.7 ALPHA (UK),47,1
+2021-08-26,U - Corpus Christi,B.1.351 BETA (South Africa),0,NA
+2021-08-26,U - Corpus Christi,B.1.617.2 DELTA (India),0,NA
+2021-08-26,U - Corpus Christi,P.1 GAMMA (Brazil),0,NA
 2021-06-21,V - Lower Rio Grande Valley,B.1.1.7 ALPHA (UK),41,NA
 2021-06-21,V - Lower Rio Grande Valley,B.1.351 BETA (South Africa),0,NA
 2021-06-21,V - Lower Rio Grande Valley,B.1.617.2 DELTA (India),0,NA
@@ -871,3 +955,7 @@ Date,TSA,Variant,Cases,Case_Ratio
 2021-08-18,V - Lower Rio Grande Valley,B.1.351 BETA (South Africa),0,NA
 2021-08-18,V - Lower Rio Grande Valley,B.1.617.2 DELTA (India),1,1
 2021-08-18,V - Lower Rio Grande Valley,P.1 GAMMA (Brazil),10,NA
+2021-08-26,V - Lower Rio Grande Valley,B.1.1.7 ALPHA (UK),42,1
+2021-08-26,V - Lower Rio Grande Valley,B.1.351 BETA (South Africa),0,NA
+2021-08-26,V - Lower Rio Grande Valley,B.1.617.2 DELTA (India),1,1
+2021-08-26,V - Lower Rio Grande Valley,P.1 GAMMA (Brazil),10,1
