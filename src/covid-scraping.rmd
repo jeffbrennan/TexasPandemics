@@ -142,6 +142,12 @@ Date_Parser = function(raw_date) {
     }
   return(clean_dates)
 }
+
+Download_Temp = function(url) { 
+    temp = tempfile()
+    download.file(url, temp, mode = 'wb')
+    return(temp)
+}
 ```
 
 ## Classifications
@@ -498,90 +504,97 @@ nyt_schools = rbindlist(lapply(list.files('original-sources/historical/nyt/archi
   mutate(Cases_Cumulative = ifelse(Cases_Cumulative == -1, NA, Cases_Cumulative))
 ```
 
-## Texas school districts
+### Current
 
 ```{r}
-# data ending on Sunday posted on Friday (5 day lag)
-school_dates = seq(as.Date('2020-10-11'), by = 'week', length.out = 52)
-# no 11/22 update due to Thanksgiving
-# missing 12/27 update prob due to christmas/new years
-school_dates = school_dates[-12]
-# school_dates = school_dates[-10]
-school_date = max(school_dates[which(school_dates <= date_out - 5)])
-
-tryCatch({
-  # school_url = paste0('https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/campus-level-Data-',
-  #                   format(school_date+2, '%m%d%Y'), '.xls')
-  # school_url = 'https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/District-level-data.xlsx'
-  school_url = 'https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/campus-level-Data_01122021v3.xls'
-  temp = tempfile()
-  curl::curl_download(school_url, temp, mode = 'wb')
-  DSHS_schools_raw = data.frame(read_excel(temp, sheet = 1))
-  },
-  error = function(e) {
-   school_url = paste0('https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/campus-level-Data_',
-                    format(school_date+2, '%m%d%Y'), '.xls')
-  temp = tempfile()
-  curl::curl_download(school_url, temp, mode = 'wb')
-  DSHS_schools_raw <<- data.frame(read_excel(temp, sheet = 1))
-  })
+# # Retains only district level data (filters for rows containing total)
+Clean_DSHS_Schools = function(df) {
+  df_out = df %>%
+    select(1:11) %>%
+    setNames(c('District', 'LEA', 'District_Total_Enrollment',
+            'Campus', 'Campus_ID', 'School_Total_Enrollment',
+            'Cases_Student_New', 'Cases_Staff_New',
+            'Case_Source_Campus', 'Case_Source_OffCampus', 'Case_Source_Unknown')) %>%
+    select(-contains('School')) %>%
+    filter(str_detect(District, 'TOTAL')) %>%
+    mutate(District = str_squish(District)) %>%
+    mutate(District = gsub(' TOTAL', '', District)) %>%
+    mutate(Date = school_date) %>%
+    relocate(Date, .after=District) %>%
+    mutate(across(matches('Case'), as.numeric)) %>%
+    mutate(across(c(LEA, Campus_ID), ~gsub("'", '', .)))
+  }
 
 
-first_row = which(DSHS_schools_raw[, 1] == 'District Name') + 1
-last_row = which(DSHS_schools_raw[, 1] == 'ZEPHYR ISD')
-names(DSHS_schools_raw)[1:2] = c('District', 'LEA')
+current_school_dates = seq(as.Date('2021-08-15'), by = 'week', length = 52)
+school_date = max(current_school_dates[which(current_school_dates <= date_out - 5)])
+base_url = 'https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/campus-level-data_'
 
+DSHS_schools <- glue('{base_url}{format(school_date + 2, "%Y%m%d")}v324.xls') %>%
+  Download_Temp(.) %>%
+  read_excel(sheet = 1) %>%
+  data.frame() %>% 
+  Clean_DSHS_Schools(.) %>% 
+  try()
 
-# read in matching county data (overlapping counties available for public, but not private ISDs)
-# public school source: http://tea-texas.maps.arcgis.com/sharing/rest/content/items/87c957f2ec334c83bc2b952bf6e64344/data
-# private school source: http://mansfield.tea.state.tx.us/Tea.AskTed.Web/Forms/DownloadDefault.aspx
-county_isd_wide = read.csv('original-sources/helpers/county_isd_wide.csv')
-
-DSHS_schools_clean = DSHS_schools_raw[first_row:last_row, ] %>%
-  mutate(LEA = as.numeric(gsub("'", '', LEA))) %>%
-  mutate(District = str_to_title(District)) %>%
-  mutate(District = gsub('Isd', 'ISD', District)) %>%
-  mutate(District = gsub('\n', ' ', District)) %>%
-  mutate(Date = school_date) %>%
-  # dplyr::select(District, Date, County, LEA, everything()) %>%
-  dplyr::select(District, Date, LEA, everything()) %>%
-  mutate_at(5:ncol(.), as.numeric) %>%
-  setNames(c('District', 'Date', 'LEA', 'Total_Enrollment', 'Approximate_Enrollment',
-             'Cases_Weekly_GRADE_EE_3', 'Cases_Weekly_GRADE_4_6', 'Cases_Weekly_GRADE_7_12',
-             'Cases_Weekly_Staff', 'Infections_Weekly_On_Campus',
-             'Infections_Weekly_Off_Campus', 'Infections_Weekly_Unknown',
-
-             'Cases_Cumulative_GRADE_EE_3', 'Cases_Cumulative_GRADE_4_6',
-             'Cases_Cumulative_GRADE_7_12', 'Cases_Cumulative_Staff',
-             'Infections_Cumulative_On_Campus', 'Infections_Cumulative_Off_Campus',
-             'Infections_Cumulative_Unknown'))
-
-# save for future combinations - avoids cleaning on every run
-write.csv(DSHS_schools_clean,
-          paste0('original-sources/historical/dshs-schools/DSHS_Schools_', school_date, '.csv'),
-          row.names = FALSE)
+if (class(DSHS_schools) != 'try-error') {
+   write_csv(DSHS_schools,
+             file = glue('./original-sources/historical/dshs-schools/2021/{school_date}_DSHS_schools.csv'))
+}
 ```
 
 
+## Combine
+
 ```{r}
-# combine previous cleaned versions w/ current week
-DSHS_school_df = rbindlist(lapply(list.files('original-sources/historical/dshs-schools', full.names = TRUE), read.csv))
+DSHS_schools_2021 = list.files('./original-sources/historical/dshs-schools/2021/', full.names = TRUE) %>% 
+  lapply(., read_csv) %>% 
+  rbindlist(fill = TRUE) 
 
-DSHS_school_df = DSHS_school_df %>% 
-  mutate(District = gsub('\n', ' ', District, fixed = TRUE)) %>% 
-  mutate(District = gsub('  ', ' ', District)) %>% 
-  mutate(District = gsub('Lighthouse Charter School', 'Lighthouse Public Schools', District)) %>% 
-  mutate(Total_Enrollment = as.numeric(Total_Enrollment)) %>% 
-  mutate(Approximate_Enrollment = as.numeric(Approximate_Enrollment)) %>% 
-  mutate(Total_Enrollment = ifelse(Total_Enrollment == 0, NA, Total_Enrollment)) %>% 
-  mutate(Approximate_Enrollment = ifelse(Approximate_Enrollment == 0, NA, Approximate_Enrollment)) %>%
-  distinct()
+DSHS_schools_archive = read_csv('./original-sources/historical/dshs-schools/historical_archive.csv')
 
-write_xlsx(list('school_data' = DSHS_school_df,
-                'helper' = read.csv('original-sources/helpers/county_isd_long.csv')),
-           'tableau/district_school_reopening.xlsx',
-           format_headers = FALSE)
+DSHS_schools_combined = DSHS_schools_2021 %>%
+  plyr::rbind.fill(DSHS_schools_archive) %>% 
+  arrange(District, Date)
+
+
+write_xlsx(
+  list('school_data' = DSHS_schools_combined,
+       'helper' = read.csv('original-sources/helpers/county_isd_long.csv')),
+  'tableau/district_school_reopening.xlsx',
+  format_headers = FALSE
+  )
 ```
+
+### Historical
+
+
+Data covering 2020-11-15 - 2021-08-01
+
+```{r}
+# historical pull - saved for reference
+# historical_schools =
+#   Download_Temp('https://dshs.texas.gov/chs/data/tea/Public-School-Data-Files-2020_2021-School-Year.xls') %>%
+#   read_excel_allsheets(skip_option = 5) %>% 
+#   .[-1]
+# 
+# # excludes weeks between 9/20 and 11/15 due to major file differences
+# # 2 months of more specific school level data which is unusable for longitudinal trending
+# school_dates = seq(as.Date('2020-11-22'), as.Date('2021-08-01'), by = 'week') %>% rev()
+# 
+# 
+# 
+
+# cleaned_schools = lapply(names(historical_schools), Clean_Historical_Schools) %>% 
+#   rbindlist(fill = TRUE) %>% 
+#   arrange(District, Date)
+# 
+# 
+# write_csv(cleaned_schools,
+#           file = './original-sources/historical/dshs-schools/historical_archive.csv')
+```
+
+
 
 # COUNTY LEVEL
 
@@ -1050,20 +1063,19 @@ vaccines_zip = read_excel_allsheets(temp, col_option = FALSE)
 vaccine_date = vaccines_zip[[1]] %>% slice(1) %>% select(2) %>% Date_Parser()
 
 if (!is.na(vaccine_date)) {
-
-vaccines_zip_out = vaccines_zip[[2]] %>% 
-  setNames(c('ZIP', 'Doses_Administered', 'At_Least_One_Dose', 'Fully_Vaccinated')) %>% 
-  mutate_all(as.numeric) %>% 
-  filter(!is.na(ZIP)) %>% 
-  mutate(Date = vaccine_date) %>% 
-  select(Date, ZIP, everything())
-write_csv(vaccines_zip_out, glue('original-sources/historical/vaccine-zip/vaccination-zip_{date_out}.csv'))
+  vaccines_zip_out = vaccines_zip[[2]] %>%
+    select(1:4) %>%
+    setNames(c('ZIP', 'Doses_Administered', 'At_Least_One_Dose', 'Fully_Vaccinated')) %>% 
+    mutate_all(as.numeric) %>% 
+    filter(!is.na(ZIP)) %>% 
+    mutate(Date = vaccine_date) %>% 
+    select(Date, ZIP, everything())
+  write_csv(vaccines_zip_out, glue('original-sources/historical/vaccine-zip/vaccination-zip_{date_out}.csv'))
 }
-
-
 zip_archive = list.files(glue('original-sources/historical/vaccine-zip'), full.names = TRUE)
 
-vaccines_zip_all = rbindlist(lapply(zip_archive, read_csv), fill = TRUE) %>% distinct() %>% 
+vaccines_zip_all = rbindlist(lapply(zip_archive, read_csv), fill = TRUE) %>%
+  distinct() %>% 
   mutate(Date = as.Date(Date))
 
 write_csv(vaccines_zip_all, 'tableau/zip_vaccine.csv')
@@ -1524,25 +1536,19 @@ write_csv(county_vax_age, 'tableau/sandbox/county_vax_age.csv')
 ## Variants
 
 ```{r}
-variant_df = 'http://www.dshs.texas.gov/news/updates.shtm' %>%
-  httr::GET(., httr::timeout(20)) %>% 
-  read_html() %>%
-  html_table() %>%
-  .[[which(str_detect(., 'ALPHA'))]] %>%
-  filter(TSA != 'Grand Total') %>% 
-  select(-Total) %>% 
-  mutate(Date = date_out)
+try(
+  variant_df <- 'http://www.dshs.texas.gov/news/updates.shtm' %>%
+    httr::GET(., httr::timeout(20)) %>% 
+    read_html() %>%
+    html_table() %>%
+    .[[which(str_detect(., 'ALPHA'))]] %>%
+    filter(TSA != 'Grand Total') %>% 
+    select(-Total) %>% 
+    mutate(Date = date_out)
+  )
 
-# variant_df = read_html('http://www.dshs.texas.gov/news/updates.shtm') %>%
-#   html_table() %>%
-#   .[[which(str_detect(., 'ALPHA'))]] %>%
-#   filter(TSA != 'Grand Total') %>% 
-#   select(-Total) %>% 
-#   mutate(Date = format(Sys.Date(), '%Y-%m-%d'))
-
-write_csv(x = variant_df,
-          file = glue('original-sources\\historical\\variants\\tsa_variants_{date_out}.csv'))
-
+try(write_csv(x = variant_df,
+              file = glue('original-sources\\historical\\variants\\tsa_variants_{date_out}.csv')))
 
 # epsilon variants deescalated on 6/29
 all_variants = list.files('original-sources\\historical\\variants\\', full.names = TRUE) %>%
@@ -1684,15 +1690,41 @@ DSHS_hosp_clean = function(df, var_name) {
   
   return(df_long)
 }
-# 1,2,3 references the 3 sheets produced by DSHS
-hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[[1]], 'Hospitalizations_Total')
-hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[[8]], 'Hospitalizations_General')
-hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[[9]], 'Hospitalizations_ICU')
-hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp[[4]], 'Beds_Available_Total')
-hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp[[5]], 'Beds_Available_ICU')
-hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp[[10]], 'Beds_Occupied_Total')
-hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp[[11]], 'Beds_Occupied_ICU')
+
+hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[['COVID-19 Hospitalizations']], 'Hospitalizations_Total')
+hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[['Adult COVID-19 General']], 'Hospitalizations_General')
+hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[['Adult COVID-19 ICU']], 'Hospitalizations_ICU')
+hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp[['Total Available Beds']], 'Beds_Available_Total')
+hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp[['ICU Beds Available']], 'Beds_Available_ICU')
+hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp[['Total Occupied Beds']], 'Beds_Occupied_Total')
+hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp[['ICU Beds Occupied']], 'Beds_Occupied_ICU')
 ```
+
+
+```{r}
+# data.frame(
+#           stringsAsFactors = FALSE,
+#                       Date = c("4/11/2020"),
+#                        TSA = c("A"),
+#                   TSA_Name = c("Amarillo"),
+#               TSA_Combined = c("A - Amarillo"),
+#            Population_DSHS = c(440127L),
+#      Ventilators_Available = c(NA),
+#     Hospitalizations_Total = c(17L),
+#   Hospitalizations_General = c(417L),
+#       Hospitalizations_ICU = c(613L),
+#       Beds_Available_Total = c(4L),
+#         Beds_Available_ICU = c(1030L),
+#        Beds_Occupied_Total = c(NA),
+#          Beds_Occupied_ICU = c(77L)
+# )
+# 
+# 8/29/2021	Q	Houston	Q - Houston	6688587	985	3423	12450	1475	814	14636	1817	72
+
+```
+
+
+
 
 ## DSHS dashboard
 
