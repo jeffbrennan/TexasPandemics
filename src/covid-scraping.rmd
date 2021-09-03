@@ -1523,10 +1523,10 @@ DSHS_hosp_clean = function(df, var_name) {
 }
 
 hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[['COVID-19 Hospitalizations']], 'Hospitalizations_Total')
-hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[['COVID-19 General Beds']], 'Hospitalizations_General')
-hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[['COVID-19 ICU']], 'Hospitalizations_ICU')
+hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[['Adult COVID-19 General']], 'Hospitalizations_General')
+hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[['Adult COVID-19 ICU']], 'Hospitalizations_ICU')
 hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp[['Total Available Beds']], 'Beds_Available_Total')
-hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp[['ICU Beds Available']], 'Beds_Available_ICU')
+hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp[['Adult ICU Beds Available']], 'Beds_Available_ICU')
 hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp[['Total Occupied Beds']], 'Beds_Occupied_Total')
 hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp[['ICU Beds Occupied']], 'Beds_Occupied_ICU')
 ```
