@@ -79,7 +79,7 @@ read_excel_allsheets = function(filename, col_option = TRUE, add_date = FALSE, s
 
 # set date for writing files
 # If before 5 PM EST, then record as last date since DSHS data will not be updated yet
-date_out = ifelse((Sys.time() < as.POSIXct(paste0(Sys.Date(), '16:00'), tz = 'America/Chicago')),
+date_out = ifelse((Sys.time() < as.POSIXct(paste0(Sys.Date(), '15:45'), tz = 'America/Chicago')),
                    Sys.Date() - 1,
                    Sys.Date())
 
@@ -589,6 +589,14 @@ DSHS_new_cases_long = DSHS_new_cases_wide %>%
   arrange(Date, County)
 ```
 
+### diagnostics
+
+```{r}
+DSHS_new_cases_long %>% 
+  filter(County == 'Harris') %>% 
+  filter(Date >= date_out-7)
+```
+
 ## active cases
 
 ```{r}
@@ -739,12 +747,10 @@ file_url = (paste0('https://beta.healthdata.gov', newest_file))
 temp = tempfile()
 download.file(file_url, temp, mode = 'wb')
 
-cpr_day = read_xlsx(temp, sheet = 6) %>%
-  slice(1) %>% 
-  dplyr::select(contains('VIRAL (RT-PCR) LAB TESTING: LAST WEEK')) %>%
+cpr_day =
+  read_xlsx(temp, sheet = 6, skip = 0, n_max = 1) %>%
+  dplyr::select(contains('TESTING: LAST WEEK')) %>%
   names() %>%
-  # str_match(., '(\\d{1,2}).(?<=\\))') %>% 
-  # str_match(., '-(\\d{1,2})') %>% 
   str_match(., '(\\d{1,2}),') %>%
   .[2] %>%
   as.numeric()
@@ -759,8 +765,8 @@ if (cpr_day > as.numeric(format(Sys.Date(), '%d'))) {
 cpr_tpr = read_xlsx(temp, sheet = 6, skip = 1) %>% 
   filter(`State Abbreviation` == 'TX') %>%
   select('County',
-         contains('lab test positivity rate - last 7 days'),
-         contains('diagnostic tests - last 7 days')) %>% 
+         contains('NAAT positivity rate - last 7 days'),
+         contains('Total NAATs - last 7 days')) %>% 
   filter(County != 'Unallocated, TX') %>%
   mutate(County = gsub(' County, TX', '', County)) %>% 
   setNames(c('County', 'TPR_CPR', 'Tests')) %>% 
@@ -854,29 +860,29 @@ write.csv(tpr_out, 'tableau/county_TPR.csv', row.names = FALSE)
 ```{r}
 curl::curl_download('https://www.dshs.texas.gov/immunize/covid19/COVID-19-Vaccine-Data-by-County.xls', mode = 'wb', 
               destfile = glue('original-sources/historical/vaccinations/vaccinations_{date_out}.xlsx'))
-
-# Clean_Vaccines = function(x) { 
+# 
+# Clean_Vaccines = function(x) {
 #   file_date = Date_Parser(x)
 #   df = read_excel(x, sheet = 2) %>%
-#     mutate(Date = file_date) %>% 
+#     mutate(Date = file_date) %>%
 #     setNames(c('County', 'PHR',
 #                'Doses_Allocated', 'Doses_Administered',
 #                'People_Vaccinated_Partial', 'People_Vaccinated_Full',
 #                'Population_Over_16', 'Population_Over_65',
 #                'Population_Phase_1A_Healthcare',
 #                'Population_Phase1A_Care_Residents',
-#                'Population_Phase_1B_Medical_Condition', 'Date')) %>% 
-#     filter(!(County %in% c('Texas', '*Other', 'Federal Long-Term Care Vaccination Program'))) %>% 
+#                'Population_Phase_1B_Medical_Condition', 'Date')) %>%
+#     filter(!(County %in% c('Texas', '*Other', 'Federal Long-Term Care Vaccination Program'))) %>%
 #     dplyr::select(Date, everything())
-# } 
+# }
 # 
 # vaccine_files = list.files('original-sources/historical/vaccinations/', full.names = TRUE)
 # 
 # county_vaccine = rbindlist(lapply(vaccine_files, Clean_Vaccines))
-# demographics_vaccine = read_excel(vaccine_files[length(vaccine_files)], sheet = 3) %>% 
+# demographics_vaccine = read_excel(vaccine_files[length(vaccine_files)], sheet = 3) %>%
 #   setNames(c('Gender', 'Age', 'Race_Ethnicity', 'Doses_Administered', 'People_Vaccinated_Partial', 'People_Vaccinated_Full'))
-#   
-# 
+
+
 # write.csv(county_vaccine, 'tableau/county_vaccine.csv', row.names = FALSE)
 # write.csv(demographics_vaccine, 'tableau/demographics_vaccine.csv', row.names = FALSE)
 ```
@@ -1185,8 +1191,10 @@ county_vaccinations_out = county_vaccinations %>%
   left_join(population_12) %>% 
   relocate(Population_12, .before = Population_16) %>%
   relocate(Population_Total, .before = TSA_Combined)
+```
 
-
+### diagnostics
+```{r}
 county_vaccinations_out %>%
   filter(County == 'Harris') %>% 
   filter(Date > as.Date('2021-04-05') & Date <= as.Date('2021-04-10')) %>%
@@ -1202,6 +1210,17 @@ county_vaccinations_out %>%
   mutate(date_check = ifelse(Date - lag(Date) > 1, TRUE, FALSE)) %>% 
   filter(date_check == TRUE)
 
+county_vaccinations_out %>%
+  filter(County == 'Harris') %>% 
+  filter(Date >= date_out-7) %>%
+  select(1:5) %>%
+  arrange(desc(Date))
+  # View('recent vax')
+```
+
+### upload 
+
+```{r}
 write_csv(county_vaccinations_out, 'tableau/sandbox/county_daily_vaccine.csv')
 ```
 
