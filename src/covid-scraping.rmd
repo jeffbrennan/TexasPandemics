@@ -902,10 +902,11 @@ curl::curl_download('https://dshs.texas.gov/coronavirus/TexasCOVID19VaccinesbyZI
               temp, mode = 'wb') 
 vaccines_zip = read_excel_allsheets(temp, col_option = FALSE)
 
-vaccine_date = vaccines_zip[[1]] %>% slice(1) %>% select(2) %>% Date_Parser()
+# vaccine_date = vaccines_zip[[1]] %>% slice(1) %>% select(2) %>% Date_Parser()
+vaccine_date = date_out
 
 if (!is.na(vaccine_date)) {
-  vaccines_zip_out = vaccines_zip[[2]] %>%
+  vaccines_zip_out = vaccines_zip[[1]] %>%
     select(1:4) %>%
     setNames(c('ZIP', 'Doses_Administered', 'At_Least_One_Dose', 'Fully_Vaccinated')) %>% 
     mutate_all(as.numeric) %>% 
