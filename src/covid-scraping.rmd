@@ -392,7 +392,7 @@ Clean_DSHS_Schools = function(df) {
     mutate(across(c(LEA, Campus_ID), ~gsub("'", '', .)))
   }
 
-current_school_dates = seq(as.Date('2021-08-15'), by = 'week', length = 52)
+current_school_dates = seq(as.Date('2021-08-15'), by = 'week', length = 200)
 school_date = max(current_school_dates[which(current_school_dates <= date_out - 5)])
 base_url = 'https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/campus-level-data_'
 
@@ -902,11 +902,11 @@ curl::curl_download('https://dshs.texas.gov/coronavirus/TexasCOVID19VaccinesbyZI
               temp, mode = 'wb') 
 vaccines_zip = read_excel_allsheets(temp, col_option = FALSE)
 
-# vaccine_date = vaccines_zip[[1]] %>% slice(1) %>% select(2) %>% Date_Parser()
-vaccine_date = date_out
+vaccine_date = vaccines_zip[[1]] %>% slice(1) %>% select(2) %>% Date_Parser()
+# vaccine_date = date_out
 
 if (!is.na(vaccine_date)) {
-  vaccines_zip_out = vaccines_zip[[1]] %>%
+  vaccines_zip_out = vaccines_zip[[2]] %>%
     select(1:4) %>%
     setNames(c('ZIP', 'Doses_Administered', 'At_Least_One_Dose', 'Fully_Vaccinated')) %>% 
     mutate_all(as.numeric) %>% 
@@ -1092,6 +1092,10 @@ dashboard_archive = list.files('C:/Users/jeffb/Desktop/Life/personal-projects/CO
 
 # combine all sheets, obtain unique date, count combos, save
 all_dashboard_files = lapply(dashboard_archive, read_excel_allsheets, add_date = TRUE, col_option = FALSE, skip_option = 0)
+
+# DSHS temporarily removed county level data on 10/6
+all_dashboard_files = all_dashboard_files[-264]
+
 
 county_vaccinations = 
   rbindlist(
@@ -1729,7 +1733,7 @@ Clean_Demographics = function(index) {
 }
 
 # TODO: add contingency if not posted on friday
-demo_releases = seq(as.Date('2020-09-25'), by = 'week', length = 52)
+demo_releases = seq(as.Date('2020-09-25'), by = 'week', length = 200)
 
 if (date_out %in% demo_releases) {
   demo_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics.xlsx'
