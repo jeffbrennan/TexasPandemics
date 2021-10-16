@@ -396,7 +396,7 @@ current_school_dates = seq(as.Date('2021-08-15'), by = 'week', length = 200)
 school_date = max(current_school_dates[which(current_school_dates <= date_out - 5)])
 base_url = 'https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/campus-level-data_'
 
-DSHS_schools <- glue('{base_url}{format(school_date, "%Y%m%d")}v1.xls') %>%
+DSHS_schools <- glue('{base_url}{format(school_date+2, "%Y%m%d")}v1.xls') %>%
   Download_Temp(.) %>%
   read_excel(sheet = 1) %>%
   data.frame() %>% 
