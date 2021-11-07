@@ -438,7 +438,10 @@ write_xlsx(
 
 ```{r}
 # fread for faster processing
-mobility_data = fread('https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv')
+# mobility_data = fread('https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv')
+# 11/7/21: stop acquring new mobility data
+
+mobility_data = fread('original-sources/historical/google/mobility.csv')
 ```
 
 ```{r}
@@ -592,9 +595,9 @@ DSHS_new_cases_long = DSHS_new_cases_wide %>%
 ### diagnostics
 
 ```{r}
-DSHS_new_cases_long %>% 
-  filter(County == 'Harris') %>% 
-  filter(Date >= date_out-7)
+# DSHS_new_cases_long %>% 
+#   filter(County == 'Harris') %>% 
+#   filter(Date >= date_out-7)
 ```
 
 ## active cases
@@ -614,15 +617,14 @@ new_active_cases = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) %>%
   filter(!is.na(County)) %>%
   select_if(function(x) all(!is.na(x)))
 
-names(new_active_cases)[2:ncol(new_active_cases)] = Date_Parser(names(new_active_cases)[2:ncol(new_active_cases)])
+# names(new_active_cases)[2:ncol(new_active_cases)] = Date_Parser(names(new_active_cases)[2:ncol(new_active_cases)])
 
 
 # melt
 new_active_cases_long = reshape::melt(new_active_cases, id = 'County') %>% 
   setNames(c('County', 'Date', 'Active_Cases_Cumulative')) %>%
-  mutate(Date = as.Date(Date)) %>%
   group_by(Date) %>%
-  # mutate(Date = as.Date(paste(str_extract_all(Date, '\\d+')[[1]], collapse = ' '), '%m%d')) %>% 
+  mutate(Date = as.Date(paste(str_extract_all(Date, '\\d+')[[1]], collapse = ' '), '%m %d %y')) %>%
   ungroup() %>%
   group_by(County) %>% 
   distinct() %>%
