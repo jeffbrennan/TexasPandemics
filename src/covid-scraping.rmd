@@ -1098,7 +1098,6 @@ all_dashboard_files = lapply(dashboard_archive, read_excel_allsheets, add_date =
 # DSHS temporarily removed county level data on 10/6
 all_dashboard_files = all_dashboard_files[-264]
 
-
 county_vaccinations = 
   rbindlist(
   lapply(
@@ -1233,6 +1232,7 @@ write_csv(county_vaccinations_out, 'tableau/sandbox/county_daily_vaccine.csv')
 
 #### state
 ```{r}
+# DSHS classified 5-11 and 12-15 as dates
 state_demo = lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>%
   discard(is.null) %>%
   .[[length(.)]] %>% 
@@ -1240,8 +1240,11 @@ state_demo = lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>%
   slice(2:nrow(.)) %>%
   select(1:(ncol(.)-1)) %>%
   filter(`Age Group` != 'Total') %>%
+  mutate(`Age Group` = ifelse(`Age Group` == '44327', '< 12 years', `Age Group`)) %>%
+  mutate(`Age Group` = ifelse(`Age Group` == '44545', '12-15 years', `Age Group`)) %>%
+  mutate(`Age Group` = ifelse(!str_detect(`Age Group`, 'years|Unknown'), glue('{`Age Group`} years'), `Age Group`)) %>%
   setNames(c('Gender', 'Age_Group', 'Race/Ethnicity',
-             'Doses_Administered', 'At_Least_One_Vaccinated', 'Fully_Vaccinated')) %>%
+             'Doses_Administered', 'At_Least_One_Vaccinated', 'Fully_Vaccinated')) %>% 
   left_join(county_demo_race %>%
               group_by(`Race/Ethnicity`) %>%
               summarize(State_Race_Total = sum(Population_Total, na.rm = TRUE))) %>% 
@@ -1296,23 +1299,23 @@ state_demo_stacked =
   relocate(Group_Type, .before = Group)
 
 
-under_12 = data.frame(Group_Type = 'Age',
-                      Group = '< 12 years',
-                      Doses_Administered = 0,
-                      At_Least_One_Vaccinated = 0,
-                      Fully_Vaccinated = 0) %>% 
-  left_join(county_demo_agesex %>% filter(`Age Group` == '< 12 years') %>%
-              group_by(`Age Group`) %>%
-              summarize(Population_Total = sum(Population_Total)) %>% 
-              rename(Age_Group = `Age Group`) %>%
-              select(Age_Group, Population_Total),
-            by = c('Group' = 'Age_Group'))
+# under_12 = data.frame(Group_Type = 'Age',
+#                       Group = '< 12 years',
+#                       Doses_Administered = 0,
+#                       At_Least_One_Vaccinated = 0,
+#                       Fully_Vaccinated = 0) %>% 
+#   left_join(county_demo_agesex %>% filter(`Age Group` == '< 12 years') %>%
+#               group_by(`Age Group`) %>%
+#               summarize(Population_Total = sum(Population_Total)) %>% 
+#               rename(Age_Group = `Age Group`) %>%
+#               select(Age_Group, Population_Total),
+#             by = c('Group' = 'Age_Group'))
 
 
 
 state_demo_stacked_out = 
   state_demo_stacked %>% 
-  rbind(under_12) %>% 
+  # rbind(under_12) %>% 
   arrange(Group, Group_Type) %>%
   mutate(Population_Total =
            ifelse(Group == '65-79 years & 80+ years',
@@ -1335,7 +1338,8 @@ state_demo_stacked_out =
             by = c('Group' = 'Gender')) %>% 
   mutate(Population_16 = ifelse(!is.na(Population_16.y), Population_16.y, Population_16.x)) %>% 
   select(-contains('.x'), -contains('.y')) %>% 
-  relocate(Population_16, .after = Population_Total)
+  relocate(Population_16, .after = Population_Total) %>% 
+  arrange(Group_Type)
 
 
 write_csv(state_demo_stacked_out, 'tableau/sandbox/stacked_state_vaccine_demographics.csv')
