@@ -1519,28 +1519,34 @@ curl::curl_download(hosp_url, temp, mode = 'wb')
 DSHS_tsa_hosp = read_excel_allsheets(temp)
  
 DSHS_hosp_clean = function(df, var_name) { 
+  # df = df[2:23, c(1, 3:ncol(df))]
+  # df$`TSA ID` = gsub('.', '', df$`TSA ID`, fixed = TRUE)
+  
   names(df) = df[1, ]
-  df = df[2:23, c(1, 3:ncol(df))]
-  df$`TSA ID` = gsub('.', '', df$`TSA ID`, fixed = TRUE)
+  df_clean = df %>% 
+    setNames(c('TSA ID', names(df)[2:length(names(df))])) %>% 
+    slice(2:23) %>% 
+    select(1, 3:ncol(.)) %>%
+    mutate(`TSA ID` = gsub('.', '', `TSA ID`, fixed = TRUE))
 
   # add temp fix for DSHS duplicated dates (8/8) (fixed by DSHS 8/10)
   # TODO: add dynamic handling
-  if (length(grep('.x', names(df)) > 0)) { 
-    df = df[, -grep('.x', names(df))]
-    names(df) = gsub('.y', '', names(df))
+  if (length(grep('.x', names(df_clean)) > 0)) { 
+    df_clean = df_clean[, -grep('.x', names(df_clean))]
+    names(df_clean) = gsub('.y', '', names(df_clean))
   }
 
   # TODO: make date conversion function
-  dates = names(df)[2:length(names(df))]
+  dates = names(df_clean)[2:length(names(df_clean))]
   numeric_dates = which(is.na(as.Date(dates, format = '%Y-%m-%d')))
   
   # convert from 5 digit excel numeric format
   # https://stackoverflow.com/questions/43230470/how-to-convert-excel-date-format-to-proper-date-in-r
   dates[numeric_dates] = format(as.Date(as.integer(dates[numeric_dates]), origin = '1899-12-30'))
   dates[-numeric_dates] = format(as.Date(dates[-numeric_dates]), '%Y-%m-%d')
-  names(df)[2:length(names(df))] = dates
+  names(df_clean)[2:length(names(df_clean))] = dates
 
-  df_long = reshape::melt(df, id = 'TSA ID')
+  df_long = reshape::melt(df_clean, id = 'TSA ID')
   names(df_long) = c('TSA', 'Date', var_name)
   df_long$Date = as.Date(df_long$Date)
   
@@ -1554,6 +1560,9 @@ DSHS_hosp_clean = function(df, var_name) {
 hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[['COVID-19 Hospitalizations']], 'Hospitalizations_Total')
 hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[['Adult COVID-19 General']], 'Hospitalizations_General')
 hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[['Adult COVID-19 ICU']], 'Hospitalizations_ICU')
+hosp_4 = DSHS_hosp_clean(DSHS_tsa_hosp[['Available Ventilators']], 'Ventilators_Available')
+
+
 hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp[['Total Available Beds']], 'Beds_Available_Total')
 hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp[['Adult ICU Beds Available']], 'Beds_Available_ICU')
 hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp[['Total Occupied Beds']], 'Beds_Occupied_Total')
@@ -1589,86 +1598,87 @@ hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp[['ICU Beds Occupied']], 'Beds_Occupied
 ## DSHS dashboard
 
 ```{r}
+# 11/13  - link no longer works
 # pull DSHS dashboard data using link found from inspect element -> network
-DSHS_json_hosp_tsa = jsonlite::fromJSON("https://services5.arcgis.com/ACaLB9ifngzawspq/arcgis/rest/services/DSHS_COVID_Hospital_Data/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outSR=102100&resultOffset=0&resultRecordCount=25&resultType=standard&cacheHint=true")[['features']][['attributes']]
-
-rac_xwalk = DSHS_json_hosp_tsa %>% select(TSA, RAC) %>% rename(TSA_Fixed = TSA)
-
-DSHS_json_hosp_tsa = DSHS_json_hosp_tsa %>% 
-  select(TSA, TotalStaff, AvailHospi, AvailICUBe, AvailVenti, COVIDPatie) %>% 
-  rename(Hospital_Beds_Staffed = TotalStaff,
-         ICU_Beds_Available = AvailICUBe,
-         Ventilators_Available = AvailVenti,
-         Current_Cases = COVIDPatie,
-         Hospital_Beds_Available = AvailHospi)
-
-# export today's file
-write_csv(DSHS_json_hosp_tsa, glue('original-sources/historical/hosp/tsa_hosp_{date_out}.csv'))
-
-# read in all files
-hosp_list = list.files('original-sources/historical/hosp', pattern = '*.csv', full.names = TRUE)
-hosp_dates = sapply(hosp_list, function(x) str_extract(x, '\\d{4}-\\d{2}-\\d{2}'))
-tsa_all_hosp = lapply(hosp_list, read.csv, fileEncoding = 'UTF-8-BOM')
-names(tsa_all_hosp) = hosp_dates
-
-tsa_combined_hosp_orig = rbindlist(tsa_all_hosp, fill = TRUE, idcol = TRUE) %>% 
-  dplyr::select(-Date) %>% 
-  rename(Date = .id) %>%
-  # dplyr::select(TSA, Date, Ventilators_Available) %>%
-  left_join(rac_xwalk, by = c('TSA' = 'RAC')) %>%
-  mutate(TSA_Fixed = ifelse(is.na(TSA_Fixed), TSA, TSA_Fixed)) %>%
-  select(-TSA) %>% 
-  rename(TSA = TSA_Fixed) %>% 
-  relocate(TSA, .before = Date) %>% 
-  mutate(Date = as.Date(Date, '%Y-%m-%d')) %>% 
-  distinct() %>% 
-  group_by(TSA, Date) %>% 
-  mutate(delete_flag = ifelse(TSA == 'L' & row_number() == 2 | TSA == 'M' & row_number() == 1 & n() == 2, 1, 0)) %>% 
-  filter(delete_flag != 1) %>% 
-  select(-delete_flag) %>% 
-  ungroup()
-
-
-wrong_dates_icu = tsa_combined_hosp_orig %>%
-  filter(TSA == 'D' & Date <= '2021-05-06') %>%
-  arrange(Ventilators_Available) %>%
-  mutate(n = row_number()) %>%
-  filter (n < 66) %>%
-  select(Date) %>%
-  filter(Date != '2021-02-04' & Date != '2021-01-05') %>% 
-  unlist() %>% 
-  as.Date()
-
-wrong_dates_cases = c('2021-02-04', '2021-01-05') %>% as.Date()
-
-wrong_dates_icu_df = tsa_combined_hosp_orig %>%
-          filter(Date %in% wrong_dates_icu) %>%
-          select(-Ventilators_Available) %>%
-          rename(Ventilators_Available = ICU_Beds_Available) %>%
-          select(TSA, Date, Ventilators_Available)
-
-wrong_dates_cases_df = tsa_combined_hosp_orig %>%
-          filter(Date %in% wrong_dates_cases) %>%
-          select(-Ventilators_Available) %>%
-          rename(Ventilators_Available = Current_Cases) %>%
-          select(TSA, Date, Ventilators_Available)
-
-
-tsa_combined_hosp = 
-  tsa_combined_hosp_orig %>%
-  select(TSA, Date, Ventilators_Available) %>% 
-  filter(!Date %in% wrong_dates_icu & !Date %in% wrong_dates_cases) %>%
-  rbind(wrong_dates_icu_df) %>% 
-  rbind(wrong_dates_cases_df) %>%
-  filter(Date != '2020-07-23')
+# DSHS_json_hosp_tsa = jsonlite::fromJSON("https://services5.arcgis.com/ACaLB9ifngzawspq/arcgis/rest/services/DSHS_COVID_Hospital_Data/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outSR=102100&resultOffset=0&resultRecordCount=25&resultType=standard&cacheHint=true")[['features']][['attributes']]
+# 
+# rac_xwalk = DSHS_json_hosp_tsa %>% select(TSA, RAC) %>% rename(TSA_Fixed = TSA)
+# 
+# DSHS_json_hosp_tsa = DSHS_json_hosp_tsa %>% 
+#   select(TSA, TotalStaff, AvailHospi, AvailICUBe, AvailVenti, COVIDPatie) %>% 
+#   rename(Hospital_Beds_Staffed = TotalStaff,
+#          ICU_Beds_Available = AvailICUBe,
+#          Ventilators_Available = AvailVenti,
+#          Current_Cases = COVIDPatie,
+#          Hospital_Beds_Available = AvailHospi)
+# 
+# # export today's file
+# write_csv(DSHS_json_hosp_tsa, glue('original-sources/historical/hosp/tsa_hosp_{date_out}.csv'))
+# 
+# # read in all files
+# hosp_list = list.files('original-sources/historical/hosp', pattern = '*.csv', full.names = TRUE)
+# hosp_dates = sapply(hosp_list, function(x) str_extract(x, '\\d{4}-\\d{2}-\\d{2}'))
+# tsa_all_hosp = lapply(hosp_list, read.csv, fileEncoding = 'UTF-8-BOM')
+# names(tsa_all_hosp) = hosp_dates
+# 
+# tsa_combined_hosp_orig = rbindlist(tsa_all_hosp, fill = TRUE, idcol = TRUE) %>% 
+#   dplyr::select(-Date) %>% 
+#   rename(Date = .id) %>%
+#   # dplyr::select(TSA, Date, Ventilators_Available) %>%
+#   left_join(rac_xwalk, by = c('TSA' = 'RAC')) %>%
+#   mutate(TSA_Fixed = ifelse(is.na(TSA_Fixed), TSA, TSA_Fixed)) %>%
+#   select(-TSA) %>% 
+#   rename(TSA = TSA_Fixed) %>% 
+#   relocate(TSA, .before = Date) %>% 
+#   mutate(Date = as.Date(Date, '%Y-%m-%d')) %>% 
+#   distinct() %>% 
+#   group_by(TSA, Date) %>% 
+#   mutate(delete_flag = ifelse(TSA == 'L' & row_number() == 2 | TSA == 'M' & row_number() == 1 & n() == 2, 1, 0)) %>% 
+#   filter(delete_flag != 1) %>% 
+#   select(-delete_flag) %>% 
+#   ungroup()
+# 
+# 
+# wrong_dates_icu = tsa_combined_hosp_orig %>%
+#   filter(TSA == 'D' & Date <= '2021-05-06') %>%
+#   arrange(Ventilators_Available) %>%
+#   mutate(n = row_number()) %>%
+#   filter (n < 66) %>%
+#   select(Date) %>%
+#   filter(Date != '2021-02-04' & Date != '2021-01-05') %>% 
+#   unlist() %>% 
+#   as.Date()
+# 
+# wrong_dates_cases = c('2021-02-04', '2021-01-05') %>% as.Date()
+# 
+# wrong_dates_icu_df = tsa_combined_hosp_orig %>%
+#           filter(Date %in% wrong_dates_icu) %>%
+#           select(-Ventilators_Available) %>%
+#           rename(Ventilators_Available = ICU_Beds_Available) %>%
+#           select(TSA, Date, Ventilators_Available)
+# 
+# wrong_dates_cases_df = tsa_combined_hosp_orig %>%
+#           filter(Date %in% wrong_dates_cases) %>%
+#           select(-Ventilators_Available) %>%
+#           rename(Ventilators_Available = Current_Cases) %>%
+#           select(TSA, Date, Ventilators_Available)
+# 
+# 
+# tsa_combined_hosp = 
+#   tsa_combined_hosp_orig %>%
+#   select(TSA, Date, Ventilators_Available) %>% 
+#   filter(!Date %in% wrong_dates_icu & !Date %in% wrong_dates_cases) %>%
+#   rbind(wrong_dates_icu_df) %>% 
+#   rbind(wrong_dates_cases_df) %>%
+#   filter(Date != '2020-07-23')
 ```
 
 ## merge
 
 ```{r}
 merged_tsa = Reduce(function(x, y) merge(x, y, by = c('Date', 'TSA'), all = TRUE),
-                    list(DSHS_tsa, tsa_combined_hosp,
-                         hosp_1, hosp_2, hosp_3,
+                    list(DSHS_tsa,
+                         hosp_1, hosp_2, hosp_3, hosp_4,
                          hosp_cap1, hosp_cap2, hosp_cap3, hosp_cap4))
 
 # fix types & ensure TSA values are valid
