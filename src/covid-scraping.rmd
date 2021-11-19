@@ -1607,7 +1607,7 @@ hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp[['ICU Beds Occupied']], 'Beds_Occupied
 # DSHS_json_hosp_tsa = DSHS_json_hosp_tsa %>% 
 #   select(TSA, TotalStaff, AvailHospi, AvailICUBe, AvailVenti, COVIDPatie) %>% 
 #   rename(Hospital_Beds_Staffed = TotalStaff,
-#          ICU_Beds_Available = AvailICUBe,
+#          ICU_Belable = Avds_AvaiailICUBe,
 #          Ventilators_Available = AvailVenti,
 #          Current_Cases = COVIDPatie,
 #          Hospital_Beds_Available = AvailHospi)
