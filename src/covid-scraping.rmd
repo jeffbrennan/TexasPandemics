@@ -1402,86 +1402,86 @@ write_csv(county_vax_age, 'tableau/sandbox/county_vax_age.csv')
 # TSA LEVEL
 
 ## Variants
-
+DSHS moved to non-scrapeable DSHS dashboard
 ```{r}
-try(
-  variant_df <- 'http://www.dshs.texas.gov/news/updates.shtm' %>%
-    httr::GET(., httr::timeout(20)) %>% 
-    read_html() %>%
-    html_table() %>%
-    .[[which(str_detect(., 'ALPHA'))]] %>%
-    filter(TSA != 'Grand Total') %>% 
-    select(-Total) %>% 
-    mutate(Date = date_out)
-  )
-
-try(write_csv(x = variant_df,
-              file = glue('original-sources\\historical\\variants\\tsa_variants_{date_out}.csv')))
+# try(
+#   variant_df <- 'http://www.dshs.texas.gov/news/updates.shtm' %>%
+#     httr::GET(., httr::timeout(20)) %>% 
+#     read_html() %>%
+#     html_table() %>%
+#     .[[which(str_detect(., 'ALPHA'))]] %>%
+#     filter(TSA != 'Grand Total') %>% 
+#     select(-Total) %>% 
+#     mutate(Date = date_out)
+#   )
+# 
+# try(write_csv(x = variant_df,
+#               file = glue('original-sources\\historical\\variants\\tsa_variants_{date_out}.csv')))
 
 # epsilon variants deescalated on 6/29
-all_variants = list.files('original-sources\\historical\\variants\\', full.names = TRUE) %>%
-  lapply(., function(x) 
-           fread(x) %>%
-           setNames(c('TSA', str_extract(names(.)[2:length(names(.))], '.*[\\S]'))) %>%
-           rename_all(., recode,
-                      B.1.1.7 = 'B.1.1.7 ALPHA (UK)',
-                      B.1.351 = 'B.1.351 BETA (South Africa)',
-                      B.1.617.2 = 'B.1.617.2 DELTA (India)',
-                      B.1.427 = 'B.1.427 EPSILON (California)',
-                      B.1.429 = 'B.1.429 EPSILON (California)',
-                      P.1 = 'P.1 GAMMA (Brazil)')
-         )  %>%
-  rbindlist(fill = TRUE) %>% 
-  relocate(Date, .before = TSA) %>%
-  left_join(tsa_long_complete %>%
-              select(TSA, TSA_Combined) %>%
-              distinct() %>%
-              rbind(
-                data.frame(TSA = 'Pending patient info from lab',
-                           TSA_Combined = 'Pending patient info from lab')
-                )) %>% 
-  select(-TSA) %>% 
-  rename('TSA' = 'TSA_Combined') %>% 
-  relocate(TSA, .after = Date) %>% 
-  mutate_at(vars(-Date, -TSA), function(x) gsub('\\,', '', x)) %>% 
-  mutate_at(vars(-Date, -TSA), as.numeric)
-
-update_dates = all_variants %>% 
-  distinct_at(vars(-Date), .keep_all = TRUE) %>%
-  select(Date) %>% 
-  distinct() %>% 
-  unlist()
-
-variants_out = all_variants %>%
-  select(-contains('EPSILON')) %>%
-  filter(Date %in% update_dates) %>% 
-  arrange(Date) %>% 
-  group_by(TSA) %>%
-  mutate(alpha_Case_Ratio = `B.1.1.7 ALPHA (UK)` / lag(`B.1.1.7 ALPHA (UK)`)) %>%
-  mutate(beta_Case_Ratio = `B.1.351 BETA (South Africa)` / lag(`B.1.351 BETA (South Africa)`)) %>% 
-  mutate(delta_Case_Ratio = `B.1.617.2 DELTA (India)` / lag(`B.1.617.2 DELTA (India)`)) %>% 
-  mutate(gamma_Case_Ratio = `P.1 GAMMA (Brazil)` / lag(`P.1 GAMMA (Brazil)`)) %>% 
-  mutate(across(where(is.numeric), ~na_if(., 'NaN'))) %>% 
-  mutate(across(where(is.numeric), ~na_if(., 'Inf'))) %>% 
-  arrange(TSA, Date)
-
-variants_melt = all_variants %>%
-  select(-contains('EPSILON')) %>%
-  filter(Date %in% update_dates) %>%
-  reshape2::melt(id.vars = c('Date', 'TSA')) %>% 
-  rename('Cases' = 'value', 'Variant' = 'variable') %>% 
-  group_by(TSA, Variant) %>%
-  arrange(Date) %>% 
-  mutate(Case_Ratio = Cases / lag(Cases)) %>% 
-  mutate(across(where(is.numeric), ~na_if(., 'NaN'))) %>% 
-  mutate(across(where(is.numeric), ~na_if(., 'Inf'))) %>% 
-  arrange(TSA, Date)
-
-write_csv(x = variants_out,
-          file = 'tableau\\tsa_variants.csv')
-
-write_csv(x = variants_melt, 
-          file = 'tableau\\tsa_variants_melt.csv')
+# all_variants = list.files('original-sources\\historical\\variants\\', full.names = TRUE) %>%
+#   lapply(., function(x) 
+#            fread(x) %>%
+#            setNames(c('TSA', str_extract(names(.)[2:length(names(.))], '.*[\\S]'))) %>%
+#            rename_all(., recode,
+#                       B.1.1.7 = 'B.1.1.7 ALPHA (UK)',
+#                       B.1.351 = 'B.1.351 BETA (South Africa)',
+#                       B.1.617.2 = 'B.1.617.2 DELTA (India)',
+#                       B.1.427 = 'B.1.427 EPSILON (California)',
+#                       B.1.429 = 'B.1.429 EPSILON (California)',
+#                       P.1 = 'P.1 GAMMA (Brazil)')
+#          )  %>%
+#   rbindlist(fill = TRUE) %>% 
+#   relocate(Date, .before = TSA) %>%
+#   left_join(tsa_long_complete %>%
+#               select(TSA, TSA_Combined) %>%
+#               distinct() %>%
+#               rbind(
+#                 data.frame(TSA = 'Pending patient info from lab',
+#                            TSA_Combined = 'Pending patient info from lab')
+#                 )) %>% 
+#   select(-TSA) %>% 
+#   rename('TSA' = 'TSA_Combined') %>% 
+#   relocate(TSA, .after = Date) %>% 
+#   mutate_at(vars(-Date, -TSA), function(x) gsub('\\,', '', x)) %>% 
+#   mutate_at(vars(-Date, -TSA), as.numeric)
+# 
+# update_dates = all_variants %>% 
+#   distinct_at(vars(-Date), .keep_all = TRUE) %>%
+#   select(Date) %>% 
+#   distinct() %>% 
+#   unlist()
+# 
+# variants_out = all_variants %>%
+#   select(-contains('EPSILON')) %>%
+#   filter(Date %in% update_dates) %>% 
+#   arrange(Date) %>% 
+#   group_by(TSA) %>%
+#   mutate(alpha_Case_Ratio = `B.1.1.7 ALPHA (UK)` / lag(`B.1.1.7 ALPHA (UK)`)) %>%
+#   mutate(beta_Case_Ratio = `B.1.351 BETA (South Africa)` / lag(`B.1.351 BETA (South Africa)`)) %>% 
+#   mutate(delta_Case_Ratio = `B.1.617.2 DELTA (India)` / lag(`B.1.617.2 DELTA (India)`)) %>% 
+#   mutate(gamma_Case_Ratio = `P.1 GAMMA (Brazil)` / lag(`P.1 GAMMA (Brazil)`)) %>% 
+#   mutate(across(where(is.numeric), ~na_if(., 'NaN'))) %>% 
+#   mutate(across(where(is.numeric), ~na_if(., 'Inf'))) %>% 
+#   arrange(TSA, Date)
+# 
+# variants_melt = all_variants %>%
+#   select(-contains('EPSILON')) %>%
+#   filter(Date %in% update_dates) %>%
+#   reshape2::melt(id.vars = c('Date', 'TSA')) %>% 
+#   rename('Cases' = 'value', 'Variant' = 'variable') %>% 
+#   group_by(TSA, Variant) %>%
+#   arrange(Date) %>% 
+#   mutate(Case_Ratio = Cases / lag(Cases)) %>% 
+#   mutate(across(where(is.numeric), ~na_if(., 'NaN'))) %>% 
+#   mutate(across(where(is.numeric), ~na_if(., 'Inf'))) %>% 
+#   arrange(TSA, Date)
+# 
+# write_csv(x = variants_out,
+#           file = 'tableau\\tsa_variants.csv')
+# 
+# write_csv(x = variants_melt, 
+#           file = 'tableau\\tsa_variants_melt.csv')
 ```
 
 ## Computed
