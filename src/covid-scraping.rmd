@@ -893,7 +893,8 @@ curl::curl_download('https://www.dshs.texas.gov/immunize/covid19/COVID-19-Vaccin
 
 ```{r}
 curl::curl_download('https://genesis.soc.texas.gov/files/accessibility/vaccineprovideraccessibilitydata.csv', mode = 'wb', 
-              glue('original-sources/historical/vaccine-providers/vaccination-providers_{date_out}.csv'))
+              glue('original-sources/historical/vaccine-providers/vaccination-providers_{date_out}.csv')) %>% 
+  try(., silent = TRUE)
 ```
 
 ## vaccines zip
