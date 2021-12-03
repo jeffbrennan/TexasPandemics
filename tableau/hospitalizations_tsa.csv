@@ -13177,25 +13177,47 @@
 2021-11-30,"T","Laredo","T - Laredo",295669,101,8,2,6,5,1,327,56
 2021-11-30,"U","Corpus Christi","U - Corpus Christi",630897,189,62,40,21,165,8,921,127
 2021-11-30,"V","Lower Rio Grande Valley","V - Lower Rio Grande Valley",1385112,364,96,59,33,598,35,2059,268
-2021-12-01,"A","Amarillo","A - Amarillo",440127,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"B","Lubbock","B - Lubbock",513580,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"C","Wichita Falls","C - Wichita Falls",219793,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"D","Abilene","D - Abilene",306972,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"E","Dallas/Ft. Worth","E - Dallas/Ft. Worth",8080080,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"F","Paris","F - Paris",273329,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"G","Longview/Tyler","G - Longview/Tyler",968611,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"H","Lufkin","H - Lufkin",272151,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"I","El Paso","I - El Paso",881765,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"J","Midland/Odessa","J - Midland/Odessa",526736,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"K","San Angelo","K - San Angelo",179457,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"L","Belton/Killeen","L - Belton/Killeen",507311,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"M","Waco","M - Waco",330048,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"N","Bryan/College Station","N - Bryan/College Station",360335,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"O","Austin","O - Austin",2375407,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"P","San Antonio","P - San Antonio",2945792,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"Q","Houston","Q - Houston",6688587,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"R","Galveston","R - Galveston",1309237,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"S","Victoria","S - Victoria",186672,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"T","Laredo","T - Laredo",295669,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"U","Corpus Christi","U - Corpus Christi",630897,NA,NA,NA,NA,NA,NA,NA,NA
-2021-12-01,"V","Lower Rio Grande Valley","V - Lower Rio Grande Valley",1385112,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-01,"A","Amarillo","A - Amarillo",440127,116,192,119,69,222,14,699,115
+2021-12-01,"B","Lubbock","B - Lubbock",513580,170,126,96,28,264,12,1151,177
+2021-12-01,"C","Wichita Falls","C - Wichita Falls",219793,101,27,16,11,331,3,795,28
+2021-12-01,"D","Abilene","D - Abilene",306972,98,63,43,20,222,1,636,49
+2021-12-01,"E","Dallas/Ft. Worth","E - Dallas/Ft. Worth",8080080,2202,824,536,262,1294,126,13701,1820
+2021-12-01,"F","Paris","F - Paris",273329,125,33,21,12,196,13,593,52
+2021-12-01,"G","Longview/Tyler","G - Longview/Tyler",968611,249,97,63,34,624,30,1889,280
+2021-12-01,"H","Lufkin","H - Lufkin",272151,91,15,7,8,117,4,254,48
+2021-12-01,"I","El Paso","I - El Paso",881765,283,336,221,107,194,2,1703,296
+2021-12-01,"J","Midland/Odessa","J - Midland/Odessa",526736,291,90,65,25,557,10,969,100
+2021-12-01,"K","San Angelo","K - San Angelo",179457,120,11,8,3,332,16,363,28
+2021-12-01,"L","Belton/Killeen","L - Belton/Killeen",507311,145,37,21,15,79,2,948,146
+2021-12-01,"M","Waco","M - Waco",330048,59,23,14,9,88,4,461,68
+2021-12-01,"N","Bryan/College Station","N - Bryan/College Station",360335,90,10,9,1,93,8,350,36
+2021-12-01,"O","Austin","O - Austin",2375407,412,114,62,47,708,51,3290,425
+2021-12-01,"P","San Antonio","P - San Antonio",2945792,839,199,114,81,726,83,5087,838
+2021-12-01,"Q","Houston","Q - Houston",6688587,1518,461,309,136,1675,167,11917,1427
+2021-12-01,"R","Galveston","R - Galveston",1309237,303,60,39,21,324,29,1431,209
+2021-12-01,"S","Victoria","S - Victoria",186672,54,11,7,4,180,14,336,43
+2021-12-01,"T","Laredo","T - Laredo",295669,101,10,2,8,14,1,330,53
+2021-12-01,"U","Corpus Christi","U - Corpus Christi",630897,187,59,39,19,161,12,857,123
+2021-12-01,"V","Lower Rio Grande Valley","V - Lower Rio Grande Valley",1385112,371,95,61,30,586,31,2113,273
+2021-12-02,"A","Amarillo","A - Amarillo",440127,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"B","Lubbock","B - Lubbock",513580,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"C","Wichita Falls","C - Wichita Falls",219793,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"D","Abilene","D - Abilene",306972,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"E","Dallas/Ft. Worth","E - Dallas/Ft. Worth",8080080,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"F","Paris","F - Paris",273329,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"G","Longview/Tyler","G - Longview/Tyler",968611,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"H","Lufkin","H - Lufkin",272151,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"I","El Paso","I - El Paso",881765,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"J","Midland/Odessa","J - Midland/Odessa",526736,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"K","San Angelo","K - San Angelo",179457,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"L","Belton/Killeen","L - Belton/Killeen",507311,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"M","Waco","M - Waco",330048,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"N","Bryan/College Station","N - Bryan/College Station",360335,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"O","Austin","O - Austin",2375407,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"P","San Antonio","P - San Antonio",2945792,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"Q","Houston","Q - Houston",6688587,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"R","Galveston","R - Galveston",1309237,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"S","Victoria","S - Victoria",186672,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"T","Laredo","T - Laredo",295669,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"U","Corpus Christi","U - Corpus Christi",630897,NA,NA,NA,NA,NA,NA,NA,NA
+2021-12-02,"V","Lower Rio Grande Valley","V - Lower Rio Grande Valley",1385112,NA,NA,NA,NA,NA,NA,NA,NA
