@@ -1708,6 +1708,53 @@ merged_tsa = merged_tsa %>%
 
 # STATE LEVEL
 
+## CDC variant data
+```{r}
+variant_lookup = data.frame(
+  stringsAsFactors = FALSE,
+           Variant = c("B.1.1.7","B.1.351","P.1",
+                       "B.1.617.2","AY.1","AY.2","B.1.526","B.1.617.1",
+                       "B.1.621","Other","B.1.427/429","B.1.525","B.1.617.3",
+                       "P.2"),
+     Variant_Label = c("Alpha","Beta","Gamma",
+                       "Delta","Delta","Delta","Iota","Kappa","Mu","Other",
+                       "Epsilon","Eta",NA,"Zeta")
+)
+
+
+cdc_variant_data = lapply(list.files('original-sources/historical/cdc_variants/', full.names=TRUE),
+                          fread) %>% 
+  rbindlist(fill = TRUE) %>% 
+  group_by(Date) %>% 
+  slice(1) %>% 
+  ungroup() %>%
+  unite(Sequences, c('Total Available sequences', 'Total Available Sequences', 'Total Sequences'), na.rm = TRUE) %>% 
+  select(-V3) %>%
+  mutate(across(everything(), ~gsub('\\%|\\,', '', .))) %>% 
+  mutate(across(-c(Date, State), as.numeric)) %>%
+  reshape2::melt(id.vars = c('Date', 'State', 'Sequences')) %>% 
+  setNames(c('Date', 'State', 'Total_Sequences', 'Variant', 'Proportion')) %>% 
+  group_by(Date) %>% 
+  mutate(Proportion_Total = sum(Proportion, na.rm = TRUE)) %>% 
+  group_by(row_number()) %>% 
+  mutate(Proportion = ifelse(Proportion_Total > 1, Proportion/100, Proportion)) %>%
+  group_by(Date) %>% 
+  mutate(Proportion_Total1 = sum(Proportion, na.rm = TRUE)) %>% 
+  select(1:5) %>%
+  ungroup() %>%
+  mutate_if(is.factor, as.character) %>% 
+  left_join(variant_lookup, by = 'Variant') %>% 
+  group_by(Date, Variant_Label) %>% 
+  mutate(Proportion = sum(Proportion, na.rm = TRUE)) %>% 
+  filter(!Variant %in% c('AY.1', 'AY.2', 'B.1.617.3')) %>% 
+  select(Date, Variant, Variant_Label, Total_Sequences, Proportion) %>%
+  mutate(Sequences = floor(Total_Sequences * Proportion)) %>% 
+  ungroup()
+
+fwrite(cdc_variant_data, 'tableau/cdc_variant_data.csv')
+```
+
+
 ```{r}
 state_url = 'https://www.dshs.state.tx.us/coronavirus/TexasCOVID19CaseCountData.xlsx'
 temp = tempfile()
@@ -1722,7 +1769,16 @@ dshs_date = format(as.Date(dshs_date), '%Y_%m_%d')
 # save state level file to historical database for longitudinal demo
 curl::curl_download(state_url, paste0('original-sources/historical/state/dshs_',
                                 dshs_date, '.xlsx'), mode = 'wb')
-```
+```data.frame(
+  stringsAsFactors = FALSE,
+              B.1.1.7 = c("B.1.351","P.1",
+                          "B.1.617.2","AY.1","AY.2","B.1.526","B.1.617.1",
+                          "B.1.621","Other","B.1.427/429","B.1.525","B.1.617.3",
+                          "P.2"),
+                Alpha = c("Beta","Gamma","Delta",
+                          "Delta","Delta","Iota","Kappa","Mu","Other",
+                          "Epsilon","Eta",NA,"Zeta")
+   )
 
 ## DSHS Demographics
 

@@ -2,12 +2,16 @@ import pandas as pd
 from tableauscraper import TableauScraper as TS
 from datetime import datetime, timedelta
 
-url = "https://public.tableau.com/shared/RHJFBQBPJ?:toolbar=n&:display_count=y&:origin=viz_share_link&:embed=y"
+url = "https://public.tableau.com/views/WeightedStateVariantTable/StateVBMTable"
 ts = TS()
 ts.loads(url)
 workbook = ts.getWorkbook()
 
-data = workbook.getCrossTabData('State Proportions')
+data = workbook.getCrossTabData('0-Table_Export')
+data.columns = data.iloc[0]
+data = data.iloc[1:]
+data.rename(columns={ data.columns[0]: "State" }, inplace = True)
+
 data_out = data[data.State == 'Texas']
 
 data_day = (datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d')
