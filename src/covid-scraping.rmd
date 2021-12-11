@@ -1718,8 +1718,7 @@ variant_lookup = data.frame(
                        "P.2"),
      Variant_Label = c("Alpha","Beta","Gamma",
                        "Delta","Delta","Delta","Iota","Kappa","Mu","Other",
-                       "Epsilon","Eta",NA,"Zeta")
-)
+                       "Epsilon","Eta",NA,"Zeta"))
 
 
 cdc_variant_data = lapply(list.files('original-sources/historical/cdc_variants/', full.names=TRUE),
