@@ -1397,6 +1397,7 @@ county_vax_age = lapply(all_dashboard_files, `[[`, 'By County, Age') %>%
   mutate(Doses_Administered_Per_Age = Doses_Administered / Population_Total) %>% 
   mutate(At_Least_One_Vaccinated_Per_Age = At_Least_One_Vaccinated / Population_Total) %>% 
   mutate(Fully_Vaccinated_Per_Age = Fully_Vaccinated / Population_Total) %>% 
+  mutate(Booster_Per_Age = Booster / Population_Total) %>% 
   filter(!(County %in% c('Other', 'Grand Total'))) %>% 
   select(-contains('_Per'))
 
@@ -1478,7 +1479,7 @@ DSHS moved to non-scrapeable DSHS dashboard
 #   group_by(TSA, Variant) %>%
 #   arrange(Date) %>% 
 #   mutate(Case_Ratio = Cases / lag(Cases)) %>% 
-#   mutate(across(where(is.numeric), ~na_if(., 'NaN'))) %>% 
+#   mutate(across(where(is.numeric),  ~na_if(., 'NaN'))) %>% 
 #   mutate(across(where(is.numeric), ~na_if(., 'Inf'))) %>% 
 #   arrange(TSA, Date)
 # 
