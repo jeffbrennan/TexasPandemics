@@ -22,6 +22,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2021-12-19,B.1.1.7,Alpha,5758,0,0
 2021-12-20,B.1.1.7,Alpha,5107,0,0
 2021-12-21,B.1.1.7,Alpha,5107,0,0
+2021-12-22,B.1.1.7,Alpha,5107,0,0
 2021-09-28,B.1.351,Beta,9169,1e-04,0
 2021-09-29,B.1.351,Beta,9169,1e-04,0
 2021-10-01,B.1.351,Beta,9169,1e-04,0
@@ -45,6 +46,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2021-12-19,B.1.351,Beta,5758,0,0
 2021-12-20,B.1.351,Beta,5107,0,0
 2021-12-21,B.1.351,Beta,5107,0,0
+2021-12-22,B.1.351,Beta,5107,0,0
 2021-09-28,P.1,Gamma,9169,0.0016,14
 2021-09-29,P.1,Gamma,9169,0.0016,14
 2021-10-01,P.1,Gamma,9169,0.0016,14
@@ -68,6 +70,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2021-12-19,P.1,Gamma,5758,0,0
 2021-12-20,P.1,Gamma,5107,0,0
 2021-12-21,P.1,Gamma,5107,0,0
+2021-12-22,P.1,Gamma,5107,0,0
 2021-09-28,B.1.617.2,Delta,9169,0.9525,8733
 2021-09-29,B.1.617.2,Delta,9169,0.9525,8733
 2021-10-01,B.1.617.2,Delta,9169,0.9525,8733
@@ -91,6 +94,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2021-12-19,B.1.617.2,Delta,5758,0.979,5637
 2021-12-20,B.1.617.2,Delta,5107,0.981,5009
 2021-12-21,B.1.617.2,Delta,5107,0.981,5009
+2021-12-22,B.1.617.2,Delta,5107,0.981,5009
 2021-09-28,B.1.526,Iota,9169,0,0
 2021-09-29,B.1.526,Iota,9169,0,0
 2021-10-01,B.1.526,Iota,9169,0,0
@@ -114,6 +118,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2021-12-19,B.1.526,Iota,5758,0,0
 2021-12-20,B.1.526,Iota,5107,0,0
 2021-12-21,B.1.526,Iota,5107,0,0
+2021-12-22,B.1.526,Iota,5107,0,0
 2021-09-28,B.1.617.1,Kappa,9169,0,0
 2021-09-29,B.1.617.1,Kappa,9169,0,0
 2021-10-01,B.1.617.1,Kappa,9169,0,0
@@ -137,6 +142,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2021-12-19,B.1.617.1,Kappa,5758,0,0
 2021-12-20,B.1.617.1,Kappa,5107,0,0
 2021-12-21,B.1.617.1,Kappa,5107,0,0
+2021-12-22,B.1.617.1,Kappa,5107,0,0
 2021-09-28,B.1.621,Mu,9169,5e-04,4
 2021-09-29,B.1.621,Mu,9169,5e-04,4
 2021-10-01,B.1.621,Mu,9169,5e-04,4
@@ -160,6 +166,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2021-12-19,B.1.621,Mu,5758,0,0
 2021-12-20,B.1.621,Mu,5107,0,0
 2021-12-21,B.1.621,Mu,5107,0,0
+2021-12-22,B.1.621,Mu,5107,0,0
 2021-09-28,Other,Other,9169,0.0446,408
 2021-09-29,Other,Other,9169,0.0446,408
 2021-10-01,Other,Other,9169,0.0446,408
@@ -183,6 +190,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2021-12-19,Other,Other,5758,0.02,115
 2021-12-20,Other,Other,5107,0.019,97
 2021-12-21,Other,Other,5107,0.019,97
+2021-12-22,Other,Other,5107,0.019,97
 2021-09-28,B.1.427/429,Epsilon,9169,0,0
 2021-09-29,B.1.427/429,Epsilon,9169,0,0
 2021-10-01,B.1.427/429,Epsilon,9169,0,0
@@ -206,6 +214,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2021-12-19,B.1.427/429,Epsilon,5758,0,0
 2021-12-20,B.1.427/429,Epsilon,5107,0,0
 2021-12-21,B.1.427/429,Epsilon,5107,0,0
+2021-12-22,B.1.427/429,Epsilon,5107,0,0
 2021-09-28,B.1.525,Eta,9169,0,0
 2021-09-29,B.1.525,Eta,9169,0,0
 2021-10-01,B.1.525,Eta,9169,0,0
@@ -229,6 +238,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2021-12-19,B.1.525,Eta,5758,0,0
 2021-12-20,B.1.525,Eta,5107,0,0
 2021-12-21,B.1.525,Eta,5107,0,0
+2021-12-22,B.1.525,Eta,5107,0,0
 2021-09-28,P.2,Zeta,9169,0,0
 2021-09-29,P.2,Zeta,9169,0,0
 2021-10-01,P.2,Zeta,9169,0,0
@@ -252,6 +262,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2021-12-19,P.2,Zeta,5758,0,0
 2021-12-20,P.2,Zeta,5107,0,0
 2021-12-21,P.2,Zeta,5107,0,0
+2021-12-22,P.2,Zeta,5107,0,0
 2021-09-28,B.1.1.529,,9169,0,0
 2021-09-29,B.1.1.529,,9169,0,0
 2021-10-01,B.1.1.529,,9169,0,0
@@ -275,3 +286,4 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2021-12-19,B.1.1.529,,5758,0,0
 2021-12-20,B.1.1.529,,5107,0,0
 2021-12-21,B.1.1.529,,5107,0,0
+2021-12-22,B.1.1.529,,5107,0,0
