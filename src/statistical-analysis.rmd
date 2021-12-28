@@ -39,7 +39,6 @@ knitr::opts_chunk$set(message = FALSE)
 ```
 
 ```{r, warning=FALSE, message=FALSE}
-# TODO: remove extra libraries if possible
 # Data manipulation & cleaning
 library(tidyverse)
 library(reshape2)
@@ -56,6 +55,8 @@ library(forecast)
 library(zoo)
 library(astsa)
 library(fpp2)
+
+select = dplyr::select
 ```
 
 
@@ -87,7 +88,7 @@ Clean_Data = function(df, level_type) {
       arrange(Date, !!as.name(level_type)) %>% 
       distinct()
   }
-  return (clean_df %>% ungroup())
+  return(clean_df %>% ungroup())
 }
 
 # county_tpr = read.csv('tableau/county_TPR.csv') %>% 
@@ -274,8 +275,12 @@ covid.rt = function(mydata, threshold) {
 
 ```{r}
 # Generate Rt estimates for each county, using 70% quantile of cases in past 3 weeks as threshold
+start_time = Sys.time()
+# 13.7 minutes
 county.rt.output = nlme::gapply(County_df, FUN = covid.rt,
                                  groups = County_df$County, threshold = case_quant)
+print(Sys.time() - start_time)
+
 # combine list of dataframes (1 for each county) to single dataframe
 RT_County_df_all = rbindlist(county.rt.output, idcol = 'County') %>% 
   mutate(Date = as.Date(Date))
@@ -302,6 +307,151 @@ RT_County_df = RT_County_df_all %>%
 good_counties = RT_County_df$County %>% unique() %>% length()
 good_counties/254 # = 0.744
 ```
+
+
+<!-- Parallel implementation -->
+
+<!-- ```{r} -->
+<!-- library(parallel) -->
+<!-- library(pbapply) -->
+<!-- Create_Worker = function(fnc_vec) { -->
+<!--   n.cores = detectCores() -->
+<!--   cl = makeCluster(n.cores) -->
+
+<!--   # create n=12 worker environment -->
+<!--   clusterEvalQ(cl, -->
+<!--                c(library(magrittr), -->
+<!--                  library(dplyr), -->
+<!--                  library(R0), -->
+<!--                  library(zoo))) %>%  -->
+<!--     invisible() -->
+
+<!--   clusterExport(cl, fnc_vec) %>% invisible() -->
+<!--   return(cl) -->
+<!-- } -->
+
+<!-- rt.df.extraction2 = function(Rt.estimate.output) { -->
+
+<!--   # extract r0 estimate values into dataframe -->
+<!--   rt.df = setNames(stack(Rt.estimate.output$estimates$TD$R)[2:1], c('Date', 'Rt')) -->
+<!--   rt.df$Date = as.Date(rt.df$Date) -->
+
+<!--   # get 95% CI -->
+<!--   CI.lower.list = Rt.estimate.output$estimates$TD$conf.int$lower -->
+<!--   CI.upper.list = Rt.estimate.output$estimates$TD$conf.int$upper -->
+
+<!--   #use unlist function to format as vector -->
+<!--   CI.lower = unlist(CI.lower.list, recursive = TRUE, use.names = TRUE) -->
+<!--   CI.upper = unlist(CI.upper.list, recursive = TRUE, use.names = TRUE) -->
+
+<!--   rt.df$lower = CI.lower -->
+<!--   rt.df$upper = CI.upper -->
+
+<!--   rt.df = rt.df %>% -->
+<!--     mutate(lower = replace(lower, Rt == 0, NA)) %>% -->
+<!--     mutate(upper = replace(upper, Rt == 0, NA)) %>% -->
+<!--     mutate(Rt = replace(Rt, Rt == 0, NA)) -->
+
+<!--   return(rt.df) -->
+<!-- } -->
+
+<!-- mc_covid_rt = function(df, threshold) { -->
+<!--   set.seed(1) -->
+<!--   county = df %>% slice(1) %>% pull(County)  -->
+<!--   print(county) -->
+
+<!--   mydata = df %>% -->
+<!--     mutate(Cases_Daily = ifelse(is.na(Cases_Daily), 0, Cases_Daily)) %>%  -->
+<!--     mutate(MA_7day = rollmean(Cases_Daily, k = 7, na.pad = TRUE, align = 'right')) -->
+
+
+<!--   pop_DSHS = pop_list %>% filter(County == County) %>% pull(Population_DSHS) -->
+
+
+<!--   # get case average from past month -->
+<!--   recent_case_avg = mydata %>%  -->
+<!--     filter(Date > seq(max(Date), length = 2, by = "-3 weeks")[2]) %>% -->
+<!--     summarize(mean(Cases_Daily, na.rm = TRUE)) %>%  -->
+<!--     unlist() %>%  -->
+<!--     unname() %>%  -->
+<!--     round(2) %>%  -->
+<!--     paste0(county, ' 3 week avg: ', ., ' cases') -->
+
+<!--   #create a vector of new cases 7 day moving average -->
+<!--   mydata.new=pull(mydata, MA_7day) -->
+<!--   date.vector = pull(mydata, Date) -->
+
+<!--   #create a named numerical vector using the date.vector as names of new cases -->
+<!--   #Note: this is needed to run R0 package function estimate.R() -->
+<!--   names(mydata.new) = c(date.vector) -->
+
+<!--   #get row number of March 15 and first nonzero entry -->
+<!--   #NOTE: for 7 day moving average start March 15, for daily start March 9 -->
+<!--   #find max row between the two (this will be beginning of rt data used) -->
+<!--   march15_row = which(mydata$Date=="2020-03-15") -->
+<!--   first_nonzero = which(mydata$Cases_Daily>0) %>%  -->
+<!--     min() %>%  -->
+<!--     ifelse(is.infinite(.), NA, .) -->
+
+<!--   last.nonzero = which(mydata$Cases_Daily>0) %>%  -->
+<!--     max() %>%  -->
+<!--     ifelse(is.infinite(.), NA, .) -->
+
+<!--   minrow = max(march15_row, first_nonzero, na.rm = TRUE) -->
+<!--   maxrow = as.integer(min(last.nonzero, nrow(mydata), na.rm = TRUE)) -->
+
+<!--   # restrict df to same region as the minrow for addition of TPR & Cases/100 -->
+<!--   mydata = mydata %>% slice(minrow:maxrow) -->
+
+<!--   ### R0 ESTIMATION ### -->
+<!--   #reduce the vector to be rows from min date (March 15 or first nonzero case) to current date -->
+<!--   mydata.newest = mydata.new[minrow:maxrow] -->
+
+<!--   rt.DSHS.df = tryCatch({ -->
+<!--     rt.DSHS = estimate.R(mydata.newest,  -->
+<!--                         gen.time,  -->
+<!--                         begin=as.integer(1), -->
+<!--                         end=length(mydata.newest), -->
+<!--                         methods=c("TD"),  -->
+<!--                         pop.size=pop_DSHS, -->
+<!--                         nsim=1000) -->
+
+<!--     rt.df.extraction(rt.DSHS) %>% -->
+<!--       select(Date, Rt, lower, upper) %>% -->
+<!--       mutate(case_avg = recent_case_avg) %>%  -->
+<!--       mutate(threshold = ifelse(recent_case_avg > threshold, 'Above', 'Below')) -->
+<!--     }, -->
+<!--     error = function(e) { -->
+<!--       writeLines(paste0('Rt generation error (despite sufficient cases)', '\n')) -->
+<!--       return(data.frame(Date = as.Date(mydata$Date), -->
+<!--                                Rt = rep(NA, length(mydata$Date)), -->
+<!--                                lower = rep(NA, length(mydata$Date)), -->
+<!--                                upper = rep(NA, length(mydata$Date)), -->
+<!--                                case_avg = NA, -->
+<!--                                threshold = NA)) -->
+<!--     }) -->
+<!--   return(rt.DSHS.df) -->
+<!-- } -->
+
+<!-- # 6 minutes 9 second -->
+<!-- pop_list = County_df %>% group_by(County) %>% slice(1) %>% select(County, Population_DSHS) -->
+<!-- gen.time = generation.time("gamma", c(3.96, 4.75)) -->
+<!-- county_df_list = County_df %>% select(-Tests_Daily, -Population_DSHS) %>% group_split(County) -->
+
+
+<!-- cl = Create_Worker(c('mc_covid.rt', 'rt.df.extraction')) -->
+<!-- mc_rt = pblapply(county_df_list[1:10], mc_covid.rt, cl = cl, threshold = case_quant) -->
+<!-- stopCluster(cl) -->
+<!-- ``` -->
+
+
+<!-- Result diff -->
+
+<!-- ```{r} -->
+
+<!-- ``` -->
+
+
 
 
 
