@@ -767,6 +767,68 @@ ARIMA_Hosp_Combined_df = rbind(ARIMA_Hosp_TSA_df, ARIMA_Hosp_State_df)
 write.csv(ARIMA_Hosp_Combined_df, 'tableau/stacked_hosp_timeseries.csv', row.names = FALSE)
 ```
 
+<!-- # Case & Death Comparison -->
+
+<!-- ```{r} -->
+<!-- # identify dates of waves per county, sum cases & hospitalizations, then compute ratio -->
+
+<!-- # wave defined as any consecutive 7 day period of R > 1.1 -->
+<!-- county_deaths = fread('tableau/county.csv') %>%  -->
+<!--   select(Date, County, contains('Death'), contains('Population')) %>%  -->
+<!--   mutate(Date = as.Date(Date)) -->
+
+
+<!-- case_death_comparison = RT_County_df %>% -->
+<!--   left_join(county_deaths, by = c('Level' = 'County', 'Date' = 'Date')) %>% -->
+<!--   rename(County = Level) %>% -->
+<!--   left_join(County_df %>% select(Date, County, contains('Case')), by = c('County', 'Date')) %>%  -->
+<!--   mutate(RT_Above_1 = Rt > 1) %>%  -->
+<!--   group_by(County) %>%  -->
+<!--   arrange(Date) %>% -->
+<!--   mutate(Cases_MA7 = rollmean(Cases_Daily, k=7, na.pad=TRUE, align='right')) %>% -->
+<!--   mutate(Week_Identifier = paste0(year(Date), '_', week(Date))) %>% -->
+<!--   group_by(County, Week_Identifier) %>%  -->
+<!--   mutate(RT_Above_1_Days = cumsum(coalesce(RT_Above_1, 0))) %>% -->
+<!--   mutate(RT_Above_1_Days = max(RT_Above_1_Days)) %>%  -->
+<!--   mutate(Wave_Flag = RT_Above_1_Days > 5) %>% -->
+<!--   group_by(County) %>%  -->
+<!--   mutate(Wave_Count = ifelse(Wave_Flag != lag(Wave_Flag), 1, 0)) %>%  -->
+<!--   mutate(Wave_Count = ifelse(Wave_Flag == FALSE, 0, Wave_Count)) %>%  -->
+<!--   mutate(Wave_Count = ifelse(is.na(Wave_Count) & Wave_Flag, 1, Wave_Count)) -->
+<!--   mutate(Wave_Flag = ifelse(Wave_Flag, 'Wave', 'No Wave')) -->
+
+<!-- # wave selection diagnostics -->
+<!-- sample_counties = case_death_comparison %>% filter(Population_DSHS > 100000) %>% pull(County) %>% unique() -->
+<!-- county_selection = sample(sample_counties)[1] -->
+
+<!-- case_ma_plot = case_death_comparison %>% -->
+<!--   filter(County == county_selection) %>% -->
+<!--   ggplot(., aes(x = Date, y = Cases_MA7)) + -->
+<!--   geom_point(aes(color = Wave_Flag)) +  -->
+<!--   labs(title = glue::glue('{county_selection} County COVID Waves')) + -->
+<!--   geom_line(color = 'gray80') + -->
+<!--   scale_color_manual(values = c('Wave' = 'salmon', 'No Wave' = 'cyan3')) + -->
+<!--   ggpubr::theme_pubr() -->
+
+<!-- # week breakdown -->
+<!-- week_ma_plot = case_death_comparison %>%  -->
+<!--   filter(County == county_selection) %>%  -->
+<!--   ggplot(aes(x = Week_Identifier, y = Cases_MA7, fill = Wave_Flag)) +  -->
+<!--   geom_bar(stat = 'identity') +  -->
+<!--   labs(x = 'Week') + -->
+<!--   scale_fill_manual(values = c('Wave' = 'salmon', 'No Wave' = 'cyan3')) + -->
+<!--   ggpubr::theme_pubr() +  -->
+<!--   theme(axis.text.x = element_blank(), -->
+<!--         axis.ticks.x = element_blank()) -->
+
+<!-- # rt breakdown -->
+<!-- rt_plot =  -->
+
+<!-- # combined plot -->
+<!-- combined_plot = ggarrange(case_ma_plot, week_Ma_plot, rt_plot) -->
+<!-- combined_plot -->
+<!-- ``` -->
+
 # STANDARD STATISTICAL TESTS        
 
 ## CASE RATIOS
@@ -795,7 +857,7 @@ Calculate_Ratio = function(df) {
 ```
 
 ### County
-
+ 
 ```{r}
 Ratio_County_df = County_df %>%
   dplyr::select(Date, County, Cases_Daily) %>%
