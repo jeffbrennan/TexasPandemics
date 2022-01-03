@@ -361,6 +361,60 @@ county_demo_agesex = read_csv('original-sources/helpers/demographics/county/coun
   mutate(Gender = recode(Gender, 'FEM' = 'Female', 'MALE' = 'Male'))
 ```
 
+# Wastewater
+
+```{r}
+
+
+Scrape_Wastewater = function(data_type, offset='') {
+  plant_url = glue('https://services.arcgis.com/lqRTrQp2HrfnJt8U/ArcGIS/rest/services/WWTP_gdb/FeatureServer/0//query?where=0%3D0&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnGeometry=true&returnCentroid=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset={offset}&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pjson&token=')
+  
+  
+  zip_url = glue('https://services.arcgis.com/lqRTrQp2HrfnJt8U/arcgis/rest/services/Wastewater_Zip_Case_Analysis/FeatureServer/0/query?where=1%3D1&objectIds=&time=&resultType=none&outFields=*&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset={offset}&resultRecordCount=&sqlFormat=none&f=pjson&token=')
+ 
+  
+  
+  url_selection = c('zip' = zip_url,
+                    'plant' = plant_url)
+  
+  ww_df = jsonlite::fromJSON(url_selection[[data_type]])[['features']][['attributes']]
+  
+  if (length(ww_df) > 0) { 
+  
+    if(data_type == 'zip') { 
+      out_df = ww_df %>%
+        mutate(across(contains('date'), function(x) as_datetime(x/1000) %>% as_date())) %>%
+        select(ZIPCODE, date, pop, contains('Spline'), contains('vax'))
+        
+    } else if (data_type == 'plant') { 
+      out_df = ww_df %>%
+        mutate(across(contains('date'), function(x) as_datetime(x/1000) %>% as_date())) %>%
+        select(corname, date, vl_est, i_est_p, t_est, firstdate, lastdate, v1_est, v2_est, spline_ww) %>%
+        rename(Plant = corname,
+           Date = date,
+           Viral_Load_PCT = vl_est,
+           p_value = i_est_p,
+           Trend = t_est,
+           Date_First = firstdate,
+           Date_Last = lastdate,
+           Viral_Copies_Log = spline_ww)
+    }
+  } else {
+    return(list(NULL))
+  }
+  return(out_df)
+}
+
+ww_plant_df = rbindlist(lapply(c('', seq(2000, 10000, by = 2000)), function(x) Scrape_Wastewater('plant', offset=x)), fill = TRUE)
+ww_zip_df = rbindlist(lapply(c('', seq(1000, 10000, by = 1000)), function(x) Scrape_Wastewater('zip', offset=x)), fill = TRUE)
+
+fwrite(ww_plant_df, 'tableau/wastewater_plant.csv')
+fwrite(ww_zip_df, 'tableau/wastewater_zip.csv')
+
+```
+
+
+
 # SCHOOL LEVEL
 
 ```{r}
@@ -1570,6 +1624,9 @@ DSHS_hosp_clean = function(df, var_name) {
   
   return(df_long)
 }
+
+
+# TODO: refactor and delineate adult from pediatric
 
 hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[['COVID-19 Hospitalizations']], 'Hospitalizations_Total')
 hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[['Adult COVID-19 General']], 'Hospitalizations_General')
