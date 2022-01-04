@@ -57,6 +57,8 @@ library(ggpubr)
 library(rvest)
 library(jsonlite)
 library(glue)
+
+select = dplyr::select
 ```
 
 ```{r}
@@ -410,7 +412,6 @@ ww_zip_df = rbindlist(lapply(c('', seq(1000, 10000, by = 1000)), function(x) Scr
 
 fwrite(ww_plant_df, 'tableau/wastewater_plant.csv')
 fwrite(ww_zip_df, 'tableau/wastewater_zip.csv')
-
 ```
 
 
@@ -811,9 +812,12 @@ cpr_day =
   .[2] %>%
   as.numeric()
 
-if (cpr_day > as.numeric(format(Sys.Date(), '%d'))) { 
+if (cpr_day > as.numeric(format(Sys.Date(), '%d'))) {
   cpr_month = format(seq.Date(Sys.Date(), length.out = 2, by = '-1 month')[2], '%m')
-  cpr_date = as.Date(glue('{cpr_month}/{cpr_day}'), '%m/%d')  
+  cpr_date = as.Date(glue('{cpr_month}/{cpr_day}'), '%m/%d')
+  if (cpr_date - Sys.Date() > 100) { 
+    cpr_date = seq.Date(cpr_date, length.out = 2, by = '-1 year')[2]
+    }
 } else { 
   cpr_date = as.Date(glue('{format(Sys.Date(), "%m")}/{cpr_day}'), '%m/%d')  
   }
@@ -1626,18 +1630,21 @@ DSHS_hosp_clean = function(df, var_name) {
 }
 
 
-# TODO: refactor and delineate adult from pediatric
+# TODO: refactor
 
-hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[['COVID-19 Hospitalizations']], 'Hospitalizations_Total')
+hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[['COVID-19 Hospitalizations']], 'Hospitalizations_Total')  # [1]
 hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[['Adult COVID-19 General']], 'Hospitalizations_General')
 hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[['Adult COVID-19 ICU']], 'Hospitalizations_ICU')
 hosp_4 = DSHS_hosp_clean(DSHS_tsa_hosp[['Available Ventilators']], 'Ventilators_Available')
+hosp_5 = DSHS_hosp_clean(DSHS_tsa_hosp[['Pediatric COVID-19']], 'Hospitalizations_Pediatric')
 
 
 hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp[['Total Available Beds']], 'Beds_Available_Total')
 hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp[['Adult ICU Beds Available']], 'Beds_Available_ICU')
 hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp[['Total Occupied Beds']], 'Beds_Occupied_Total')
 hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp[['ICU Beds Occupied']], 'Beds_Occupied_ICU')
+hosp_cap5 = DSHS_hosp_clean(DSHS_tsa_hosp[['Pediatric ICU Beds Available']], 'Pediatric_Beds_Available_ICU')
+
 ```
 
 
@@ -1749,18 +1756,20 @@ hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp[['ICU Beds Occupied']], 'Beds_Occupied
 ```{r}
 merged_tsa = Reduce(function(x, y) merge(x, y, by = c('Date', 'TSA'), all = TRUE),
                     list(DSHS_tsa,
-                         hosp_1, hosp_2, hosp_3, hosp_4,
-                         hosp_cap1, hosp_cap2, hosp_cap3, hosp_cap4))
+                         hosp_1, hosp_2, hosp_3, hosp_4, hosp_5,
+                         hosp_cap1, hosp_cap2, hosp_cap3, hosp_cap4, hosp_cap5))
 
 # fix types & ensure TSA values are valid
 merged_tsa = merged_tsa %>% 
   mutate_at(vars(Beds_Available_Total, Beds_Available_ICU, Ventilators_Available,
                  Beds_Occupied_Total, Beds_Occupied_ICU, Hospitalizations_Total,
-                 Hospitalizations_General, Hospitalizations_ICU),
+                 Hospitalizations_General, Hospitalizations_ICU,
+                 Hospitalizations_Pediatric, Pediatric_Beds_Available_ICU),
             funs(as.character)) %>%
   mutate_at(vars(Beds_Available_Total, Beds_Available_ICU, Ventilators_Available,
                  Beds_Occupied_Total, Beds_Occupied_ICU, Hospitalizations_Total,
-                 Hospitalizations_General, Hospitalizations_ICU),
+                 Hospitalizations_General, Hospitalizations_ICU,
+                 Hospitalizations_Pediatric, Pediatric_Beds_Available_ICU),
             funs(as.integer)) %>%
   mutate(TSA_Combined = paste0(TSA, ' - ', TSA_Name)) %>%
   filter(!is.na(TSA) & !is.na(Date)) %>% 
@@ -1833,35 +1842,40 @@ curl::curl_download(state_url, paste0('original-sources/historical/state/dshs_',
 ```
 ## DSHS Demographics
 
+
 ## POST 12/11 DEMOGRAPHIC SCRAPING 
 
 ```{r}
 
-Clean_Demographics = function(index) {
-
-  group_conversion =  c('Age', 'Gender', 'Race')
+Clean_Demographics = function(sheet_name, file_date=date_out) {
+  group_type = str_extract(sheet_name, 'Age|Gender|Race')
+  stat_type = str_extract(sheet_name, 'Case|Fatal')
   
-  case_df = weekly_demo[[index]] %>%
-    select(1:2) %>%
+  if(stat_type == 'Case') {
+  out_df = weekly_demo[[sheet_name]] %>%
+    as.data.frame() %>%
+    dplyr::select(1:2) %>%
     setNames(c('Group', 'Cases_Cumulative')) %>%
     filter(!Group %in% c('Pending DOB', 'Total', 'Unknown', 'Grand Total')) %>%
-    mutate(Date = date_out) %>%
-    mutate(Group_Type = group_conversion[index]) %>%
+    mutate(Date = as.Date(file_date)) %>%
+    mutate(Group_Type = group_type) %>%
     group_by(Date) %>%
     mutate(Cases_PCT = Cases_Cumulative / sum(Cases_Cumulative)) %>%
     dplyr::select(Date, Group_Type, Group, Cases_Cumulative, Cases_PCT)
-
-  death_df = weekly_demo[[index + 3]] %>% 
-    select(1:2) %>%
+  
+  } else if (stat_type == 'Fatal') { 
+  out_df = weekly_demo[sheet_name] %>% 
+    as.data.frame() %>%
+    dplyr::select(1:2) %>%
     setNames(c('Group', 'Deaths_Cumulative')) %>%
     filter(!Group %in% c('Pending DOB', 'Total', 'Unknown', 'Grand Total')) %>%
-    mutate(Date = date_out) %>%
-    mutate(Group_Type = group_conversion[index]) %>%
+    mutate(Date = as.Date(file_date)) %>%
+    mutate(Group_Type = group_type) %>%
     group_by(Date) %>%
     mutate(Deaths_PCT = Deaths_Cumulative / sum(Deaths_Cumulative)) %>%
     dplyr::select(Date, Group_Type, Group, Deaths_Cumulative, Deaths_PCT)
-
-  clean_df = merge(case_df, death_df, by = c('Date', 'Group_Type', 'Group'))
+  }
+  return(out_df)
 }
 
 # TODO: add contingency if not posted on friday
@@ -1869,15 +1883,25 @@ demo_releases = seq(as.Date('2020-09-25'), by = 'week', length = 200)
 
 if (date_out %in% demo_releases) {
   demo_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics.xlsx'
+  curl::curl_download(demo_url, glue('original-sources/historical/demo-archive/demo_{date_out}.xlsx'))
   temp = tempfile()
   curl::curl_download(demo_url, temp, mode = 'wb')
   weekly_demo = read_excel_allsheets(temp, col_option = FALSE)
-  curl::curl_download(demo_url, glue('original-sources/historical/demo-archive/demo_{date_out}.xlsx'))
-  
-  
-  daily_demo_stack = rbindlist(lapply(seq(1,3), Clean_Demographics))
+
+  # --- temp demo fix 12/10 - 12/31
+  # missing_dates = seq.Date(from=as.Date('2021-12-10'), to=as.Date('2021-12-31'), by = 'week')
+  # for (m_date in as.character(missing_dates)) { 
+  #   weekly_demo = read_excel_allsheets(glue('original-sources/historical/demo-archive/demo_{m_date}.xlsx'),
+  #                                      col_option = FALSE)
+  daily_demo_stack = rbindlist(lapply(names(weekly_demo), function(x) Clean_Demographics(x, m_date)), fill = TRUE) %>% 
+    group_by(Date, Group_Type, Group) %>% 
+    tidyr::fill(Deaths_Cumulative, .direction = 'updown') %>% 
+    tidyr::fill(Deaths_PCT, .direction = 'updown') %>%
+    slice(1) %>% 
+    ungroup()
   write.csv(daily_demo_stack, paste0('original-sources/historical/demo/dshs_', date_out, '.csv'), row.names = FALSE)
 }
+
 ```
 
 
@@ -1887,7 +1911,6 @@ if (date_out %in% demo_releases) {
 daily_demo_stack_all = rbindlist(lapply(list.files('original-sources/historical/demo/',
                                                    full.names = TRUE), read.csv)) %>% 
   mutate(Date = as.Date(Date))
-  # distinct(Cases_Cumulative, Cases_PCT, Deaths_Cumulative, Deaths_PCT, .keep_all = TRUE)
 
 legacy_demo = read.csv('original-sources/helpers/legacy_demographics.csv') %>% mutate(Date = as.Date(Date))
 
