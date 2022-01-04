@@ -1435,7 +1435,7 @@ county_vax_age = lapply(all_dashboard_files, `[[`, 'By County, Age') %>%
   .[[length(.)]] %>% 
   setNames(slice(., 1)) %>%
   slice(2:nrow(.)) %>%
-  select(1:(ncol(.)-1)) %>%
+  select(1:(ncol(.)-1))
   mutate(`Age Group` = ifelse(`Age Group` == '44692', '5-11 years', `Age Group`)) %>%
   mutate(`Age Group` = ifelse(`Age Group` == '44910', '12-15 years', `Age Group`)) %>%
   setNames(c('County', 'Age_Group',
