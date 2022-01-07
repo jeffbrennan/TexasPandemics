@@ -1113,13 +1113,15 @@ if (format(date_out, '%A') == 'Monday' & (date_out - date_modified == -1)) {
   pop_files = list.files('original-sources/historical/vaccinations/', full.names = TRUE)
 
   vax_pop_counts = read_xlsx(pop_files[length(pop_files)], sheet = 2) %>%
-    dplyr::select(1, 7, 8, 9, 10, 11) %>%
+    dplyr::select(`County Name`, ends_with('5+'), ends_with('16+'), ends_with('65+'),
+                  contains('Healthcare'), contains('Long-term'), contains('Medical Condition')) %>% 
+    relocate(contains('65+'), .after=contains('16+')) %>%
       setNames(c('County',
-                 'Population_Over_16', 'Population_Over_65',
+                 'Population_Over_5', 'Population_Over_16', 'Population_Over_65',
                  'Population_Phase_1A_Healthcare',
                  'Population_Phase1A_Care_Residents',
                  'Population_Phase_1B_Medical_Condition', 'Date')) %>%
-      filter(!(County %in% c('Texas', '*Other', 'Federal Long-Term Care Vaccination Program')))
+    filter(County %in% (dshs_pops$County %>% unique()))
   
   vax_out = vax_allocation %>% 
     full_join(vax_admin, by = c('Date', 'County')) %>% 
@@ -1167,22 +1169,25 @@ county_vaccinations =
                                 rename('Date' = ncol(.)))
     )
     , fill = TRUE) %>% 
-  filter(!(`County Name` %in% c('Texas',
-                                'Federal Long-Term Care Vaccination Program',
-                                'Federal Pharmacy Retail Vaccination Program'))) %>%
+  filter(`County Name` %in% (dshs_pops$County %>% unique())) %>%
   # distinct_at(vars(-c(`County Name`, Date)), .keep_all = TRUE) %>%
   select(Date, `County Name`,
          `Total Doses Allocated`, `Vaccine Doses Administered`,
          `People Vaccinated with at least One Dose`, `People Fully Vaccinated`,
-        `Population, 16+`, `Population, 65+`) %>%
+         ends_with('5+'), `Population, 16+`, `Population, 65+`) %>%
+  relocate(ends_with('5+'), .before=ends_with('16+')) %>% 
+  relocate(ends_with('65+'), .after=ends_with('16+')) %>%
   setNames(c('Date', 'County', 'Doses_Allocated',
              'Doses_Administered', 'At_Least_One_Dose', 'Fully_Vaccinated',
-             'Population_16', 'Population_65')) %>%
+             'Population_5', 'Population_16', 'Population_65')) %>%
   mutate_at(vars(-County, -Date), as.numeric) %>%
-  mutate(Doses_Allocated_Per_16 = Doses_Allocated / Population_16,
+  mutate(Doses_Allocated_Per_5 = Doses_Allocated / Population_5,
+         Doses_Allocated_Per_16 = Doses_Allocated / Population_16,
          Doses_Allocated_Per_65 = Doses_Allocated / Population_65,
+         Doses_Administered_Per_5 = Doses_Administered / Population_5,
          Doses_Administered_Per_16 = Doses_Administered / Population_16,
          Doses_Administered_Per_65 = Doses_Administered / Population_65,
+         Fully_Vaccinated_Per_5 = Fully_Vaccinated / Population_5,
          Fully_Vaccinated_Per_16 = Fully_Vaccinated / Population_16,
          Fully_Vaccinated_Per_65 = Fully_Vaccinated / Population_65)
 
@@ -1192,9 +1197,6 @@ vaccinations_312 =
   read_xlsx("original-sources/historical/vaccinations/vaccinations_2021-03-12.xlsx", sheet = 2) %>% 
   slice(2:nrow(.)) %>%
   mutate(Date = as.Date('2021-03-12')) %>%
-  filter(!(`County Name` %in% c('Texas',
-                              'Federal Long-Term Care Vaccination Program',
-                              'Federal Pharmacy Retail Vaccination Program'))) %>%
   # select(- `People Fully Vaccinated`) %>% 
   rename(At_Least_One_Dose = `People Fully Vaccinated`,
          `People Fully Vaccinated` = `People Vaccinated with at least One Dose`) %>%
@@ -1206,6 +1208,7 @@ vaccinations_312 =
   setNames(c('Date', 'County', 'Doses_Allocated',
              'Doses_Administered', 'At_Least_One_Dose', 'Fully_Vaccinated',
              'Population_16', 'Population_65')) %>%
+  filter(County %in% (dshs_pops$County %>% unique())) %>%
   mutate_at(vars(-County, -Date), as.numeric) %>%
   mutate(Doses_Allocated_Per_16 = Doses_Allocated / Population_16,
          Doses_Allocated_Per_65 = Doses_Allocated / Population_65,
@@ -1228,20 +1231,16 @@ vaccinations_407 = county_vaccinations %>%
 population_12 = all_dashboard_files[[length(all_dashboard_files)]][[2]] %>%
   setNames(slice(., 1)) %>%
   select(`County Name`, `Population\r\n12+`) %>% 
-  filter() %>% 
-  filter(!(`County Name` %in% c('Texas',
-                                'Federal Long-Term Care Vaccination Program',
-                                'Federal Pharmacy Retail Vaccination Program',
-                                'County Name'))) %>% 
-  rename(County = `County Name`, Population_12 = `Population\r\n12+`) %>% 
+  filter(`County Name` %in% (dshs_pops$County %>% unique())) %>%
+  rename(County = `County Name`, Population_12 = `Population\r\n12+`) %>%
   filter(!is.na(County))
 
 
 
 county_vaccinations_out = county_vaccinations %>% 
   filter(Date != '2021-03-12' & Date != '2021-03-13') %>% 
-  rbind(vaccinations_312) %>%
-  rbind(vaccinations_407) %>%
+  plyr::rbind.fill(vaccinations_312) %>%
+  plyr::rbind.fill(vaccinations_407) %>%
   arrange(Date, County) %>%
   mutate(County = gsub('\\*Other|\\* Other', 'Other', County)) %>%
   left_join(tsa_long_complete %>% select(County, TSA_Combined)) %>% 
@@ -1255,7 +1254,10 @@ county_vaccinations_out = county_vaccinations %>%
               arrange(-Population_Total)) %>%
   left_join(population_12) %>% 
   relocate(Population_12, .before = Population_16) %>%
-  relocate(Population_Total, .before = TSA_Combined)
+  relocate(Population_Total, .before = TSA_Combined) %>% 
+  group_by(County) %>% 
+  mutate(Population_5 = coalesce(Population_5, NA)) %>% 
+  tidyr::fill(Population_5, .direction = 'updown')
 ```
 
 ### diagnostics
@@ -1435,7 +1437,7 @@ county_vax_age = lapply(all_dashboard_files, `[[`, 'By County, Age') %>%
   .[[length(.)]] %>% 
   setNames(slice(., 1)) %>%
   slice(2:nrow(.)) %>%
-  select(1:(ncol(.)-1))
+  select(1:(ncol(.)-1)) %>%
   mutate(`Age Group` = ifelse(`Age Group` == '44692', '5-11 years', `Age Group`)) %>%
   mutate(`Age Group` = ifelse(`Age Group` == '44910', '12-15 years', `Age Group`)) %>%
   setNames(c('County', 'Age_Group',
