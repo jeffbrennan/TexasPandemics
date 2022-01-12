@@ -1895,7 +1895,7 @@ if (date_out %in% demo_releases) {
   # for (m_date in as.character(missing_dates)) { 
   #   weekly_demo = read_excel_allsheets(glue('original-sources/historical/demo-archive/demo_{m_date}.xlsx'),
   #                                      col_option = FALSE)
-  daily_demo_stack = rbindlist(lapply(names(weekly_demo), function(x) Clean_Demographics(x, m_date)), fill = TRUE) %>% 
+  daily_demo_stack = rbindlist(lapply(names(weekly_demo), function(x) Clean_Demographics(x, date_out)), fill = TRUE) %>% 
     group_by(Date, Group_Type, Group) %>% 
     tidyr::fill(Deaths_Cumulative, .direction = 'updown') %>% 
     tidyr::fill(Deaths_PCT, .direction = 'updown') %>%
