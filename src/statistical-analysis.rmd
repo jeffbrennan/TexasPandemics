@@ -561,6 +561,7 @@ write.csv(RT_Combined_df, 'tableau/stacked_rt.csv', row.names = FALSE)
 ```{r}
 # Compute forecast (UPDATE PREDICTION PERIOD [days] AS NEEDED)
 covid.arima.forecast=function(mydata, prediction.period = 10, mindate, threshold) {
+  mindate = min(mydata$Date)
   print(as.character(mydata[1,2]))
   maxdate = max(mydata$Date)
   pred_start_label = format(mindate, format = '%m_%d')
@@ -621,7 +622,6 @@ covid.arima.forecast=function(mydata, prediction.period = 10, mindate, threshold
 ARIMA_Case_County_output = nlme::gapply(County_df,
                                    FUN = covid.arima.forecast,
                                    groups = County_df$County,
-                                   mindate = as.Date('2020-03-04'),
                                    threshold = case_quant)
 
 ARIMA_Case_County_df = rbindlist(ARIMA_Case_County_output, idcol = 'County')
@@ -633,7 +633,6 @@ ARIMA_Case_County_df = rbindlist(ARIMA_Case_County_output, idcol = 'County')
 ARIMA_Case_TSA_output = nlme::gapply(TSA_df,
                                 FUN = covid.arima.forecast,
                                 groups = TSA_df$TSA,
-                                mindate = as.Date('2020-03-04'),
                                 threshold = case_quant)
 
 ARIMA_Case_TSA_df = rbindlist(ARIMA_Case_TSA_output, idcol = 'TSA')
@@ -645,7 +644,6 @@ ARIMA_Case_TSA_df = rbindlist(ARIMA_Case_TSA_output, idcol = 'TSA')
 ARIMA_Case_PHR_output = nlme::gapply(PHR_df,
                                  FUN = covid.arima.forecast,
                                  groups = PHR_df$PHR,
-                                 mindate = as.Date('2020-03-04'),
                                  threshold = case_quant)
 
 ARIMA_Case_PHR_df = rbindlist(ARIMA_Case_PHR_output, idcol='PHR')
@@ -657,7 +655,6 @@ ARIMA_Case_PHR_df = rbindlist(ARIMA_Case_PHR_output, idcol='PHR')
 ARIMA_Case_Metro_output = nlme::gapply(Metro_df,
                                   FUN = covid.arima.forecast,
                                   groups = Metro_df$Metro,
-                                  mindate = as.Date('2020-03-04'),
                                   threshold = case_quant)
 
 ARIMA_Case_Metro_df = rbindlist(ARIMA_Case_Metro_output, idcol = 'Metro')
@@ -933,7 +930,7 @@ new_pct_change = function(level, dat, region){
 
   # restrict data to first test date (for % test increase)
   start_date = as.Date("2020-09-30")
-  dat = dat %>% filter(Date >= start_date)
+  dat = dat %>% filter(Date >= start_date) 
   start_values = dat %>% filter(Date == start_date)
   
   dat$ma_cases_y = 100*(as.vector(dat$Cases_MA_14 / start_values$Cases_MA_14) - 1)
@@ -976,9 +973,9 @@ TPR_merge = county %>%
   mutate(Cases_MA_14 = rollmean(Cases_Daily, k=14, na.pad=TRUE, align='right')) %>% 
   mutate(Tests_MA_14 = Tests / 14) %>% 
   ungroup() %>%
-  filter(Date %in% TPR_dates) %>% 
   dplyr::select(-Cases_Daily) %>% 
-  rename(Tests_Total_14 = Tests)
+  rename(Tests_Total_14 = Tests) %>% 
+  filter(!is.na(TSA))
 
 
 TPR_county = TPR_merge %>% dplyr::select(-c(TSA, PHR, Metro))
@@ -994,7 +991,7 @@ TPR_State = TPR_merge %>% group_by(Date) %>% summarize_if(is.numeric, sum, na.rm
 ```{r}
 PCT_County_df = rbindlist(lapply(unique(TPR_county$County), function(x) new_pct_change('County', TPR_county, x)))
 
-PCT_TSA_df = rbindlist(lapply(unique(TPR_TSA$TSA), function(x) new_pct_change('TSA', TPR_TSA, x))) %>% 
+PCT_TSA_df = rbindlist(lapply(unique(TPR_TSA$TSA), function(x) new_pct_change('TSA', TPR_TSA, x))) %>%
   mutate(tests_ma_percentdiff = ifelse(Date > min(Date) & tests_ma_percentdiff == -100, NA, tests_ma_percentdiff)) %>% 
   mutate(tests_total_percentdiff = ifelse(Date > min(Date) & tests_total_percentdiff == -100, NA, tests_total_percentdiff))
 
@@ -1017,6 +1014,7 @@ PCT_State_df = new_pct_change('State', TPR_State, 'Texas') %>%
 
 ```{r}
 PCT_Combined_df = rbind(PCT_County_df, PCT_TSA_df, PCT_PHR_df, PCT_Metro_df, PCT_State_df)
+
 write.csv(PCT_Combined_df, 'tableau/stacked_pct_change_new.csv', row.names = FALSE)
 ```
 
