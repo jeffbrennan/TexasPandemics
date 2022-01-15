@@ -414,6 +414,53 @@ fwrite(ww_plant_df, 'tableau/wastewater_plant.csv')
 fwrite(ww_zip_df, 'tableau/wastewater_zip.csv')
 ```
 
+# ww variant ocr
+
+```{r}
+# image path updates: https://services.arcgis.com/lqRTrQp2HrfnJt8U/ArcGIS/rest/services/Variants_Heatmaps_List/FeatureServer/0/query?where=0%3D0&objectIds=&time=&resultType=none&outFields=*&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&sqlFormat=none&f=html&token=
+
+
+# download
+image_paths = c('omicron' = 'https://covidwwtp.spatialstudieslab.org/hhd/datasets/variants/B11529.png',
+                'lambda' = 'https://covidwwtp.spatialstudieslab.org/hhd/datasets/variants/C37.png',
+                'delta' = 'https://covidwwtp.spatialstudieslab.org/hhd/datasets/variants/B16172.png',
+                'alpha' = 'https://covidwwtp.spatialstudieslab.org/hhd/datasets/variants/B117.png')
+
+sapply(names(image_paths), function(x) download.file(image_paths[[x]], glue('original-sources/historical/wastewater-variants/{x}_{date_out}.png'), mode = 'wb'), USE.NAMES = TRUE)
+# ocr
+
+# delta
+library(magick)
+library(tesseract)
+img_crop = image_read("original-sources/historical/wastewater-variants/delta_2022-01-14.png") %>% 
+  image_crop(geometry_area(0,0,-690,120)) %>% 
+  image_crop(geometry_area(0,0, 10, -190))
+
+
+data = img_crop %>% 
+  geometry_area()
+
+
+data
+
+
+
+```
+
+
+
+## diagnostics
+```{r}
+max(ww_zip_df$date)
+
+# matches
+ww_zip_df %>% 
+  filter(ZIPCODE %in% c('77085', '77029') & date == '2022-01-03') %>% 
+  select(ZIPCODE, date, Spline_WW_weight)
+
+
+```
+
 
 
 # SCHOOL LEVEL
@@ -538,17 +585,27 @@ mobility_texas$Date = as.Date(mobility_texas$Date)
 ## cases
 
 ```{r}
+Clean_Vitals = function(df, data_type) { 
+  
+  df_out = df %>%
+    filter(County %in% unique(county_demo_agesex$County)) %>%
+    reshape2::melt('County') %>% 
+    setNames(c('County', 'Date', data_type)) %>%
+    filter(!Date %in% c('Total', 'Unknown Date')) %>% 
+    mutate_all(as.character) %>% 
+    mutate(Date = Date_Parser(Date)) %>%
+    mutate_at(3, as.numeric) %>%
+    # mutate('{data_type}' := ifelse('{data_type}' < 0, 0, '{data_type}')) %>%
+    arrange(Date, County)
+}
 # download xlsx as tempfile and load using readxl
 case_url = 'http://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyCaseCountData.xlsx'
 temp = tempfile()
 curl::curl_download(case_url, temp, mode = 'wb') 
+DSHS_cases = read_excel_allsheets(temp, skip = 2)
 
-DSHS_cases_wide = data.frame(read_excel(temp, sheet = 1, skip = 2)) %>% slice(1:254)
-names(DSHS_cases_wide)[2:ncol(DSHS_cases_wide)] = Date_Parser(names(DSHS_cases_wide)[2:ncol(DSHS_cases_wide)])
-
-DSHS_cases_long = DSHS_cases_wide %>% 
-  reshape::melt('County.Name') %>% 
-  setNames(c('County', 'Date', 'Cases_Cumulative')) %>%
+DSHS_cases_long =  lapply(DSHS_cases, function(x) Clean_Vitals(x, 'Cases_Cumulative')) %>% 
+  rbindlist() %>%
   mutate(Date = as.Date(Date)) %>%
   mutate(Cases_Cumulative = as.integer(as.character(Cases_Cumulative))) %>% 
   group_by(County) %>%
@@ -564,22 +621,12 @@ death_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyFatalityC
 temp = tempfile()
 curl::curl_download(death_url, temp, mode = 'wb') 
 
-DSHS_deaths_wide = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) %>% slice(1:254)
-names(DSHS_deaths_wide) = gsub('X', '', names(DSHS_deaths_wide))
 
-names(DSHS_deaths_wide)[2:ncol(DSHS_deaths_wide)] = Date_Parser(names(DSHS_deaths_wide)[2:ncol(DSHS_deaths_wide)])
+DSHS_deaths = read_excel_allsheets(temp, skip = 2)
 
-DSHS_deaths_long = DSHS_deaths_wide %>% 
-  reshape2::melt('County.Name') %>% 
-  setNames(c('County', 'Date', 'Deaths_Cumulative')) %>% 
-  mutate(Date = as.Date(Date)) %>% 
-  mutate(Deaths_Cumulative = as.integer(as.character(Deaths_Cumulative))) %>% 
-  mutate(County = stringr::str_to_title(County)) %>% 
-  mutate(County = gsub('De Witt', 'DeWitt', County)) %>%
-  mutate(County = gsub('Dewitt', 'DeWitt', County)) %>%
-  mutate(County = gsub('Mcculloch', 'McCulloch', County)) %>% 
-  mutate(County = gsub('Mclennan', 'McLennan', County)) %>%
-  mutate(County = gsub('Mcmullen', 'McMullen', County)) %>%
+DSHS_deaths_long = lapply(DSHS_deaths, function(x) Clean_Vitals(x, 'Deaths_Cumulative')) %>% 
+  rbindlist() %>%
+  mutate(Date = as.Date(Date)) %>%
   group_by(County) %>%
   tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
   mutate(Deaths_Cumulative_NA = Deaths_Cumulative) %>%
@@ -600,6 +647,12 @@ test_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsbyCou
 temp = tempfile()
 curl::curl_download(test_url, temp, mode = 'wb')
 
+DSHS_tests = read_excel_allsheets(temp, skip = 1)
+
+DSHS_tests_long = lapply(DSHS_tests, function(x) Clean_Vitals(x, 'Tests_Cumulative')) %>% 
+  rbindlist() %>% 
+  mutate(Date = as.Date(Date))
+
 new_tests = data.frame(readxl::read_excel(temp, sheet = 1, skip = 1))
 new_tests_long = new_tests %>% 
   filter(str_detect(County, 'County|Unknown|Total', negate = TRUE)) %>% 
@@ -615,35 +668,29 @@ DSHS_tests_long = merged_tests %>%
   tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
   mutate(Tests_Cumulative_NA = Tests_Cumulative) %>%
   tidyr::fill(Tests_Cumulative, .direction = "down") %>%
-  mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative)))
+  mutate(Tests_Daily = c(Tests_Cumulative[1], diff(Tests_Cumulative))) %>% 
+  distinct()
 ```
 
 ## new cases
 
 ```{r}
-# 10/23 - file includes all dates now
-# get new cases as excel file
-new_case_url ='https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx'
-temp = tempfile()
-curl::curl_download(new_case_url, temp, mode = 'wb') 
-
-
 # MANUALLY ADD MONTGOMERY CASES PER MISTI WILLINGHAM (11/20)
 # 11/1 - 11/20 [manual entry] | 11/21 DSHS value
 montgomery_new_cases = c(32, 61, 78, 110, 98, 124, 78, 77, 144, 97, 146, 133, 124, 103, 90, 109, 33, 3, 330, 162, 484)
 montgomery_case_dates = seq(as.Date('2020-11-01'), as.Date('2020-11-21'), by = 'day')
 
-DSHS_new_cases_wide = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) %>% slice(1:254)
-names(DSHS_new_cases_wide)[2:ncol(DSHS_new_cases_wide)] = Date_Parser(names(DSHS_new_cases_wide)[2:ncol(DSHS_new_cases_wide)])
+new_case_url ='https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx'
+temp = tempfile()
+curl::curl_download(new_case_url, temp, mode = 'wb') 
+DSHS_new_cases = read_excel_allsheets(temp, skip = 2)
 
-DSHS_new_cases_long = DSHS_new_cases_wide %>%
-  reshape2::melt('County') %>% 
-  setNames(c('County', 'Date', 'Cases_Daily')) %>%
-  mutate(Date = as.Date(Date)) %>%
-  mutate(Cases_Daily = ifelse(Cases_Daily < 0, 0, Cases_Daily)) %>%
-  mutate(Cases_Daily = replace(Cases_Daily, 
+DSHS_new_cases_long = lapply(DSHS_new_cases, function(x) Clean_Vitals(x, 'Cases_Daily')) %>% 
+  rbindlist() %>% 
+  mutate(Cases_Daily = replace(Cases_Daily,
                                County == 'Montgomery' & Date %in% montgomery_case_dates,
                                montgomery_new_cases)) %>%
+  mutate(Date = as.Date(Date)) %>%
   arrange(Date, County)
 ```
 
@@ -702,7 +749,8 @@ DSHS_active_cases_long = rbind(old_active_cases_long, new_active_cases_long) %>%
 
 county_counts = Reduce(function(x, y) merge(x, y, by = c('Date', 'County'), all=TRUE),
        list(DSHS_cases_long, DSHS_new_cases_long, DSHS_deaths_long, DSHS_tests_long,
-            DSHS_active_cases_long))
+            DSHS_active_cases_long)) %>% 
+  filter(Date <= date_out)
 ```
 
 
@@ -728,7 +776,7 @@ merged_county$Population_DSHS = as.numeric(merged_county$Population_DSHS)
 
 # keep only relevant dates (previous dates include google mobility only)
 merged_county = merged_county %>% 
-  filter(Date >= as.Date('2020-03-04') & !is.na(County)) %>% 
+  filter(Date >= as.Date('2020-03-06') & !is.na(County)) %>% 
   distinct() 
 ```
 
@@ -1565,7 +1613,7 @@ DSHS_tsa_counts =
 
 # static pop counts (sum)
 DSHS_tsa_pops = 
-  subset(merged_county, Date == '2020-03-04') %>%
+  subset(merged_county, Date == '2020-03-06') %>%
   group_by(TSA) %>%
   summarize_at(vars(Population_DSHS),
                funs(sum))
@@ -1612,13 +1660,8 @@ DSHS_hosp_clean = function(df, var_name) {
 
   # TODO: make date conversion function
   dates = names(df_clean)[2:length(names(df_clean))]
-  numeric_dates = which(is.na(as.Date(dates, format = '%Y-%m-%d')))
-  
-  # convert from 5 digit excel numeric format
-  # https://stackoverflow.com/questions/43230470/how-to-convert-excel-date-format-to-proper-date-in-r
-  dates[numeric_dates] = format(as.Date(as.integer(dates[numeric_dates]), origin = '1899-12-30'))
-  dates[-numeric_dates] = format(as.Date(dates[-numeric_dates]), '%Y-%m-%d')
-  names(df_clean)[2:length(names(df_clean))] = dates
+  clean_dates = Date_Parser(dates)
+  names(df_clean)[2:length(names(df_clean))] = clean_dates
 
   df_long = reshape::melt(df_clean, id = 'TSA ID')
   names(df_long) = c('TSA', 'Date', var_name)
@@ -1895,7 +1938,8 @@ if (date_out %in% demo_releases) {
   # for (m_date in as.character(missing_dates)) { 
   #   weekly_demo = read_excel_allsheets(glue('original-sources/historical/demo-archive/demo_{m_date}.xlsx'),
   #                                      col_option = FALSE)
-  daily_demo_stack = rbindlist(lapply(names(weekly_demo), function(x) Clean_Demographics(x, date_out)), fill = TRUE) %>% 
+  daily_demo_stack = rbindlist(lapply(names(weekly_demo), function(x) Clean_Demographics(x, date_out)), fill = TRUE) %>%
+    mutate(Date = as.Date(Date)) %>%
     group_by(Date, Group_Type, Group) %>% 
     tidyr::fill(Deaths_Cumulative, .direction = 'updown') %>% 
     tidyr::fill(Deaths_PCT, .direction = 'updown') %>%
