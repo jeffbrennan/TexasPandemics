@@ -1923,53 +1923,118 @@ Clean_Demographics = function(sheet_name, file_date=date_out) {
   return(out_df)
 }
 
-# TODO: add contingency if not posted on friday
+# demo_releases = seq(as.Date('2020-09-25'), by = 'week', length = 200)
+# 
+# if (date_out %in% demo_releases) {
+#   demo_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics.xlsx'
+#   curl::curl_download(demo_url, glue('original-sources/historical/demo-archive/demo_{date_out}.xlsx'))
+#   temp = tempfile()
+#   curl::curl_download(demo_url, temp, mode = 'wb')
+#   weekly_demo = read_excel_allsheets(temp, col_option = FALSE)
+# 
+#   # --- temp demo fix 12/10 - 12/31
+#   # missing_dates = seq.Date(from=as.Date('2021-12-10'), to=as.Date('2021-12-31'), by = 'week')
+#   # for (m_date in as.character(missing_dates)) { 
+#   #   weekly_demo = read_excel_allsheets(glue('original-sources/historical/demo-archive/demo_{m_date}.xlsx'),
+#   #                                      col_option = FALSE)
+#   daily_demo_stack = rbindlist(lapply(names(weekly_demo), function(x) Clean_Demographics(x, date_out)), fill = TRUE) %>%
+#     mutate(Date = as.Date(Date)) %>%
+#     group_by(Date, Group_Type, Group) %>% 
+#     tidyr::fill(Deaths_Cumulative, .direction = 'updown') %>% 
+#     tidyr::fill(Deaths_PCT, .direction = 'updown') %>%
+#     slice(1) %>% 
+#     ungroup()
+#   write.csv(daily_demo_stack, paste0('original-sources/historical/demo/dshs_', date_out, '.csv'), row.names = FALSE)
+# }
+
+```
+
+
+## Post 1/14
+Case & Death file became single dataset containing archive of monthly data
+```{r}
+Clean_Demo_New = function(sheet_name) { 
+  if (str_detect(sheet_name, 'Fatal|Confirmed')) { 
+  
+    group_type = str_extract(sheet_name, 'Age|Sex|Gender|Race')
+    stat_type = str_extract(sheet_name, 'Cases|Fatalities')
+    
+    df = demographics_all[[sheet_name]] 
+    
+    clean_df = df %>% 
+      slice(3:nrow(df)) %>% 
+      setNames(df[2, ]) %>% 
+      select(-Total) %>%
+      pivot_longer(!1) %>% 
+      setNames(c('Date', 'Group', stat_type)) %>% 
+      filter(!str_detect(Date, 'Total|Notes')) %>%
+      mutate(Date = as.Date(glue('01 {Date}'), '%d %B %Y')) %>% 
+      mutate(Group_Type = group_type)
+  
+    return(clean_df)  
+  }
+}
+
+# monthly
 demo_releases = seq(as.Date('2020-09-25'), by = 'week', length = 200)
 
 if (date_out %in% demo_releases) {
   demo_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics.xlsx'
   curl::curl_download(demo_url, glue('original-sources/historical/demo-archive/demo_{date_out}.xlsx'))
-  temp = tempfile()
-  curl::curl_download(demo_url, temp, mode = 'wb')
-  weekly_demo = read_excel_allsheets(temp, col_option = FALSE)
 
-  # --- temp demo fix 12/10 - 12/31
-  # missing_dates = seq.Date(from=as.Date('2021-12-10'), to=as.Date('2021-12-31'), by = 'week')
-  # for (m_date in as.character(missing_dates)) { 
-  #   weekly_demo = read_excel_allsheets(glue('original-sources/historical/demo-archive/demo_{m_date}.xlsx'),
-  #                                      col_option = FALSE)
-  daily_demo_stack = rbindlist(lapply(names(weekly_demo), function(x) Clean_Demographics(x, date_out)), fill = TRUE) %>%
-    mutate(Date = as.Date(Date)) %>%
-    group_by(Date, Group_Type, Group) %>% 
-    tidyr::fill(Deaths_Cumulative, .direction = 'updown') %>% 
-    tidyr::fill(Deaths_PCT, .direction = 'updown') %>%
+
+  all_demo_files = list.files('original-sources/historical/demo-archive', full.names = TRUE)
+  monthly_update_dates = str_extract(all_demo_files, '\\d{4}-\\d{2}-\\d{2}') %>% 
+    as.Date() %>% 
+    .[which(. >= as.Date('2022-01-14'))]
+  
+  monthly_updates = all_demo_files[str_detect(all_demo_files, as.character(monthly_update_dates))]
+  
+  demographics_all = read_excel_allsheets(monthly_updates[length(monthly_updates)])
+  
+  
+  cleaned_demo_new = lapply(names(demographics_all), function(x) Clean_Demo_New(x)) %>% 
+    rbindlist(fill = TRUE) %>% 
+    rename(Deaths_Monthly = Fatalities,
+           Cases_Monthly = Cases) %>%
+    mutate(across(c(Deaths_Monthly, Cases_Monthly), as.numeric)) %>%
+    group_by(Date, Group_Type, Group) %>%
+    tidyr::fill(Deaths_Monthly, .direction = 'updown') %>% 
+    tidyr::fill(Cases_Monthly, .direction = 'updown') %>% 
     slice(1) %>% 
-    ungroup()
-  write.csv(daily_demo_stack, paste0('original-sources/historical/demo/dshs_', date_out, '.csv'), row.names = FALSE)
+    ungroup() %>% 
+    arrange(Date, Group_Type, Group) %>% 
+    relocate(Group_Type, .before='Group') %>% 
+    mutate(Group_Type = str_replace_all(Group_Type, c('Sex' = 'Gender'))) %>% 
+    mutate(Group = ifelse(Group_Type == 'Age' & !str_detect(Group, 'Unknown'), glue('{Group} years'), Group)) %>% 
+    group_by(Date, Group_Type) %>%
+    mutate(Deaths_PCT = Deaths_Monthly / sum(Deaths_Monthly, na.rm = TRUE)) %>%
+    mutate(Cases_PCT = Cases_Monthly / sum(Cases_Monthly, na.rm = TRUE)) %>% 
+    mutate(Date = ifelse(is.na(Date), 'Unknown', as.character(Date)))
+
+  write_csv(cleaned_demo_new, 'tableau/stacked_demographics_v2.csv')
 }
-
 ```
-
 
 ### merge
 
 ```{r}
-daily_demo_stack_all = rbindlist(lapply(list.files('original-sources/historical/demo/',
-                                                   full.names = TRUE), read.csv)) %>% 
-  mutate(Date = as.Date(Date))
-
-legacy_demo = read.csv('original-sources/helpers/legacy_demographics.csv') %>% mutate(Date = as.Date(Date))
-
-demo_stacked_combined = rbind(legacy_demo, daily_demo_stack_all) %>% 
-  group_by(Group_Type, Group) %>% 
-  mutate(Cases_Daily = as.numeric(c(Cases_Cumulative[1], diff(Cases_Cumulative)))) %>%
-  mutate(Cases_Daily_NO_NEGATIVE = ifelse(Cases_Daily < 0, 0, Cases_Daily)) %>%
-  mutate(Deaths_Daily = as.numeric(c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))) %>%
-  mutate(Deaths_Daily_NO_NEGATIVE = ifelse(Deaths_Daily < 0, 0, Deaths_Daily)) %>% 
-  dplyr::select(Date, Group_Type, Group, Cases_Cumulative, Cases_PCT, Cases_Daily, Cases_Daily_NO_NEGATIVE, everything()) %>% 
-  arrange(Date)
+# daily_demo_stack_all = rbindlist(lapply(list.files('original-sources/historical/demo/',
+#                                                    full.names = TRUE), read.csv)) %>% 
+#   mutate(Date = as.Date(Date))
+# 
+# legacy_demo = read.csv('original-sources/helpers/legacy_demographics.csv') %>% mutate(Date = as.Date(Date))
+# 
+# demo_stacked_combined = rbind(legacy_demo, daily_demo_stack_all) %>% 
+#   group_by(Group_Type, Group) %>% 
+#   mutate(Cases_Daily = as.numeric(c(Cases_Cumulative[1], diff(Cases_Cumulative)))) %>%
+#   mutate(Cases_Daily_NO_NEGATIVE = ifelse(Cases_Daily < 0, 0, Cases_Daily)) %>%
+#   mutate(Deaths_Daily = as.numeric(c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))) %>%
+#   mutate(Deaths_Daily_NO_NEGATIVE = ifelse(Deaths_Daily < 0, 0, Deaths_Daily)) %>% 
+#   dplyr::select(Date, Group_Type, Group, Cases_Cumulative, Cases_PCT, Cases_Daily, Cases_Daily_NO_NEGATIVE, everything()) %>% 
+#   arrange(Date)
+# write.csv(demo_stacked_combined, file = 'tableau/stacked_demographics.csv', row.names = FALSE)
 ```
-
 
 # OUTPUT
 
@@ -2007,10 +2072,4 @@ hosp_tsa %>% select(Date, TSA, Ventilators_Available) %>% filter(TSA == 'D') %>%
   theme_pubr()
 
 write.csv(hosp_tsa, file = 'tableau/hospitalizations_tsa.csv', row.names = F)
-```
-
-## Demographics
-
-```{r}
-write.csv(demo_stacked_combined, file = 'tableau/stacked_demographics.csv', row.names = FALSE)
 ```
