@@ -1877,9 +1877,9 @@ curl::curl_download(state_url, temp, mode = 'wb')
 dshs_header = names(read_excel(temp, sheet = 1)[1])
 
 current_year =  substr(Sys.Date(), 1, 4)
-dshs_date = str_extract(dshs_header, '\\d{4}\\/\\d{2}\\/\\d{2}')
+dshs_date = str_extract_all(dshs_header, '\\d{2}\\/\\d{2}\\/\\d{4}')[[1]][2]
 # dshs_date = paste0(current_year, '/',  str_extract_all(dshs_header, '\\d*\\/\\d*')[[1]])
-dshs_date = format(as.Date(dshs_date), '%Y_%m_%d')
+dshs_date = format(as.Date(dshs_date, '%m/%d/%Y'), '%Y_%m_%d')
 
 # save state level file to historical database for longitudinal demo
 curl::curl_download(state_url, paste0('original-sources/historical/state/dshs_',
