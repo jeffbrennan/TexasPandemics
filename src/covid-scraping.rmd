@@ -471,6 +471,8 @@ nyt_schools = rbindlist(lapply(list.files('original-sources/historical/nyt/archi
   setNames(c('School', 'City', 'County', 'Deaths_Cumulative', 'Cases_Cumulative', 'Date')) %>%
   mutate(Date = as.Date(Date)) %>% 
   mutate(Cases_Cumulative = ifelse(Cases_Cumulative == -1, NA, Cases_Cumulative))
+
+write.csv(nyt_schools, file = 'original-sources/historical/nyt/nyt_colleges.csv', row.names = F)
 ```
 
 ### Current
@@ -778,6 +780,13 @@ merged_county$Population_DSHS = as.numeric(merged_county$Population_DSHS)
 merged_county = merged_county %>% 
   filter(Date >= as.Date('2020-03-06') & !is.na(County)) %>% 
   distinct() 
+
+
+merged_county_out = merged_county %>% 
+  dplyr::select(-c(Cases_Cumulative_NA, Deaths_Cumulative_NA,
+                   Tests_Cumulative_NA, Active_Cases_Cumulative_NA))
+
+write_csv(merged_county_out %>% arrange(County, Date), 'tableau/county.csv')
 ```
 
 ## TPR 
@@ -1819,6 +1828,21 @@ merged_tsa = merged_tsa %>%
   mutate(TSA_Combined = paste0(TSA, ' - ', TSA_Name)) %>%
   filter(!is.na(TSA) & !is.na(Date)) %>% 
   distinct()
+
+hosp_tsa = merged_tsa %>% 
+  dplyr::select(Date, TSA, TSA_Name, TSA_Combined, Population_DSHS, Ventilators_Available,
+                Hospitalizations_Total, Hospitalizations_General, Hospitalizations_ICU,
+                Beds_Available_Total, Beds_Available_ICU, Beds_Occupied_Total, Beds_Occupied_ICU) %>% 
+  filter(Date >= min(hosp_cap1$Date))
+
+# diagnostics
+hosp_tsa %>% select(TSA) %>% distinct()
+hosp_tsa %>% select(Date, TSA, Ventilators_Available) %>% filter(TSA == 'D') %>%
+  ggplot(aes(x = Date, y = Ventilators_Available)) + 
+  geom_point() + 
+  theme_pubr()
+
+write.csv(hosp_tsa, file = 'tableau/hospitalizations_tsa.csv', row.names = F)
 ```
 
 
@@ -1984,11 +2008,16 @@ if (date_out %in% demo_releases) {
 
 
   all_demo_files = list.files('original-sources/historical/demo-archive', full.names = TRUE)
-  monthly_update_dates = str_extract(all_demo_files, '\\d{4}-\\d{2}-\\d{2}') %>% 
+  monthly_update_dates = str_extract(all_demo_files, '\\d{4}-\\d{2}-\\d{2}') %>%
     as.Date() %>% 
     .[which(. >= as.Date('2022-01-14'))]
-  
-  monthly_updates = all_demo_files[str_detect(all_demo_files, as.character(monthly_update_dates))]
+                             # function(x) all_demo_files[which(str_detect(all_demo_files, as.character(x)))])
+
+  monthly_updates = sapply(monthly_update_dates, 
+                           function(x) str_detect(all_demo_files, as.character(x)) %>%
+                             which(.) %>%
+                             all_demo_files[.]
+                           )
   
   demographics_all = read_excel_allsheets(monthly_updates[length(monthly_updates)])
   
@@ -2014,62 +2043,4 @@ if (date_out %in% demo_releases) {
 
   write_csv(cleaned_demo_new, 'tableau/stacked_demographics_v2.csv')
 }
-```
-
-### merge
-
-```{r}
-# daily_demo_stack_all = rbindlist(lapply(list.files('original-sources/historical/demo/',
-#                                                    full.names = TRUE), read.csv)) %>% 
-#   mutate(Date = as.Date(Date))
-# 
-# legacy_demo = read.csv('original-sources/helpers/legacy_demographics.csv') %>% mutate(Date = as.Date(Date))
-# 
-# demo_stacked_combined = rbind(legacy_demo, daily_demo_stack_all) %>% 
-#   group_by(Group_Type, Group) %>% 
-#   mutate(Cases_Daily = as.numeric(c(Cases_Cumulative[1], diff(Cases_Cumulative)))) %>%
-#   mutate(Cases_Daily_NO_NEGATIVE = ifelse(Cases_Daily < 0, 0, Cases_Daily)) %>%
-#   mutate(Deaths_Daily = as.numeric(c(Deaths_Cumulative[1], diff(Deaths_Cumulative)))) %>%
-#   mutate(Deaths_Daily_NO_NEGATIVE = ifelse(Deaths_Daily < 0, 0, Deaths_Daily)) %>% 
-#   dplyr::select(Date, Group_Type, Group, Cases_Cumulative, Cases_PCT, Cases_Daily, Cases_Daily_NO_NEGATIVE, everything()) %>% 
-#   arrange(Date)
-# write.csv(demo_stacked_combined, file = 'tableau/stacked_demographics.csv', row.names = FALSE)
-```
-
-# OUTPUT
-
-## Schools
-
-```{r}
-write.csv(nyt_schools, file = 'original-sources/historical/nyt/nyt_colleges.csv', row.names = F)
-```
-
-## County
-
-```{r}
-merged_county_out = merged_county %>% 
-  dplyr::select(-c(Cases_Cumulative_NA, Deaths_Cumulative_NA,
-                   Tests_Cumulative_NA, Active_Cases_Cumulative_NA))
-
-write_csv(merged_county_out %>% arrange(County, Date), 'tableau/county.csv')
-```
-
-## TSA
-
-```{r}
-# TODO: fix names
-hosp_tsa = merged_tsa %>% 
-  dplyr::select(Date, TSA, TSA_Name, TSA_Combined, Population_DSHS, Ventilators_Available,
-                Hospitalizations_Total, Hospitalizations_General, Hospitalizations_ICU,
-                Beds_Available_Total, Beds_Available_ICU, Beds_Occupied_Total, Beds_Occupied_ICU) %>% 
-  filter(Date >= min(hosp_cap1$Date))
-
-# diagnostics
-hosp_tsa %>% select(TSA) %>% distinct()
-hosp_tsa %>% select(Date, TSA, Ventilators_Available) %>% filter(TSA == 'D') %>%
-  ggplot(aes(x = Date, y = Ventilators_Available)) + 
-  geom_point() + 
-  theme_pubr()
-
-write.csv(hosp_tsa, file = 'tableau/hospitalizations_tsa.csv', row.names = F)
 ```
