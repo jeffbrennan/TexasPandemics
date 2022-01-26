@@ -833,69 +833,93 @@ tpr_df = rbindlist(
 Source for TPR data post 12/16. Still use CMS tests and dates for case averages to keep % change section of stat analysis rmd the same
 
 ```{r}
+# 11/25 - csv no longer available 
 # get latest url
-page = read_html('https://beta.healthdata.gov/National/COVID-19-Community-Profile-Report/gqxm-d9w9')
-file_loc = page %>%
-  html_nodes('script') %>%
-  str_detect('.xlsx') %>%
-  which()
+# page = read_html('https://beta.healthdata.gov/National/COVID-19-Community-Profile-Report/gqxm-d9w9')
+# file_loc = page %>%
+#   html_nodes('script') %>%
+#   str_detect('.xlsx') %>%
+#   which()
+# 
+# file_text = page %>% html_nodes('script') %>%
+#   .[file_loc] %>%
+#   html_text() %>%
+#   gsub('\n    var initialState =\n      ', '', .) %>%
+#   gsub('\n   ;\n  ', '', .)
+# 
+# 
+# newest_file = fromJSON(file_text)$view$attachments %>%
+#   filter(href %>% str_detect('.xlsx')) %>% 
+#   distinct() %>%
+#   arrange(desc(name)) %>%
+#   slice(1) %>%
+#   select(href) %>%
+#   unlist()
+# 
+# file_date = as.Date(str_match(newest_file, '\\d{8}'), '%Y%m%d')
+# file_url = (paste0('https://beta.healthdata.gov', newest_file))
+# 
+# temp = tempfile()
+# download.file(file_url, temp, mode = 'wb')
+# 
+# cpr_day =
+#   read_xlsx(temp, sheet = 6, skip = 0, n_max = 1) %>%
+#   dplyr::select(contains('TESTING: LAST WEEK')) %>%
+#   names() %>%
+#   str_match(., '(\\d{1,2}),') %>%
+#   .[2] %>%
+#   as.numeric()
+# 
+# if (cpr_day > as.numeric(format(Sys.Date(), '%d'))) {
+#   cpr_month = format(seq.Date(Sys.Date(), length.out = 2, by = '-1 month')[2], '%m')
+#   cpr_date = as.Date(glue('{cpr_month}/{cpr_day}'), '%m/%d')
+#   if (cpr_date - Sys.Date() > 100) { 
+#     cpr_date = seq.Date(cpr_date, length.out = 2, by = '-1 year')[2]
+#     }
+# } else { 
+#   cpr_date = as.Date(glue('{format(Sys.Date(), "%m")}/{cpr_day}'), '%m/%d')  
+#   }
+# 
+# cpr_tpr = read_xlsx(temp, sheet = 6, skip = 1) %>% 
+#   filter(`State Abbreviation` == 'TX') %>%
+#   select('County',
+#          contains('NAAT positivity rate - last 7 days'),
+#          contains('Total NAATs - last 7 days')) %>% 
+#   filter(County != 'Unallocated, TX') %>%
+#   mutate(County = gsub(' County, TX', '', County)) %>% 
+#   setNames(c('County', 'TPR_CPR', 'Tests')) %>% 
+#   mutate(Date = cpr_date) %>% 
+#   arrange(County)
 
-file_text = page %>% html_nodes('script') %>%
-  .[file_loc] %>%
-  html_text() %>%
-  gsub('\n    var initialState =\n      ', '', .) %>%
-  gsub('\n   ;\n  ', '', .)
 
 
-newest_file = fromJSON(file_text)$view$attachments %>%
-  filter(href %>% str_detect('.xlsx')) %>% 
-  distinct() %>%
-  arrange(desc(name)) %>%
-  slice(1) %>%
-  select(href) %>%
-  unlist()
+# # save
+# write.csv(cpr_tpr,
+#           paste0('original-sources/historical/cpr/cpr_tpr_', cpr_date, '.csv'),
+#           row.names = FALSE)
+```
 
-file_date = as.Date(str_match(newest_file, '\\d{8}'), '%Y%m%d')
-file_url = (paste0('https://beta.healthdata.gov', newest_file))
 
-temp = tempfile()
-download.file(file_url, temp, mode = 'wb')
-
-cpr_day =
-  read_xlsx(temp, sheet = 6, skip = 0, n_max = 1) %>%
-  dplyr::select(contains('TESTING: LAST WEEK')) %>%
-  names() %>%
-  str_match(., '(\\d{1,2}),') %>%
-  .[2] %>%
-  as.numeric()
-
-if (cpr_day > as.numeric(format(Sys.Date(), '%d'))) {
-  cpr_month = format(seq.Date(Sys.Date(), length.out = 2, by = '-1 month')[2], '%m')
-  cpr_date = as.Date(glue('{cpr_month}/{cpr_day}'), '%m/%d')
-  if (cpr_date - Sys.Date() > 100) { 
-    cpr_date = seq.Date(cpr_date, length.out = 2, by = '-1 year')[2]
-    }
-} else { 
-  cpr_date = as.Date(glue('{format(Sys.Date(), "%m")}/{cpr_day}'), '%m/%d')  
-  }
-
-cpr_tpr = read_xlsx(temp, sheet = 6, skip = 1) %>% 
-  filter(`State Abbreviation` == 'TX') %>%
-  select('County',
-         contains('NAAT positivity rate - last 7 days'),
-         contains('Total NAATs - last 7 days')) %>% 
-  filter(County != 'Unallocated, TX') %>%
+```{r}
+cpr_tpr = fromJSON('https://services5.arcgis.com/qWZ7BaZXaP5isnfT/arcgis/rest/services/Community_Profile_Report_Counties/FeatureServer/0/query?where=State_Abbreviation%3D%27TX%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=County%2C+test_positivity_rate_last_7_d%2C+total_tests_last_7_d%2C+last_updated&returnGeometry=false&returnCentroid=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pjson&token=')[['features']][['attributes']] %>% 
+  filter(!str_detect(County, 'Unallocated')) %>%
+  setNames(c('County', 'TPR_CPR', 'Tests', 'Date')) %>% 
+  mutate(Date = as_date(as_datetime(Date/1000))) %>% 
+  mutate(TPR_CPR = TPR_CPR / 100) %>% 
   mutate(County = gsub(' County, TX', '', County)) %>% 
-  setNames(c('County', 'TPR_CPR', 'Tests')) %>% 
-  mutate(Date = cpr_date) %>% 
   arrange(County)
 
-# save
-write.csv(cpr_tpr,
-          paste0('original-sources/historical/cpr/cpr_tpr_', cpr_date, '.csv'),
-          row.names = FALSE)
+cpr_date = cpr_tpr$Date[1]
+
+fwrite(cpr_tpr,
+        paste0('original-sources/historical/cpr/cpr_tpr_', cpr_date, '.csv'),
+        row.names = FALSE,
+        quote = TRUE)
+```
 
 
+
+```{r}
 # add cms archive (8/19 - 12/09) (data represented 2 weeks of cases)
 cpr_dates = list.files('original-sources/historical/cpr') %>% 
   gsub('cpr_tpr_', '', .) %>% 
