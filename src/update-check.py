@@ -35,14 +35,18 @@ def parse_file(file_url, header_loc):
                 max_date = today.date()
         except:
             pass
-    else:
+    elif 'CaseCountData' in file_url: 
         df = pd.ExcelFile(file_url, engine='xlrd').parse(
             sheet_name=0, header=header_loc)
+        max_date = parsedate(re.findall(date_regex, df.columns[0])[1][0]).date()
+
+    else:
+        df = pd.ExcelFile(file_url, engine='xlrd').parse(
+            sheet_name=2, header=header_loc)
         df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
         date_text = list(df.columns)[-1]
         max_date = parsedate(re.search(date_regex, date_text).group(0)).date()
     return 1 if max_date == today.date() else 0
-
 
 def check_update(files, max_attempts, check_interval=600):
     for file in files:
@@ -107,5 +111,5 @@ if datetime.utcnow().hour > 4 and datetime.utcnow().hour < 16:
 else:
     today = datetime.now()
 
-run_requests()
+# run_requests()
 run_daily()
