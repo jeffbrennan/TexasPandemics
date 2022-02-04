@@ -111,5 +111,5 @@ if datetime.utcnow().hour > 4 and datetime.utcnow().hour < 16:
 else:
     today = datetime.now()
 
-# run_requests()
+run_requests()
 run_daily()
