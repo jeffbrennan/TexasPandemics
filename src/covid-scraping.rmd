@@ -333,8 +333,8 @@ demo_5_11 = read_csv('original-sources/helpers/demographics/county/county_pop_ag
             MEDIAN_AGE_TOT, MEDIAN_AGE_MALE, MEDIAN_AGE_FEM )) %>%
   reshape2::melt(idvars = 'CTYNAME') %>% 
   separate(variable, c('age', 'gender')) %>%
-  filter(gender != 'TOT') %>% 
-  filter(age %in% c('UNDER5', 'AGE513')) %>% 
+  filter(gender != 'TOT') %>%
+  filter(age == 'AGE513') %>% 
   mutate(value = ifelse(age == 'AGE513', value * (7/9), value)) %>% 
   group_by(CTYNAME, gender) %>% 
   summarize(Population_Total = round(sum(value), 0)) %>% 
@@ -1500,16 +1500,8 @@ state_demo_stacked_out =
             by = c('Group' = 'Gender')) %>% 
   mutate(Population_5 = ifelse(!is.na(Population_5.y), Population_5.y, Population_5.x)) %>% 
   select(-contains('.x'), -contains('.y')) %>% 
-  relocate(Population_5, .after = Fully_Vaccinated)
-  
+  relocate(Population_5, .after = Fully_Vaccinated) %>% 
   arrange(Group_Type)
-
-# TODO add population5
-# TODO fix gender pop 5 total = gender total
-test = county_demo_agesex %>%
-              filter(`Age Group` %in% c('5-11 years', '12-15 years', '16+')) %>%
-              group_by(Gender) %>%
-              summarize(Population_5 = sum(Population_Total))
 
 write_csv(state_demo_stacked_out, 'tableau/sandbox/stacked_state_vaccine_demographics.csv')
 ```
@@ -1902,12 +1894,7 @@ write.csv(hosp_tsa, file = 'tableau/hospitalizations_tsa.csv', row.names = F)
 
 ## Case/Hosp Wave Comparison
 ```{r}
-
-# # October 1st - june30 2021
-# # july - december 11 2021
-# # december 12 - current third wave
-
-
+# Wave declarations
 waves = list(
   data.frame(Wave = 'Wave 1', Date = seq(as.Date('2020-10-01'), as.Date('2021-06-30'), by = 'days')),
   data.frame(Wave = 'Wave 2', Date = seq(as.Date('2021-07-01'), as.Date('2021-12-11'), by = 'days')),
@@ -1945,7 +1932,6 @@ wave_comparison = fread('tableau/county.csv') %>%
   # 
 
 fwrite(wave_comparison, 'tableau/wave_comparison.csv')
-
 ```
 
 
