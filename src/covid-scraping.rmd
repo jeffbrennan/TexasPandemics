@@ -1690,9 +1690,6 @@ curl::curl_download(hosp_url, temp, mode = 'wb')
 DSHS_tsa_hosp = read_excel_allsheets(temp)
  
 DSHS_hosp_clean = function(df, var_name) { 
-  # df = df[2:23, c(1, 3:ncol(df))]
-  # df$`TSA ID` = gsub('.', '', df$`TSA ID`, fixed = TRUE)
-  
   names(df) = df[1, ]
   df_clean = df %>% 
     setNames(c('TSA ID', names(df)[2:length(names(df))])) %>% 
@@ -1700,14 +1697,11 @@ DSHS_hosp_clean = function(df, var_name) {
     select(1, 3:ncol(.)) %>%
     mutate(`TSA ID` = gsub('.', '', `TSA ID`, fixed = TRUE))
 
-  # add temp fix for DSHS duplicated dates (8/8) (fixed by DSHS 8/10)
-  # TODO: add dynamic handling
   if (length(grep('.x', names(df_clean)) > 0)) { 
     df_clean = df_clean[, -grep('.x', names(df_clean))]
     names(df_clean) = gsub('.y', '', names(df_clean))
   }
 
-  # TODO: make date conversion function
   dates = names(df_clean)[2:length(names(df_clean))]
   clean_dates = Date_Parser(dates)
   names(df_clean)[2:length(names(df_clean))] = clean_dates
@@ -1723,174 +1717,45 @@ DSHS_hosp_clean = function(df, var_name) {
   return(df_long)
 }
 
-
-# TODO: refactor
-
-hosp_1 = DSHS_hosp_clean(DSHS_tsa_hosp[['COVID-19 Hospitalizations']], 'Hospitalizations_Total')  # [1]
-hosp_2 = DSHS_hosp_clean(DSHS_tsa_hosp[['Adult COVID-19 General']], 'Hospitalizations_General')
-hosp_3 = DSHS_hosp_clean(DSHS_tsa_hosp[['Adult COVID-19 ICU']], 'Hospitalizations_ICU')
-hosp_4 = DSHS_hosp_clean(DSHS_tsa_hosp[['Available Ventilators']], 'Ventilators_Available')
-hosp_5 = DSHS_hosp_clean(DSHS_tsa_hosp[['Pediatric COVID-19']], 'Hospitalizations_Pediatric')
-
-
-hosp_cap1 = DSHS_hosp_clean(DSHS_tsa_hosp[['Total Available Beds']], 'Beds_Available_Total')
-hosp_cap2 = DSHS_hosp_clean(DSHS_tsa_hosp[['Adult ICU Beds Available']], 'Beds_Available_ICU')
-hosp_cap3 = DSHS_hosp_clean(DSHS_tsa_hosp[['Total Occupied Beds']], 'Beds_Occupied_Total')
-hosp_cap4 = DSHS_hosp_clean(DSHS_tsa_hosp[['ICU Beds Occupied']], 'Beds_Occupied_ICU')
-hosp_cap5 = DSHS_hosp_clean(DSHS_tsa_hosp[['Pediatric ICU Beds Available']], 'Pediatric_Beds_Available_ICU')
-
+hosp_vars = c('COVID-19 Hospitalizations', 'Adult COVID-19 General', 'Adult COVID-19 ICU',
+              'Available Ventilators', 'Pediatric COVID-19', 'COVID-19 Admits 24HR',
+              'Total Available Beds', 'Adult ICU Beds Available', 'Total Occupied Beds',
+              'ICU Beds Occupied', 'Pediatric ICU Beds Available')
+hosp_cols = lapply(hosp_vars, function(x) DSHS_hosp_clean(DSHS_tsa_hosp[[x]], x)) %>% 
+  purrr::reduce(left_join, by = c('TSA', 'Date')) %>% 
+  rename(c(
+    "Hospitalizations_Total" = "COVID-19 Hospitalizations",
+    "Hospitalizations_General" = "Adult COVID-19 General",
+    "Hospitalizations_ICU" = "Adult COVID-19 ICU",
+    "Ventilators_Available" = "Available Ventilators",
+    "Hospitalizations_Pediatric" = "Pediatric COVID-19",
+    "Hospitalizations_24" = "COVID-19 Admits 24HR",
+    "Beds_Available_Total" = "Total Available Beds",
+    "Beds_Available_ICU" = "Adult ICU Beds Available",
+    "Beds_Occupied_Total" = "Total Occupied Beds",
+    "Beds_Occupied_ICU" = "ICU Beds Occupied",
+    "Pediatric_Beds_Available_ICU" = "Pediatric ICU Beds Available"
+  )) %>% 
+  mutate(across(Hospitalizations_Total:Pediatric_Beds_Available_ICU, as.character)) %>% 
+  mutate(across(Hospitalizations_Total:Pediatric_Beds_Available_ICU, as.integer)) %>% 
+  relocate(Hospitalizations_24, .after = ncol(.))
 ```
-
-
-```{r}
-# data.frame(
-#           stringsAsFactors = FALSE,
-#                       Date = c("4/11/2020"),
-#                        TSA = c("A"),
-#                   TSA_Name = c("Amarillo"),
-#               TSA_Combined = c("A - Amarillo"),
-#            Population_DSHS = c(440127L),
-#      Ventilators_Available = c(NA),
-#     Hospitalizations_Total = c(17L),
-#   Hospitalizations_General = c(417L),
-#       Hospitalizations_ICU = c(613L),
-#       Beds_Available_Total = c(4L),
-#         Beds_Available_ICU = c(1030L),
-#        Beds_Occupied_Total = c(NA),
-#          Beds_Occupied_ICU = c(77L)
-# )
-# 
-# 8/29/2021	Q	Houston	Q - Houston	6688587	985	3423	12450	1475	814	14636	1817	72
-
-```
-
-
-
-
-## DSHS dashboard
-
-```{r}
-# 11/13  - link no longer works
-# pull DSHS dashboard data using link found from inspect element -> network
-# DSHS_json_hosp_tsa = jsonlite::fromJSON("https://services5.arcgis.com/ACaLB9ifngzawspq/arcgis/rest/services/DSHS_COVID_Hospital_Data/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outSR=102100&resultOffset=0&resultRecordCount=25&resultType=standard&cacheHint=true")[['features']][['attributes']]
-# 
-# rac_xwalk = DSHS_json_hosp_tsa %>% select(TSA, RAC) %>% rename(TSA_Fixed = TSA)
-# 
-# DSHS_json_hosp_tsa = DSHS_json_hosp_tsa %>% 
-#   select(TSA, TotalStaff, AvailHospi, AvailICUBe, AvailVenti, COVIDPatie) %>% 
-#   rename(Hospital_Beds_Staffed = TotalStaff,
-#          ICU_Belable = Avds_AvaiailICUBe,
-#          Ventilators_Available = AvailVenti,
-#          Current_Cases = COVIDPatie,
-#          Hospital_Beds_Available = AvailHospi)
-# 
-# # export today's file
-# write_csv(DSHS_json_hosp_tsa, glue('original-sources/historical/hosp/tsa_hosp_{date_out}.csv'))
-# 
-# # read in all files
-# hosp_list = list.files('original-sources/historical/hosp', pattern = '*.csv', full.names = TRUE)
-# hosp_dates = sapply(hosp_list, function(x) str_extract(x, '\\d{4}-\\d{2}-\\d{2}'))
-# tsa_all_hosp = lapply(hosp_list, read.csv, fileEncoding = 'UTF-8-BOM')
-# names(tsa_all_hosp) = hosp_dates
-# 
-# tsa_combined_hosp_orig = rbindlist(tsa_all_hosp, fill = TRUE, idcol = TRUE) %>% 
-#   dplyr::select(-Date) %>% 
-#   rename(Date = .id) %>%
-#   # dplyr::select(TSA, Date, Ventilators_Available) %>%
-#   left_join(rac_xwalk, by = c('TSA' = 'RAC')) %>%
-#   mutate(TSA_Fixed = ifelse(is.na(TSA_Fixed), TSA, TSA_Fixed)) %>%
-#   select(-TSA) %>% 
-#   rename(TSA = TSA_Fixed) %>% 
-#   relocate(TSA, .before = Date) %>% 
-#   mutate(Date = as.Date(Date, '%Y-%m-%d')) %>% 
-#   distinct() %>% 
-#   group_by(TSA, Date) %>% 
-#   mutate(delete_flag = ifelse(TSA == 'L' & row_number() == 2 | TSA == 'M' & row_number() == 1 & n() == 2, 1, 0)) %>% 
-#   filter(delete_flag != 1) %>% 
-#   select(-delete_flag) %>% 
-#   ungroup()
-# 
-# 
-# wrong_dates_icu = tsa_combined_hosp_orig %>%
-#   filter(TSA == 'D' & Date <= '2021-05-06') %>%
-#   arrange(Ventilators_Available) %>%
-#   mutate(n = row_number()) %>%
-#   filter (n < 66) %>%
-#   select(Date) %>%
-#   filter(Date != '2021-02-04' & Date != '2021-01-05') %>% 
-#   unlist() %>% 
-#   as.Date()
-# 
-# wrong_dates_cases = c('2021-02-04', '2021-01-05') %>% as.Date()
-# 
-# wrong_dates_icu_df = tsa_combined_hosp_orig %>%
-#           filter(Date %in% wrong_dates_icu) %>%
-#           select(-Ventilators_Available) %>%
-#           rename(Ventilators_Available = ICU_Beds_Available) %>%
-#           select(TSA, Date, Ventilators_Available)
-# 
-# wrong_dates_cases_df = tsa_combined_hosp_orig %>%
-#           filter(Date %in% wrong_dates_cases) %>%
-#           select(-Ventilators_Available) %>%
-#           rename(Ventilators_Available = Current_Cases) %>%
-#           select(TSA, Date, Ventilators_Available)
-# 
-# 
-# tsa_combined_hosp = 
-#   tsa_combined_hosp_orig %>%
-#   select(TSA, Date, Ventilators_Available) %>% 
-#   filter(!Date %in% wrong_dates_icu & !Date %in% wrong_dates_cases) %>%
-#   rbind(wrong_dates_icu_df) %>% 
-#   rbind(wrong_dates_cases_df) %>%
-#   filter(Date != '2020-07-23')
-```
-
 ## merge
 
 ```{r}
-merged_tsa = Reduce(function(x, y) merge(x, y, by = c('Date', 'TSA'), all = TRUE),
-                    list(DSHS_tsa,
-                         hosp_1, hosp_2, hosp_3, hosp_4, hosp_5,
-                         hosp_cap1, hosp_cap2, hosp_cap3, hosp_cap4, hosp_cap5))
-
-# fix types & ensure TSA values are valid
-merged_tsa = merged_tsa %>% 
-  mutate_at(vars(Beds_Available_Total, Beds_Available_ICU, Ventilators_Available,
-                 Beds_Occupied_Total, Beds_Occupied_ICU, Hospitalizations_Total,
-                 Hospitalizations_General, Hospitalizations_ICU,
-                 Hospitalizations_Pediatric, Pediatric_Beds_Available_ICU),
-            funs(as.character)) %>%
-  mutate_at(vars(Beds_Available_Total, Beds_Available_ICU, Ventilators_Available,
-                 Beds_Occupied_Total, Beds_Occupied_ICU, Hospitalizations_Total,
-                 Hospitalizations_General, Hospitalizations_ICU,
-                 Hospitalizations_Pediatric, Pediatric_Beds_Available_ICU),
-            funs(as.integer)) %>%
+merged_tsa = DSHS_tsa %>% 
+  left_join(hosp_cols, by = c('TSA', 'Date')) %>%
   mutate(TSA_Combined = paste0(TSA, ' - ', TSA_Name)) %>%
   filter(!is.na(TSA) & !is.na(Date)) %>% 
-  distinct()
+  distinct() %>% 
+  select(Date, TSA, TSA_Name, TSA_Combined, Population_DSHS,
+         Hospitalizations_Total:Pediatric_Beds_Available_ICU) %>% 
+  filter(Date >= as.Date('2020-04-11'))
 
-hosp_tsa = merged_tsa %>% 
-  dplyr::select(Date, TSA, TSA_Name, TSA_Combined, Population_DSHS, Ventilators_Available,
-                Hospitalizations_Total, Hospitalizations_General, Hospitalizations_ICU,
-                Beds_Available_Total, Beds_Available_ICU, Beds_Occupied_Total, Beds_Occupied_ICU) %>% 
-  filter(Date >= min(hosp_cap1$Date))
-
-# diagnostics
-hosp_tsa %>% select(TSA) %>% distinct()
-hosp_tsa %>% select(Date, TSA, Ventilators_Available) %>% filter(TSA == 'D') %>%
-  ggplot(aes(x = Date, y = Ventilators_Available)) + 
-  geom_point() + 
-  theme_pubr()
-
-write.csv(hosp_tsa, file = 'tableau/hospitalizations_tsa.csv', row.names = F)
+write.csv(merged_tsa, file = 'tableau/hospitalizations_tsa.csv', row.names = F)
 ```
 
-
-
-
-
 # STATE LEVEL
-
 
 ## Case/Hosp Wave Comparison
 ```{r}
@@ -1904,32 +1769,40 @@ waves = list(
   mutate(Date = as.Date(Date))
 
 
-# hospitalizations result in ratios >1 because most people have stays longer than 1 day (double counted)
-# using deaths instead
-wave_comparison = fread('tableau/county.csv') %>%
+# tsa wave
+wave_comparison_tsa = fread('tableau/county.csv') %>%
   mutate(Date = as.Date(Date)) %>% 
-  group_by(Date) %>% 
+  group_by(TSA, Date) %>% 
   summarize(Cases_Daily = sum(Cases_Daily, na.rm = TRUE),
             Deaths_Daily = sum(Deaths_Daily, na.rm = TRUE)) %>%
   ungroup() %>% 
-  # left_join(fread('tableau/hospitalizations_tsa.csv') %>%
-  #             mutate(Date = as.Date(Date)) %>%
-  #             group_by(Date) %>% 
-  #             summarize(Hospitalizations_Total = sum(Hospitalizations_Total, na.rm = TRUE),
-  #                       Hospitalizations_ICU = sum(Hospitalizations_ICU, na.rm = TRUE)),
-  #           by = c('Date' = 'Date')) %>% 
+  left_join(fread('tableau/hospitalizations_tsa.csv') %>%
+              mutate(Date = as.Date(Date)) %>%
+              group_by(TSA, Date) %>%
+              summarize(Hospitalizations_24 = sum(Hospitalizations_24, na.rm = TRUE)),
+            by = c('Date' = 'Date', 'TSA' = 'TSA')) %>%
   left_join(waves, by = c('Date' = 'Date')) %>% 
   filter(!is.na(Wave)) %>%
-  group_by(Wave) %>%
-  summarize(Cases_Total = sum(Cases_Daily, na.rm = TRUE),
-            Deaths_Total = sum(Deaths_Daily, na.rm = TRUE)) %>%
-  mutate(Death_Ratio = Deaths_Total / Cases_Total)
-    # summarize(Hospitalizations_Total = sum(Hospitalizations_Total, na.rm = TRUE),
-  #           Hospitalizations_ICU = sum(Hospitalizations_ICU, na.rm = TRUE),
-  #           Cases_Total = sum(Cases_Daily, na.rm = TRUE)) %>% 
-  # mutate(Hospitalizations_Total_Ratio = Hospitalizations_Total / Cases_Total) %>% 
-  # mutate(Hospitalizations_ICU_Ratio = Hospitalizations_ICU / Cases_Total)
-  # 
+  group_by(TSA, Wave) %>%
+  summarize(Hospitalizations_24 = sum(Hospitalizations_24, na.rm = TRUE),
+            Cases_Total = sum(Cases_Daily, na.rm = TRUE)) %>%
+  mutate(Hospitalizations_24_Ratio = Hospitalizations_24 / Cases_Total) %>% 
+  mutate(Level_Type = 'TSA') %>% 
+  rename(Level = TSA) %>% 
+  relocate(Level_Type, .before = Level)
+
+
+wave_comparison = wave_comparison_tsa %>% 
+  plyr::rbind.fill(
+    wave_comparison_tsa %>% 
+      group_by(Wave) %>% 
+      mutate(Hospitalizations_24 = sum(Hospitalizations_24, na.rm = TRUE),
+             Cases_Total = sum(Cases_Total, na.rm = TRUE)) %>% 
+      mutate(Hospitalizations_24_Ratio = Hospitalizations_24 / Cases_Total) %>% 
+      ungroup() %>%
+      mutate(Level_Type = 'State', Level = 'Texas') %>% 
+      distinct()
+    )
 
 fwrite(wave_comparison, 'tableau/wave_comparison.csv')
 ```
