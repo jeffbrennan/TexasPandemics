@@ -1747,9 +1747,9 @@ merged_tsa = DSHS_tsa %>%
   left_join(hosp_cols, by = c('TSA', 'Date')) %>%
   mutate(TSA_Combined = paste0(TSA, ' - ', TSA_Name)) %>%
   filter(!is.na(TSA) & !is.na(Date)) %>% 
-  distinct() %>% 
+  distinct() %>%
   select(Date, TSA, TSA_Name, TSA_Combined, Population_DSHS,
-         Hospitalizations_Total:Pediatric_Beds_Available_ICU) %>% 
+         Hospitalizations_Total:Hospitalizations_24) %>% 
   filter(Date >= as.Date('2020-04-11'))
 
 write.csv(merged_tsa, file = 'tableau/hospitalizations_tsa.csv', row.names = F)
