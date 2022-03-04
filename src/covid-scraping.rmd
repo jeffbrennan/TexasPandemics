@@ -540,6 +540,37 @@ write_xlsx(
 
 # COUNTY LEVEL
 
+## CDC Community Levels
+
+```{r}
+cdc_community_json = fromJSON('https://www.cdc.gov/coronavirus/2019-ncov/modules/science/us_community_burden_by_county.json')
+
+cdc_community_date =  as.Date(str_extract(cdc_community_json[['dataFileName']], '\\d{8}'), '%Y%m%d')
+
+cdc_community_levels = cdc_community_json %>% 
+  .[['data']] %>% 
+  filter(State == 'Texas') %>% 
+  mutate(Date = cdc_community_date) %>% 
+  mutate(across(contains(' - '), ~str_replace(., '\\%', ''))) %>% 
+  mutate(across(contains(' - '), as.numeric)) %>% 
+  mutate(County = str_replace(County,', Texas, US', '')) %>% 
+  select(-FIPS, -State) %>% 
+  relocate(Date, .before = 'County') %>% 
+  rename_with(~str_replace(., ., 'inpatient_bed_utilization'), contains('Inpatient')) %>% 
+  rename_with(~str_replace(., ., 'admissions_100k'), contains('Admissions')) %>% 
+  rename_with(~str_replace(., ., 'cases_100k'), contains('Cases per')) %>% 
+  rename_with(~str_replace(., ., 'cases_7day_MA'), contains('Transmission Level - Cases')) %>% 
+  rename_with(~str_replace(., ., 'TPR'), contains('Positivity')) %>%
+  rename_with(~str_replace(., ., 'transmission_level'), contains('Transmission')) %>%
+  rename_with(~str_replace(., ., 'community_level'), contains('Community'))
+
+
+fwrite(cdc_community_levels, 
+       glue('original-sources/historical/cdc-levels/{cdc_community_date}_cdc_community_level.csv')
+      )
+```
+
+
 ## Google mobility
 
 ```{r}
@@ -1772,7 +1803,7 @@ waves = list(
 # tsa wave
 wave_comparison_tsa = fread('tableau/county.csv') %>%
   mutate(Date = as.Date(Date)) %>% 
-  group_by(TSA, Date) %>% 
+  group_by(TSA_Combined, Date) %>% 
   summarize(Cases_Daily = sum(Cases_Daily, na.rm = TRUE),
             Deaths_Daily = sum(Deaths_Daily, na.rm = TRUE)) %>%
   ungroup() %>% 
@@ -1783,7 +1814,7 @@ wave_comparison_tsa = fread('tableau/county.csv') %>%
             by = c('Date' = 'Date', 'TSA' = 'TSA')) %>%
   left_join(waves, by = c('Date' = 'Date')) %>% 
   filter(!is.na(Wave)) %>%
-  group_by(TSA, Wave) %>%
+  group_by(TSA_Combined, Wave) %>%
   summarize(Hospitalizations_24 = sum(Hospitalizations_24, na.rm = TRUE),
             Cases_Total = sum(Cases_Daily, na.rm = TRUE)) %>%
   mutate(Hospitalizations_24_Ratio = Hospitalizations_24 / Cases_Total) %>% 
@@ -1792,9 +1823,9 @@ wave_comparison_tsa = fread('tableau/county.csv') %>%
   relocate(Level_Type, .before = Level)
 
 
-wave_comparison = wave_comparison_tsa %>% 
+wave_comparison = wave_comparison_tsa %>%
   plyr::rbind.fill(
-    wave_comparison_tsa %>% 
+    wave_comparison_tsa %>%
       group_by(Wave) %>% 
       mutate(Hospitalizations_24 = sum(Hospitalizations_24, na.rm = TRUE),
              Cases_Total = sum(Cases_Total, na.rm = TRUE)) %>% 
@@ -1802,7 +1833,7 @@ wave_comparison = wave_comparison_tsa %>%
       ungroup() %>%
       mutate(Level_Type = 'State', Level = 'Texas') %>% 
       distinct()
-    )
+    ) %>% 
 
 fwrite(wave_comparison, 'tableau/wave_comparison.csv')
 ```
