@@ -1809,9 +1809,9 @@ wave_comparison_tsa = fread('tableau/county.csv') %>%
   ungroup() %>% 
   left_join(fread('tableau/hospitalizations_tsa.csv') %>%
               mutate(Date = as.Date(Date)) %>%
-              group_by(TSA, Date) %>%
+              group_by(TSA_Combined, Date) %>%
               summarize(Hospitalizations_24 = sum(Hospitalizations_24, na.rm = TRUE)),
-            by = c('Date' = 'Date', 'TSA' = 'TSA')) %>%
+            by = c('Date' = 'Date', 'TSA_Combined' = 'TSA_Combined')) %>%
   left_join(waves, by = c('Date' = 'Date')) %>% 
   filter(!is.na(Wave)) %>%
   group_by(TSA_Combined, Wave) %>%
@@ -1819,7 +1819,7 @@ wave_comparison_tsa = fread('tableau/county.csv') %>%
             Cases_Total = sum(Cases_Daily, na.rm = TRUE)) %>%
   mutate(Hospitalizations_24_Ratio = Hospitalizations_24 / Cases_Total) %>% 
   mutate(Level_Type = 'TSA') %>% 
-  rename(Level = TSA) %>% 
+  rename(Level = TSA_Combined) %>% 
   relocate(Level_Type, .before = Level)
 
 
@@ -1833,7 +1833,7 @@ wave_comparison = wave_comparison_tsa %>%
       ungroup() %>%
       mutate(Level_Type = 'State', Level = 'Texas') %>% 
       distinct()
-    ) %>% 
+    )
 
 fwrite(wave_comparison, 'tableau/wave_comparison.csv')
 ```
