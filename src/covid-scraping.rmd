@@ -828,7 +828,9 @@ write_csv(merged_county_out %>% arrange(County, Date), 'tableau/county.csv')
 Get_TPR = function() { 
   page = read_html('https://data.cms.gov/covid-19/covid-19-nursing-home-data')
   tpr_url = page %>% html_nodes('a') %>% html_attr('href') %>%
-    .[grepl('download', .)] %>% .[1] %>% gsub('%2F', '/', .)
+    .[grepl('download', .)] %>%
+    .[1] %>% 
+    gsub('%2F', '/', .)
   
   # temp dir needed for unzip to keep directory clean
   temp_dir = tempdir()
@@ -868,86 +870,108 @@ Source for TPR data post 12/16. Still use CMS tests and dates for case averages 
 ```{r}
 # 11/25 - csv no longer available 
 # get latest url
-# page = read_html('https://beta.healthdata.gov/National/COVID-19-Community-Profile-Report/gqxm-d9w9')
-# file_loc = page %>%
-#   html_nodes('script') %>%
-#   str_detect('.xlsx') %>%
-#   which()
-# 
-# file_text = page %>% html_nodes('script') %>%
-#   .[file_loc] %>%
-#   html_text() %>%
-#   gsub('\n    var initialState =\n      ', '', .) %>%
-#   gsub('\n   ;\n  ', '', .)
-# 
-# 
-# newest_file = fromJSON(file_text)$view$attachments %>%
-#   filter(href %>% str_detect('.xlsx')) %>% 
-#   distinct() %>%
-#   arrange(desc(name)) %>%
-#   slice(1) %>%
-#   select(href) %>%
-#   unlist()
-# 
-# file_date = as.Date(str_match(newest_file, '\\d{8}'), '%Y%m%d')
-# file_url = (paste0('https://beta.healthdata.gov', newest_file))
-# 
-# temp = tempfile()
-# download.file(file_url, temp, mode = 'wb')
-# 
-# cpr_day =
-#   read_xlsx(temp, sheet = 6, skip = 0, n_max = 1) %>%
-#   dplyr::select(contains('TESTING: LAST WEEK')) %>%
-#   names() %>%
-#   str_match(., '(\\d{1,2}),') %>%
-#   .[2] %>%
-#   as.numeric()
-# 
-# if (cpr_day > as.numeric(format(Sys.Date(), '%d'))) {
-#   cpr_month = format(seq.Date(Sys.Date(), length.out = 2, by = '-1 month')[2], '%m')
-#   cpr_date = as.Date(glue('{cpr_month}/{cpr_day}'), '%m/%d')
-#   if (cpr_date - Sys.Date() > 100) { 
-#     cpr_date = seq.Date(cpr_date, length.out = 2, by = '-1 year')[2]
-#     }
-# } else { 
-#   cpr_date = as.Date(glue('{format(Sys.Date(), "%m")}/{cpr_day}'), '%m/%d')  
-#   }
-# 
-# cpr_tpr = read_xlsx(temp, sheet = 6, skip = 1) %>% 
-#   filter(`State Abbreviation` == 'TX') %>%
-#   select('County',
-#          contains('NAAT positivity rate - last 7 days'),
-#          contains('Total NAATs - last 7 days')) %>% 
-#   filter(County != 'Unallocated, TX') %>%
-#   mutate(County = gsub(' County, TX', '', County)) %>% 
-#   setNames(c('County', 'TPR_CPR', 'Tests')) %>% 
-#   mutate(Date = cpr_date) %>% 
-#   arrange(County)
+Clean_TPR = function(newest_file) { 
+  file_date = as.Date(str_match(newest_file, '\\d{8}'), '%Y%m%d')
+  file_url = paste0('https://beta.healthdata.gov', newest_file) %>% 
+    str_replace(.,
+                'https://beta.healthdata.govhttps://beta.healthdata.gov',
+                'https://beta.healthdata.gov')
+  
+  temp = tempfile()
+  download.file(file_url, temp, mode = 'wb')
+  
+  tpr_names =
+    read_xlsx(temp, sheet = 6, skip = 0, n_max = 1) %>%
+    dplyr::select(contains('TESTING: LAST WEEK')) %>%
+    names()
+  
+  
+  cpr_day = tpr_names %>%
+    str_match(., '(\\d{1,2}),') %>%
+    .[2] %>%
+    as.numeric()
+    
+  cpr_month = tpr_names %>% 
+    str_extract_all(., 'January|February|March|April|May|June|July|August|September|October|November|December') %>% 
+    as.data.frame() %>% 
+    setNames('Date') %>% 
+    mutate(Date = as.Date(glue('{Date}-01-2022'), '%B-%d-%Y')) %>% 
+    arrange(desc(Date)) %>% 
+    slice(1) %>% 
+    pull(Date) %>% 
+    month()
 
+  cpr_date = as.Date(glue('{cpr_month}/{cpr_day}'), '%m/%d')
+  if (cpr_date - Sys.Date() > 100) { 
+      cpr_date = seq.Date(cpr_date, length.out = 2, by = '-1 year')[2]
+    }
+  
+ print(cpr_date)
+ cpr_tpr = read_xlsx(temp, sheet = 6, skip = 1) %>% 
+   filter(`State Abbreviation` == 'TX') %>%
+   select('County',
+          contains('NAAT positivity rate - last 7 days'),
+          contains('Total NAATs - last 7 days')) %>% 
+   filter(County != 'Unallocated, TX') %>%
+   mutate(County = gsub(' County, TX', '', County)) %>% 
+   setNames(c('County', 'TPR_CPR', 'Tests')) %>% 
+   mutate(Date = cpr_date) %>% 
+   arrange(County)
+ 
+ output = list(cpr_tpr)
+ names(output) = cpr_date
+ return(output)
+}
 
+page = read_html('https://beta.healthdata.gov/National/COVID-19-Community-Profile-Report/gqxm-d9w9')
+file_loc = page %>%
+  html_nodes('script') %>% 
+  html_text() %>%
+  str_detect('\\.xlsx') %>%
+  which()
 
-# # save
-# write.csv(cpr_tpr,
-#           paste0('original-sources/historical/cpr/cpr_tpr_', cpr_date, '.csv'),
-#           row.names = FALSE)
+file_text = page %>% 
+  html_nodes('script') %>%
+  .[file_loc] %>%
+  html_text() %>%
+  str_replace(., '\n    var initialState =\n      ', '') %>%
+  str_replace(., '\n   ;\n  ', '')
+
+tpr_url = fromJSON(file_text)$view$attachments %>%
+  filter(href %>% str_detect('.xlsx')) %>% 
+  distinct() %>%
+  arrange(desc(name)) %>%
+  slice(1:28) %>%
+  pull(href) %>%
+  unname()
+
+tpr_results = map(tpr_url[26:28], ~Clean_TPR(.)) %>% 
+  unlist(., recursive = FALSE)
+
+map(names(tpr_results), ~fwrite(tpr_results[[.]],
+                                glue('original-sources/historical/cpr/cpr_tpr_{.}.csv'),
+                                quote = TRUE))
 ```
 
+Inconsistent updates, no longer using
 
 ```{r}
-cpr_tpr = fromJSON('https://services5.arcgis.com/qWZ7BaZXaP5isnfT/arcgis/rest/services/Community_Profile_Report_Counties/FeatureServer/0/query?where=State_Abbreviation%3D%27TX%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=County%2C+test_positivity_rate_last_7_d%2C+total_tests_last_7_d%2C+last_updated&returnGeometry=false&returnCentroid=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pjson&token=')[['features']][['attributes']] %>% 
-  filter(!str_detect(County, 'Unallocated')) %>%
-  setNames(c('County', 'TPR_CPR', 'Tests', 'Date')) %>% 
-  mutate(Date = as_date(as_datetime(Date/1000))) %>% 
-  mutate(TPR_CPR = TPR_CPR / 100) %>% 
-  mutate(County = gsub(' County, TX', '', County)) %>% 
-  arrange(County)
-
-cpr_date = cpr_tpr$Date[1]
-
-fwrite(cpr_tpr,
-        paste0('original-sources/historical/cpr/cpr_tpr_', cpr_date, '.csv'),
-        row.names = FALSE,
-        quote = TRUE)
+# cpr_tpr = fromJSON('https://services5.arcgis.com/qWZ7BaZXaP5isnfT/arcgis/rest/services/Community_Profile_Report_Counties/FeatureServer/0/query?where=State_Abbreviation%3D%27TX%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=County%2C+test_positivity_rate_last_7_d%2C+total_tests_last_7_d%2C+last_updated&returnGeometry=false&returnCentroid=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pjson&token=')[['features']][['attributes']] %>% 
+#   filter(!str_detect(County, 'Unallocated')) %>%
+#   setNames(c('County', 'TPR_CPR', 'Tests', 'Date')) %>% 
+#   mutate(Date = as_date(as_datetime(Date/1000))) %>% 
+#   mutate(TPR_CPR = TPR_CPR / 100) %>% 
+#   mutate(County = gsub(' County, TX', '', County)) %>% 
+#   arrange(County)
+# 
+# cpr_date = cpr_tpr$Date[1]
+# 
+# 
+# 
+# fwrite(cpr_tpr,
+#         paste0('original-sources/historical/cpr/cpr_tpr_', cpr_date, '.csv'),
+#         row.names = FALSE,
+#         quote = TRUE)
 ```
 
 
@@ -1396,30 +1420,43 @@ county_vaccinations_out %>%
   filter(Date >= date_out-7) %>%
   select(1:5) %>%
   arrange(desc(Date))
-  # View('recent vax')
-```
 
-### upload 
-
-```{r}
 write_csv(county_vaccinations_out, 'tableau/sandbox/county_daily_vaccine.csv')
 ```
 
 #### state
 ```{r}
 # DSHS classified 5-11 and 12-15 as dates
-state_demo = lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>%
+state_demo = lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>% 
   discard(is.null) %>%
-  .[[length(.)]] %>% 
-  setNames(slice(., 1)) %>%
-  slice(2:nrow(.)) %>%
-  select(1:(ncol(.)-1)) %>%
+  lapply(., function(x) x %>% 
+           setNames(slice(., 1) %>% unlist()) %>%
+           rename(Date = ncol(.)) %>%
+           slice(2:nrow(.))) %>%
+  rbindlist(fill = TRUE) %>% 
+  mutate(`Race/Ethnicity` = ifelse(is.na(`Race/Ethnicity`), str_c(Race, Ethnicity), `Race/Ethnicity`)) %>%
+  select(-Race, -Ethnicity, -`People Vaccinated with at Least One Dose`, -`People Vaccinated`) %>%
   filter(`Age Group` != 'Total') %>%
   mutate(`Age Group` = ifelse(`Age Group` == '44692', '5-11 years', `Age Group`)) %>%
   mutate(`Age Group` = ifelse(`Age Group` == '44910', '12-15 years', `Age Group`)) %>%
   mutate(`Age Group` = ifelse(!str_detect(`Age Group`, 'years|Unknown'), glue('{`Age Group`} years'), `Age Group`)) %>%
-  setNames(c('Gender', 'Age_Group', 'Race/Ethnicity',
-             'Doses_Administered', 'At_Least_One_Vaccinated', 'Fully_Vaccinated', 'Booster')) %>%
+  rename(Age_Group = 'Age Group',
+         Doses_Administered = 'Doses Administered',
+         At_Least_One_Vaccinated = 'People Vaccinated with at least One Dose',
+         Fully_Vaccinated = 'People Fully Vaccinated',
+         Booster = 'People with Booster Doses') %>%
+  # remove dupes
+  arrange(Date) %>%
+  group_by(Gender, Age_Group, `Race/Ethnicity`) %>% 
+  mutate(dupe_val = Fully_Vaccinated == lag(Fully_Vaccinated)) %>% 
+  group_by(Date) %>% 
+  mutate(dupe_count = sum(dupe_val, na.rm = TRUE)) %>% 
+  mutate(row_count = n()) %>% 
+  ungroup() %>%
+  filter(dupe_count != row_count) %>%
+  filter(Date == max(Date)) %>% 
+  select(-dupe_count, -row_count, -dupe_val) %>% 
+  # add pops
   left_join(county_demo_race %>%
               group_by(`Race/Ethnicity`) %>%
               summarize(State_Race_Total = sum(Population_Total, na.rm = TRUE))) %>%
@@ -1443,8 +1480,11 @@ state_demo = lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>%
          Fully_Vaccinated_Per_Age = Fully_Vaccinated / State_Age_Total,
          Booster_Per_Race = Booster / State_Race_Total,
          Booster_Per_Gender = Booster / State_Gender_Total,
-         Booster_Per_Age = Booster / State_Age_Total)
-
+         Booster_Per_Age = Booster / State_Age_Total) %>% 
+  relocate(`Race/Ethnicity`, .after=Age_Group) %>% 
+  mutate(Date = format(as.Date(Date, origin = '1970-01-01'), '%Y-%m-%d')) %>%
+  relocate(Date, .after=Booster_Per_Age)
+  
 write_csv(state_demo, 'tableau/sandbox/state_vaccine_demographics.csv')
 ```
 
@@ -1991,7 +2031,7 @@ Clean_Demo_New = function(sheet_name) {
 }
 
 # monthly
-demo_releases = seq(as.Date('2020-09-25'), by = 'week', length = 200)
+demo_releases = seq(as.Date('2022-01-01'), by = 'month', length = 50) + days(14)
 
 if (date_out %in% demo_releases) {
   demo_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics.xlsx'
@@ -2002,8 +2042,7 @@ if (date_out %in% demo_releases) {
   monthly_update_dates = str_extract(all_demo_files, '\\d{4}-\\d{2}-\\d{2}') %>%
     as.Date() %>% 
     .[which(. >= as.Date('2022-01-14'))]
-                             # function(x) all_demo_files[which(str_detect(all_demo_files, as.character(x)))])
-
+                             
   monthly_updates = sapply(monthly_update_dates, 
                            function(x) str_detect(all_demo_files, as.character(x)) %>%
                              which(.) %>%
@@ -2011,8 +2050,7 @@ if (date_out %in% demo_releases) {
                            )
   
   demographics_all = read_excel_allsheets(monthly_updates[length(monthly_updates)])
-  
-  
+
   cleaned_demo_new = lapply(names(demographics_all), function(x) Clean_Demo_New(x)) %>% 
     rbindlist(fill = TRUE) %>% 
     rename(Deaths_Monthly = Fatalities,
@@ -2030,7 +2068,8 @@ if (date_out %in% demo_releases) {
     group_by(Date, Group_Type) %>%
     mutate(Deaths_PCT = Deaths_Monthly / sum(Deaths_Monthly, na.rm = TRUE)) %>%
     mutate(Cases_PCT = Cases_Monthly / sum(Cases_Monthly, na.rm = TRUE)) %>% 
-    mutate(Date = ifelse(is.na(Date), 'Unknown', as.character(Date)))
+    filter(!is.na(Date))
+    # mutate(Date = ifelse(is.na(Date), 'Unknown', as.character(Date)))
 
   write_csv(cleaned_demo_new, 'tableau/stacked_demographics_v2.csv')
 }
