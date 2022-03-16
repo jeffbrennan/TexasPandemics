@@ -941,11 +941,11 @@ tpr_url = fromJSON(file_text)$view$attachments %>%
   filter(href %>% str_detect('.xlsx')) %>% 
   distinct() %>%
   arrange(desc(name)) %>%
-  slice(1:28) %>%
+  slice(1) %>%
   pull(href) %>%
   unname()
 
-tpr_results = map(tpr_url[26:28], ~Clean_TPR(.)) %>% 
+tpr_results = map(tpr_url, ~Clean_TPR(.)) %>% 
   unlist(., recursive = FALSE)
 
 map(names(tpr_results), ~fwrite(tpr_results[[.]],
