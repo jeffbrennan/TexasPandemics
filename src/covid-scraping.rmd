@@ -2034,7 +2034,7 @@ Clean_Demo_New = function(sheet_name) {
 demo_releases = seq(as.Date('2022-01-01'), by = 'month', length = 50) + days(14)
 
 if (date_out %in% demo_releases) {
-  demo_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics.xlsx'
+  demo_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics_Counts.xlsx'
   curl::curl_download(demo_url, glue('original-sources/historical/demo-archive/demo_{date_out}.xlsx'))
 
 
