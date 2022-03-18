@@ -543,31 +543,31 @@ write_xlsx(
 ## CDC Community Levels
 
 ```{r}
-cdc_community_json = fromJSON('https://www.cdc.gov/coronavirus/2019-ncov/modules/science/us_community_burden_by_county.json')
-
-cdc_community_date =  as.Date(str_extract(cdc_community_json[['dataFileName']], '\\d{8}'), '%Y%m%d')
-
-cdc_community_levels = cdc_community_json %>% 
-  .[['data']] %>% 
-  filter(State == 'Texas') %>% 
-  mutate(Date = cdc_community_date) %>% 
-  mutate(across(contains(' - '), ~str_replace(., '\\%', ''))) %>% 
-  mutate(across(contains(' - '), as.numeric)) %>% 
-  mutate(County = str_replace(County,', Texas, US', '')) %>% 
-  select(-FIPS, -State) %>% 
-  relocate(Date, .before = 'County') %>% 
-  rename_with(~str_replace(., ., 'inpatient_bed_utilization'), contains('Inpatient')) %>% 
-  rename_with(~str_replace(., ., 'admissions_100k'), contains('Admissions')) %>% 
-  rename_with(~str_replace(., ., 'cases_100k'), contains('Cases per')) %>% 
-  rename_with(~str_replace(., ., 'cases_7day_MA'), contains('Transmission Level - Cases')) %>% 
-  rename_with(~str_replace(., ., 'TPR'), contains('Positivity')) %>%
-  rename_with(~str_replace(., ., 'transmission_level'), contains('Transmission')) %>%
-  rename_with(~str_replace(., ., 'community_level'), contains('Community'))
-
-
-fwrite(cdc_community_levels, 
-       glue('original-sources/historical/cdc-levels/{cdc_community_date}_cdc_community_level.csv')
-      )
+# cdc_community_json = fromJSON('https://www.cdc.gov/coronavirus/2019-ncov/modules/science/us_community_burden_by_county.json')
+# 
+# cdc_community_date =  as.Date(str_extract(cdc_community_json[['dataFileName']], '\\d{8}'), '%Y%m%d')
+# 
+# cdc_community_levels = cdc_community_json %>% 
+#   .[['data']] %>% 
+#   filter(State == 'Texas') %>% 
+#   mutate(Date = cdc_community_date) %>% 
+#   mutate(across(contains(' - '), ~str_replace(., '\\%', ''))) %>% 
+#   mutate(across(contains(' - '), as.numeric)) %>% 
+#   mutate(County = str_replace(County,', Texas, US', '')) %>% 
+#   select(-FIPS, -State) %>% 
+#   relocate(Date, .before = 'County') %>% 
+#   rename_with(~str_replace(., ., 'inpatient_bed_utilization'), contains('Inpatient')) %>% 
+#   rename_with(~str_replace(., ., 'admissions_100k'), contains('Admissions')) %>% 
+#   rename_with(~str_replace(., ., 'cases_100k'), contains('Cases per')) %>% 
+#   rename_with(~str_replace(., ., 'cases_7day_MA'), contains('Transmission Level - Cases')) %>% 
+#   rename_with(~str_replace(., ., 'TPR'), contains('Positivity')) %>%
+#   rename_with(~str_replace(., ., 'transmission_level'), contains('Transmission')) %>%
+#   rename_with(~str_replace(., ., 'community_level'), contains('Community'))
+# 
+# 
+# fwrite(cdc_community_levels, 
+#        glue('original-sources/historical/cdc-levels/{cdc_community_date}_cdc_community_level.csv')
+#       )
 ```
 
 
