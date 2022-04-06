@@ -732,9 +732,30 @@ DSHS_new_cases_long = lapply(DSHS_new_cases, function(x) Clean_Vitals(x, 'Cases_
 ### diagnostics
 
 ```{r}
-# DSHS_new_cases_long %>% 
-#   filter(County == 'Harris') %>% 
-#   filter(Date >= date_out-7)
+case_spikes = DSHS_new_cases_long %>%
+  filter(Date >= as.Date('2022-01-01')) %>% 
+  group_by(County) %>%
+  mutate(case_7ma = rollmean(Cases_Daily, k = 7, align = 'right', na.pad = TRUE)) %>%
+  mutate(case_7ma_prev = lag(case_7ma)) %>% 
+  mutate(case_7ma_diff = case_7ma / lag(case_7ma)) %>% 
+  mutate(spike = case_7ma > 50 & case_7ma_diff > 2)
+
+
+case_spikes %>% 
+  filter(spike) %>% 
+  View()
+
+
+DSHS_new_cases_long %>%
+  filter(County == 'Harris') %>%
+  filter(Date >= as.Date('2022-01-01')) %>% 
+  ggplot(aes(x = Date, y = Cases_Daily)) + 
+  geom_point() + 
+  geom_line() + 
+  theme_pubr()
+
+
+
 ```
 
 ## active cases
@@ -1015,6 +1036,9 @@ cms_new = tpr_df %>% filter(Date >= '2020-12-16') %>%
   distinct() %>%
   select(Date, County, Tests)
 
+
+# TODO: switch to CPR data source CASES/DEATHS LAST WEEK
+# divide case total by 7
 tpr_cases = merged_county %>% 
   dplyr::select(County, Date, Cases_Daily, Population_DSHS) %>%
   filter(Date >= as.Date(min(TPR_dates)) - 13 & Date <= max(TPR_dates)) %>%
@@ -1605,7 +1629,8 @@ county_vax_age = lapply(all_dashboard_files, `[[`, 'By County, Age') %>%
   .[[length(.)]] %>% 
   setNames(slice(., 1)) %>%
   slice(2:nrow(.)) %>%
-  select(1:(ncol(.)-1)) %>%
+  select(1:(ncol(.)-1)) %>% 
+  rename(any_of(c(`Age Group` = 'Agegrp'))) %>%
   mutate(`Age Group` = ifelse(`Age Group` == '44692', '5-11 years', `Age Group`)) %>%
   mutate(`Age Group` = ifelse(`Age Group` == '44910', '12-15 years', `Age Group`)) %>%
   setNames(c('County', 'Age_Group',
@@ -1628,6 +1653,7 @@ county_vax_age = lapply(all_dashboard_files, `[[`, 'By County, Age') %>%
   mutate(Booster_Per_Age = Booster / Population_Total) %>% 
   filter(!(County %in% c('Other', 'Grand Total'))) %>% 
   select(-contains('_Per'))
+
 
 write_csv(county_vax_age, 'tableau/sandbox/county_vax_age.csv')
 ```
@@ -1863,6 +1889,13 @@ wave_comparison_tsa = fread('tableau/county.csv') %>%
   relocate(Level_Type, .before = Level)
 
 
+wave_comparison_county = tsa_long_complete %>%
+  select(County, TSA_Combined) %>%
+  left_join(wave_comparison_tsa %>% select(-Level_Type), by = c('TSA_Combined' = 'Level')) %>%
+  select(-TSA_Combined) %>% 
+  rename(Level = County) %>% 
+  mutate(Level_Type = 'County')
+
 wave_comparison = wave_comparison_tsa %>%
   plyr::rbind.fill(
     wave_comparison_tsa %>%
@@ -1873,7 +1906,8 @@ wave_comparison = wave_comparison_tsa %>%
       ungroup() %>%
       mutate(Level_Type = 'State', Level = 'Texas') %>% 
       distinct()
-    )
+    ) %>% 
+  plyr::rbind.fill(wave_comparison_county)
 
 fwrite(wave_comparison, 'tableau/wave_comparison.csv')
 ```
