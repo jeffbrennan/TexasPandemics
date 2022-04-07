@@ -738,24 +738,37 @@ case_spikes = DSHS_new_cases_long %>%
   mutate(case_7ma = rollmean(Cases_Daily, k = 7, align = 'right', na.pad = TRUE)) %>%
   mutate(case_7ma_prev = lag(case_7ma)) %>% 
   mutate(case_7ma_diff = case_7ma / lag(case_7ma)) %>% 
-  mutate(spike = case_7ma > 50 & case_7ma_diff > 2)
+  mutate(spike = (case_7ma > 25 & case_7ma_diff > 2 )
+                 | (case_7ma_diff > 5 & case_7ma > 10)
+         ) %>% 
+  filter(spike)
 
-
-case_spikes %>% 
-  filter(spike) %>% 
-  View()
-
-
-DSHS_new_cases_long %>%
-  filter(County == 'Harris') %>%
-  filter(Date >= as.Date('2022-01-01')) %>% 
-  ggplot(aes(x = Date, y = Cases_Daily)) + 
-  geom_point() + 
-  geom_line() + 
+spike_plot = DSHS_new_cases_long %>%
+  filter(County %in% case_spikes$County) %>%
+  filter(Date >= as.Date('2022-01-01')) %>%
+  left_join(case_spikes %>% select(-Cases_Daily, -case_7ma), by = c('County', 'Date')) %>%
+  mutate(spike = !is.na(spike)) %>%
+  group_by(County) %>% 
+  mutate(Date_max = ifelse(spike, format(Date+days(14), '%Y-%m-%d'), NA)) %>%
+  mutate(Date_min = ifelse(spike, format(Date-days(14),  '%Y-%m-%d'), NA)) %>%
+  tidyr::fill(Date_max, .direction='updown') %>%
+  tidyr::fill(Date_min, .direction='updown') %>%
+  group_by(County) %>% 
+  mutate(case_7ma = rollmean(Cases_Daily, k = 7, align = 'right', na.pad = TRUE)) %>%
+  group_by(County, spike) %>% 
+  filter(Date <= max(Date_max) & Date >= min(Date_min)) %>%
+  ungroup()  %>% 
+  ggplot(aes(x = Date, y = Cases_Daily, fill = spike)) + 
+  facet_wrap(~County, scales = 'free') + 
+  geom_bar(color='black', stat='identity') +
+  geom_path(aes(x = Date, y = case_7ma, group=1, color = spike), size = 0.5) +
+  scale_fill_manual(values = c('gray90', 'salmon')) +
+  scale_color_manual(values = c('gray50', 'salmon')) +
+  scale_x_date(date_labels = '%m/%d') +
   theme_pubr()
 
-
-
+ggsave(plot = spike_plot, filename = 'tableau/case_spikes.png', width = 15, height = 9, dpi = 600)
+fwrite(case_spikes, 'tableau/case_spikes.csv')
 ```
 
 ## active cases
