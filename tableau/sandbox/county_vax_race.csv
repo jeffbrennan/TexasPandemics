@@ -1,5 +1,6 @@
 County,Race/Ethnicity,At_Least_One_Vaccinated,Fully_Vaccinated,Booster,Doses_Administered,Population_Total
 Anderson,Asian,237,215,86,528,385
+<<<<<<< Updated upstream
 Anderson,Black,5301,4747,1717,11385,12135
 Anderson,Hispanic,2622,2262,601,5268,10510
 Anderson,Other,4743,4238,1482,10171,4067
@@ -23,6 +24,31 @@ Aransas,Hispanic,2993,2515,908,6242,6560
 Aransas,Other,3183,2915,1637,7608,1916
 Aransas,Unknown,499,392,63,934,NA
 Aransas,White,8907,7775,3458,19484,15710
+=======
+Anderson,Black,5303,4751,1727,11400,12135
+Anderson,Hispanic,2623,2263,604,5273,10510
+Anderson,Other,4747,4240,1487,10182,4067
+Anderson,Unknown,834,601,84,1409,NA
+Anderson,White,13408,12008,4785,28466,33638
+Andrews,Asian,60,54,19,132,103
+Andrews,Black,72,67,28,164,282
+Andrews,Hispanic,3892,3468,1137,8451,10590
+Andrews,Other,380,336,125,826,1234
+Andrews,Unknown,1092,985,337,2278,NA
+Andrews,White,3681,3258,1137,7957,7461
+Angelina,Asian,433,379,190,993,780
+Angelina,Black,5090,4558,2121,11452,13002
+Angelina,Hispanic,9144,8062,2540,19327,19700
+Angelina,Other,7306,6459,2260,15716,4922
+Angelina,Unknown,3070,2467,650,5903,NA
+Angelina,White,19307,17621,7845,43071,51947
+Aransas,Asian,269,235,84,575,449
+Aransas,Black,113,89,30,223,300
+Aransas,Hispanic,2995,2518,911,6250,6560
+Aransas,Other,3183,2915,1638,7609,1916
+Aransas,Unknown,498,391,63,932,NA
+Aransas,White,8908,7775,3459,19486,15710
+>>>>>>> Stashed changes
 Archer,Asian,9,8,3,20,35
 Archer,Black,23,21,5,44,70
 Archer,Hispanic,285,264,72,587,699
@@ -37,6 +63,7 @@ Armstrong,Unknown,67,55,10,130,NA
 Armstrong,White,567,501,219,1243,1663
 Atascosa,Asian,115,101,39,249,196
 Atascosa,Black,151,131,32,305,441
+<<<<<<< Updated upstream
 Atascosa,Hispanic,12636,10995,3340,26315,33163
 Atascosa,Other,6318,5512,2409,13919,3069
 Atascosa,Unknown,984,729,130,1797,NA
@@ -65,6 +92,36 @@ Bastrop,Hispanic,19283,15465,4044,38074,35189
 Bastrop,Other,17623,15759,7560,40372,8552
 Bastrop,Unknown,3233,2121,374,5580,NA
 Bastrop,White,17445,14943,5694,36496,45358
+=======
+Atascosa,Hispanic,12636,10992,3342,26314,33163
+Atascosa,Other,6326,5522,2415,13942,3069
+Atascosa,Unknown,984,729,130,1797,NA
+Atascosa,White,8778,7674,2854,18613,16782
+Austin,Asian,130,105,45,264,209
+Austin,Black,1020,864,333,2042,2560
+Austin,Hispanic,3988,3362,971,7966,8355
+Austin,Other,2702,2453,1251,6236,2026
+Austin,Unknown,861,653,118,1408,NA
+Austin,White,7948,7126,2932,16966,18427
+Bailey,Asian,16,13,6,33,44
+Bailey,Black,12,11,3,25,82
+Bailey,Hispanic,1421,1098,295,2668,4481
+Bailey,Other,203,164,77,424,582
+Bailey,Unknown,851,780,225,1853,NA
+Bailey,White,714,598,261,1492,2312
+Bandera,Asian,47,42,13,98,126
+Bandera,Black,64,58,10,122,224
+Bandera,Hispanic,1532,1313,491,3230,4565
+Bandera,Other,2520,2266,1166,5719,1689
+Bandera,Unknown,1111,927,297,2174,NA
+Bandera,White,6229,5459,2349,13304,17738
+Bastrop,Asian,420,365,163,925,642
+Bastrop,Black,1985,1660,616,4112,5812
+Bastrop,Hispanic,19286,15474,4054,38096,35189
+Bastrop,Other,17623,15759,7565,40377,8552
+Bastrop,Unknown,3232,2120,374,5578,NA
+Bastrop,White,17444,14940,5695,36493,45358
+>>>>>>> Stashed changes
 Baylor,Asian,9,8,4,20,14
 Baylor,Black,22,19,10,50,89
 Baylor,Hispanic,114,92,28,222,497
@@ -72,6 +129,7 @@ Baylor,Other,88,80,32,194,323
 Baylor,Unknown,313,290,36,638,NA
 Baylor,White,1060,964,359,2261,2820
 Bee,Asian,128,102,38,265,180
+<<<<<<< Updated upstream
 Bee,Black,1049,917,295,2247,2712
 Bee,Hispanic,6790,5822,2174,14493,19316
 Bee,Other,4124,3315,1269,8629,1836
@@ -89,12 +147,35 @@ Bexar,Hispanic,638443,536581,192250,1340615,1215788
 Bexar,Other,351894,305350,146095,782616,197881
 Bexar,Unknown,61003,41893,9119,108345,NA
 Bexar,White,371753,318910,136263,798607,542675
+=======
+Bee,Black,1052,927,295,2260,2712
+Bee,Hispanic,6791,5824,2174,14496,19316
+Bee,Other,4134,3334,1273,8662,1836
+Bee,Unknown,1798,1470,266,3517,NA
+Bee,White,5236,4600,1727,11253,10034
+Bell,Asian,5595,4594,1838,11735,10484
+Bell,Black,29176,23845,7288,58684,80677
+Bell,Hispanic,33546,28036,8167,68293,92760
+Bell,Other,35448,30924,12174,76462,65586
+Bell,Unknown,9758,6788,1039,17231,NA
+Bell,White,70016,61409,24563,150308,161752
+Bexar,Asian,33588,28665,12449,73448,59329
+Bexar,Black,58530,48906,17891,122237,148558
+Bexar,Hispanic,638600,536708,192452,1341096,1215788
+Bexar,Other,352109,305589,146342,783312,197881
+Bexar,Unknown,60975,41869,9106,108282,NA
+Bexar,White,371844,318999,136394,798922,542675
+>>>>>>> Stashed changes
 Blanco,Asian,24,19,8,51,105
 Blanco,Black,32,29,10,68,129
 Blanco,Hispanic,929,798,212,1878,2348
 Blanco,Other,1315,1196,649,3077,846
 Blanco,Unknown,186,152,32,349,NA
+<<<<<<< Updated upstream
 Blanco,White,4325,3867,1718,9589,9125
+=======
+Blanco,White,4324,3866,1717,9586,9125
+>>>>>>> Stashed changes
 Borden,Asian,2,2,1,4,1
 Borden,Black,1,0,0,1,6
 Borden,Hispanic,34,25,6,58,117
@@ -104,6 +185,7 @@ Borden,White,143,130,34,283,516
 Bosque,Asian,31,26,10,64,91
 Bosque,Black,115,102,43,249,323
 Bosque,Hispanic,1094,940,263,2225,3533
+<<<<<<< Updated upstream
 Bosque,Other,1335,1223,647,3106,1190
 Bosque,Unknown,1005,775,244,1974,NA
 Bosque,White,5906,5396,2326,12925,14410
@@ -125,6 +207,29 @@ Brazos,Hispanic,25608,21805,6001,52304,60075
 Brazos,Other,24081,21904,9940,54708,18237
 Brazos,Unknown,5619,3555,628,9385,NA
 Brazos,White,61289,54446,20363,131701,126413
+=======
+Bosque,Other,1336,1226,647,3110,1190
+Bosque,Unknown,1005,775,244,1974,NA
+Bosque,White,5906,5396,2326,12925,14410
+Bowie,Asian,593,519,218,1311,1101
+Bowie,Black,7862,6604,2446,16265,23299
+Bowie,Hispanic,3069,2589,621,6077,7313
+Bowie,Other,4271,3821,1465,9350,9072
+Bowie,Unknown,1917,1152,171,3009,NA
+Bowie,White,21116,18325,6651,43817,58870
+Brazoria,Asian,16786,15064,6897,37366,25308
+Brazoria,Black,30731,27614,11606,68134,53768
+Brazoria,Hispanic,58339,51041,15658,121964,118151
+Brazoria,Other,55142,50948,24230,127424,30119
+Brazoria,Unknown,7415,5606,1551,13990,NA
+Brazoria,White,74269,67140,25764,159896,169600
+Brazos,Asian,8689,7488,3373,19343,14110
+Brazos,Black,9871,8595,3039,20701,24296
+Brazos,Hispanic,25604,21805,6006,52305,60075
+Brazos,Other,24087,21908,9950,54728,18237
+Brazos,Unknown,5619,3554,628,9385,NA
+Brazos,White,61299,54450,20370,131722,126413
+>>>>>>> Stashed changes
 Brewster,Asian,47,42,17,103,138
 Brewster,Black,41,29,9,75,120
 Brewster,Hispanic,2283,1892,745,4762,4159
@@ -139,6 +244,7 @@ Briscoe,Unknown,10,7,3,20,NA
 Briscoe,White,427,387,206,995,1064
 Brooks,Asian,10,8,3,20,64
 Brooks,Black,8,5,0,13,39
+<<<<<<< Updated upstream
 Brooks,Hispanic,7156,2887,1036,10687,6483
 Brooks,Other,663,574,337,1550,184
 Brooks,Unknown,102,44,1,147,NA
@@ -206,10 +312,80 @@ Cass,White,7153,6264,2492,14866,22808
 Castro,Asian,9,9,5,23,42
 Castro,Black,41,38,18,90,152
 Castro,Hispanic,2381,1953,661,4843,4947
+=======
+Brooks,Hispanic,7691,2934,1035,11268,6483
+Brooks,Other,663,574,337,1550,184
+Brooks,Unknown,102,44,1,147,NA
+Brooks,White,1415,1241,475,3075,482
+Brown,Asian,130,116,41,257,272
+Brown,Black,516,475,178,1071,1364
+Brown,Hispanic,3139,2748,760,6127,8735
+Brown,Other,3292,2916,1244,6806,2692
+Brown,Unknown,1786,1576,344,3084,NA
+Brown,White,8885,8042,3019,17904,26744
+Burleson,Asian,55,54,24,128,82
+Burleson,Black,970,900,404,2153,2263
+Burleson,Hispanic,1431,1268,446,3024,3899
+Burleson,Other,1151,1054,513,2644,1299
+Burleson,Unknown,640,465,82,1081,NA
+Burleson,White,5491,5055,2127,12075,11850
+Burnet,Asian,257,223,83,540,413
+Burnet,Black,369,303,88,719,832
+Burnet,Hispanic,3701,3150,800,7374,10874
+Burnet,Other,6570,6005,3050,15098,3219
+Burnet,Unknown,1078,808,148,1865,NA
+Burnet,White,16491,14746,6331,35760,35194
+Caldwell,Asian,112,102,52,254,392
+Caldwell,Black,835,752,295,1824,2481
+Caldwell,Hispanic,10804,8954,2897,22006,23488
+Caldwell,Other,5402,4688,2043,11750,3532
+Caldwell,Unknown,2438,1867,450,4432,NA
+Caldwell,White,8565,7573,3217,18459,16696
+Calhoun,Asian,721,662,256,1463,1111
+Calhoun,Black,204,169,82,435,526
+Calhoun,Hispanic,5313,4609,1559,10946,10522
+Calhoun,Other,1476,1368,644,3238,1190
+Calhoun,Unknown,527,364,102,935,NA
+Calhoun,White,4665,4136,1805,10011,8889
+Callahan,Asian,38,34,12,77,94
+Callahan,Black,23,14,2,38,208
+Callahan,Hispanic,482,408,126,981,1397
+Callahan,Other,564,519,222,1261,1063
+Callahan,Unknown,440,388,98,911,NA
+Callahan,White,4286,3852,1568,9100,11937
+Cameron,Asian,1086,947,406,2278,2804
+Cameron,Black,701,599,158,1252,1594
+Cameron,Hispanic,300522,242897,88979,617849,380861
+Cameron,Other,36473,29799,14870,78770,11752
+Cameron,Unknown,25586,19131,6109,50459,NA
+Cameron,White,53456,42834,17743,109955,36381
+Camp,Asian,52,45,18,112,105
+Camp,Black,857,733,326,1862,2060
+Camp,Hispanic,1462,1186,248,2849,3391
+Camp,Other,821,742,345,1883,1312
+Camp,Unknown,185,146,27,350,NA
+Camp,White,2993,2630,1089,6520,7197
+Carson,Asian,12,10,6,28,35
+Carson,Black,7,6,3,14,58
+Carson,Hispanic,197,165,53,409,576
+Carson,Other,268,240,107,596,532
+Carson,Unknown,211,175,63,448,NA
+Carson,White,1632,1450,562,3546,5067
+Cass,Asian,62,50,14,121,146
+Cass,Black,1782,1534,605,3724,5053
+Cass,Hispanic,711,602,210,1493,1431
+Cass,Other,1640,1489,580,3645,1951
+Cass,Unknown,430,277,50,676,NA
+Cass,White,7156,6265,2494,14872,22808
+Castro,Asian,9,9,5,23,42
+Castro,Black,41,38,18,90,152
+Castro,Hispanic,2380,1953,661,4842,4947
+>>>>>>> Stashed changes
 Castro,Other,211,169,57,429,419
 Castro,Unknown,194,143,24,350,NA
 Castro,White,967,859,418,2183,2316
 Chambers,Asian,442,398,164,977,530
+<<<<<<< Updated upstream
 Chambers,Black,1756,1561,592,3849,3394
 Chambers,Hispanic,4897,4177,1150,10096,10436
 Chambers,Other,3615,3266,1191,7942,2932
@@ -221,11 +397,25 @@ Cherokee,Hispanic,5306,4500,1105,10536,12531
 Cherokee,Other,2966,2654,1087,6532,4591
 Cherokee,Unknown,1062,892,250,2043,NA
 Cherokee,White,11706,10537,4456,25413,31593
+=======
+Chambers,Black,1756,1560,592,3848,3394
+Chambers,Hispanic,4896,4176,1150,10094,10436
+Chambers,Other,3615,3267,1192,7944,2932
+Chambers,Unknown,765,596,142,1444,NA
+Chambers,White,12840,11477,3811,27318,28761
+Cherokee,Asian,127,108,49,265,246
+Cherokee,Black,2692,2424,1060,5848,7259
+Cherokee,Hispanic,5305,4500,1105,10535,12531
+Cherokee,Other,2968,2656,1088,6537,4591
+Cherokee,Unknown,1062,892,250,2043,NA
+Cherokee,White,11707,10537,4457,25414,31593
+>>>>>>> Stashed changes
 Childress,Asian,45,43,22,103,52
 Childress,Black,390,367,159,800,748
 Childress,Hispanic,669,605,201,1330,2318
 Childress,Other,598,544,262,1238,469
 Childress,Unknown,109,79,5,188,NA
+<<<<<<< Updated upstream
 Childress,White,2143,1987,860,4609,4046
 Clay,Asian,22,18,8,47,50
 Clay,Black,23,22,5,49,88
@@ -257,12 +447,49 @@ Collin,Hispanic,110231,93345,29236,226954,160636
 Collin,Other,152916,139802,70600,358697,105061
 Collin,Unknown,28783,20865,2923,50795,NA
 Collin,White,300190,269588,112540,664825,570008
+=======
+Childress,White,2142,1986,860,4607,4046
+Clay,Asian,22,18,8,47,50
+Clay,Black,23,22,5,49,88
+Clay,Hispanic,219,198,69,476,722
+Clay,Other,689,631,302,1581,942
+Clay,Unknown,299,261,38,582,NA
+Clay,White,3561,3263,1254,7769,9327
+Cochran,Asian,3,3,2,6,8
+Cochran,Black,27,23,6,50,99
+Cochran,Hispanic,667,568,153,1295,1737
+Cochran,Other,83,75,33,182,210
+Cochran,Unknown,144,125,28,284,NA
+Cochran,White,331,298,97,655,961
+Coke,Asian,1,1,0,2,5
+Coke,Black,4,4,0,8,25
+Coke,Hispanic,227,195,76,486,749
+Coke,Other,223,201,100,517,324
+Coke,Unknown,47,30,10,85,NA
+Coke,White,947,858,385,2119,2514
+Coleman,Asian,19,16,8,42,87
+Coleman,Black,31,26,8,61,235
+Coleman,Hispanic,327,288,114,699,1434
+Coleman,Other,316,267,106,660,727
+Coleman,Unknown,1282,1116,425,2773,NA
+Coleman,White,1487,1370,644,3323,6244
+Collin,Asian,136718,119630,52806,304762,167089
+Collin,Black,57612,50470,17852,123556,107723
+Collin,Hispanic,110281,93385,29272,227078,160636
+Collin,Other,152986,139877,70707,358947,105061
+Collin,Unknown,28774,20850,2924,50772,NA
+Collin,White,300204,269612,112635,664959,570008
+>>>>>>> Stashed changes
 Collingsworth,Asian,4,4,3,11,3
 Collingsworth,Black,32,20,6,52,152
 Collingsworth,Hispanic,239,173,52,429,994
 Collingsworth,Other,73,62,31,163,302
 Collingsworth,Unknown,72,52,17,140,NA
+<<<<<<< Updated upstream
 Collingsworth,White,692,618,332,1532,1678
+=======
+Collingsworth,White,689,616,331,1526,1678
+>>>>>>> Stashed changes
 Colorado,Asian,78,71,29,172,121
 Colorado,Black,1080,974,434,2319,2470
 Colorado,Hispanic,2859,2468,740,5673,6589
@@ -270,6 +497,7 @@ Colorado,Other,1469,1320,692,3349,1634
 Colorado,Unknown,1065,889,270,2055,NA
 Colorado,White,5989,5412,2493,13044,11966
 Comal,Asian,1322,1135,451,2837,1957
+<<<<<<< Updated upstream
 Comal,Black,1925,1586,608,3987,3592
 Comal,Hispanic,20968,17905,5736,43127,43824
 Comal,Other,25523,22987,11747,58596,12362
@@ -281,11 +509,25 @@ Comanche,Hispanic,1466,1308,377,2990,3903
 Comanche,Other,501,446,199,1106,900
 Comanche,Unknown,1236,1104,427,2671,NA
 Comanche,White,3593,3286,1540,7945,9361
+=======
+Comal,Black,1925,1588,611,3992,3592
+Comal,Hispanic,20968,17911,5737,43133,43824
+Comal,Other,25533,23000,11765,58638,12362
+Comal,Unknown,4510,3380,652,8093,NA
+Comal,White,53436,47325,19434,114594,103953
+Comanche,Asian,19,14,8,40,75
+Comanche,Black,16,6,2,24,62
+Comanche,Hispanic,1466,1308,380,2993,3903
+Comanche,Other,502,447,200,1109,900
+Comanche,Unknown,1236,1104,427,2671,NA
+Comanche,White,3593,3285,1540,7944,9361
+>>>>>>> Stashed changes
 Concho,Asian,7,5,1,13,47
 Concho,Black,26,12,5,42,37
 Concho,Hispanic,484,346,115,886,947
 Concho,Other,132,119,67,313,146
 Concho,Unknown,158,142,56,345,NA
+<<<<<<< Updated upstream
 Concho,White,760,688,316,1671,1650
 Cooke,Asian,192,155,65,400,377
 Cooke,Black,382,306,112,776,1348
@@ -299,6 +541,21 @@ Coryell,Hispanic,3836,3289,1022,7973,14349
 Coryell,Other,7107,6285,2570,15570,13191
 Coryell,Unknown,1664,1156,206,2980,NA
 Coryell,White,18234,16147,6181,39022,43753
+=======
+Concho,White,759,687,318,1671,1650
+Cooke,Asian,192,155,65,400,377
+Cooke,Black,382,306,112,776,1348
+Cooke,Hispanic,3130,2420,541,5914,7807
+Cooke,Other,2086,1784,724,4502,3437
+Cooke,Unknown,1440,1187,220,2664,NA
+Cooke,White,11240,9573,3843,23737,30694
+Coryell,Asian,643,523,188,1318,1471
+Coryell,Black,4658,4004,1427,9851,12501
+Coryell,Hispanic,3837,3293,1023,7979,14349
+Coryell,Other,7115,6293,2575,15590,13191
+Coryell,Unknown,1664,1156,205,2978,NA
+Coryell,White,18237,16152,6188,39038,43753
+>>>>>>> Stashed changes
 Cottle,Black,15,13,6,30,144
 Cottle,Hispanic,119,104,49,258,339
 Cottle,Other,102,93,36,230,112
@@ -313,15 +570,23 @@ Crane,White,589,477,144,1190,1405
 Crockett,Asian,15,13,10,37,31
 Crockett,Black,7,5,2,13,18
 Crockett,Hispanic,1052,916,391,2332,2286
+<<<<<<< Updated upstream
 Crockett,Other,238,194,90,520,249
+=======
+Crockett,Other,238,194,91,521,249
+>>>>>>> Stashed changes
 Crockett,Unknown,43,33,6,80,NA
-Crockett,White,501,444,195,1124,1083
+Crockett,White,502,444,195,1125,1083
 Crosby,Asian,7,6,3,15,13
 Crosby,Black,42,37,15,90,172
 Crosby,Hispanic,1302,1174,422,2836,3250
 Crosby,Other,310,266,133,699,453
 Crosby,Unknown,215,184,78,474,NA
+<<<<<<< Updated upstream
 Crosby,White,969,883,384,2187,2230
+=======
+Crosby,White,967,881,382,2181,2230
+>>>>>>> Stashed changes
 Culberson,Asian,34,27,12,73,37
 Culberson,Black,4,2,1,7,34
 Culberson,Hispanic,916,800,353,2062,1582
@@ -330,6 +595,7 @@ Culberson,Unknown,72,63,20,155,NA
 Culberson,White,233,204,78,505,472
 Dallam,Asian,19,16,6,41,56
 Dallam,Black,57,36,4,94,144
+<<<<<<< Updated upstream
 Dallam,Hispanic,1978,1432,378,3726,3465
 Dallam,Other,311,246,92,641,594
 Dallam,Unknown,686,451,78,1214,NA
@@ -351,6 +617,29 @@ Deaf Smith,Black,45,38,15,98,215
 Deaf Smith,Hispanic,5751,4996,1550,11712,13761
 Deaf Smith,Other,545,466,171,1154,1126
 Deaf Smith,Unknown,869,716,227,1773,NA
+=======
+Dallam,Hispanic,1979,1433,379,3729,3465
+Dallam,Other,312,246,92,642,594
+Dallam,Unknown,684,450,78,1211,NA
+Dallam,White,1039,851,301,2147,3478
+Dallas,Asian,127045,111629,48502,281570,172416
+Dallas,Black,253060,219504,77581,537956,597570
+Dallas,Hispanic,655008,549352,149843,1320943,1074195
+Dallas,Other,286120,251964,118439,645751,210403
+Dallas,Unknown,59165,40489,4894,101007,NA
+Dallas,White,437930,389554,177906,975782,745508
+Dawson,Asian,20,18,4,41,139
+Dawson,Black,401,374,86,773,673
+Dawson,Hispanic,1927,1655,471,3933,7400
+Dawson,Other,870,751,238,1700,874
+Dawson,Unknown,259,226,76,552,NA
+Dawson,White,1543,1359,407,3113,4378
+Deaf Smith,Asian,30,28,14,69,96
+Deaf Smith,Black,45,38,15,98,215
+Deaf Smith,Hispanic,5753,4996,1552,11716,13761
+Deaf Smith,Other,545,466,171,1154,1126
+Deaf Smith,Unknown,867,715,227,1770,NA
+>>>>>>> Stashed changes
 Deaf Smith,White,1793,1633,720,4016,4306
 Delta,Asian,18,13,5,34,36
 Delta,Black,123,107,30,256,338
@@ -358,6 +647,7 @@ Delta,Hispanic,147,117,19,277,472
 Delta,Other,308,285,94,674,740
 Delta,Unknown,143,119,32,284,NA
 Delta,White,1268,1129,444,2759,4236
+<<<<<<< Updated upstream
 Denton,Asian,60439,52893,24053,134675,84494
 Denton,Black,46785,41315,14972,100961,93153
 Denton,Hispanic,109932,94417,29873,228946,173905
@@ -370,6 +660,20 @@ DeWitt,Hispanic,1871,1685,562,3874,7291
 DeWitt,Other,2055,1829,878,4680,1158
 DeWitt,Unknown,690,550,133,1355,NA
 DeWitt,White,4747,4401,1851,10524,10931
+=======
+Denton,Asian,60449,52904,24076,134719,84494
+Denton,Black,46801,41323,14986,101000,93153
+Denton,Hispanic,109955,94443,29915,229037,173905
+Denton,Other,112507,103019,51983,263748,91254
+Denton,Unknown,18790,13588,1946,32377,NA
+Denton,White,265228,241679,102069,593525,511351
+DeWitt,Asian,60,51,25,133,70
+DeWitt,Black,658,608,249,1469,1634
+DeWitt,Hispanic,1870,1685,562,3873,7291
+DeWitt,Other,2056,1829,889,4692,1158
+DeWitt,Unknown,690,550,133,1355,NA
+DeWitt,White,4748,4402,1856,10531,10931
+>>>>>>> Stashed changes
 Dickens,Asian,3,3,0,6,23
 Dickens,Black,10,10,3,22,106
 Dickens,Hispanic,138,118,32,271,671
@@ -379,13 +683,20 @@ Dickens,White,517,478,221,1138,1365
 Dimmit,Asian,29,28,10,67,65
 Dimmit,Black,40,32,16,87,114
 Dimmit,Hispanic,8679,4907,1439,14968,8868
+<<<<<<< Updated upstream
 Dimmit,Other,1081,815,401,2258,425
 Dimmit,Unknown,429,279,46,750,NA
 Dimmit,White,1598,1287,588,3419,1034
+=======
+Dimmit,Other,1080,814,400,2255,425
+Dimmit,Unknown,429,279,46,750,NA
+Dimmit,White,1598,1288,588,3420,1034
+>>>>>>> Stashed changes
 Donley,Asian,4,4,0,8,19
 Donley,Black,27,21,8,56,190
 Donley,Hispanic,105,81,24,209,370
 Donley,Other,315,289,113,707,207
+<<<<<<< Updated upstream
 Donley,Unknown,89,81,33,203,NA
 Donley,White,822,717,291,1768,2623
 Duval,Asian,19,18,7,43,40
@@ -394,11 +705,22 @@ Duval,Hispanic,5832,4987,2053,12465,9967
 Duval,Other,722,611,292,1601,351
 Duval,Unknown,324,222,67,592,NA
 Duval,White,1397,1177,487,2982,977
+=======
+Donley,Unknown,88,80,32,200,NA
+Donley,White,823,718,292,1771,2623
+Duval,Asian,19,18,7,43,40
+Duval,Black,149,140,29,314,114
+Duval,Hispanic,5834,4988,2053,12468,9967
+Duval,Other,723,612,292,1603,351
+Duval,Unknown,324,222,67,592,NA
+Duval,White,1401,1181,489,2992,977
+>>>>>>> Stashed changes
 Eastland,Asian,60,53,19,118,135
 Eastland,Black,65,54,26,141,336
 Eastland,Hispanic,996,840,234,1991,3121
 Eastland,Other,749,662,260,1559,1207
 Eastland,Unknown,489,359,61,871,NA
+<<<<<<< Updated upstream
 Eastland,White,5177,4588,1903,11060,14401
 Ector,Asian,1132,1015,431,2551,1825
 Ector,Black,2334,1985,613,4811,7361
@@ -447,11 +769,62 @@ Fayette,Hispanic,1758,1397,357,3318,5450
 Fayette,Other,3612,3313,1881,8567,1448
 Fayette,Unknown,727,560,150,1352,NA
 Fayette,White,8215,7272,2877,17323,17991
+=======
+Eastland,White,5178,4589,1906,11065,14401
+Ector,Asian,1132,1015,432,2552,1825
+Ector,Black,2336,1985,613,4813,7361
+Ector,Hispanic,36653,30444,9750,75775,103988
+Ector,Other,11225,9901,3368,23886,11593
+Ector,Unknown,3749,2744,361,6620,NA
+Ector,White,27020,24041,7367,56834,50570
+Edwards,Black,1,1,1,3,10
+Edwards,Hispanic,292,245,113,643,1069
+Edwards,Other,152,137,71,350,126
+Edwards,Unknown,59,53,12,123,NA
+Edwards,White,376,328,127,813,818
+El Paso,Asian,4314,3437,1288,8913,9490
+El Paso,Black,7258,5601,1564,13972,25877
+El Paso,Hispanic,645046,513509,196292,1325541,696115
+El Paso,Other,33853,26928,12083,70904,55194
+El Paso,Unknown,64601,41515,12955,117377,NA
+El Paso,White,48664,39636,15258,100521,97247
+Ellis,Asian,940,819,334,2065,1378
+Ellis,Black,13124,11664,4148,28358,21380
+Ellis,Hispanic,22661,19562,5151,46396,49705
+Ellis,Other,18691,16807,6980,41584,14486
+Ellis,Unknown,3500,2544,281,6014,NA
+Ellis,White,51832,46587,17410,112031,108813
+Erath,Asian,182,149,64,384,385
+Erath,Black,159,134,37,316,772
+Erath,Hispanic,3218,2762,645,6451,9205
+Erath,Other,2968,2734,1362,6908,3019
+Erath,Unknown,668,513,83,1187,NA
+Erath,White,10683,9521,3524,22797,31567
+Falls,Asian,57,52,23,130,88
+Falls,Black,1747,1491,578,3740,3969
+Falls,Hispanic,1542,1290,380,3151,4158
+Falls,Other,1462,1248,421,3064,1416
+Falls,Unknown,375,288,13,669,NA
+Falls,White,4126,3635,1480,9006,8741
+Fannin,Asian,83,71,23,168,264
+Fannin,Black,918,839,361,2006,2214
+Fannin,Hispanic,1790,1507,400,3496,4247
+Fannin,Other,1623,1471,570,3555,3366
+Fannin,Unknown,1424,1163,390,2833,NA
+Fannin,White,10495,9423,3889,22411,27787
+Fayette,Asian,64,55,18,132,99
+Fayette,Black,568,479,158,1140,1485
+Fayette,Hispanic,1757,1396,357,3316,5450
+Fayette,Other,3614,3314,1884,8573,1448
+Fayette,Unknown,727,560,150,1352,NA
+Fayette,White,8214,7271,2877,17321,17991
+>>>>>>> Stashed changes
 Fisher,Asian,1,1,0,2,15
 Fisher,Black,27,20,1,43,130
 Fisher,Hispanic,384,327,129,791,1080
 Fisher,Other,91,79,27,188,358
 Fisher,Unknown,228,198,120,541,NA
+<<<<<<< Updated upstream
 Fisher,White,873,774,344,1847,2535
 Floyd,Asian,2,2,0,3,23
 Floyd,Black,40,36,16,90,191
@@ -461,21 +834,42 @@ Floyd,Unknown,123,91,16,209,NA
 Floyd,White,1113,1021,437,2474,2072
 Foard,Asian,2,1,1,4,8
 Foard,Black,17,15,4,32,54
+=======
+Fisher,White,873,774,346,1849,2535
+Floyd,Asian,2,2,0,3,23
+Floyd,Black,40,36,16,90,191
+Floyd,Hispanic,1270,1136,437,2756,3366
+Floyd,Other,233,199,94,514,434
+Floyd,Unknown,123,91,16,209,NA
+Floyd,White,1113,1021,437,2474,2072
+Foard,Asian,2,1,1,4,8
+Foard,Black,16,14,4,31,54
+>>>>>>> Stashed changes
 Foard,Hispanic,78,56,23,148,216
 Foard,Other,30,26,12,67,69
 Foard,Unknown,102,84,29,212,NA
 Foard,White,372,327,136,807,859
+<<<<<<< Updated upstream
 Fort Bend,Asian,115180,102780,48678,261325,167664
 Fort Bend,Black,91011,80760,31930,198779,165868
 Fort Bend,Hispanic,135678,116865,37396,283316,202492
 Fort Bend,Other,151674,139874,70128,355742,69190
 Fort Bend,Unknown,20938,14940,3875,38430,NA
 Fort Bend,White,138272,124093,50521,302924,258729
+=======
+Fort Bend,Asian,115201,102784,48721,261395,167664
+Fort Bend,Black,91027,80776,31965,198847,165868
+Fort Bend,Hispanic,135694,116885,37438,283396,202492
+Fort Bend,Other,151735,139922,70212,355932,69190
+Fort Bend,Unknown,20937,14935,3876,38425,NA
+Fort Bend,White,138273,124090,50565,302965,258729
+>>>>>>> Stashed changes
 Franklin,Asian,33,25,10,66,107
 Franklin,Black,141,117,61,305,414
 Franklin,Hispanic,527,435,109,1038,1616
 Franklin,Other,602,552,278,1397,836
 Franklin,Unknown,532,433,94,960,NA
+<<<<<<< Updated upstream
 Franklin,White,2702,2382,1043,5818,8352
 Freestone,Asian,65,51,17,130,113
 Freestone,Black,1272,1146,485,2795,3010
@@ -487,10 +881,24 @@ Frio,Asian,58,47,17,108,497
 Frio,Black,892,847,75,1090,602
 Frio,Hispanic,10101,8727,1977,16446,16216
 Frio,Other,2340,2088,567,4207,955
+=======
+Franklin,White,2701,2381,1043,5816,8352
+Freestone,Asian,65,51,17,130,113
+Freestone,Black,1272,1146,485,2795,3010
+Freestone,Hispanic,881,749,170,1718,3169
+Freestone,Other,1437,1280,542,3198,1734
+Freestone,Unknown,258,175,38,442,NA
+Freestone,White,4856,4421,1560,10150,13062
+Frio,Asian,58,47,17,108,497
+Frio,Black,892,847,75,1090,602
+Frio,Hispanic,10102,8728,1979,16450,16216
+Frio,Other,2340,2088,568,4208,955
+>>>>>>> Stashed changes
 Frio,Unknown,755,563,126,1378,NA
 Frio,White,1865,1618,612,3843,2853
 Gaines,Asian,36,31,13,78,74
 Gaines,Black,58,55,14,116,366
+<<<<<<< Updated upstream
 Gaines,Hispanic,2341,1979,472,4514,9142
 Gaines,Other,478,396,116,938,1210
 Gaines,Unknown,1016,879,234,2068,NA
@@ -501,23 +909,42 @@ Galveston,Hispanic,49258,43508,14503,105646,86852
 Galveston,Other,56878,53729,29745,138862,28028
 Galveston,Unknown,5511,4033,526,9287,NA
 Galveston,White,82032,73791,27717,177543,193946
+=======
+Gaines,Hispanic,2341,1979,473,4515,9142
+Gaines,Other,478,396,115,937,1210
+Gaines,Unknown,1016,879,234,2068,NA
+Gaines,White,1443,1291,341,2906,11687
+Galveston,Asian,10105,9155,4043,22026,11442
+Galveston,Black,22869,20530,8903,51366,42953
+Galveston,Hispanic,49274,43526,14523,105699,86852
+Galveston,Other,56898,53748,29787,138942,28028
+Galveston,Unknown,5508,4030,525,9280,NA
+Galveston,White,82045,73802,27758,177608,193946
+>>>>>>> Stashed changes
 Garza,Asian,19,16,3,31,26
-Garza,Black,69,63,8,114,389
+Garza,Black,69,63,10,116,389
 Garza,Hispanic,2281,2186,493,3785,3238
-Garza,Other,219,184,47,434,432
+Garza,Other,219,184,48,435,432
 Garza,Unknown,44,37,2,78,NA
 Garza,White,795,737,118,1567,2473
 Gillespie,Asian,105,89,29,211,131
 Gillespie,Black,33,28,13,74,103
 Gillespie,Hispanic,1851,1538,409,3712,6429
+<<<<<<< Updated upstream
 Gillespie,Other,3047,2821,1678,7386,1363
 Gillespie,Unknown,959,773,98,1790,NA
 Gillespie,White,10378,9308,4305,23223,20007
+=======
+Gillespie,Other,3050,2823,1682,7395,1363
+Gillespie,Unknown,959,773,98,1790,NA
+Gillespie,White,10381,9310,4308,23231,20007
+>>>>>>> Stashed changes
 Glasscock,Asian,3,3,1,7,2
 Glasscock,Black,2,0,0,2,21
 Glasscock,Hispanic,204,173,30,397,554
 Glasscock,Other,158,143,46,339,37
 Glasscock,Unknown,26,18,2,46,NA
+<<<<<<< Updated upstream
 Glasscock,White,305,273,77,633,821
 Goliad,Asian,14,12,5,31,32
 Goliad,Black,80,73,37,180,309
@@ -567,6 +994,57 @@ Hale,Hispanic,7874,6964,2222,16321,20179
 Hale,Other,2415,2107,760,4928,2340
 Hale,Unknown,747,567,74,1331,NA
 Hale,White,4312,3919,1449,9106,10988
+=======
+Glasscock,White,305,273,78,634,821
+Goliad,Asian,14,12,5,31,32
+Goliad,Black,80,73,37,180,309
+Goliad,Hispanic,949,834,305,2018,2744
+Goliad,Other,646,594,339,1545,448
+Goliad,Unknown,256,214,56,518,NA
+Goliad,White,1706,1542,650,3725,4452
+Gonzales,Asian,44,42,20,103,93
+Gonzales,Black,523,466,172,1089,1242
+Gonzales,Hispanic,3634,3238,900,7208,10689
+Gonzales,Other,2076,1850,761,4494,1316
+Gonzales,Unknown,1080,897,311,2138,NA
+Gonzales,White,4383,3961,1616,9337,8562
+Gray,Asian,67,63,23,148,118
+Gray,Black,377,348,161,790,1121
+Gray,Hispanic,1986,1725,552,4178,6530
+Gray,Other,1387,1220,469,2937,2056
+Gray,Unknown,859,683,134,1655,NA
+Gray,White,5065,4616,1840,10959,13577
+Grayson,Asian,683,585,220,1393,2042
+Grayson,Black,2819,2388,889,5572,7963
+Grayson,Hispanic,7915,6604,1571,15238,19370
+Grayson,Other,10408,9145,3682,22592,15831
+Grayson,Unknown,4844,3889,855,9023,NA
+Grayson,White,41360,36250,15365,86395,101621
+Gregg,Asian,902,772,275,1916,1623
+Gregg,Black,10258,8925,3429,22175,25098
+Gregg,Hispanic,11093,9577,2268,22578,23824
+Gregg,Other,10082,9109,4147,22974,10466
+Gregg,Unknown,3409,2552,549,6251,NA
+Gregg,White,29984,26825,10481,65615,70670
+Grimes,Asian,84,76,35,190,101
+Grimes,Black,2140,1958,868,4749,4299
+Grimes,Hispanic,3119,2702,830,6474,7132
+Grimes,Other,2721,2443,1160,6143,2280
+Grimes,Unknown,1406,1116,211,2668,NA
+Grimes,White,8317,7530,3252,18286,16805
+Guadalupe,Asian,1684,1429,520,3493,3001
+Guadalupe,Black,5544,4582,1679,11344,13137
+Guadalupe,Hispanic,29297,25354,8049,59791,64251
+Guadalupe,Other,23174,20735,9893,51877,18433
+Guadalupe,Unknown,6063,4692,970,11104,NA
+Guadalupe,White,38063,33628,12877,79147,82239
+Hale,Asian,63,53,18,130,172
+Hale,Black,483,440,120,921,1617
+Hale,Hispanic,7880,6967,2227,16332,20179
+Hale,Other,2427,2111,783,4965,2340
+Hale,Unknown,745,565,74,1328,NA
+Hale,White,4325,3929,1468,9143,10988
+>>>>>>> Stashed changes
 Hall,Asian,6,5,4,15,5
 Hall,Black,69,59,14,136,241
 Hall,Hispanic,427,373,128,868,1041
@@ -576,9 +1054,15 @@ Hall,White,671,603,276,1473,1629
 Hamilton,Asian,14,13,7,33,59
 Hamilton,Black,11,9,2,19,59
 Hamilton,Hispanic,499,439,103,988,1135
+<<<<<<< Updated upstream
 Hamilton,Other,327,304,172,781,595
 Hamilton,Unknown,182,149,35,358,NA
 Hamilton,White,3551,3281,1571,7918,7056
+=======
+Hamilton,Other,326,303,172,779,595
+Hamilton,Unknown,182,149,35,358,NA
+Hamilton,White,3550,3282,1571,7918,7056
+>>>>>>> Stashed changes
 Hansford,Asian,5,5,2,12,19
 Hansford,Black,8,3,2,13,36
 Hansford,Hispanic,1073,959,276,2071,2660
@@ -593,6 +1077,7 @@ Hardeman,Unknown,262,236,61,552,NA
 Hardeman,White,1194,1097,492,2574,2670
 Hardin,Asian,204,179,60,433,407
 Hardin,Black,1226,1066,412,2593,3160
+<<<<<<< Updated upstream
 Hardin,Hispanic,1341,1129,291,2698,3441
 Hardin,Other,4073,3713,1418,9070,3321
 Hardin,Unknown,1412,1084,214,2588,NA
@@ -627,6 +1112,42 @@ Hays,Hispanic,48450,40021,13307,99215,92274
 Hays,Other,32046,28491,14377,72606,21539
 Hays,Unknown,13772,10580,2240,25184,NA
 Hays,White,65929,58102,24992,143497,120830
+=======
+Hardin,Hispanic,1342,1129,291,2699,3441
+Hardin,Other,4075,3714,1419,9074,3321
+Hardin,Unknown,1411,1083,214,2586,NA
+Hardin,White,16405,14593,5386,35340,49591
+Harris,Asian,233063,205942,89683,502455,335133
+Harris,Black,393879,337711,116264,822562,886956
+Harris,Hispanic,1289642,1084085,302826,2598766,2061019
+Harris,Other,625742,563657,264289,1412667,375442
+Harris,Unknown,130855,89971,22482,233316,NA
+Harris,White,745995,664247,274235,1619863,1353078
+Harrison,Asian,205,181,75,430,459
+Harrison,Black,5347,4740,1957,11513,13735
+Harrison,Hispanic,3470,2989,628,6813,9078
+Harrison,Other,4553,4139,1857,10350,5064
+Harrison,Unknown,1513,1136,198,2636,NA
+Harrison,White,14588,12999,4855,30890,41951
+Hartley,Asian,11,9,5,24,44
+Hartley,Black,127,121,75,306,377
+Hartley,Hispanic,1084,801,189,1988,1556
+Hartley,Other,484,429,264,1141,277
+Hartley,Unknown,391,302,61,752,NA
+Hartley,White,1148,986,449,2526,3523
+Haskell,Asian,22,20,8,49,49
+Haskell,Black,55,48,9,101,213
+Haskell,Hispanic,519,407,103,966,1619
+Haskell,Other,328,265,149,725,522
+Haskell,Unknown,141,123,9,272,NA
+Haskell,White,1448,1283,421,3009,3655
+Hays,Asian,2869,2432,1025,6171,3536
+Hays,Black,4345,3765,1210,8985,8942
+Hays,Hispanic,48455,40022,13315,99230,92274
+Hays,Other,32057,28505,14397,72649,21539
+Hays,Unknown,13765,10576,2237,25171,NA
+Hays,White,65932,58108,25016,143528,120830
+>>>>>>> Stashed changes
 Hemphill,Asian,9,8,2,16,41
 Hemphill,Black,2,1,0,2,15
 Hemphill,Hispanic,510,443,142,946,1307
@@ -634,6 +1155,7 @@ Hemphill,Other,150,127,55,319,227
 Hemphill,Unknown,141,115,41,285,NA
 Hemphill,White,997,907,400,2104,2389
 Henderson,Asian,272,227,87,579,516
+<<<<<<< Updated upstream
 Henderson,Black,1773,1558,632,3831,5125
 Henderson,Hispanic,4860,4122,1091,9849,11218
 Henderson,Other,5371,4867,2387,12154,6913
@@ -684,20 +1206,81 @@ Howard,White,4943,4253,1248,9911,17578
 Hudspeth,Asian,18,14,2,34,50
 Hudspeth,Black,51,38,7,93,149
 Hudspeth,Hispanic,2858,2454,1004,6129,3759
+=======
+Henderson,Black,1772,1556,631,3827,5125
+Henderson,Hispanic,4863,4124,1094,9857,11218
+Henderson,Other,5371,4867,2389,12156,6913
+Henderson,Unknown,1660,1240,142,2761,NA
+Henderson,White,23666,20915,9099,51555,64069
+Hidalgo,Asian,3083,2517,1073,6531,7945
+Hidalgo,Black,1465,1221,382,2983,3625
+Hidalgo,Hispanic,720093,508204,165378,1363688,803455
+Hidalgo,Other,68987,52749,22447,138232,20875
+Hidalgo,Unknown,37380,20859,4415,61346,NA
+Hidalgo,White,102124,82119,27275,202792,51644
+Hill,Asian,129,113,33,267,200
+Hill,Black,697,575,179,1364,2261
+Hill,Hispanic,2730,2274,546,5319,7779
+Hill,Other,2166,1942,911,4777,2863
+Hill,Unknown,1295,981,168,2282,NA
+Hill,White,9972,8839,3588,20770,25665
+Hockley,Asian,40,36,7,78,92
+Hockley,Black,262,223,77,543,789
+Hockley,Hispanic,4948,4296,1328,10191,11212
+Hockley,Other,1181,1010,354,2444,1354
+Hockley,Unknown,799,628,129,1420,NA
+Hockley,White,4093,3700,1427,8774,10642
+Hood,Asian,228,198,63,475,501
+Hood,Black,180,160,51,385,624
+Hood,Hispanic,2852,2469,587,5790,7898
+Hood,Other,6524,6023,3505,15836,3973
+Hood,Unknown,764,554,122,1394,NA
+Hood,White,22460,20173,8631,49712,51471
+Hopkins,Asian,153,132,57,338,239
+Hopkins,Black,932,814,340,2029,2618
+Hopkins,Hispanic,2716,2386,537,5489,6467
+Hopkins,Other,3361,3062,1338,7588,2986
+Hopkins,Unknown,698,513,61,1161,NA
+Hopkins,White,8905,7886,2972,19114,26995
+Houston,Asian,110,82,20,204,172
+Houston,Black,2472,2236,1126,5594,5637
+Houston,Hispanic,1162,951,257,2260,2662
+Houston,Other,1344,1192,567,2998,1271
+Houston,Unknown,488,341,53,843,NA
+Houston,White,5339,4855,2115,11739,14130
+Howard,Asian,142,113,37,280,361
+Howard,Black,252,211,53,475,2115
+Howard,Hispanic,4611,3988,485,8017,15906
+Howard,Other,3587,3275,1180,7905,3065
+Howard,Unknown,843,683,204,1659,NA
+Howard,White,4943,4254,1247,9911,17578
+Hudspeth,Asian,18,14,2,34,50
+Hudspeth,Black,51,38,7,93,149
+Hudspeth,Hispanic,2859,2455,1005,6132,3759
+>>>>>>> Stashed changes
 Hudspeth,Other,157,128,41,318,496
 Hudspeth,Unknown,173,117,41,327,NA
 Hudspeth,White,824,738,93,1224,838
 Hunt,Asian,606,530,181,1255,1380
+<<<<<<< Updated upstream
 Hunt,Black,2806,2389,780,5781,7715
 Hunt,Hispanic,8623,7173,1632,16932,17383
 Hunt,Other,6037,5444,2187,13409,9419
 Hunt,Unknown,2074,1649,257,3692,NA
 Hunt,White,27237,24414,9256,58400,69449
+=======
+Hunt,Black,2806,2390,781,5783,7715
+Hunt,Hispanic,8625,7176,1634,16938,17383
+Hunt,Other,6041,5448,2193,13423,9419
+Hunt,Unknown,2074,1650,257,3693,NA
+Hunt,White,27239,24417,9256,58405,69449
+>>>>>>> Stashed changes
 Hutchinson,Asian,46,38,15,98,141
 Hutchinson,Black,117,103,40,255,524
 Hutchinson,Hispanic,1655,1408,439,3413,5038
 Hutchinson,Other,1228,1064,380,2650,2214
 Hutchinson,Unknown,767,616,112,1490,NA
+<<<<<<< Updated upstream
 Hutchinson,White,4486,3982,1680,9813,14559
 Irion,Asian,2,1,0,3,8
 Irion,Black,7,6,2,15,16
@@ -723,12 +1306,40 @@ Jasper,Hispanic,921,798,188,1842,2429
 Jasper,Other,1913,1696,735,4211,2222
 Jasper,Unknown,2030,1684,655,4204,NA
 Jasper,White,7775,7005,2748,16780,26599
+=======
+Hutchinson,White,4486,3982,1681,9814,14559
+Irion,Asian,2,1,0,3,8
+Irion,Black,7,6,2,15,16
+Irion,Hispanic,162,141,51,352,393
+Irion,Other,167,154,71,379,120
+Irion,Unknown,23,21,2,43,NA
+Irion,White,390,345,148,859,1088
+Jack,Asian,21,19,6,44,49
+Jack,Black,186,165,77,416,349
+Jack,Hispanic,559,474,118,1087,1551
+Jack,Other,467,398,205,1049,486
+Jack,Unknown,240,199,22,447,NA
+Jack,White,2475,2244,759,5220,6841
+Jackson,Asian,64,55,13,125,156
+Jackson,Black,325,291,121,727,896
+Jackson,Hispanic,1592,1365,369,3231,4947
+Jackson,Other,1135,1019,431,2517,1120
+Jackson,Unknown,1107,948,107,2034,NA
+Jackson,White,3167,2927,1267,7173,8540
+Jasper,Asian,79,70,31,179,189
+Jasper,Black,2180,1928,871,4806,5588
+Jasper,Hispanic,921,799,188,1843,2429
+Jasper,Other,1913,1696,735,4211,2222
+Jasper,Unknown,2030,1684,655,4204,NA
+Jasper,White,7776,7006,2750,16784,26599
+>>>>>>> Stashed changes
 Jeff Davis,Asian,5,5,1,10,34
 Jeff Davis,Black,1,0,0,1,13
 Jeff Davis,Hispanic,452,393,150,978,735
 Jeff Davis,Other,130,99,56,281,201
 Jeff Davis,Unknown,83,75,17,164,NA
 Jeff Davis,White,657,609,321,1540,1430
+<<<<<<< Updated upstream
 Jefferson,Asian,8956,7880,2625,17104,9539
 Jefferson,Black,35373,30999,13261,78887,83224
 Jefferson,Hispanic,24957,20985,5135,50698,55576
@@ -777,6 +1388,56 @@ Kendall,Hispanic,5518,4587,1542,11178,11659
 Kendall,Other,7964,7193,3824,18494,3511
 Kendall,Unknown,1363,973,194,2414,NA
 Kendall,White,18096,15959,6998,39374,33811
+=======
+Jefferson,Asian,8958,7880,2627,17108,9539
+Jefferson,Black,35381,31004,13268,78906,83224
+Jefferson,Hispanic,24962,20988,5140,50711,55576
+Jefferson,Other,25283,22853,9945,57199,18380
+Jefferson,Unknown,7317,5791,2013,14676,NA
+Jefferson,White,40245,35667,14215,88437,99026
+Jim Hogg,Asian,12,5,1,18,26
+Jim Hogg,Black,5,3,1,9,33
+Jim Hogg,Hispanic,2790,2145,644,5543,4821
+Jim Hogg,Other,420,356,177,950,193
+Jim Hogg,Unknown,97,66,5,167,NA
+Jim Hogg,White,447,369,142,942,286
+Jim Wells,Asian,75,61,25,158,189
+Jim Wells,Black,61,53,18,126,296
+Jim Wells,Hispanic,16861,14161,5983,36385,32413
+Jim Wells,Other,2484,2155,1077,5638,1783
+Jim Wells,Unknown,1264,894,159,2249,NA
+Jim Wells,White,6270,5301,2133,13361,7289
+Johnson,Asian,1022,901,359,2228,1572
+Johnson,Black,3455,3028,1001,7299,6635
+Johnson,Hispanic,16923,14242,3949,34280,39763
+Johnson,Other,15745,13947,5972,35038,15641
+Johnson,Unknown,3230,2404,342,5664,NA
+Johnson,White,50838,45424,17483,110588,123189
+Jones,Asian,66,56,22,140,113
+Jones,Black,936,859,419,1951,2403
+Jones,Hispanic,1858,1356,363,3331,5626
+Jones,Other,2190,1693,716,4179,1462
+Jones,Unknown,549,448,101,1088,NA
+Jones,White,4739,4294,1694,9904,11648
+Karnes,Asian,50,42,17,104,59
+Karnes,Black,584,554,237,1327,1302
+Karnes,Hispanic,3770,3422,880,7069,8803
+Karnes,Other,1496,1370,610,3366,699
+Karnes,Unknown,506,435,181,1091,NA
+Karnes,White,2892,2667,1036,6138,5328
+Kaufman,Asian,1403,1212,487,3022,1842
+Kaufman,Black,10302,9039,3113,21985,18145
+Kaufman,Hispanic,18299,15358,3997,36890,31663
+Kaufman,Other,11027,9771,3851,24248,11997
+Kaufman,Unknown,4948,3815,689,9190,NA
+Kaufman,White,35370,31616,12324,76474,81430
+Kendall,Asian,367,313,146,801,591
+Kendall,Black,260,205,89,544,559
+Kendall,Hispanic,5519,4588,1541,11179,11659
+Kendall,Other,7975,7204,3833,18523,3511
+Kendall,Unknown,1361,970,194,2410,NA
+Kendall,White,18097,15958,7002,39379,33811
+>>>>>>> Stashed changes
 Kenedy,Asian,1,1,0,2,3
 Kenedy,Black,2,2,0,4,9
 Kenedy,Hispanic,163,143,61,362,296
@@ -790,10 +1451,17 @@ Kent,Unknown,19,16,2,36,NA
 Kent,White,243,217,92,524,584
 Kerr,Asian,260,218,80,534,546
 Kerr,Black,255,221,77,515,780
+<<<<<<< Updated upstream
 Kerr,Hispanic,4181,3453,924,8251,14435
 Kerr,Other,6614,5859,3027,15085,4116
 Kerr,Unknown,1446,1131,320,2788,NA
 Kerr,White,16287,14254,6315,35170,35928
+=======
+Kerr,Hispanic,4183,3456,926,8258,14435
+Kerr,Other,6613,5859,3028,15085,4116
+Kerr,Unknown,1446,1132,320,2789,NA
+Kerr,White,16284,14250,6320,35170,35928
+>>>>>>> Stashed changes
 Kimble,Asian,10,10,7,26,36
 Kimble,Black,5,5,2,12,29
 Kimble,Hispanic,200,177,97,465,1081
@@ -813,6 +1481,7 @@ Kinney,Unknown,75,55,16,140,NA
 Kinney,White,791,686,299,1739,1259
 Kleberg,Asian,447,380,122,943,673
 Kleberg,Black,363,295,98,740,1014
+<<<<<<< Updated upstream
 Kleberg,Hispanic,13423,11529,4799,29392,22511
 Kleberg,Other,2318,2022,1045,5318,2036
 Kleberg,Unknown,1599,1229,367,3178,NA
@@ -847,11 +1516,48 @@ Lampasas,Hispanic,1504,1291,420,3078,4158
 Lampasas,Other,2125,1891,896,4712,2508
 Lampasas,Unknown,684,521,81,1179,NA
 Lampasas,White,6428,5637,2269,13558,15511
+=======
+Kleberg,Hispanic,13427,11535,4807,29410,22511
+Kleberg,Other,2318,2022,1046,5319,2036
+Kleberg,Unknown,1597,1226,366,3172,NA
+Kleberg,White,3993,3417,1441,8643,6129
+Knox,Asian,11,9,4,23,10
+Knox,Black,47,38,11,85,192
+Knox,Hispanic,381,328,68,736,1276
+Knox,Other,373,344,173,862,395
+Knox,Unknown,88,77,16,177,NA
+Knox,White,675,615,194,1426,2106
+La Salle,Asian,16,15,10,40,27
+La Salle,Black,176,170,108,418,54
+La Salle,Hispanic,3359,2893,1045,6750,6542
+La Salle,Other,507,461,232,1145,269
+La Salle,Unknown,773,661,123,1557,NA
+La Salle,White,587,538,290,1352,838
+Lamar,Asian,244,206,82,520,376
+Lamar,Black,2293,1974,821,4931,6560
+Lamar,Hispanic,1461,1233,229,2805,4210
+Lamar,Other,2971,2651,1075,6574,6365
+Lamar,Unknown,1609,1413,611,3545,NA
+Lamar,White,13091,11707,4755,28341,36638
+Lamb,Asian,6,5,3,13,28
+Lamb,Black,225,191,118,517,445
+Lamb,Hispanic,2761,2388,826,5664,7230
+Lamb,Other,706,600,271,1542,1079
+Lamb,Unknown,663,582,166,1393,NA
+Lamb,White,1932,1695,853,4292,5014
+Lampasas,Asian,120,92,46,245,251
+Lampasas,Black,303,238,79,603,768
+Lampasas,Hispanic,1505,1291,420,3079,4158
+Lampasas,Other,2126,1891,896,4713,2508
+Lampasas,Unknown,684,521,81,1179,NA
+Lampasas,White,6429,5638,2269,13560,15511
+>>>>>>> Stashed changes
 Lavaca,Asian,65,52,17,128,100
 Lavaca,Black,398,372,143,833,1170
 Lavaca,Hispanic,1367,1200,371,2734,3950
 Lavaca,Other,929,855,379,2092,1137
 Lavaca,Unknown,712,549,149,1338,NA
+<<<<<<< Updated upstream
 Lavaca,White,6274,5872,2519,13734,14680
 Lee,Asian,24,22,12,57,83
 Lee,Black,740,662,285,1626,1775
@@ -877,6 +1583,33 @@ Limestone,Hispanic,1691,1453,307,3091,5296
 Limestone,Other,2268,2039,828,4925,1757
 Limestone,Unknown,420,318,51,659,NA
 Limestone,White,4705,4165,1708,9976,13623
+=======
+Lavaca,White,6273,5871,2518,13731,14680
+Lee,Asian,24,22,12,57,83
+Lee,Black,740,662,285,1626,1775
+Lee,Hispanic,1796,1536,356,3462,4217
+Lee,Other,1439,1266,666,3312,1251
+Lee,Unknown,660,451,68,1076,NA
+Lee,White,4506,4049,1704,9895,10834
+Leon,Asian,78,63,31,169,106
+Leon,Black,479,423,188,1013,1203
+Leon,Hispanic,828,696,163,1580,2617
+Leon,Other,1231,1109,495,2755,1040
+Leon,Unknown,262,182,24,426,NA
+Leon,White,4903,4369,1748,10161,13196
+Liberty,Asian,341,301,104,716,477
+Liberty,Black,3285,2924,1187,7197,7981
+Liberty,Hispanic,15963,13273,2856,31331,25209
+Liberty,Other,7175,6300,2419,15599,6615
+Liberty,Unknown,2195,1590,197,3797,NA
+Liberty,White,16826,14933,4946,35248,53005
+Limestone,Asian,95,83,32,202,166
+Limestone,Black,1264,1097,378,2616,3924
+Limestone,Hispanic,1692,1454,308,3094,5296
+Limestone,Other,2265,2036,826,4917,1757
+Limestone,Unknown,420,318,51,659,NA
+Limestone,White,4705,4165,1709,9977,13623
+>>>>>>> Stashed changes
 Lipscomb,Asian,7,6,0,13,22
 Lipscomb,Hispanic,291,256,52,580,1114
 Lipscomb,Other,92,80,36,200,398
@@ -884,6 +1617,7 @@ Lipscomb,Unknown,144,130,54,322,NA
 Lipscomb,White,515,469,175,1100,1963
 Live Oak,Asian,22,17,9,48,71
 Live Oak,Black,18,14,2,32,504
+<<<<<<< Updated upstream
 Live Oak,Hispanic,1620,1442,570,3582,4982
 Live Oak,Other,650,599,298,1526,654
 Live Oak,Unknown,304,244,51,594,NA
@@ -894,10 +1628,23 @@ Llano,Hispanic,975,823,218,1942,2358
 Llano,Other,1834,1710,1001,4406,1282
 Llano,Unknown,595,475,107,1097,NA
 Llano,White,8976,8135,4154,20220,18747
+=======
+Live Oak,Hispanic,1619,1442,570,3581,4982
+Live Oak,Other,649,598,297,1523,654
+Live Oak,Unknown,304,244,51,594,NA
+Live Oak,White,1940,1746,669,4208,6462
+Llano,Asian,78,63,33,165,115
+Llano,Black,50,43,19,106,208
+Llano,Hispanic,975,823,218,1942,2358
+Llano,Other,1832,1708,999,4400,1282
+Llano,Unknown,595,475,107,1097,NA
+Llano,White,8975,8135,4157,20222,18747
+>>>>>>> Stashed changes
 Loving,Hispanic,8,6,3,16,23
 Loving,Other,4,4,2,10,1
 Loving,Unknown,1,1,0,2,NA
 Loving,White,28,19,2,49,137
+<<<<<<< Updated upstream
 Lubbock,Asian,4417,3870,1656,9718,6905
 Lubbock,Black,7586,6489,2071,15574,21895
 Lubbock,Hispanic,49425,42897,13353,102604,112706
@@ -914,23 +1661,48 @@ Madison,Asian,55,48,23,123,104
 Madison,Black,1241,1125,542,2774,2750
 Madison,Hispanic,1309,1044,302,2537,3455
 Madison,Other,1265,1110,523,2850,1065
+=======
+Lubbock,Asian,4418,3871,1659,9723,6905
+Lubbock,Black,7585,6487,2071,15571,21895
+Lubbock,Hispanic,49431,42901,13353,102615,112706
+Lubbock,Other,27450,24470,10932,61277,24710
+Lubbock,Unknown,8272,6524,1255,15841,NA
+Lubbock,White,70636,63316,24611,153043,163533
+Lynn,Asian,4,4,4,12,9
+Lynn,Black,29,28,9,66,116
+Lynn,Hispanic,1105,958,324,2338,2783
+Lynn,Other,315,286,121,701,514
+Lynn,Unknown,170,136,56,362,NA
+Lynn,White,1023,927,320,2185,2970
+Madison,Asian,55,48,23,123,104
+Madison,Black,1240,1124,541,2771,2750
+Madison,Hispanic,1309,1044,302,2537,3455
+Madison,Other,1266,1111,524,2853,1065
+>>>>>>> Stashed changes
 Madison,Unknown,191,131,19,294,NA
 Madison,White,3001,2717,1089,6415,7725
 Marion,Asian,27,16,8,50,91
 Marion,Black,861,779,302,1875,2023
 Marion,Hispanic,163,138,40,326,447
+<<<<<<< Updated upstream
 Marion,Other,723,669,341,1679,959
 Marion,Unknown,163,110,18,273,NA
 Marion,White,2521,2287,812,5283,6992
+=======
+Marion,Other,724,670,342,1681,959
+Marion,Unknown,163,110,18,273,NA
+Marion,White,2522,2287,812,5284,6992
+>>>>>>> Stashed changes
 Martin,Asian,3,3,2,8,27
 Martin,Black,14,14,5,31,105
-Martin,Hispanic,791,642,170,1557,2749
+Martin,Hispanic,791,642,171,1558,2749
 Martin,Other,212,188,63,447,354
 Martin,Unknown,285,203,53,534,NA
 Martin,White,811,695,243,1681,2818
 Mason,Asian,1,1,1,3,13
 Mason,Black,6,4,2,12,18
 Mason,Hispanic,487,428,190,1086,1087
+<<<<<<< Updated upstream
 Mason,Other,347,334,205,872,214
 Mason,Unknown,59,49,8,113,NA
 Mason,White,1386,1292,630,3174,3109
@@ -958,12 +1730,42 @@ McLennan,Hispanic,28894,24976,7477,58949,69246
 McLennan,Other,23920,21418,8953,52567,22036
 McLennan,Unknown,5136,3615,445,8924,NA
 McLennan,White,73444,65107,25947,156321,142240
+=======
+Mason,Other,348,335,206,875,214
+Mason,Unknown,59,49,8,113,NA
+Mason,White,1386,1292,630,3174,3109
+Matagorda,Asian,526,449,158,1108,633
+Matagorda,Black,1400,1234,522,3081,3787
+Matagorda,Hispanic,6594,5610,1579,13456,15854
+Matagorda,Other,4263,3666,1575,9336,2733
+Matagorda,Unknown,661,431,51,1098,NA
+Matagorda,White,6562,5834,2212,14067,15849
+Maverick,Asian,58,43,21,118,334
+Maverick,Black,54,45,6,97,173
+Maverick,Hispanic,54453,38852,11832,100831,55854
+Maverick,Other,6059,4684,1685,11993,2273
+Maverick,Unknown,4387,2218,501,6854,NA
+Maverick,White,10134,7124,1856,18234,1577
+McCulloch,Asian,20,15,6,38,55
+McCulloch,Black,39,38,20,96,153
+McCulloch,Hispanic,791,718,286,1756,2638
+McCulloch,Other,216,192,95,488,648
+McCulloch,Unknown,132,105,24,251,NA
+McCulloch,White,2237,2031,870,4933,4996
+McLennan,Asian,3105,2638,1036,6560,4138
+McLennan,Black,14767,12816,4508,30709,35755
+McLennan,Hispanic,28895,24978,7487,58961,69246
+McLennan,Other,23973,21460,8980,52688,22036
+McLennan,Unknown,5141,3617,446,8931,NA
+McLennan,White,73432,65097,25963,156316,142240
+>>>>>>> Stashed changes
 McMullen,Black,2,2,0,4,16
-McMullen,Hispanic,115,105,36,246,313
+McMullen,Hispanic,115,105,37,247,313
 McMullen,Other,67,65,31,157,83
 McMullen,Unknown,13,10,2,25,NA
 McMullen,White,159,147,58,337,400
 Medina,Asian,146,131,51,314,339
+<<<<<<< Updated upstream
 Medina,Black,706,652,243,1539,1340
 Medina,Hispanic,10611,9254,3437,22426,27158
 Medina,Other,7111,6313,2943,15784,3392
@@ -987,6 +1789,31 @@ Milam,Hispanic,2541,2240,683,5390,6660
 Milam,Other,1745,1568,744,3973,1788
 Milam,Unknown,623,488,94,1170,NA
 Milam,White,6708,6191,2818,15278,15397
+=======
+Medina,Black,707,653,243,1541,1340
+Medina,Hispanic,10609,9254,3438,22425,27158
+Medina,Other,7115,6318,2949,15800,3392
+Medina,Unknown,1590,1140,247,2847,NA
+Medina,White,11355,10291,4454,24564,22037
+Menard,Asian,1,1,0,2,4
+Menard,Black,10,9,3,22,30
+Menard,Hispanic,364,326,173,838,791
+Menard,Other,103,91,53,232,133
+Menard,Unknown,24,19,2,44,NA
+Menard,White,719,675,303,1590,1281
+Midland,Asian,1964,1701,589,4205,3780
+Midland,Black,3943,3424,1060,8254,10915
+Midland,Hispanic,33805,28662,7579,69185,81342
+Midland,Other,11720,10337,3878,25398,12625
+Midland,Unknown,3580,2563,292,6341,NA
+Midland,White,31625,28068,9316,67314,77834
+Milam,Asian,78,66,38,181,224
+Milam,Black,832,728,253,1773,2121
+Milam,Hispanic,2543,2241,684,5394,6660
+Milam,Other,1745,1568,745,3974,1788
+Milam,Unknown,624,488,94,1171,NA
+Milam,White,6708,6191,2820,15280,15397
+>>>>>>> Stashed changes
 Mills,Asian,13,13,9,32,15
 Mills,Black,7,6,1,14,43
 Mills,Hispanic,290,261,64,605,890
@@ -996,11 +1823,16 @@ Mills,White,1611,1462,705,3659,3858
 Mitchell,Asian,24,24,15,61,42
 Mitchell,Black,268,254,146,599,888
 Mitchell,Hispanic,870,786,335,1910,3471
+<<<<<<< Updated upstream
 Mitchell,Other,608,547,288,1376,935
+=======
+Mitchell,Other,607,546,288,1374,935
+>>>>>>> Stashed changes
 Mitchell,Unknown,271,235,115,617,NA
 Mitchell,White,1374,1253,563,3024,3974
 Montague,Asian,51,47,24,115,77
 Montague,Black,20,16,6,40,132
+<<<<<<< Updated upstream
 Montague,Hispanic,842,701,183,1646,2214
 Montague,Other,917,824,333,2032,1574
 Montague,Unknown,608,496,83,1135,NA
@@ -1023,12 +1855,37 @@ Morris,Hispanic,604,515,130,1201,1322
 Morris,Other,694,629,288,1579,1362
 Morris,Unknown,352,222,66,605,NA
 Morris,White,3368,3025,1236,7216,7891
+=======
+Montague,Hispanic,841,700,185,1646,2214
+Montague,Other,919,825,334,2035,1574
+Montague,Unknown,608,496,83,1135,NA
+Montague,White,5636,4918,1950,11937,16934
+Montgomery,Asian,12007,10525,4384,26371,19039
+Montgomery,Black,16447,14219,4811,34526,32465
+Montgomery,Hispanic,94893,78304,19751,186602,152837
+Montgomery,Other,80634,71964,31675,179544,47447
+Montgomery,Unknown,15269,10773,1250,24982,NA
+Montgomery,White,173675,153675,57332,371190,391093
+Moore,Asian,231,142,35,402,1258
+Moore,Black,147,78,12,232,760
+Moore,Hispanic,6608,5231,1350,13039,11994
+Moore,Other,1516,1165,348,3012,1463
+Moore,Unknown,1055,694,132,1871,NA
+Moore,White,2441,2015,656,4990,6576
+Morris,Asian,26,18,6,46,74
+Morris,Black,1194,1042,452,2567,2680
+Morris,Hispanic,604,515,130,1201,1322
+Morris,Other,695,631,289,1583,1362
+Morris,Unknown,352,222,66,605,NA
+Morris,White,3368,3024,1235,7214,7891
+>>>>>>> Stashed changes
 Motley,Black,5,4,2,11,29
 Motley,Hispanic,50,31,10,89,231
 Motley,Other,144,111,38,293,73
 Motley,Unknown,16,13,7,35,NA
 Motley,White,253,180,79,498,915
 Nacogdoches,Asian,493,434,205,1083,791
+<<<<<<< Updated upstream
 Nacogdoches,Black,4687,3962,1558,9522,11485
 Nacogdoches,Hispanic,6332,5231,1333,12223,13046
 Nacogdoches,Other,3827,3459,1619,8620,4892
@@ -1040,18 +1897,36 @@ Navarro,Hispanic,5697,4943,1317,11793,14303
 Navarro,Other,5523,4858,1879,12100,4938
 Navarro,Unknown,1664,1286,322,3225,NA
 Navarro,White,11276,10090,4169,24778,27400
+=======
+Nacogdoches,Black,4687,3964,1560,9526,11485
+Nacogdoches,Hispanic,6332,5232,1336,12227,13046
+Nacogdoches,Other,3828,3460,1620,8623,4892
+Nacogdoches,Unknown,1856,1393,204,3317,NA
+Nacogdoches,White,16614,14728,6341,35012,38631
+Navarro,Asian,237,208,82,520,300
+Navarro,Black,2202,1956,810,4843,6310
+Navarro,Hispanic,5696,4942,1318,11792,14303
+Navarro,Other,5523,4858,1884,12105,4938
+Navarro,Unknown,1665,1286,322,3226,NA
+Navarro,White,11274,10090,4171,24779,27400
+>>>>>>> Stashed changes
 Newton,Asian,19,17,4,40,76
 Newton,Black,829,743,319,1858,2663
 Newton,Hispanic,84,74,15,165,534
 Newton,Other,372,344,148,835,1062
 Newton,Unknown,457,371,151,939,NA
+<<<<<<< Updated upstream
 Newton,White,1971,1774,699,4303,9968
+=======
+Newton,White,1971,1775,699,4304,9968
+>>>>>>> Stashed changes
 Nolan,Asian,59,52,14,119,88
 Nolan,Black,209,188,68,419,637
 Nolan,Hispanic,2085,1896,745,4259,5753
 Nolan,Other,598,525,230,1274,1239
 Nolan,Unknown,448,347,112,850,NA
 Nolan,White,3628,3379,1501,7702,7957
+<<<<<<< Updated upstream
 Nueces,Asian,4675,4028,1346,9039,7396
 Nueces,Black,4762,4074,1507,9978,12575
 Nueces,Hispanic,120142,103354,40584,257997,233647
@@ -1064,11 +1939,26 @@ Ochiltree,Hispanic,2145,1855,290,4148,5451
 Ochiltree,Other,377,328,131,817,716
 Ochiltree,Unknown,288,259,17,563,NA
 Ochiltree,White,1396,1267,370,2912,4112
+=======
+Nueces,Asian,4681,4031,1351,9051,7396
+Nueces,Black,4762,4074,1507,9978,12575
+Nueces,Hispanic,120166,103383,40639,258107,233647
+Nueces,Other,39068,34639,18668,90072,24246
+Nueces,Unknown,8833,6812,1062,16324,NA
+Nueces,White,61463,53683,21968,132385,103942
+Ochiltree,Asian,16,13,1,29,40
+Ochiltree,Black,6,5,1,11,62
+Ochiltree,Hispanic,2145,1855,290,4148,5451
+Ochiltree,Other,378,329,132,820,716
+Ochiltree,Unknown,290,259,17,565,NA
+Ochiltree,White,1395,1266,369,2909,4112
+>>>>>>> Stashed changes
 Oldham,Asian,20,16,7,43,30
 Oldham,Black,12,9,5,26,69
 Oldham,Hispanic,129,104,34,254,362
 Oldham,Other,126,112,40,277,198
 Oldham,Unknown,70,60,17,147,NA
+<<<<<<< Updated upstream
 Oldham,White,512,451,165,1096,1602
 Orange,Asian,594,496,148,1225,945
 Orange,Black,2638,2261,876,5552,7147
@@ -1094,6 +1984,33 @@ Parker,Hispanic,7661,6563,1727,15495,18607
 Parker,Other,11484,10565,4936,26444,10750
 Parker,Unknown,3623,3026,724,6909,NA
 Parker,White,48236,43193,15331,102803,118054
+=======
+Oldham,White,514,452,165,1099,1602
+Orange,Asian,593,495,148,1223,945
+Orange,Black,2638,2261,876,5552,7147
+Orange,Hispanic,2461,2052,496,4917,7074
+Orange,Other,6560,5907,2448,14681,5647
+Orange,Unknown,1739,1244,255,3082,NA
+Orange,White,20665,18012,6571,43858,66534
+Palo Pinto,Asian,116,95,36,240,268
+Palo Pinto,Black,202,167,62,419,663
+Palo Pinto,Hispanic,2174,1859,506,4364,5884
+Palo Pinto,Other,1881,1708,819,4333,2192
+Palo Pinto,Unknown,484,394,91,919,NA
+Palo Pinto,White,7505,6761,2670,16266,21785
+Panola,Asian,52,49,21,112,196
+Panola,Black,1365,1210,487,2874,3586
+Panola,Hispanic,777,682,165,1545,2107
+Panola,Other,1571,1413,539,3425,1870
+Panola,Unknown,335,248,29,563,NA
+Panola,White,5334,4719,1723,11107,16874
+Parker,Asian,663,568,204,1394,883
+Parker,Black,744,645,210,1540,2113
+Parker,Hispanic,7661,6563,1731,15499,18607
+Parker,Other,11488,10568,4942,26457,10750
+Parker,Unknown,3622,3024,723,6905,NA
+Parker,White,48242,43204,15343,102833,118054
+>>>>>>> Stashed changes
 Parmer,Asian,10,9,1,19,59
 Parmer,Black,14,12,8,30,101
 Parmer,Hispanic,1935,1652,545,3858,6218
@@ -1101,6 +2018,7 @@ Parmer,Other,196,162,66,413,634
 Parmer,Unknown,1397,1279,576,3241,NA
 Parmer,White,833,752,293,1783,3161
 Pecos,Asian,101,97,50,242,167
+<<<<<<< Updated upstream
 Pecos,Black,308,289,128,649,615
 Pecos,Hispanic,6308,5545,2171,13698,10924
 Pecos,Other,1030,909,329,2097,914
@@ -1121,11 +2039,34 @@ Potter,White,21881,19256,7646,47221,50752
 Presidio,Asian,21,18,3,41,200
 Presidio,Black,13,11,1,24,64
 Presidio,Hispanic,6151,4879,2039,12995,5494
+=======
+Pecos,Black,307,288,128,648,615
+Pecos,Hispanic,6310,5546,2172,13702,10924
+Pecos,Other,1030,909,329,2097,914
+Pecos,Unknown,1126,942,383,2293,NA
+Pecos,White,1727,1569,653,3722,3924
+Polk,Asian,190,153,72,404,408
+Polk,Black,2517,2266,1022,5676,4949
+Polk,Hispanic,2810,2343,691,5642,7975
+Polk,Other,3630,3259,1580,8313,4251
+Polk,Unknown,1140,832,118,1970,NA
+Polk,White,14928,13087,5887,32514,36394
+Potter,Asian,2134,1777,683,4550,6572
+Potter,Black,3768,3208,1189,7839,11840
+Potter,Hispanic,19866,16442,4232,39785,45866
+Potter,Other,9879,8513,3347,21308,10237
+Potter,Unknown,3395,2508,720,6551,NA
+Potter,White,21885,19256,7654,47232,50752
+Presidio,Asian,21,18,3,41,200
+Presidio,Black,13,11,1,24,64
+Presidio,Hispanic,6152,4879,2039,12996,5494
+>>>>>>> Stashed changes
 Presidio,Other,578,388,233,1187,455
 Presidio,Unknown,268,206,46,491,NA
 Presidio,White,970,861,394,2055,863
 Rains,Asian,30,27,15,71,101
 Rains,Black,87,71,20,178,310
+<<<<<<< Updated upstream
 Rains,Hispanic,420,361,87,847,1179
 Rains,Other,743,705,349,1774,915
 Rains,Unknown,217,138,20,346,NA
@@ -1139,9 +2080,24 @@ Randall,White,41171,36629,14531,89241,96360
 Reagan,Asian,5,2,0,7,16
 Reagan,Black,12,11,5,25,96
 Reagan,Hispanic,999,860,162,1890,2718
+=======
+Rains,Hispanic,420,362,87,848,1179
+Rains,Other,744,706,350,1777,915
+Rains,Unknown,217,138,20,346,NA
+Rains,White,3654,3289,1346,8014,10615
+Randall,Asian,1285,1063,428,2706,2289
+Randall,Black,1403,1182,357,2832,4268
+Randall,Hispanic,12029,10298,2888,24490,31772
+Randall,Other,10071,9085,3995,22673,11569
+Randall,Unknown,4545,3619,999,9038,NA
+Randall,White,41185,36644,14546,89284,96360
+Reagan,Asian,5,2,0,7,16
+Reagan,Black,12,11,5,25,96
+Reagan,Hispanic,999,860,163,1891,2718
+>>>>>>> Stashed changes
 Reagan,Other,415,386,139,875,420
 Reagan,Unknown,109,90,22,217,NA
-Reagan,White,232,203,59,477,969
+Reagan,White,232,203,61,479,969
 Real,Asian,1,1,1,3,9
 Real,Black,9,8,3,20,31
 Real,Hispanic,343,285,137,746,961
@@ -1151,6 +2107,7 @@ Real,White,1093,967,366,2367,2361
 Red River,Asian,28,23,6,52,38
 Red River,Black,661,586,117,1216,1935
 Red River,Hispanic,300,240,60,572,840
+<<<<<<< Updated upstream
 Red River,Other,1032,912,270,2135,1040
 Red River,Unknown,507,452,126,1068,NA
 Red River,White,2843,2512,870,5825,8867
@@ -1166,12 +2123,30 @@ Refugio,Hispanic,1659,1507,570,3676,3516
 Refugio,Other,396,355,189,925,521
 Refugio,Unknown,475,417,202,1087,NA
 Refugio,White,1424,1268,582,3188,2905
+=======
+Red River,Other,1033,912,270,2136,1040
+Red River,Unknown,508,452,126,1069,NA
+Red River,White,2843,2512,871,5826,8867
+Reeves,Asian,89,82,41,211,230
+Reeves,Black,72,58,20,149,776
+Reeves,Hispanic,18277,7128,1324,26626,11926
+Reeves,Other,352,318,157,823,749
+Reeves,Unknown,2103,1668,806,4557,NA
+Reeves,White,643,546,186,1349,2904
+Refugio,Asian,11,8,4,23,51
+Refugio,Black,190,176,85,442,364
+Refugio,Hispanic,1658,1506,571,3675,3516
+Refugio,Other,396,355,189,925,521
+Refugio,Unknown,475,417,202,1087,NA
+Refugio,White,1423,1267,581,3185,2905
+>>>>>>> Stashed changes
 Roberts,Black,1,1,0,2,0
 Roberts,Hispanic,16,14,4,33,94
 Roberts,Other,27,22,5,52,87
 Roberts,Unknown,26,19,5,50,NA
 Roberts,White,216,201,81,471,736
 Robertson,Asian,77,63,23,154,136
+<<<<<<< Updated upstream
 Robertson,Black,1365,1208,494,2854,3255
 Robertson,Hispanic,1499,1287,379,3019,3736
 Robertson,Other,1158,1043,443,2552,1217
@@ -1201,11 +2176,43 @@ Sabine,Hispanic,109,85,30,211,514
 Sabine,Other,536,497,237,1248,751
 Sabine,Unknown,422,359,145,910,NA
 Sabine,White,2982,2638,1171,6477,9025
+=======
+Robertson,Black,1366,1209,495,2857,3255
+Robertson,Hispanic,1499,1287,379,3019,3736
+Robertson,Other,1158,1043,443,2552,1217
+Robertson,Unknown,304,194,20,478,NA
+Robertson,White,4390,3933,1577,9247,9658
+Rockwall,Asian,2202,1896,733,4723,3225
+Rockwall,Black,4649,4021,1363,9833,7412
+Rockwall,Hispanic,11623,9713,2749,23395,19542
+Rockwall,Other,10880,9779,4574,24808,8640
+Rockwall,Unknown,2792,2064,256,4941,NA
+Rockwall,White,38150,33610,12634,81462,72354
+Runnels,Asian,20,19,7,45,121
+Runnels,Black,60,51,18,125,208
+Runnels,Hispanic,1442,1294,417,2992,3572
+Runnels,Other,351,316,128,772,653
+Runnels,Unknown,329,275,56,620,NA
+Runnels,White,2807,2605,1077,6181,6217
+Rusk,Asian,137,116,42,286,295
+Rusk,Black,3759,3362,1361,7936,9283
+Rusk,Hispanic,3607,3091,818,7251,9524
+Rusk,Other,3892,3430,1381,8364,3986
+Rusk,Unknown,853,644,79,1475,NA
+Rusk,White,12421,11052,4208,26243,34256
+Sabine,Asian,19,17,6,37,41
+Sabine,Black,253,218,99,550,710
+Sabine,Hispanic,110,86,32,215,514
+Sabine,Other,535,496,237,1246,751
+Sabine,Unknown,422,359,145,910,NA
+Sabine,White,2983,2639,1172,6480,9025
+>>>>>>> Stashed changes
 San Augustine,Asian,12,10,3,25,24
 San Augustine,Black,977,856,359,2143,1737
 San Augustine,Hispanic,229,181,59,463,636
 San Augustine,Other,454,386,203,1031,597
 San Augustine,Unknown,198,154,28,366,NA
+<<<<<<< Updated upstream
 San Augustine,White,2165,1917,803,4756,5691
 San Jacinto,Asian,55,45,20,113,149
 San Jacinto,Black,959,843,321,1993,2610
@@ -1225,10 +2232,32 @@ San Saba,Hispanic,549,440,121,1055,1855
 San Saba,Other,614,547,212,1350,500
 San Saba,Unknown,115,61,6,161,NA
 San Saba,White,1354,1181,396,2764,3836
+=======
+San Augustine,White,2164,1916,802,4753,5691
+San Jacinto,Asian,55,45,20,113,149
+San Jacinto,Black,959,843,321,1993,2610
+San Jacinto,Hispanic,1446,1223,303,2876,3981
+San Jacinto,Other,1736,1577,716,3928,2504
+San Jacinto,Unknown,522,402,67,931,NA
+San Jacinto,White,6317,5607,2192,13264,21428
+San Patricio,Asian,551,484,149,1128,689
+San Patricio,Black,451,385,119,902,1004
+San Patricio,Hispanic,19171,16229,5523,39849,39028
+San Patricio,Other,6667,5894,2638,14767,4266
+San Patricio,Unknown,1600,1186,169,2877,NA
+San Patricio,White,15142,13089,4830,31520,25122
+San Saba,Asian,9,9,2,19,38
+San Saba,Black,78,75,9,161,218
+San Saba,Hispanic,550,441,122,1058,1855
+San Saba,Other,616,547,214,1354,500
+San Saba,Unknown,115,61,6,161,NA
+San Saba,White,1360,1186,406,2784,3836
+>>>>>>> Stashed changes
 Schleicher,Asian,4,4,2,10,10
 Schleicher,Black,17,16,6,36,35
-Schleicher,Hispanic,613,552,218,1356,1525
+Schleicher,Hispanic,616,553,218,1360,1525
 Schleicher,Other,123,111,57,289,252
+<<<<<<< Updated upstream
 Schleicher,Unknown,144,133,32,292,NA
 Schleicher,White,506,473,201,1139,1198
 Scurry,Asian,46,38,16,95,89
@@ -1247,6 +2276,26 @@ Shelby,Asian,184,165,56,390,313
 Shelby,Black,1912,1683,588,4020,4342
 Shelby,Hispanic,1711,1409,297,3253,4729
 Shelby,Other,1222,1066,383,2634,1585
+=======
+Schleicher,Unknown,143,132,32,290,NA
+Schleicher,White,506,473,201,1139,1198
+Scurry,Asian,46,38,16,95,89
+Scurry,Black,282,259,115,587,785
+Scurry,Hispanic,3037,2556,736,6091,6823
+Scurry,Other,835,734,318,1739,1303
+Scurry,Unknown,444,325,29,781,NA
+Scurry,White,4478,4089,1630,9650,8745
+Shackelford,Asian,6,6,1,13,15
+Shackelford,Black,4,4,0,8,34
+Shackelford,Hispanic,152,130,73,346,369
+Shackelford,Other,111,104,46,257,230
+Shackelford,Unknown,77,64,16,149,NA
+Shackelford,White,984,879,332,2144,2782
+Shelby,Asian,184,165,56,390,313
+Shelby,Black,1912,1683,588,4020,4342
+Shelby,Hispanic,1712,1410,298,3256,4729
+Shelby,Other,1221,1065,382,2631,1585
+>>>>>>> Stashed changes
 Shelby,Unknown,842,608,76,1434,NA
 Shelby,White,5164,4484,1700,10785,15489
 Sherman,Black,8,8,4,20,40
@@ -1254,6 +2303,7 @@ Sherman,Hispanic,591,451,69,1051,1337
 Sherman,Other,104,67,21,188,170
 Sherman,Unknown,123,106,21,250,NA
 Sherman,White,445,363,94,869,1598
+<<<<<<< Updated upstream
 Smith,Asian,2342,2041,785,5100,3665
 Smith,Black,17818,15802,6488,39441,40165
 Smith,Hispanic,20269,17461,4615,41669,46746
@@ -1278,18 +2328,48 @@ Stephens,Hispanic,614,538,155,1208,2287
 Stephens,Other,411,355,93,804,570
 Stephens,Unknown,278,224,41,504,NA
 Stephens,White,2272,2082,844,4797,6590
+=======
+Smith,Asian,2343,2042,785,5102,3665
+Smith,Black,17819,15803,6494,39450,40165
+Smith,Hispanic,20269,17459,4613,41665,46746
+Smith,Other,14791,13462,6369,34246,16713
+Smith,Unknown,7582,6239,728,13941,NA
+Smith,White,58666,52827,22275,130302,137671
+Somervell,Asian,33,32,12,77,66
+Somervell,Black,13,9,1,23,94
+Somervell,Hispanic,545,479,135,1093,1653
+Somervell,Other,1290,1198,793,3143,872
+Somervell,Unknown,165,140,37,329,NA
+Somervell,White,2370,2135,669,4929,7098
+Starr,Asian,34,28,8,69,109
+Starr,Black,21,15,6,40,78
+Starr,Hispanic,77100,56414,15809,143381,62276
+Starr,Other,4916,3967,1912,10392,962
+Starr,Unknown,1943,1456,371,3616,NA
+Starr,White,6476,4924,1988,12840,2102
+Stephens,Asian,46,40,17,100,72
+Stephens,Black,112,101,28,209,252
+Stephens,Hispanic,614,538,155,1208,2287
+Stephens,Other,412,356,94,807,570
+Stephens,Unknown,278,224,41,504,NA
+Stephens,White,2274,2083,847,4803,6590
+>>>>>>> Stashed changes
 Sterling,Asian,1,0,0,1,2
 Sterling,Black,5,4,2,11,24
 Sterling,Hispanic,204,178,61,441,527
 Sterling,Other,91,82,23,196,105
 Sterling,Unknown,16,13,0,28,NA
-Sterling,White,260,228,67,547,705
+Sterling,White,260,228,68,548,705
 Stonewall,Asian,9,8,3,18,17
 Stonewall,Black,6,6,3,13,40
 Stonewall,Hispanic,87,74,21,171,242
-Stonewall,Other,35,31,18,81,121
+Stonewall,Other,36,32,19,84,121
 Stonewall,Unknown,55,50,18,123,NA
+<<<<<<< Updated upstream
 Stonewall,White,448,408,172,975,1021
+=======
+Stonewall,White,447,407,172,973,1021
+>>>>>>> Stashed changes
 Sutton,Asian,14,14,6,33,8
 Sutton,Black,2,2,0,4,16
 Sutton,Hispanic,1034,904,335,2253,2409
@@ -1297,11 +2377,12 @@ Sutton,Other,144,124,50,313,181
 Sutton,Unknown,98,72,23,189,NA
 Sutton,White,563,520,226,1286,1324
 Swisher,Asian,13,12,7,31,31
-Swisher,Black,181,167,69,358,570
+Swisher,Black,182,168,70,361,570
 Swisher,Hispanic,1067,944,346,2143,3336
 Swisher,Other,395,348,152,766,684
 Swisher,Unknown,229,193,52,458,NA
 Swisher,White,1431,1292,574,3004,3315
+<<<<<<< Updated upstream
 Tarrant,Asian,81945,72753,31285,182727,118294
 Tarrant,Black,157451,137184,46203,334606,357639
 Tarrant,Hispanic,330203,282868,85150,683928,619710
@@ -1314,6 +2395,20 @@ Taylor,Hispanic,12838,10843,3237,26142,34471
 Taylor,Other,10134,9020,4121,22681,15364
 Taylor,Unknown,6324,5434,1512,13164,NA
 Taylor,White,38000,33540,13464,81782,86509
+=======
+Tarrant,Asian,81951,72755,31321,182773,118294
+Tarrant,Black,157476,137211,46268,334722,357639
+Tarrant,Hispanic,330304,282989,85255,684254,619710
+Tarrant,Other,231998,210504,98729,533328,209076
+Tarrant,Unknown,40659,28800,3496,69513,NA
+Tarrant,White,500393,451517,184521,1107945,953162
+Taylor,Asian,1423,1182,458,2980,3014
+Taylor,Black,3648,3032,961,7367,10277
+Taylor,Hispanic,12841,10846,3241,26152,34471
+Taylor,Other,10134,9022,4123,22685,15364
+Taylor,Unknown,6323,5434,1513,13164,NA
+Taylor,White,37998,33544,13479,81798,86509
+>>>>>>> Stashed changes
 Terrell,Black,5,5,0,10,8
 Terrell,Hispanic,241,206,104,548,399
 Terrell,Other,59,49,21,124,94
@@ -1331,6 +2426,7 @@ Throckmorton,Other,52,47,18,114,90
 Throckmorton,Unknown,55,47,21,118,NA
 Throckmorton,White,534,471,193,1180,1236
 Titus,Asian,162,139,68,364,337
+<<<<<<< Updated upstream
 Titus,Black,1241,1068,438,2670,2934
 Titus,Hispanic,6270,5084,1226,12285,14436
 Titus,Other,1661,1474,598,3683,2614
@@ -1366,6 +2462,43 @@ Upshur,Hispanic,1501,1243,300,2956,3787
 Upshur,Other,2148,1944,871,4883,3529
 Upshur,Unknown,797,625,80,1429,NA
 Upshur,White,10450,9313,3573,22380,33509
+=======
+Titus,Black,1242,1069,439,2673,2934
+Titus,Hispanic,6271,5084,1228,12288,14436
+Titus,Other,1661,1474,598,3683,2614
+Titus,Unknown,663,504,107,1228,NA
+Titus,White,6010,5246,2055,12865,14533
+Tom Green,Asian,746,652,268,1622,1462
+Tom Green,Black,1650,1460,547,3566,4316
+Tom Green,Hispanic,21213,19004,6946,46178,48534
+Tom Green,Other,6765,6056,2895,15345,10790
+Tom Green,Unknown,2117,1622,370,3920,NA
+Tom Green,White,30208,27642,11673,67790,62425
+Travis,Asian,68403,58723,28675,152364,91682
+Travis,Black,40716,34920,12686,85419,102257
+Travis,Hispanic,243073,201030,69348,502393,428571
+Travis,Other,229337,206083,113619,535669,133313
+Travis,Unknown,47283,34073,7140,84809,NA
+Travis,White,391162,347111,171576,879487,622339
+Trinity,Asian,29,24,5,54,64
+Trinity,Black,515,424,193,1071,1290
+Trinity,Hispanic,520,438,134,1061,1564
+Trinity,Other,1697,1531,672,3783,1056
+Trinity,Unknown,416,324,47,743,NA
+Trinity,White,3882,3421,1443,8285,11416
+Tyler,Asian,40,35,18,89,128
+Tyler,Black,1102,1011,488,2535,2302
+Tyler,Hispanic,449,381,108,907,1790
+Tyler,Other,1232,1094,444,2710,1303
+Tyler,Unknown,515,397,119,995,NA
+Tyler,White,5574,5122,2284,12586,17005
+Upshur,Asian,91,69,25,182,185
+Upshur,Black,1264,1142,503,2793,3205
+Upshur,Hispanic,1501,1243,301,2957,3787
+Upshur,Other,2149,1945,872,4886,3529
+Upshur,Unknown,797,625,80,1429,NA
+Upshur,White,10449,9313,3574,22380,33509
+>>>>>>> Stashed changes
 Upton,Asian,4,4,1,9,11
 Upton,Black,25,25,6,55,82
 Upton,Hispanic,711,619,241,1563,1988
@@ -1374,6 +2507,7 @@ Upton,Unknown,254,230,106,586,NA
 Upton,White,595,504,201,1275,1494
 Uvalde,Asian,90,77,38,200,174
 Uvalde,Black,41,33,8,78,178
+<<<<<<< Updated upstream
 Uvalde,Hispanic,9215,7756,3146,19688,19445
 Uvalde,Other,1837,1632,884,4255,1317
 Uvalde,Unknown,687,466,184,1304,NA
@@ -1408,6 +2542,42 @@ Waller,Hispanic,8221,7000,1585,16321,17152
 Waller,Other,4888,4362,1841,10835,3954
 Waller,Unknown,837,578,75,1419,NA
 Waller,White,9269,8264,2953,19603,23506
+=======
+Uvalde,Hispanic,9223,7764,3152,19710,19445
+Uvalde,Other,1836,1631,883,4252,1317
+Uvalde,Unknown,687,466,184,1304,NA
+Uvalde,White,5048,4427,1628,10708,6736
+Val Verde,Asian,111,83,28,207,335
+Val Verde,Black,152,122,30,285,668
+Val Verde,Hispanic,28734,21798,6320,54574,40339
+Val Verde,Other,6068,4196,1470,11577,2702
+Val Verde,Unknown,3097,1840,222,4924,NA
+Val Verde,White,7676,6181,1930,15299,7210
+Van Zandt,Asian,130,109,39,263,272
+Van Zandt,Black,623,562,245,1370,1548
+Van Zandt,Hispanic,2469,2102,510,4919,6599
+Van Zandt,Other,2892,2636,1150,6542,4148
+Van Zandt,Unknown,1217,938,162,2144,NA
+Van Zandt,White,16303,14709,6262,35373,46905
+Victoria,Asian,677,614,267,1520,1160
+Victoria,Black,2108,1880,776,4676,5292
+Victoria,Hispanic,16734,14808,4803,35741,44052
+Victoria,Other,8413,7674,3857,19654,5832
+Victoria,Unknown,3064,2571,816,6299,NA
+Victoria,White,19484,17523,7077,42952,40404
+Walker,Asian,514,429,162,1077,762
+Walker,Black,7249,6413,2376,15566,16823
+Walker,Hispanic,4730,4040,1002,9277,13195
+Walker,Other,9706,8534,3426,21161,4747
+Walker,Unknown,1202,857,199,2140,NA
+Walker,White,17041,15189,5710,36208,40969
+Waller,Asian,601,495,174,1242,686
+Waller,Black,3375,2940,1060,7135,13005
+Waller,Hispanic,8231,7007,1589,16341,17152
+Waller,Other,4889,4364,1845,10842,3954
+Waller,Unknown,837,578,76,1420,NA
+Waller,White,9267,8260,2953,19598,23506
+>>>>>>> Stashed changes
 Ward,Asian,41,34,13,87,49
 Ward,Black,114,97,27,222,484
 Ward,Hispanic,2675,2208,679,5354,6618
@@ -1415,6 +2585,7 @@ Ward,Other,415,378,154,922,1110
 Ward,Unknown,319,253,61,625,NA
 Ward,White,1562,1324,349,3104,4611
 Washington,Asian,338,304,137,772,574
+<<<<<<< Updated upstream
 Washington,Black,2272,2003,733,4874,6072
 Washington,Hispanic,2098,1789,442,4225,6008
 Washington,Other,4834,4526,2550,11735,1963
@@ -1444,11 +2615,43 @@ Wichita,Hispanic,9485,8228,2517,19441,26220
 Wichita,Other,9055,8149,3822,20257,14888
 Wichita,Unknown,5555,4678,1115,10989,NA
 Wichita,White,36190,32649,14102,78633,85406
+=======
+Washington,Black,2271,2002,734,4873,6072
+Washington,Hispanic,2098,1789,442,4225,6008
+Washington,Other,4838,4529,2551,11743,1963
+Washington,Unknown,799,619,222,1598,NA
+Washington,White,10022,9086,3781,22210,22739
+Webb,Asian,609,492,159,1207,1343
+Webb,Black,221,163,26,381,879
+Webb,Hispanic,306674,186568,45846,513392,263898
+Webb,Other,42938,31834,11336,80182,6042
+Webb,Unknown,20789,13886,2641,36567,NA
+Webb,White,41861,32387,10916,80905,10048
+Wharton,Asian,149,123,49,319,200
+Wharton,Black,2326,2014,743,4912,5208
+Wharton,Hispanic,8084,6692,1858,16161,17702
+Wharton,Other,5455,4822,2040,12004,1943
+Wharton,Unknown,777,568,108,1306,NA
+Wharton,White,8380,7420,2809,17578,18073
+Wheeler,Asian,23,19,13,53,41
+Wheeler,Black,29,23,3,53,136
+Wheeler,Hispanic,585,478,99,1109,1273
+Wheeler,Other,202,173,68,438,404
+Wheeler,Unknown,238,198,72,508,NA
+Wheeler,White,1269,1152,555,2739,3494
+Wichita,Asian,1454,1262,548,3164,2655
+Wichita,Black,5018,4335,1784,10430,13784
+Wichita,Hispanic,9488,8232,2519,19450,26220
+Wichita,Other,9055,8150,3825,20261,14888
+Wichita,Unknown,5555,4677,1115,10988,NA
+Wichita,White,36190,32649,14109,78640,85406
+>>>>>>> Stashed changes
 Wilbarger,Asian,312,285,72,643,385
 Wilbarger,Black,406,365,141,853,947
 Wilbarger,Hispanic,1587,1421,431,3144,3806
 Wilbarger,Other,287,241,93,592,1291
 Wilbarger,Unknown,1076,957,270,2229,NA
+<<<<<<< Updated upstream
 Wilbarger,White,3506,3273,1477,7651,7265
 Willacy,Asian,24,21,8,53,140
 Willacy,Black,236,212,139,576,409
@@ -1471,11 +2674,36 @@ Wilson,White,12519,11145,4124,26235,28834
 Winkler,Asian,37,35,11,76,50
 Winkler,Black,44,42,14,94,169
 Winkler,Hispanic,1698,1457,408,3406,4954
+=======
+Wilbarger,White,3506,3274,1478,7653,7265
+Willacy,Asian,24,21,8,53,140
+Willacy,Black,236,212,139,576,409
+Willacy,Hispanic,13255,11271,3909,26598,18908
+Willacy,Other,1549,1121,486,3128,592
+Willacy,Unknown,676,515,156,1331,NA
+Willacy,White,1375,1214,554,3052,1820
+Williamson,Asian,40097,33923,16020,88524,46076
+Williamson,Black,19382,16967,6371,41312,39330
+Williamson,Hispanic,78546,67840,23893,166516,146602
+Williamson,Other,105090,96141,51600,247673,65196
+Williamson,Unknown,21162,15691,3171,38324,NA
+Williamson,White,189910,169962,75447,418912,342586
+Wilson,Asian,238,207,89,512,255
+Wilson,Black,391,333,135,823,758
+Wilson,Hispanic,7220,6413,2207,15194,20522
+Wilson,Other,7385,6647,2989,16346,3147
+Wilson,Unknown,1812,1422,356,3471,NA
+Wilson,White,12446,11073,4056,26026,28834
+Winkler,Asian,37,35,11,76,50
+Winkler,Black,44,42,14,94,169
+Winkler,Hispanic,1698,1457,409,3407,4954
+>>>>>>> Stashed changes
 Winkler,Other,223,187,85,480,483
 Winkler,Unknown,624,547,250,1382,NA
 Winkler,White,844,755,237,1700,2719
 Wise,Asian,230,207,70,491,401
 Wise,Black,348,301,125,750,926
+<<<<<<< Updated upstream
 Wise,Hispanic,5640,4846,1149,11250,13965
 Wise,Other,3294,2923,1225,7300,5226
 Wise,Unknown,1516,1248,262,2906,NA
@@ -1486,27 +2714,57 @@ Wood,Hispanic,1804,1576,456,3707,4714
 Wood,Other,4383,4027,2098,10254,3068
 Wood,Unknown,1012,786,121,1806,NA
 Wood,White,13837,12549,5712,30286,37327
+=======
+Wise,Hispanic,5639,4845,1148,11247,13965
+Wise,Other,3295,2923,1226,7302,5226
+Wise,Unknown,1515,1247,262,2904,NA
+Wise,White,19500,17520,6087,40854,53207
+Wood,Asian,120,101,51,260,252
+Wood,Black,756,682,322,1701,2357
+Wood,Hispanic,1804,1576,457,3708,4714
+Wood,Other,4383,4027,2099,10255,3068
+Wood,Unknown,1011,785,120,1803,NA
+Wood,White,13840,12554,5716,30299,37327
+>>>>>>> Stashed changes
 Yoakum,Asian,18,15,5,37,42
 Yoakum,Black,14,13,9,33,84
 Yoakum,Hispanic,2280,1931,540,4423,5883
 Yoakum,Other,183,133,48,356,533
+<<<<<<< Updated upstream
 Yoakum,Unknown,667,570,201,1385,NA
+=======
+Yoakum,Unknown,666,569,201,1383,NA
+>>>>>>> Stashed changes
 Yoakum,White,924,809,310,1875,2589
 Young,Asian,40,37,13,86,109
 Young,Black,54,49,25,122,244
 Young,Hispanic,1402,1247,292,2775,3485
 Young,Other,2000,1819,789,4417,1226
 Young,Unknown,535,459,146,1081,NA
+<<<<<<< Updated upstream
 Young,White,4244,3827,1389,8874,13853
 Zapata,Asian,7,5,3,15,24
 Zapata,Black,2,1,1,4,42
 Zapata,Hispanic,7399,6405,2031,15041,13429
+=======
+Young,White,4244,3827,1390,8875,13853
+Zapata,Asian,7,5,3,15,24
+Zapata,Black,2,1,1,4,42
+Zapata,Hispanic,7399,6405,2032,15042,13429
+>>>>>>> Stashed changes
 Zapata,Other,1119,934,192,2231,239
 Zapata,Unknown,471,419,181,1061,NA
 Zapata,White,806,635,225,1630,649
 Zavala,Asian,7,7,2,16,16
 Zavala,Black,17,15,6,36,68
+<<<<<<< Updated upstream
 Zavala,Hispanic,4995,4310,1499,10716,11135
 Zavala,Other,653,583,267,1490,420
 Zavala,Unknown,300,197,26,515,NA
 Zavala,White,1053,907,323,2236,577
+=======
+Zavala,Hispanic,4997,4311,1501,10721,11135
+Zavala,Other,654,584,268,1493,420
+Zavala,Unknown,301,197,26,516,NA
+Zavala,White,1054,906,322,2235,577
+>>>>>>> Stashed changes
