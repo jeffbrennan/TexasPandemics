@@ -795,7 +795,8 @@ new_active_cases = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) %>%
 new_active_cases_long = reshape::melt(new_active_cases, id = 'County') %>% 
   setNames(c('County', 'Date', 'Active_Cases_Cumulative')) %>%
   group_by(Date) %>%
-  mutate(Date = as.Date(paste(str_extract_all(Date, '\\d+')[[1]], collapse = ' '), '%m %d %y')) %>%
+  mutate(Date = str_extract_all(Date, '\\d+')[[1]]) %>% 
+  mutate(Date = as.Date(as.numeric(Date), origin='1899-12-30')) %>% 
   ungroup() %>%
   group_by(County) %>% 
   distinct() %>%
