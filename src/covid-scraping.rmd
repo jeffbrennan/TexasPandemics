@@ -432,21 +432,19 @@ sapply(names(image_paths), function(x) download.file(image_paths[[x]], glue('ori
 # ocr
 
 # delta
-library(magick)
-library(tesseract)
-img_crop = image_read("original-sources/historical/wastewater-variants/delta_2022-01-14.png") %>% 
-  image_crop(geometry_area(0,0,-690,120)) %>% 
-  image_crop(geometry_area(0,0, 10, -190))
-
-
-data = img_crop %>% 
-  geometry_area()
-
-
-data
-
-
-
+# library(magick)
+# library(tesseract)
+# img_crop = image_read("original-sources/historical/wastewater-variants/delta_2022-01-14.png") %>% 
+#   image_crop(geometry_area(0,0,-690,120)) %>% 
+#   image_crop(geometry_area(0,0, 10, -190))
+# 
+# 
+# data = img_crop %>% 
+#   geometry_area()
+# 
+# 
+# data
+# 
 ```
 
 
@@ -908,9 +906,10 @@ Source for TPR data post 12/16. Still use CMS tests and dates for case averages 
 Clean_TPR = function(newest_file) { 
   file_date = as.Date(str_match(newest_file, '\\d{8}'), '%Y%m%d')
   file_url = paste0('https://beta.healthdata.gov', newest_file) %>% 
-    str_replace(.,
+    str_replace_all(.,
                 'https://beta.healthdata.govhttps://beta.healthdata.gov',
-                'https://beta.healthdata.gov')
+                'https://beta.healthdata.gov') %>% 
+    str_replace_all(., ' ', '%20')
   
   temp = tempfile()
   download.file(file_url, temp, mode = 'wb')
