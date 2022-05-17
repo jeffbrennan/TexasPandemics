@@ -198,7 +198,7 @@ tsa_long_complete = subset(tsa_long, value != '')[, c(1, 4)] %>%
 
 
 dshs_pops =
-  read_csv('https://raw.githubusercontent.com/jeffbrennan/COVID-19/d03d476f7fb060dfd2e1a600a6a1e449df0ab8df/original-sources/DSHS_county_cases.csv') %>%
+  fread('https://raw.githubusercontent.com/jeffbrennan/COVID-19/d03d476f7fb060dfd2e1a600a6a1e449df0ab8df/original-sources/DSHS_county_cases.csv') %>%
   select(County, Population) %>%
   distinct() %>%
   rename(Population_DSHS = Population)
@@ -311,7 +311,7 @@ age_lookup = data.frame(age =
                             NA, NA, '50-64 years', '50-64 years', '50-64 years',
                             '65-79 years', '65-79 years', '65-79 years', '80+ years', '80+ years'))
 
-demo_12_15 =  read_csv('original-sources/helpers/demographics/county/county_pop_age_sex.csv') %>%
+demo_12_15 =  fread('original-sources/helpers/demographics/county/county_pop_age_sex.csv') %>%
   filter(YEAR == '12') %>% 
   select(-c(SUMLEV, STATE, COUNTY, STNAME, YEAR,
             POPESTIMATE,
@@ -326,7 +326,7 @@ demo_12_15 =  read_csv('original-sources/helpers/demographics/county/county_pop_
   mutate(`Age Group` = '12-15 years') %>%
   rename(County = CTYNAME, Gender = gender)
 
-demo_5_11 = read_csv('original-sources/helpers/demographics/county/county_pop_age_sex.csv') %>%
+demo_5_11 = fread('original-sources/helpers/demographics/county/county_pop_age_sex.csv') %>%
   filter(YEAR == '12') %>% 
   select(-c(SUMLEV, STATE, COUNTY, STNAME, YEAR,
             POPESTIMATE,
@@ -341,7 +341,7 @@ demo_5_11 = read_csv('original-sources/helpers/demographics/county/county_pop_ag
   mutate(`Age Group` = '5-11 years') %>%
   rename(County = CTYNAME, Gender = gender)
 
-county_demo_agesex = read_csv('original-sources/helpers/demographics/county/county_pop_age_sex.csv') %>%
+county_demo_agesex = fread('original-sources/helpers/demographics/county/county_pop_age_sex.csv') %>%
   filter(YEAR == '12') %>% 
   select(-c(SUMLEV, STATE, COUNTY, STNAME, YEAR,
             POPESTIMATE,
@@ -508,7 +508,7 @@ DSHS_schools <- glue('{base_url}{format(school_date+2, "%Y%m%d")}v1.xls') %>%
   try()
 
 if (class(DSHS_schools) != 'try-error') {
-   write_csv(DSHS_schools,
+   fwrite(DSHS_schools,
              file = glue('./original-sources/historical/dshs-schools/2021/{school_date}_DSHS_schools.csv'))
 }
 ```
@@ -518,10 +518,10 @@ if (class(DSHS_schools) != 'try-error') {
 
 ```{r}
 DSHS_schools_2021 = list.files('./original-sources/historical/dshs-schools/2021/', full.names = TRUE) %>% 
-  lapply(., read_csv) %>% 
+  lapply(., fread) %>% 
   rbindlist(fill = TRUE) 
 
-DSHS_schools_archive = read_csv('./original-sources/historical/dshs-schools/historical_archive.csv')
+DSHS_schools_archive = fread('./original-sources/historical/dshs-schools/historical_archive.csv')
 
 DSHS_schools_combined = DSHS_schools_2021 %>%
   plyr::rbind.fill(DSHS_schools_archive) %>% 
@@ -852,7 +852,7 @@ merged_county_out = merged_county %>%
   dplyr::select(-c(Cases_Cumulative_NA, Deaths_Cumulative_NA,
                    Tests_Cumulative_NA, Active_Cases_Cumulative_NA))
 
-write_csv(merged_county_out %>% arrange(County, Date), 'tableau/county.csv')
+fwrite(merged_county_out %>% arrange(County, Date), 'tableau/county.csv')
 ```
 
 ## TPR 
@@ -1149,15 +1149,18 @@ if (!is.na(vaccine_date)) {
     filter(!is.na(ZIP)) %>% 
     mutate(Date = vaccine_date) %>% 
     select(Date, ZIP, everything())
-  write_csv(vaccines_zip_out, glue('original-sources/historical/vaccine-zip/vaccination-zip_{date_out}.csv'))
+  
+  if(nrow(vaccines_zip_out) > 0) { 
+    fwrite(vaccines_zip_out, glue('original-sources/historical/vaccine-zip/vaccination-zip_{date_out}.csv'))
+  }
 }
-zip_archive = list.files(glue('original-sources/historical/vaccine-zip'), full.names = TRUE)
 
-vaccines_zip_all = rbindlist(lapply(zip_archive, read_csv), fill = TRUE) %>%
+zip_archive = list.files(glue('original-sources/historical/vaccine-zip'), full.names = TRUE)
+vaccines_zip_all = rbindlist(lapply(zip_archive, fread), fill = TRUE) %>%
   distinct() %>% 
   mutate(Date = as.Date(Date))
 
-write_csv(vaccines_zip_all, 'tableau/zip_vaccine.csv')
+fwrite(vaccines_zip_all, 'tableau/zip_vaccine.csv')
 ```
 
 
@@ -1212,8 +1215,8 @@ if (format(date_out, '%A') == 'Monday' & (date_out - date_modified == -1)) {
 ## FULL
   demo_archive = list.files(glue('{vax_dir}/archive/'), full.names = TRUE)
   
-  age_archive = rbindlist(lapply(demo_archive %>% .[str_detect(., 'age')], read_csv), fill = TRUE) %>% distinct()
-  race_archive = rbindlist(lapply(demo_archive %>% .[str_detect(., 'race')], read_csv), fill = TRUE) %>% distinct()
+  age_archive = rbindlist(lapply(demo_archive %>% .[str_detect(., 'age')], fread), fill = TRUE) %>% distinct()
+  race_archive = rbindlist(lapply(demo_archive %>% .[str_detect(., 'race')], fread), fill = TRUE) %>% distinct()
   
   vax_age_full = rbindlist(lapply(list.files(glue('{vax_dir}/temp/demo_age_full/'), full.names = TRUE),
                                   read.csv, fileEncoding="UTF-16LE", sep = '\t'),
@@ -1458,7 +1461,7 @@ county_vaccinations_out %>%
   select(1:5) %>%
   arrange(desc(Date))
 
-write_csv(county_vaccinations_out, 'tableau/sandbox/county_daily_vaccine.csv')
+fwrite(county_vaccinations_out, 'tableau/sandbox/county_daily_vaccine.csv')
 ```
 
 #### state
@@ -1522,7 +1525,7 @@ state_demo = lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>%
   mutate(Date = format(as.Date(Date, origin = '1970-01-01'), '%Y-%m-%d')) %>%
   relocate(Date, .after=Booster_Per_Age)
   
-write_csv(state_demo, 'tableau/sandbox/state_vaccine_demographics.csv')
+fwrite(state_demo, 'tableau/sandbox/state_vaccine_demographics.csv')
 ```
 
 ```{r}
@@ -1611,7 +1614,7 @@ state_demo_stacked_out =
   relocate(Population_5, .after = Fully_Vaccinated) %>% 
   arrange(Group_Type)
 
-write_csv(state_demo_stacked_out, 'tableau/sandbox/stacked_state_vaccine_demographics.csv')
+fwrite(state_demo_stacked_out, 'tableau/sandbox/stacked_state_vaccine_demographics.csv')
 ```
 
 ```{r}
@@ -1633,7 +1636,7 @@ county_vax_race = lapply(all_dashboard_files, `[[`, 'By County, Race') %>%
   select(-contains('_Per'))
 
 
-write_csv(county_vax_race, 'tableau/sandbox/county_vax_race.csv')
+fwrite(county_vax_race, 'tableau/sandbox/county_vax_race.csv')
 ```
 
 ```{r}
@@ -1668,7 +1671,7 @@ county_vax_age = lapply(all_dashboard_files, `[[`, 'By County, Age') %>%
   select(-contains('_Per'))
 
 
-write_csv(county_vax_age, 'tableau/sandbox/county_vax_age.csv')
+fwrite(county_vax_age, 'tableau/sandbox/county_vax_age.csv')
 ```
 
 
@@ -1688,7 +1691,7 @@ DSHS moved to non-scrapeable DSHS dashboard
 #     mutate(Date = date_out)
 #   )
 # 
-# try(write_csv(x = variant_df,
+# try(fwrite(x = variant_df,
 #               file = glue('original-sources\\historical\\variants\\tsa_variants_{date_out}.csv')))
 
 # epsilon variants deescalated on 6/29
@@ -1750,10 +1753,10 @@ DSHS moved to non-scrapeable DSHS dashboard
 #   mutate(across(where(is.numeric), ~na_if(., 'Inf'))) %>% 
 #   arrange(TSA, Date)
 # 
-# write_csv(x = variants_out,
+# fwrite(x = variants_out,
 #           file = 'tableau\\tsa_variants.csv')
 # 
-# write_csv(x = variants_melt, 
+# fwrite(x = variants_melt, 
 #           file = 'tableau\\tsa_variants_melt.csv')
 ```
 
@@ -2118,6 +2121,6 @@ if (date_out %in% demo_releases) {
     filter(!is.na(Date))
     # mutate(Date = ifelse(is.na(Date), 'Unknown', as.character(Date)))
 
-  write_csv(cleaned_demo_new, 'tableau/stacked_demographics_v2.csv')
+  fwrite(cleaned_demo_new, 'tableau/stacked_demographics_v2.csv')
 }
 ```
