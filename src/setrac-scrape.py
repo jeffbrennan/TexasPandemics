@@ -81,7 +81,7 @@ def get_tokens(page_url):
 
 
 def get_icu_data(county):
-    print(f'Obtaining icu bed usage for {county}')
+    print(f'{county}: OBTAINING BED USAGE - ICU')
     payload = {
         'version': '1.0.0',
         'queries': [
@@ -309,7 +309,7 @@ def get_icu_data(county):
 
 
 def get_gen_data(county):
-    print(f'Obtaining general bed usage for {county}')
+    print(f'{county}: OBTAINING BED USAGE - GENERAL')
     payload = {
         'version': '1.0.0',
         'queries': [
