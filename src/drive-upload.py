@@ -77,6 +77,6 @@ all_files = [item for sublist in id_results for item in sublist]
 local_files = [i for i in glob.glob('tableau/**', recursive=True) if ('.csv' in i or '.xlsx' in i)]
 
 for f in all_files:
-    if f['mimeType'] != 'application/vnd.google-apps.folder':
+    if f['mimeType'] == 'application/vnd.google-apps.spreadsheet':
         f_path = [i for i in local_files if f['name'] in i][0]
         Update_File(f_path, f)
