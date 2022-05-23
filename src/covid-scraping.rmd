@@ -157,7 +157,7 @@ Download_Temp = function(url) {
 ```{r}
 # add metro and PHR code designations
 # source: https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls
-# add PHR readable names from https://dshs.texas.gov/regions/default.shtm
+# add PHR readable names from https://dshs.state.tx.us/regions/default.shtm
 PHR_helper = data.frame(PHR = c("1", "2/3", "4/5N",
                                 "6/5S", "7", "8",
                                 "9/10", "11"),
@@ -176,7 +176,7 @@ county_classifications = read_xlsx('original-sources/helpers/county_classificati
 
 ```{r}
 # TSA levels
-tsa_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx'
+tsa_url = 'https://dshs.state.tx.us/coronavirus/TexasCOVID-19HospitalizationsOverTimebyTSA.xlsx'
 temp = tempfile()
 curl::curl_download(tsa_url, temp, mode = 'wb')
 DSHS_tsa_names = readxl::read_xlsx(temp)[3:24, 1:2]
@@ -498,7 +498,7 @@ Clean_DSHS_Schools = function(df) {
 
 current_school_dates = seq(as.Date('2021-08-15'), by = 'week', length = 200)
 school_date = max(current_school_dates[which(current_school_dates <= date_out - 5)])
-base_url = 'https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/campus-level-data_'
+base_url = 'https://dshs.state.tx.us/chs/data/tea/district-level-school-covid-19-case-data/campus-level-data_'
 
 DSHS_schools <- glue('{base_url}{format(school_date+2, "%Y%m%d")}v1.xls') %>%
   Download_Temp(.) %>%
@@ -632,7 +632,7 @@ Clean_Vitals = function(df, data_type) {
     arrange(Date, County)
 }
 # download xlsx as tempfile and load using readxl
-case_url = 'http://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyCaseCountData.xlsx'
+case_url = 'http://dshs.state.tx.us/coronavirus/TexasCOVID19DailyCountyCaseCountData.xlsx'
 temp = tempfile()
 curl::curl_download(case_url, temp, mode = 'wb') 
 DSHS_cases = read_excel_allsheets(temp, skip = 2)
@@ -650,7 +650,7 @@ DSHS_cases_long =  lapply(DSHS_cases, function(x) Clean_Vitals(x, 'Cases_Cumulat
 ## deaths
 
 ```{r}
-death_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyFatalityCountData.xlsx'
+death_url = 'https://dshs.state.tx.us/coronavirus/TexasCOVID19DailyCountyFatalityCountData.xlsx'
 temp = tempfile()
 curl::curl_download(death_url, temp, mode = 'wb') 
 
@@ -676,7 +676,7 @@ legacy_tests_long = read.csv('original-sources/historical/testing/DSHS_county_te
   mutate(Date = as.Date(Date))
 
 # NEW
-test_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19CumulativeTestsbyCounty.xlsx'
+test_url = 'https://dshs.state.tx.us/coronavirus/TexasCOVID-19CumulativeTestsbyCounty.xlsx'
 temp = tempfile()
 curl::curl_download(test_url, temp, mode = 'wb')
 
@@ -713,7 +713,7 @@ DSHS_tests_long = merged_tests %>%
 montgomery_new_cases = c(32, 61, 78, 110, 98, 124, 78, 77, 144, 97, 146, 133, 124, 103, 90, 109, 33, 3, 330, 162, 484)
 montgomery_case_dates = seq(as.Date('2020-11-01'), as.Date('2020-11-21'), by = 'day')
 
-new_case_url ='https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx'
+new_case_url ='https://dshs.state.tx.us/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx'
 temp = tempfile()
 curl::curl_download(new_case_url, temp, mode = 'wb') 
 DSHS_new_cases = read_excel_allsheets(temp, skip = 2)
@@ -777,7 +777,7 @@ old_active_cases_long = read.csv('original-sources/historical/active-cases/activ
 
 
 # current
-new_case_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID-19ActiveCaseDatabyCounty.xlsx'
+new_case_url = 'https://dshs.state.tx.us/coronavirus/TexasCOVID-19ActiveCaseDatabyCounty.xlsx'
 temp = tempfile()
 curl::curl_download(new_case_url, temp, mode = 'wb') 
 new_active_cases = data.frame(readxl::read_excel(temp, sheet = 1, skip = 2)) %>%
@@ -1093,7 +1093,7 @@ write.csv(tpr_out, 'tableau/county_TPR.csv', row.names = FALSE)
 ## vaccinations
 
 ```{r}
-curl::curl_download('https://www.dshs.texas.gov/immunize/covid19/COVID-19-Vaccine-Data-by-County.xls', mode = 'wb', 
+curl::curl_download('https://www.dshs.state.tx.us/immunize/covid19/COVID-19-Vaccine-Data-by-County.xls', mode = 'wb', 
               destfile = glue('original-sources/historical/vaccinations/vaccinations_{date_out}.xlsx'))
 # 
 # Clean_Vaccines = function(x) {
@@ -1134,7 +1134,7 @@ curl::curl_download('https://genesis.soc.texas.gov/files/accessibility/vaccinepr
 
 ```{r}
 temp = tempfile()
-curl::curl_download('https://dshs.texas.gov/coronavirus/TexasCOVID19VaccinesbyZIP.xlsx',
+curl::curl_download('https://dshs.state.tx.us/coronavirus/TexasCOVID19VaccinesbyZIP.xlsx',
               temp, mode = 'wb') 
 vaccines_zip = read_excel_allsheets(temp, col_option = FALSE)
 
@@ -1681,7 +1681,7 @@ fwrite(county_vax_age, 'tableau/sandbox/county_vax_age.csv')
 DSHS moved to non-scrapeable DSHS dashboard
 ```{r}
 # try(
-#   variant_df <- 'http://www.dshs.texas.gov/news/updates.shtm' %>%
+#   variant_df <- 'http://www.dshs.state.tx.us/news/updates.shtm' %>%
 #     httr::GET(., httr::timeout(20)) %>% 
 #     read_html() %>%
 #     html_table() %>%
@@ -1796,7 +1796,7 @@ DSHS_tsa = merge(DSHS_tsa, DSHS_tsa_pops, by = 'TSA', all = TRUE)
 ## DSHS hospitals
 
 ```{r}
-hosp_url = 'https://dshs.texas.gov/coronavirus/CombinedHospitalDataoverTimebyTSA.xlsx'
+hosp_url = 'https://dshs.state.tx.us/coronavirus/CombinedHospitalDataoverTimebyTSA.xlsx'
 temp = tempfile()
 
 curl::curl_download(hosp_url, temp, mode = 'wb') 
@@ -2031,7 +2031,7 @@ Clean_Demographics = function(sheet_name, file_date=date_out) {
 # demo_releases = seq(as.Date('2020-09-25'), by = 'week', length = 200)
 # 
 # if (date_out %in% demo_releases) {
-#   demo_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics.xlsx'
+#   demo_url = 'https://dshs.state.tx.us/coronavirus/TexasCOVID19Demographics.xlsx'
 #   curl::curl_download(demo_url, glue('original-sources/historical/demo-archive/demo_{date_out}.xlsx'))
 #   temp = tempfile()
 #   curl::curl_download(demo_url, temp, mode = 'wb')
@@ -2084,7 +2084,7 @@ Clean_Demo_New = function(sheet_name) {
 demo_releases = seq(as.Date('2022-01-01'), by = 'month', length = 50) + days(14)
 
 if (date_out %in% demo_releases) {
-  demo_url = 'https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics_Counts.xlsx'
+  demo_url = 'https://dshs.state.tx.us/coronavirus/TexasCOVID19Demographics_Counts.xlsx'
   curl::curl_download(demo_url, glue('original-sources/historical/demo-archive/demo_{date_out}.xlsx'))
 
 
