@@ -65,16 +65,30 @@ select = dplyr::select
 # Grab every sheet from an excel file and convert to list of dataframes
 # https://stackoverflow.com/questions/12945687/read-all-worksheets-in-an-excel-workbook-into-an-r-list-with-data-frames
 read_excel_allsheets = function(filename, col_option = TRUE, add_date = FALSE, skip_option = 1) {
-    sheets = readxl::excel_sheets(filename)
-    x = lapply(sheets, function(X) read_excel(filename, sheet = X,
-                                              skip = skip_option,
-                                              col_names = col_option, na = '.'))
+    sheets = openxlsx::getSheetNames(filename)
+
+    x = map(sheets, ~ openxlsx::read.xlsx(filename,
+                                          sheet = .,
+                                          startRow = skip_option + 1,
+                                          colNames = col_option,
+                                          na.strings = '.')
+    )
+    # 
+    # sheets = readxl::excel_sheets(filename)
+    # 
+    # x = map(sheets, ~ readxl::read_xlsx(filename,
+    #                                       sheet = .,
+    #                                       skip = skip_option,
+    #                                       col_names = col_option,
+    #                                       na  = '.')
+    #         
+    #        )
     names(x) = sheets
     x = lapply(x, as.data.frame)
     
     if (add_date == TRUE) { 
       file_date = str_extract(filename, '\\d.*\\d')
-      x = lapply(x, function(z) return(mutate(z, Date = as.Date(file_date))))
+      x = map(x, ~x %>% mutate(Date = as.Date(file_date)))
     }
     return(x)
 }
@@ -633,9 +647,12 @@ Clean_Vitals = function(df, data_type) {
 }
 # download xlsx as tempfile and load using readxl
 case_url = 'http://dshs.state.tx.us/coronavirus/TexasCOVID19DailyCountyCaseCountData.xlsx'
-temp = tempfile()
-curl::curl_download(case_url, temp, mode = 'wb') 
-DSHS_cases = read_excel_allsheets(temp, skip = 2)
+# temp = tempfile()
+curl::curl_download(case_url,
+                    'original-sources/historical/temp/dshs_cases.xlsx',
+                    mode = 'wb') 
+DSHS_cases = read_excel_allsheets('original-sources/historical/temp/dshs_cases.xlsx',
+                                  skip_option = 2)
 
 DSHS_cases_long =  lapply(DSHS_cases, function(x) Clean_Vitals(x, 'Cases_Cumulative')) %>% 
   rbindlist() %>%
@@ -651,11 +668,13 @@ DSHS_cases_long =  lapply(DSHS_cases, function(x) Clean_Vitals(x, 'Cases_Cumulat
 
 ```{r}
 death_url = 'https://dshs.state.tx.us/coronavirus/TexasCOVID19DailyCountyFatalityCountData.xlsx'
-temp = tempfile()
-curl::curl_download(death_url, temp, mode = 'wb') 
+# temp = tempfile()
+curl::curl_download(death_url,
+                    'original-sources/historical/temp/dshs_deaths.xlsx',
+                    mode = 'wb') 
 
-
-DSHS_deaths = read_excel_allsheets(temp, skip = 2)
+DSHS_deaths = read_excel_allsheets('original-sources/historical/temp/dshs_deaths.xlsx', 
+                                   skip_option = 2)
 
 DSHS_deaths_long = lapply(DSHS_deaths, function(x) Clean_Vitals(x, 'Deaths_Cumulative')) %>% 
   rbindlist() %>%
@@ -677,10 +696,13 @@ legacy_tests_long = read.csv('original-sources/historical/testing/DSHS_county_te
 
 # NEW
 test_url = 'https://dshs.state.tx.us/coronavirus/TexasCOVID-19CumulativeTestsbyCounty.xlsx'
-temp = tempfile()
-curl::curl_download(test_url, temp, mode = 'wb')
+# temp = tempfile()
+curl::curl_download(test_url,
+                    'original-sources/historical/temp/dshs_test.xlsx',
+                    mode = 'wb')
 
-DSHS_tests = read_excel_allsheets(temp, skip = 1)
+DSHS_tests = read_excel_allsheets('original-sources/historical/temp/dshs_test.xlsx',
+                                  skip_option = 1)
 
 DSHS_tests_long = lapply(DSHS_tests, function(x) Clean_Vitals(x, 'Tests_Cumulative')) %>% 
   rbindlist() %>% 
@@ -714,9 +736,12 @@ montgomery_new_cases = c(32, 61, 78, 110, 98, 124, 78, 77, 144, 97, 146, 133, 12
 montgomery_case_dates = seq(as.Date('2020-11-01'), as.Date('2020-11-21'), by = 'day')
 
 new_case_url ='https://dshs.state.tx.us/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx'
-temp = tempfile()
-curl::curl_download(new_case_url, temp, mode = 'wb') 
-DSHS_new_cases = read_excel_allsheets(temp, skip = 2)
+# temp = tempfile()
+curl::curl_download(new_case_url,
+                    'original-sources/historical/temp/dshs_new_cases.xlsx',
+                    mode = 'wb') 
+DSHS_new_cases = read_excel_allsheets('original-sources/historical/temp/dshs_new_cases.xlsx',
+                                      skip_option = 2)
 
 DSHS_new_cases_long = lapply(DSHS_new_cases, function(x) Clean_Vitals(x, 'Cases_Daily')) %>% 
   rbindlist() %>% 
@@ -987,29 +1012,6 @@ map(names(tpr_results), ~fwrite(tpr_results[[.]],
                                 quote = TRUE))
 ```
 
-Inconsistent updates, no longer using
-
-```{r}
-# cpr_tpr = fromJSON('https://services5.arcgis.com/qWZ7BaZXaP5isnfT/arcgis/rest/services/Community_Profile_Report_Counties/FeatureServer/0/query?where=State_Abbreviation%3D%27TX%27&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=County%2C+test_positivity_rate_last_7_d%2C+total_tests_last_7_d%2C+last_updated&returnGeometry=false&returnCentroid=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pjson&token=')[['features']][['attributes']] %>% 
-#   filter(!str_detect(County, 'Unallocated')) %>%
-#   setNames(c('County', 'TPR_CPR', 'Tests', 'Date')) %>% 
-#   mutate(Date = as_date(as_datetime(Date/1000))) %>% 
-#   mutate(TPR_CPR = TPR_CPR / 100) %>% 
-#   mutate(County = gsub(' County, TX', '', County)) %>% 
-#   arrange(County)
-# 
-# cpr_date = cpr_tpr$Date[1]
-# 
-# 
-# 
-# fwrite(cpr_tpr,
-#         paste0('original-sources/historical/cpr/cpr_tpr_', cpr_date, '.csv'),
-#         row.names = FALSE,
-#         quote = TRUE)
-```
-
-
-
 ```{r}
 # add cms archive (8/19 - 12/09) (data represented 2 weeks of cases)
 cpr_dates = list.files('original-sources/historical/cpr') %>% 
@@ -1136,7 +1138,7 @@ curl::curl_download('https://genesis.soc.texas.gov/files/accessibility/vaccinepr
 temp = tempfile()
 curl::curl_download('https://dshs.state.tx.us/coronavirus/TexasCOVID19VaccinesbyZIP.xlsx',
               temp, mode = 'wb') 
-vaccines_zip = read_excel_allsheets(temp, col_option = FALSE)
+vaccines_zip = (temp, col_option = FALSE)
 
 vaccine_date = vaccines_zip[[1]] %>% slice(1) %>% select(2) %>% Date_Parser()
 # vaccine_date = date_out
@@ -1329,13 +1331,16 @@ if (format(date_out, '%A') == 'Monday' & (date_out - date_modified == -1)) {
 ## vax dashboard new
 
 ```{r}
-dashboard_archive = list.files('C:/Users/jeffb/Desktop/Life/personal-projects/COVID/original-sources/historical/vaccinations', full.names = TRUE)
+dashboard_archive = list.files('original-sources/historical/vaccinations', full.names = TRUE)
 
-# combine all sheets, obtain unique date, count combos, save
-all_dashboard_files = lapply(dashboard_archive, read_excel_allsheets, add_date = TRUE, col_option = FALSE, skip_option = 0)
+# TODO: make dynamic based on dates present in cleaned final file
+NUM_DAYS = 1
+new_files = dashboard_archive[(length(dashboard_archive) - (NUM_DAYS - 1)):length(dashboard_archive)]
+# new_files = dashboard_archive
 
-# DSHS temporarily removed county level data on 10/6
-all_dashboard_files = all_dashboard_files[-264]
+start_time = Sys.time()
+all_dashboard_files = lapply(new_files, read_excel_allsheets, add_date = TRUE, col_option = FALSE, skip_option = 0)
+print(Sys.time() - start_time)
 
 county_vaccinations = 
   rbindlist(
@@ -1348,7 +1353,6 @@ county_vaccinations =
     )
     , fill = TRUE) %>% 
   filter(`County Name` %in% (dshs_pops$County %>% unique())) %>%
-  # distinct_at(vars(-c(`County Name`, Date)), .keep_all = TRUE) %>%
   select(Date, `County Name`,
          `Total Doses Allocated`, `Vaccine Doses Administered`,
          `People Vaccinated with at least One Dose`, `People Fully Vaccinated`,
@@ -1371,39 +1375,39 @@ county_vaccinations =
 
 
 # DSHS swapped counts of full and partial vaccinations on 3/12 [duplicated on 3/13].
-vaccinations_312 = 
-  read_xlsx("original-sources/historical/vaccinations/vaccinations_2021-03-12.xlsx", sheet = 2) %>% 
-  slice(2:nrow(.)) %>%
-  mutate(Date = as.Date('2021-03-12')) %>%
-  # select(- `People Fully Vaccinated`) %>% 
-  rename(At_Least_One_Dose = `People Fully Vaccinated`,
-         `People Fully Vaccinated` = `People Vaccinated with at least One Dose`) %>%
-  # distinct_at(vars(-c(`County Name`, Date)), .keep_all = TRUE) %>% 
-  select(Date, `County Name`,
-         `Total Doses Allocated`, `Vaccine Doses Administered`,
-         `At_Least_One_Dose`, `People Fully Vaccinated`,
-         `Population, 16+`, `Population, 65+`) %>%
-  setNames(c('Date', 'County', 'Doses_Allocated',
-             'Doses_Administered', 'At_Least_One_Dose', 'Fully_Vaccinated',
-             'Population_16', 'Population_65')) %>%
-  filter(County %in% (dshs_pops$County %>% unique())) %>%
-  mutate_at(vars(-County, -Date), as.numeric) %>%
-  mutate(Doses_Allocated_Per_16 = Doses_Allocated / Population_16,
-         Doses_Allocated_Per_65 = Doses_Allocated / Population_65,
-         Doses_Administered_Per_16 = Doses_Administered / Population_16,
-         Doses_Administered_Per_65 = Doses_Administered / Population_65,
-         Fully_Vaccinated_Per_16 = Fully_Vaccinated / Population_16,
-         Fully_Vaccinated_Per_65 = Fully_Vaccinated / Population_65)
-
-
-vaccinations_312 = vaccinations_312 %>% rbind(vaccinations_312 %>% mutate(Date = as.Date('2021-03-13')))
-
-# Average between 4/6 and 4/8 for missing 4/7 file
-vaccinations_407 = county_vaccinations %>%
-  filter(Date == '2021-04-06' | Date == '2021-04-08') %>% 
-  group_by(County) %>% 
-  summarize(across(Doses_Allocated:Fully_Vaccinated_Per_65, ~round(mean(.x, na.rm = TRUE), 0))) %>% 
-  mutate(Date = as.Date('2021-04-07'))
+# vaccinations_312 = 
+#   read_xlsx("original-sources/historical/vaccinations/vaccinations_2021-03-12.xlsx", sheet = 2) %>% 
+#   slice(2:nrow(.)) %>%
+#   mutate(Date = as.Date('2021-03-12')) %>%
+#   # select(- `People Fully Vaccinated`) %>% 
+#   rename(At_Least_One_Dose = `People Fully Vaccinated`,
+#          `People Fully Vaccinated` = `People Vaccinated with at least One Dose`) %>%
+#   # distinct_at(vars(-c(`County Name`, Date)), .keep_all = TRUE) %>% 
+#   select(Date, `County Name`,
+#          `Total Doses Allocated`, `Vaccine Doses Administered`,
+#          `At_Least_One_Dose`, `People Fully Vaccinated`,
+#          `Population, 16+`, `Population, 65+`) %>%
+#   setNames(c('Date', 'County', 'Doses_Allocated',
+#              'Doses_Administered', 'At_Least_One_Dose', 'Fully_Vaccinated',
+#              'Population_16', 'Population_65')) %>%
+#   filter(County %in% (dshs_pops$County %>% unique())) %>%
+#   mutate_at(vars(-County, -Date), as.numeric) %>%
+#   mutate(Doses_Allocated_Per_16 = Doses_Allocated / Population_16,
+#          Doses_Allocated_Per_65 = Doses_Allocated / Population_65,
+#          Doses_Administered_Per_16 = Doses_Administered / Population_16,
+#          Doses_Administered_Per_65 = Doses_Administered / Population_65,
+#          Fully_Vaccinated_Per_16 = Fully_Vaccinated / Population_16,
+#          Fully_Vaccinated_Per_65 = Fully_Vaccinated / Population_65)
+# 
+# 
+# vaccinations_312 = vaccinations_312 %>% rbind(vaccinations_312 %>% mutate(Date = as.Date('2021-03-13')))
+# 
+# # Average between 4/6 and 4/8 for missing 4/7 file
+# vaccinations_407 = county_vaccinations %>%
+#   filter(Date == '2021-04-06' | Date == '2021-04-08') %>% 
+#   group_by(County) %>% 
+#   summarize(across(Doses_Allocated:Fully_Vaccinated_Per_65, ~round(mean(.x, na.rm = TRUE), 0))) %>% 
+#   mutate(Date = as.Date('2021-04-07'))
 
 
 population_12 = all_dashboard_files[[length(all_dashboard_files)]][[2]] %>%
@@ -1413,15 +1417,10 @@ population_12 = all_dashboard_files[[length(all_dashboard_files)]][[2]] %>%
   rename(County = `County Name`, Population_12 = `Population\r\n12+`) %>%
   filter(!is.na(County))
 
+current_vaccination_file = fread('tableau/sandbox/county_daily_vaccine.csv')
 
-
-county_vaccinations_out = county_vaccinations %>% 
-  filter(Date != '2021-03-12' & Date != '2021-03-13') %>% 
-  plyr::rbind.fill(vaccinations_312) %>%
-  plyr::rbind.fill(vaccinations_407) %>%
-  arrange(Date, County) %>%
-  mutate(County = gsub('\\*Other|\\* Other', 'Other', County)) %>%
-  left_join(tsa_long_complete %>% select(County, TSA_Combined)) %>% 
+county_vaccinations_out = county_vaccinations |> 
+    left_join(tsa_long_complete %>% select(County, TSA_Combined)) %>% 
   left_join(county_classifications %>% select(County, PHR_Combined, Metro_Area)) %>% 
   select(-contains('_Per')) %>% 
   left_join(county_demo_agesex %>%
@@ -1435,7 +1434,33 @@ county_vaccinations_out = county_vaccinations %>%
   relocate(Population_Total, .before = TSA_Combined) %>% 
   group_by(County) %>% 
   mutate(Population_5 = coalesce(Population_5, NA)) %>% 
-  tidyr::fill(Population_5, .direction = 'updown')
+  tidyr::fill(Population_5, .direction = 'updown') |> 
+  plyr::rbind.fill(current_vaccination_file) |> 
+  arrange(Date, County) |> 
+  distinct()
+
+# 
+# county_vaccinations_out = county_vaccinations %>% 
+#   filter(Date != '2021-03-12' & Date != '2021-03-13') %>% 
+#   plyr::rbind.fill(vaccinations_312) %>%
+#   plyr::rbind.fill(vaccinations_407) %>%
+#   arrange(Date, County) %>%
+#   mutate(County = gsub('\\*Other|\\* Other', 'Other', County)) %>%
+#   left_join(tsa_long_complete %>% select(County, TSA_Combined)) %>% 
+#   left_join(county_classifications %>% select(County, PHR_Combined, Metro_Area)) %>% 
+#   select(-contains('_Per')) %>% 
+#   left_join(county_demo_agesex %>%
+#               select(County, `Age Group`, Population_Total) %>%
+#               filter(`Age Group` %in% c('<16', '16+')) %>%
+#               group_by(County) %>%
+#               summarize(Population_Total = sum(Population_Total)) %>%
+#               arrange(-Population_Total)) %>%
+#   left_join(population_12) %>% 
+#   relocate(Population_12, .before = Population_16) %>%
+#   relocate(Population_Total, .before = TSA_Combined) %>% 
+#   group_by(County) %>% 
+#   mutate(Population_5 = coalesce(Population_5, NA)) %>% 
+#   tidyr::fill(Population_5, .direction = 'updown')
 ```
 
 ### diagnostics
@@ -1473,18 +1498,24 @@ state_demo = lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>%
            setNames(slice(., 1) %>% unlist()) %>%
            rename(Date = ncol(.)) %>%
            slice(2:nrow(.))) %>%
-  rbindlist(fill = TRUE) %>% 
-  mutate(`Race/Ethnicity` = ifelse(is.na(`Race/Ethnicity`), str_c(Race, Ethnicity), `Race/Ethnicity`)) %>%
-  select(-Race, -Ethnicity, -`People Vaccinated with at Least One Dose`, -`People Vaccinated`) %>%
-  filter(`Age Group` != 'Total') %>%
-  mutate(`Age Group` = ifelse(`Age Group` == '44692', '5-11 years', `Age Group`)) %>%
-  mutate(`Age Group` = ifelse(`Age Group` == '44910', '12-15 years', `Age Group`)) %>%
-  mutate(`Age Group` = ifelse(!str_detect(`Age Group`, 'years|Unknown'), glue('{`Age Group`} years'), `Age Group`)) %>%
-  rename(Age_Group = 'Age Group',
+  rbindlist(fill = TRUE) |> 
+  mutate(`Race/Ethnicity` = ifelse(is.na(`Race/Ethnicity`), str_c(Race, Ethnicity), `Race/Ethnicity`)) |> 
+  select(-any_of(c('Race', 'Ethnicity', 'People Vaccinated with at Least One Dose', 'People Vaccinated'))) |> 
+  unite(Age_Group, starts_with('Age'), remove = TRUE, na.rm = TRUE) |> 
+  unite(Booster, contains('Booster'), remove = TRUE, na.rm = TRUE) |> 
+  rename(
+    any_of(
+      c(
          Doses_Administered = 'Doses Administered',
          At_Least_One_Vaccinated = 'People Vaccinated with at least One Dose',
-         Fully_Vaccinated = 'People Fully Vaccinated',
-         Booster = 'People with Booster Doses') %>%
+         Fully_Vaccinated = 'People Fully Vaccinated'         
+         )
+      )
+    ) |> 
+  filter(Age_Group != 'Total') %>%
+  mutate(Age_Group = ifelse(Age_Group == '44692', '5-11 years', Age_Group)) %>%
+  mutate(Age_Group = ifelse(Age_Group == '44910', '12-15 years', Age_Group)) %>%
+  mutate(Age_Group = ifelse(!str_detect(Age_Group, 'years|Unknown'), glue('{Age_Group} years'), Age_Group)) %>%
   # remove dupes
   arrange(Date) %>%
   group_by(Gender, Age_Group, `Race/Ethnicity`) %>% 
@@ -1524,13 +1555,18 @@ state_demo = lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>%
   relocate(`Race/Ethnicity`, .after=Age_Group) %>% 
   mutate(Date = format(as.Date(Date, origin = '1970-01-01'), '%Y-%m-%d')) %>%
   relocate(Date, .after=Booster_Per_Age)
-  
+
+# current_state_demo = fread('tableau/sandbox/state_vaccine_demographics.csv')  
+# 
+# state_demo_out = current_state_demo |> 
+#   plyr::rbind.fill(state_demo) |> 
+#   arrange(Date)
+# 
 fwrite(state_demo, 'tableau/sandbox/state_vaccine_demographics.csv')
 ```
 
 ```{r}
 measure_cols = c('Doses_Administered', 'At_Least_One_Vaccinated', 'Fully_Vaccinated')
-
 
 state_demo_stacked = 
   state_demo %>%
@@ -1571,7 +1607,7 @@ state_demo_stacked =
 
 
 
-state_demo_stacked_out = 
+state_demo_stacked_clean = 
   state_demo_stacked %>% 
   # rbind(under_12) %>% 
   arrange(Group, Group_Type) %>%
@@ -1614,7 +1650,11 @@ state_demo_stacked_out =
   relocate(Population_5, .after = Fully_Vaccinated) %>% 
   arrange(Group_Type)
 
-fwrite(state_demo_stacked_out, 'tableau/sandbox/stacked_state_vaccine_demographics.csv')
+# stacked_vax_demo_current = fread('tableau/sandbox/stacked_state_vaccine_demographics.csv')
+# 
+# state_demo_stacked_out = stacked_vax_demo_current |> 
+#   plyr::rbind.fill(state_demo_stacked_clean)
+fwrite(state_demo_stacked_clean, 'tableau/sandbox/stacked_state_vaccine_demographics.csv')
 ```
 
 ```{r}
@@ -1634,7 +1674,12 @@ county_vax_race = lapply(all_dashboard_files, `[[`, 'By County, Race') %>%
   mutate(Booster_Per_Race = Booster / Population_Total) %>% 
   filter(!(County %in% c('Other', 'Grand Total'))) %>% 
   select(-contains('_Per'))
-
+# 
+# county_vax_race_current = fread('tableau/sandbox/county_vax_race.csv')
+# 
+# county_vax_race_out = county_vax_race_current |> 
+#   plyr::rbind.fill(county_vax_race) |> 
+#   arrange(Date, County)
 
 fwrite(county_vax_race, 'tableau/sandbox/county_vax_race.csv')
 ```
@@ -1662,9 +1707,6 @@ county_vax_age = lapply(all_dashboard_files, `[[`, 'By County, Age') %>%
               group_by(County, `Age Group`) %>% 
               summarize(Population_Total = sum(Population_Total, na.rm = TRUE)) %>%
               rename('Age_Group' = `Age Group`)) %>%
-              # mutate(Age_Group = glue('{Age_Group} years')) %>%
-              # mutate(Age_Group = gsub('years years', '', Age_Group)) %>%
-              # mutate(Age_Group = str_squish(Age_Group))) %>%
   mutate_at(vars(-County, -`Age_Group`), as.numeric) %>%
   mutate(Doses_Administered_Per_Age = Doses_Administered / Population_Total) %>% 
   mutate(At_Least_One_Vaccinated_Per_Age = At_Least_One_Vaccinated / Population_Total) %>% 
@@ -1801,10 +1843,12 @@ DSHS_tsa = merge(DSHS_tsa, DSHS_tsa_pops, by = 'TSA', all = TRUE)
 ```{r}
 hosp_url = 'https://dshs.state.tx.us/coronavirus/CombinedHospitalDataoverTimebyTSA.xlsx'
 temp = tempfile()
-
-curl::curl_download(hosp_url, temp, mode = 'wb') 
-DSHS_tsa_hosp = read_excel_allsheets(temp)
+curl::curl_download(hosp_url,
+                    'original-sources/historical/temp/dshs_hosp.xlsx',
+                    mode = 'wb')
+DSHS_tsa_hosp = read_excel_allsheets('original-sources/historical/temp/dshs_hosp.xlsx')
  
+
 DSHS_hosp_clean = function(df, var_name) { 
   names(df) = df[1, ]
   df_clean = df %>% 
