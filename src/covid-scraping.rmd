@@ -1137,10 +1137,12 @@ curl::curl_download('https://genesis.soc.texas.gov/files/accessibility/vaccinepr
 ## vaccines zip
 
 ```{r}
-temp = tempfile()
 curl::curl_download('https://dshs.state.tx.us/coronavirus/TexasCOVID19VaccinesbyZIP.xlsx',
-              temp, mode = 'wb') 
-vaccines_zip = (temp, col_option = FALSE)
+                    'original-sources/historical/temp/zip_vaccine.xlsx',
+                    mode = 'wb') 
+
+vaccines_zip = read_excel_allsheets('original-sources/historical/temp/zip_vaccine.xlsx',
+                                    col_option = FALSE)
 
 vaccine_date = vaccines_zip[[1]] %>% slice(1) %>% select(2) %>% Date_Parser()
 # vaccine_date = date_out
