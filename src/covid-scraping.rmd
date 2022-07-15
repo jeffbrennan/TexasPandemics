@@ -59,6 +59,7 @@ library(jsonlite)
 library(glue)
 
 select = dplyr::select
+filter = dplyr::filter
 ```
 
 ```{r}
@@ -857,23 +858,16 @@ merged_dshs = Reduce(function(x, y) merge(x, y, by = 'County', all = TRUE),
                        list(county_counts, tsa_long_complete, dshs_pops, county_classifications))
 
 # add TSA, PHR & HHSC combination
- merged_dshs$TSA_Combined = paste0(merged_dshs$TSA, ' - ', merged_dshs$TSA_Name)
+merged_dshs$TSA_Combined = paste0(merged_dshs$TSA, ' - ', merged_dshs$TSA_Name)
 merged_dshs$PHR_Combined = paste0(merged_dshs$PHR, ' - ', merged_dshs$PHR_Name)
-# merged_dshs$HHSC_Combined = paste0(merged_dshs$HHSC, ' - ', merged_dshs$HHSC_Name)
-# 
-merged_county = as.data.frame(merge(merged_dshs, mobility_texas,
-                                    by = c('Date', 'County'), all = TRUE)) %>%
-  filter(!is.na(County) & County != 'Unknown')
-
-# fix types
-merged_county$County = as.factor(merged_county$County)
-merged_county$Population_DSHS = as.numeric(merged_county$Population_DSHS)
 
 # keep only relevant dates (previous dates include google mobility only)
-merged_county = merged_county %>% 
-  filter(Date >= as.Date('2020-03-06') & !is.na(County)) %>% 
-  distinct() 
-
+merged_county = as.data.frame(merge(merged_dshs, mobility_texas,
+                                    by = c('Date', 'County'), all = TRUE)) %>%
+  filter(County %in% unique(county_classifications$County)) |> 
+  mutate(Population_DSHS = as.numeric(Population_DSHS)) |> 
+  filter(Date >= as.Date('2020-03-06') & !is.na(County)) |>  
+  distinct()
 
 merged_county_out = merged_county %>% 
   dplyr::select(-c(Cases_Cumulative_NA, Deaths_Cumulative_NA,
