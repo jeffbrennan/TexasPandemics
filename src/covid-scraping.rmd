@@ -1063,6 +1063,8 @@ tpr_cases = merged_county %>%
   filter(Date %in% TPR_dates) %>% 
   dplyr::select(-Cases_Daily, -Population_DSHS, -Cases_100K_14Day_MA)
 
+tpr_cases$Date |> unique() |> sort()
+
 
 tpr_out = all_cpr_tpr %>%
   rbind(TPR_all_dates %>% filter(Date >= '2020-12-16'), fill = TRUE) %>%
@@ -1080,11 +1082,14 @@ tpr_out = all_cpr_tpr %>%
   arrange(County, Date) %>%
   group_by(County, Date) %>% 
   slice(1) %>% 
-  distinct() %>% 
+  distinct() |> 
   group_by(Date) %>% 
   mutate(count_0 = sum(TPR == 0)) %>%
   filter(count_0 < 254 | is.na(count_0))
   
+tpr_out$Date |> unique() |> sort()
+
+
 write.csv(tpr_out, 'tableau/county_TPR.csv', row.names = FALSE)
 ```
 
