@@ -10,10 +10,8 @@ setwd('C:/Users/jeffb/Desktop/Life/personal-projects/COVID/')
 # dshs ----------------------------------------------------------------------------------------
 
 ## functions -----------------------------------------------------------------------------------
-
-
 Run_Diagnostics = function(df) {
-  na_check = nrow(df) == df |> filter(!is.na(Cases))
+  na_check = nrow(df) == df |> filter(!is.na(Cases)) |> nrow()
   checks = all(c(na_check))
   
   return(checks)
@@ -41,9 +39,11 @@ Get_Demographics = function() {
   combined_demo = fread('monkeypox/stacked_state_demographics.csv') |> 
     plyr::rbind.fill(dshs_demographics) |> 
     distinct() |> 
+    mutate(Date = as_date(Date, format = '%Y-%m-%d')) |> 
     arrange(Demo, Demo_Group, Date)
   
   if(checks) { 
+    message('Writing demographics update')
     fwrite(combined_demo, glue('monkeypox/stacked_state_demographics.csv'))
     }
   return(dshs_demographics)
@@ -73,11 +73,13 @@ Get_Cases = function() {
   
   cases_combined = fread('monkeypox/stacked_cases.csv') |> 
     plyr::rbind.fill(dshs_cases) |> 
+    mutate(Date = as_date(Date, format = '%Y-%m-%d')) |>
     arrange(Level, Level_Type, Date) |> 
     distinct()
   
   
   if(checks) { 
+    message('Writing case update')
     fwrite(cases_combined, glue('monkeypox/stacked_cases.csv'))
   }
   return(dshs_cases)
