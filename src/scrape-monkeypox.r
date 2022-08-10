@@ -87,7 +87,7 @@ Get_Cases = function() {
 
 Check_DSHS = function() { 
   
-  dshs_cases_html = read_html('https://www.dshs.texas.gov/news/updates.shtm#monkeypox')
+  dshs_cases_html = read_html(UPDATE_URL)
   dshs_case_update = dshs_cases_html |> 
     html_nodes(xpath = '//*[@id="ctl00_ContentPlaceHolder1_ContentPageColumnCenter"]/span[2]') |> 
     html_text() |> 
@@ -110,14 +110,14 @@ CURRENT_MAX_DATE = fread('monkeypox/stacked_state_demographics.csv') |>
 
 MAX_ATTEMPTS = 50
 SLEEP_TIME = 60 * 10
+UPDATE_URL = 'https://www.dshs.texas.gov/news/updates.shtm#monkeypox'
+
 
 dshs_page = Check_DSHS()
-
-message('Checking https://www.dshs.texas.gov/news/updates.shtm#monkeypox for updates... ')
+message(glue('Checking {UPDATE_URL} for updates... '))
 
 
 ## check ---------------------------------------------------------------------------------------
-
 counter = 1
 while (CURRENT_MAX_DATE >= dshs_page[['update']] & counter < MAX_ATTEMPTS) {
   message(glue('[ATTEMPT #{str_pad(counter, width = 2, pad = "0")}] Retrying in {SLEEP_TIME / 60} minutes...'))
