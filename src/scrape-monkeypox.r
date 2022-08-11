@@ -32,7 +32,8 @@ Get_Demographics = function() {
     relocate(Demo, .before = Demo_Group) |> 
     mutate(Date = dshs_page[['update']]) |> 
     relocate(Date, .before = Demo) |> 
-    mutate(Demo_Group = as.character(Demo_Group))
+    mutate(Demo_Group = as.character(Demo_Group)) |> 
+    mutate(Demo_Group = str_replace_all(Demo_Group, '�|\\<a0\\>', '')) 
   
   checks = Run_Diagnostics(dshs_demographics)
   
@@ -67,14 +68,15 @@ Get_Cases = function() {
         mutate(Level = 'Texas')
     ) |> 
     relocate(Level_Type, .before = Level) |> 
-    relocate(Date, .before = Level_Type)
+    relocate(Date, .before = Level_Type) |> 
+    mutate(Level = str_replace_all(Level, '�|\\<a0\\>', ''))
   
   checks = Run_Diagnostics(dshs_cases)
   
   cases_combined = fread('monkeypox/stacked_cases.csv') |> 
     plyr::rbind.fill(dshs_cases) |> 
     mutate(Date = as_date(Date, format = '%Y-%m-%d')) |>
-    arrange(Level, Level_Type, Date) |> 
+    arrange(Level_Type, Level, Date) |> 
     distinct()
   
   
@@ -99,7 +101,6 @@ Check_DSHS = function() {
               'update' = dshs_case_update)
          )
 }
-
 
 
 ## setup ---------------------------------------------------------------------------------------
@@ -137,3 +138,41 @@ if (CURRENT_MAX_DATE < dshs_page[['update']]) {
   dshs_demographics = Get_Demographics()
   dshs_cases = Get_Cases()
 }
+
+
+
+# case_archive = fread('original-sources/historical/monkeypox/monkeypox_archive.csv') |> 
+#   mutate(Date = as_date(Date, format = '%m/%d/%Y'))
+# 
+# current_cases = fread('monkeypox/stacked_cases.csv')
+# current_demo = fread('monkeypox/stacked_state_demographics.csv')
+# 
+# cases_out = case_archive |> 
+#   filter(Level_Type == 'PHR') |>
+#   rbind(case_archive |> filter(Level_Type == 'PHR') |> 
+#           group_by(Date) |> 
+#           summarize(Cases = sum(Cases)) |> 
+#           mutate(Level = 'Texas',
+#                  Level_Type = 'State')
+#         ) |> 
+#   rbind(current_cases |> mutate(Date = as.Date(Date))) |>
+#   mutate(Level = str_replace_all(Level, '�', '')) |> 
+#   arrange(Level_Type, Level, Date)
+# 
+# 
+# demo_out = case_archive |> 
+#   filter(Level_Type != 'PHR') |>
+#   # rbind(case_archive |> filter(Level_Type == 'PHR') |> 
+#   #         group_by(Date) |> 
+#   #         summarize(Cases = sum(Cases)) |> 
+#   #         mutate(Level = 'Texas',
+#   #                Level_Type = 'State')
+#   # ) |> 
+#   rename(Demo = Level_Type,
+#          Demo_Group = Level) |> 
+#   rbind(current_demo |> mutate(Date = as.Date(Date))) |>
+#   mutate(Demo_Group = str_replace_all(Demo_Group, '�|\\<a0\\>', '')) |> 
+#   arrange(Demo, Demo_Group, Date)
+# 
+# 
+# fwrite(demo_out, 'monkeypox/stacked_state_demographics.csv')
