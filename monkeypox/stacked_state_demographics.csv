@@ -4,7 +4,6 @@ Date,Demo,Demo_Group,Cases
 2022-08-02,Age,<18 Years,0
 2022-08-05,Age,<18 Years,0
 2022-08-09,Age,<18 Years,2
-2022-08-10,Age,<18 Years,2
 2022-07-01,Age,<21 Years,0
 2022-07-08,Age,<21 Years,1
 2022-07-12,Age,<21 Years,2
@@ -13,7 +12,6 @@ Date,Demo,Demo_Group,Cases
 2022-08-02,Age,18-29 Years,127
 2022-08-05,Age,18-29 Years,149
 2022-08-09,Age,18-29 Years,190
-2022-08-10,Age,18-29 Years,190
 2022-07-01,Age,21-29 Years,5
 2022-07-08,Age,21-29 Years,11
 2022-07-12,Age,21-29 Years,11
@@ -25,7 +23,6 @@ Date,Demo,Demo_Group,Cases
 2022-08-02,Age,30-39 Years,205
 2022-08-05,Age,30-39 Years,256
 2022-08-09,Age,30-39 Years,315
-2022-08-10,Age,30-39 Years,315
 2022-07-01,Age,40-49 Years,2
 2022-07-08,Age,40-49 Years,4
 2022-07-12,Age,40-49 Years,4
@@ -34,7 +31,6 @@ Date,Demo,Demo_Group,Cases
 2022-08-02,Age,40-49 Years,77
 2022-08-05,Age,40-49 Years,99
 2022-08-09,Age,40-49 Years,128
-2022-08-10,Age,40-49 Years,128
 2022-07-01,Age,50-59 Years,0
 2022-07-08,Age,50-59 Years,2
 2022-07-12,Age,50-59 Years,2
@@ -43,18 +39,15 @@ Date,Demo,Demo_Group,Cases
 2022-08-02,Age,50-59 Years,39
 2022-08-05,Age,50-59 Years,46
 2022-08-09,Age,50-59 Years,58
-2022-08-10,Age,50-59 Years,58
-2022-08-02,Age,60+ Years,6
-2022-08-05,Age,60+ Years,6
-2022-08-09,Age,60+ Years,7
-2022-08-10,Age,60+ Years,7
-2022-07-01,Age,60+Years,1
-2022-07-08,Age,60+Years,1
-2022-07-12,Age,60+Years,1
-2022-07-26,Age,60+Years,3
-2022-07-29,Age,60+Years,3
+2022-08-02,Age,60+ Years,6
+2022-08-05,Age,60+ Years,6
+2022-08-09,Age,60+ Years,7
+2022-07-01,Age,60+ Years,1
+2022-07-08,Age,60+ Years,1
+2022-07-12,Age,60+ Years,1
+2022-07-26,Age,60+ Years,3
+2022-07-29,Age,60+ Years,3
 2022-08-09,Age,Unknown,1
-2022-08-10,Age,Unknown,1
 2022-07-01,Gender,Female,0
 2022-07-08,Gender,Female,0
 2022-07-12,Gender,Female,0
@@ -63,7 +56,6 @@ Date,Demo,Demo_Group,Cases
 2022-08-02,Gender,Female,7
 2022-08-05,Gender,Female,8
 2022-08-09,Gender,Female,10
-2022-08-10,Gender,Female,10
 2022-07-01,Gender,Male,12
 2022-07-08,Gender,Male,27
 2022-07-12,Gender,Male,35
@@ -72,7 +64,5 @@ Date,Demo,Demo_Group,Cases
 2022-08-02,Gender,Male,447
 2022-08-05,Gender,Male,547
 2022-08-09,Gender,Male,690
-2022-08-10,Gender,Male,690
 2022-08-05,Gender,Unknown,1
 2022-08-09,Gender,Unknown,1
-2022-08-10,Gender,Unknown,1
