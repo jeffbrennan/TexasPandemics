@@ -1,5 +1,7 @@
 # setup ---------------------------------------------------------------------------------------
+stopifnot(weekdays(Sys.Date()) %in% c('Tuesday', 'Friday'))
 suppressMessages(suppressWarnings(source("C:/Users/jeffb/Desktop/Life/personal-projects/functions/util.R")))
+
 date_out = ifelse((Sys.time() < as.POSIXct(paste0(Sys.Date(), '16:00'), tz = 'America/Chicago')),
                   Sys.Date() - 1,
                   Sys.Date()) |> 
@@ -109,7 +111,7 @@ CURRENT_MAX_DATE = fread('monkeypox/stacked_state_demographics.csv') |>
   as_date(., format = '%m/%d/%Y') |> 
   max()
 
-MAX_ATTEMPTS = 50
+MAX_ATTEMPTS = 12
 SLEEP_TIME = 60 * 10
 UPDATE_URL = 'https://www.dshs.texas.gov/news/updates.shtm#monkeypox'
 
@@ -120,6 +122,8 @@ message(glue('Checking {UPDATE_URL} for updates... '))
 
 ## check ---------------------------------------------------------------------------------------
 counter = 1
+# TODO: add check for numbers in current update vs previous
+
 while (CURRENT_MAX_DATE >= dshs_page[['update']] & counter < MAX_ATTEMPTS) {
   message(glue('[ATTEMPT #{str_pad(counter, width = 2, pad = "0")}] Retrying in {SLEEP_TIME / 60} minutes...'))
   Sys.sleep(SLEEP_TIME)
@@ -138,41 +142,3 @@ if (CURRENT_MAX_DATE < dshs_page[['update']]) {
   dshs_demographics = Get_Demographics()
   dshs_cases = Get_Cases()
 }
-
-
-
-# case_archive = fread('original-sources/historical/monkeypox/monkeypox_archive.csv') |> 
-#   mutate(Date = as_date(Date, format = '%m/%d/%Y'))
-# 
-# current_cases = fread('monkeypox/stacked_cases.csv')
-# current_demo = fread('monkeypox/stacked_state_demographics.csv')
-# 
-# cases_out = case_archive |> 
-#   filter(Level_Type == 'PHR') |>
-#   rbind(case_archive |> filter(Level_Type == 'PHR') |> 
-#           group_by(Date) |> 
-#           summarize(Cases = sum(Cases)) |> 
-#           mutate(Level = 'Texas',
-#                  Level_Type = 'State')
-#         ) |> 
-#   rbind(current_cases |> mutate(Date = as.Date(Date))) |>
-#   mutate(Level = str_replace_all(Level, '�', '')) |> 
-#   arrange(Level_Type, Level, Date)
-# 
-# 
-# demo_out = case_archive |> 
-#   filter(Level_Type != 'PHR') |>
-#   # rbind(case_archive |> filter(Level_Type == 'PHR') |> 
-#   #         group_by(Date) |> 
-#   #         summarize(Cases = sum(Cases)) |> 
-#   #         mutate(Level = 'Texas',
-#   #                Level_Type = 'State')
-#   # ) |> 
-#   rename(Demo = Level_Type,
-#          Demo_Group = Level) |> 
-#   rbind(current_demo |> mutate(Date = as.Date(Date))) |>
-#   mutate(Demo_Group = str_replace_all(Demo_Group, '�|\\<a0\\>', '')) |> 
-#   arrange(Demo, Demo_Group, Date)
-# 
-# 
-# fwrite(demo_out, 'monkeypox/stacked_state_demographics.csv')
