@@ -664,7 +664,10 @@ DSHS_cases_long =  lapply(DSHS_cases, function(x) Clean_Vitals(x, 'Cases_Cumulat
   group_by(County) %>%
   tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) %>%
   mutate(Cases_Cumulative_NA = Cases_Cumulative) %>% 
-  tidyr::fill(Cases_Cumulative, .direction = "down")
+  tidyr::fill(Cases_Cumulative, .direction = "down") |> 
+  group_by(County, Date) |> 
+  filter(Cases_Cumulative == max(Cases_Cumulative, na.rm = TRUE)) |> 
+  ungroup()
 ```
 
 ## deaths
@@ -753,6 +756,19 @@ DSHS_new_cases_long = lapply(DSHS_new_cases, function(x) Clean_Vitals(x, 'Cases_
                                montgomery_new_cases)) %>%
   mutate(Date = as.Date(Date)) %>%
   arrange(Date, County)
+
+NEW_CASES_MAX_DATE = max(DSHS_new_cases_long$Date)
+CUMULATIVE_CASES_MAX_DATE = max(DSHS_cases_long$Date)
+
+if (NEW_CASES_MAX_DATE < CUMULATIVE_CASES_MAX_DATE) { 
+  DSHS_new_cases_long = DSHS_cases_long |>
+    arrange(Date) |> 
+    group_by(County) |> 
+    mutate(Cases_Daily = Cases_Cumulative - lag(Cases_Cumulative)) |> 
+    mutate(Cases_Daily = ifelse(is.na(Cases_Daily) | Cases_Daily < 0, 0, Cases_Daily)) |> 
+    ungroup() |> 
+    select(-Cases_Cumulative, -Cases_Cumulative_NA)
+}
 ```
 
 ### diagnostics
