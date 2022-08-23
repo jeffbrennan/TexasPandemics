@@ -29,19 +29,19 @@ def parse_file(file_url, header_loc):
     elif 'district-level' in file_url:
         # url updates weekly, if pandas can read and rows are approx expected, then file is updated
         try:
-            df = pd.ExcelFile(file_url, engine='xlrd').parse(
+            df = pd.ExcelFile(file_url, engine='openpyxl').parse(
                 sheet_name=0, header=header_loc)
             if len(df.index) > 1000:
                 max_date = today.date()
         except:
             pass
-    elif 'CaseCountData' in file_url: 
-        df = pd.ExcelFile(file_url, engine='xlrd').parse(
-            sheet_name=0, header=header_loc)
-        max_date = parsedate(re.findall(date_regex, df.columns[0])[1][0]).date()
+    # elif 'CaseCountData' in file_url:
+    #     df = pd.ExcelFile(file_url, engine='openpyxl').parse(
+    #         sheet_name=0, header=header_loc)
+    #     max_date = parsedate(re.findall(date_regex, df.columns[0])[1][0]).date()
 
     else:
-        df = pd.ExcelFile(file_url, engine='xlrd').parse(
+        df = pd.ExcelFile(file_url, engine='openpyxl').parse(
             sheet_name=2, header=header_loc)
         df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
         date_text = list(df.columns)[-1]
@@ -84,7 +84,7 @@ def weekly_updates(today):
 def run_requests():
     tmc_bat = r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID\requests.bat'
     tmc_url = [
-        ['https://dshs.texas.gov/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx', 2]]
+        ['https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyCaseCountData.xlsx', 2]]
 
     print('Checking new cases...')
     check_update(tmc_url, max_attempts=100)
@@ -95,7 +95,7 @@ def run_requests():
 def run_daily():
     daily_bat = [
         r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID\scrape.bat']
-    daily_url = [['https://dshs.texas.gov/coronavirus/TexasCOVID19CaseCountData.xlsx', 0]]
+    daily_url = [['https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyCaseCountData.xlsx', 0]]
     daily_url.extend(weekly_updates(today.date()))
 
     print('\nChecking dashboard files...')
