@@ -569,10 +569,8 @@ gen_df = pd.DataFrame(
 counties = ['Angelina', 'Brazoria', 'Fort Bend', 'Harris',
             'Galveston', 'Jefferson', 'Montgomery', 'Nacogdoches']
 
-for county in counties:
-    gen_df = gen_df.append(get_gen_data(county))
-    icu_df = icu_df.append(get_icu_data(county))
-# endregion
+gen_df = pd.concat([get_gen_data(county) for county in counties])
+icu_df = pd.concat([get_icu_data(county) for county in counties])
 
 # region prepare merge
 gen_df.columns = ['Date', 'Level', 'COVID_General_Beds', 'COVID_General_Patients']
