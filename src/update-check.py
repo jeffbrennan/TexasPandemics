@@ -95,7 +95,7 @@ def run_requests():
 def run_daily():
     daily_bat = [
         r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID\scrape.bat']
-    daily_url = [['https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyCaseCountData.xlsx', 0]]
+    daily_url = [['https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyCaseCountData.xlsx', 2]]
     daily_url.extend(weekly_updates(today.date()))
 
     print('\nChecking dashboard files...')
@@ -111,5 +111,5 @@ if datetime.utcnow().hour > 4 and datetime.utcnow().hour < 16:
 else:
     today = datetime.now()
 
-run_requests()
+# run_requests()
 run_daily()
