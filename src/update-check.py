@@ -84,7 +84,7 @@ def weekly_updates(today):
 def run_requests():
     tmc_bat = r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID\requests.bat'
     tmc_url = [
-        ['https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyCaseCountData.xlsx', 2]]
+        ['https://dshs.texas.gov/coronavirus/COVID19CumulativeConfirmedCasesbyCounty.xlsx', 2]]
 
     print('Checking new cases...')
     check_update(tmc_url, max_attempts=100)
@@ -95,11 +95,11 @@ def run_requests():
 def run_daily():
     daily_bat = [
         r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID\scrape.bat']
-    daily_url = [['https://dshs.texas.gov/coronavirus/TexasCOVID19DailyCountyCaseCountData.xlsx', 2]]
+    daily_url = [['https://dshs.texas.gov/coronavirus/COVID19CumulativeConfirmedCasesbyCounty.xlsx', 2]]
     daily_url.extend(weekly_updates(today.date()))
 
     print('\nChecking dashboard files...')
-    check_update(daily_url, max_attempts=6)
+    check_update(daily_url, max_attempts=50)
     print('\nDashboard files are ready!')
     run_bat(daily_bat)
 

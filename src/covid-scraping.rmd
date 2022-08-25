@@ -649,7 +649,7 @@ Clean_Vitals = function(df, data_type) {
     arrange(Date, County)
 }
 # download xlsx as tempfile and load using readxl
-case_url = 'http://dshs.state.tx.us/coronavirus/TexasCOVID19DailyCountyCaseCountData.xlsx'
+case_url = 'https://dshs.texas.gov/coronavirus/COVID19CumulativeConfirmedCasesbyCounty.xlsx'
 # temp = tempfile()
 curl::curl_download(case_url,
                     'original-sources/historical/temp/dshs_cases.xlsx',
@@ -741,7 +741,8 @@ DSHS_tests_long = merged_tests |>
 montgomery_new_cases = c(32, 61, 78, 110, 98, 124, 78, 77, 144, 97, 146, 133, 124, 103, 90, 109, 33, 3, 330, 162, 484)
 montgomery_case_dates = seq(as.Date('2020-11-01'), as.Date('2020-11-21'), by = 'day')
 
-new_case_url ='https://dshs.state.tx.us/coronavirus/TexasCOVID-19NewCasesOverTimebyCounty.xlsx'
+new_case_url ='https://dshs.texas.gov/coronavirus/COVID19NewConfirmedCasesbyCounty.xlsx'
+
 # temp = tempfile()
 curl::curl_download(new_case_url,
                     'original-sources/historical/temp/dshs_new_cases.xlsx',
