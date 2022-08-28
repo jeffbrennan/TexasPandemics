@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 from dateutil.parser import parse as parsedate
 from requests import get
 import re
-from bs4 import BeautifulSoup
 import pandas as pd
 from subprocess import Popen
 import sys
@@ -15,38 +14,14 @@ def run_bat(bat_file):
 
 
 def parse_file(file_url, header_loc):
-    # match 2/4 digits, separator, 2/4 digits, optional separator, optional 2/4 digits
-    date_regex = r'((\d{4}|\d{2}|\d{1})(\.|\-|\/)(\d{4}|\d{2}|\d{1})?(\.|\-|\/)?(\d{4}|\d{2}))'
+    df = pd.ExcelFile(file_url, engine='openpyxl').parse(
+        sheet_name=0, header=header_loc)
 
-    if 'Demographics' in file_url:
-        r = get('https://dshs.texas.gov/coronavirus/additionaldata/')
-        soup = BeautifulSoup(r.text, 'lxml')
-        parent = soup.find(
-            "a", {"title": "Case and Fatality Demographics Data "})
-        date_text = parent.nextSibling.nextSibling.text
-        max_date = parsedate(re.search(date_regex, date_text).group(0))
+    date_text = list(df.columns)[-1]
+    date_matches = re.findall(r'(\d{1,2}\/\d{1,2}\/\d{4})', date_text)
+    max_date = parsedate(date_matches[-1])
+    return 1 if max_date == TODAY.date() else 0
 
-    elif 'district-level' in file_url:
-        # url updates weekly, if pandas can read and rows are approx expected, then file is updated
-        try:
-            df = pd.ExcelFile(file_url, engine='openpyxl').parse(
-                sheet_name=0, header=header_loc)
-            if len(df.index) > 1000:
-                max_date = today.date()
-        except:
-            pass
-    # elif 'CaseCountData' in file_url:
-    #     df = pd.ExcelFile(file_url, engine='openpyxl').parse(
-    #         sheet_name=0, header=header_loc)
-    #     max_date = parsedate(re.findall(date_regex, df.columns[0])[1][0]).date()
-
-    else:
-        df = pd.ExcelFile(file_url, engine='openpyxl').parse(
-            sheet_name=2, header=header_loc)
-        df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
-        date_text = list(df.columns)[-1]
-        max_date = parsedate(re.search(date_regex, date_text).group(0)).date()
-    return 1 if max_date == today.date() else 0
 
 def check_update(files, max_attempts, check_interval=600):
     for file in files:
@@ -70,46 +45,24 @@ def check_update(files, max_attempts, check_interval=600):
                 attempts += 1
 
 
-# if thursday (3), add schools, if friday (4), add demo, else none
-def weekly_updates(today):
-    day = today.weekday()
-    district_date = (today - timedelta(days=2)).strftime('%m%d%Y')
-    return {
-        4: [['https://dshs.texas.gov/coronavirus/TexasCOVID19Demographics.xlsx.asp', 3],
-            [f'https://dshs.texas.gov/chs/data/tea/district-level-school-covid-19-case-data/district-level-data-file_{district_date}.xls', 0]
-            ]
-    }.get(day, [])
-
-
-def run_requests():
-    tmc_bat = r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID\requests.bat'
-    tmc_url = [
-        ['https://dshs.texas.gov/coronavirus/COVID19CumulativeConfirmedCasesbyCounty.xlsx', 2]]
-
-    print('Checking new cases...')
-    check_update(tmc_url, max_attempts=100)
-    run_bat(tmc_bat)
-    print('\nNew cases are ready!')
-
-
 def run_daily():
-    daily_bat = [
-        r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID\scrape.bat']
-    daily_url = [['https://dshs.texas.gov/coronavirus/COVID19CumulativeConfirmedCasesbyCounty.xlsx', 2]]
-    daily_url.extend(weekly_updates(today.date()))
-
     print('\nChecking dashboard files...')
-    check_update(daily_url, max_attempts=50)
+    check_update(UPDATE_URL, max_attempts=100)
     print('\nDashboard files are ready!')
-    run_bat(daily_bat)
+    run_bat(TMC_BAT)
+    run_bat(DAILY_BAT)
 
 
 # data updates at ~ 5PM EST
 # if running after midnight (4 UTC) or before noon (16 UTC), subtract 1 day
 if datetime.utcnow().hour > 4 and datetime.utcnow().hour < 16:
-    today = datetime.now() - timedelta(days=1)
+    TODAY = datetime.now() - timedelta(days=1)
 else:
-    today = datetime.now()
+    TODAY = datetime.now()
 
-# run_requests()
-run_daily()
+TMC_BAT = r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID\requests_auto.bat'
+DAILY_BAT = r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID\scrape.bat'
+UPDATE_URL = [['https://dshs.texas.gov/coronavirus/TexasCOVID19CaseCountData.xlsx', 0]]
+TODAY_INT = TODAY.weekday()
+if TODAY_INT < 5:
+    run_daily()

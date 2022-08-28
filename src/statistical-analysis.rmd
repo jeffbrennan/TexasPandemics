@@ -131,7 +131,7 @@ clean_dfs$State = clean_dfs$State %>% left_join(., state_hosp, by = 'Date')
 ```{r}
 #extract data frames from the list
 County_df = clean_dfs$County
-TSA_df = clean_dfs$TSA
+TSA_df = clean_dfs$TSA |> distinct
 PHR_df = clean_dfs$PHR
 Metro_df = clean_dfs$Metro
 State_df = clean_dfs$State
