@@ -1780,7 +1780,8 @@ merged_tsa = DSHS_tsa %>%
   distinct() %>%
   select(Date, TSA, TSA_Name, TSA_Combined, Population_DSHS,
          Hospitalizations_Total:Hospitalizations_24) %>% 
-  filter(Date >= as.Date('2020-04-11'))
+  filter(Date >= as.Date('2020-04-11')) |> 
+  arrange(TSA, Date)
 
 fwrite(merged_tsa, file = 'tableau/hospitalizations_tsa.csv')
 ```
