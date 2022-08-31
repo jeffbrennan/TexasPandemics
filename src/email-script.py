@@ -144,7 +144,7 @@ auth = pd.read_csv('backend/auth.csv').squeeze()
 
 # check file modification date, drop recipient if file is too old
 # if all files are old, abort email script
-daily_update = 60 * 1
+daily_update = 60 * 5
 start_time = time.time()
 recipients = [x for x in all_recipients if (start_time - os.path.getmtime(x['files'][0][1])) < daily_update]
 if not recipients: sys.exit()
