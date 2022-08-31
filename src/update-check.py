@@ -20,7 +20,7 @@ def parse_file(file_url, header_loc):
 
     date_text = list(df.columns)[0]
     date_matches = re.findall(r'(\d{1,2}\/\d{1,2}\/\d{4})', date_text)
-    max_date = parsedate(date_matches[-1])
+    max_date = parsedate(date_matches[-1]).date()
     return 1 if max_date == TODAY.date() else 0
 
 
@@ -80,9 +80,11 @@ if datetime.utcnow().hour > 4 and datetime.utcnow().hour < 16:
 else:
     TODAY = datetime.now()
 
+os.chdir('C:/Users/jeffb/Desktop/Life/personal-projects/COVID/')
+
 TMC_FILE_PATH = 'special-requests/TMC/rt_estimate.csv'
-TMC_BAT = r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID\requests_auto.bat'
-DAILY_BAT = r'C:\Users\jeffb\Desktop\Life\personal-projects\COVID\scrape.bat'
+TMC_BAT = 'requests_auto.bat'
+DAILY_BAT = 'scrape.bat'
 UPDATE_URL = [['https://dshs.texas.gov/coronavirus/TexasCOVID19CaseCountData.xlsx', 0]]
 TODAY_INT = TODAY.weekday()
 if TODAY_INT < 5:
