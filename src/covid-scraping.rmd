@@ -707,8 +707,9 @@ curl::curl_download(VITALS_URL,
                     mode = 'wb')
 
 PREV_VITALS = fread('tableau/county.csv') |> 
-  select(Date, County,
-         Cases_Cumulative, Deaths_Cumulative) |> 
+  select(Date, County, Cases_Cumulative, Deaths_Cumulative,
+         Cases_Cumulative_Imputed, Deaths_Cumulative_Imputed,
+         Cases_Daily_Imputed, Deaths_Daily_Imputed) |> 
   mutate(Date = as.Date(Date)) |> 
   filter(Date < VITALS_DATE)
 ```
@@ -716,26 +717,97 @@ PREV_VITALS = fread('tableau/county.csv') |>
 ### pull
 
 ```{r}
+# TODO: get this to work
+Impute_Vals = function(df, var_name) { 
+  values_out = df |>
+    mutate(missing_days = sum(missing_day != 0)) |> 
+    tidyr::fill(!!var_name, .direction = 'down') |>
+    mutate(val_diff = max(!!var_name, na.rm = TRUE) - min(!!var_name, na.rm = TRUE)) |> 
+    mutate(val_spread = val_diff / (missing_days + 1)) |>
+    mutate(imputed_vals = !!var_name + (val_spread * missing_day)) |>
+    mutate(imputed_vals = as.integer(floor(imputed_vals))) |>
+    select(imputed_vals)
+    pull(imputed_Vals)
+  
+  return(values_out)
+}
+```
+
+```{r}
 NEWEST_CASE_FILE = list.files('original-sources/historical/state', full.names = TRUE) %>%
   .[!str_detect(., '_NA')] %>%
   .[length(.)]
   
 
-DSHS_vitals_long = readxl::read_xlsx(NEWEST_CASE_FILE, sheet = 'Case and Fatalities_ALL', skip = 1) |> 
+DSHS_vitals_long_raw = readxl::read_xlsx(NEWEST_CASE_FILE, sheet = 'Case and Fatalities_ALL', skip = 1) |> 
   select(County, `Confirmed Cases`, Fatalities) |> 
   rename(Cases_Cumulative = `Confirmed Cases`,
          Deaths_Cumulative = Fatalities) |> 
   mutate(Date = VITALS_DATE) |> 
-  plyr::rbind.fill(PREV_VITALS) |> 
+  plyr::rbind.fill(PREV_VITALS |> filter(Date < VITALS_DATE)) |> 
   group_by(County) |> 
-  arrange(Date) |>
-  # tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) |> 
-  tidyr::fill(Cases_Cumulative, .direction = "down") |>
-  tidyr::fill(Deaths_Cumulative, .direction = "down") |>
+  arrange(Date)
+
+DSHS_vitals_long_impute_prep = DSHS_vitals_long_raw |> 
+  tidyr::complete(Date = seq.Date(min(Date), date_out, by="day")) |> 
   mutate(Deaths_Daily = Deaths_Cumulative - lag(Deaths_Cumulative),
          Cases_Daily = Cases_Cumulative - lag(Cases_Cumulative)) |> 
+  mutate(missing_day = cumsum(is.na(Cases_Cumulative))) |> 
+  mutate(missing_day = ifelse(!is.na(Cases_Cumulative), 0, missing_day)) |> 
+  mutate(impute_group = is.na(Cases_Cumulative_Imputed) & (missing_day != 0 | lead(missing_day) != 0 | lag(missing_day) != 0))
+
+IMPUTED_CHECK = DSHS_vitals_long_impute_prep |> filter(impute_group) |> nrow() > 0
+
+if (IMPUTED_CHECK) { 
+DSHS_vitals_long_imputed = DSHS_vitals_long_impute_prep |> 
+  filter(impute_group) %>%
+  mutate(missing_days = sum(missing_day != 0)) |>
+  # cases
+  tidyr::fill(Cases_Cumulative, .direction = 'down') |>
+  mutate(Case_diff = max(Cases_Cumulative, na.rm = TRUE) - min(Cases_Cumulative, na.rm = TRUE)) |> 
+  mutate(Cases_Daily_spread = Case_diff / (missing_days + 1)) |> 
+  mutate(Cases_Cumulative_Imputed = Cases_Cumulative + (Cases_Daily_spread * missing_day)) |>  
+  mutate(Cases_Cumulative_Imputed = as.integer(floor(Cases_Cumulative_Imputed))) |> 
+  # deaths
+  tidyr::fill(Deaths_Cumulative, .direction = 'down') |>
+  mutate(Death_diff = max(Deaths_Cumulative, na.rm = TRUE) - min(Deaths_Cumulative, na.rm = TRUE)) |> 
+  mutate(Deaths_Daily_spread = Death_diff / (missing_days + 1)) |> 
+  mutate(Deaths_Cumulative_Imputed = Deaths_Cumulative + (Deaths_Daily_spread * missing_day)) |>  
+  mutate(Deaths_Cumulative_Imputed = as.integer(floor(Deaths_Cumulative_Imputed))) |> 
+  ungroup() |> 
+  select(County, Date, contains('Imputed'))
+
+DSHS_vitals_long = 
+  DSHS_vitals_long_impute_prep |>
+  left_join(DSHS_vitals_long_imputed, by = c('County', 'Date')) |> 
+  filter(!is.na(County)) |> 
+  select(-impute_group) |> 
+  mutate(Cases_Cumulative_Imputed = ifelse(is.na(Cases_Cumulative_Imputed), Cases_Cumulative, Cases_Cumulative_Imputed)) |> 
+  mutate(Deaths_Cumulative_Imputed = ifelse(is.na(Deaths_Cumulative_Imputed), Deaths_Cumulative, Deaths_Cumulative_Imputed)) |> 
+  group_by(County) |> 
+  mutate(Cases_Cumulative_Imputed = ifelse(Date == '2022-08-25',
+                                           Cases_Cumulative + ((lead(Cases_Cumulative) - lag(Cases_Cumulative)) / 2),
+                                           Cases_Cumulative_Imputed
+                                           )
+        ) |> 
+  mutate(Deaths_Cumulative_Imputed = ifelse(Date == '2022-08-25',
+                                 Deaths_Cumulative + ((lead(Deaths_Cumulative) - lag(Deaths_Cumulative)) / 2),
+                                 Deaths_Cumulative_Imputed)
+        ) |> 
+  mutate(Cases_Daily_Imputed = Cases_Cumulative_Imputed - lag(Cases_Cumulative_Imputed)) |>
+  mutate(Deaths_Daily_Imputed = Deaths_Cumulative_Imputed - lag(Deaths_Cumulative_Imputed)) |> 
+  mutate(across(contains('Imputed'), as.integer)) |> 
   ungroup()
+} else { 
+  
+  DSHS_vitals_long = DSHS_vitals_long_impute_prep |> ungroup() |>  select(-impute_group, -missing_day)
+  
+  }
+
+  # mutate(Cases_Daily_Imputed = ifelse(is.na(Cases_Daily_Imputed), Cases_Daily, Cases_Daily_Imputed)) |>
+  # mutate(Deaths_Daily_Imputed = ifelse(is.na(Deaths_Daily_Imputed), Deaths_Daily, Deaths_Daily_Imputed)) |>
 ```
+
 
 <!-- ### diagnostics -->
 
@@ -782,7 +854,7 @@ DSHS_vitals_long = readxl::read_xlsx(NEWEST_CASE_FILE, sheet = 'Case and Fatalit
 ### merge
 
 ```{r}
-county_tests =all_cpr_tpr |> 
+county_tests = all_cpr_tpr |> 
   select(County, Date, Tests) |> 
   rename(Tests_Daily = Tests) |> 
   filter(!is.na(Tests_Daily)) |> 
@@ -792,8 +864,14 @@ county_tests =all_cpr_tpr |>
 
 merged_dshs_header = fread('tableau/county.csv', nrows=0) |> names()
 
+merged_dshs_header = append(merged_dshs_header,
+                            c('Cases_Cumulative_Imputed', 'Cases_Daily_Imputed',
+                              'Deaths_Cumulative_Imputed', 'Deaths_Daily_Imputed'),
+                            after = 6) |> 
+  unique()
 
-merged_dshs = DSHS_vitals_long |>  
+merged_dshs = DSHS_vitals_long |>
+  filter(County %in% unique(county_classifications$County)) |> 
   left_join(tsa_long_complete, by = 'County') |> 
   left_join(dshs_pops, by = 'County') |> 
   left_join(county_classifications, by = 'County') |> 
@@ -810,8 +888,9 @@ merged_dshs = DSHS_vitals_long |>
   arrange(County, Date) |> 
   mutate(Active_Cases_Cumulative = NA,
          Active_Cases_Daily = NA) |> 
-  select(all_of(merged_dshs_header))
- 
+  select(all_of(merged_dshs_header)) |> 
+  mutate(across(c(Cases_Cumulative, Cases_Daily, Deaths_Cumulative, Deaths_Daily), ~ifelse(Date == '2022-08-25', NA, .)))
+
 fwrite(merged_dshs %>% arrange(County, Date), 'tableau/county.csv')
 ```
 
