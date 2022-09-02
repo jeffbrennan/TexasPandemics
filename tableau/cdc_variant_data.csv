@@ -217,6 +217,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,B.1.1.7,Alpha,5652,0,0
 2022-08-29,B.1.1.7,Alpha,5652,0,0
 2022-08-31,B.1.1.7,Alpha,5652,0,0
+2022-09-01,B.1.1.7,Alpha,4504,0,0
 2021-09-28,B.1.351,Beta,9169,1e-04,0
 2021-09-29,B.1.351,Beta,9169,1e-04,0
 2021-10-01,B.1.351,Beta,9169,1e-04,0
@@ -435,6 +436,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,B.1.351,Beta,5652,0,0
 2022-08-29,B.1.351,Beta,5652,0,0
 2022-08-31,B.1.351,Beta,5652,0,0
+2022-09-01,B.1.351,Beta,4504,0,0
 2021-09-28,P.1,Gamma,9169,0.0016,14
 2021-09-29,P.1,Gamma,9169,0.0016,14
 2021-10-01,P.1,Gamma,9169,0.0016,14
@@ -653,6 +655,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,P.1,Gamma,5652,0,0
 2022-08-29,P.1,Gamma,5652,0,0
 2022-08-31,P.1,Gamma,5652,0,0
+2022-09-01,P.1,Gamma,4504,0,0
 2021-09-28,B.1.617.2,Delta,9169,0.9525,8733
 2021-09-29,B.1.617.2,Delta,9169,0.9525,8733
 2021-10-01,B.1.617.2,Delta,9169,0.9525,8733
@@ -871,6 +874,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,B.1.617.2,Delta,5652,0,0
 2022-08-29,B.1.617.2,Delta,5652,0,0
 2022-08-31,B.1.617.2,Delta,5652,0,0
+2022-09-01,B.1.617.2,Delta,4504,0,0
 2021-09-28,B.1.526,Iota,9169,0,0
 2021-09-29,B.1.526,Iota,9169,0,0
 2021-10-01,B.1.526,Iota,9169,0,0
@@ -1089,6 +1093,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,B.1.526,Iota,5652,0,0
 2022-08-29,B.1.526,Iota,5652,0,0
 2022-08-31,B.1.526,Iota,5652,0,0
+2022-09-01,B.1.526,Iota,4504,0,0
 2021-09-28,B.1.617.1,Kappa,9169,0,0
 2021-09-29,B.1.617.1,Kappa,9169,0,0
 2021-10-01,B.1.617.1,Kappa,9169,0,0
@@ -1307,6 +1312,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,B.1.617.1,Kappa,5652,0,0
 2022-08-29,B.1.617.1,Kappa,5652,0,0
 2022-08-31,B.1.617.1,Kappa,5652,0,0
+2022-09-01,B.1.617.1,Kappa,4504,0,0
 2021-09-28,B.1.621,Mu,9169,5e-04,4
 2021-09-29,B.1.621,Mu,9169,5e-04,4
 2021-10-01,B.1.621,Mu,9169,5e-04,4
@@ -1525,6 +1531,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,B.1.621,Mu,5652,0,0
 2022-08-29,B.1.621,Mu,5652,0,0
 2022-08-31,B.1.621,Mu,5652,0,0
+2022-09-01,B.1.621,Mu,4504,0,0
 2021-09-28,Other,Other,9169,0.0446,408
 2021-09-29,Other,Other,9169,0.0446,408
 2021-10-01,Other,Other,9169,0.0446,408
@@ -1743,6 +1750,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,Other,Other,5652,0,0
 2022-08-29,Other,Other,5652,0,0
 2022-08-31,Other,Other,5652,0,0
+2022-09-01,Other,Other,4504,0,0
 2021-09-28,B.1.427/429,Epsilon,9169,0,0
 2021-09-29,B.1.427/429,Epsilon,9169,0,0
 2021-10-01,B.1.427/429,Epsilon,9169,0,0
@@ -1961,6 +1969,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,B.1.427/429,Epsilon,5652,0,0
 2022-08-29,B.1.427/429,Epsilon,5652,0,0
 2022-08-31,B.1.427/429,Epsilon,5652,0,0
+2022-09-01,B.1.427/429,Epsilon,4504,0,0
 2021-09-28,B.1.525,Eta,9169,0,0
 2021-09-29,B.1.525,Eta,9169,0,0
 2021-10-01,B.1.525,Eta,9169,0,0
@@ -2179,6 +2188,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,B.1.525,Eta,5652,0,0
 2022-08-29,B.1.525,Eta,5652,0,0
 2022-08-31,B.1.525,Eta,5652,0,0
+2022-09-01,B.1.525,Eta,4504,0,0
 2021-09-28,P.2,Zeta,9169,0,0
 2021-09-29,P.2,Zeta,9169,0,0
 2021-10-01,P.2,Zeta,9169,0,0
@@ -2397,6 +2407,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,P.2,Zeta,5652,0,0
 2022-08-29,P.2,Zeta,5652,0,0
 2022-08-31,P.2,Zeta,5652,0,0
+2022-09-01,P.2,Zeta,4504,0,0
 2021-09-28,B.1.1.529,,9169,0,0
 2021-09-29,B.1.1.529,,9169,0,0
 2021-10-01,B.1.1.529,,9169,0,0
@@ -2615,6 +2626,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,B.1.1.529,,5652,0.999,5646
 2022-08-29,B.1.1.529,,5652,0.999,5646
 2022-08-31,B.1.1.529,,5652,0.999,5646
+2022-09-01,B.1.1.529,,4504,1,4504
 2021-09-28,AY.1 (Delta),,9169,0,0
 2021-09-29,AY.1 (Delta),,9169,0,0
 2021-10-01,AY.1 (Delta),,9169,0,0
@@ -2833,6 +2845,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,AY.1 (Delta),,5652,0.999,5646
 2022-08-29,AY.1 (Delta),,5652,0.999,5646
 2022-08-31,AY.1 (Delta),,5652,0.999,5646
+2022-09-01,AY.1 (Delta),,4504,1,4504
 2021-09-28,AY.2 (Delta),,9169,0,0
 2021-09-29,AY.2 (Delta),,9169,0,0
 2021-10-01,AY.2 (Delta),,9169,0,0
@@ -3051,6 +3064,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,AY.2 (Delta),,5652,0.999,5646
 2022-08-29,AY.2 (Delta),,5652,0.999,5646
 2022-08-31,AY.2 (Delta),,5652,0.999,5646
+2022-09-01,AY.2 (Delta),,4504,1,4504
 2021-09-28,B.1.1.7 (Alpha),,9169,0,0
 2021-09-29,B.1.1.7 (Alpha),,9169,0,0
 2021-10-01,B.1.1.7 (Alpha),,9169,0,0
@@ -3269,6 +3283,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,B.1.1.7 (Alpha),,5652,0.999,5646
 2022-08-29,B.1.1.7 (Alpha),,5652,0.999,5646
 2022-08-31,B.1.1.7 (Alpha),,5652,0.999,5646
+2022-09-01,B.1.1.7 (Alpha),,4504,1,4504
 2021-09-28,B.1.1.529 (Omicron),,9169,0,0
 2021-09-29,B.1.1.529 (Omicron),,9169,0,0
 2021-10-01,B.1.1.529 (Omicron),,9169,0,0
@@ -3487,6 +3502,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,B.1.1.529 (Omicron),,5652,0.999,5646
 2022-08-29,B.1.1.529 (Omicron),,5652,0.999,5646
 2022-08-31,B.1.1.529 (Omicron),,5652,0.999,5646
+2022-09-01,B.1.1.529 (Omicron),,4504,1,4504
 2021-09-28,B.1.526 (Iota),,9169,0,0
 2021-09-29,B.1.526 (Iota),,9169,0,0
 2021-10-01,B.1.526 (Iota),,9169,0,0
@@ -3705,6 +3721,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,B.1.526 (Iota),,5652,0.999,5646
 2022-08-29,B.1.526 (Iota),,5652,0.999,5646
 2022-08-31,B.1.526 (Iota),,5652,0.999,5646
+2022-09-01,B.1.526 (Iota),,4504,1,4504
 2021-09-28,B.1.617.2 (Delta),,9169,0,0
 2021-09-29,B.1.617.2 (Delta),,9169,0,0
 2021-10-01,B.1.617.2 (Delta),,9169,0,0
@@ -3923,6 +3940,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,B.1.617.2 (Delta),,5652,0.999,5646
 2022-08-29,B.1.617.2 (Delta),,5652,0.999,5646
 2022-08-31,B.1.617.2 (Delta),,5652,0.999,5646
+2022-09-01,B.1.617.2 (Delta),,4504,1,4504
 2021-09-28,B.1.621 (Mu),,9169,0,0
 2021-09-29,B.1.621 (Mu),,9169,0,0
 2021-10-01,B.1.621 (Mu),,9169,0,0
@@ -4141,6 +4159,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,B.1.621 (Mu),,5652,0.999,5646
 2022-08-29,B.1.621 (Mu),,5652,0.999,5646
 2022-08-31,B.1.621 (Mu),,5652,0.999,5646
+2022-09-01,B.1.621 (Mu),,4504,1,4504
 2021-09-28,BA.2 (Omicron),,9169,0,0
 2021-09-29,BA.2 (Omicron),,9169,0,0
 2021-10-01,BA.2 (Omicron),,9169,0,0
@@ -4359,6 +4378,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,BA.2 (Omicron),,5652,0.999,5646
 2022-08-29,BA.2 (Omicron),,5652,0.999,5646
 2022-08-31,BA.2 (Omicron),,5652,0.999,5646
+2022-09-01,BA.2 (Omicron),,4504,1,4504
 2021-09-28,BA.2.12.1 (Omicron),,9169,0,0
 2021-09-29,BA.2.12.1 (Omicron),,9169,0,0
 2021-10-01,BA.2.12.1 (Omicron),,9169,0,0
@@ -4577,6 +4597,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,BA.2.12.1 (Omicron),,5652,0.999,5646
 2022-08-29,BA.2.12.1 (Omicron),,5652,0.999,5646
 2022-08-31,BA.2.12.1 (Omicron),,5652,0.999,5646
+2022-09-01,BA.2.12.1 (Omicron),,4504,1,4504
 2021-09-28,BA.4 (Omicron),,9169,0,0
 2021-09-29,BA.4 (Omicron),,9169,0,0
 2021-10-01,BA.4 (Omicron),,9169,0,0
@@ -4795,6 +4816,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,BA.4 (Omicron),,5652,0.999,5646
 2022-08-29,BA.4 (Omicron),,5652,0.999,5646
 2022-08-31,BA.4 (Omicron),,5652,0.999,5646
+2022-09-01,BA.4 (Omicron),,4504,1,4504
 2021-09-28,BA.5 (Omicron),,9169,0,0
 2021-09-29,BA.5 (Omicron),,9169,0,0
 2021-10-01,BA.5 (Omicron),,9169,0,0
@@ -5013,6 +5035,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,BA.5 (Omicron),,5652,0.999,5646
 2022-08-29,BA.5 (Omicron),,5652,0.999,5646
 2022-08-31,BA.5 (Omicron),,5652,0.999,5646
+2022-09-01,BA.5 (Omicron),,4504,1,4504
 2021-09-28,B.1.427/429 (Epsilon),,9169,0,0
 2021-09-29,B.1.427/429 (Epsilon),,9169,0,0
 2021-10-01,B.1.427/429 (Epsilon),,9169,0,0
@@ -5231,6 +5254,7 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,B.1.427/429 (Epsilon),,5652,0.999,5646
 2022-08-29,B.1.427/429 (Epsilon),,5652,0.999,5646
 2022-08-31,B.1.427/429 (Epsilon),,5652,0.999,5646
+2022-09-01,B.1.427/429 (Epsilon),,4504,1,4504
 2021-09-28,BA.4.6 (Omicron),,9169,0,0
 2021-09-29,BA.4.6 (Omicron),,9169,0,0
 2021-10-01,BA.4.6 (Omicron),,9169,0,0
@@ -5449,3 +5473,4 @@ Date,Variant,Variant_Label,Total_Sequences,Proportion,Sequences
 2022-08-28,BA.4.6 (Omicron),,5652,0.999,5646
 2022-08-29,BA.4.6 (Omicron),,5652,0.999,5646
 2022-08-31,BA.4.6 (Omicron),,5652,0.999,5646
+2022-09-01,BA.4.6 (Omicron),,4504,1,4504
