@@ -758,9 +758,10 @@ DSHS_vitals_long_impute_prep = DSHS_vitals_long_raw |>
                                     Deaths_Cumulative)) |> 
   mutate(Deaths_Daily = Deaths_Cumulative - lag(Deaths_Cumulative),
          Cases_Daily = Cases_Cumulative - lag(Cases_Cumulative)) |> 
-  mutate(missing_day = cumsum(is.na(Cases_Cumulative) & Date > (VITALS_DATE - days(5)))) |> 
+  mutate(missing_day = cumsum(is.na(Cases_Cumulative) & Date != '2022-08-25')) |> 
   mutate(missing_day = ifelse(missing_day == lag(missing_day) | missing_day == 0 | row_number() == 1, 0, missing_day)) |> 
-  mutate(impute_group = is.na(Cases_Cumulative_Imputed) & (missing_day != 0 | lead(missing_day) != 0 | lag(missing_day) != 0))
+  mutate(impute_group = missing_day != 0 | lead(missing_day) != 0 | lag(missing_day) != 0)
+
 
 IMPUTED_CHECK = DSHS_vitals_long_impute_prep |> filter(impute_group) |> nrow() > 0
 
@@ -784,7 +785,6 @@ DSHS_vitals_long_imputed = DSHS_vitals_long_impute_prep |>
   select(County, Date, contains('Imputed'))
 
 
-  # DSHS_vitals_long_imputed |> filter(County == 'Bexar') |> View()
 
 DSHS_vitals_long = 
   DSHS_vitals_long_impute_prep |>
@@ -813,6 +813,9 @@ DSHS_vitals_long =
   DSHS_vitals_long = DSHS_vitals_long_impute_prep |> ungroup() |>  select(-impute_group, -missing_day)
   
   }
+
+  DSHS_vitals_long |> filter(County == 'Bexar') |> filter(Date > '2022-08-20') |> View()
+
 
   # mutate(Cases_Daily_Imputed = ifelse(is.na(Cases_Daily_Imputed), Cases_Daily, Cases_Daily_Imputed)) |>
   # mutate(Deaths_Daily_Imputed = ifelse(is.na(Deaths_Daily_Imputed), Deaths_Daily, Deaths_Daily_Imputed)) |>
