@@ -71,7 +71,7 @@ def run_daily():
 
     # run regardless of prev status
     run_bat(DAILY_BAT)
-
+    run_bat('commit.bat')
 
 # data updates at ~ 5PM EST
 # if running after midnight (4 UTC) or before noon (16 UTC), subtract 1 day
