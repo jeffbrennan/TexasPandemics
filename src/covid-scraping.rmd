@@ -799,6 +799,8 @@ DSHS_vitals_long_impute_prep = DSHS_vitals_long_raw |>
   mutate(impute_group2 = cumsum(as.integer(impute_group & lag(impute_group) == FALSE))) |> 
   mutate(impute_group2 = ifelse(impute_group == FALSE, 0, impute_group2))
 
+IMPUTED_CHECK = DSHS_vitals_long_impute_prep |> filter(impute_group) |> nrow() > 0
+
 if (IMPUTED_CHECK) { 
   message('PERFORMING IMPUTATION')
   DSHS_vitals_long_imputed = DSHS_vitals_long_impute_prep |> 
