@@ -8,6 +8,7 @@ Date,Demo,Demo_Group,Cases
 2022-08-16,Age,<18 Years,5
 2022-08-19,Age,<18 Years,5
 2022-08-23,Age,<18 Years,5
+2022-09-16,Age,<18 Years,14
 2022-07-01,Age,<21 Years,0
 2022-07-08,Age,<21 Years,1
 2022-07-12,Age,<21 Years,2
@@ -20,6 +21,7 @@ Date,Demo,Demo_Group,Cases
 2022-08-16,Age,18-29 Years,276
 2022-08-19,Age,18-29 Years,313
 2022-08-23,Age,18-29 Years,363
+2022-09-16,Age,18-29 Years,589
 2022-07-01,Age,21-29 Years,5
 2022-07-08,Age,21-29 Years,11
 2022-07-12,Age,21-29 Years,11
@@ -35,6 +37,7 @@ Date,Demo,Demo_Group,Cases
 2022-08-16,Age,30-39 Years,431
 2022-08-19,Age,30-39 Years,486
 2022-08-23,Age,30-39 Years,550
+2022-09-16,Age,30-39 Years,875
 2022-07-01,Age,40-49 Years,2
 2022-07-08,Age,40-49 Years,4
 2022-07-12,Age,40-49 Years,4
@@ -47,6 +50,7 @@ Date,Demo,Demo_Group,Cases
 2022-08-16,Age,40-49 Years,181
 2022-08-19,Age,40-49 Years,201
 2022-08-23,Age,40-49 Years,225
+2022-09-16,Age,40-49 Years,385
 2022-07-01,Age,50-59 Years,0
 2022-07-08,Age,50-59 Years,2
 2022-07-12,Age,50-59 Years,2
@@ -59,6 +63,7 @@ Date,Demo,Demo_Group,Cases
 2022-08-16,Age,50-59 Years,83
 2022-08-19,Age,50-59 Years,95
 2022-08-23,Age,50-59 Years,117
+2022-09-16,Age,50-59 Years,171
 2022-07-01,Age,60+ Years,1
 2022-07-08,Age,60+ Years,1
 2022-07-12,Age,60+ Years,1
@@ -71,6 +76,7 @@ Date,Demo,Demo_Group,Cases
 2022-08-16,Age,60+ Years,15
 2022-08-19,Age,60+ Years,19
 2022-08-23,Age,60+ Years,21
+2022-09-16,Age,60+ Years,38
 2022-08-09,Age,Unknown,1
 2022-08-12,Age,Unknown,1
 2022-07-01,Gender,Female,0
@@ -85,6 +91,7 @@ Date,Demo,Demo_Group,Cases
 2022-08-16,Gender,Female,17
 2022-08-19,Gender,Female,21
 2022-08-23,Gender,Female,27
+2022-09-16,Gender,Female,58
 2022-07-01,Gender,Male,12
 2022-07-08,Gender,Male,27
 2022-07-12,Gender,Male,35
@@ -97,9 +104,11 @@ Date,Demo,Demo_Group,Cases
 2022-08-16,Gender,Male,973
 2022-08-19,Gender,Male,1097
 2022-08-23,Gender,Male,1252
+2022-09-16,Gender,Male,"2,013"
 2022-08-05,Gender,Unknown,1
 2022-08-09,Gender,Unknown,1
 2022-08-12,Gender,Unknown,1
 2022-08-16,Gender,Unknown,1
 2022-08-19,Gender,Unknown,1
 2022-08-23,Gender,Unknown,2
+2022-09-16,Gender,Unknown,1

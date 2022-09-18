@@ -71,7 +71,7 @@ def run_daily():
 
     # run regardless of prev status
     run_bat(DAILY_BAT)
-    run_bat('commit.bat')
+    # run_bat('commit.bat')
 
 # data updates at ~ 5PM EST
 # if running after midnight (4 UTC) or before noon (16 UTC), subtract 1 day
@@ -83,7 +83,7 @@ else:
 os.chdir('C:/Users/jeffb/Desktop/Life/personal-projects/COVID/')
 
 TMC_FILE_PATH = 'special-requests/TMC/rt_estimate.csv'
-TMC_BAT = 'requests_auto.bat'
+TMC_BAT = 'requests.bat'
 DAILY_BAT = 'scrape.bat'
 UPDATE_URL = [['https://dshs.texas.gov/coronavirus/TexasCOVID19CaseCountData.xlsx', 0]]
 TODAY_INT = TODAY.weekday()
