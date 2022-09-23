@@ -893,6 +893,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,A,Amarillo,A - Amarillo,440127,22,18,,142,0,207,6,651,4,0,0
 2022-09-20,A,Amarillo,A - Amarillo,440127,,,,,,,,,,,
 2022-09-21,A,Amarillo,A - Amarillo,440127,16,14,,147,0,205,7,644,2,0,4
+2022-09-22,A,Amarillo,A - Amarillo,440127,,,,,,,,,,,
+2022-09-23,A,Amarillo,A - Amarillo,440127,17,15,,147,1,212,6,633,2,1,2
 2020-04-11,B,Lubbock,B - Lubbock,513580,34,22,12,,,613,93,755,,24,
 2020-04-12,B,Lubbock,B - Lubbock,513580,35,23,12,,,628,89,744,,26,
 2020-04-13,B,Lubbock,B - Lubbock,513580,31,17,14,,,660,91,734,,24,
@@ -1787,6 +1789,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,B,Lubbock,B - Lubbock,513580,28,22,,194,0,378,14,950,6,13,7
 2022-09-20,B,Lubbock,B - Lubbock,513580,,,,,,,,,,,
 2022-09-21,B,Lubbock,B - Lubbock,513580,23,18,,202,0,338,13,1033,5,11,4
+2022-09-22,B,Lubbock,B - Lubbock,513580,,,,,,,,,,,
+2022-09-23,B,Lubbock,B - Lubbock,513580,20,17,,202,0,313,17,1023,3,23,4
 2020-04-11,C,Wichita Falls,C - Wichita Falls,219793,5,4,1,,,348,20,240,,0,
 2020-04-12,C,Wichita Falls,C - Wichita Falls,219793,5,5,0,,,366,18,223,,0,
 2020-04-13,C,Wichita Falls,C - Wichita Falls,219793,6,6,0,,,341,19,231,,0,
@@ -2681,6 +2685,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,C,Wichita Falls,C - Wichita Falls,219793,9,9,,65,0,398,3,703,0,0,2
 2022-09-20,C,Wichita Falls,C - Wichita Falls,219793,,,,,,,,,,,
 2022-09-21,C,Wichita Falls,C - Wichita Falls,219793,5,5,,63,0,395,3,701,0,0,1
+2022-09-22,C,Wichita Falls,C - Wichita Falls,219793,,,,,,,,,,,
+2022-09-23,C,Wichita Falls,C - Wichita Falls,219793,5,5,,63,0,391,5,725,0,0,2
 2020-04-11,D,Abilene,D - Abilene,306972,6,4,2,,,479,36,214,,3,
 2020-04-12,D,Abilene,D - Abilene,306972,7,4,3,,,478,36,146,,3,
 2020-04-13,D,Abilene,D - Abilene,306972,2,2,0,,,498,27,268,,3,
@@ -3575,6 +3581,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,D,Abilene,D - Abilene,306972,16,14,,109,1,235,5,486,2,0,2
 2022-09-20,D,Abilene,D - Abilene,306972,,,,,,,,,,,
 2022-09-21,D,Abilene,D - Abilene,306972,11,10,,110,0,244,6,546,1,0,3
+2022-09-22,D,Abilene,D - Abilene,306972,,,,,,,,,,,
+2022-09-23,D,Abilene,D - Abilene,306972,14,12,,110,0,245,7,544,2,0,3
 2020-04-11,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,369,208,161,,,5095,623,7347,,40,
 2020-04-12,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,365,109,256,,,5223,603,8219,,49,
 2020-04-13,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,373,223,150,,,5347,612,8589,,48,
@@ -4469,6 +4477,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,549,465,,2345,38,1492,155,13209,84,13,120
 2022-09-20,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,,,,,,,,,,,
 2022-09-21,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,516,436,,2307,40,1378,145,13817,80,9,109
+2022-09-22,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,,,,,,,,,,,
+2022-09-23,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,475,411,,2299,29,1252,166,14252,64,8,109
 2020-04-11,F,Paris,F - Paris,273329,14,2,12,,,,36,421,,0,
 2020-04-12,F,Paris,F - Paris,273329,16,5,11,,,,32,405,,0,
 2020-04-13,F,Paris,F - Paris,273329,21,12,9,,,,27,416,,0,
@@ -5363,6 +5373,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,F,Paris,F - Paris,273329,30,28,,133,0,186,13,536,2,0,1
 2022-09-20,F,Paris,F - Paris,273329,,,,,,,,,,,
 2022-09-21,F,Paris,F - Paris,273329,28,24,,133,0,122,7,602,4,0,3
+2022-09-22,F,Paris,F - Paris,273329,,,,,,,,,,,
+2022-09-23,F,Paris,F - Paris,273329,26,23,,138,0,128,18,620,3,0,2
 2020-04-11,G,Longview/Tyler,G - Longview/Tyler,968611,32,16,16,,,714,103,921,,0,
 2020-04-12,G,Longview/Tyler,G - Longview/Tyler,968611,26,13,13,,,734,103,932,,0,
 2020-04-13,G,Longview/Tyler,G - Longview/Tyler,968611,33,16,17,,,739,95,969,,0,
@@ -6257,6 +6269,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,G,Longview/Tyler,G - Longview/Tyler,968611,60,46,,221,2,606,25,1734,14,0,6
 2022-09-20,G,Longview/Tyler,G - Longview/Tyler,968611,,,,,,,,,,,
 2022-09-21,G,Longview/Tyler,G - Longview/Tyler,968611,52,45,,244,0,559,23,1784,7,0,8
+2022-09-22,G,Longview/Tyler,G - Longview/Tyler,968611,,,,,,,,,,,
+2022-09-23,G,Longview/Tyler,G - Longview/Tyler,968611,53,42,,229,0,563,25,1827,11,0,10
 2020-04-11,H,Lufkin,H - Lufkin,272151,15,10,5,,,257,35,190,,0,
 2020-04-12,H,Lufkin,H - Lufkin,272151,18,14,4,,,253,33,198,,0,
 2020-04-13,H,Lufkin,H - Lufkin,272151,23,18,5,,,217,28,149,,0,
@@ -7151,6 +7165,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,H,Lufkin,H - Lufkin,272151,9,8,,107,0,132,7,253,1,0,1
 2022-09-20,H,Lufkin,H - Lufkin,272151,,,,,,,,,,,
 2022-09-21,H,Lufkin,H - Lufkin,272151,15,14,,111,0,84,10,326,1,0,6
+2022-09-22,H,Lufkin,H - Lufkin,272151,,,,,,,,,,,
+2022-09-23,H,Lufkin,H - Lufkin,272151,18,16,,110,0,76,9,329,2,0,5
 2020-04-11,I,El Paso,I - El Paso,881765,14,8,6,,,702,73,328,,27,
 2020-04-12,I,El Paso,I - El Paso,881765,23,14,9,,,693,67,471,,28,
 2020-04-13,I,El Paso,I - El Paso,881765,12,6,6,,,693,86,318,,25,
@@ -8045,6 +8061,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,I,El Paso,I - El Paso,881765,35,28,,336,1,319,13,1521,7,4,17
 2022-09-20,I,El Paso,I - El Paso,881765,,,,,,,,,,,
 2022-09-21,I,El Paso,I - El Paso,881765,39,28,,326,2,282,15,1591,11,2,13
+2022-09-22,I,El Paso,I - El Paso,881765,,,,,,,,,,,
+2022-09-23,I,El Paso,I - El Paso,881765,38,24,,320,2,248,8,1664,14,0,9
 2020-04-11,J,Midland/Odessa,J - Midland/Odessa,526736,10,6,4,,,732,42,663,,0,
 2020-04-12,J,Midland/Odessa,J - Midland/Odessa,526736,11,7,4,,,689,37,676,,0,
 2020-04-13,J,Midland/Odessa,J - Midland/Odessa,526736,17,8,9,,,677,45,640,,0,
@@ -8939,6 +8957,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,J,Midland/Odessa,J - Midland/Odessa,526736,20,16,,277,0,658,32,891,4,0,4
 2022-09-20,J,Midland/Odessa,J - Midland/Odessa,526736,,,,,,,,,,,
 2022-09-21,J,Midland/Odessa,J - Midland/Odessa,526736,20,17,,282,0,639,28,958,3,0,5
+2022-09-22,J,Midland/Odessa,J - Midland/Odessa,526736,,,,,,,,,,,
+2022-09-23,J,Midland/Odessa,J - Midland/Odessa,526736,18,16,,284,0,648,32,980,2,0,3
 2020-04-11,K,San Angelo,K - San Angelo,179457,0,0,0,,,284,13,208,,0,
 2020-04-12,K,San Angelo,K - San Angelo,179457,0,0,0,,,293,15,199,,0,
 2020-04-13,K,San Angelo,K - San Angelo,179457,0,0,0,,,298,18,210,,0,
@@ -9833,6 +9853,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,K,San Angelo,K - San Angelo,179457,13,13,,126,0,279,23,299,0,0,4
 2022-09-20,K,San Angelo,K - San Angelo,179457,,,,,,,,,,,
 2022-09-21,K,San Angelo,K - San Angelo,179457,11,11,,116,1,232,21,350,0,0,3
+2022-09-22,K,San Angelo,K - San Angelo,179457,,,,,,,,,,,
+2022-09-23,K,San Angelo,K - San Angelo,179457,7,7,,112,0,238,20,320,0,0,0
 2020-04-11,L,Belton/Killeen,L - Belton/Killeen,507311,11,1,10,,,663,56,434,,15,
 2020-04-12,L,Belton/Killeen,L - Belton/Killeen,507311,12,6,6,,,633,46,397,,14,
 2020-04-13,L,Belton/Killeen,L - Belton/Killeen,507311,13,7,6,,,647,57,308,,13,
@@ -10727,6 +10749,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,L,Belton/Killeen,L - Belton/Killeen,507311,38,31,,140,4,191,9,903,7,1,13
 2022-09-20,L,Belton/Killeen,L - Belton/Killeen,507311,,,,,,,,,,,
 2022-09-21,L,Belton/Killeen,L - Belton/Killeen,507311,34,27,,138,1,121,10,891,7,1,8
+2022-09-22,L,Belton/Killeen,L - Belton/Killeen,507311,,,,,,,,,,,
+2022-09-23,L,Belton/Killeen,L - Belton/Killeen,507311,41,34,,137,4,118,11,928,7,0,7
 2020-04-11,M,Waco,M - Waco,330048,9,4,5,,,363,26,262,,0,
 2020-04-12,M,Waco,M - Waco,330048,2,0,2,,,238,21,133,,0,
 2020-04-13,M,Waco,M - Waco,330048,5,3,2,,,333,26,137,,0,
@@ -11621,6 +11645,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,M,Waco,M - Waco,330048,19,16,,49,0,121,14,393,3,12,2
 2022-09-20,M,Waco,M - Waco,330048,,,,,,,,,,,
 2022-09-21,M,Waco,M - Waco,330048,13,10,,54,0,106,6,473,3,13,7
+2022-09-22,M,Waco,M - Waco,330048,,,,,,,,,,,
+2022-09-23,M,Waco,M - Waco,330048,12,10,,59,0,91,9,491,2,9,3
 2020-04-11,N,Bryan/College Station,N - Bryan/College Station,360335,24,16,8,,,278,15,234,,0,
 2020-04-12,N,Bryan/College Station,N - Bryan/College Station,360335,31,14,17,,,274,26,247,,0,
 2020-04-13,N,Bryan/College Station,N - Bryan/College Station,360335,13,7,6,,,293,27,111,,0,
@@ -12515,6 +12541,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,N,Bryan/College Station,N - Bryan/College Station,360335,25,23,,82,0,41,0,345,2,0,3
 2022-09-20,N,Bryan/College Station,N - Bryan/College Station,360335,,,,,,,,,,,
 2022-09-21,N,Bryan/College Station,N - Bryan/College Station,360335,27,26,,84,0,66,6,340,1,0,8
+2022-09-22,N,Bryan/College Station,N - Bryan/College Station,360335,,,,,,,,,,,
+2022-09-23,N,Bryan/College Station,N - Bryan/College Station,360335,26,23,,84,0,61,0,359,3,0,4
 2020-04-11,O,Austin,O - Austin,2375407,22,10,12,,,1408,144,1059,,7,
 2020-04-12,O,Austin,O - Austin,2375407,26,11,15,,,1227,156,1028,,8,
 2020-04-13,O,Austin,O - Austin,2375407,28,12,16,,,1427,164,1148,,12,
@@ -13409,6 +13437,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,O,Austin,O - Austin,2375407,140,111,,375,5,369,35,3170,29,11,25
 2022-09-20,O,Austin,O - Austin,2375407,,,,,,,,,,,
 2022-09-21,O,Austin,O - Austin,2375407,136,102,,375,5,332,31,3249,34,11,27
+2022-09-22,O,Austin,O - Austin,2375407,,,,,,,,,,,
+2022-09-23,O,Austin,O - Austin,2375407,139,106,,376,6,306,32,3309,33,13,22
 2020-04-11,P,San Antonio,P - San Antonio,2945792,57,35,22,,,2488,351,3398,,73,
 2020-04-12,P,San Antonio,P - San Antonio,2945792,57,35,22,,,2596,333,3405,,67,
 2020-04-13,P,San Antonio,P - San Antonio,2945792,64,39,25,,,2493,342,3276,,64,
@@ -14303,6 +14333,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,P,San Antonio,P - San Antonio,2945792,199,165,,820,16,1095,132,4874,34,10,32
 2022-09-20,P,San Antonio,P - San Antonio,2945792,,,,,,,,,,,
 2022-09-21,P,San Antonio,P - San Antonio,2945792,188,155,,827,15,997,119,5093,33,10,36
+2022-09-22,P,San Antonio,P - San Antonio,2945792,,,,,,,,,,,
+2022-09-23,P,San Antonio,P - San Antonio,2945792,175,134,,813,17,963,104,5193,41,11,34
 2020-04-11,Q,Houston,Q - Houston,6688587,516,302,214,,,4062,403,6949,,114,
 2020-04-12,Q,Houston,Q - Houston,6688587,319,185,134,,,3562,341,5616,,120,
 2020-04-13,Q,Houston,Q - Houston,6688587,527,293,234,,,3531,401,7254,,119,
@@ -15197,6 +15229,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,Q,Houston,Q - Houston,6688587,597,505,,1520,41,1199,122,11617,92,42,76
 2022-09-20,Q,Houston,Q - Houston,6688587,,,,,,,,,,,
 2022-09-21,Q,Houston,Q - Houston,6688587,632,534,,1449,43,1109,125,12347,98,27,80
+2022-09-22,Q,Houston,Q - Houston,6688587,,,,,,,,,,,
+2022-09-23,Q,Houston,Q - Houston,6688587,579,473,,1389,42,1048,108,12353,106,27,86
 2020-04-11,R,Galveston,R - Galveston,1309237,76,46,30,,,572,48,867,,8,
 2020-04-12,R,Galveston,R - Galveston,1309237,84,50,34,,,558,49,855,,6,
 2020-04-13,R,Galveston,R - Galveston,1309237,97,60,37,,,621,47,875,,5,
@@ -16091,6 +16125,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,R,Galveston,R - Galveston,1309237,52,41,,248,0,190,17,1255,11,3,11
 2022-09-20,R,Galveston,R - Galveston,1309237,,,,,,,,,,,
 2022-09-21,R,Galveston,R - Galveston,1309237,58,48,,248,0,272,13,1386,10,2,18
+2022-09-22,R,Galveston,R - Galveston,1309237,,,,,,,,,,,
+2022-09-23,R,Galveston,R - Galveston,1309237,49,39,,167,0,217,18,1393,10,4,7
 2020-04-11,S,Victoria,S - Victoria,186672,16,12,4,,,277,30,254,,0,
 2020-04-12,S,Victoria,S - Victoria,186672,21,15,6,,,278,33,240,,0,
 2020-04-13,S,Victoria,S - Victoria,186672,22,17,5,,,290,31,248,,0,
@@ -16985,6 +17021,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,S,Victoria,S - Victoria,186672,19,19,,60,0,175,19,268,0,0,2
 2022-09-20,S,Victoria,S - Victoria,186672,,,,,,,,,,,
 2022-09-21,S,Victoria,S - Victoria,186672,17,14,,64,0,152,12,306,3,0,3
+2022-09-22,S,Victoria,S - Victoria,186672,,,,,,,,,,,
+2022-09-23,S,Victoria,S - Victoria,186672,13,11,,65,0,133,15,311,2,0,1
 2020-04-11,T,Laredo,T - Laredo,295669,25,13,12,,,100,15,255,,0,
 2020-04-12,T,Laredo,T - Laredo,295669,24,13,11,,,110,21,238,,0,
 2020-04-13,T,Laredo,T - Laredo,295669,28,17,11,,,86,16,241,,0,
@@ -17879,6 +17917,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,T,Laredo,T - Laredo,295669,14,12,,88,0,13,0,311,2,0,2
 2022-09-20,T,Laredo,T - Laredo,295669,,,,,,,,,,,
 2022-09-21,T,Laredo,T - Laredo,295669,15,13,,85,0,4,0,365,2,0,1
+2022-09-22,T,Laredo,T - Laredo,295669,,,,,,,,,,,
+2022-09-23,T,Laredo,T - Laredo,295669,17,15,,85,0,13,2,372,2,0,1
 2020-04-11,U,Corpus Christi,U - Corpus Christi,630897,9,4,5,,,360,21,785,,11,
 2020-04-12,U,Corpus Christi,U - Corpus Christi,630897,12,7,5,,,382,23,765,,11,
 2020-04-13,U,Corpus Christi,U - Corpus Christi,630897,9,4,5,,,360,15,779,,11,
@@ -18773,6 +18813,8 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,U,Corpus Christi,U - Corpus Christi,630897,89,75,,174,0,167,16,1071,14,0,5
 2022-09-20,U,Corpus Christi,U - Corpus Christi,630897,,,,,,,,,,,
 2022-09-21,U,Corpus Christi,U - Corpus Christi,630897,99,82,,166,4,132,13,1085,17,0,20
+2022-09-22,U,Corpus Christi,U - Corpus Christi,630897,,,,,,,,,,,
+2022-09-23,U,Corpus Christi,U - Corpus Christi,630897,84,63,,169,6,150,9,1125,21,0,15
 2020-04-11,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,57,39,18,,,881,108,1219,,27,
 2020-04-12,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,65,43,22,,,861,105,1157,,30,
 2020-04-13,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,68,36,32,,,817,101,1333,,29,
@@ -19667,3 +19709,5 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-09-19,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,91,77,,365,18,347,41,2192,14,4,20
 2022-09-20,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,,,,,,,,,,,
 2022-09-21,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,90,72,,364,18,383,40,2317,18,6,20
+2022-09-22,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,,,,,,,,,,,
+2022-09-23,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,84,70,,363,17,366,30,2357,14,5,17
