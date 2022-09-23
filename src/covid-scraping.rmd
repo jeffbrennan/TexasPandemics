@@ -859,10 +859,18 @@ if (IMPUTED_CHECK) {
            Cases_Daily = Cases_Cumulative - lag(Cases_Cumulative)) |> 
     ungroup()
 
+  stopifnot(
+  DSHS_vitals_long |> 
+  # select(Cases_Cumulative, Cases_Cumulative_Imputed) |> 
+  filter(missing_day == 0) |> 
+  filter(Cases_Cumulative != Cases_Cumulative_Imputed & Date != '2022-08-25') |> 
+  nrow() == 0
+  )
+  
 
   } else { 
     message('NO IMPUTATION NEEDED')
-    DSHS_vitals_long = DSHS_vitals_long_impute_prep |> ungroup() |>  select(-impute_group, -missing_day)
+    DSHS_vitals_long = DSHS_vitals_long_impute_prep |> ungroup() |>  select(-any_of(c('impute_group', 'missing_day')))
   }
 
   DSHS_vitals_long |> filter(County == 'Bexar') |> filter(Date > '2022-08-20') |> View()
@@ -877,13 +885,7 @@ if (IMPUTED_CHECK) {
 
 ```{r}
 # adjustment check
-stopifnot(
-  DSHS_vitals_long |> 
-  # select(Cases_Cumulative, Cases_Cumulative_Imputed) |> 
-  filter(missing_day == 0) |> 
-  filter(Cases_Cumulative != Cases_Cumulative_Imputed & Date != '2022-08-25') |> 
-  nrow() == 0
-)
+
 
 # negative check
 stopifnot(
