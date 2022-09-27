@@ -71,6 +71,7 @@ def run_daily():
 
     # run regardless of prev status
     run_bat(DAILY_BAT)
+    os.system(MONKEYPOX_SCRIPT)
     # run_bat('commit.bat')
 
 # data updates at ~ 5PM EST
@@ -83,8 +84,10 @@ else:
 os.chdir('C:/Users/jeffb/Desktop/Life/personal-projects/COVID/')
 
 TMC_FILE_PATH = 'special-requests/TMC/rt_estimate.csv'
-TMC_BAT = 'requests.bat'
+TMC_BAT = 'requests_auto.bat'
 DAILY_BAT = 'scrape.bat'
+MONKEYPOX_SCRIPT = 'Rscript src/scrape-monkeypox.r'
+
 UPDATE_URL = [['https://dshs.texas.gov/coronavirus/TexasCOVID19CaseCountData.xlsx', 0]]
 TODAY_INT = TODAY.weekday()
 if TODAY_INT < 5:
