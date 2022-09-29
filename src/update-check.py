@@ -48,6 +48,7 @@ def check_update(files, max_attempts, check_interval=600):
 
 
 def run_daily():
+    os.system(MONKEYPOX_SCRIPT)
     print('\nChecking dashboard files...')
     check_update(UPDATE_URL, max_attempts=100)
     print('\nDashboard files are ready!')
@@ -71,7 +72,6 @@ def run_daily():
 
     # run regardless of prev status
     run_bat(DAILY_BAT)
-    os.system(MONKEYPOX_SCRIPT)
     # run_bat('commit.bat')
 
 # data updates at ~ 5PM EST
