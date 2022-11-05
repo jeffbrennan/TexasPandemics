@@ -1,5 +1,5 @@
 # setup ---------------------------------------------------------------------------------------
-stopifnot(weekdays(Sys.Date()) %in% c('Tuesday', 'Friday'))
+stopifnot(weekdays(Sys.Date()) %in% c('Tuesday'))
 suppressMessages(suppressWarnings(source("C:/Users/jeffb/Desktop/Life/personal-projects/functions/util.R")))
 
 date_out = ifelse((Sys.time() < as.POSIXct(paste0(Sys.Date(), '16:00'), tz = 'America/Chicago')),
