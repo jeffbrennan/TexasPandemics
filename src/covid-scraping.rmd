@@ -386,7 +386,9 @@ Scrape_Wastewater = function(data_type, offset='') {
       out_df = ww_df %>%
         mutate(across(contains('date'), function(x) as_datetime(x/1000) %>% as_date())) %>%
         select(ZIPCODE, date, pop, contains('Spline'), contains('vax'))
-        
+
+       message(glue('{offset} max date: {max(out_df$date, na.rm = TRUE)}'))
+
     } else if (data_type == 'plant') { 
       out_df = ww_df %>%
         mutate(across(contains('date'), function(x) as_datetime(x/1000) %>% as_date())) %>%
@@ -399,15 +401,24 @@ Scrape_Wastewater = function(data_type, offset='') {
            Date_First = firstdate,
            Date_Last = lastdate,
            Viral_Copies_Log = spline_ww)
+       message(glue('{offset} max date: {max(out_df$Date, na.rm = TRUE)}'))
     }
   } else {
+    message(glue('{offset} returns no results'))
     return(list(NULL))
   }
   return(out_df)
 }
 
-ww_plant_df = rbindlist(lapply(c('', seq(2000, 10000, by = 2000)), function(x) Scrape_Wastewater('plant', offset=x)), fill = TRUE)
-ww_zip_df = rbindlist(lapply(c('', seq(1000, 10000, by = 1000)), function(x) Scrape_Wastewater('zip', offset=x)), fill = TRUE)
+
+plant_offsets = c('', seq(2000, 10000, by = 2000))
+zip_offsets = c('', seq(1000, 30000, by = 1000))
+
+ww_plant_df = map(plant_offsets, ~Scrape_Wastewater('plant', offset = .)) %>%
+  rbindlist(., fill = TRUE)
+
+ww_zip_df = map(zip_offsets, ~Scrape_Wastewater('zip', offset = .)) %>%
+                      rbindlist(., fill = TRUE)
 
 fwrite(ww_plant_df, 'tableau/wastewater_plant.csv')
 fwrite(ww_zip_df, 'tableau/wastewater_zip.csv')
