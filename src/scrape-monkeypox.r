@@ -111,8 +111,8 @@ CURRENT_MAX_DATE = fread('monkeypox/stacked_state_demographics.csv') |>
   as_date(., format = '%m/%d/%Y') |> 
   max()
 
-MAX_ATTEMPTS = 12
-SLEEP_TIME = 60 * 10
+MAX_ATTEMPTS = 1
+SLEEP_TIME = 60
 UPDATE_URL = 'https://www.dshs.texas.gov/news/updates.shtm#monkeypox'
 
 
