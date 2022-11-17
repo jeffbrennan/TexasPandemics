@@ -409,19 +409,43 @@ Scrape_Wastewater = function(data_type, offset='') {
   }
   return(out_df)
 }
-
-
-plant_offsets = c('', seq(2000, 10000, by = 2000))
-zip_offsets = c('', seq(1000, 10000, by = 1000))
+plant_offsets = c('', seq(2000, 15000, by = 2000))
+zip_offsets = c('', seq(1000, 20000, by = 1000))
 
 ww_plant_df = map(plant_offsets, ~Scrape_Wastewater('plant', offset = .)) %>%
   rbindlist(., fill = TRUE)
+fwrite(ww_plant_df, 'tableau/wastewater_plant.csv')
 
 ww_zip_df = map(zip_offsets, ~Scrape_Wastewater('zip', offset = .)) %>%
-                      rbindlist(., fill = TRUE)
+  rbindlist(., fill = TRUE)
 
-fwrite(ww_plant_df, 'tableau/wastewater_plant.csv')
-fwrite(ww_zip_df, 'tableau/wastewater_zip.csv')
+ww_zip_df_clean = ww_zip_df %>%
+    mutate(ZIPCODE = as.character(as.integer(ZIPCODE))) %>%
+    filter(!is.na(ZIPCODE)) %>%
+    arrange(ZIPCODE, date)
+
+ww_zip_zipcode_n = length(unique(ww_zip_df_clean$ZIPCODE))
+ww_zip_missing_values = with(ww_zip_df_clean, table(ZIPCODE, date)) %>%
+  as.data.frame() %>%
+  pivot_wider(values_from = Freq, names_from = date) %>%
+  filter(if_any(-one_of("ZIPCODE"), ~ . != 1))
+
+ww_zip_date_gaps = ww_zip_df_clean %>%
+    select(date) %>%
+    distinct() %>%
+    arrange(date) %>%
+    mutate(date_delta = date - lag(date)) %>%
+    filter(!is.na(date_delta) & date_delta != 7)
+
+ww_zip_checks = c(
+                    ww_zip_zipcode_n > 100,
+                    ww_zip_missing_values %>% nrow() == 0,
+                    ww_zip_date_gaps %>% nrow() == 0
+)
+
+if (all(ww_zip_checks)) {
+    fwrite(ww_zip_df_clean, 'tableau/wastewater_zip.csv')
+}
 ```
 
 ## Other sources
@@ -440,44 +464,44 @@ filter(wwtp_jurisdiction == 'Texas') %>%
 
 fwrite(cdc_ww_texas, 'tableau/wastewater_county_cdc.csv')
 
+# TODO: fix
 # biobot
-biobot_ww_date = seq(as.Date('2022-11-10'), as.Date('2025-01-01'), by = 'week') %>%
-  format(., '%Y-%m-%d') %>%
-  .[which(. <= Sys.Date())] %>%
-  .[length(.)]
+# biobot_ww_date = seq(as.Date('2022-11-10'), as.Date('2025-01-01'), by = 'week') %>%
+#   format(., '%Y-%m-%d') %>%
+#   .[which(. <= Sys.Date())] %>%
+#   .[length(.)]
 
-
-biobot_ww = fread(glue('https://d1t7q96h7r5kqm.cloudfront.net/{biobot_ww_date}_automated_csvs/wastewater_by_county.csv'))
-bioboot_ww_texas = biobot_ww %>%
-  filter(state_abbr == 'TX') %>%
-  mutate(date = format(date, '%Y-%m-%d')) %>%
-  select(date, display_name, eff_conc_sarscov2_weekly_rolling, eff_conc_sarscov2_weekly) %>%
-  mutate(display_name = str_replace_all(display_name, " County, TX", "")) %>%
-  rename(Date = date,
-         County = display_name
-         )
-fwrite(bioboot_ww_texas, 'tableau/wastewater_county_biobot.csv')
-
-
-biobot_ww_variant_dates = seq(as.Date('2022-10-27'), as.Date('2025-01-01'), by = 'week')
-biobot_ww_variant_date = biobot_ww_variant_dates[c(1, 4:length(biobot_ww_variant_dates))] %>%
-  format(., '%Y-%m-%d') %>%
-  .[which(. <= Sys.Date())] %>%
-  .[length(.)]
-
-biobot_ww_variant = fread(glue('https://d1t7q96h7r5kqm.cloudfront.net/{biobot_ww_variant_date}_variant_data/wastewater_variant_county.csv'))
-
-biobot_ww_variant_texas = biobot_ww_variant %>%
-    mutate(tx_county = str_detect(display_name, ', TX')) %>%
-    filter(tx_county) %>%
-    select(date, display_name, variant, var_pct) %>%
-    mutate(date = as.character(date)) %>%
-    mutate(display_name = str_replace_all(display_name, ' County, TX', '')) %>%
-    rename(Date = date,
-           County = display_name
-           )
-
-fwrite(biobot_ww_variant_texas, 'tableau/wastewater_county_variant_biobot.csv')
+# biobot_ww = fread(glue('https://d1t7q96h7r5kqm.cloudfront.net/{biobot_ww_date}_automated_csvs/wastewater_by_county.csv'))
+# bioboot_ww_texas = biobot_ww %>%
+#   filter(state_abbr == 'TX') %>%
+#   mutate(date = format(date, '%Y-%m-%d')) %>%
+#   select(date, display_name, eff_conc_sarscov2_weekly_rolling, eff_conc_sarscov2_weekly) %>%
+#   mutate(display_name = str_replace_all(display_name, " County, TX", "")) %>%
+#   rename(Date = date,
+#          County = display_name
+#          )
+# fwrite(bioboot_ww_texas, 'tableau/wastewater_county_biobot.csv')
+#
+#
+# biobot_ww_variant_dates = seq(as.Date('2022-10-27'), as.Date('2025-01-01'), by = 'week')
+# biobot_ww_variant_date = biobot_ww_variant_dates[c(1, 4:length(biobot_ww_variant_dates))] %>%
+#   format(., '%Y-%m-%d') %>%
+#   .[which(. <= Sys.Date())] %>%
+#   .[length(.)]
+#
+# biobot_ww_variant = fread(glue('https://d1t7q96h7r5kqm.cloudfront.net/{biobot_ww_variant_date}_variant_data/wastewater_variant_county.csv'))
+#
+# biobot_ww_variant_texas = biobot_ww_variant %>%
+#     mutate(tx_county = str_detect(display_name, ', TX')) %>%
+#     filter(tx_county) %>%
+#     select(date, display_name, variant, var_pct) %>%
+#     mutate(date = as.character(date)) %>%
+#     mutate(display_name = str_replace_all(display_name, ' County, TX', '')) %>%
+#     rename(Date = date,
+#            County = display_name
+#            )
+#
+# fwrite(biobot_ww_variant_texas, 'tableau/wastewater_county_variant_biobot.csv')
 
 ```
 
@@ -512,21 +536,6 @@ sapply(names(image_paths), function(x) download.file(image_paths[[x]], glue('ori
 # data
 # 
 ```
-
-
-
-## diagnostics
-```{r}
-max(ww_zip_df$date)
-
-# matches
-ww_zip_df %>%
-  filter(ZIPCODE %in% c('77085', '77029') & date == '2022-01-03') %>%
-  select(ZIPCODE, date, Spline_WW_weight)
-
-
-```
-
 
 
 # SCHOOL LEVEL
