@@ -27,6 +27,14 @@ filter = dplyr::filter
 
 
 ```{r}
+wastewater = fread('tableau/wastewater_zip.csv')
+head(wastewater)
+
+wastewater$ZIPCODE %>% unique() %>% length()
+
+```
+
+```{r}
 Add_Emoji = function(long_df) { 
   output = long_df %>% 
     mutate(Emoji = case_when(Text == 'Date' & Statistic < date_out ~ ':warning:',
