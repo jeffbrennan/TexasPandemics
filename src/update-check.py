@@ -88,7 +88,7 @@ TMC_BAT = 'requests_auto.bat'
 DAILY_BAT = 'scrape.bat'
 MONKEYPOX_SCRIPT = 'Rscript src/scrape-monkeypox.r'
 
-UPDATE_URL = [['https://dshs.texas.gov/coronavirus/TexasCOVID19CaseCountData.xlsx', 0]]
+UPDATE_URL = [['https://www.dshs.texas.gov/sites/default/files/STATEEPI-CHS/coronavirus/CaseCountData.xlsx', 0]]
 TODAY_INT = TODAY.weekday()
 if TODAY_INT < 5:
     run_daily()
