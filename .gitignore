@@ -19,7 +19,5 @@ original-sources/helpers/unpublished
 original-sources/historical/vax-dashboard
 original-sources/historical/setrac-archive
 original-sources/historical/google/mobility.csv
-src/scrape-sources.r
-src/special-requests.r
 .idea
 idea/.gitignore
