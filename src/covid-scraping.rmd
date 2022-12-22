@@ -1185,9 +1185,12 @@ write.csv(tpr_out, 'tableau/county_TPR.csv', row.names = FALSE)
 ## vaccinations
 
 ```{r}
-vaccine_county_dshs_url = 'https://www.dshs.texas.gov/sites/default/files/LIDS-Immunize-COVID19/COVID%20Dashboard/COVID-19%20Vaccine%20Data%20by%20County.xlsx'
+vaccine_county_dshs_url_base = 'https://www.dshs.texas.gov/sites/default/files/LIDS-Immunize-COVID19/COVID%20Dashboard/COVID-19%20Vaccine%20Data%20by%20County'
 
 if (format(date_out, '%A') == 'Wednesday') {
+
+  vaccine_county_dshs_url = str_c(vaccine_county_dshs_url_base, format(date_out, '%m.%d.%y'), '.xlsx')
+
 
   curl::curl_download(vaccine_county_dshs_url,
                       mode     = 'wb',
