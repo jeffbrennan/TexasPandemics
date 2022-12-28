@@ -14,11 +14,11 @@ def run_bat(bat_file):
     stdout, stderr = p.communicate()
 
 
-def parse_file(file_url, header_loc):
+def parse_file(file_url, sheet_loc, header_loc):
     df = pd.ExcelFile(file_url, engine='openpyxl').parse(
-        sheet_name=0, header=header_loc)
+        sheet_name=sheet_loc, header=header_loc)
 
-    date_text = list(df.columns)[0]
+    date_text = list(df.columns)[-1]
     date_matches = re.findall(r'(\d{1,2}\/\d{1,2}\/\d{4})', date_text)
     max_date = parsedate(date_matches[-1]).date()
     return 1 if max_date == TODAY.date() else 0
@@ -31,7 +31,8 @@ def check_update(files, max_attempts, check_interval=600):
         print(file[0])
 
         while new_file == 0:
-            new_file = parse_file(file[0], file[1])
+            # TODO: convert to dict
+            new_file = parse_file(file[0], file[1], file[2])
 
             if new_file == 1:
                 print(f'Attempt #{attempts} | New file!')
@@ -88,7 +89,7 @@ TMC_BAT = 'requests_auto.bat'
 DAILY_BAT = 'scrape.bat'
 MONKEYPOX_SCRIPT = 'Rscript src/scrape-monkeypox.r'
 
-UPDATE_URL = [['https://www.dshs.texas.gov/sites/default/files/STATEEPI-CHS/coronavirus/CaseCountData.xlsx', 0]]
+UPDATE_URL = [['https://www.dshs.texas.gov/sites/default/files/chs/data/Texas%20COVID-19%20New%20Confirmed%20Cases%20by%20County.xlsx', 2, 2]]
 TODAY_INT = TODAY.weekday()
-if TODAY_INT < 5:
+if TODAY_INT == 2:
     run_daily()
