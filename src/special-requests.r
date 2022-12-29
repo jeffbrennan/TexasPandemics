@@ -209,7 +209,7 @@ focused_rt_plot = function(rt_data) {
 }
 
 # SETUP ---------------------------------------------------------------------------------------
-setwd('C:/Users/jeffb/Desktop/Life/personal-projects/COVID')
+# setwd('C:/Users/jeffb/Desktop/Life/personal-projects/COVID')
 
 date_out = as.Date(ifelse((Sys.time() < as.POSIXct(paste0(Sys.Date(), '15:05'), tz = 'America/Chicago')),
                           Sys.Date() - 1,
@@ -484,7 +484,6 @@ TMC_contributions = DSHS_vitals_long %>%
   filter(Date > Sys.Date() - 15)
 
 
-
 TMC_plot = focused_rt_plot(TMC_rt_output)
 
 # diagnostics ----
@@ -536,8 +535,6 @@ rt_cases_stacked = ggarrange(stacked_plot,
 
 
 # output --------------------------------------------------------------------------------------
-write.csv(TMC_rt_output, glue('special-requests/TMC/rt_estimate.csv'), row.names = FALSE)
-write.csv(TMC_rt_output, glue('special-requests/HMH/rt_estimate_{max(TMC_rt_output$Date)}.csv'), row.names = FALSE)
-
+fwrite(TMC_rt_output, glue('special-requests/TMC/rt_estimate.csv'), eol = "\r\n")
 ggsave('special-requests/TMC/county_plot.png', plot = county_plot, width = 12, height = 8)
 ggsave('special-requests/TMC/stacked_plot.png', plot = rt_cases_stacked, width = 10, height = 12, dpi = 600)
