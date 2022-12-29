@@ -393,10 +393,35 @@ CURRENT_RT_DATE = fread('special-requests/TMC/rt_estimate.csv') %>%
 
 # new pull --------------------------------------------------------------------------------------------
 # DSHS began uploading daily data again on 2022-12-14
-new_pull = TRUE
-if (new_pull) {
+new_case_url = 'https://www.dshs.texas.gov/sites/default/files/chs/data/Texas%20COVID-19%20New%20Confirmed%20Cases%20by%20County.xlsx'
+# new_case_url = "https://www.dshs.texas.gov/sites/default/files/chs/data/Texas%20COVID-19%20New%20Confirmed%20Cases%20by%20County.xlsx"
+temp         = tempfile()
+curl::curl_download(new_case_url, temp, mode = 'wb')
+sheet_names = readxl::excel_sheets(temp)
 
-  new_case_url = "https://www.dshs.texas.gov/sites/default/files/chs/data/Texas%20COVID-19%20New%20Confirmed%20Cases%20by%20County.xlsx"
+all_cases = map(sheet_names, ~readxl::read_xlsx(temp, sheet = ., col_types = 'text', skip = 2))
+
+DSHS_vitals_long = all_cases %>%
+  rbindlist(fill = TRUE) %>%
+  pivot_longer(!County) %>%
+  filter(County %in% TMC_COUNTIES) %>%
+  filter(!is.na(value)) %>%
+  rename(Date        = name,
+         Cases_Daily = value) %>%
+  filter(!str_to_upper(Date) %in% c("TOTAL", "UNKNOWN DATE")) %>%
+  mutate(Date = ifelse(!is.na(as.integer(Date)),
+                       as.character(as.Date(as.integer(Date), origin = '1899-12-30')),
+                       as.character(as.Date(Date, format = '%m/%d/%Y'))
+  )
+  ) %>%
+  mutate(Date = as.Date(Date)) %>%
+  mutate(Cases_Daily = as.integer(Cases_Daily))
+
+max_case_date = max(DSHS_vitals_long$Date, na.rm = TRUE)
+date_diff     = difftime(max_case_date, CURRENT_RT_DATE, units = 'days')
+# check cumulative file
+if (date_diff <= 1) {
+  new_case_url = 'https://www.dshs.texas.gov/sites/default/files/chs/data/Texas%20COVID-19%20Cumulative%20Confirmed%20Cases%20by%20County.xlsx'
   temp         = tempfile()
   curl::curl_download(new_case_url, temp, mode = 'wb')
   sheet_names = readxl::excel_sheets(temp)
@@ -408,8 +433,8 @@ if (new_pull) {
     pivot_longer(!County) %>%
     filter(County %in% TMC_COUNTIES) %>%
     filter(!is.na(value)) %>%
-    rename(Date        = name,
-           Cases_Daily = value) %>%
+    rename(Date             = name,
+           Cases_Cumulative = value) %>%
     filter(!str_to_upper(Date) %in% c("TOTAL", "UNKNOWN DATE")) %>%
     mutate(Date = ifelse(!is.na(as.integer(Date)),
                          as.character(as.Date(as.integer(Date), origin = '1899-12-30')),
@@ -417,10 +442,18 @@ if (new_pull) {
     )
     ) %>%
     mutate(Date = as.Date(Date)) %>%
-    mutate(Cases_Daily = as.integer(Cases_Daily))
+    mutate(Cases_Cumulative = as.integer(Cases_Cumulative)) %>%
+    arrange(Date) %>%
+    group_by(County) %>%
+    mutate(Cases_Daily = Cases_Cumulative - lag(Cases_Cumulative)) %>%
+    mutate(Cases_Daily = ifelse(is.na(Cases_Daily) | Cases_Daily < 0, 0, Cases_Daily)) %>%
+    filter(!is.na(Date)) %>%
+    select(-Cases_Cumulative)
 }
 
-date_diff = difftime(max(DSHS_vitals_long$Date), CURRENT_RT_DATE, units = 'days')
+max_case_date = max(DSHS_vitals_long$Date, na.rm = TRUE)
+date_diff     = difftime(max_case_date, CURRENT_RT_DATE, units = 'days')
+
 stopifnot(date_diff > 1)
 
 # run RT on TMC ----------------------------------------------------------------------------------
