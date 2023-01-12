@@ -190,9 +190,10 @@ county_classifications = read_xlsx('original-sources/helpers/county_classificati
 ```
 
 ```{r}
-tsa_long_complete = fread('tableau/county.csv') |>
+tsa_lookup_url = 'https://raw.githubusercontent.com/jeffbrennan/TexasPandemics/master/tableau/county.csv'
+tsa_long_complete = fread(tsa_lookup_url, fill = TRUE) %>%
   select(County, TSA, TSA_Name, TSA_Combined) |>
-  distinct()
+    distinct()
 
 dshs_pops =
   fread('https://raw.githubusercontent.com/jeffbrennan/COVID-19/d03d476f7fb060dfd2e1a600a6a1e449df0ab8df/original-sources/DSHS_county_cases.csv') %>%
@@ -885,14 +886,16 @@ merged_dshs = DSHS_vitals_long |>
     arrange(County, Date) |>
     mutate(Active_Cases_Cumulative = NA,
            Active_Cases_Daily      = NA) |>
-    select(all_of(merged_dshs_header)) |>
-    mutate(across(c(Cases_Cumulative, Cases_Daily, Deaths_Cumulative, Deaths_Daily), ~ifelse(Date %in% MISSING_VITALS_DATES, NA, .)))
+    select(all_of(merged_dshs_header))
+
+# View(merged_dshs)
 ```
 
 
 ```{r}
 # diagnostics
 stopifnot(merged_dshs$County |> unique() |> length() == 254)
+stopifnot(merged_dshs$TSA_Combined |> unique() |> length() == 22)
 fwrite(merged_dshs %>% arrange(County, Date), 'tableau/county.csv')
 ```
 
@@ -1733,6 +1736,8 @@ DSHS moved to non-scrapeable DSHS dashboard
 ## Computed
 
 ```{r}
+# merged_dshs %>% View()
+
 # longitudinal counts (sum)
 DSHS_tsa_counts =
   merged_dshs %>%
@@ -1752,13 +1757,18 @@ DSHS_tsa_pops = merged_dshs |>
 # longitudinal google data (mean)
 DSHS_tsa_google =
   merged_dshs %>%
-    group_by(Date, TSA, TSA_Name) %>%
-    summarize(
-      across(c(Retail_Recreation, Grocery_Pharmacy,
-               Parks, Transit,
-               Workplaces, Residential),
-             ~weighted.mean(., Population_DSHS), na.rm = TRUE
-      ))
+    # mutate(across)
+    distinct(Date, TSA, TSA_Name,
+             Retail_Recreation, Grocery_Pharmacy,
+             Parks, Transit,
+             Workplaces, Residential
+    )
+# summarize(
+#   across(c(Retail_Recreation, Grocery_Pharmacy,
+#            Parks, Transit,
+#            Workplaces, Residential),
+#          ~weighted.mean(., Population_DSHS), na.rm = TRUE
+#   ))
 
 DSHS_tsa = merge(DSHS_tsa_counts, DSHS_tsa_google, by = c('Date', 'TSA', 'TSA_Name'))
 DSHS_tsa = merge(DSHS_tsa, DSHS_tsa_pops, by = 'TSA', all = TRUE)
@@ -1863,12 +1873,20 @@ hosp_cols_new = fromJSON(TSA_HOSP_QUERY)$features$attributes |>
     "TSA"                          = "tsa")) |>
   mutate(Date = TSA_HOSP_DATE)
 
-hosp_cols = fread('tableau/hospitalizations_tsa.csv') |>
-  select(Date, TSA, Hospitalizations_Total:Hospitalizations_24) |>
-  plyr::rbind.fill(hosp_cols_new) |>
-  arrange(TSA, Date) |>
-  mutate(Date = as.Date(Date)) |>
-  distinct()
+# View(hosp_cols_new)
+hosp_url = 'https://raw.githubusercontent.com/jeffbrennan/TexasPandemics/master/tableau/hospitalizations_tsa.csv'
+
+hosp_cols = fread(hosp_url, fill = TRUE) %>%
+  select(Date, TSA, Hospitalizations_Total:Hospitalizations_24) %>%
+  filter(str_detect(Date, '\\d{4}-\\d{2}-\\d{2}')) %>%
+  plyr::rbind.fill(hosp_cols_new) %>%
+  arrange(TSA, Date) %>%
+  mutate(Date = as.Date(Date)) %>%
+  distinct() %>%
+  group_by(Date, TSA) %>%
+  arrange(desc(Hospitalizations_Total)) %>%
+  slice(1) %>%
+  ungroup()
 ```
 
 
@@ -1885,6 +1903,8 @@ merged_tsa = DSHS_tsa %>%
   filter(Date >= as.Date('2020-04-11')) |>
     arrange(TSA, Date)
 
+# View(DSHS_tsa)
+# View(merged_tsa)
 fwrite(merged_tsa, file = 'tableau/hospitalizations_tsa.csv')
 ```
 
