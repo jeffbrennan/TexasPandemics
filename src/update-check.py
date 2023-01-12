@@ -58,7 +58,7 @@ def run_daily():
     TMC_DATE_STR = pd.read_csv(TMC_FILE_PATH)[['Date']].squeeze().max()
     TMC_DATE = datetime.strptime(TMC_DATE_STR, '%Y-%m-%d').date()
 
-    # ensure TMC runs only runs if cases are more recent than rt
+# ensure TMC runs only runs if cases are more recent than rt
     DATE_CHECK = CASE_DATE > (TMC_DATE - timedelta(days=1))
 
     # ensure TMC only runs if file has not been modified in last 4 hours (to handle bug reruns)
@@ -89,7 +89,7 @@ TMC_BAT = 'requests_auto.bat'
 DAILY_BAT = 'scrape.bat'
 MONKEYPOX_SCRIPT = 'Rscript src/scrape-monkeypox.r'
 
-UPDATE_URL = [['https://www.dshs.texas.gov/sites/default/files/chs/data/Texas%20COVID-19%20New%20Confirmed%20Cases%20by%20County.xlsx', 2, 2]]
+UPDATE_URL = [['https://www.dshs.texas.gov/sites/default/files/chs/data/COVID/Texas%20COVID-19%20New%20Confirmed%20Cases%20by%20County.xlsx', 2, 2]]
 TODAY_INT = TODAY.weekday()
 if TODAY_INT == 2:
     run_daily()
