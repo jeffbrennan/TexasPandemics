@@ -990,8 +990,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,A,Amarillo,A - Amarillo,440127,,,,,,,,,,,
 2022-12-26,A,Amarillo,A - Amarillo,440127,,,,,,,,,,,
 2022-12-27,A,Amarillo,A - Amarillo,440127,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,A,Amarillo,A - Amarillo,440127,,,,,,,,,,,
+2022-12-28,A,Amarillo,A - Amarillo,440127,25,18,,143,3,218,6,662,7,1,7
 2022-12-29,A,Amarillo,A - Amarillo,440127,,,,,,,,,,,
 2022-12-30,A,Amarillo,A - Amarillo,440127,,,,,,,,,,,
 2022-12-31,A,Amarillo,A - Amarillo,440127,,,,,,,,,,,
@@ -999,9 +998,13 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,A,Amarillo,A - Amarillo,440127,,,,,,,,,,,
 2023-01-03,A,Amarillo,A - Amarillo,440127,,,,,,,,,,,
 2023-01-04,A,Amarillo,A - Amarillo,440127,21,18,,138,0,221,4,660,3,1,6
-=======
-2022-12-28,A,Amarillo,A - Amarillo,440127,25,18,,143,3,218,6,662,7,1,7
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,A,Amarillo,A - Amarillo,440127,,,,,,,,,,,
+2023-01-06,A,Amarillo,A - Amarillo,440127,,,,,,,,,,,
+2023-01-07,A,Amarillo,A - Amarillo,440127,,,,,,,,,,,
+2023-01-08,A,Amarillo,A - Amarillo,440127,,,,,,,,,,,
+2023-01-09,A,Amarillo,A - Amarillo,440127,,,,,,,,,,,
+2023-01-10,A,Amarillo,A - Amarillo,440127,,,,,,,,,,,
+2023-01-11,A,Amarillo,A - Amarillo,440127,21,19,,142,0,236,5,688,2,1,5
 2020-04-11,B,Lubbock,B - Lubbock,513580,34,22,12,,,613,93,755,,24,
 2020-04-12,B,Lubbock,B - Lubbock,513580,35,23,12,,,628,89,744,,26,
 2020-04-13,B,Lubbock,B - Lubbock,513580,31,17,14,,,660,91,734,,24,
@@ -1993,8 +1996,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,B,Lubbock,B - Lubbock,513580,,,,,,,,,,,
 2022-12-26,B,Lubbock,B - Lubbock,513580,,,,,,,,,,,
 2022-12-27,B,Lubbock,B - Lubbock,513580,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,B,Lubbock,B - Lubbock,513580,,,,,,,,,,,
+2022-12-28,B,Lubbock,B - Lubbock,513580,51,41,,177,1,384,25,927,10,18,13
 2022-12-29,B,Lubbock,B - Lubbock,513580,,,,,,,,,,,
 2022-12-30,B,Lubbock,B - Lubbock,513580,,,,,,,,,,,
 2022-12-31,B,Lubbock,B - Lubbock,513580,,,,,,,,,,,
@@ -2002,9 +2004,13 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,B,Lubbock,B - Lubbock,513580,,,,,,,,,,,
 2023-01-03,B,Lubbock,B - Lubbock,513580,,,,,,,,,,,
 2023-01-04,B,Lubbock,B - Lubbock,513580,67,58,,178,1,322,16,999,9,8,9
-=======
-2022-12-28,B,Lubbock,B - Lubbock,513580,51,41,,177,1,384,25,927,10,18,13
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,B,Lubbock,B - Lubbock,513580,,,,,,,,,,,
+2023-01-06,B,Lubbock,B - Lubbock,513580,,,,,,,,,,,
+2023-01-07,B,Lubbock,B - Lubbock,513580,,,,,,,,,,,
+2023-01-08,B,Lubbock,B - Lubbock,513580,,,,,,,,,,,
+2023-01-09,B,Lubbock,B - Lubbock,513580,,,,,,,,,,,
+2023-01-10,B,Lubbock,B - Lubbock,513580,,,,,,,,,,,
+2023-01-11,B,Lubbock,B - Lubbock,513580,56,45,,180,3,296,16,1042,11,11,9
 2020-04-11,C,Wichita Falls,C - Wichita Falls,219793,5,4,1,,,348,20,240,,0,
 2020-04-12,C,Wichita Falls,C - Wichita Falls,219793,5,5,0,,,366,18,223,,0,
 2020-04-13,C,Wichita Falls,C - Wichita Falls,219793,6,6,0,,,341,19,231,,0,
@@ -2996,8 +3002,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,C,Wichita Falls,C - Wichita Falls,219793,,,,,,,,,,,
 2022-12-26,C,Wichita Falls,C - Wichita Falls,219793,,,,,,,,,,,
 2022-12-27,C,Wichita Falls,C - Wichita Falls,219793,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,C,Wichita Falls,C - Wichita Falls,219793,,,,,,,,,,,
+2022-12-28,C,Wichita Falls,C - Wichita Falls,219793,13,13,,62,0,351,0,718,0,0,1
 2022-12-29,C,Wichita Falls,C - Wichita Falls,219793,,,,,,,,,,,
 2022-12-30,C,Wichita Falls,C - Wichita Falls,219793,,,,,,,,,,,
 2022-12-31,C,Wichita Falls,C - Wichita Falls,219793,,,,,,,,,,,
@@ -3005,9 +3010,13 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,C,Wichita Falls,C - Wichita Falls,219793,,,,,,,,,,,
 2023-01-03,C,Wichita Falls,C - Wichita Falls,219793,,,,,,,,,,,
 2023-01-04,C,Wichita Falls,C - Wichita Falls,219793,22,21,,60,0,361,2,706,1,0,8
-=======
-2022-12-28,C,Wichita Falls,C - Wichita Falls,219793,13,13,,62,0,351,0,718,0,0,1
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,C,Wichita Falls,C - Wichita Falls,219793,,,,,,,,,,,
+2023-01-06,C,Wichita Falls,C - Wichita Falls,219793,,,,,,,,,,,
+2023-01-07,C,Wichita Falls,C - Wichita Falls,219793,,,,,,,,,,,
+2023-01-08,C,Wichita Falls,C - Wichita Falls,219793,,,,,,,,,,,
+2023-01-09,C,Wichita Falls,C - Wichita Falls,219793,,,,,,,,,,,
+2023-01-10,C,Wichita Falls,C - Wichita Falls,219793,,,,,,,,,,,
+2023-01-11,C,Wichita Falls,C - Wichita Falls,219793,27,24,,52,1,356,0,727,3,0,4
 2020-04-11,D,Abilene,D - Abilene,306972,6,4,2,,,479,36,214,,3,
 2020-04-12,D,Abilene,D - Abilene,306972,7,4,3,,,478,36,146,,3,
 2020-04-13,D,Abilene,D - Abilene,306972,2,2,0,,,498,27,268,,3,
@@ -3999,8 +4008,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,D,Abilene,D - Abilene,306972,,,,,,,,,,,
 2022-12-26,D,Abilene,D - Abilene,306972,,,,,,,,,,,
 2022-12-27,D,Abilene,D - Abilene,306972,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,D,Abilene,D - Abilene,306972,,,,,,,,,,,
+2022-12-28,D,Abilene,D - Abilene,306972,30,29,,110,0,240,2,504,1,0,3
 2022-12-29,D,Abilene,D - Abilene,306972,,,,,,,,,,,
 2022-12-30,D,Abilene,D - Abilene,306972,,,,,,,,,,,
 2022-12-31,D,Abilene,D - Abilene,306972,,,,,,,,,,,
@@ -4008,9 +4016,13 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,D,Abilene,D - Abilene,306972,,,,,,,,,,,
 2023-01-03,D,Abilene,D - Abilene,306972,,,,,,,,,,,
 2023-01-04,D,Abilene,D - Abilene,306972,31,23,,111,0,222,3,581,8,0,6
-=======
-2022-12-28,D,Abilene,D - Abilene,306972,30,29,,110,0,240,2,504,1,0,3
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,D,Abilene,D - Abilene,306972,,,,,,,,,,,
+2023-01-06,D,Abilene,D - Abilene,306972,,,,,,,,,,,
+2023-01-07,D,Abilene,D - Abilene,306972,,,,,,,,,,,
+2023-01-08,D,Abilene,D - Abilene,306972,,,,,,,,,,,
+2023-01-09,D,Abilene,D - Abilene,306972,,,,,,,,,,,
+2023-01-10,D,Abilene,D - Abilene,306972,,,,,,,,,,,
+2023-01-11,D,Abilene,D - Abilene,306972,23,19,,112,0,228,2,578,4,0,0
 2020-04-11,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,369,208,161,,,5095,623,7347,,40,
 2020-04-12,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,365,109,256,,,5223,603,8219,,49,
 2020-04-13,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,373,223,150,,,5347,612,8589,,48,
@@ -5002,8 +5014,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,,,,,,,,,,,
 2022-12-26,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,,,,,,,,,,,
 2022-12-27,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,,,,,,,,,,,
+2022-12-28,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,748,640,,2183,20,1468,129,12795,108,14,175
 2022-12-29,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,,,,,,,,,,,
 2022-12-30,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,,,,,,,,,,,
 2022-12-31,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,,,,,,,,,,,
@@ -5011,9 +5022,13 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,,,,,,,,,,,
 2023-01-03,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,,,,,,,,,,,
 2023-01-04,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,1000,831,,2119,31,1255,111,13765,169,17,186
-=======
-2022-12-28,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,748,640,,2183,20,1468,129,12795,108,14,175
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,,,,,,,,,,,
+2023-01-06,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,,,,,,,,,,,
+2023-01-07,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,,,,,,,,,,,
+2023-01-08,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,,,,,,,,,,,
+2023-01-09,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,,,,,,,,,,,
+2023-01-10,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,,,,,,,,,,,
+2023-01-11,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8080080,1000,843,,2150,33,1250,118,14212,157,17,181
 2020-04-11,F,Paris,F - Paris,273329,14,2,12,,,,36,421,,0,
 2020-04-12,F,Paris,F - Paris,273329,16,5,11,,,,32,405,,0,
 2020-04-13,F,Paris,F - Paris,273329,21,12,9,,,,27,416,,0,
@@ -6005,8 +6020,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,F,Paris,F - Paris,273329,,,,,,,,,,,
 2022-12-26,F,Paris,F - Paris,273329,,,,,,,,,,,
 2022-12-27,F,Paris,F - Paris,273329,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,F,Paris,F - Paris,273329,,,,,,,,,,,
+2022-12-28,F,Paris,F - Paris,273329,33,30,,147,0,93,4,580,3,0,4
 2022-12-29,F,Paris,F - Paris,273329,,,,,,,,,,,
 2022-12-30,F,Paris,F - Paris,273329,,,,,,,,,,,
 2022-12-31,F,Paris,F - Paris,273329,,,,,,,,,,,
@@ -6014,609 +6028,1208 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,F,Paris,F - Paris,273329,,,,,,,,,,,
 2023-01-03,F,Paris,F - Paris,273329,,,,,,,,,,,
 2023-01-04,F,Paris,F - Paris,273329,45,37,,144,0,71,5,619,8,0,5
-=======
-2022-12-28,F,Paris,F - Paris,273329,33,30,,147,0,93,4,580,3,0,4
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,F,Paris,F - Paris,273329,,,,,,,,,,,
+2023-01-06,F,Paris,F - Paris,273329,,,,,,,,,,,
+2023-01-07,F,Paris,F - Paris,273329,,,,,,,,,,,
+2023-01-08,F,Paris,F - Paris,273329,,,,,,,,,,,
+2023-01-09,F,Paris,F - Paris,273329,,,,,,,,,,,
+2023-01-10,F,Paris,F - Paris,273329,,,,,,,,,,,
+2023-01-11,F,Paris,F - Paris,273329,39,34,,147,0,115,8,608,5,0,6
+2020-04-11,G,Longview/Tyler,G - Longview/Tyler,968611,32,16,16,,,714,103,921,,0,
 2020-04-11,G,Longview/Tyler,G - Longview/Tyler,968611,32,16,16,,,714,103,921,,0,
 2020-04-12,G,Longview/Tyler,G - Longview/Tyler,968611,26,13,13,,,734,103,932,,0,
+2020-04-12,G,Longview/Tyler,G - Longview/Tyler,968611,26,13,13,,,734,103,932,,0,
+2020-04-13,G,Longview/Tyler,G - Longview/Tyler,968611,33,16,17,,,739,95,969,,0,
 2020-04-13,G,Longview/Tyler,G - Longview/Tyler,968611,33,16,17,,,739,95,969,,0,
 2020-04-14,G,Longview/Tyler,G - Longview/Tyler,968611,32,14,18,,,752,103,1023,,0,
+2020-04-14,G,Longview/Tyler,G - Longview/Tyler,968611,32,14,18,,,752,103,1023,,0,
+2020-04-15,G,Longview/Tyler,G - Longview/Tyler,968611,36,19,17,,,682,84,1039,,0,
 2020-04-15,G,Longview/Tyler,G - Longview/Tyler,968611,36,19,17,,,682,84,1039,,0,
 2020-04-16,G,Longview/Tyler,G - Longview/Tyler,968611,43,26,17,,,736,103,995,,0,
+2020-04-16,G,Longview/Tyler,G - Longview/Tyler,968611,43,26,17,,,736,103,995,,0,
+2020-04-17,G,Longview/Tyler,G - Longview/Tyler,968611,36,22,14,,,665,80,1067,,0,
 2020-04-17,G,Longview/Tyler,G - Longview/Tyler,968611,36,22,14,,,665,80,1067,,0,
 2020-04-18,G,Longview/Tyler,G - Longview/Tyler,968611,42,26,16,,,589,64,1013,,0,
+2020-04-18,G,Longview/Tyler,G - Longview/Tyler,968611,42,26,16,,,589,64,1013,,0,
+2020-04-19,G,Longview/Tyler,G - Longview/Tyler,968611,45,25,20,,,610,57,960,,0,
 2020-04-19,G,Longview/Tyler,G - Longview/Tyler,968611,45,25,20,,,610,57,960,,0,
 2020-04-20,G,Longview/Tyler,G - Longview/Tyler,968611,47,29,18,,,659,77,1030,,0,
+2020-04-20,G,Longview/Tyler,G - Longview/Tyler,968611,47,29,18,,,659,77,1030,,0,
+2020-04-21,G,Longview/Tyler,G - Longview/Tyler,968611,60,32,28,,,595,61,1314,,0,
 2020-04-21,G,Longview/Tyler,G - Longview/Tyler,968611,60,32,28,,,595,61,1314,,0,
 2020-04-22,G,Longview/Tyler,G - Longview/Tyler,968611,43,22,21,,,590,52,1267,230,0,
+2020-04-22,G,Longview/Tyler,G - Longview/Tyler,968611,43,22,21,,,590,52,1267,230,0,
+2020-04-23,G,Longview/Tyler,G - Longview/Tyler,968611,48,26,22,,,664,80,1347,216,0,
 2020-04-23,G,Longview/Tyler,G - Longview/Tyler,968611,48,26,22,,,664,80,1347,216,0,
 2020-04-24,G,Longview/Tyler,G - Longview/Tyler,968611,47,24,23,,,618,83,1276,235,0,
+2020-04-24,G,Longview/Tyler,G - Longview/Tyler,968611,47,24,23,,,618,83,1276,235,0,
+2020-04-25,G,Longview/Tyler,G - Longview/Tyler,968611,54,31,23,,,578,64,1232,222,0,
 2020-04-25,G,Longview/Tyler,G - Longview/Tyler,968611,54,31,23,,,578,64,1232,222,0,
 2020-04-26,G,Longview/Tyler,G - Longview/Tyler,968611,53,29,24,,,567,56,1141,228,0,
+2020-04-26,G,Longview/Tyler,G - Longview/Tyler,968611,53,29,24,,,567,56,1141,228,0,
+2020-04-27,G,Longview/Tyler,G - Longview/Tyler,968611,54,32,22,,,626,71,1158,210,0,
 2020-04-27,G,Longview/Tyler,G - Longview/Tyler,968611,54,32,22,,,626,71,1158,210,0,
 2020-04-28,G,Longview/Tyler,G - Longview/Tyler,968611,53,31,22,,,582,77,1264,200,0,
+2020-04-28,G,Longview/Tyler,G - Longview/Tyler,968611,53,31,22,,,582,77,1264,200,0,
+2020-04-29,G,Longview/Tyler,G - Longview/Tyler,968611,53,33,20,,,596,76,1276,202,0,
 2020-04-29,G,Longview/Tyler,G - Longview/Tyler,968611,53,33,20,,,596,76,1276,202,0,
 2020-04-30,G,Longview/Tyler,G - Longview/Tyler,968611,63,38,25,,,601,83,1272,214,0,
+2020-04-30,G,Longview/Tyler,G - Longview/Tyler,968611,63,38,25,,,601,83,1272,214,0,
+2020-05-01,G,Longview/Tyler,G - Longview/Tyler,968611,68,42,26,,,539,68,1294,216,0,
 2020-05-01,G,Longview/Tyler,G - Longview/Tyler,968611,68,42,26,,,539,68,1294,216,0,
 2020-05-02,G,Longview/Tyler,G - Longview/Tyler,968611,96,62,34,,,545,77,1459,228,0,
+2020-05-02,G,Longview/Tyler,G - Longview/Tyler,968611,96,62,34,,,545,77,1459,228,0,
+2020-05-03,G,Longview/Tyler,G - Longview/Tyler,968611,67,41,26,,,612,86,1184,205,0,
 2020-05-03,G,Longview/Tyler,G - Longview/Tyler,968611,67,41,26,,,612,86,1184,205,0,
 2020-05-04,G,Longview/Tyler,G - Longview/Tyler,968611,54,32,22,,,595,87,1207,207,0,
+2020-05-04,G,Longview/Tyler,G - Longview/Tyler,968611,54,32,22,,,595,87,1207,207,0,
+2020-05-05,G,Longview/Tyler,G - Longview/Tyler,968611,57,33,24,,,508,83,1412,209,0,
 2020-05-05,G,Longview/Tyler,G - Longview/Tyler,968611,57,33,24,,,508,83,1412,209,0,
 2020-05-06,G,Longview/Tyler,G - Longview/Tyler,968611,53,32,21,,,500,67,1437,222,0,
+2020-05-06,G,Longview/Tyler,G - Longview/Tyler,968611,53,32,21,,,500,67,1437,222,0,
+2020-05-07,G,Longview/Tyler,G - Longview/Tyler,968611,50,31,19,,,536,72,1416,218,0,
 2020-05-07,G,Longview/Tyler,G - Longview/Tyler,968611,50,31,19,,,536,72,1416,218,0,
 2020-05-08,G,Longview/Tyler,G - Longview/Tyler,968611,55,31,24,,,548,71,1420,221,0,
+2020-05-08,G,Longview/Tyler,G - Longview/Tyler,968611,55,31,24,,,548,71,1420,221,0,
+2020-05-09,G,Longview/Tyler,G - Longview/Tyler,968611,49,27,22,,,607,76,1232,218,0,
 2020-05-09,G,Longview/Tyler,G - Longview/Tyler,968611,49,27,22,,,607,76,1232,218,0,
 2020-05-10,G,Longview/Tyler,G - Longview/Tyler,968611,46,25,21,,,617,78,1033,214,0,
+2020-05-10,G,Longview/Tyler,G - Longview/Tyler,968611,46,25,21,,,617,78,1033,214,0,
+2020-05-11,G,Longview/Tyler,G - Longview/Tyler,968611,43,20,23,,,651,78,1236,206,0,
 2020-05-11,G,Longview/Tyler,G - Longview/Tyler,968611,43,20,23,,,651,78,1236,206,0,
 2020-05-12,G,Longview/Tyler,G - Longview/Tyler,968611,39,19,20,,,535,62,1369,217,0,
+2020-05-12,G,Longview/Tyler,G - Longview/Tyler,968611,39,19,20,,,535,62,1369,217,0,
+2020-05-13,G,Longview/Tyler,G - Longview/Tyler,968611,40,19,21,,,555,98,1381,206,0,
 2020-05-13,G,Longview/Tyler,G - Longview/Tyler,968611,40,19,21,,,555,98,1381,206,0,
 2020-05-14,G,Longview/Tyler,G - Longview/Tyler,968611,45,20,25,,,575,98,1387,203,0,
+2020-05-14,G,Longview/Tyler,G - Longview/Tyler,968611,45,20,25,,,575,98,1387,203,0,
+2020-05-15,G,Longview/Tyler,G - Longview/Tyler,968611,40,19,21,,,531,91,1376,201,0,
 2020-05-15,G,Longview/Tyler,G - Longview/Tyler,968611,40,19,21,,,531,91,1376,201,0,
 2020-05-16,G,Longview/Tyler,G - Longview/Tyler,968611,37,20,17,,,470,69,1291,204,0,
+2020-05-16,G,Longview/Tyler,G - Longview/Tyler,968611,37,20,17,,,470,69,1291,204,0,
+2020-05-17,G,Longview/Tyler,G - Longview/Tyler,968611,41,25,16,,,567,71,1228,196,0,
 2020-05-17,G,Longview/Tyler,G - Longview/Tyler,968611,41,25,16,,,567,71,1228,196,0,
 2020-05-18,G,Longview/Tyler,G - Longview/Tyler,968611,40,24,16,,,572,75,1252,182,0,
+2020-05-18,G,Longview/Tyler,G - Longview/Tyler,968611,40,24,16,,,572,75,1252,182,0,
+2020-05-19,G,Longview/Tyler,G - Longview/Tyler,968611,41,25,16,,,416,53,1459,221,0,
 2020-05-19,G,Longview/Tyler,G - Longview/Tyler,968611,41,25,16,,,416,53,1459,221,0,
 2020-05-20,G,Longview/Tyler,G - Longview/Tyler,968611,38,20,18,,,442,41,1468,230,0,
+2020-05-20,G,Longview/Tyler,G - Longview/Tyler,968611,38,20,18,,,442,41,1468,230,0,
+2020-05-21,G,Longview/Tyler,G - Longview/Tyler,968611,36,21,15,,,440,43,1464,235,0,
 2020-05-21,G,Longview/Tyler,G - Longview/Tyler,968611,36,21,15,,,440,43,1464,235,0,
 2020-05-22,G,Longview/Tyler,G - Longview/Tyler,968611,42,24,18,,,457,44,1496,236,0,
+2020-05-22,G,Longview/Tyler,G - Longview/Tyler,968611,42,24,18,,,457,44,1496,236,0,
+2020-05-23,G,Longview/Tyler,G - Longview/Tyler,968611,39,20,19,,,423,54,1420,218,0,
 2020-05-23,G,Longview/Tyler,G - Longview/Tyler,968611,39,20,19,,,423,54,1420,218,0,
 2020-05-24,G,Longview/Tyler,G - Longview/Tyler,968611,40,20,20,,,482,55,1351,218,0,
+2020-05-24,G,Longview/Tyler,G - Longview/Tyler,968611,40,20,20,,,482,55,1351,218,0,
+2020-05-25,G,Longview/Tyler,G - Longview/Tyler,968611,39,19,20,,,497,60,1290,211,0,
 2020-05-25,G,Longview/Tyler,G - Longview/Tyler,968611,39,19,20,,,497,60,1290,211,0,
 2020-05-26,G,Longview/Tyler,G - Longview/Tyler,968611,43,21,22,,,508,52,1365,221,0,
+2020-05-26,G,Longview/Tyler,G - Longview/Tyler,968611,43,21,22,,,508,52,1365,221,0,
+2020-05-27,G,Longview/Tyler,G - Longview/Tyler,968611,43,19,24,,,458,51,1499,223,0,
 2020-05-27,G,Longview/Tyler,G - Longview/Tyler,968611,43,19,24,,,458,51,1499,223,0,
 2020-05-28,G,Longview/Tyler,G - Longview/Tyler,968611,44,22,22,,,518,110,1517,200,0,
+2020-05-28,G,Longview/Tyler,G - Longview/Tyler,968611,44,22,22,,,518,110,1517,200,0,
+2020-05-29,G,Longview/Tyler,G - Longview/Tyler,968611,44,22,22,,,583,98,1471,204,0,
 2020-05-29,G,Longview/Tyler,G - Longview/Tyler,968611,44,22,22,,,583,98,1471,204,0,
 2020-05-30,G,Longview/Tyler,G - Longview/Tyler,968611,46,22,24,,,570,95,1334,209,0,
+2020-05-30,G,Longview/Tyler,G - Longview/Tyler,968611,46,22,24,,,570,95,1334,209,0,
+2020-05-31,G,Longview/Tyler,G - Longview/Tyler,968611,49,21,28,,,601,126,1259,203,0,
 2020-05-31,G,Longview/Tyler,G - Longview/Tyler,968611,49,21,28,,,601,126,1259,203,0,
 2020-06-01,G,Longview/Tyler,G - Longview/Tyler,968611,53,26,27,,,652,116,1302,221,0,
+2020-06-01,G,Longview/Tyler,G - Longview/Tyler,968611,53,26,27,,,652,116,1302,221,0,
+2020-06-02,G,Longview/Tyler,G - Longview/Tyler,968611,52,25,27,,,514,89,1374,228,0,
 2020-06-02,G,Longview/Tyler,G - Longview/Tyler,968611,52,25,27,,,514,89,1374,228,0,
 2020-06-03,G,Longview/Tyler,G - Longview/Tyler,968611,44,20,24,,,534,92,1453,226,0,
+2020-06-03,G,Longview/Tyler,G - Longview/Tyler,968611,44,20,24,,,534,92,1453,226,0,
+2020-06-04,G,Longview/Tyler,G - Longview/Tyler,968611,48,24,24,,,540,89,1504,231,0,
 2020-06-04,G,Longview/Tyler,G - Longview/Tyler,968611,48,24,24,,,540,89,1504,231,0,
 2020-06-05,G,Longview/Tyler,G - Longview/Tyler,968611,43,19,24,,,538,90,1523,236,0,
+2020-06-05,G,Longview/Tyler,G - Longview/Tyler,968611,43,19,24,,,538,90,1523,236,0,
+2020-06-06,G,Longview/Tyler,G - Longview/Tyler,968611,49,23,26,,,582,98,1444,245,0,
 2020-06-06,G,Longview/Tyler,G - Longview/Tyler,968611,49,23,26,,,582,98,1444,245,0,
 2020-06-07,G,Longview/Tyler,G - Longview/Tyler,968611,54,30,24,,,484,63,1392,222,0,
+2020-06-07,G,Longview/Tyler,G - Longview/Tyler,968611,54,30,24,,,484,63,1392,222,0,
+2020-06-08,G,Longview/Tyler,G - Longview/Tyler,968611,51,24,27,,,558,115,1391,215,0,
 2020-06-08,G,Longview/Tyler,G - Longview/Tyler,968611,51,24,27,,,558,115,1391,215,0,
 2020-06-09,G,Longview/Tyler,G - Longview/Tyler,968611,50,24,26,,,470,88,1489,221,0,
+2020-06-09,G,Longview/Tyler,G - Longview/Tyler,968611,50,24,26,,,470,88,1489,221,0,
+2020-06-10,G,Longview/Tyler,G - Longview/Tyler,968611,47,23,24,,,441,72,1523,228,0,
 2020-06-10,G,Longview/Tyler,G - Longview/Tyler,968611,47,23,24,,,441,72,1523,228,0,
 2020-06-11,G,Longview/Tyler,G - Longview/Tyler,968611,50,27,23,,,530,73,1483,236,0,
+2020-06-11,G,Longview/Tyler,G - Longview/Tyler,968611,50,27,23,,,530,73,1483,236,0,
+2020-06-12,G,Longview/Tyler,G - Longview/Tyler,968611,54,29,25,,,542,78,1482,232,0,
 2020-06-12,G,Longview/Tyler,G - Longview/Tyler,968611,54,29,25,,,542,78,1482,232,0,
 2020-06-13,G,Longview/Tyler,G - Longview/Tyler,968611,53,26,27,,,529,84,1396,218,0,
+2020-06-13,G,Longview/Tyler,G - Longview/Tyler,968611,53,26,27,,,529,84,1396,218,0,
+2020-06-14,G,Longview/Tyler,G - Longview/Tyler,968611,55,29,26,,,508,73,1299,221,0,
 2020-06-14,G,Longview/Tyler,G - Longview/Tyler,968611,55,29,26,,,508,73,1299,221,0,
 2020-06-15,G,Longview/Tyler,G - Longview/Tyler,968611,60,33,27,,,515,68,1412,232,0,
+2020-06-15,G,Longview/Tyler,G - Longview/Tyler,968611,60,33,27,,,515,68,1412,232,0,
+2020-06-16,G,Longview/Tyler,G - Longview/Tyler,968611,57,29,28,,,433,62,1569,235,0,
 2020-06-16,G,Longview/Tyler,G - Longview/Tyler,968611,57,29,28,,,433,62,1569,235,0,
 2020-06-17,G,Longview/Tyler,G - Longview/Tyler,968611,47,21,26,,,428,58,1571,253,0,
+2020-06-17,G,Longview/Tyler,G - Longview/Tyler,968611,47,21,26,,,428,58,1571,253,0,
+2020-06-18,G,Longview/Tyler,G - Longview/Tyler,968611,52,26,26,,,445,68,1627,241,0,
 2020-06-18,G,Longview/Tyler,G - Longview/Tyler,968611,52,26,26,,,445,68,1627,241,0,
 2020-06-19,G,Longview/Tyler,G - Longview/Tyler,968611,51,25,26,,,408,75,1611,239,0,
+2020-06-19,G,Longview/Tyler,G - Longview/Tyler,968611,51,25,26,,,408,75,1611,239,0,
+2020-06-20,G,Longview/Tyler,G - Longview/Tyler,968611,51,24,27,,,511,66,1467,240,0,
 2020-06-20,G,Longview/Tyler,G - Longview/Tyler,968611,51,24,27,,,511,66,1467,240,0,
 2020-06-21,G,Longview/Tyler,G - Longview/Tyler,968611,54,27,27,,,516,87,1335,220,0,
+2020-06-21,G,Longview/Tyler,G - Longview/Tyler,968611,54,27,27,,,516,87,1335,220,0,
+2020-06-22,G,Longview/Tyler,G - Longview/Tyler,968611,56,30,26,,,547,80,1342,224,0,
 2020-06-22,G,Longview/Tyler,G - Longview/Tyler,968611,56,30,26,,,547,80,1342,224,0,
 2020-06-23,G,Longview/Tyler,G - Longview/Tyler,968611,62,34,28,,,425,75,1606,231,0,
+2020-06-23,G,Longview/Tyler,G - Longview/Tyler,968611,62,34,28,,,425,75,1606,231,0,
+2020-06-24,G,Longview/Tyler,G - Longview/Tyler,968611,62,35,27,,,438,73,1596,240,0,
 2020-06-24,G,Longview/Tyler,G - Longview/Tyler,968611,62,35,27,,,438,73,1596,240,0,
 2020-06-25,G,Longview/Tyler,G - Longview/Tyler,968611,73,40,33,,,435,79,1591,235,0,
+2020-06-25,G,Longview/Tyler,G - Longview/Tyler,968611,73,40,33,,,435,79,1591,235,0,
+2020-06-26,G,Longview/Tyler,G - Longview/Tyler,968611,75,42,33,,,541,92,1510,218,0,
 2020-06-26,G,Longview/Tyler,G - Longview/Tyler,968611,75,42,33,,,541,92,1510,218,0,
 2020-06-27,G,Longview/Tyler,G - Longview/Tyler,968611,72,39,33,,,521,90,1377,220,0,
+2020-06-27,G,Longview/Tyler,G - Longview/Tyler,968611,72,39,33,,,521,90,1377,220,0,
+2020-06-28,G,Longview/Tyler,G - Longview/Tyler,968611,85,48,37,,,603,96,1308,219,0,
 2020-06-28,G,Longview/Tyler,G - Longview/Tyler,968611,85,48,37,,,603,96,1308,219,0,
 2020-06-29,G,Longview/Tyler,G - Longview/Tyler,968611,85,51,34,,,579,85,1273,229,0,
+2020-06-29,G,Longview/Tyler,G - Longview/Tyler,968611,85,51,34,,,579,85,1273,229,0,
+2020-06-30,G,Longview/Tyler,G - Longview/Tyler,968611,79,50,29,,,559,87,1404,233,0,
 2020-06-30,G,Longview/Tyler,G - Longview/Tyler,968611,79,50,29,,,559,87,1404,233,0,
 2020-07-01,G,Longview/Tyler,G - Longview/Tyler,968611,91,57,34,,,484,79,1583,242,0,
+2020-07-01,G,Longview/Tyler,G - Longview/Tyler,968611,91,57,34,,,484,79,1583,242,0,
+2020-07-02,G,Longview/Tyler,G - Longview/Tyler,968611,96,66,30,,,500,89,1550,232,0,
 2020-07-02,G,Longview/Tyler,G - Longview/Tyler,968611,96,66,30,,,500,89,1550,232,0,
 2020-07-03,G,Longview/Tyler,G - Longview/Tyler,968611,113,72,41,,,554,89,1480,231,0,
+2020-07-03,G,Longview/Tyler,G - Longview/Tyler,968611,113,72,41,,,554,89,1480,231,0,
+2020-07-04,G,Longview/Tyler,G - Longview/Tyler,968611,116,80,36,,,577,104,1365,214,0,
 2020-07-04,G,Longview/Tyler,G - Longview/Tyler,968611,116,80,36,,,577,104,1365,214,0,
 2020-07-05,G,Longview/Tyler,G - Longview/Tyler,968611,121,88,33,,,533,97,1274,219,0,
+2020-07-05,G,Longview/Tyler,G - Longview/Tyler,968611,121,88,33,,,533,97,1274,219,0,
+2020-07-06,G,Longview/Tyler,G - Longview/Tyler,968611,146,106,40,,,612,99,1375,211,0,
 2020-07-06,G,Longview/Tyler,G - Longview/Tyler,968611,146,106,40,,,612,99,1375,211,0,
 2020-07-07,G,Longview/Tyler,G - Longview/Tyler,968611,148,104,44,,,509,90,1532,227,0,
+2020-07-07,G,Longview/Tyler,G - Longview/Tyler,968611,148,104,44,,,509,90,1532,227,0,
+2020-07-08,G,Longview/Tyler,G - Longview/Tyler,968611,151,103,48,,,477,87,1585,234,0,
 2020-07-08,G,Longview/Tyler,G - Longview/Tyler,968611,151,103,48,,,477,87,1585,234,0,
 2020-07-09,G,Longview/Tyler,G - Longview/Tyler,968611,162,112,50,,,461,85,1541,240,0,
+2020-07-09,G,Longview/Tyler,G - Longview/Tyler,968611,162,112,50,,,461,85,1541,240,0,
+2020-07-10,G,Longview/Tyler,G - Longview/Tyler,968611,159,107,52,,,482,81,1527,241,0,
 2020-07-10,G,Longview/Tyler,G - Longview/Tyler,968611,159,107,52,,,482,81,1527,241,0,
 2020-07-11,G,Longview/Tyler,G - Longview/Tyler,968611,220,167,53,,,547,83,1494,241,0,
+2020-07-11,G,Longview/Tyler,G - Longview/Tyler,968611,220,167,53,,,547,83,1494,241,0,
+2020-07-12,G,Longview/Tyler,G - Longview/Tyler,968611,187,124,63,,,543,87,1349,233,0,
 2020-07-12,G,Longview/Tyler,G - Longview/Tyler,968611,187,124,63,,,543,87,1349,233,0,
 2020-07-13,G,Longview/Tyler,G - Longview/Tyler,968611,197,130,67,,,533,73,1467,245,0,
+2020-07-13,G,Longview/Tyler,G - Longview/Tyler,968611,197,130,67,,,533,73,1467,245,0,
+2020-07-14,G,Longview/Tyler,G - Longview/Tyler,968611,206,137,69,,,464,72,1595,259,0,
 2020-07-14,G,Longview/Tyler,G - Longview/Tyler,968611,206,137,69,,,464,72,1595,259,0,
 2020-07-15,G,Longview/Tyler,G - Longview/Tyler,968611,220,150,70,,,484,75,1662,259,0,
+2020-07-15,G,Longview/Tyler,G - Longview/Tyler,968611,220,150,70,,,484,75,1662,259,0,
+2020-07-16,G,Longview/Tyler,G - Longview/Tyler,968611,226,154,72,,,457,71,1651,254,0,
 2020-07-16,G,Longview/Tyler,G - Longview/Tyler,968611,226,154,72,,,457,71,1651,254,0,
 2020-07-17,G,Longview/Tyler,G - Longview/Tyler,968611,222,153,69,,,432,72,1644,256,0,
+2020-07-17,G,Longview/Tyler,G - Longview/Tyler,968611,222,153,69,,,432,72,1644,256,0,
+2020-07-18,G,Longview/Tyler,G - Longview/Tyler,968611,221,148,73,,,455,74,1611,259,0,
 2020-07-18,G,Longview/Tyler,G - Longview/Tyler,968611,221,148,73,,,455,74,1611,259,0,
 2020-07-19,G,Longview/Tyler,G - Longview/Tyler,968611,242,167,75,,,472,70,1543,267,0,
+2020-07-19,G,Longview/Tyler,G - Longview/Tyler,968611,242,167,75,,,472,70,1543,267,0,
+2020-07-20,G,Longview/Tyler,G - Longview/Tyler,968611,245,166,79,,,461,61,1570,262,0,
 2020-07-20,G,Longview/Tyler,G - Longview/Tyler,968611,245,166,79,,,461,61,1570,262,0,
 2020-07-21,G,Longview/Tyler,G - Longview/Tyler,968611,259,179,80,,,397,63,1670,264,0,
+2020-07-21,G,Longview/Tyler,G - Longview/Tyler,968611,259,179,80,,,397,63,1670,264,0,
+2020-07-22,G,Longview/Tyler,G - Longview/Tyler,968611,271,196,75,,,389,32,1670,226,0,
 2020-07-22,G,Longview/Tyler,G - Longview/Tyler,968611,271,196,75,,,389,32,1670,226,0,
 2020-07-23,G,Longview/Tyler,G - Longview/Tyler,968611,244,168,76,,,399,77,1353,215,2,
+2020-07-23,G,Longview/Tyler,G - Longview/Tyler,968611,244,168,76,,,399,77,1353,215,2,
+2020-07-24,G,Longview/Tyler,G - Longview/Tyler,968611,234,156,78,,,476,18,1456,239,0,
 2020-07-24,G,Longview/Tyler,G - Longview/Tyler,968611,234,156,78,,,476,18,1456,239,0,
 2020-07-25,G,Longview/Tyler,G - Longview/Tyler,968611,247,166,81,,,319,23,49,253,0,
+2020-07-25,G,Longview/Tyler,G - Longview/Tyler,968611,247,166,81,,,319,23,49,253,0,
+2020-07-26,G,Longview/Tyler,G - Longview/Tyler,968611,255,174,81,,,297,30,1417,248,0,
 2020-07-26,G,Longview/Tyler,G - Longview/Tyler,968611,255,174,81,,,297,30,1417,248,0,
 2020-07-27,G,Longview/Tyler,G - Longview/Tyler,968611,270,182,88,,,348,25,1523,269,0,
+2020-07-27,G,Longview/Tyler,G - Longview/Tyler,968611,270,182,88,,,348,25,1523,269,0,
+2020-07-28,G,Longview/Tyler,G - Longview/Tyler,968611,272,184,88,,,270,27,1593,274,0,
 2020-07-28,G,Longview/Tyler,G - Longview/Tyler,968611,272,184,88,,,270,27,1593,274,0,
 2020-07-29,G,Longview/Tyler,G - Longview/Tyler,968611,269,180,89,,,230,18,1623,273,0,
+2020-07-29,G,Longview/Tyler,G - Longview/Tyler,968611,269,180,89,,,230,18,1623,273,0,
+2020-07-30,G,Longview/Tyler,G - Longview/Tyler,968611,251,166,85,,,268,25,1687,265,0,
 2020-07-30,G,Longview/Tyler,G - Longview/Tyler,968611,251,166,85,,,268,25,1687,265,0,
 2020-07-31,G,Longview/Tyler,G - Longview/Tyler,968611,245,160,85,,,260,34,1587,115,0,
+2020-07-31,G,Longview/Tyler,G - Longview/Tyler,968611,245,160,85,,,260,34,1587,115,0,
+2020-08-01,G,Longview/Tyler,G - Longview/Tyler,968611,241,156,85,225,0,351,35,1592,220,0,31
 2020-08-01,G,Longview/Tyler,G - Longview/Tyler,968611,241,156,85,225,0,351,35,1592,220,0,31
 2020-08-02,G,Longview/Tyler,G - Longview/Tyler,968611,243,154,89,224,0,329,39,1436,257,0,33
+2020-08-02,G,Longview/Tyler,G - Longview/Tyler,968611,243,154,89,224,0,329,39,1436,257,0,33
+2020-08-03,G,Longview/Tyler,G - Longview/Tyler,968611,256,163,93,242,0,347,36,1458,259,0,28
 2020-08-03,G,Longview/Tyler,G - Longview/Tyler,968611,256,163,93,242,0,347,36,1458,259,0,28
 2020-08-04,G,Longview/Tyler,G - Longview/Tyler,968611,250,167,83,240,0,304,41,1558,278,0,35
+2020-08-04,G,Longview/Tyler,G - Longview/Tyler,968611,250,167,83,240,0,304,41,1558,278,0,35
+2020-08-05,G,Longview/Tyler,G - Longview/Tyler,968611,259,173,86,225,0,267,41,1659,272,0,43
 2020-08-05,G,Longview/Tyler,G - Longview/Tyler,968611,259,173,86,225,0,267,41,1659,272,0,43
 2020-08-06,G,Longview/Tyler,G - Longview/Tyler,968611,263,176,87,218,0,269,38,1666,269,0,36
+2020-08-06,G,Longview/Tyler,G - Longview/Tyler,968611,263,176,87,218,0,269,38,1666,269,0,36
+2020-08-07,G,Longview/Tyler,G - Longview/Tyler,968611,262,177,85,234,0,287,42,1559,254,0,35
 2020-08-07,G,Longview/Tyler,G - Longview/Tyler,968611,262,177,85,234,0,287,42,1559,254,0,35
 2020-08-08,G,Longview/Tyler,G - Longview/Tyler,968611,247,166,81,222,0,306,34,1546,256,0,26
+2020-08-08,G,Longview/Tyler,G - Longview/Tyler,968611,247,166,81,222,0,306,34,1546,256,0,26
+2020-08-09,G,Longview/Tyler,G - Longview/Tyler,968611,240,156,84,206,0,366,24,1454,260,0,27
 2020-08-09,G,Longview/Tyler,G - Longview/Tyler,968611,240,156,84,206,0,366,24,1454,260,0,27
 2020-08-10,G,Longview/Tyler,G - Longview/Tyler,968611,235,154,81,235,0,429,37,1475,262,0,30
+2020-08-10,G,Longview/Tyler,G - Longview/Tyler,968611,235,154,81,235,0,429,37,1475,262,0,30
+2020-08-11,G,Longview/Tyler,G - Longview/Tyler,968611,228,154,74,244,0,351,40,1543,258,0,34
 2020-08-11,G,Longview/Tyler,G - Longview/Tyler,968611,228,154,74,244,0,351,40,1543,258,0,34
 2020-08-12,G,Longview/Tyler,G - Longview/Tyler,968611,230,152,78,245,0,358,38,1570,253,0,35
+2020-08-12,G,Longview/Tyler,G - Longview/Tyler,968611,230,152,78,245,0,358,38,1570,253,0,35
+2020-08-13,G,Longview/Tyler,G - Longview/Tyler,968611,212,135,77,244,0,351,37,1601,263,0,27
 2020-08-13,G,Longview/Tyler,G - Longview/Tyler,968611,212,135,77,244,0,351,37,1601,263,0,27
 2020-08-14,G,Longview/Tyler,G - Longview/Tyler,968611,218,144,74,244,0,348,35,1652,267,0,39
+2020-08-14,G,Longview/Tyler,G - Longview/Tyler,968611,218,144,74,244,0,348,35,1652,267,0,39
+2020-08-15,G,Longview/Tyler,G - Longview/Tyler,968611,229,158,71,251,0,442,46,1656,264,0,51
 2020-08-15,G,Longview/Tyler,G - Longview/Tyler,968611,229,158,71,251,0,442,46,1656,264,0,51
 2020-08-16,G,Longview/Tyler,G - Longview/Tyler,968611,225,152,73,250,0,442,43,1537,265,0,40
+2020-08-16,G,Longview/Tyler,G - Longview/Tyler,968611,225,152,73,250,0,442,43,1537,265,0,40
+2020-08-17,G,Longview/Tyler,G - Longview/Tyler,968611,234,158,76,257,0,447,44,1514,258,0,28
 2020-08-17,G,Longview/Tyler,G - Longview/Tyler,968611,234,158,76,257,0,447,44,1514,258,0,28
 2020-08-18,G,Longview/Tyler,G - Longview/Tyler,968611,233,157,75,278,1,384,29,1699,274,0,25
+2020-08-18,G,Longview/Tyler,G - Longview/Tyler,968611,233,157,75,278,1,384,29,1699,274,0,25
+2020-08-19,G,Longview/Tyler,G - Longview/Tyler,968611,221,151,70,273,0,415,37,1668,259,0,27
 2020-08-19,G,Longview/Tyler,G - Longview/Tyler,968611,221,151,70,273,0,415,37,1668,259,0,27
 2020-08-20,G,Longview/Tyler,G - Longview/Tyler,968611,211,149,62,274,0,427,33,1653,258,0,28
+2020-08-20,G,Longview/Tyler,G - Longview/Tyler,968611,211,149,62,274,0,427,33,1653,258,0,28
+2020-08-21,G,Longview/Tyler,G - Longview/Tyler,968611,203,140,63,272,0,463,45,1609,246,0,22
 2020-08-21,G,Longview/Tyler,G - Longview/Tyler,968611,203,140,63,272,0,463,45,1609,246,0,22
 2020-08-22,G,Longview/Tyler,G - Longview/Tyler,968611,202,137,65,273,0,446,44,1580,247,0,31
 2020-08-23,G,Longview/Tyler,G - Longview/Tyler,968611,196,129,67,278,0,500,41,1507,242,0,18
 2020-08-24,G,Longview/Tyler,G - Longview/Tyler,968611,206,139,67,265,0,470,38,1509,259,0,27
+2020-08-24,G,Longview/Tyler,G - Longview/Tyler,968611,206,139,67,265,0,470,38,1509,259,0,27
+2020-08-25,G,Longview/Tyler,G - Longview/Tyler,968611,192,127,65,272,0,451,39,1584,263,0,31
 2020-08-25,G,Longview/Tyler,G - Longview/Tyler,968611,192,127,65,272,0,451,39,1584,263,0,31
 2020-08-26,G,Longview/Tyler,G - Longview/Tyler,968611,198,132,66,293,0,407,42,1669,259,0,30
+2020-08-26,G,Longview/Tyler,G - Longview/Tyler,968611,198,132,66,293,0,407,42,1669,259,0,30
 2020-08-27,G,Longview/Tyler,G - Longview/Tyler,968611,199,132,67,269,0,408,40,1632,255,0,36
+2020-08-27,G,Longview/Tyler,G - Longview/Tyler,968611,199,132,67,269,0,408,40,1632,255,0,36
+2020-08-28,G,Longview/Tyler,G - Longview/Tyler,968611,204,139,65,253,0,459,36,1608,264,0,31
 2020-08-28,G,Longview/Tyler,G - Longview/Tyler,968611,204,139,65,253,0,459,36,1608,264,0,31
 2020-08-29,G,Longview/Tyler,G - Longview/Tyler,968611,206,140,66,252,0,494,36,1626,263,0,38
 2020-08-30,G,Longview/Tyler,G - Longview/Tyler,968611,213,144,69,255,0,490,45,1579,252,0,28
 2020-08-31,G,Longview/Tyler,G - Longview/Tyler,968611,222,150,71,266,1,428,33,1561,263,0,28
+2020-08-31,G,Longview/Tyler,G - Longview/Tyler,968611,222,150,71,266,1,428,33,1561,263,0,28
+2020-09-01,G,Longview/Tyler,G - Longview/Tyler,968611,220,148,71,255,1,379,28,1673,276,0,23
 2020-09-01,G,Longview/Tyler,G - Longview/Tyler,968611,220,148,71,255,1,379,28,1673,276,0,23
 2020-09-02,G,Longview/Tyler,G - Longview/Tyler,968611,220,147,73,257,0,387,30,1718,285,0,86
+2020-09-02,G,Longview/Tyler,G - Longview/Tyler,968611,220,147,73,257,0,387,30,1718,285,0,86
 2020-09-03,G,Longview/Tyler,G - Longview/Tyler,968611,218,144,74,258,0,408,25,1695,287,0,27
+2020-09-03,G,Longview/Tyler,G - Longview/Tyler,968611,218,144,74,258,0,408,25,1695,287,0,27
+2020-09-04,G,Longview/Tyler,G - Longview/Tyler,968611,201,132,69,261,0,419,33,1641,285,0,29
 2020-09-04,G,Longview/Tyler,G - Longview/Tyler,968611,201,132,69,261,0,419,33,1641,285,0,29
 2020-09-05,G,Longview/Tyler,G - Longview/Tyler,968611,185,120,65,245,0,469,28,1527,275,0,23
 2020-09-06,G,Longview/Tyler,G - Longview/Tyler,968611,194,125,69,256,0,498,24,1523,274,0,16
 2020-09-07,G,Longview/Tyler,G - Longview/Tyler,968611,200,135,65,282,0,458,24,1462,268,0,22
+2020-09-07,G,Longview/Tyler,G - Longview/Tyler,968611,200,135,65,282,0,458,24,1462,268,0,22
+2020-09-08,G,Longview/Tyler,G - Longview/Tyler,968611,180,117,63,290,0,480,29,1511,282,35,22
 2020-09-08,G,Longview/Tyler,G - Longview/Tyler,968611,180,117,63,290,0,480,29,1511,282,35,22
 2020-09-09,G,Longview/Tyler,G - Longview/Tyler,968611,174,110,64,290,0,406,29,1593,283,0,16
+2020-09-09,G,Longview/Tyler,G - Longview/Tyler,968611,174,110,64,290,0,406,29,1593,283,0,16
+2020-09-10,G,Longview/Tyler,G - Longview/Tyler,968611,188,125,63,275,0,442,24,1721,286,0,23
 2020-09-10,G,Longview/Tyler,G - Longview/Tyler,968611,188,125,63,275,0,442,24,1721,286,0,23
 2020-09-11,G,Longview/Tyler,G - Longview/Tyler,968611,172,110,62,298,0,415,27,1758,281,0,11
+2020-09-11,G,Longview/Tyler,G - Longview/Tyler,968611,172,110,62,298,0,415,27,1758,281,0,11
+2020-09-12,G,Longview/Tyler,G - Longview/Tyler,968611,172,113,59,300,0,424,33,1727,278,0,19
 2020-09-12,G,Longview/Tyler,G - Longview/Tyler,968611,172,113,59,300,0,424,33,1727,278,0,19
 2020-09-13,G,Longview/Tyler,G - Longview/Tyler,968611,168,105,63,291,0,452,34,1613,276,0,19
+2020-09-13,G,Longview/Tyler,G - Longview/Tyler,968611,168,105,63,291,0,452,34,1613,276,0,19
+2020-09-14,G,Longview/Tyler,G - Longview/Tyler,968611,169,105,64,312,0,467,30,1559,268,0,17
 2020-09-14,G,Longview/Tyler,G - Longview/Tyler,968611,169,105,64,312,0,467,30,1559,268,0,17
 2020-09-15,G,Longview/Tyler,G - Longview/Tyler,968611,170,106,64,313,0,449,34,1631,280,0,99
+2020-09-15,G,Longview/Tyler,G - Longview/Tyler,968611,170,106,64,313,0,449,34,1631,280,0,99
+2020-09-16,G,Longview/Tyler,G - Longview/Tyler,968611,177,114,63,301,0,404,26,1701,286,0,106
 2020-09-16,G,Longview/Tyler,G - Longview/Tyler,968611,177,114,63,301,0,404,26,1701,286,0,106
 2020-09-17,G,Longview/Tyler,G - Longview/Tyler,968611,164,99,65,325,0,438,37,1675,274,1,103
+2020-09-17,G,Longview/Tyler,G - Longview/Tyler,968611,164,99,65,325,0,438,37,1675,274,1,103
+2020-09-18,G,Longview/Tyler,G - Longview/Tyler,968611,159,96,62,326,1,464,44,1646,260,1,21
 2020-09-18,G,Longview/Tyler,G - Longview/Tyler,968611,159,96,62,326,1,464,44,1646,260,1,21
 2020-09-19,G,Longview/Tyler,G - Longview/Tyler,968611,157,98,59,325,0,501,41,1614,254,1,24
+2020-09-19,G,Longview/Tyler,G - Longview/Tyler,968611,157,98,59,325,0,501,41,1614,254,1,24
+2020-09-20,G,Longview/Tyler,G - Longview/Tyler,968611,151,98,53,331,0,595,48,1521,243,0,12
 2020-09-20,G,Longview/Tyler,G - Longview/Tyler,968611,151,98,53,331,0,595,48,1521,243,0,12
 2020-09-21,G,Longview/Tyler,G - Longview/Tyler,968611,159,111,48,326,0,626,49,1496,242,0,23
+2020-09-21,G,Longview/Tyler,G - Longview/Tyler,968611,159,111,48,326,0,626,49,1496,242,0,23
+2020-09-22,G,Longview/Tyler,G - Longview/Tyler,968611,153,103,50,325,0,520,47,1591,249,0,26
 2020-09-22,G,Longview/Tyler,G - Longview/Tyler,968611,153,103,50,325,0,520,47,1591,249,0,26
 2020-09-23,G,Longview/Tyler,G - Longview/Tyler,968611,159,110,49,339,0,487,46,1672,251,0,28
+2020-09-23,G,Longview/Tyler,G - Longview/Tyler,968611,159,110,49,339,0,487,46,1672,251,0,28
+2020-09-24,G,Longview/Tyler,G - Longview/Tyler,968611,168,120,48,336,0,454,36,1718,256,0,31
 2020-09-24,G,Longview/Tyler,G - Longview/Tyler,968611,168,120,48,336,0,454,36,1718,256,0,31
 2020-09-25,G,Longview/Tyler,G - Longview/Tyler,968611,158,107,51,330,0,526,52,1635,243,0,19
+2020-09-25,G,Longview/Tyler,G - Longview/Tyler,968611,158,107,51,330,0,526,52,1635,243,0,19
+2020-09-26,G,Longview/Tyler,G - Longview/Tyler,968611,155,103,52,310,0,509,47,1612,243,0,28
 2020-09-26,G,Longview/Tyler,G - Longview/Tyler,968611,155,103,52,310,0,509,47,1612,243,0,28
 2020-09-27,G,Longview/Tyler,G - Longview/Tyler,968611,174,118,56,311,0,518,39,1539,254,0,26
+2020-09-27,G,Longview/Tyler,G - Longview/Tyler,968611,174,118,56,311,0,518,39,1539,254,0,26
+2020-09-28,G,Longview/Tyler,G - Longview/Tyler,968611,179,120,59,299,0,546,44,1538,246,0,21
 2020-09-28,G,Longview/Tyler,G - Longview/Tyler,968611,179,120,59,299,0,546,44,1538,246,0,21
 2020-09-29,G,Longview/Tyler,G - Longview/Tyler,968611,190,127,63,305,0,467,26,1712,264,0,32
+2020-09-29,G,Longview/Tyler,G - Longview/Tyler,968611,190,127,63,305,0,467,26,1712,264,0,32
+2020-09-30,G,Longview/Tyler,G - Longview/Tyler,968611,189,126,63,302,0,466,38,1686,258,0,20
 2020-09-30,G,Longview/Tyler,G - Longview/Tyler,968611,189,126,63,302,0,466,38,1686,258,0,20
 2020-10-01,G,Longview/Tyler,G - Longview/Tyler,968611,187,125,62,304,0,441,27,1692,266,0,28
+2020-10-01,G,Longview/Tyler,G - Longview/Tyler,968611,187,125,62,304,0,441,27,1692,266,0,28
+2020-10-02,G,Longview/Tyler,G - Longview/Tyler,968611,185,122,63,298,0,499,24,1631,266,0,20
 2020-10-02,G,Longview/Tyler,G - Longview/Tyler,968611,185,122,63,298,0,499,24,1631,266,0,20
 2020-10-03,G,Longview/Tyler,G - Longview/Tyler,968611,185,125,60,302,0,536,27,1646,267,0,19
+2020-10-03,G,Longview/Tyler,G - Longview/Tyler,968611,185,125,60,302,0,536,27,1646,267,0,19
+2020-10-04,G,Longview/Tyler,G - Longview/Tyler,968611,188,131,57,312,0,568,44,1491,259,0,15
 2020-10-04,G,Longview/Tyler,G - Longview/Tyler,968611,188,131,57,312,0,568,44,1491,259,0,15
 2020-10-05,G,Longview/Tyler,G - Longview/Tyler,968611,207,139,68,289,0,764,42,1745,258,0,28
+2020-10-05,G,Longview/Tyler,G - Longview/Tyler,968611,207,139,68,289,0,764,42,1745,258,0,28
+2020-10-06,G,Longview/Tyler,G - Longview/Tyler,968611,210,149,60,301,1,671,25,1924,266,0,38
 2020-10-06,G,Longview/Tyler,G - Longview/Tyler,968611,210,149,60,301,1,671,25,1924,266,0,38
 2020-10-07,G,Longview/Tyler,G - Longview/Tyler,968611,224,166,58,312,0,656,24,1940,269,0,38
+2020-10-07,G,Longview/Tyler,G - Longview/Tyler,968611,224,166,58,312,0,656,24,1940,269,0,38
+2020-10-08,G,Longview/Tyler,G - Longview/Tyler,968611,233,165,67,308,1,707,20,1968,274,0,39
 2020-10-08,G,Longview/Tyler,G - Longview/Tyler,968611,233,165,67,308,1,707,20,1968,274,0,39
 2020-10-09,G,Longview/Tyler,G - Longview/Tyler,968611,218,156,62,310,0,703,26,1908,267,0,33
+2020-10-09,G,Longview/Tyler,G - Longview/Tyler,968611,218,156,62,310,0,703,26,1908,267,0,33
+2020-10-10,G,Longview/Tyler,G - Longview/Tyler,968611,221,156,65,305,0,715,30,1848,260,0,30
 2020-10-10,G,Longview/Tyler,G - Longview/Tyler,968611,221,156,65,305,0,715,30,1848,260,0,30
 2020-10-11,G,Longview/Tyler,G - Longview/Tyler,968611,234,168,66,303,0,724,29,1746,258,0,113
+2020-10-11,G,Longview/Tyler,G - Longview/Tyler,968611,234,168,66,303,0,724,29,1746,258,0,113
+2020-10-12,G,Longview/Tyler,G - Longview/Tyler,968611,213,150,63,292,0,735,24,1738,266,0,118
 2020-10-12,G,Longview/Tyler,G - Longview/Tyler,968611,213,150,63,292,0,735,24,1738,266,0,118
 2020-10-13,G,Longview/Tyler,G - Longview/Tyler,968611,209,138,71,292,0,686,27,1877,267,0,20
+2020-10-13,G,Longview/Tyler,G - Longview/Tyler,968611,209,138,71,292,0,686,27,1877,267,0,20
+2020-10-14,G,Longview/Tyler,G - Longview/Tyler,968611,212,139,73,299,0,687,26,1957,275,0,34
 2020-10-14,G,Longview/Tyler,G - Longview/Tyler,968611,212,139,73,299,0,687,26,1957,275,0,34
 2020-10-15,G,Longview/Tyler,G - Longview/Tyler,968611,213,145,68,302,0,691,17,1939,280,0,26
+2020-10-15,G,Longview/Tyler,G - Longview/Tyler,968611,213,145,68,302,0,691,17,1939,280,0,26
+2020-10-16,G,Longview/Tyler,G - Longview/Tyler,968611,222,152,70,306,0,658,17,1963,278,0,45
 2020-10-16,G,Longview/Tyler,G - Longview/Tyler,968611,222,152,70,306,0,658,17,1963,278,0,45
 2020-10-17,G,Longview/Tyler,G - Longview/Tyler,968611,222,151,70,297,1,701,17,1855,276,0,33
+2020-10-17,G,Longview/Tyler,G - Longview/Tyler,968611,222,151,70,297,1,701,17,1855,276,0,33
+2020-10-18,G,Longview/Tyler,G - Longview/Tyler,968611,225,152,73,296,0,733,22,1807,273,0,41
 2020-10-18,G,Longview/Tyler,G - Longview/Tyler,968611,225,152,73,296,0,733,22,1807,273,0,41
 2020-10-19,G,Longview/Tyler,G - Longview/Tyler,968611,233,159,74,309,0,440,22,1583,267,0,33
+2020-10-19,G,Longview/Tyler,G - Longview/Tyler,968611,233,159,74,309,0,440,22,1583,267,0,33
+2020-10-20,G,Longview/Tyler,G - Longview/Tyler,968611,253,179,74,299,0,639,12,1974,281,0,53
 2020-10-20,G,Longview/Tyler,G - Longview/Tyler,968611,253,179,74,299,0,639,12,1974,281,0,53
 2020-10-21,G,Longview/Tyler,G - Longview/Tyler,968611,257,182,74,298,1,605,15,2016,286,0,38
+2020-10-21,G,Longview/Tyler,G - Longview/Tyler,968611,257,182,74,298,1,605,15,2016,286,0,38
+2020-10-22,G,Longview/Tyler,G - Longview/Tyler,968611,249,176,72,306,1,639,10,2035,282,0,32
 2020-10-22,G,Longview/Tyler,G - Longview/Tyler,968611,249,176,72,306,1,639,10,2035,282,0,32
 2020-10-23,G,Longview/Tyler,G - Longview/Tyler,968611,237,165,71,310,1,677,12,1975,278,0,23
+2020-10-23,G,Longview/Tyler,G - Longview/Tyler,968611,237,165,71,310,1,677,12,1975,278,0,23
+2020-10-24,G,Longview/Tyler,G - Longview/Tyler,968611,238,170,68,297,0,684,26,1906,264,0,38
 2020-10-24,G,Longview/Tyler,G - Longview/Tyler,968611,238,170,68,297,0,684,26,1906,264,0,38
 2020-10-25,G,Longview/Tyler,G - Longview/Tyler,968611,231,164,67,295,0,749,24,1823,265,0,25
+2020-10-25,G,Longview/Tyler,G - Longview/Tyler,968611,231,164,67,295,0,749,24,1823,265,0,25
+2020-10-26,G,Longview/Tyler,G - Longview/Tyler,968611,243,174,69,300,0,725,24,1866,269,0,27
 2020-10-26,G,Longview/Tyler,G - Longview/Tyler,968611,243,174,69,300,0,725,24,1866,269,0,27
 2020-10-27,G,Longview/Tyler,G - Longview/Tyler,968611,245,174,71,319,0,670,25,1929,267,0,41
+2020-10-27,G,Longview/Tyler,G - Longview/Tyler,968611,245,174,71,319,0,670,25,1929,267,0,41
+2020-10-28,G,Longview/Tyler,G - Longview/Tyler,968611,255,182,73,316,0,655,32,2023,263,0,33
 2020-10-28,G,Longview/Tyler,G - Longview/Tyler,968611,255,182,73,316,0,655,32,2023,263,0,33
 2020-10-29,G,Longview/Tyler,G - Longview/Tyler,968611,262,190,72,277,0,666,30,2035,265,0,41
+2020-10-29,G,Longview/Tyler,G - Longview/Tyler,968611,262,190,72,277,0,666,30,2035,265,0,41
+2020-10-30,G,Longview/Tyler,G - Longview/Tyler,968611,269,191,78,301,0,696,35,1989,260,0,42
 2020-10-30,G,Longview/Tyler,G - Longview/Tyler,968611,269,191,78,301,0,696,35,1989,260,0,42
 2020-10-31,G,Longview/Tyler,G - Longview/Tyler,968611,279,201,78,303,0,833,24,1904,261,0,37
+2020-10-31,G,Longview/Tyler,G - Longview/Tyler,968611,279,201,78,303,0,833,24,1904,261,0,37
+2020-11-01,G,Longview/Tyler,G - Longview/Tyler,968611,272,186,86,312,0,845,25,1834,261,0,24
 2020-11-01,G,Longview/Tyler,G - Longview/Tyler,968611,272,186,86,312,0,845,25,1834,261,0,24
 2020-11-02,G,Longview/Tyler,G - Longview/Tyler,968611,267,187,80,306,0,793,25,1840,265,0,19
+2020-11-02,G,Longview/Tyler,G - Longview/Tyler,968611,267,187,80,306,0,793,25,1840,265,0,19
+2020-11-03,G,Longview/Tyler,G - Longview/Tyler,968611,267,188,79,305,0,625,24,1963,267,0,33
 2020-11-03,G,Longview/Tyler,G - Longview/Tyler,968611,267,188,79,305,0,625,24,1963,267,0,33
 2020-11-04,G,Longview/Tyler,G - Longview/Tyler,968611,280,198,80,301,2,635,30,2024,261,0,44
+2020-11-04,G,Longview/Tyler,G - Longview/Tyler,968611,280,198,80,301,2,635,30,2024,261,0,44
+2020-11-05,G,Longview/Tyler,G - Longview/Tyler,968611,294,214,78,280,2,630,33,1989,264,0,54
 2020-11-05,G,Longview/Tyler,G - Longview/Tyler,968611,294,214,78,280,2,630,33,1989,264,0,54
 2020-11-06,G,Longview/Tyler,G - Longview/Tyler,968611,297,217,79,321,1,617,24,1996,265,0,52
+2020-11-06,G,Longview/Tyler,G - Longview/Tyler,968611,297,217,79,321,1,617,24,1996,265,0,52
+2020-11-07,G,Longview/Tyler,G - Longview/Tyler,968611,296,217,78,323,1,655,29,1917,261,0,44
 2020-11-07,G,Longview/Tyler,G - Longview/Tyler,968611,296,217,78,323,1,655,29,1917,261,0,44
 2020-11-08,G,Longview/Tyler,G - Longview/Tyler,968611,301,218,83,303,0,788,31,1830,262,0,39
+2020-11-08,G,Longview/Tyler,G - Longview/Tyler,968611,301,218,83,303,0,788,31,1830,262,0,39
+2020-11-09,G,Longview/Tyler,G - Longview/Tyler,968611,311,229,82,303,0,814,41,1779,253,0,32
 2020-11-09,G,Longview/Tyler,G - Longview/Tyler,968611,311,229,82,303,0,814,41,1779,253,0,32
 2020-11-10,G,Longview/Tyler,G - Longview/Tyler,968611,310,235,75,293,0,632,29,1935,265,0,47
+2020-11-10,G,Longview/Tyler,G - Longview/Tyler,968611,310,235,75,293,0,632,29,1935,265,0,47
+2020-11-11,G,Longview/Tyler,G - Longview/Tyler,968611,311,231,80,294,0,593,22,2041,262,0,58
 2020-11-11,G,Longview/Tyler,G - Longview/Tyler,968611,311,231,80,294,0,593,22,2041,262,0,58
 2020-11-12,G,Longview/Tyler,G - Longview/Tyler,968611,333,253,80,299,0,620,31,2045,261,0,50
+2020-11-12,G,Longview/Tyler,G - Longview/Tyler,968611,333,253,80,299,0,620,31,2045,261,0,50
+2020-11-13,G,Longview/Tyler,G - Longview/Tyler,968611,341,258,83,295,0,652,28,1996,264,0,48
 2020-11-13,G,Longview/Tyler,G - Longview/Tyler,968611,341,258,83,295,0,652,28,1996,264,0,48
 2020-11-14,G,Longview/Tyler,G - Longview/Tyler,968611,335,255,80,294,0,667,24,1924,261,0,36
+2020-11-14,G,Longview/Tyler,G - Longview/Tyler,968611,335,255,80,294,0,667,24,1924,261,0,36
+2020-11-15,G,Longview/Tyler,G - Longview/Tyler,968611,328,241,87,300,0,687,23,1871,266,0,40
 2020-11-15,G,Longview/Tyler,G - Longview/Tyler,968611,328,241,87,300,0,687,23,1871,266,0,40
 2020-11-16,G,Longview/Tyler,G - Longview/Tyler,968611,362,272,90,289,0,697,29,1840,268,0,42
+2020-11-16,G,Longview/Tyler,G - Longview/Tyler,968611,362,272,90,289,0,697,29,1840,268,0,42
+2020-11-17,G,Longview/Tyler,G - Longview/Tyler,968611,368,274,94,232,0,618,26,2033,278,0,67
 2020-11-17,G,Longview/Tyler,G - Longview/Tyler,968611,368,274,94,232,0,618,26,2033,278,0,67
 2020-11-18,G,Longview/Tyler,G - Longview/Tyler,968611,366,272,94,234,0,643,23,2013,271,0,49
+2020-11-18,G,Longview/Tyler,G - Longview/Tyler,968611,366,272,94,234,0,643,23,2013,271,0,49
+2020-11-19,G,Longview/Tyler,G - Longview/Tyler,968611,382,284,98,231,0,637,34,2010,269,0,56
 2020-11-19,G,Longview/Tyler,G - Longview/Tyler,968611,382,284,98,231,0,637,34,2010,269,0,56
 2020-11-20,G,Longview/Tyler,G - Longview/Tyler,968611,397,297,100,232,0,639,32,2032,268,0,77
+2020-11-20,G,Longview/Tyler,G - Longview/Tyler,968611,397,297,100,232,0,639,32,2032,268,0,77
+2020-11-21,G,Longview/Tyler,G - Longview/Tyler,968611,396,294,102,226,0,741,37,1896,270,0,55
 2020-11-21,G,Longview/Tyler,G - Longview/Tyler,968611,396,294,102,226,0,741,37,1896,270,0,55
 2020-11-22,G,Longview/Tyler,G - Longview/Tyler,968611,395,294,101,225,0,688,26,1881,273,0,40
+2020-11-22,G,Longview/Tyler,G - Longview/Tyler,968611,395,294,101,225,0,688,26,1881,273,0,40
+2020-11-23,G,Longview/Tyler,G - Longview/Tyler,968611,428,322,106,211,0,723,24,1874,275,0,58
 2020-11-23,G,Longview/Tyler,G - Longview/Tyler,968611,428,322,106,211,0,723,24,1874,275,0,58
 2020-11-24,G,Longview/Tyler,G - Longview/Tyler,968611,415,313,102,212,0,636,19,1933,284,0,52
+2020-11-24,G,Longview/Tyler,G - Longview/Tyler,968611,415,313,102,212,0,636,19,1933,284,0,52
+2020-11-25,G,Longview/Tyler,G - Longview/Tyler,968611,446,329,117,196,0,611,18,2021,274,0,77
 2020-11-25,G,Longview/Tyler,G - Longview/Tyler,968611,446,329,117,196,0,611,18,2021,274,0,77
 2020-11-26,G,Longview/Tyler,G - Longview/Tyler,968611,439,320,118,192,1,715,23,1920,270,0,55
+2020-11-26,G,Longview/Tyler,G - Longview/Tyler,968611,439,320,118,192,1,715,23,1920,270,0,55
+2020-11-27,G,Longview/Tyler,G - Longview/Tyler,968611,419,302,116,197,1,745,18,1827,277,0,36
 2020-11-27,G,Longview/Tyler,G - Longview/Tyler,968611,419,302,116,197,1,745,18,1827,277,0,36
 2020-11-28,G,Longview/Tyler,G - Longview/Tyler,968611,420,304,116,200,0,721,16,1799,272,0,43
+2020-11-28,G,Longview/Tyler,G - Longview/Tyler,968611,420,304,116,200,0,721,16,1799,272,0,43
+2020-11-29,G,Longview/Tyler,G - Longview/Tyler,968611,429,309,120,206,0,679,27,1801,266,0,46
 2020-11-29,G,Longview/Tyler,G - Longview/Tyler,968611,429,309,120,206,0,679,27,1801,266,0,46
 2020-11-30,G,Longview/Tyler,G - Longview/Tyler,968611,453,321,132,212,0,690,21,1870,282,0,53
+2020-11-30,G,Longview/Tyler,G - Longview/Tyler,968611,453,321,132,212,0,690,21,1870,282,0,53
+2020-12-01,G,Longview/Tyler,G - Longview/Tyler,968611,469,338,131,169,0,598,19,1981,284,0,54
 2020-12-01,G,Longview/Tyler,G - Longview/Tyler,968611,469,338,131,169,0,598,19,1981,284,0,54
 2020-12-02,G,Longview/Tyler,G - Longview/Tyler,968611,444,310,134,160,0,608,14,2065,293,0,50
+2020-12-02,G,Longview/Tyler,G - Longview/Tyler,968611,444,310,134,160,0,608,14,2065,293,0,50
+2020-12-03,G,Longview/Tyler,G - Longview/Tyler,968611,442,308,134,147,0,700,24,2007,281,0,52
 2020-12-03,G,Longview/Tyler,G - Longview/Tyler,968611,442,308,134,147,0,700,24,2007,281,0,52
 2020-12-04,G,Longview/Tyler,G - Longview/Tyler,968611,441,313,128,258,0,753,26,1974,276,0,62
+2020-12-04,G,Longview/Tyler,G - Longview/Tyler,968611,441,313,128,258,0,753,26,1974,276,0,62
+2020-12-05,G,Longview/Tyler,G - Longview/Tyler,968611,451,323,128,268,0,748,22,1998,279,0,73
 2020-12-05,G,Longview/Tyler,G - Longview/Tyler,968611,451,323,128,268,0,748,22,1998,279,0,73
 2020-12-06,G,Longview/Tyler,G - Longview/Tyler,968611,449,317,132,270,0,796,23,1903,288,0,56
+2020-12-06,G,Longview/Tyler,G - Longview/Tyler,968611,449,317,132,270,0,796,23,1903,288,0,56
+2020-12-07,G,Longview/Tyler,G - Longview/Tyler,968611,470,343,127,264,0,807,20,1962,300,0,57
 2020-12-07,G,Longview/Tyler,G - Longview/Tyler,968611,470,343,127,264,0,807,20,1962,300,0,57
 2020-12-08,G,Longview/Tyler,G - Longview/Tyler,968611,467,341,126,277,0,744,25,2056,297,0,52
+2020-12-08,G,Longview/Tyler,G - Longview/Tyler,968611,467,341,126,277,0,744,25,2056,297,0,52
+2020-12-09,G,Longview/Tyler,G - Longview/Tyler,968611,462,338,124,265,0,719,16,2076,295,0,69
 2020-12-09,G,Longview/Tyler,G - Longview/Tyler,968611,462,338,124,265,0,719,16,2076,295,0,69
 2020-12-10,G,Longview/Tyler,G - Longview/Tyler,968611,479,364,115,272,0,947,55,2116,286,0,58
+2020-12-10,G,Longview/Tyler,G - Longview/Tyler,968611,479,364,115,272,0,947,55,2116,286,0,58
+2020-12-11,G,Longview/Tyler,G - Longview/Tyler,968611,459,343,116,256,0,714,27,2093,289,0,48
 2020-12-11,G,Longview/Tyler,G - Longview/Tyler,968611,459,343,116,256,0,714,27,2093,289,0,48
 2020-12-12,G,Longview/Tyler,G - Longview/Tyler,968611,461,345,116,241,0,776,29,2030,288,0,57
+2020-12-12,G,Longview/Tyler,G - Longview/Tyler,968611,461,345,116,241,0,776,29,2030,288,0,57
+2020-12-13,G,Longview/Tyler,G - Longview/Tyler,968611,440,325,115,224,0,871,25,1888,289,0,41
 2020-12-13,G,Longview/Tyler,G - Longview/Tyler,968611,440,325,115,224,0,871,25,1888,289,0,41
 2020-12-14,G,Longview/Tyler,G - Longview/Tyler,968611,474,353,121,248,0,916,23,1883,287,0,66
+2020-12-14,G,Longview/Tyler,G - Longview/Tyler,968611,474,353,121,248,0,916,23,1883,287,0,66
+2020-12-15,G,Longview/Tyler,G - Longview/Tyler,968611,478,356,122,257,0,768,28,2064,289,0,86
 2020-12-15,G,Longview/Tyler,G - Longview/Tyler,968611,478,356,122,257,0,768,28,2064,289,0,86
 2020-12-16,G,Longview/Tyler,G - Longview/Tyler,968611,486,364,122,276,0,748,29,2079,286,0,80
+2020-12-16,G,Longview/Tyler,G - Longview/Tyler,968611,486,364,122,276,0,748,29,2079,286,0,80
+2020-12-17,G,Longview/Tyler,G - Longview/Tyler,968611,516,383,130,264,3,726,26,2113,296,0,89
 2020-12-17,G,Longview/Tyler,G - Longview/Tyler,968611,516,383,130,264,3,726,26,2113,296,0,89
 2020-12-18,G,Longview/Tyler,G - Longview/Tyler,968611,524,392,132,267,0,726,25,2113,297,0,63
+2020-12-18,G,Longview/Tyler,G - Longview/Tyler,968611,524,392,132,267,0,726,25,2113,297,0,63
+2020-12-19,G,Longview/Tyler,G - Longview/Tyler,968611,497,372,125,273,0,773,25,1996,300,0,56
 2020-12-19,G,Longview/Tyler,G - Longview/Tyler,968611,497,372,125,273,0,773,25,1996,300,0,56
 2020-12-20,G,Longview/Tyler,G - Longview/Tyler,968611,492,366,126,269,0,797,24,1995,286,0,47
+2020-12-20,G,Longview/Tyler,G - Longview/Tyler,968611,492,366,126,269,0,797,24,1995,286,0,47
+2020-12-21,G,Longview/Tyler,G - Longview/Tyler,968611,510,389,121,255,0,788,29,2033,287,0,55
 2020-12-21,G,Longview/Tyler,G - Longview/Tyler,968611,510,389,121,255,0,788,29,2033,287,0,55
 2020-12-22,G,Longview/Tyler,G - Longview/Tyler,968611,543,415,128,261,0,728,25,2095,293,0,74
+2020-12-22,G,Longview/Tyler,G - Longview/Tyler,968611,543,415,128,261,0,728,25,2095,293,0,74
+2020-12-23,G,Longview/Tyler,G - Longview/Tyler,968611,543,414,128,245,1,728,33,2104,290,0,86
 2020-12-23,G,Longview/Tyler,G - Longview/Tyler,968611,543,414,128,245,1,728,33,2104,290,0,86
 2020-12-24,G,Longview/Tyler,G - Longview/Tyler,968611,547,407,139,240,1,753,25,2018,291,0,105
+2020-12-24,G,Longview/Tyler,G - Longview/Tyler,968611,547,407,139,240,1,753,25,2018,291,0,105
+2020-12-25,G,Longview/Tyler,G - Longview/Tyler,968611,542,395,147,237,0,950,22,1944,289,0,71
 2020-12-25,G,Longview/Tyler,G - Longview/Tyler,968611,542,395,147,237,0,950,22,1944,289,0,71
 2020-12-26,G,Longview/Tyler,G - Longview/Tyler,968611,571,430,141,222,0,934,26,1962,292,0,58
+2020-12-26,G,Longview/Tyler,G - Longview/Tyler,968611,571,430,141,222,0,934,26,1962,292,0,58
+2020-12-27,G,Longview/Tyler,G - Longview/Tyler,968611,580,435,145,221,0,792,19,1972,304,0,73
 2020-12-27,G,Longview/Tyler,G - Longview/Tyler,968611,580,435,145,221,0,792,19,1972,304,0,73
 2020-12-28,G,Longview/Tyler,G - Longview/Tyler,968611,585,440,145,217,0,800,17,2019,302,0,80
+2020-12-28,G,Longview/Tyler,G - Longview/Tyler,968611,585,440,145,217,0,800,17,2019,302,0,80
+2020-12-29,G,Longview/Tyler,G - Longview/Tyler,968611,581,433,148,231,0,704,20,2107,305,0,83
 2020-12-29,G,Longview/Tyler,G - Longview/Tyler,968611,581,433,148,231,0,704,20,2107,305,0,83
 2020-12-30,G,Longview/Tyler,G - Longview/Tyler,968611,585,441,144,232,0,665,21,2163,318,0,80
+2020-12-30,G,Longview/Tyler,G - Longview/Tyler,968611,585,441,144,232,0,665,21,2163,318,0,80
+2020-12-31,G,Longview/Tyler,G - Longview/Tyler,968611,593,446,147,240,0,674,29,2129,310,0,85
 2020-12-31,G,Longview/Tyler,G - Longview/Tyler,968611,593,446,147,240,0,674,29,2129,310,0,85
 2021-01-01,G,Longview/Tyler,G - Longview/Tyler,968611,630,475,154,221,1,780,20,2043,318,0,93
+2021-01-01,G,Longview/Tyler,G - Longview/Tyler,968611,630,475,154,221,1,780,20,2043,318,0,93
+2021-01-02,G,Longview/Tyler,G - Longview/Tyler,968611,621,467,154,234,0,787,24,2012,312,0,60
 2021-01-02,G,Longview/Tyler,G - Longview/Tyler,968611,621,467,154,234,0,787,24,2012,312,0,60
 2021-01-03,G,Longview/Tyler,G - Longview/Tyler,968611,628,468,160,218,0,773,18,1995,318,0,55
+2021-01-03,G,Longview/Tyler,G - Longview/Tyler,968611,628,468,160,218,0,773,18,1995,318,0,55
+2021-01-04,G,Longview/Tyler,G - Longview/Tyler,968611,651,487,164,215,0,755,16,2055,322,0,67
 2021-01-04,G,Longview/Tyler,G - Longview/Tyler,968611,651,487,164,215,0,755,16,2055,322,0,67
 2021-01-05,G,Longview/Tyler,G - Longview/Tyler,968611,658,501,157,220,0,693,22,2113,308,0,87
+2021-01-05,G,Longview/Tyler,G - Longview/Tyler,968611,658,501,157,220,0,693,22,2113,308,0,87
+2021-01-06,G,Longview/Tyler,G - Longview/Tyler,968611,684,527,157,235,0,677,23,2152,309,0,93
 2021-01-06,G,Longview/Tyler,G - Longview/Tyler,968611,684,527,157,235,0,677,23,2152,309,0,93
 2021-01-07,G,Longview/Tyler,G - Longview/Tyler,968611,669,511,158,228,0,676,24,2155,311,0,81
+2021-01-07,G,Longview/Tyler,G - Longview/Tyler,968611,669,511,158,228,0,676,24,2155,311,0,81
+2021-01-08,G,Longview/Tyler,G - Longview/Tyler,968611,666,511,155,244,0,685,31,2189,296,0,97
 2021-01-08,G,Longview/Tyler,G - Longview/Tyler,968611,666,511,155,244,0,685,31,2189,296,0,97
 2021-01-09,G,Longview/Tyler,G - Longview/Tyler,968611,636,472,153,224,11,504,27,1745,269,0,47
+2021-01-09,G,Longview/Tyler,G - Longview/Tyler,968611,636,472,153,224,11,504,27,1745,269,0,47
+2021-01-10,G,Longview/Tyler,G - Longview/Tyler,968611,589,444,145,223,0,516,35,1644,257,0,75
 2021-01-10,G,Longview/Tyler,G - Longview/Tyler,968611,589,444,145,223,0,516,35,1644,257,0,75
 2021-01-11,G,Longview/Tyler,G - Longview/Tyler,968611,661,508,153,241,0,782,37,2013,302,0,82
+2021-01-11,G,Longview/Tyler,G - Longview/Tyler,968611,661,508,153,241,0,782,37,2013,302,0,82
+2021-01-12,G,Longview/Tyler,G - Longview/Tyler,968611,646,489,157,232,0,748,35,2064,302,0,81
 2021-01-12,G,Longview/Tyler,G - Longview/Tyler,968611,646,489,157,232,0,748,35,2064,302,0,81
 2021-01-13,G,Longview/Tyler,G - Longview/Tyler,968611,629,470,159,228,0,674,27,2159,308,0,81
+2021-01-13,G,Longview/Tyler,G - Longview/Tyler,968611,629,470,159,228,0,674,27,2159,308,0,81
+2021-01-14,G,Longview/Tyler,G - Longview/Tyler,968611,634,472,162,240,0,708,32,2168,316,0,86
 2021-01-14,G,Longview/Tyler,G - Longview/Tyler,968611,634,472,162,240,0,708,32,2168,316,0,86
 2021-01-15,G,Longview/Tyler,G - Longview/Tyler,968611,640,477,163,236,0,656,28,2149,324,0,91
+2021-01-15,G,Longview/Tyler,G - Longview/Tyler,968611,640,477,163,236,0,656,28,2149,324,0,91
+2021-01-16,G,Longview/Tyler,G - Longview/Tyler,968611,603,446,157,247,0,734,19,2094,329,0,75
 2021-01-16,G,Longview/Tyler,G - Longview/Tyler,968611,603,446,157,247,0,734,19,2094,329,0,75
 2021-01-17,G,Longview/Tyler,G - Longview/Tyler,968611,590,430,160,247,0,760,12,1995,335,0,62
+2021-01-17,G,Longview/Tyler,G - Longview/Tyler,968611,590,430,160,247,0,760,12,1995,335,0,62
+2021-01-18,G,Longview/Tyler,G - Longview/Tyler,968611,625,466,158,245,1,750,15,1991,333,0,61
 2021-01-18,G,Longview/Tyler,G - Longview/Tyler,968611,625,466,158,245,1,750,15,1991,333,0,61
 2021-01-19,G,Longview/Tyler,G - Longview/Tyler,968611,588,426,162,242,0,729,14,2030,330,0,60
+2021-01-19,G,Longview/Tyler,G - Longview/Tyler,968611,588,426,162,242,0,729,14,2030,330,0,60
+2021-01-20,G,Longview/Tyler,G - Longview/Tyler,968611,533,376,157,244,0,781,14,2101,325,0,52
 2021-01-20,G,Longview/Tyler,G - Longview/Tyler,968611,533,376,157,244,0,781,14,2101,325,0,52
 2021-01-21,G,Longview/Tyler,G - Longview/Tyler,968611,541,386,155,235,0,773,23,2108,317,0,68
+2021-01-21,G,Longview/Tyler,G - Longview/Tyler,968611,541,386,155,235,0,773,23,2108,317,0,68
+2021-01-22,G,Longview/Tyler,G - Longview/Tyler,968611,529,381,148,269,0,768,24,2097,318,0,71
 2021-01-22,G,Longview/Tyler,G - Longview/Tyler,968611,529,381,148,269,0,768,24,2097,318,0,71
 2021-01-23,G,Longview/Tyler,G - Longview/Tyler,968611,528,385,142,280,1,811,31,2049,311,0,59
+2021-01-23,G,Longview/Tyler,G - Longview/Tyler,968611,528,385,142,280,1,811,31,2049,311,0,59
+2021-01-24,G,Longview/Tyler,G - Longview/Tyler,968611,513,369,144,278,0,846,39,1980,310,0,54
 2021-01-24,G,Longview/Tyler,G - Longview/Tyler,968611,513,369,144,278,0,846,39,1980,310,0,54
 2021-01-25,G,Longview/Tyler,G - Longview/Tyler,968611,504,369,135,310,0,879,39,1947,301,0,48
+2021-01-25,G,Longview/Tyler,G - Longview/Tyler,968611,504,369,135,310,0,879,39,1947,301,0,48
+2021-01-26,G,Longview/Tyler,G - Longview/Tyler,968611,505,373,132,285,0,752,22,2079,311,0,64
 2021-01-26,G,Longview/Tyler,G - Longview/Tyler,968611,505,373,132,285,0,752,22,2079,311,0,64
 2021-01-27,G,Longview/Tyler,G - Longview/Tyler,968611,498,366,131,290,1,664,26,2144,306,0,52
+2021-01-27,G,Longview/Tyler,G - Longview/Tyler,968611,498,366,131,290,1,664,26,2144,306,0,52
+2021-01-28,G,Longview/Tyler,G - Longview/Tyler,968611,477,348,128,304,1,673,25,2137,309,0,57
 2021-01-28,G,Longview/Tyler,G - Longview/Tyler,968611,477,348,128,304,1,673,25,2137,309,0,57
 2021-01-29,G,Longview/Tyler,G - Longview/Tyler,968611,443,310,133,277,0,729,20,2078,309,0,53
+2021-01-29,G,Longview/Tyler,G - Longview/Tyler,968611,443,310,133,277,0,729,20,2078,309,0,53
+2021-01-30,G,Longview/Tyler,G - Longview/Tyler,968611,449,316,133,287,0,872,29,2043,306,0,57
 2021-01-30,G,Longview/Tyler,G - Longview/Tyler,968611,449,316,133,287,0,872,29,2043,306,0,57
 2021-01-31,G,Longview/Tyler,G - Longview/Tyler,968611,453,315,137,307,1,811,31,2009,301,0,54
+2021-01-31,G,Longview/Tyler,G - Longview/Tyler,968611,453,315,137,307,1,811,31,2009,301,0,54
+2021-02-01,G,Longview/Tyler,G - Longview/Tyler,968611,440,317,123,289,0,769,26,1960,317,0,44
 2021-02-01,G,Longview/Tyler,G - Longview/Tyler,968611,440,317,123,289,0,769,26,1960,317,0,44
 2021-02-02,G,Longview/Tyler,G - Longview/Tyler,968611,430,309,121,301,0,763,24,2059,309,0,50
+2021-02-02,G,Longview/Tyler,G - Longview/Tyler,968611,430,309,121,301,0,763,24,2059,309,0,50
+2021-02-03,G,Longview/Tyler,G - Longview/Tyler,968611,412,290,122,303,0,762,37,2057,302,0,51
 2021-02-03,G,Longview/Tyler,G - Longview/Tyler,968611,412,290,122,303,0,762,37,2057,302,0,51
 2021-02-04,G,Longview/Tyler,G - Longview/Tyler,968611,407,281,125,300,1,743,27,2055,313,0,51
+2021-02-04,G,Longview/Tyler,G - Longview/Tyler,968611,407,281,125,300,1,743,27,2055,313,0,51
+2021-02-05,G,Longview/Tyler,G - Longview/Tyler,968611,385,269,116,309,0,831,29,2050,304,0,44
 2021-02-05,G,Longview/Tyler,G - Longview/Tyler,968611,385,269,116,309,0,831,29,2050,304,0,44
 2021-02-06,G,Longview/Tyler,G - Longview/Tyler,968611,372,268,104,323,0,904,22,2006,310,0,37
+2021-02-06,G,Longview/Tyler,G - Longview/Tyler,968611,372,268,104,323,0,904,22,2006,310,0,37
+2021-02-07,G,Longview/Tyler,G - Longview/Tyler,968611,375,273,102,322,0,821,29,1948,305,0,47
 2021-02-07,G,Longview/Tyler,G - Longview/Tyler,968611,375,273,102,322,0,821,29,1948,305,0,47
 2021-02-08,G,Longview/Tyler,G - Longview/Tyler,968611,365,263,102,340,0,842,28,1942,300,0,36
+2021-02-08,G,Longview/Tyler,G - Longview/Tyler,968611,365,263,102,340,0,842,28,1942,300,0,36
+2021-02-09,G,Longview/Tyler,G - Longview/Tyler,968611,354,248,105,346,1,749,27,2052,305,0,47
 2021-02-09,G,Longview/Tyler,G - Longview/Tyler,968611,354,248,105,346,1,749,27,2052,305,0,47
 2021-02-10,G,Longview/Tyler,G - Longview/Tyler,968611,352,240,111,323,1,699,26,2085,290,0,45
+2021-02-10,G,Longview/Tyler,G - Longview/Tyler,968611,352,240,111,323,1,699,26,2085,290,0,45
+2021-02-11,G,Longview/Tyler,G - Longview/Tyler,968611,332,230,101,353,1,739,34,2031,294,0,29
 2021-02-11,G,Longview/Tyler,G - Longview/Tyler,968611,332,230,101,353,1,739,34,2031,294,0,29
 2021-02-12,G,Longview/Tyler,G - Longview/Tyler,968611,321,224,97,365,0,785,28,1975,293,0,34
+2021-02-12,G,Longview/Tyler,G - Longview/Tyler,968611,321,224,97,365,0,785,28,1975,293,0,34
+2021-02-13,G,Longview/Tyler,G - Longview/Tyler,968611,305,212,93,362,0,933,38,1900,288,0,24
 2021-02-13,G,Longview/Tyler,G - Longview/Tyler,968611,305,212,93,362,0,933,38,1900,288,0,24
 2021-02-14,G,Longview/Tyler,G - Longview/Tyler,968611,302,212,90,341,0,985,39,1824,287,0,31
+2021-02-14,G,Longview/Tyler,G - Longview/Tyler,968611,302,212,90,341,0,985,39,1824,287,0,31
+2021-02-15,G,Longview/Tyler,G - Longview/Tyler,968611,302,204,98,342,0,1024,39,1728,292,0,19
 2021-02-15,G,Longview/Tyler,G - Longview/Tyler,968611,302,204,98,342,0,1024,39,1728,292,0,19
 2021-02-16,G,Longview/Tyler,G - Longview/Tyler,968611,307,209,98,322,0,814,29,1868,309,0,23
+2021-02-16,G,Longview/Tyler,G - Longview/Tyler,968611,307,209,98,322,0,814,29,1868,309,0,23
+2021-02-17,G,Longview/Tyler,G - Longview/Tyler,968611,294,200,94,324,0,707,24,1895,310,0,27
 2021-02-17,G,Longview/Tyler,G - Longview/Tyler,968611,294,200,94,324,0,707,24,1895,310,0,27
 2021-02-18,G,Longview/Tyler,G - Longview/Tyler,968611,288,189,99,328,0,673,26,1925,308,0,26
+2021-02-18,G,Longview/Tyler,G - Longview/Tyler,968611,288,189,99,328,0,673,26,1925,308,0,26
+2021-02-19,G,Longview/Tyler,G - Longview/Tyler,968611,286,195,91,341,0,650,23,1950,298,0,32
 2021-02-19,G,Longview/Tyler,G - Longview/Tyler,968611,286,195,91,341,0,650,23,1950,298,0,32
 2021-02-20,G,Longview/Tyler,G - Longview/Tyler,968611,276,187,89,366,0,629,17,1949,293,0,24
+2021-02-20,G,Longview/Tyler,G - Longview/Tyler,968611,276,187,89,366,0,629,17,1949,293,0,24
+2021-02-21,G,Longview/Tyler,G - Longview/Tyler,968611,263,185,78,347,0,653,15,1952,296,0,19
 2021-02-21,G,Longview/Tyler,G - Longview/Tyler,968611,263,185,78,347,0,653,15,1952,296,0,19
 2021-02-22,G,Longview/Tyler,G - Longview/Tyler,968611,258,175,83,357,0,729,26,2020,293,0,29
+2021-02-22,G,Longview/Tyler,G - Longview/Tyler,968611,258,175,83,357,0,729,26,2020,293,0,29
+2021-02-23,G,Longview/Tyler,G - Longview/Tyler,968611,231,155,76,353,0,645,25,2177,296,0,29
 2021-02-23,G,Longview/Tyler,G - Longview/Tyler,968611,231,155,76,353,0,645,25,2177,296,0,29
 2021-02-24,G,Longview/Tyler,G - Longview/Tyler,968611,231,155,76,353,0,645,25,2175,296,0,27
+2021-02-24,G,Longview/Tyler,G - Longview/Tyler,968611,231,155,76,353,0,645,25,2175,296,0,27
+2021-02-25,G,Longview/Tyler,G - Longview/Tyler,968611,210,141,69,359,0,676,26,2096,285,0,18
 2021-02-25,G,Longview/Tyler,G - Longview/Tyler,968611,210,141,69,359,0,676,26,2096,285,0,18
 2021-02-26,G,Longview/Tyler,G - Longview/Tyler,968611,195,124,71,351,0,724,30,2076,286,0,14
+2021-02-26,G,Longview/Tyler,G - Longview/Tyler,968611,195,124,71,351,0,724,30,2076,286,0,14
+2021-02-27,G,Longview/Tyler,G - Longview/Tyler,968611,203,126,77,366,0,711,34,2056,282,0,24
 2021-02-27,G,Longview/Tyler,G - Longview/Tyler,968611,203,126,77,366,0,711,34,2056,282,0,24
 2021-02-28,G,Longview/Tyler,G - Longview/Tyler,968611,199,122,77,360,0,775,38,1969,275,0,20
+2021-02-28,G,Longview/Tyler,G - Longview/Tyler,968611,199,122,77,360,0,775,38,1969,275,0,20
+2021-03-01,G,Longview/Tyler,G - Longview/Tyler,968611,196,122,74,358,0,774,24,1910,287,0,17
 2021-03-01,G,Longview/Tyler,G - Longview/Tyler,968611,196,122,74,358,0,774,24,1910,287,0,17
 2021-03-02,G,Longview/Tyler,G - Longview/Tyler,968611,183,112,71,353,0,724,25,1975,287,0,11
+2021-03-02,G,Longview/Tyler,G - Longview/Tyler,968611,183,112,71,353,0,724,25,1975,287,0,11
+2021-03-03,G,Longview/Tyler,G - Longview/Tyler,968611,182,113,68,345,1,726,22,2051,294,0,19
 2021-03-03,G,Longview/Tyler,G - Longview/Tyler,968611,182,113,68,345,1,726,22,2051,294,0,19
 2021-03-04,G,Longview/Tyler,G - Longview/Tyler,968611,179,118,61,355,0,664,21,2088,288,0,15
+2021-03-04,G,Longview/Tyler,G - Longview/Tyler,968611,179,118,61,355,0,664,21,2088,288,0,15
+2021-03-05,G,Longview/Tyler,G - Longview/Tyler,968611,171,116,55,359,0,725,22,2083,284,0,16
 2021-03-05,G,Longview/Tyler,G - Longview/Tyler,968611,171,116,55,359,0,725,22,2083,284,0,16
 2021-03-06,G,Longview/Tyler,G - Longview/Tyler,968611,153,96,57,363,0,797,35,1998,277,0,10
+2021-03-06,G,Longview/Tyler,G - Longview/Tyler,968611,153,96,57,363,0,797,35,1998,277,0,10
+2021-03-07,G,Longview/Tyler,G - Longview/Tyler,968611,152,100,52,347,0,800,46,1908,261,0,9
 2021-03-07,G,Longview/Tyler,G - Longview/Tyler,968611,152,100,52,347,0,800,46,1908,261,0,9
 2021-03-08,G,Longview/Tyler,G - Longview/Tyler,968611,139,91,48,356,0,801,42,1916,265,0,14
+2021-03-08,G,Longview/Tyler,G - Longview/Tyler,968611,139,91,48,356,0,801,42,1916,265,0,14
+2021-03-09,G,Longview/Tyler,G - Longview/Tyler,968611,128,86,42,359,0,776,43,1867,268,0,12
 2021-03-09,G,Longview/Tyler,G - Longview/Tyler,968611,128,86,42,359,0,776,43,1867,268,0,12
 2021-03-10,G,Longview/Tyler,G - Longview/Tyler,968611,128,88,40,342,0,718,40,1921,271,0,8
+2021-03-10,G,Longview/Tyler,G - Longview/Tyler,968611,128,88,40,342,0,718,40,1921,271,0,8
+2021-03-11,G,Longview/Tyler,G - Longview/Tyler,968611,127,88,39,344,0,806,44,1899,267,0,11
 2021-03-11,G,Longview/Tyler,G - Longview/Tyler,968611,127,88,39,344,0,806,44,1899,267,0,11
 2021-03-12,G,Longview/Tyler,G - Longview/Tyler,968611,125,85,40,339,0,861,44,1855,268,0,17
+2021-03-12,G,Longview/Tyler,G - Longview/Tyler,968611,125,85,40,339,0,861,44,1855,268,0,17
+2021-03-13,G,Longview/Tyler,G - Longview/Tyler,968611,124,80,44,342,0,1087,52,1740,255,0,12
 2021-03-13,G,Longview/Tyler,G - Longview/Tyler,968611,124,80,44,342,0,1087,52,1740,255,0,12
 2021-03-14,G,Longview/Tyler,G - Longview/Tyler,968611,117,82,35,342,0,1053,57,1709,246,0,11
+2021-03-14,G,Longview/Tyler,G - Longview/Tyler,968611,117,82,35,342,0,1053,57,1709,246,0,11
+2021-03-15,G,Longview/Tyler,G - Longview/Tyler,968611,118,81,37,357,0,992,44,1749,254,0,11
 2021-03-15,G,Longview/Tyler,G - Longview/Tyler,968611,118,81,37,357,0,992,44,1749,254,0,11
 2021-03-16,G,Longview/Tyler,G - Longview/Tyler,968611,115,79,36,360,0,897,42,1873,256,0,16
+2021-03-16,G,Longview/Tyler,G - Longview/Tyler,968611,115,79,36,360,0,897,42,1873,256,0,16
+2021-03-17,G,Longview/Tyler,G - Longview/Tyler,968611,103,67,36,350,0,780,35,1953,261,0,10
 2021-03-17,G,Longview/Tyler,G - Longview/Tyler,968611,103,67,36,350,0,780,35,1953,261,0,10
 2021-03-18,G,Longview/Tyler,G - Longview/Tyler,968611,97,64,33,334,0,860,51,1922,247,0,15
+2021-03-18,G,Longview/Tyler,G - Longview/Tyler,968611,97,64,33,334,0,860,51,1922,247,0,15
+2021-03-19,G,Longview/Tyler,G - Longview/Tyler,968611,86,60,26,334,0,955,54,1803,242,0,15
 2021-03-19,G,Longview/Tyler,G - Longview/Tyler,968611,86,60,26,334,0,955,54,1803,242,0,15
 2021-03-20,G,Longview/Tyler,G - Longview/Tyler,968611,83,53,30,342,0,1046,44,1743,248,0,5
+2021-03-20,G,Longview/Tyler,G - Longview/Tyler,968611,83,53,30,342,0,1046,44,1743,248,0,5
+2021-03-21,G,Longview/Tyler,G - Longview/Tyler,968611,83,58,25,333,0,1106,64,1706,231,0,8
 2021-03-21,G,Longview/Tyler,G - Longview/Tyler,968611,83,58,25,333,0,1106,64,1706,231,0,8
 2021-03-22,G,Longview/Tyler,G - Longview/Tyler,968611,91,69,22,330,0,1015,69,1719,213,0,13
+2021-03-22,G,Longview/Tyler,G - Longview/Tyler,968611,91,69,22,330,0,1015,69,1719,213,0,13
+2021-03-23,G,Longview/Tyler,G - Longview/Tyler,968611,86,64,22,342,0,862,59,1842,223,0,12
 2021-03-23,G,Longview/Tyler,G - Longview/Tyler,968611,86,64,22,342,0,862,59,1842,223,0,12
 2021-03-24,G,Longview/Tyler,G - Longview/Tyler,968611,77,54,22,344,1,847,62,1947,234,0,7
+2021-03-24,G,Longview/Tyler,G - Longview/Tyler,968611,77,54,22,344,1,847,62,1947,234,0,7
+2021-03-25,G,Longview/Tyler,G - Longview/Tyler,968611,71,51,20,346,0,868,55,1943,235,0,5
 2021-03-25,G,Longview/Tyler,G - Longview/Tyler,968611,71,51,20,346,0,868,55,1943,235,0,5
 2021-03-26,G,Longview/Tyler,G - Longview/Tyler,968611,75,52,23,346,0,887,61,1920,237,0,11
+2021-03-26,G,Longview/Tyler,G - Longview/Tyler,968611,75,52,23,346,0,887,61,1920,237,0,11
+2021-03-27,G,Longview/Tyler,G - Longview/Tyler,968611,69,43,25,365,1,1059,63,1825,233,0,8
 2021-03-27,G,Longview/Tyler,G - Longview/Tyler,968611,69,43,25,365,1,1059,63,1825,233,0,8
 2021-03-28,G,Longview/Tyler,G - Longview/Tyler,968611,74,47,26,353,1,1042,62,1746,240,0,12
+2021-03-28,G,Longview/Tyler,G - Longview/Tyler,968611,74,47,26,353,1,1042,62,1746,240,0,12
+2021-03-29,G,Longview/Tyler,G - Longview/Tyler,968611,68,41,26,341,1,1016,51,1716,236,0,4
 2021-03-29,G,Longview/Tyler,G - Longview/Tyler,968611,68,41,26,341,1,1016,51,1716,236,0,4
 2021-03-30,G,Longview/Tyler,G - Longview/Tyler,968611,64,38,25,333,1,940,46,1825,243,0,8
+2021-03-30,G,Longview/Tyler,G - Longview/Tyler,968611,64,38,25,333,1,940,46,1825,243,0,8
+2021-03-31,G,Longview/Tyler,G - Longview/Tyler,968611,62,39,23,340,0,858,43,1963,267,0,7
 2021-03-31,G,Longview/Tyler,G - Longview/Tyler,968611,62,39,23,340,0,858,43,1963,267,0,7
 2021-04-01,G,Longview/Tyler,G - Longview/Tyler,968611,66,44,22,342,0,909,62,1889,244,0,11
+2021-04-01,G,Longview/Tyler,G - Longview/Tyler,968611,66,44,22,342,0,909,62,1889,244,0,11
+2021-04-02,G,Longview/Tyler,G - Longview/Tyler,968611,59,40,19,342,0,1029,62,1779,240,0,7
 2021-04-02,G,Longview/Tyler,G - Longview/Tyler,968611,59,40,19,342,0,1029,62,1779,240,0,7
 2021-04-03,G,Longview/Tyler,G - Longview/Tyler,968611,64,43,21,346,0,1082,61,1704,240,0,11
+2021-04-03,G,Longview/Tyler,G - Longview/Tyler,968611,64,43,21,346,0,1082,61,1704,240,0,11
+2021-04-04,G,Longview/Tyler,G - Longview/Tyler,968611,63,43,20,352,0,1145,69,1647,227,0,9
 2021-04-04,G,Longview/Tyler,G - Longview/Tyler,968611,63,43,20,352,0,1145,69,1647,227,0,9
 2021-04-05,G,Longview/Tyler,G - Longview/Tyler,968611,65,44,21,340,0,1124,68,1627,225,0,13
+2021-04-05,G,Longview/Tyler,G - Longview/Tyler,968611,65,44,21,340,0,1124,68,1627,225,0,13
+2021-04-06,G,Longview/Tyler,G - Longview/Tyler,968611,62,43,19,339,0,917,73,1767,220,0,12
 2021-04-06,G,Longview/Tyler,G - Longview/Tyler,968611,62,43,19,339,0,917,73,1767,220,0,12
 2021-04-07,G,Longview/Tyler,G - Longview/Tyler,968611,56,37,19,322,0,901,55,1839,235,0,8
+2021-04-07,G,Longview/Tyler,G - Longview/Tyler,968611,56,37,19,322,0,901,55,1839,235,0,8
+2021-04-08,G,Longview/Tyler,G - Longview/Tyler,968611,62,41,21,305,0,846,50,1867,246,0,21
 2021-04-08,G,Longview/Tyler,G - Longview/Tyler,968611,62,41,21,305,0,846,50,1867,246,0,21
 2021-04-09,G,Longview/Tyler,G - Longview/Tyler,968611,62,40,22,319,0,797,41,1912,253,0,11
+2021-04-09,G,Longview/Tyler,G - Longview/Tyler,968611,62,40,22,319,0,797,41,1912,253,0,11
+2021-04-10,G,Longview/Tyler,G - Longview/Tyler,968611,69,46,23,308,0,820,52,1833,250,0,14
 2021-04-10,G,Longview/Tyler,G - Longview/Tyler,968611,69,46,23,308,0,820,52,1833,250,0,14
 2021-04-11,G,Longview/Tyler,G - Longview/Tyler,968611,69,45,24,312,0,881,63,1800,236,0,5
+2021-04-11,G,Longview/Tyler,G - Longview/Tyler,968611,69,45,24,312,0,881,63,1800,236,0,5
+2021-04-12,G,Longview/Tyler,G - Longview/Tyler,968611,79,54,25,308,0,899,59,1737,242,0,8
 2021-04-12,G,Longview/Tyler,G - Longview/Tyler,968611,79,54,25,308,0,899,59,1737,242,0,8
 2021-04-13,G,Longview/Tyler,G - Longview/Tyler,968611,73,49,24,249,0,859,42,1880,263,0,5
+2021-04-13,G,Longview/Tyler,G - Longview/Tyler,968611,73,49,24,249,0,859,42,1880,263,0,5
+2021-04-14,G,Longview/Tyler,G - Longview/Tyler,968611,74,50,24,318,0,860,35,1914,267,0,11
 2021-04-14,G,Longview/Tyler,G - Longview/Tyler,968611,74,50,24,318,0,860,35,1914,267,0,11
 2021-04-15,G,Longview/Tyler,G - Longview/Tyler,968611,76,47,28,318,1,846,38,1907,264,0,16
+2021-04-15,G,Longview/Tyler,G - Longview/Tyler,968611,76,47,28,318,1,846,38,1907,264,0,16
+2021-04-16,G,Longview/Tyler,G - Longview/Tyler,968611,72,42,30,313,0,821,36,1866,265,0,9
 2021-04-16,G,Longview/Tyler,G - Longview/Tyler,968611,72,42,30,313,0,821,36,1866,265,0,9
 2021-04-17,G,Longview/Tyler,G - Longview/Tyler,968611,74,46,28,305,0,935,49,1798,253,0,15
+2021-04-17,G,Longview/Tyler,G - Longview/Tyler,968611,74,46,28,305,0,935,49,1798,253,0,15
+2021-04-18,G,Longview/Tyler,G - Longview/Tyler,968611,76,47,29,315,0,896,44,1740,259,0,10
 2021-04-18,G,Longview/Tyler,G - Longview/Tyler,968611,76,47,29,315,0,896,44,1740,259,0,10
 2021-04-19,G,Longview/Tyler,G - Longview/Tyler,968611,72,44,28,327,0,907,57,1738,253,0,7
+2021-04-19,G,Longview/Tyler,G - Longview/Tyler,968611,72,44,28,327,0,907,57,1738,253,0,7
+2021-04-20,G,Longview/Tyler,G - Longview/Tyler,968611,75,44,31,306,0,797,34,1847,264,0,14
 2021-04-20,G,Longview/Tyler,G - Longview/Tyler,968611,75,44,31,306,0,797,34,1847,264,0,14
 2021-04-21,G,Longview/Tyler,G - Longview/Tyler,968611,83,52,31,301,0,755,33,1933,264,0,16
+2021-04-21,G,Longview/Tyler,G - Longview/Tyler,968611,83,52,31,301,0,755,33,1933,264,0,16
+2021-04-22,G,Longview/Tyler,G - Longview/Tyler,968611,89,56,33,295,0,802,31,1937,261,0,13
 2021-04-22,G,Longview/Tyler,G - Longview/Tyler,968611,89,56,33,295,0,802,31,1937,261,0,13
 2021-04-23,G,Longview/Tyler,G - Longview/Tyler,968611,93,63,30,294,0,824,33,1937,273,0,14
+2021-04-23,G,Longview/Tyler,G - Longview/Tyler,968611,93,63,30,294,0,824,33,1937,273,0,14
+2021-04-24,G,Longview/Tyler,G - Longview/Tyler,968611,94,61,32,295,1,904,45,1856,261,0,20
 2021-04-24,G,Longview/Tyler,G - Longview/Tyler,968611,94,61,32,295,1,904,45,1856,261,0,20
 2021-04-25,G,Longview/Tyler,G - Longview/Tyler,968611,99,69,30,299,0,889,48,1779,254,0,9
+2021-04-25,G,Longview/Tyler,G - Longview/Tyler,968611,99,69,30,299,0,889,48,1779,254,0,9
+2021-04-26,G,Longview/Tyler,G - Longview/Tyler,968611,97,63,34,290,0,910,57,1797,243,0,12
 2021-04-26,G,Longview/Tyler,G - Longview/Tyler,968611,97,63,34,290,0,910,57,1797,243,0,12
 2021-04-27,G,Longview/Tyler,G - Longview/Tyler,968611,91,61,30,288,0,825,40,1854,264,0,13
+2021-04-27,G,Longview/Tyler,G - Longview/Tyler,968611,91,61,30,288,0,825,40,1854,264,0,13
+2021-04-28,G,Longview/Tyler,G - Longview/Tyler,968611,93,58,35,282,0,773,27,1947,275,0,16
 2021-04-28,G,Longview/Tyler,G - Longview/Tyler,968611,93,58,35,282,0,773,27,1947,275,0,16
 2021-04-29,G,Longview/Tyler,G - Longview/Tyler,968611,100,62,38,290,0,770,32,1933,272,0,24
+2021-04-29,G,Longview/Tyler,G - Longview/Tyler,968611,100,62,38,290,0,770,32,1933,272,0,24
+2021-04-30,G,Longview/Tyler,G - Longview/Tyler,968611,108,72,35,255,1,753,41,1970,256,0,24
 2021-04-30,G,Longview/Tyler,G - Longview/Tyler,968611,108,72,35,255,1,753,41,1970,256,0,24
 2021-05-01,G,Longview/Tyler,G - Longview/Tyler,968611,108,73,34,271,1,969,57,1857,237,0,17
+2021-05-01,G,Longview/Tyler,G - Longview/Tyler,968611,108,73,34,271,1,969,57,1857,237,0,17
+2021-05-02,G,Longview/Tyler,G - Longview/Tyler,968611,120,85,35,265,0,978,67,1742,227,0,16
 2021-05-02,G,Longview/Tyler,G - Longview/Tyler,968611,120,85,35,265,0,978,67,1742,227,0,16
 2021-05-03,G,Longview/Tyler,G - Longview/Tyler,968611,101,69,32,296,0,946,59,1717,233,0,17
+2021-05-03,G,Longview/Tyler,G - Longview/Tyler,968611,101,69,32,296,0,946,59,1717,233,0,17
+2021-05-04,G,Longview/Tyler,G - Longview/Tyler,968611,102,70,32,292,0,850,43,1844,238,0,15
 2021-05-04,G,Longview/Tyler,G - Longview/Tyler,968611,102,70,32,292,0,850,43,1844,238,0,15
 2021-05-05,G,Longview/Tyler,G - Longview/Tyler,968611,95,63,32,311,0,789,39,1904,261,0,12
+2021-05-05,G,Longview/Tyler,G - Longview/Tyler,968611,95,63,32,311,0,789,39,1904,261,0,12
+2021-05-06,G,Longview/Tyler,G - Longview/Tyler,968611,94,60,34,300,0,736,53,1930,253,0,13
 2021-05-06,G,Longview/Tyler,G - Longview/Tyler,968611,94,60,34,300,0,736,53,1930,253,0,13
 2021-05-07,G,Longview/Tyler,G - Longview/Tyler,968611,92,58,34,299,0,748,38,1912,255,0,13
+2021-05-07,G,Longview/Tyler,G - Longview/Tyler,968611,92,58,34,299,0,748,38,1912,255,0,13
+2021-05-08,G,Longview/Tyler,G - Longview/Tyler,968611,89,53,36,290,0,865,46,1839,248,0,10
 2021-05-08,G,Longview/Tyler,G - Longview/Tyler,968611,89,53,36,290,0,865,46,1839,248,0,10
 2021-05-09,G,Longview/Tyler,G - Longview/Tyler,968611,87,52,35,290,0,867,46,1836,248,0,8
+2021-05-09,G,Longview/Tyler,G - Longview/Tyler,968611,87,52,35,290,0,867,46,1836,248,0,8
+2021-05-10,G,Longview/Tyler,G - Longview/Tyler,968611,95,56,39,268,0,912,51,1778,242,0,
 2021-05-10,G,Longview/Tyler,G - Longview/Tyler,968611,95,56,39,268,0,912,51,1778,242,0,
 2021-05-11,G,Longview/Tyler,G - Longview/Tyler,968611,86,48,38,262,0,785,46,1874,252,0,
+2021-05-11,G,Longview/Tyler,G - Longview/Tyler,968611,86,48,38,262,0,785,46,1874,252,0,
+2021-05-12,G,Longview/Tyler,G - Longview/Tyler,968611,83,46,37,257,0,759,40,1919,256,0,11
 2021-05-12,G,Longview/Tyler,G - Longview/Tyler,968611,83,46,37,257,0,759,40,1919,256,0,11
 2021-05-13,G,Longview/Tyler,G - Longview/Tyler,968611,79,49,30,252,0,862,42,1880,254,0,10
+2021-05-13,G,Longview/Tyler,G - Longview/Tyler,968611,79,49,30,252,0,862,42,1880,254,0,10
+2021-05-14,G,Longview/Tyler,G - Longview/Tyler,968611,75,39,36,257,0,858,40,1857,259,0,11
 2021-05-14,G,Longview/Tyler,G - Longview/Tyler,968611,75,39,36,257,0,858,40,1857,259,0,11
 2021-05-15,G,Longview/Tyler,G - Longview/Tyler,968611,73,39,34,260,0,874,44,1846,249,0,11
+2021-05-15,G,Longview/Tyler,G - Longview/Tyler,968611,73,39,34,260,0,874,44,1846,249,0,11
+2021-05-16,G,Longview/Tyler,G - Longview/Tyler,968611,68,35,33,263,0,848,55,1811,240,0,7
 2021-05-16,G,Longview/Tyler,G - Longview/Tyler,968611,68,35,33,263,0,848,55,1811,240,0,7
 2021-05-17,G,Longview/Tyler,G - Longview/Tyler,968611,83,41,42,260,0,867,52,1740,244,0,5
+2021-05-17,G,Longview/Tyler,G - Longview/Tyler,968611,83,41,42,260,0,867,52,1740,244,0,5
+2021-05-18,G,Longview/Tyler,G - Longview/Tyler,968611,80,39,41,266,0,747,38,1850,250,0,8
 2021-05-18,G,Longview/Tyler,G - Longview/Tyler,968611,80,39,41,266,0,747,38,1850,250,0,8
 2021-05-19,G,Longview/Tyler,G - Longview/Tyler,968611,80,37,43,268,0,725,37,1913,262,0,12
+2021-05-19,G,Longview/Tyler,G - Longview/Tyler,968611,80,37,43,268,0,725,37,1913,262,0,12
+2021-05-20,G,Longview/Tyler,G - Longview/Tyler,968611,80,41,39,257,0,694,43,1963,254,0,8
 2021-05-20,G,Longview/Tyler,G - Longview/Tyler,968611,80,41,39,257,0,694,43,1963,254,0,8
 2021-05-21,G,Longview/Tyler,G - Longview/Tyler,968611,79,40,39,257,0,683,51,1887,251,0,8
+2021-05-21,G,Longview/Tyler,G - Longview/Tyler,968611,79,40,39,257,0,683,51,1887,251,0,8
+2021-05-22,G,Longview/Tyler,G - Longview/Tyler,968611,79,42,37,269,0,767,61,1819,236,0,12
 2021-05-22,G,Longview/Tyler,G - Longview/Tyler,968611,79,42,37,269,0,767,61,1819,236,0,12
 2021-05-23,G,Longview/Tyler,G - Longview/Tyler,968611,81,43,38,271,0,781,55,1704,230,0,11
+2021-05-23,G,Longview/Tyler,G - Longview/Tyler,968611,81,43,38,271,0,781,55,1704,230,0,11
+2021-05-24,G,Longview/Tyler,G - Longview/Tyler,968611,77,43,34,252,0,811,48,1768,242,0,9
 2021-05-24,G,Longview/Tyler,G - Longview/Tyler,968611,77,43,34,252,0,811,48,1768,242,0,9
 2021-05-25,G,Longview/Tyler,G - Longview/Tyler,968611,85,48,37,251,0,748,50,1846,243,0,15
+2021-05-25,G,Longview/Tyler,G - Longview/Tyler,968611,85,48,37,251,0,748,50,1846,243,0,15
+2021-05-26,G,Longview/Tyler,G - Longview/Tyler,968611,75,40,35,268,0,740,51,1876,242,0,11
 2021-05-26,G,Longview/Tyler,G - Longview/Tyler,968611,75,40,35,268,0,740,51,1876,242,0,11
 2021-05-27,G,Longview/Tyler,G - Longview/Tyler,968611,71,36,35,256,0,748,54,1915,239,0,8
+2021-05-27,G,Longview/Tyler,G - Longview/Tyler,968611,71,36,35,256,0,748,54,1915,239,0,8
+2021-05-28,G,Longview/Tyler,G - Longview/Tyler,968611,63,36,27,249,0,749,60,1888,233,0,8
 2021-05-28,G,Longview/Tyler,G - Longview/Tyler,968611,63,36,27,249,0,749,60,1888,233,0,8
 2021-05-29,G,Longview/Tyler,G - Longview/Tyler,968611,62,40,22,257,0,759,60,1806,227,0,11
+2021-05-29,G,Longview/Tyler,G - Longview/Tyler,968611,62,40,22,257,0,759,60,1806,227,0,11
+2021-05-30,G,Longview/Tyler,G - Longview/Tyler,968611,58,38,20,252,0,839,60,1746,225,0,8
 2021-05-30,G,Longview/Tyler,G - Longview/Tyler,968611,58,38,20,252,0,839,60,1746,225,0,8
 2021-05-31,G,Longview/Tyler,G - Longview/Tyler,968611,60,39,21,247,0,848,58,1738,230,0,9
+2021-05-31,G,Longview/Tyler,G - Longview/Tyler,968611,60,39,21,247,0,848,58,1738,230,0,9
+2021-06-01,G,Longview/Tyler,G - Longview/Tyler,968611,64,45,18,273,1,777,54,1730,239,0,17
 2021-06-01,G,Longview/Tyler,G - Longview/Tyler,968611,64,45,18,273,1,777,54,1730,239,0,17
 2021-06-02,G,Longview/Tyler,G - Longview/Tyler,968611,58,40,17,274,1,763,47,1807,248,0,15
+2021-06-02,G,Longview/Tyler,G - Longview/Tyler,968611,58,40,17,274,1,763,47,1807,248,0,15
+2021-06-03,G,Longview/Tyler,G - Longview/Tyler,968611,58,38,19,270,1,712,44,1866,242,0,9
 2021-06-03,G,Longview/Tyler,G - Longview/Tyler,968611,58,38,19,270,1,712,44,1866,242,0,9
 2021-06-04,G,Longview/Tyler,G - Longview/Tyler,968611,61,43,17,269,1,743,53,1915,247,0,9
+2021-06-04,G,Longview/Tyler,G - Longview/Tyler,968611,61,43,17,269,1,743,53,1915,247,0,9
+2021-06-05,G,Longview/Tyler,G - Longview/Tyler,968611,60,45,15,268,0,780,60,1888,231,0,6
 2021-06-05,G,Longview/Tyler,G - Longview/Tyler,968611,60,45,15,268,0,780,60,1888,231,0,6
 2021-06-06,G,Longview/Tyler,G - Longview/Tyler,968611,49,35,14,263,0,870,51,1727,238,0,8
+2021-06-06,G,Longview/Tyler,G - Longview/Tyler,968611,49,35,14,263,0,870,51,1727,238,0,8
+2021-06-07,G,Longview/Tyler,G - Longview/Tyler,968611,57,40,17,295,0,858,65,1701,229,0,5
 2021-06-07,G,Longview/Tyler,G - Longview/Tyler,968611,57,40,17,295,0,858,65,1701,229,0,5
 2021-06-08,G,Longview/Tyler,G - Longview/Tyler,968611,46,31,15,296,0,801,71,1786,229,0,3
+2021-06-08,G,Longview/Tyler,G - Longview/Tyler,968611,46,31,15,296,0,801,71,1786,229,0,3
+2021-06-09,G,Longview/Tyler,G - Longview/Tyler,968611,51,36,15,308,0,776,57,1858,244,0,10
 2021-06-09,G,Longview/Tyler,G - Longview/Tyler,968611,51,36,15,308,0,776,57,1858,244,0,10
 2021-06-10,G,Longview/Tyler,G - Longview/Tyler,968611,55,38,17,283,0,754,56,1914,247,0,9
+2021-06-10,G,Longview/Tyler,G - Longview/Tyler,968611,55,38,17,283,0,754,56,1914,247,0,9
+2021-06-11,G,Longview/Tyler,G - Longview/Tyler,968611,54,36,18,293,0,768,53,1945,245,0,8
 2021-06-11,G,Longview/Tyler,G - Longview/Tyler,968611,54,36,18,293,0,768,53,1945,245,0,8
 2021-06-12,G,Longview/Tyler,G - Longview/Tyler,968611,56,34,22,294,0,804,57,1860,239,0,7
+2021-06-12,G,Longview/Tyler,G - Longview/Tyler,968611,56,34,22,294,0,804,57,1860,239,0,7
+2021-06-13,G,Longview/Tyler,G - Longview/Tyler,968611,59,37,22,297,0,829,62,1796,229,0,8
 2021-06-13,G,Longview/Tyler,G - Longview/Tyler,968611,59,37,22,297,0,829,62,1796,229,0,8
 2021-06-14,G,Longview/Tyler,G - Longview/Tyler,968611,63,40,23,271,0,843,65,1787,240,0,9
+2021-06-14,G,Longview/Tyler,G - Longview/Tyler,968611,63,40,23,271,0,843,65,1787,240,0,9
+2021-06-15,G,Longview/Tyler,G - Longview/Tyler,968611,70,49,21,271,0,770,52,1864,250,0,11
 2021-06-15,G,Longview/Tyler,G - Longview/Tyler,968611,70,49,21,271,0,770,52,1864,250,0,11
 2021-06-16,G,Longview/Tyler,G - Longview/Tyler,968611,64,42,22,265,0,700,44,1942,258,0,5
+2021-06-16,G,Longview/Tyler,G - Longview/Tyler,968611,64,42,22,265,0,700,44,1942,258,0,5
+2021-06-17,G,Longview/Tyler,G - Longview/Tyler,968611,55,35,20,266,0,721,52,1934,251,0,6
 2021-06-17,G,Longview/Tyler,G - Longview/Tyler,968611,55,35,20,266,0,721,52,1934,251,0,6
 2021-06-18,G,Longview/Tyler,G - Longview/Tyler,968611,55,34,21,261,0,727,38,1898,246,0,10
+2021-06-18,G,Longview/Tyler,G - Longview/Tyler,968611,55,34,21,261,0,727,38,1898,246,0,10
+2021-06-19,G,Longview/Tyler,G - Longview/Tyler,968611,54,32,22,251,0,825,40,1854,244,0,8
 2021-06-19,G,Longview/Tyler,G - Longview/Tyler,968611,54,32,22,251,0,825,40,1854,244,0,8
 2021-06-20,G,Longview/Tyler,G - Longview/Tyler,968611,56,29,27,254,0,898,42,1767,240,0,6
+2021-06-20,G,Longview/Tyler,G - Longview/Tyler,968611,56,29,27,254,0,898,42,1767,240,0,6
+2021-06-21,G,Longview/Tyler,G - Longview/Tyler,968611,52,22,30,265,0,870,30,1767,253,0,6
 2021-06-21,G,Longview/Tyler,G - Longview/Tyler,968611,52,22,30,265,0,870,30,1767,253,0,6
 2021-06-22,G,Longview/Tyler,G - Longview/Tyler,968611,56,26,30,242,0,751,21,1856,266,0,10
+2021-06-22,G,Longview/Tyler,G - Longview/Tyler,968611,56,26,30,242,0,751,21,1856,266,0,10
+2021-06-23,G,Longview/Tyler,G - Longview/Tyler,968611,49,26,23,240,0,718,18,1927,268,0,7
 2021-06-23,G,Longview/Tyler,G - Longview/Tyler,968611,49,26,23,240,0,718,18,1927,268,0,7
 2021-06-24,G,Longview/Tyler,G - Longview/Tyler,968611,52,28,24,242,0,748,30,1984,266,0,9
+2021-06-24,G,Longview/Tyler,G - Longview/Tyler,968611,52,28,24,242,0,748,30,1984,266,0,9
+2021-06-25,G,Longview/Tyler,G - Longview/Tyler,968611,56,30,26,226,0,736,29,1983,259,0,10
 2021-06-25,G,Longview/Tyler,G - Longview/Tyler,968611,56,30,26,226,0,736,29,1983,259,0,10
 2021-06-26,G,Longview/Tyler,G - Longview/Tyler,968611,55,28,27,224,0,747,36,1944,253,0,9
+2021-06-26,G,Longview/Tyler,G - Longview/Tyler,968611,55,28,27,224,0,747,36,1944,253,0,9
+2021-06-27,G,Longview/Tyler,G - Longview/Tyler,968611,54,30,24,233,0,811,44,1851,247,0,8
 2021-06-27,G,Longview/Tyler,G - Longview/Tyler,968611,54,30,24,233,0,811,44,1851,247,0,8
 2021-06-28,G,Longview/Tyler,G - Longview/Tyler,968611,53,32,21,239,0,851,42,1788,253,0,5
+2021-06-28,G,Longview/Tyler,G - Longview/Tyler,968611,53,32,21,239,0,851,42,1788,253,0,5
+2021-06-29,G,Longview/Tyler,G - Longview/Tyler,968611,59,37,22,216,0,772,31,1913,262,0,5
 2021-06-29,G,Longview/Tyler,G - Longview/Tyler,968611,59,37,22,216,0,772,31,1913,262,0,5
 2021-06-30,G,Longview/Tyler,G - Longview/Tyler,968611,64,44,20,218,0,723,38,1923,254,0,7
+2021-06-30,G,Longview/Tyler,G - Longview/Tyler,968611,64,44,20,218,0,723,38,1923,254,0,7
+2021-07-01,G,Longview/Tyler,G - Longview/Tyler,968611,61,39,22,226,0,694,36,1939,260,0,8
 2021-07-01,G,Longview/Tyler,G - Longview/Tyler,968611,61,39,22,226,0,694,36,1939,260,0,8
 2021-07-02,G,Longview/Tyler,G - Longview/Tyler,968611,58,37,21,233,0,745,40,1894,255,0,8
+2021-07-02,G,Longview/Tyler,G - Longview/Tyler,968611,58,37,21,233,0,745,40,1894,255,0,8
+2021-07-03,G,Longview/Tyler,G - Longview/Tyler,968611,58,38,20,241,0,845,46,1847,247,0,9
 2021-07-03,G,Longview/Tyler,G - Longview/Tyler,968611,58,38,20,241,0,845,46,1847,247,0,9
 2021-07-04,G,Longview/Tyler,G - Longview/Tyler,968611,61,38,23,253,0,860,56,1781,239,0,9
+2021-07-04,G,Longview/Tyler,G - Longview/Tyler,968611,61,38,23,253,0,860,56,1781,239,0,9
+2021-07-05,G,Longview/Tyler,G - Longview/Tyler,968611,57,34,23,243,0,855,49,1781,247,0,6
 2021-07-05,G,Longview/Tyler,G - Longview/Tyler,968611,57,34,23,243,0,855,49,1781,247,0,6
 2021-07-06,G,Longview/Tyler,G - Longview/Tyler,968611,62,39,22,253,1,853,56,1772,244,0,7
+2021-07-06,G,Longview/Tyler,G - Longview/Tyler,968611,62,39,22,253,1,853,56,1772,244,0,7
+2021-07-07,G,Longview/Tyler,G - Longview/Tyler,968611,68,43,24,235,1,738,42,1864,258,0,12
 2021-07-07,G,Longview/Tyler,G - Longview/Tyler,968611,68,43,24,235,1,738,42,1864,258,0,12
 2021-07-08,G,Longview/Tyler,G - Longview/Tyler,968611,76,49,26,228,1,682,45,1922,247,0,20
+2021-07-08,G,Longview/Tyler,G - Longview/Tyler,968611,76,49,26,228,1,682,45,1922,247,0,20
+2021-07-09,G,Longview/Tyler,G - Longview/Tyler,968611,77,50,26,241,1,678,51,1924,243,0,17
 2021-07-09,G,Longview/Tyler,G - Longview/Tyler,968611,77,50,26,241,1,678,51,1924,243,0,17
 2021-07-10,G,Longview/Tyler,G - Longview/Tyler,968611,80,53,26,240,1,711,47,1913,244,0,19
+2021-07-10,G,Longview/Tyler,G - Longview/Tyler,968611,80,53,26,240,1,711,47,1913,244,0,19
+2021-07-11,G,Longview/Tyler,G - Longview/Tyler,968611,86,53,33,245,0,779,50,1847,245,0,20
 2021-07-11,G,Longview/Tyler,G - Longview/Tyler,968611,86,53,33,245,0,779,50,1847,245,0,20
 2021-07-12,G,Longview/Tyler,G - Longview/Tyler,968611,95,59,36,229,0,800,45,1819,257,0,20
+2021-07-12,G,Longview/Tyler,G - Longview/Tyler,968611,95,59,36,229,0,800,45,1819,257,0,20
+2021-07-13,G,Longview/Tyler,G - Longview/Tyler,968611,112,73,39,220,0,722,44,1917,266,0,23
 2021-07-13,G,Longview/Tyler,G - Longview/Tyler,968611,112,73,39,220,0,722,44,1917,266,0,23
 2021-07-14,G,Longview/Tyler,G - Longview/Tyler,968611,127,84,43,225,0,693,36,1966,268,0,22
+2021-07-14,G,Longview/Tyler,G - Longview/Tyler,968611,127,84,43,225,0,693,36,1966,268,0,22
+2021-07-15,G,Longview/Tyler,G - Longview/Tyler,968611,128,85,43,216,0,693,33,1929,272,0,23
 2021-07-15,G,Longview/Tyler,G - Longview/Tyler,968611,128,85,43,216,0,693,33,1929,272,0,23
 2021-07-16,G,Longview/Tyler,G - Longview/Tyler,968611,133,85,48,205,0,700,41,1933,264,0,19
+2021-07-16,G,Longview/Tyler,G - Longview/Tyler,968611,133,85,48,205,0,700,41,1933,264,0,19
+2021-07-17,G,Longview/Tyler,G - Longview/Tyler,968611,128,80,48,210,0,690,37,1923,259,0,18
 2021-07-17,G,Longview/Tyler,G - Longview/Tyler,968611,128,80,48,210,0,690,37,1923,259,0,18
 2021-07-18,G,Longview/Tyler,G - Longview/Tyler,968611,125,76,49,210,0,839,40,1825,266,0,21
+2021-07-18,G,Longview/Tyler,G - Longview/Tyler,968611,125,76,49,210,0,839,40,1825,266,0,21
+2021-07-19,G,Longview/Tyler,G - Longview/Tyler,968611,132,82,50,216,0,753,34,1889,267,0,27
 2021-07-19,G,Longview/Tyler,G - Longview/Tyler,968611,132,82,50,216,0,753,34,1889,267,0,27
 2021-07-20,G,Longview/Tyler,G - Longview/Tyler,968611,142,87,55,223,0,674,33,1939,271,0,32
+2021-07-20,G,Longview/Tyler,G - Longview/Tyler,968611,142,87,55,223,0,674,33,1939,271,0,32
+2021-07-21,G,Longview/Tyler,G - Longview/Tyler,968611,144,89,55,215,0,630,29,1968,276,0,26
 2021-07-21,G,Longview/Tyler,G - Longview/Tyler,968611,144,89,55,215,0,630,29,1968,276,0,26
 2021-07-22,G,Longview/Tyler,G - Longview/Tyler,968611,165,104,60,221,1,681,34,1999,276,0,28
+2021-07-22,G,Longview/Tyler,G - Longview/Tyler,968611,165,104,60,221,1,681,34,1999,276,0,28
+2021-07-23,G,Longview/Tyler,G - Longview/Tyler,968611,166,112,54,233,0,727,32,1916,273,0,31
 2021-07-23,G,Longview/Tyler,G - Longview/Tyler,968611,166,112,54,233,0,727,32,1916,273,0,31
 2021-07-24,G,Longview/Tyler,G - Longview/Tyler,968611,166,112,54,238,0,783,46,1907,259,0,28
+2021-07-24,G,Longview/Tyler,G - Longview/Tyler,968611,166,112,54,238,0,783,46,1907,259,0,28
+2021-07-25,G,Longview/Tyler,G - Longview/Tyler,968611,180,121,58,239,1,740,42,1873,258,0,33
 2021-07-25,G,Longview/Tyler,G - Longview/Tyler,968611,180,121,58,239,1,740,42,1873,258,0,33
 2021-07-26,G,Longview/Tyler,G - Longview/Tyler,968611,193,133,59,241,1,782,54,1822,252,0,26
+2021-07-26,G,Longview/Tyler,G - Longview/Tyler,968611,193,133,59,241,1,782,54,1822,252,0,26
+2021-07-27,G,Longview/Tyler,G - Longview/Tyler,968611,201,127,72,236,2,686,41,1940,270,0,32
 2021-07-27,G,Longview/Tyler,G - Longview/Tyler,968611,201,127,72,236,2,686,41,1940,270,0,32
 2021-07-28,G,Longview/Tyler,G - Longview/Tyler,968611,206,134,71,227,1,641,43,2010,261,0,42
+2021-07-28,G,Longview/Tyler,G - Longview/Tyler,968611,206,134,71,227,1,641,43,2010,261,0,42
+2021-07-29,G,Longview/Tyler,G - Longview/Tyler,968611,219,142,77,222,0,622,38,1973,261,0,57
 2021-07-29,G,Longview/Tyler,G - Longview/Tyler,968611,219,142,77,222,0,622,38,1973,261,0,57
 2021-07-30,G,Longview/Tyler,G - Longview/Tyler,968611,238,163,75,219,0,629,45,1944,262,0,60
+2021-07-30,G,Longview/Tyler,G - Longview/Tyler,968611,238,163,75,219,0,629,45,1944,262,0,60
+2021-07-31,G,Longview/Tyler,G - Longview/Tyler,968611,241,159,82,206,0,703,43,1905,259,0,45
 2021-07-31,G,Longview/Tyler,G - Longview/Tyler,968611,241,159,82,206,0,703,43,1905,259,0,45
 2021-08-01,G,Longview/Tyler,G - Longview/Tyler,968611,250,161,89,209,0,718,42,1863,262,0,45
+2021-08-01,G,Longview/Tyler,G - Longview/Tyler,968611,250,161,89,209,0,718,42,1863,262,0,45
+2021-08-02,G,Longview/Tyler,G - Longview/Tyler,968611,280,187,93,195,0,736,39,1871,262,0,46
 2021-08-02,G,Longview/Tyler,G - Longview/Tyler,968611,280,187,93,195,0,736,39,1871,262,0,46
 2021-08-03,G,Longview/Tyler,G - Longview/Tyler,968611,298,207,91,199,0,654,30,1983,267,0,50
+2021-08-03,G,Longview/Tyler,G - Longview/Tyler,968611,298,207,91,199,0,654,30,1983,267,0,50
+2021-08-04,G,Longview/Tyler,G - Longview/Tyler,968611,317,216,101,205,0,588,29,2005,282,0,61
 2021-08-04,G,Longview/Tyler,G - Longview/Tyler,968611,317,216,101,205,0,588,29,2005,282,0,61
 2021-08-05,G,Longview/Tyler,G - Longview/Tyler,968611,352,245,106,201,1,578,30,2014,272,0,59
+2021-08-05,G,Longview/Tyler,G - Longview/Tyler,968611,352,245,106,201,1,578,30,2014,272,0,59
+2021-08-06,G,Longview/Tyler,G - Longview/Tyler,968611,373,254,116,179,3,564,30,1973,274,0,54
 2021-08-06,G,Longview/Tyler,G - Longview/Tyler,968611,373,254,116,179,3,564,30,1973,274,0,54
 2021-08-07,G,Longview/Tyler,G - Longview/Tyler,968611,381,258,120,185,3,600,24,1933,278,0,70
+2021-08-07,G,Longview/Tyler,G - Longview/Tyler,968611,381,258,120,185,3,600,24,1933,278,0,70
+2021-08-08,G,Longview/Tyler,G - Longview/Tyler,968611,383,263,117,189,3,614,24,1908,278,0,55
 2021-08-08,G,Longview/Tyler,G - Longview/Tyler,968611,383,263,117,189,3,614,24,1908,278,0,55
 2021-08-09,G,Longview/Tyler,G - Longview/Tyler,968611,438,315,123,211,0,606,16,1910,289,0,67
+2021-08-09,G,Longview/Tyler,G - Longview/Tyler,968611,438,315,123,211,0,606,16,1910,289,0,67
+2021-08-10,G,Longview/Tyler,G - Longview/Tyler,968611,469,340,129,182,0,567,16,1961,290,0,82
 2021-08-10,G,Longview/Tyler,G - Longview/Tyler,968611,469,340,129,182,0,567,16,1961,290,0,82
 2021-08-11,G,Longview/Tyler,G - Longview/Tyler,968611,468,336,132,182,0,523,12,2009,298,0,82
+2021-08-11,G,Longview/Tyler,G - Longview/Tyler,968611,468,336,132,182,0,523,12,2009,298,0,82
+2021-08-12,G,Longview/Tyler,G - Longview/Tyler,968611,483,345,138,158,0,525,14,2011,296,0,68
 2021-08-12,G,Longview/Tyler,G - Longview/Tyler,968611,483,345,138,158,0,525,14,2011,296,0,68
 2021-08-13,G,Longview/Tyler,G - Longview/Tyler,968611,509,364,145,186,0,511,13,2073,305,0,67
+2021-08-13,G,Longview/Tyler,G - Longview/Tyler,968611,509,364,145,186,0,511,13,2073,305,0,67
+2021-08-14,G,Longview/Tyler,G - Longview/Tyler,968611,514,361,151,182,2,563,15,1989,307,0,83
 2021-08-14,G,Longview/Tyler,G - Longview/Tyler,968611,514,361,151,182,2,563,15,1989,307,0,83
 2021-08-15,G,Longview/Tyler,G - Longview/Tyler,968611,531,373,155,162,3,528,14,1967,313,0,83
+2021-08-15,G,Longview/Tyler,G - Longview/Tyler,968611,531,373,155,162,3,528,14,1967,313,0,83
+2021-08-16,G,Longview/Tyler,G - Longview/Tyler,968611,551,376,174,169,1,552,17,1957,317,0,82
 2021-08-16,G,Longview/Tyler,G - Longview/Tyler,968611,551,376,174,169,1,552,17,1957,317,0,82
 2021-08-17,G,Longview/Tyler,G - Longview/Tyler,968611,575,402,173,160,0,548,15,2067,309,0,104
+2021-08-17,G,Longview/Tyler,G - Longview/Tyler,968611,575,402,173,160,0,548,15,2067,309,0,104
+2021-08-18,G,Longview/Tyler,G - Longview/Tyler,968611,598,415,182,177,1,539,26,2100,306,0,86
 2021-08-18,G,Longview/Tyler,G - Longview/Tyler,968611,598,415,182,177,1,539,26,2100,306,0,86
 2021-08-19,G,Longview/Tyler,G - Longview/Tyler,968611,610,415,193,199,2,558,19,2086,288,0,94
+2021-08-19,G,Longview/Tyler,G - Longview/Tyler,968611,610,415,193,199,2,558,19,2086,288,0,94
+2021-08-20,G,Longview/Tyler,G - Longview/Tyler,968611,642,444,197,194,1,568,17,2071,288,0,96
 2021-08-20,G,Longview/Tyler,G - Longview/Tyler,968611,642,444,197,194,1,568,17,2071,288,0,96
 2021-08-21,G,Longview/Tyler,G - Longview/Tyler,968611,645,438,206,204,1,602,12,2034,297,0,84
+2021-08-21,G,Longview/Tyler,G - Longview/Tyler,968611,645,438,206,204,1,602,12,2034,297,0,84
+2021-08-22,G,Longview/Tyler,G - Longview/Tyler,968611,646,441,205,196,0,588,13,2027,295,0,88
 2021-08-22,G,Longview/Tyler,G - Longview/Tyler,968611,646,441,205,196,0,588,13,2027,295,0,88
 2021-08-23,G,Longview/Tyler,G - Longview/Tyler,968611,680,474,205,206,1,513,12,1973,302,0,102
+2021-08-23,G,Longview/Tyler,G - Longview/Tyler,968611,680,474,205,206,1,513,12,1973,302,0,102
+2021-08-24,G,Longview/Tyler,G - Longview/Tyler,968611,702,481,220,177,1,576,13,1958,314,0,98
 2021-08-24,G,Longview/Tyler,G - Longview/Tyler,968611,702,481,220,177,1,576,13,1958,314,0,98
 2021-08-25,G,Longview/Tyler,G - Longview/Tyler,968611,711,481,228,145,2,515,9,2037,325,0,97
+2021-08-25,G,Longview/Tyler,G - Longview/Tyler,968611,711,481,228,145,2,515,9,2037,325,0,97
+2021-08-26,G,Longview/Tyler,G - Longview/Tyler,968611,728,494,233,170,1,524,8,2087,329,0,109
 2021-08-26,G,Longview/Tyler,G - Longview/Tyler,968611,728,494,233,170,1,524,8,2087,329,0,109
 2021-08-27,G,Longview/Tyler,G - Longview/Tyler,968611,729,488,240,162,1,522,9,2082,328,0,89
+2021-08-27,G,Longview/Tyler,G - Longview/Tyler,968611,729,488,240,162,1,522,9,2082,328,0,89
+2021-08-28,G,Longview/Tyler,G - Longview/Tyler,968611,735,497,236,211,2,546,11,2043,350,0,91
 2021-08-28,G,Longview/Tyler,G - Longview/Tyler,968611,735,497,236,211,2,546,11,2043,350,0,91
 2021-08-29,G,Longview/Tyler,G - Longview/Tyler,968611,732,480,251,206,1,535,11,2026,359,0,75
+2021-08-29,G,Longview/Tyler,G - Longview/Tyler,968611,732,480,251,206,1,535,11,2026,359,0,75
+2021-08-30,G,Longview/Tyler,G - Longview/Tyler,968611,776,543,231,167,2,576,11,1993,369,0,85
 2021-08-30,G,Longview/Tyler,G - Longview/Tyler,968611,776,543,231,167,2,576,11,1993,369,0,85
 2021-08-31,G,Longview/Tyler,G - Longview/Tyler,968611,785,532,252,131,1,538,11,2066,383,0,106
+2021-08-31,G,Longview/Tyler,G - Longview/Tyler,968611,785,532,252,131,1,538,11,2066,383,0,106
+2021-09-01,G,Longview/Tyler,G - Longview/Tyler,968611,795,534,261,122,0,523,8,2097,402,0,106
 2021-09-01,G,Longview/Tyler,G - Longview/Tyler,968611,795,534,261,122,0,523,8,2097,402,0,106
 2021-09-02,G,Longview/Tyler,G - Longview/Tyler,968611,787,523,264,127,0,542,9,2099,398,0,84
+2021-09-02,G,Longview/Tyler,G - Longview/Tyler,968611,787,523,264,127,0,542,9,2099,398,0,84
+2021-09-03,G,Longview/Tyler,G - Longview/Tyler,968611,801,528,272,128,1,534,7,2139,406,0,87
 2021-09-03,G,Longview/Tyler,G - Longview/Tyler,968611,801,528,272,128,1,534,7,2139,406,0,87
 2021-09-04,G,Longview/Tyler,G - Longview/Tyler,968611,819,537,278,130,4,515,10,2148,409,0,96
+2021-09-04,G,Longview/Tyler,G - Longview/Tyler,968611,819,537,278,130,4,515,10,2148,409,0,96
+2021-09-05,G,Longview/Tyler,G - Longview/Tyler,968611,820,541,276,129,3,534,7,2119,404,0,86
 2021-09-05,G,Longview/Tyler,G - Longview/Tyler,968611,820,541,276,129,3,534,7,2119,404,0,86
 2021-09-06,G,Longview/Tyler,G - Longview/Tyler,968611,814,540,272,140,2,513,7,2125,398,0,88
+2021-09-06,G,Longview/Tyler,G - Longview/Tyler,968611,814,540,272,140,2,513,7,2125,398,0,88
+2021-09-07,G,Longview/Tyler,G - Longview/Tyler,968611,821,544,275,133,2,517,13,2107,406,0,88
 2021-09-07,G,Longview/Tyler,G - Longview/Tyler,968611,821,544,275,133,2,517,13,2107,406,0,88
 2021-09-08,G,Longview/Tyler,G - Longview/Tyler,968611,822,544,273,130,5,545,14,2128,416,0,90
+2021-09-08,G,Longview/Tyler,G - Longview/Tyler,968611,822,544,273,130,5,545,14,2128,416,0,90
+2021-09-09,G,Longview/Tyler,G - Longview/Tyler,968611,805,529,276,114,0,477,9,2148,426,0,102
 2021-09-09,G,Longview/Tyler,G - Longview/Tyler,968611,805,529,276,114,0,477,9,2148,426,0,102
 2021-09-10,G,Longview/Tyler,G - Longview/Tyler,968611,796,531,263,121,2,477,10,2153,424,0,77
+2021-09-10,G,Longview/Tyler,G - Longview/Tyler,968611,796,531,263,121,2,477,10,2153,424,0,77
+2021-09-11,G,Longview/Tyler,G - Longview/Tyler,968611,802,538,262,115,2,541,8,2144,423,0,95
 2021-09-11,G,Longview/Tyler,G - Longview/Tyler,968611,802,538,262,115,2,541,8,2144,423,0,95
 2021-09-12,G,Longview/Tyler,G - Longview/Tyler,968611,789,532,256,129,1,542,8,2087,416,0,80
+2021-09-12,G,Longview/Tyler,G - Longview/Tyler,968611,789,532,256,129,1,542,8,2087,416,0,80
+2021-09-13,G,Longview/Tyler,G - Longview/Tyler,968611,786,523,262,140,1,520,8,2054,420,0,65
 2021-09-13,G,Longview/Tyler,G - Longview/Tyler,968611,786,523,262,140,1,520,8,2054,420,0,65
 2021-09-14,G,Longview/Tyler,G - Longview/Tyler,968611,770,514,256,149,0,488,7,2059,422,0,75
+2021-09-14,G,Longview/Tyler,G - Longview/Tyler,968611,770,514,256,149,0,488,7,2059,422,0,75
+2021-09-15,G,Longview/Tyler,G - Longview/Tyler,968611,774,512,262,142,0,505,9,2152,421,0,76
 2021-09-15,G,Longview/Tyler,G - Longview/Tyler,968611,774,512,262,142,0,505,9,2152,421,0,76
 2021-09-16,G,Longview/Tyler,G - Longview/Tyler,968611,765,497,268,153,0,518,6,2197,425,0,71
+2021-09-16,G,Longview/Tyler,G - Longview/Tyler,968611,765,497,268,153,0,518,6,2197,425,0,71
+2021-09-17,G,Longview/Tyler,G - Longview/Tyler,968611,769,504,263,150,2,509,9,2177,431,0,89
 2021-09-17,G,Longview/Tyler,G - Longview/Tyler,968611,769,504,263,150,2,509,9,2177,431,0,89
 2021-09-18,G,Longview/Tyler,G - Longview/Tyler,968611,755,495,258,157,2,508,10,2154,433,0,76
+2021-09-18,G,Longview/Tyler,G - Longview/Tyler,968611,755,495,258,157,2,508,10,2154,433,0,76
+2021-09-19,G,Longview/Tyler,G - Longview/Tyler,968611,740,479,259,158,2,533,13,2109,424,0,74
 2021-09-19,G,Longview/Tyler,G - Longview/Tyler,968611,740,479,259,158,2,533,13,2109,424,0,74
 2021-09-20,G,Longview/Tyler,G - Longview/Tyler,968611,738,485,251,157,2,517,9,2115,430,0,56
+2021-09-20,G,Longview/Tyler,G - Longview/Tyler,968611,738,485,251,157,2,517,9,2115,430,0,56
+2021-09-21,G,Longview/Tyler,G - Longview/Tyler,968611,738,464,273,163,1,513,9,2168,414,0,48
 2021-09-21,G,Longview/Tyler,G - Longview/Tyler,968611,738,464,273,163,1,513,9,2168,414,0,48
 2021-09-22,G,Longview/Tyler,G - Longview/Tyler,968611,723,458,264,178,1,505,9,2170,418,0,55
+2021-09-22,G,Longview/Tyler,G - Longview/Tyler,968611,723,458,264,178,1,505,9,2170,418,0,55
+2021-09-23,G,Longview/Tyler,G - Longview/Tyler,968611,702,449,253,187,0,502,11,2178,414,0,49
 2021-09-23,G,Longview/Tyler,G - Longview/Tyler,968611,702,449,253,187,0,502,11,2178,414,0,49
 2021-09-24,G,Longview/Tyler,G - Longview/Tyler,968611,665,386,279,194,0,556,14,2103,431,0,46
+2021-09-24,G,Longview/Tyler,G - Longview/Tyler,968611,665,386,279,194,0,556,14,2103,431,0,46
+2021-09-25,G,Longview/Tyler,G - Longview/Tyler,968611,647,381,266,189,0,556,11,2070,424,0,56
 2021-09-25,G,Longview/Tyler,G - Longview/Tyler,968611,647,381,266,189,0,556,11,2070,424,0,56
 2021-09-26,G,Longview/Tyler,G - Longview/Tyler,968611,629,371,258,200,0,586,17,1997,417,0,43
+2021-09-26,G,Longview/Tyler,G - Longview/Tyler,968611,629,371,258,200,0,586,17,1997,417,0,43
+2021-09-27,G,Longview/Tyler,G - Longview/Tyler,968611,614,356,258,214,0,570,12,1974,416,0,39
 2021-09-27,G,Longview/Tyler,G - Longview/Tyler,968611,614,356,258,214,0,570,12,1974,416,0,39
 2021-09-28,G,Longview/Tyler,G - Longview/Tyler,968611,601,360,241,225,0,540,13,2024,411,0,52
+2021-09-28,G,Longview/Tyler,G - Longview/Tyler,968611,601,360,241,225,0,540,13,2024,411,0,52
+2021-09-29,G,Longview/Tyler,G - Longview/Tyler,968611,566,350,215,238,1,548,15,2088,404,0,46
 2021-09-29,G,Longview/Tyler,G - Longview/Tyler,968611,566,350,215,238,1,548,15,2088,404,0,46
 2021-09-30,G,Longview/Tyler,G - Longview/Tyler,968611,556,344,211,235,1,534,16,2055,394,0,45
+2021-09-30,G,Longview/Tyler,G - Longview/Tyler,968611,556,344,211,235,1,534,16,2055,394,0,45
+2021-10-01,G,Longview/Tyler,G - Longview/Tyler,968611,510,313,195,249,2,565,19,2050,389,0,30
 2021-10-01,G,Longview/Tyler,G - Longview/Tyler,968611,510,313,195,249,2,565,19,2050,389,0,30
 2021-10-02,G,Longview/Tyler,G - Longview/Tyler,968611,495,304,191,248,0,560,13,2009,399,0,33
+2021-10-02,G,Longview/Tyler,G - Longview/Tyler,968611,495,304,191,248,0,560,13,2009,399,0,33
+2021-10-03,G,Longview/Tyler,G - Longview/Tyler,968611,512,307,205,257,0,597,23,1982,392,0,34
 2021-10-03,G,Longview/Tyler,G - Longview/Tyler,968611,512,307,205,257,0,597,23,1982,392,0,34
 2021-10-04,G,Longview/Tyler,G - Longview/Tyler,968611,467,285,182,255,0,661,24,1927,379,0,33
+2021-10-04,G,Longview/Tyler,G - Longview/Tyler,968611,467,285,182,255,0,661,24,1927,379,0,33
+2021-10-05,G,Longview/Tyler,G - Longview/Tyler,968611,469,290,179,252,0,565,21,1956,382,0,33
 2021-10-05,G,Longview/Tyler,G - Longview/Tyler,968611,469,290,179,252,0,565,21,1956,382,0,33
 2021-10-06,G,Longview/Tyler,G - Longview/Tyler,968611,447,284,163,281,0,596,14,1975,372,0,29
+2021-10-06,G,Longview/Tyler,G - Longview/Tyler,968611,447,284,163,281,0,596,14,1975,372,0,29
+2021-10-07,G,Longview/Tyler,G - Longview/Tyler,968611,424,266,158,282,0,592,21,1988,365,0,38
 2021-10-07,G,Longview/Tyler,G - Longview/Tyler,968611,424,266,158,282,0,592,21,1988,365,0,38
 2021-10-08,G,Longview/Tyler,G - Longview/Tyler,968611,410,250,160,273,0,553,17,2045,358,0,22
+2021-10-08,G,Longview/Tyler,G - Longview/Tyler,968611,410,250,160,273,0,553,17,2045,358,0,22
+2021-10-09,G,Longview/Tyler,G - Longview/Tyler,968611,387,221,164,274,2,607,21,1995,353,0,25
 2021-10-09,G,Longview/Tyler,G - Longview/Tyler,968611,387,221,164,274,2,607,21,1995,353,0,25
 2021-10-10,G,Longview/Tyler,G - Longview/Tyler,968611,379,219,158,267,2,711,24,1961,350,0,27
+2021-10-10,G,Longview/Tyler,G - Longview/Tyler,968611,379,219,158,267,2,711,24,1961,350,0,27
+2021-10-11,G,Longview/Tyler,G - Longview/Tyler,968611,376,228,148,268,0,636,19,1888,345,0,30
 2021-10-11,G,Longview/Tyler,G - Longview/Tyler,968611,376,228,148,268,0,636,19,1888,345,0,30
 2021-10-12,G,Longview/Tyler,G - Longview/Tyler,968611,359,217,142,266,0,577,14,1981,338,0,27
+2021-10-12,G,Longview/Tyler,G - Longview/Tyler,968611,359,217,142,266,0,577,14,1981,338,0,27
+2021-10-13,G,Longview/Tyler,G - Longview/Tyler,968611,350,208,142,301,0,529,13,2056,353,0,14
 2021-10-13,G,Longview/Tyler,G - Longview/Tyler,968611,350,208,142,301,0,529,13,2056,353,0,14
 2021-10-14,G,Longview/Tyler,G - Longview/Tyler,968611,338,199,139,302,0,554,14,2060,338,0,24
+2021-10-14,G,Longview/Tyler,G - Longview/Tyler,968611,338,199,139,302,0,554,14,2060,338,0,24
+2021-10-15,G,Longview/Tyler,G - Longview/Tyler,968611,334,199,135,280,0,546,21,2074,333,0,18
 2021-10-15,G,Longview/Tyler,G - Longview/Tyler,968611,334,199,135,280,0,546,21,2074,333,0,18
 2021-10-16,G,Longview/Tyler,G - Longview/Tyler,968611,314,185,129,290,0,587,25,1994,322,0,19
+2021-10-16,G,Longview/Tyler,G - Longview/Tyler,968611,314,185,129,290,0,587,25,1994,322,0,19
+2021-10-17,G,Longview/Tyler,G - Longview/Tyler,968611,310,177,132,289,1,611,29,1927,319,0,10
 2021-10-17,G,Longview/Tyler,G - Longview/Tyler,968611,310,177,132,289,1,611,29,1927,319,0,10
 2021-10-18,G,Longview/Tyler,G - Longview/Tyler,968611,274,161,112,305,1,637,32,1872,319,0,15
+2021-10-18,G,Longview/Tyler,G - Longview/Tyler,968611,274,161,112,305,1,637,32,1872,319,0,15
+2021-10-19,G,Longview/Tyler,G - Longview/Tyler,968611,264,152,111,326,1,609,23,1945,325,0,18
 2021-10-19,G,Longview/Tyler,G - Longview/Tyler,968611,264,152,111,326,1,609,23,1945,325,0,18
 2021-10-20,G,Longview/Tyler,G - Longview/Tyler,968611,271,154,116,344,1,641,26,1945,316,0,15
+2021-10-20,G,Longview/Tyler,G - Longview/Tyler,968611,271,154,116,344,1,641,26,1945,316,0,15
+2021-10-21,G,Longview/Tyler,G - Longview/Tyler,968611,264,143,120,340,1,607,24,1964,313,0,21
 2021-10-21,G,Longview/Tyler,G - Longview/Tyler,968611,264,143,120,340,1,607,24,1964,313,0,21
 2021-10-22,G,Longview/Tyler,G - Longview/Tyler,968611,243,126,116,338,1,660,26,1933,299,0,16
+2021-10-22,G,Longview/Tyler,G - Longview/Tyler,968611,243,126,116,338,1,660,26,1933,299,0,16
+2021-10-23,G,Longview/Tyler,G - Longview/Tyler,968611,242,124,117,337,1,723,38,1853,290,0,17
 2021-10-23,G,Longview/Tyler,G - Longview/Tyler,968611,242,124,117,337,1,723,38,1853,290,0,17
 2021-10-24,G,Longview/Tyler,G - Longview/Tyler,968611,233,116,116,340,1,751,39,1776,289,0,12
+2021-10-24,G,Longview/Tyler,G - Longview/Tyler,968611,233,116,116,340,1,751,39,1776,289,0,12
+2021-10-25,G,Longview/Tyler,G - Longview/Tyler,968611,220,105,115,346,0,728,31,1772,299,0,12
 2021-10-25,G,Longview/Tyler,G - Longview/Tyler,968611,220,105,115,346,0,728,31,1772,299,0,12
 2021-10-26,G,Longview/Tyler,G - Longview/Tyler,968611,219,111,108,353,0,620,25,1891,296,0,11
+2021-10-26,G,Longview/Tyler,G - Longview/Tyler,968611,219,111,108,353,0,620,25,1891,296,0,11
+2021-10-27,G,Longview/Tyler,G - Longview/Tyler,968611,207,106,101,363,0,625,26,1912,285,0,9
 2021-10-27,G,Longview/Tyler,G - Longview/Tyler,968611,207,106,101,363,0,625,26,1912,285,0,9
 2021-10-28,G,Longview/Tyler,G - Longview/Tyler,968611,199,99,100,363,0,640,37,1958,282,0,12
+2021-10-28,G,Longview/Tyler,G - Longview/Tyler,968611,199,99,100,363,0,640,37,1958,282,0,12
+2021-10-29,G,Longview/Tyler,G - Longview/Tyler,968611,186,93,93,368,0,668,36,1963,281,0,9
 2021-10-29,G,Longview/Tyler,G - Longview/Tyler,968611,186,93,93,368,0,668,36,1963,281,0,9
 2021-10-30,G,Longview/Tyler,G - Longview/Tyler,968611,183,98,85,360,0,803,49,1847,261,0,14
+2021-10-30,G,Longview/Tyler,G - Longview/Tyler,968611,183,98,85,360,0,803,49,1847,261,0,14
+2021-10-31,G,Longview/Tyler,G - Longview/Tyler,968611,188,101,87,361,0,844,55,1744,253,0,8
 2021-10-31,G,Longview/Tyler,G - Longview/Tyler,968611,188,101,87,361,0,844,55,1744,253,0,8
 2021-11-01,G,Longview/Tyler,G - Longview/Tyler,968611,187,100,87,386,0,768,57,1708,252,0,12
+2021-11-01,G,Longview/Tyler,G - Longview/Tyler,968611,187,100,87,386,0,768,57,1708,252,0,12
+2021-11-02,G,Longview/Tyler,G - Longview/Tyler,968611,173,90,82,360,1,685,50,1765,248,0,16
 2021-11-02,G,Longview/Tyler,G - Longview/Tyler,968611,173,90,82,360,1,685,50,1765,248,0,16
 2021-11-03,G,Longview/Tyler,G - Longview/Tyler,968611,161,82,79,369,0,712,59,1780,250,0,15
+2021-11-03,G,Longview/Tyler,G - Longview/Tyler,968611,161,82,79,369,0,712,59,1780,250,0,15
+2021-11-04,G,Longview/Tyler,G - Longview/Tyler,968611,155,78,77,379,0,693,55,1805,259,0,10
 2021-11-04,G,Longview/Tyler,G - Longview/Tyler,968611,155,78,77,379,0,693,55,1805,259,0,10
 2021-11-05,G,Longview/Tyler,G - Longview/Tyler,968611,154,83,71,387,0,739,60,1770,253,0,11
+2021-11-05,G,Longview/Tyler,G - Longview/Tyler,968611,154,83,71,387,0,739,60,1770,253,0,11
+2021-11-06,G,Longview/Tyler,G - Longview/Tyler,968611,145,75,70,381,0,774,58,1851,259,0,6
 2021-11-06,G,Longview/Tyler,G - Longview/Tyler,968611,145,75,70,381,0,774,58,1851,259,0,6
 2021-11-07,G,Longview/Tyler,G - Longview/Tyler,968611,143,78,65,383,0,870,58,1748,225,0,6
+2021-11-07,G,Longview/Tyler,G - Longview/Tyler,968611,143,78,65,383,0,870,58,1748,225,0,6
+2021-11-08,G,Longview/Tyler,G - Longview/Tyler,968611,130,77,53,379,0,825,58,1720,253,0,7
 2021-11-08,G,Longview/Tyler,G - Longview/Tyler,968611,130,77,53,379,0,825,58,1720,253,0,7
 2021-11-09,G,Longview/Tyler,G - Longview/Tyler,968611,122,70,52,380,0,713,50,1804,262,0,10
+2021-11-09,G,Longview/Tyler,G - Longview/Tyler,968611,122,70,52,380,0,713,50,1804,262,0,10
+2021-11-10,G,Longview/Tyler,G - Longview/Tyler,968611,126,73,53,373,0,732,56,1839,259,0,10
 2021-11-10,G,Longview/Tyler,G - Longview/Tyler,968611,126,73,53,373,0,732,56,1839,259,0,10
 2021-11-11,G,Longview/Tyler,G - Longview/Tyler,968611,113,62,51,373,0,674,54,1908,259,0,13
+2021-11-11,G,Longview/Tyler,G - Longview/Tyler,968611,113,62,51,373,0,674,54,1908,259,0,13
+2021-11-12,G,Longview/Tyler,G - Longview/Tyler,968611,111,58,53,355,0,676,63,1912,248,0,10
 2021-11-12,G,Longview/Tyler,G - Longview/Tyler,968611,111,58,53,355,0,676,63,1912,248,0,10
 2021-11-13,G,Longview/Tyler,G - Longview/Tyler,968611,108,58,50,352,0,816,63,1765,232,0,13
+2021-11-13,G,Longview/Tyler,G - Longview/Tyler,968611,108,58,50,352,0,816,63,1765,232,0,13
+2021-11-14,G,Longview/Tyler,G - Longview/Tyler,968611,106,58,48,346,0,828,66,1703,221,0,13
 2021-11-14,G,Longview/Tyler,G - Longview/Tyler,968611,106,58,48,346,0,828,66,1703,221,0,13
 2021-11-15,G,Longview/Tyler,G - Longview/Tyler,968611,113,61,52,355,0,722,56,1831,250,0,12
+2021-11-15,G,Longview/Tyler,G - Longview/Tyler,968611,113,61,52,355,0,722,56,1831,250,0,12
+2021-11-16,G,Longview/Tyler,G - Longview/Tyler,968611,99,60,39,356,0,688,54,1862,258,0,4
 2021-11-16,G,Longview/Tyler,G - Longview/Tyler,968611,99,60,39,356,0,688,54,1862,258,0,4
 2021-11-17,G,Longview/Tyler,G - Longview/Tyler,968611,97,61,36,354,0,642,49,1925,263,0,9
+2021-11-17,G,Longview/Tyler,G - Longview/Tyler,968611,97,61,36,354,0,642,49,1925,263,0,9
+2021-11-18,G,Longview/Tyler,G - Longview/Tyler,968611,91,61,30,249,0,633,44,1937,262,0,8
 2021-11-18,G,Longview/Tyler,G - Longview/Tyler,968611,91,61,30,249,0,633,44,1937,262,0,8
 2021-11-19,G,Longview/Tyler,G - Longview/Tyler,968611,88,60,28,253,0,677,48,1920,261,0,8
+2021-11-19,G,Longview/Tyler,G - Longview/Tyler,968611,88,60,28,253,0,677,48,1920,261,0,8
+2021-11-20,G,Longview/Tyler,G - Longview/Tyler,968611,89,60,29,262,0,754,48,1847,263,0,10
 2021-11-20,G,Longview/Tyler,G - Longview/Tyler,968611,89,60,29,262,0,754,48,1847,263,0,10
 2021-11-21,G,Longview/Tyler,G - Longview/Tyler,968611,89,60,29,262,0,788,55,1800,255,0,6
+2021-11-21,G,Longview/Tyler,G - Longview/Tyler,968611,89,60,29,262,0,788,55,1800,255,0,6
+2021-11-22,G,Longview/Tyler,G - Longview/Tyler,968611,98,63,35,254,0,833,54,1716,250,0,7
 2021-11-22,G,Longview/Tyler,G - Longview/Tyler,968611,98,63,35,254,0,833,54,1716,250,0,7
 2021-11-23,G,Longview/Tyler,G - Longview/Tyler,968611,92,57,35,254,0,709,53,1850,251,0,9
+2021-11-23,G,Longview/Tyler,G - Longview/Tyler,968611,92,57,35,254,0,709,53,1850,251,0,9
+2021-11-24,G,Longview/Tyler,G - Longview/Tyler,968611,90,58,32,254,0,680,39,1809,229,0,4
 2021-11-24,G,Longview/Tyler,G - Longview/Tyler,968611,90,58,32,254,0,680,39,1809,229,0,4
 2021-11-25,G,Longview/Tyler,G - Longview/Tyler,968611,90,56,34,256,0,841,64,1654,234,0,21
+2021-11-25,G,Longview/Tyler,G - Longview/Tyler,968611,90,56,34,256,0,841,64,1654,234,0,21
+2021-11-26,G,Longview/Tyler,G - Longview/Tyler,968611,96,56,40,248,0,862,63,1607,240,0,18
 2021-11-26,G,Longview/Tyler,G - Longview/Tyler,968611,96,56,40,248,0,862,63,1607,240,0,18
 2021-11-27,G,Longview/Tyler,G - Longview/Tyler,968611,99,60,39,259,0,801,59,1666,250,0,22
+2021-11-27,G,Longview/Tyler,G - Longview/Tyler,968611,99,60,39,259,0,801,59,1666,250,0,22
+2021-11-28,G,Longview/Tyler,G - Longview/Tyler,968611,98,58,40,252,0,737,56,1715,251,0,20
 2021-11-28,G,Longview/Tyler,G - Longview/Tyler,968611,98,58,40,252,0,737,56,1715,251,0,20
 2021-11-29,G,Longview/Tyler,G - Longview/Tyler,968611,104,61,43,233,0,708,45,1756,260,0,24
+2021-11-29,G,Longview/Tyler,G - Longview/Tyler,968611,104,61,43,233,0,708,45,1756,260,0,24
+2021-11-30,G,Longview/Tyler,G - Longview/Tyler,968611,104,67,37,234,0,613,27,1881,277,0,27
 2021-11-30,G,Longview/Tyler,G - Longview/Tyler,968611,104,67,37,234,0,613,27,1881,277,0,27
 2021-12-01,G,Longview/Tyler,G - Longview/Tyler,968611,97,63,34,249,0,624,30,1889,280,0,20
+2021-12-01,G,Longview/Tyler,G - Longview/Tyler,968611,97,63,34,249,0,624,30,1889,280,0,20
+2021-12-02,G,Longview/Tyler,G - Longview/Tyler,968611,98,66,32,240,0,607,22,1893,260,0,25
 2021-12-02,G,Longview/Tyler,G - Longview/Tyler,968611,98,66,32,240,0,607,22,1893,260,0,25
 2021-12-03,G,Longview/Tyler,G - Longview/Tyler,968611,100,70,30,195,0,532,21,1943,268,0,15
 2021-12-04,G,Longview/Tyler,G - Longview/Tyler,968611,103,74,29,207,0,626,29,1842,251,0,13
@@ -7008,8 +7621,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,G,Longview/Tyler,G - Longview/Tyler,968611,,,,,,,,,,,
 2022-12-26,G,Longview/Tyler,G - Longview/Tyler,968611,,,,,,,,,,,
 2022-12-27,G,Longview/Tyler,G - Longview/Tyler,968611,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,G,Longview/Tyler,G - Longview/Tyler,968611,,,,,,,,,,,
+2022-12-28,G,Longview/Tyler,G - Longview/Tyler,968611,73,57,,181,0,621,23,1719,16,3,12
 2022-12-29,G,Longview/Tyler,G - Longview/Tyler,968611,,,,,,,,,,,
 2022-12-30,G,Longview/Tyler,G - Longview/Tyler,968611,,,,,,,,,,,
 2022-12-31,G,Longview/Tyler,G - Longview/Tyler,968611,,,,,,,,,,,
@@ -7017,9 +7629,13 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,G,Longview/Tyler,G - Longview/Tyler,968611,,,,,,,,,,,
 2023-01-03,G,Longview/Tyler,G - Longview/Tyler,968611,,,,,,,,,,,
 2023-01-04,G,Longview/Tyler,G - Longview/Tyler,968611,83,65,,188,0,562,19,1818,18,0,13
-=======
-2022-12-28,G,Longview/Tyler,G - Longview/Tyler,968611,73,57,,181,0,621,23,1719,16,3,12
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,G,Longview/Tyler,G - Longview/Tyler,968611,,,,,,,,,,,
+2023-01-06,G,Longview/Tyler,G - Longview/Tyler,968611,,,,,,,,,,,
+2023-01-07,G,Longview/Tyler,G - Longview/Tyler,968611,,,,,,,,,,,
+2023-01-08,G,Longview/Tyler,G - Longview/Tyler,968611,,,,,,,,,,,
+2023-01-09,G,Longview/Tyler,G - Longview/Tyler,968611,,,,,,,,,,,
+2023-01-10,G,Longview/Tyler,G - Longview/Tyler,968611,,,,,,,,,,,
+2023-01-11,G,Longview/Tyler,G - Longview/Tyler,968611,81,60,,183,0,563,22,1898,21,0,8
 2020-04-11,H,Lufkin,H - Lufkin,272151,15,10,5,,,257,35,190,,0,
 2020-04-12,H,Lufkin,H - Lufkin,272151,18,14,4,,,253,33,198,,0,
 2020-04-13,H,Lufkin,H - Lufkin,272151,23,18,5,,,217,28,149,,0,
@@ -8011,8 +8627,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,H,Lufkin,H - Lufkin,272151,,,,,,,,,,,
 2022-12-26,H,Lufkin,H - Lufkin,272151,,,,,,,,,,,
 2022-12-27,H,Lufkin,H - Lufkin,272151,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,H,Lufkin,H - Lufkin,272151,,,,,,,,,,,
+2022-12-28,H,Lufkin,H - Lufkin,272151,24,18,,96,0,88,4,274,6,0,4
 2022-12-29,H,Lufkin,H - Lufkin,272151,,,,,,,,,,,
 2022-12-30,H,Lufkin,H - Lufkin,272151,,,,,,,,,,,
 2022-12-31,H,Lufkin,H - Lufkin,272151,,,,,,,,,,,
@@ -8020,9 +8635,13 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,H,Lufkin,H - Lufkin,272151,,,,,,,,,,,
 2023-01-03,H,Lufkin,H - Lufkin,272151,,,,,,,,,,,
 2023-01-04,H,Lufkin,H - Lufkin,272151,28,24,,104,0,76,11,304,4,0,5
-=======
-2022-12-28,H,Lufkin,H - Lufkin,272151,24,18,,96,0,88,4,274,6,0,4
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,H,Lufkin,H - Lufkin,272151,,,,,,,,,,,
+2023-01-06,H,Lufkin,H - Lufkin,272151,,,,,,,,,,,
+2023-01-07,H,Lufkin,H - Lufkin,272151,,,,,,,,,,,
+2023-01-08,H,Lufkin,H - Lufkin,272151,,,,,,,,,,,
+2023-01-09,H,Lufkin,H - Lufkin,272151,,,,,,,,,,,
+2023-01-10,H,Lufkin,H - Lufkin,272151,,,,,,,,,,,
+2023-01-11,H,Lufkin,H - Lufkin,272151,31,29,,95,0,64,4,236,2,0,2
 2020-04-11,I,El Paso,I - El Paso,881765,14,8,6,,,702,73,328,,27,
 2020-04-12,I,El Paso,I - El Paso,881765,23,14,9,,,693,67,471,,28,
 2020-04-13,I,El Paso,I - El Paso,881765,12,6,6,,,693,86,318,,25,
@@ -9014,8 +9633,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,I,El Paso,I - El Paso,881765,,,,,,,,,,,
 2022-12-26,I,El Paso,I - El Paso,881765,,,,,,,,,,,
 2022-12-27,I,El Paso,I - El Paso,881765,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,I,El Paso,I - El Paso,881765,,,,,,,,,,,
+2022-12-28,I,El Paso,I - El Paso,881765,122,93,,267,6,255,9,1554,29,3,22
 2022-12-29,I,El Paso,I - El Paso,881765,,,,,,,,,,,
 2022-12-30,I,El Paso,I - El Paso,881765,,,,,,,,,,,
 2022-12-31,I,El Paso,I - El Paso,881765,,,,,,,,,,,
@@ -9023,9 +9641,13 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,I,El Paso,I - El Paso,881765,,,,,,,,,,,
 2023-01-03,I,El Paso,I - El Paso,881765,,,,,,,,,,,
 2023-01-04,I,El Paso,I - El Paso,881765,120,90,,272,3,224,5,1687,30,2,25
-=======
-2022-12-28,I,El Paso,I - El Paso,881765,122,93,,267,6,255,9,1554,29,3,22
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,I,El Paso,I - El Paso,881765,,,,,,,,,,,
+2023-01-06,I,El Paso,I - El Paso,881765,,,,,,,,,,,
+2023-01-07,I,El Paso,I - El Paso,881765,,,,,,,,,,,
+2023-01-08,I,El Paso,I - El Paso,881765,,,,,,,,,,,
+2023-01-09,I,El Paso,I - El Paso,881765,,,,,,,,,,,
+2023-01-10,I,El Paso,I - El Paso,881765,,,,,,,,,,,
+2023-01-11,I,El Paso,I - El Paso,881765,94,70,,265,3,225,5,1759,24,1,17
 2020-04-11,J,Midland/Odessa,J - Midland/Odessa,526736,10,6,4,,,732,42,663,,0,
 2020-04-12,J,Midland/Odessa,J - Midland/Odessa,526736,11,7,4,,,689,37,676,,0,
 2020-04-13,J,Midland/Odessa,J - Midland/Odessa,526736,17,8,9,,,677,45,640,,0,
@@ -10017,8 +10639,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,J,Midland/Odessa,J - Midland/Odessa,526736,,,,,,,,,,,
 2022-12-26,J,Midland/Odessa,J - Midland/Odessa,526736,,,,,,,,,,,
 2022-12-27,J,Midland/Odessa,J - Midland/Odessa,526736,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,J,Midland/Odessa,J - Midland/Odessa,526736,,,,,,,,,,,
+2022-12-28,J,Midland/Odessa,J - Midland/Odessa,526736,47,39,,291,0,627,26,876,8,0,15
 2022-12-29,J,Midland/Odessa,J - Midland/Odessa,526736,,,,,,,,,,,
 2022-12-30,J,Midland/Odessa,J - Midland/Odessa,526736,,,,,,,,,,,
 2022-12-31,J,Midland/Odessa,J - Midland/Odessa,526736,,,,,,,,,,,
@@ -10026,9 +10647,13 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,J,Midland/Odessa,J - Midland/Odessa,526736,,,,,,,,,,,
 2023-01-03,J,Midland/Odessa,J - Midland/Odessa,526736,,,,,,,,,,,
 2023-01-04,J,Midland/Odessa,J - Midland/Odessa,526736,54,40,,292,0,636,20,934,14,0,10
-=======
-2022-12-28,J,Midland/Odessa,J - Midland/Odessa,526736,47,39,,291,0,627,26,876,8,0,15
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,J,Midland/Odessa,J - Midland/Odessa,526736,,,,,,,,,,,
+2023-01-06,J,Midland/Odessa,J - Midland/Odessa,526736,,,,,,,,,,,
+2023-01-07,J,Midland/Odessa,J - Midland/Odessa,526736,,,,,,,,,,,
+2023-01-08,J,Midland/Odessa,J - Midland/Odessa,526736,,,,,,,,,,,
+2023-01-09,J,Midland/Odessa,J - Midland/Odessa,526736,,,,,,,,,,,
+2023-01-10,J,Midland/Odessa,J - Midland/Odessa,526736,,,,,,,,,,,
+2023-01-11,J,Midland/Odessa,J - Midland/Odessa,526736,45,38,,278,1,617,22,963,7,0,6
 2020-04-11,K,San Angelo,K - San Angelo,179457,0,0,0,,,284,13,208,,0,
 2020-04-12,K,San Angelo,K - San Angelo,179457,0,0,0,,,293,15,199,,0,
 2020-04-13,K,San Angelo,K - San Angelo,179457,0,0,0,,,298,18,210,,0,
@@ -11020,8 +11645,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,K,San Angelo,K - San Angelo,179457,,,,,,,,,,,
 2022-12-26,K,San Angelo,K - San Angelo,179457,,,,,,,,,,,
 2022-12-27,K,San Angelo,K - San Angelo,179457,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,K,San Angelo,K - San Angelo,179457,,,,,,,,,,,
+2022-12-28,K,San Angelo,K - San Angelo,179457,15,14,,100,0,238,17,318,1,0,6
 2022-12-29,K,San Angelo,K - San Angelo,179457,,,,,,,,,,,
 2022-12-30,K,San Angelo,K - San Angelo,179457,,,,,,,,,,,
 2022-12-31,K,San Angelo,K - San Angelo,179457,,,,,,,,,,,
@@ -11029,9 +11653,13 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,K,San Angelo,K - San Angelo,179457,,,,,,,,,,,
 2023-01-03,K,San Angelo,K - San Angelo,179457,,,,,,,,,,,
 2023-01-04,K,San Angelo,K - San Angelo,179457,18,17,,106,0,204,19,367,1,0,5
-=======
-2022-12-28,K,San Angelo,K - San Angelo,179457,15,14,,100,0,238,17,318,1,0,6
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,K,San Angelo,K - San Angelo,179457,,,,,,,,,,,
+2023-01-06,K,San Angelo,K - San Angelo,179457,,,,,,,,,,,
+2023-01-07,K,San Angelo,K - San Angelo,179457,,,,,,,,,,,
+2023-01-08,K,San Angelo,K - San Angelo,179457,,,,,,,,,,,
+2023-01-09,K,San Angelo,K - San Angelo,179457,,,,,,,,,,,
+2023-01-10,K,San Angelo,K - San Angelo,179457,,,,,,,,,,,
+2023-01-11,K,San Angelo,K - San Angelo,179457,11,11,,116,0,224,18,356,0,0,1
 2020-04-11,L,Belton/Killeen,L - Belton/Killeen,507311,11,1,10,,,663,56,434,,15,
 2020-04-12,L,Belton/Killeen,L - Belton/Killeen,507311,12,6,6,,,633,46,397,,14,
 2020-04-13,L,Belton/Killeen,L - Belton/Killeen,507311,13,7,6,,,647,57,308,,13,
@@ -12023,8 +12651,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,L,Belton/Killeen,L - Belton/Killeen,507311,,,,,,,,,,,
 2022-12-26,L,Belton/Killeen,L - Belton/Killeen,507311,,,,,,,,,,,
 2022-12-27,L,Belton/Killeen,L - Belton/Killeen,507311,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,L,Belton/Killeen,L - Belton/Killeen,507311,,,,,,,,,,,
+2022-12-28,L,Belton/Killeen,L - Belton/Killeen,507311,47,39,,135,2,188,10,840,8,1,20
 2022-12-29,L,Belton/Killeen,L - Belton/Killeen,507311,,,,,,,,,,,
 2022-12-30,L,Belton/Killeen,L - Belton/Killeen,507311,,,,,,,,,,,
 2022-12-31,L,Belton/Killeen,L - Belton/Killeen,507311,,,,,,,,,,,
@@ -12032,9 +12659,13 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,L,Belton/Killeen,L - Belton/Killeen,507311,,,,,,,,,,,
 2023-01-03,L,Belton/Killeen,L - Belton/Killeen,507311,,,,,,,,,,,
 2023-01-04,L,Belton/Killeen,L - Belton/Killeen,507311,67,54,,128,2,155,9,890,13,2,32
-=======
-2022-12-28,L,Belton/Killeen,L - Belton/Killeen,507311,47,39,,135,2,188,10,840,8,1,20
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,L,Belton/Killeen,L - Belton/Killeen,507311,,,,,,,,,,,
+2023-01-06,L,Belton/Killeen,L - Belton/Killeen,507311,,,,,,,,,,,
+2023-01-07,L,Belton/Killeen,L - Belton/Killeen,507311,,,,,,,,,,,
+2023-01-08,L,Belton/Killeen,L - Belton/Killeen,507311,,,,,,,,,,,
+2023-01-09,L,Belton/Killeen,L - Belton/Killeen,507311,,,,,,,,,,,
+2023-01-10,L,Belton/Killeen,L - Belton/Killeen,507311,,,,,,,,,,,
+2023-01-11,L,Belton/Killeen,L - Belton/Killeen,507311,62,52,,134,2,155,10,924,10,0,24
 2020-04-11,M,Waco,M - Waco,330048,9,4,5,,,363,26,262,,0,
 2020-04-12,M,Waco,M - Waco,330048,2,0,2,,,238,21,133,,0,
 2020-04-13,M,Waco,M - Waco,330048,5,3,2,,,333,26,137,,0,
@@ -13026,8 +13657,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,M,Waco,M - Waco,330048,,,,,,,,,,,
 2022-12-26,M,Waco,M - Waco,330048,,,,,,,,,,,
 2022-12-27,M,Waco,M - Waco,330048,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,M,Waco,M - Waco,330048,,,,,,,,,,,
+2022-12-28,M,Waco,M - Waco,330048,27,24,,54,0,123,15,410,3,0,7
 2022-12-29,M,Waco,M - Waco,330048,,,,,,,,,,,
 2022-12-30,M,Waco,M - Waco,330048,,,,,,,,,,,
 2022-12-31,M,Waco,M - Waco,330048,,,,,,,,,,,
@@ -13035,9 +13665,13 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,M,Waco,M - Waco,330048,,,,,,,,,,,
 2023-01-03,M,Waco,M - Waco,330048,,,,,,,,,,,
 2023-01-04,M,Waco,M - Waco,330048,45,37,,52,0,97,8,496,8,0,5
-=======
-2022-12-28,M,Waco,M - Waco,330048,27,24,,54,0,123,15,410,3,0,7
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,M,Waco,M - Waco,330048,,,,,,,,,,,
+2023-01-06,M,Waco,M - Waco,330048,,,,,,,,,,,
+2023-01-07,M,Waco,M - Waco,330048,,,,,,,,,,,
+2023-01-08,M,Waco,M - Waco,330048,,,,,,,,,,,
+2023-01-09,M,Waco,M - Waco,330048,,,,,,,,,,,
+2023-01-10,M,Waco,M - Waco,330048,,,,,,,,,,,
+2023-01-11,M,Waco,M - Waco,330048,37,34,,55,1,73,0,472,3,0,1
 2020-04-11,N,Bryan/College Station,N - Bryan/College Station,360335,24,16,8,,,278,15,234,,0,
 2020-04-12,N,Bryan/College Station,N - Bryan/College Station,360335,31,14,17,,,274,26,247,,0,
 2020-04-13,N,Bryan/College Station,N - Bryan/College Station,360335,13,7,6,,,293,27,111,,0,
@@ -14029,8 +14663,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,N,Bryan/College Station,N - Bryan/College Station,360335,,,,,,,,,,,
 2022-12-26,N,Bryan/College Station,N - Bryan/College Station,360335,,,,,,,,,,,
 2022-12-27,N,Bryan/College Station,N - Bryan/College Station,360335,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,N,Bryan/College Station,N - Bryan/College Station,360335,,,,,,,,,,,
+2022-12-28,N,Bryan/College Station,N - Bryan/College Station,360335,40,37,,73,0,54,1,318,3,0,12
 2022-12-29,N,Bryan/College Station,N - Bryan/College Station,360335,,,,,,,,,,,
 2022-12-30,N,Bryan/College Station,N - Bryan/College Station,360335,,,,,,,,,,,
 2022-12-31,N,Bryan/College Station,N - Bryan/College Station,360335,,,,,,,,,,,
@@ -14038,9 +14671,13 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,N,Bryan/College Station,N - Bryan/College Station,360335,,,,,,,,,,,
 2023-01-03,N,Bryan/College Station,N - Bryan/College Station,360335,,,,,,,,,,,
 2023-01-04,N,Bryan/College Station,N - Bryan/College Station,360335,28,25,,84,0,35,0,383,3,0,8
-=======
-2022-12-28,N,Bryan/College Station,N - Bryan/College Station,360335,40,37,,73,0,54,1,318,3,0,12
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,N,Bryan/College Station,N - Bryan/College Station,360335,,,,,,,,,,,
+2023-01-06,N,Bryan/College Station,N - Bryan/College Station,360335,,,,,,,,,,,
+2023-01-07,N,Bryan/College Station,N - Bryan/College Station,360335,,,,,,,,,,,
+2023-01-08,N,Bryan/College Station,N - Bryan/College Station,360335,,,,,,,,,,,
+2023-01-09,N,Bryan/College Station,N - Bryan/College Station,360335,,,,,,,,,,,
+2023-01-10,N,Bryan/College Station,N - Bryan/College Station,360335,,,,,,,,,,,
+2023-01-11,N,Bryan/College Station,N - Bryan/College Station,360335,36,32,,71,0,35,2,383,4,0,7
 2020-04-11,O,Austin,O - Austin,2375407,22,10,12,,,1408,144,1059,,7,
 2020-04-12,O,Austin,O - Austin,2375407,26,11,15,,,1227,156,1028,,8,
 2020-04-13,O,Austin,O - Austin,2375407,28,12,16,,,1427,164,1148,,12,
@@ -15032,8 +15669,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,O,Austin,O - Austin,2375407,,,,,,,,,,,
 2022-12-26,O,Austin,O - Austin,2375407,,,,,,,,,,,
 2022-12-27,O,Austin,O - Austin,2375407,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,O,Austin,O - Austin,2375407,,,,,,,,,,,
+2022-12-28,O,Austin,O - Austin,2375407,151,124,,370,5,357,43,3035,27,1,30
 2022-12-29,O,Austin,O - Austin,2375407,,,,,,,,,,,
 2022-12-30,O,Austin,O - Austin,2375407,,,,,,,,,,,
 2022-12-31,O,Austin,O - Austin,2375407,,,,,,,,,,,
@@ -15041,9 +15677,13 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,O,Austin,O - Austin,2375407,,,,,,,,,,,
 2023-01-03,O,Austin,O - Austin,2375407,,,,,,,,,,,
 2023-01-04,O,Austin,O - Austin,2375407,221,184,,372,4,235,15,3329,37,1,43
-=======
-2022-12-28,O,Austin,O - Austin,2375407,151,124,,370,5,357,43,3035,27,1,30
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,O,Austin,O - Austin,2375407,,,,,,,,,,,
+2023-01-06,O,Austin,O - Austin,2375407,,,,,,,,,,,
+2023-01-07,O,Austin,O - Austin,2375407,,,,,,,,,,,
+2023-01-08,O,Austin,O - Austin,2375407,,,,,,,,,,,
+2023-01-09,O,Austin,O - Austin,2375407,,,,,,,,,,,
+2023-01-10,O,Austin,O - Austin,2375407,,,,,,,,,,,
+2023-01-11,O,Austin,O - Austin,2375407,235,192,,375,7,227,16,3536,43,2,29
 2020-04-11,P,San Antonio,P - San Antonio,2945792,57,35,22,,,2488,351,3398,,73,
 2020-04-12,P,San Antonio,P - San Antonio,2945792,57,35,22,,,2596,333,3405,,67,
 2020-04-13,P,San Antonio,P - San Antonio,2945792,64,39,25,,,2493,342,3276,,64,
@@ -16035,8 +16675,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,P,San Antonio,P - San Antonio,2945792,,,,,,,,,,,
 2022-12-26,P,San Antonio,P - San Antonio,2945792,,,,,,,,,,,
 2022-12-27,P,San Antonio,P - San Antonio,2945792,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,P,San Antonio,P - San Antonio,2945792,,,,,,,,,,,
+2022-12-28,P,San Antonio,P - San Antonio,2945792,223,183,,751,18,1180,108,4683,40,13,75
 2022-12-29,P,San Antonio,P - San Antonio,2945792,,,,,,,,,,,
 2022-12-30,P,San Antonio,P - San Antonio,2945792,,,,,,,,,,,
 2022-12-31,P,San Antonio,P - San Antonio,2945792,,,,,,,,,,,
@@ -16044,9 +16683,13 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,P,San Antonio,P - San Antonio,2945792,,,,,,,,,,,
 2023-01-03,P,San Antonio,P - San Antonio,2945792,,,,,,,,,,,
 2023-01-04,P,San Antonio,P - San Antonio,2945792,273,223,,754,14,915,68,5060,50,9,67
-=======
-2022-12-28,P,San Antonio,P - San Antonio,2945792,223,183,,751,18,1180,108,4683,40,13,75
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,P,San Antonio,P - San Antonio,2945792,,,,,,,,,,,
+2023-01-06,P,San Antonio,P - San Antonio,2945792,,,,,,,,,,,
+2023-01-07,P,San Antonio,P - San Antonio,2945792,,,,,,,,,,,
+2023-01-08,P,San Antonio,P - San Antonio,2945792,,,,,,,,,,,
+2023-01-09,P,San Antonio,P - San Antonio,2945792,,,,,,,,,,,
+2023-01-10,P,San Antonio,P - San Antonio,2945792,,,,,,,,,,,
+2023-01-11,P,San Antonio,P - San Antonio,2945792,286,231,,768,13,891,75,5177,55,12,45
 2020-04-11,Q,Houston,Q - Houston,6688587,516,302,214,,,4062,403,6949,,114,
 2020-04-12,Q,Houston,Q - Houston,6688587,319,185,134,,,3562,341,5616,,120,
 2020-04-13,Q,Houston,Q - Houston,6688587,527,293,234,,,3531,401,7254,,119,
@@ -17038,8 +17681,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,Q,Houston,Q - Houston,6688587,,,,,,,,,,,
 2022-12-26,Q,Houston,Q - Houston,6688587,,,,,,,,,,,
 2022-12-27,Q,Houston,Q - Houston,6688587,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,Q,Houston,Q - Houston,6688587,,,,,,,,,,,
+2022-12-28,Q,Houston,Q - Houston,6688587,650,561,,1400,33,1109,102,9974,89,17,98
 2022-12-29,Q,Houston,Q - Houston,6688587,,,,,,,,,,,
 2022-12-30,Q,Houston,Q - Houston,6688587,,,,,,,,,,,
 2022-12-31,Q,Houston,Q - Houston,6688587,,,,,,,,,,,
@@ -17047,9 +17689,13 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,Q,Houston,Q - Houston,6688587,,,,,,,,,,,
 2023-01-03,Q,Houston,Q - Houston,6688587,,,,,,,,,,,
 2023-01-04,Q,Houston,Q - Houston,6688587,927,808,,1389,42,809,62,11212,119,10,128
-=======
-2022-12-28,Q,Houston,Q - Houston,6688587,650,561,,1400,33,1109,102,9974,89,17,98
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,Q,Houston,Q - Houston,6688587,,,,,,,,,,,
+2023-01-06,Q,Houston,Q - Houston,6688587,,,,,,,,,,,
+2023-01-07,Q,Houston,Q - Houston,6688587,,,,,,,,,,,
+2023-01-08,Q,Houston,Q - Houston,6688587,,,,,,,,,,,
+2023-01-09,Q,Houston,Q - Houston,6688587,,,,,,,,,,,
+2023-01-10,Q,Houston,Q - Houston,6688587,,,,,,,,,,,
+2023-01-11,Q,Houston,Q - Houston,6688587,946,805,,1392,41,809,86,11987,141,11,105
 2020-04-11,R,Galveston,R - Galveston,1309237,76,46,30,,,572,48,867,,8,
 2020-04-12,R,Galveston,R - Galveston,1309237,84,50,34,,,558,49,855,,6,
 2020-04-13,R,Galveston,R - Galveston,1309237,97,60,37,,,621,47,875,,5,
@@ -18041,8 +18687,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,R,Galveston,R - Galveston,1309237,,,,,,,,,,,
 2022-12-26,R,Galveston,R - Galveston,1309237,,,,,,,,,,,
 2022-12-27,R,Galveston,R - Galveston,1309237,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,R,Galveston,R - Galveston,1309237,,,,,,,,,,,
+2022-12-28,R,Galveston,R - Galveston,1309237,57,42,,221,1,199,12,936,15,12,21
 2022-12-29,R,Galveston,R - Galveston,1309237,,,,,,,,,,,
 2022-12-30,R,Galveston,R - Galveston,1309237,,,,,,,,,,,
 2022-12-31,R,Galveston,R - Galveston,1309237,,,,,,,,,,,
@@ -18050,9 +18695,13 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,R,Galveston,R - Galveston,1309237,,,,,,,,,,,
 2023-01-03,R,Galveston,R - Galveston,1309237,,,,,,,,,,,
 2023-01-04,R,Galveston,R - Galveston,1309237,86,76,,211,1,165,12,1394,10,1,30
-=======
-2022-12-28,R,Galveston,R - Galveston,1309237,57,42,,221,1,199,12,936,15,12,21
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,R,Galveston,R - Galveston,1309237,,,,,,,,,,,
+2023-01-06,R,Galveston,R - Galveston,1309237,,,,,,,,,,,
+2023-01-07,R,Galveston,R - Galveston,1309237,,,,,,,,,,,
+2023-01-08,R,Galveston,R - Galveston,1309237,,,,,,,,,,,
+2023-01-09,R,Galveston,R - Galveston,1309237,,,,,,,,,,,
+2023-01-10,R,Galveston,R - Galveston,1309237,,,,,,,,,,,
+2023-01-11,R,Galveston,R - Galveston,1309237,88,70,,214,2,150,2,1355,18,1,19
 2020-04-11,S,Victoria,S - Victoria,186672,16,12,4,,,277,30,254,,0,
 2020-04-12,S,Victoria,S - Victoria,186672,21,15,6,,,278,33,240,,0,
 2020-04-13,S,Victoria,S - Victoria,186672,22,17,5,,,290,31,248,,0,
@@ -19044,8 +19693,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,S,Victoria,S - Victoria,186672,,,,,,,,,,,
 2022-12-26,S,Victoria,S - Victoria,186672,,,,,,,,,,,
 2022-12-27,S,Victoria,S - Victoria,186672,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,S,Victoria,S - Victoria,186672,,,,,,,,,,,
+2022-12-28,S,Victoria,S - Victoria,186672,23,23,,64,0,131,12,302,0,0,3
 2022-12-29,S,Victoria,S - Victoria,186672,,,,,,,,,,,
 2022-12-30,S,Victoria,S - Victoria,186672,,,,,,,,,,,
 2022-12-31,S,Victoria,S - Victoria,186672,,,,,,,,,,,
@@ -19053,9 +19701,13 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,S,Victoria,S - Victoria,186672,,,,,,,,,,,
 2023-01-03,S,Victoria,S - Victoria,186672,,,,,,,,,,,
 2023-01-04,S,Victoria,S - Victoria,186672,40,30,,59,0,126,8,331,10,0,13
-=======
-2022-12-28,S,Victoria,S - Victoria,186672,23,23,,64,0,131,12,302,0,0,3
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,S,Victoria,S - Victoria,186672,,,,,,,,,,,
+2023-01-06,S,Victoria,S - Victoria,186672,,,,,,,,,,,
+2023-01-07,S,Victoria,S - Victoria,186672,,,,,,,,,,,
+2023-01-08,S,Victoria,S - Victoria,186672,,,,,,,,,,,
+2023-01-09,S,Victoria,S - Victoria,186672,,,,,,,,,,,
+2023-01-10,S,Victoria,S - Victoria,186672,,,,,,,,,,,
+2023-01-11,S,Victoria,S - Victoria,186672,38,31,,60,0,97,6,352,7,0,6
 2020-04-11,T,Laredo,T - Laredo,295669,25,13,12,,,100,15,255,,0,
 2020-04-12,T,Laredo,T - Laredo,295669,24,13,11,,,110,21,238,,0,
 2020-04-13,T,Laredo,T - Laredo,295669,28,17,11,,,86,16,241,,0,
@@ -20047,8 +20699,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,T,Laredo,T - Laredo,295669,,,,,,,,,,,
 2022-12-26,T,Laredo,T - Laredo,295669,,,,,,,,,,,
 2022-12-27,T,Laredo,T - Laredo,295669,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,T,Laredo,T - Laredo,295669,,,,,,,,,,,
+2022-12-28,T,Laredo,T - Laredo,295669,17,14,,73,0,5,0,345,3,0,1
 2022-12-29,T,Laredo,T - Laredo,295669,,,,,,,,,,,
 2022-12-30,T,Laredo,T - Laredo,295669,,,,,,,,,,,
 2022-12-31,T,Laredo,T - Laredo,295669,,,,,,,,,,,
@@ -20056,9 +20707,13 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,T,Laredo,T - Laredo,295669,,,,,,,,,,,
 2023-01-03,T,Laredo,T - Laredo,295669,,,,,,,,,,,
 2023-01-04,T,Laredo,T - Laredo,295669,16,14,,72,0,4,0,354,2,0,1
-=======
-2022-12-28,T,Laredo,T - Laredo,295669,17,14,,73,0,5,0,345,3,0,1
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,T,Laredo,T - Laredo,295669,,,,,,,,,,,
+2023-01-06,T,Laredo,T - Laredo,295669,,,,,,,,,,,
+2023-01-07,T,Laredo,T - Laredo,295669,,,,,,,,,,,
+2023-01-08,T,Laredo,T - Laredo,295669,,,,,,,,,,,
+2023-01-09,T,Laredo,T - Laredo,295669,,,,,,,,,,,
+2023-01-10,T,Laredo,T - Laredo,295669,,,,,,,,,,,
+2023-01-11,T,Laredo,T - Laredo,295669,21,16,,72,0,9,1,368,5,0,1
 2020-04-11,U,Corpus Christi,U - Corpus Christi,630897,9,4,5,,,360,21,785,,11,
 2020-04-12,U,Corpus Christi,U - Corpus Christi,630897,12,7,5,,,382,23,765,,11,
 2020-04-13,U,Corpus Christi,U - Corpus Christi,630897,9,4,5,,,360,15,779,,11,
@@ -21050,8 +21705,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,U,Corpus Christi,U - Corpus Christi,630897,,,,,,,,,,,
 2022-12-26,U,Corpus Christi,U - Corpus Christi,630897,,,,,,,,,,,
 2022-12-27,U,Corpus Christi,U - Corpus Christi,630897,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,U,Corpus Christi,U - Corpus Christi,630897,,,,,,,,,,,
+2022-12-28,U,Corpus Christi,U - Corpus Christi,630897,57,41,,172,0,188,13,1041,16,0,7
 2022-12-29,U,Corpus Christi,U - Corpus Christi,630897,,,,,,,,,,,
 2022-12-30,U,Corpus Christi,U - Corpus Christi,630897,,,,,,,,,,,
 2022-12-31,U,Corpus Christi,U - Corpus Christi,630897,,,,,,,,,,,
@@ -21059,9 +21713,13 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,U,Corpus Christi,U - Corpus Christi,630897,,,,,,,,,,,
 2023-01-03,U,Corpus Christi,U - Corpus Christi,630897,,,,,,,,,,,
 2023-01-04,U,Corpus Christi,U - Corpus Christi,630897,94,83,,160,7,127,5,1095,11,0,29
-=======
-2022-12-28,U,Corpus Christi,U - Corpus Christi,630897,57,41,,172,0,188,13,1041,16,0,7
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,U,Corpus Christi,U - Corpus Christi,630897,,,,,,,,,,,
+2023-01-06,U,Corpus Christi,U - Corpus Christi,630897,,,,,,,,,,,
+2023-01-07,U,Corpus Christi,U - Corpus Christi,630897,,,,,,,,,,,
+2023-01-08,U,Corpus Christi,U - Corpus Christi,630897,,,,,,,,,,,
+2023-01-09,U,Corpus Christi,U - Corpus Christi,630897,,,,,,,,,,,
+2023-01-10,U,Corpus Christi,U - Corpus Christi,630897,,,,,,,,,,,
+2023-01-11,U,Corpus Christi,U - Corpus Christi,630897,100,84,,166,3,137,10,1124,16,4,8
 2020-04-11,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,57,39,18,,,881,108,1219,,27,
 2020-04-12,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,65,43,22,,,861,105,1157,,30,
 2020-04-13,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,68,36,32,,,817,101,1333,,29,
@@ -22053,8 +22711,7 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2022-12-25,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,,,,,,,,,,,
 2022-12-26,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,,,,,,,,,,,
 2022-12-27,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,,,,,,,,,,,
-<<<<<<< HEAD
-2022-12-28,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,,,,,,,,,,,
+2022-12-28,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,108,89,,368,2,391,21,2276,19,3,41
 2022-12-29,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,,,,,,,,,,,
 2022-12-30,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,,,,,,,,,,,
 2022-12-31,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,,,,,,,,,,,
@@ -22062,6 +22719,10 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-01-02,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,,,,,,,,,,,
 2023-01-03,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,,,,,,,,,,,
 2023-01-04,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,159,133,,372,10,406,37,2285,26,10,57
-=======
-2022-12-28,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,108,89,,368,2,391,21,2276,19,3,41
->>>>>>> 4fa3390162568754b829a2c786d998d1190d28fa
+2023-01-05,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,,,,,,,,,,,
+2023-01-06,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,,,,,,,,,,,
+2023-01-07,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,,,,,,,,,,,
+2023-01-08,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,,,,,,,,,,,
+2023-01-09,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,,,,,,,,,,,
+2023-01-10,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,,,,,,,,,,,
+2023-01-11,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1385112,150,123,,382,8,360,25,2415,27,6,48
