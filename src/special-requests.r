@@ -393,8 +393,7 @@ CURRENT_RT_DATE = fread('special-requests/TMC/rt_estimate.csv') %>%
 
 # new pull --------------------------------------------------------------------------------------------
 # DSHS began uploading daily data again on 2022-12-14
-new_case_url = 'https://www.dshs.texas.gov/sites/default/files/chs/data/Texas%20COVID-19%20New%20Confirmed%20Cases%20by%20County.xlsx'
-# new_case_url = "https://www.dshs.texas.gov/sites/default/files/chs/data/Texas%20COVID-19%20New%20Confirmed%20Cases%20by%20County.xlsx"
+new_case_url = "https://www.dshs.texas.gov/sites/default/files/chs/data/COVID/Texas%20COVID-19%20New%20Confirmed%20Cases%20by%20County.xlsx"
 temp         = tempfile()
 curl::curl_download(new_case_url, temp, mode = 'wb')
 sheet_names = readxl::excel_sheets(temp)
@@ -421,7 +420,6 @@ max_case_date = max(DSHS_vitals_long$Date, na.rm = TRUE)
 date_diff     = difftime(max_case_date, CURRENT_RT_DATE, units = 'days')
 # check cumulative file
 if (date_diff <= 1) {
-  new_case_url = 'https://www.dshs.texas.gov/sites/default/files/chs/data/Texas%20COVID-19%20Cumulative%20Confirmed%20Cases%20by%20County.xlsx'
   temp         = tempfile()
   curl::curl_download(new_case_url, temp, mode = 'wb')
   sheet_names = readxl::excel_sheets(temp)
