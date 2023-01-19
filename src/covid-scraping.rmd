@@ -3,10 +3,10 @@ title: 'COVID Scraping'
 author: 'Jeffrey Brennan'
 output: html_document
 editor_options:
-chunk_output_type: console
+  chunk_output_type: console
 knit: (function(inputFile, encoding) {
-rmarkdown::render(inputFile, encoding = encoding, output_dir = "diagnostics/",
-knit_root_dir = "C:/Users/jeffb/Desktop/Life/personal-projects/COVID") })
+  rmarkdown::render(inputFile, encoding = encoding, output_dir = "diagnostics/",
+                    knit_root_dir = "C:/Users/jeffb/Desktop/Life/personal-projects/COVID") })
 ---
 
 # SETUP
