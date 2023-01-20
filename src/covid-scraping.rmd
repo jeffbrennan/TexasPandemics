@@ -3,10 +3,10 @@ title: 'COVID Scraping'
 author: 'Jeffrey Brennan'
 output: html_document
 editor_options:
-  chunk_output_type: console
+chunk_output_type: console
 knit: (function(inputFile, encoding) {
-  rmarkdown::render(inputFile, encoding = encoding, output_dir = "diagnostics/",
-                    knit_root_dir = "C:/Users/jeffb/Desktop/Life/personal-projects/COVID") })
+rmarkdown::render(inputFile, encoding = encoding, output_dir = "diagnostics/",
+knit_root_dir = "C:/Users/jeffb/Desktop/Life/personal-projects/COVID") })
 ---
 
 # SETUP
@@ -835,8 +835,10 @@ DSHS_vitals_long = DSHS_cases_long %>%
   left_join(DSHS_deaths_long, by = c('County', 'Date')) %>%
   arrange(County, Date) %>%
   mutate(across(c(Cases_Daily, Deaths_Daily), ~ifelse(is.na(.), 0, .))) %>%
+  group_by(County) %>%
   mutate(Cases_Cumulative = cumsum(Cases_Daily)) %>%
   mutate(Deaths_Cumulative = cumsum(Deaths_Daily)) %>%
+  ungroup() %>%
   mutate(Cases_Daily_Imputed       = NA,
          Deaths_Daily_Imputed      = NA,
          Cases_Cumulative_Imputed  = NA,
@@ -1423,10 +1425,10 @@ state_demo = lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>%
     setNames(slice(., 1) %>% unlist()) %>%
     rename(Date = ncol(.)) %>%
     slice(2:nrow(.))) %>%
-  rbindlist(fill = TRUE) |>
-    mutate(`Race/Ethnicity` = ifelse(is.na(`Race/Ethnicity`), str_c(Race, Ethnicity), `Race/Ethnicity`)) |>
-    select(-any_of(c('Race', 'Ethnicity', 'People Vaccinated with at Least One Dose', 'People Vaccinated'))) |>
-    unite(Age_Group, starts_with('Age'), remove = TRUE, na.rm = TRUE) |>
+  rbindlist(fill = TRUE) %>%
+  mutate(`Race/Ethnicity` = ifelse(is.na(`Race/Ethnicity`), str_c(Race, Ethnicity), `Race/Ethnicity`)) %>%
+  select(-any_of(c('Race', 'Ethnicity', 'People Vaccinated with at Least One Dose', 'People Vaccinated'))) %>%
+  unite(Age_Group, starts_with('Age'), remove = TRUE, na.rm = TRUE) |>
     unite(Booster, contains('Booster'), remove = TRUE, na.rm = TRUE) |>
     rename(
       any_of(
@@ -1438,15 +1440,18 @@ state_demo = lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>%
           Gender                  = 'Gender '
         )
       )
-    ) |>
-    filter(Age_Group != 'Total') %>%
-  mutate(Age_Group = ifelse(Age_Group == '44692', '5-11 years', Age_Group)) %>%
-  mutate(Age_Group = ifelse(Age_Group == '44910', '12-15 years', Age_Group)) %>%
+    ) %>%
+  filter(Age_Group != 'Total') %>%
+  mutate(Age_Group = str_replace_all(Age_Group, 'yr', '')) %>%
+  mutate(Age_Group = str_replace_all(Age_Group, 'mo', ' months')) %>%
+  mutate(Age_Group = ifelse(Age_Group %in% c('44692', '45057'), '5-11 years', Age_Group)) %>%
+  mutate(Age_Group = ifelse(Age_Group %in% c('45275', '44910'), '12-15 years', Age_Group)) %>%
   mutate(Age_Group = ifelse(!str_detect(Age_Group, 'years|Unknown'), glue('{Age_Group} years'), Age_Group)) %>%
+  mutate(Age_Group = str_squish(Age_Group)) %>%
   # remove dupes
-  arrange(Date) |>
-    group_by(Gender, Age_Group, `Race/Ethnicity`) |>
-    mutate(dupe_val = Fully_Vaccinated == lag(Fully_Vaccinated)) %>%
+  arrange(Date) %>%
+  group_by(Gender, Age_Group, `Race/Ethnicity`) %>%
+  mutate(dupe_val = Fully_Vaccinated == lag(Fully_Vaccinated)) %>%
   group_by(Date) %>%
   mutate(dupe_count = sum(dupe_val, na.rm = TRUE)) %>%
   mutate(row_count = n()) %>%
