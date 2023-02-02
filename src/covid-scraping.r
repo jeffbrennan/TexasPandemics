@@ -1301,7 +1301,6 @@ TSA_hosp_combined_cleaned = TSA_hosp_combined %>%
   rename(
     all_of(
       c(
-        # "Hospitalizations_General"     = "Adult COVID-19 General",
         # ICU----------------------------------------------------
         "Beds_Occupied_ICU"            = "ICU Beds Occupied",
         "Beds_Available_ICU"           = "Adult ICU Beds Available",
@@ -1399,7 +1398,10 @@ merged_tsa = DSHS_tsa %>%
   select(Date, TSA, TSA_Name, TSA_Combined, Population_DSHS,
          Hospitalizations_Total:Hospitalizations_24) %>%
   filter(Date >= as.Date('2020-04-11')) %>%
-  arrange(TSA, Date)
+  arrange(TSA, Date) %>%
+  distinct()
+
+stopifnot(merged_tsa %>% group_by(Date, TSA) %>% filter(n() > 1) %>% nrow() == 0)
 
 fwrite(merged_tsa, file = 'tableau/hospitalizations_tsa.csv')
 
