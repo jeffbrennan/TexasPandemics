@@ -592,8 +592,8 @@ DSHS_deaths_long = all_fatalities %>%
   rbindlist(fill = TRUE) %>%
   pivot_longer(!County) %>%
   filter(!is.na(value)) %>%
-  rename(Date         = name,
-         Deaths_Daily = value) %>%
+  rename(Date              = name,
+         Deaths_Cumulative = value) %>%
   filter(!str_to_upper(Date) %in% c("TOTAL", "UNKNOWN DATE")) %>%
   mutate(Date = ifelse(!is.na(as.integer(Date)),
                        as.character(as.Date(as.integer(Date), origin = '1899-12-30')),
@@ -601,7 +601,13 @@ DSHS_deaths_long = all_fatalities %>%
   )
   ) %>%
   mutate(Date = as.Date(Date)) %>%
-  mutate(Deaths_Daily = as.integer(Deaths_Daily))
+  mutate(Deaths_Cumulative = as.integer(Deaths_Cumulative)) %>%
+  group_by(County) %>%
+  arrange(Date) %>%
+  mutate(Deaths_Daily = Deaths_Cumulative - lag(Deaths_Cumulative)) %>%
+  select(-Deaths_Cumulative) %>%
+  ungroup() %>%
+  mutate(Deaths_Daily = ifelse(is.na(Deaths_Daily), 0, Deaths_Daily))
 
 max_death_date = max(DSHS_cases_long$Date, na.rm = TRUE)
 
@@ -1249,52 +1255,144 @@ DSHS_hosp_clean = function(df, var_name) {
   return(df_long)
 }
 
-TSA_HOSP_QUERY      = 'https://services3.arcgis.com/vljlarU2635mITsl/ArcGIS/rest/services/covid19_tsa_data_hosted/FeatureServer/0/query?where=0%3D0&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&relationParam=&returnGeodetic=false&outFields=tsa%2Ctotal_lab_confirmed%2Cped_lab_confirmed_inpatient%2Ctotal_adult_lab_confirmed%2Ctotal_beds_occupied%2Ctotal_adult_icu%2Ctotal_ventilators_available%2Ctotal_lab_confirmed%2Ctotal_lab_confirmed_24hrs%2Ctotal_beds_available%2Cavailable_staffed_icu%2Cavailable_staffed_picu&returnGeometry=false&returnCentroid=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&defaultSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pjson&token='
-TSA_HOSP_DATE_QUERY = "https://services3.arcgis.com/vljlarU2635mITsl/ArcGIS/rest/services/covid19_tsa_data_hosted/FeatureServer/layers?f=pjson"
-TSA_HOSP_DATE_NUM   = fromJSON(TSA_HOSP_DATE_QUERY)$
-  layers$
-  editingInfo$
-  lastEditDate
+# TSA excel sheet --------------------------------------------------------------------------------------------
+TSA_source = 'https://www.dshs.texas.gov/sites/default/files/chs/data/COVID/Combined%20Hospital%20Data%20over%20Time%20by%20TSA%20Region.xlsx'
+curl::curl_download(TSA_source, glue('original-sources/historical/hosp_xlsx/hosp_{date_out}.xlsx'))
+TSA_hosp_all_sheets = read_excel_allsheets(glue('original-sources/historical/hosp_xlsx/hosp_{date_out}.xlsx'), skip_option = 2)
 
-TSA_HOSP_DATE = as.POSIXct(TSA_HOSP_DATE_NUM / 1000, origin = "1970-01-01") %>%
-  as.Date()
+names(TSA_hosp_all_sheets)
 
-hosp_cols_new = fromJSON(TSA_HOSP_QUERY)$features$attributes %>%
-  mutate(Hospitalizations_General = total_lab_confirmed - total_adult_icu) %>%
-  # mutate(Hospitalizations_Pediatric = total_lab_confirmed - total_adult_lab_confirmed) %>%
-  rename(c(
-    "Hospitalizations_Total"       = "total_lab_confirmed",
-    # "Hospitalizations_General" = "Adult COVID-19 General",
-    "Hospitalizations_ICU"         = "total_adult_icu",
-    "Ventilators_Available"        = "total_ventilators_available",
-    "Hospitalizations_Pediatric"   = "ped_lab_confirmed_inpatient",
-    "Hospitalizations_24"          = "total_lab_confirmed_24hrs",
-    "Beds_Available_Total"         = "total_beds_available",
-    "Beds_Available_ICU"           = "available_staffed_icu",
-    "Beds_Occupied_Total"          = "total_beds_occupied",
-    "Beds_Occupied_ICU"            = "total_adult_icu",
-    "Pediatric_Beds_Available_ICU" = "available_staffed_picu",
-    "TSA"                          = "tsa")) %>%
-  mutate(Date = TSA_HOSP_DATE)
 
-# View(hosp_cols_new)
-hosp_url = 'https://raw.githubusercontent.com/jeffbrennan/TexasPandemics/master/tableau/hospitalizations_tsa.csv'
+TSA_hosp_combined = map(
+  names(TSA_hosp_all_sheets),
+  function(x) {
+    message(x)
 
-hosp_cols = fread(hosp_url, fill = TRUE) %>%
-  select(Date, TSA, Hospitalizations_Total:Hospitalizations_24) %>%
-  filter(str_detect(Date, '\\d{4}-\\d{2}-\\d{2}')) %>%
-  plyr::rbind.fill(hosp_cols_new) %>%
-  arrange(TSA, Date) %>%
-  mutate(Date = as.Date(Date)) %>%
-  distinct() %>%
+    raw_sheet = TSA_hosp_all_sheets[[x]]
+    if (!any(str_detect(names(raw_sheet), 'TSA'))) {
+      col_row   = which(str_detect(raw_sheet[, 1], 'TSA'))
+      raw_sheet = raw_sheet %>%
+        setNames(raw_sheet[col_row,]) %>%
+        slice((col_row + 1):nrow(raw_sheet))
+
+    }
+
+    cleaned_sheet = raw_sheet %>%
+      select(-any_of(c("TSA.AREA"))) %>%
+      rename(any_of(c(TSA = 'TSA ID', TSA = 'TSA.ID'))) %>%
+      pivot_longer(!TSA) %>%
+      mutate(Hosp_Var = !!quo_name(x)) %>%
+      rename(Date = name) %>%
+      relocate(Hosp_Var, .before = 'value')
+    return(cleaned_sheet)
+  }
+) %>%
+  rbindlist(fill = TRUE)
+
+TSA_hosp_combined_cleaned = TSA_hosp_combined %>%
+  mutate(TSA = str_replace_all(TSA, '\\.', '')) %>%
+  filter(str_length(TSA) == 1) %>%
+  filter(!is.na(value)) %>%
+  filter(!str_detect(Hosp_Var, '%')) %>%
+  mutate(value = as.integer(value)) %>%
+  pivot_wider(id_cols     = c(Date, TSA),
+              names_from  = Hosp_Var,
+              values_from = value) %>%
+  rename(
+    all_of(
+      c(
+        # "Hospitalizations_General"     = "Adult COVID-19 General",
+        # ICU----------------------------------------------------
+        "Beds_Occupied_ICU"            = "ICU Beds Occupied",
+        "Beds_Available_ICU"           = "Adult ICU Beds Available",
+        "Hospitalizations_ICU"         = "Adult COVID-19 ICU",
+
+        # General------------------------------------------------
+        "Hospitalizations_General"     = "Adult COVID-19 General",
+        "Beds_Available_Total"         = "Total Available Beds",
+        "Beds_Occupied_Total"          = "Total Occupied Beds",
+
+        # Pediatric ---------------------------------------------
+        "Hospitalizations_Pediatric"   = "Pediatric COVID-19",
+        "Pediatric_Beds_Available_ICU" = "Pediatric ICU Beds Available",
+
+        # Other
+        "Hospitalizations_24"          = "COVID-19 Admits 24HR",
+        "Ventilators_Available"        = "Available Ventilators"
+      ))) %>%
   group_by(Date, TSA) %>%
-  arrange(desc(Hospitalizations_Total)) %>%
-  slice(1) %>%
-  ungroup()
+  mutate(Hospitalizations_Total = sum(Hospitalizations_General, Hospitalizations_ICU, na.rm = TRUE)) %>%
+  ungroup() %>%
+  mutate(Date = as.Date(Date, '%m/%d/%Y')) %>%
+  select(
+    Date, TSA,
+    Hospitalizations_Total, Hospitalizations_General, Hospitalizations_ICU,
+    Ventilators_Available,
+    Hospitalizations_Pediatric,
+    Beds_Available_Total, Beds_Available_ICU, Beds_Occupied_Total,
+    Beds_Occupied_ICU,
+    Pediatric_Beds_Available_ICU, Hospitalizations_24
+  )
+
+#
+# TSA_HOSP_QUERY      = 'https://services3.arcgis.com/vljlarU2635mITsl/ArcGIS/rest/services/covid19_tsa_data_hosted/FeatureServer/0/query?where=0%3D0&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&relationParam=&returnGeodetic=false&outFields=tsa%2Ctotal_lab_confirmed%2Cped_lab_confirmed_inpatient%2Ctotal_adult_lab_confirmed%2Ctotal_beds_occupied%2Ctotal_adult_icu%2Ctotal_ventilators_available%2Ctotal_lab_confirmed%2Ctotal_lab_confirmed_24hrs%2Ctotal_beds_available%2Cavailable_staffed_icu%2Cavailable_staffed_picu&returnGeometry=false&returnCentroid=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&defaultSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pjson&token='
+# TSA_HOSP_DATE_QUERY = "https://services3.arcgis.com/vljlarU2635mITsl/ArcGIS/rest/services/covid19_tsa_data_hosted/FeatureServer/layers?f=pjson"
+# TSA_HOSP_DATE_NUM   = fromJSON(TSA_HOSP_DATE_QUERY)$
+#   layers$
+#   editingInfo$
+#   lastEditDate
+#
+# TSA_HOSP_DATE = as.POSIXct(TSA_HOSP_DATE_NUM / 1000, origin = "1970-01-01") %>%
+#   as.Date()
+#
+# hosp_cols_new_raw = fromJSON(TSA_HOSP_QUERY)$features$attributes
+#
+# hosp_cols_new = hosp_cols_new_raw %>%
+#   mutate(Hospitalizations_General = total_lab_confirmed - total_adult_icu) %>%
+#   # mutate(Hospitalizations_Pediatric = total_lab_confirmed - total_adult_lab_confirmed) %>%
+#   rename(
+#     c(
+#       # "Hospitalizations_General"     = "Adult COVID-19 General",
+#       # ICU----------------------------------------------------
+#       "Beds_Occupied_ICU"            = "total_adult_icu",
+#       "Beds_Available_ICU"           = "available_staffed_icu",
+#       "Hospitalizations_ICU"         = "total_adult_icu",
+#
+#       # General------------------------------------------------
+#       "Hospitalizations_Total"       = "total_lab_confirmed",
+#       "Beds_Available_Total"         = "total_beds_available",
+#       "Beds_Occupied_Total"          = "total_beds_occupied",
+#
+#       # Pediatric ---------------------------------------------
+#       "Hospitalizations_Pediatric"   = "ped_lab_confirmed_inpatient",
+#       "Pediatric_Beds_Available_ICU" = "available_staffed_picu",
+#
+#       # Other
+#       "Hospitalizations_24"          = "total_lab_confirmed_24hrs",
+#       "Ventilators_Available"        = "total_ventilators_available",
+#       "TSA"                          = "tsa"
+#     )
+#   ) %>%
+#   mutate(Date = TSA_HOSP_DATE)
+#
+# # View(hosp_cols_new)
+# hosp_url = 'https://raw.githubusercontent.com/jeffbrennan/TexasPandemics/master/tableau/hospitalizations_tsa.csv'
+#
+# hosp_cols = fread(hosp_url, fill = TRUE) %>%
+#   select(Date, TSA, Hospitalizations_Total:Hospitalizations_24) %>%
+#   filter(str_detect(Date, '\\d{4}-\\d{2}-\\d{2}')) %>%
+#   plyr::rbind.fill(hosp_cols_new) %>%
+#   arrange(TSA, Date) %>%
+#   mutate(Date = as.Date(Date)) %>%
+#   distinct() %>%
+#   group_by(Date, TSA) %>%
+#   arrange(desc(Hospitalizations_Total)) %>%
+#   slice(1) %>%
+#   ungroup()
 
 # combine --------------------------------------------------------------------------------------------
 merged_tsa = DSHS_tsa %>%
-  left_join(hosp_cols, by = c('TSA', 'Date')) %>%
+  left_join(TSA_hosp_combined_cleaned, by = c('TSA', 'Date')) %>%
   mutate(TSA_Combined = paste0(TSA, ' - ', TSA_Name)) %>%
   filter(!is.na(TSA) & !is.na(Date)) %>%
   distinct() %>%
