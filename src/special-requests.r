@@ -281,7 +281,8 @@ DSHS_vitals_long = all_cases %>%
   )
   ) %>%
   mutate(Date = as.Date(Date)) %>%
-  mutate(Cases_Daily = as.integer(Cases_Daily))
+  mutate(Cases_Daily = as.integer(Cases_Daily)) %>%
+  distinct()
 
 max_case_date = max(DSHS_vitals_long$Date, na.rm = TRUE)
 date_diff     = difftime(max_case_date, CURRENT_RT_DATE, units = 'days')
@@ -327,7 +328,7 @@ TMC = DSHS_vitals_long %>%
     ungroup() |>
     filter(County %in% TMC_COUNTIES) %>%
   left_join(county_pops, by = 'County') %>%
-  mutate(Population_DSHS = as.numeric(Population_DSHS)) |>
+  mutate(Population_DSHS = as.numeric(Population_DSHS)) %>%
     dplyr::select(-County) %>%
   melt(id = "Date") %>%
   dcast(Date ~ variable, sum, na.rm = TRUE)

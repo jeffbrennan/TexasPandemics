@@ -575,7 +575,8 @@ DSHS_cases_long = all_cases %>%
   )
   ) %>%
   mutate(Date = as.Date(Date)) %>%
-  mutate(Cases_Daily = as.integer(Cases_Daily))
+  mutate(Cases_Daily = as.integer(Cases_Daily)) %>%
+  distinct()
 
 max_case_date = max(DSHS_cases_long$Date, na.rm = TRUE)
 
@@ -607,7 +608,8 @@ DSHS_deaths_long = all_fatalities %>%
   mutate(Deaths_Daily = Deaths_Cumulative - lag(Deaths_Cumulative)) %>%
   select(-Deaths_Cumulative) %>%
   ungroup() %>%
-  mutate(Deaths_Daily = ifelse(is.na(Deaths_Daily), 0, Deaths_Daily))
+  mutate(Deaths_Daily = ifelse(is.na(Deaths_Daily), 0, Deaths_Daily)) %>%
+  distinct()
 
 max_death_date = max(DSHS_cases_long$Date, na.rm = TRUE)
 
@@ -615,7 +617,7 @@ max_death_date = max(DSHS_cases_long$Date, na.rm = TRUE)
 DSHS_vitals_long = DSHS_cases_long %>%
   left_join(DSHS_deaths_long, by = c('County', 'Date')) %>%
   arrange(County, Date) %>%
-  mutate(across(c(Cases_Daily, Deaths_Daily), ~ifelse(is.na(.), 0, .))) %>%
+  mutate(across(c(Cases_Daily, Deaths_Daily), ~ifelse(is.na(.) | . < 0, 0, .))) %>%
   group_by(County) %>%
   mutate(Cases_Cumulative = cumsum(Cases_Daily)) %>%
   mutate(Deaths_Cumulative = cumsum(Deaths_Daily)) %>%
@@ -623,14 +625,21 @@ DSHS_vitals_long = DSHS_cases_long %>%
   mutate(Cases_Daily_Imputed       = NA,
          Deaths_Daily_Imputed      = NA,
          Cases_Cumulative_Imputed  = NA,
-         Deaths_Cumulative_Imputed = NA)
+         Deaths_Cumulative_Imputed = NA) %>%
+  distinct()
 
 stopifnot(
   DSHS_vitals_long %>%
     filter(Cases_Daily < 0) %>%
-    nrow() > 0
+    nrow() == 0
 )
 
+stopifnot(DSHS_vitals_long %>%
+            group_by(County, Date) %>%
+            filter(n() > 1) %>%
+            nrow()
+            == 0
+)
 ## merge data --------------------------------------------------------------------------------------------
 county_tests = all_cpr_tpr %>%
   select(County, Date, Tests) %>%
@@ -1401,7 +1410,10 @@ merged_tsa = DSHS_tsa %>%
   arrange(TSA, Date) %>%
   distinct()
 
-stopifnot(merged_tsa %>% group_by(Date, TSA) %>% filter(n() > 1) %>% nrow() == 0)
+stopifnot(merged_tsa %>%
+            group_by(Date, TSA) %>%
+            filter(n() > 1) %>%
+            nrow() == 0)
 
 fwrite(merged_tsa, file = 'tableau/hospitalizations_tsa.csv')
 
