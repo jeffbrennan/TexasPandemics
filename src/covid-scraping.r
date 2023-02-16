@@ -1230,11 +1230,17 @@ DSHS_tsa_google =
       Retail_Recreation, Grocery_Pharmacy,
       Parks, Transit,
       Workplaces, Residential
-    )
+    ) %>%
+    group_by(TSA, Date) %>%
+    arrange(Retail_Recreation, Grocery_Pharmacy, Parks, Transit, Workplaces, Residential) %>%
+    slice(1) %>%
+    ungroup()
 
-DSHS_tsa = merge(DSHS_tsa_counts, DSHS_tsa_google, by = c('Date', 'TSA', 'TSA_Name'))
-DSHS_tsa = merge(DSHS_tsa, DSHS_tsa_pops, by = 'TSA', all = TRUE)
-
+# DSHS_tsa = merge(DSHS_tsa_counts, DSHS_tsa_google, by = c('Date', 'TSA', 'TSA_Name'))
+# DSHS_tsa = merge(DSHS_tsa, DSHS_tsa_pops, by = 'TSA', all = TRUE)
+DSHS_tsa = DSHS_tsa_counts %>%
+  left_join(DSHS_tsa_google, by = c('Date', 'TSA', 'TSA_Name')) %>%
+  left_join(DSHS_tsa_pops, by = 'TSA')
 # hospitals --------------------------------------------------------------------------------------------
 DSHS_hosp_clean = function(df, var_name) {
   names(df) = df[1,]
@@ -1340,7 +1346,12 @@ TSA_hosp_combined_cleaned = TSA_hosp_combined %>%
     Beds_Available_Total, Beds_Available_ICU, Beds_Occupied_Total,
     Beds_Occupied_ICU,
     Pediatric_Beds_Available_ICU, Hospitalizations_24
-  )
+  ) %>%
+  distinct() %>%
+  group_by(TSA, Date) %>%
+  arrange(Hospitalizations_Total) %>%
+  slice(1) %>%
+  ungroup()
 
 #
 # TSA_HOSP_QUERY      = 'https://services3.arcgis.com/vljlarU2635mITsl/ArcGIS/rest/services/covid19_tsa_data_hosted/FeatureServer/0/query?where=0%3D0&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&relationParam=&returnGeodetic=false&outFields=tsa%2Ctotal_lab_confirmed%2Cped_lab_confirmed_inpatient%2Ctotal_adult_lab_confirmed%2Ctotal_beds_occupied%2Ctotal_adult_icu%2Ctotal_ventilators_available%2Ctotal_lab_confirmed%2Ctotal_lab_confirmed_24hrs%2Ctotal_beds_available%2Cavailable_staffed_icu%2Cavailable_staffed_picu&returnGeometry=false&returnCentroid=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&defaultSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pjson&token='
@@ -1398,6 +1409,11 @@ TSA_hosp_combined_cleaned = TSA_hosp_combined %>%
 #   slice(1) %>%
 #   ungroup()
 
+stopifnot(TSA_hosp_combined_cleaned %>%
+            group_by(TSA, Date) %>%
+            filter(n() > 1) %>%
+  nrow() == 0
+)
 # combine --------------------------------------------------------------------------------------------
 merged_tsa = DSHS_tsa %>%
   left_join(TSA_hosp_combined_cleaned, by = c('TSA', 'Date')) %>%
@@ -1414,6 +1430,14 @@ stopifnot(merged_tsa %>%
             group_by(Date, TSA) %>%
             filter(n() > 1) %>%
             nrow() == 0)
+
+
+TSA_hosp_combined_cleaned %>%
+  group_by(Date, TSA) %>%
+  filter(n() > 1) %>%
+  ungroup() %>%
+  arrange(TSA, Date) %>%
+  View()
 
 fwrite(merged_tsa, file = 'tableau/hospitalizations_tsa.csv')
 
