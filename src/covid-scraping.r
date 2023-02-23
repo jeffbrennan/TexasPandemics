@@ -941,9 +941,10 @@ if (format(date_out, '%A') == 'Wednesday' & (date_out - date_modified == -1)) {
 }
 
 # vax dashboard new --------------------------------------------------------------------------------------------
-dashboard_archive = list.files('original-sources/historical/vaccinations', full.names = TRUE)
+dashboard_archive        = list.files('original-sources/historical/vaccinations', full.names = TRUE)
+current_vaccination_file = fread('tableau/sandbox/county_daily_vaccine.csv')
 
-NUM_DAYS  = 1
+NUM_DAYS  = 4
 new_files = dashboard_archive[(length(dashboard_archive) - (NUM_DAYS - 1)):length(dashboard_archive)]
 
 start_time          = Sys.time()
@@ -990,8 +991,6 @@ population_12       = all_dashboard_files[[length(all_dashboard_files)]][[2]] %>
   rename(County = `County Name`, Population_12 = `Population\n12+`) %>%
   filter(!is.na(County))
 
-current_vaccination_file = fread('tableau/sandbox/county_daily_vaccine.csv')
-
 county_vaccinations_out = county_vaccinations %>%
   left_join(tsa_long_complete %>% select(County, TSA_Combined)) %>%
   left_join(county_classifications %>% select(County, PHR_Combined, Metro_Area)) %>%
@@ -1010,7 +1009,14 @@ county_vaccinations_out = county_vaccinations %>%
   tidyr::fill(Population_5, .direction = 'updown') %>%
   plyr::rbind.fill(current_vaccination_file) %>%
   arrange(Date, County) %>%
+  filter(TSA_Combined != '') %>%
   distinct()
+
+stopifnot(county_vaccinations_out %>%
+            group_by(County, Date) %>%
+            filter(n() > 1) %>%
+            nrow() == 0)
+fwrite(county_vaccinations_out, 'tableau/sandbox/county_daily_vaccine.csv')
 
 # state  --------------------------------------------------------------------------------------------
 state_demo = lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>%
@@ -1412,7 +1418,7 @@ TSA_hosp_combined_cleaned = TSA_hosp_combined %>%
 stopifnot(TSA_hosp_combined_cleaned %>%
             group_by(TSA, Date) %>%
             filter(n() > 1) %>%
-  nrow() == 0
+            nrow() == 0
 )
 # combine --------------------------------------------------------------------------------------------
 merged_tsa = DSHS_tsa %>%
