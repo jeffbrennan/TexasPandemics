@@ -547,12 +547,6 @@ all_cpr_tpr = rbindlist(lapply(list.files('original-sources/historical/cpr/', fu
   mutate(TPR = ifelse(is.na(TPR), 0, TPR)) %>%
   mutate(Tests = as.integer(Tests))
 
-# Google mobility --------------------------------------------------------------------------------------------
-mobility_texas = fread('https://raw.githubusercontent.com/jeffbrennan/TexasPandemics/master/tableau/county.csv') %>%
-  select(Date, County, Retail_Recreation:Residential) %>%
-  distinct() %>%
-  mutate(Date = as.Date(Date))
-
 # vitals --------------------------------------------------------------------------------------------
 confirmed_case_url = "https://www.dshs.texas.gov/sites/default/files/chs/data/COVID/Texas%20COVID-19%20New%20Confirmed%20Cases%20by%20County.xlsx"
 probable_case_url  = 'https://www.dshs.texas.gov/sites/default/files/chs/data/COVID/Texas%20COVID-19%20New%20Probable%20Cases%20by%20County.xlsx'
@@ -688,7 +682,6 @@ merged_dshs = DSHS_vitals_long %>%
   mutate(TSA_Combined = str_c(TSA, ' - ', TSA_Name),
          PHR_Combined = str_c(PHR, ' - ', PHR_Name)
   ) %>%
-  left_join(mobility_texas, by = c('Date', 'County')) %>%
   filter(County %in% unique(county_classifications$County)) %>%
   mutate(Population_DSHS = as.numeric(Population_DSHS)) %>%
   filter(Date >= as.Date('2020-03-06') & !is.na(County)) %>%
