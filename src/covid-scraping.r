@@ -554,29 +554,50 @@ mobility_texas = fread('https://raw.githubusercontent.com/jeffbrennan/TexasPande
   mutate(Date = as.Date(Date))
 
 # vitals --------------------------------------------------------------------------------------------
-## cases --------------------------------------------------------------------------------------------
-new_case_url = "https://www.dshs.texas.gov/sites/default/files/chs/data/COVID/Texas%20COVID-19%20New%20Confirmed%20Cases%20by%20County.xlsx"
-temp         = tempfile()
-curl::curl_download(new_case_url, temp, mode = 'wb')
-sheet_names = readxl::excel_sheets(temp)
+confirmed_case_url = "https://www.dshs.texas.gov/sites/default/files/chs/data/COVID/Texas%20COVID-19%20New%20Confirmed%20Cases%20by%20County.xlsx"
+probable_case_url  = 'https://www.dshs.texas.gov/sites/default/files/chs/data/COVID/Texas%20COVID-19%20New%20Probable%20Cases%20by%20County.xlsx'
 
-all_cases = map(sheet_names, ~readxl::read_xlsx(temp, sheet = ., col_types = 'text', skip = 2))
+Clean_Cases = function(case_url) {
+  temp = tempfile()
+  curl::curl_download(case_url, temp, mode = 'wb')
+  sheet_names = readxl::excel_sheets(temp)
 
-DSHS_cases_long = all_cases %>%
-  rbindlist(fill = TRUE) %>%
-  pivot_longer(!County) %>%
-  filter(!is.na(value)) %>%
-  rename(Date        = name,
-         Cases_Daily = value) %>%
-  filter(!str_to_upper(Date) %in% c("TOTAL", "UNKNOWN DATE")) %>%
-  mutate(Date = ifelse(!is.na(as.integer(Date)),
-                       as.character(as.Date(as.integer(Date), origin = '1899-12-30')),
-                       as.character(as.Date(Date, format = '%m/%d/%Y'))
-  )
+  all_cases = map(sheet_names, ~readxl::read_xlsx(temp, sheet = ., col_types = 'text', skip = 2))
+
+  cleaned_cases = all_cases %>%
+    rbindlist(fill = TRUE) %>%
+    pivot_longer(!County) %>%
+    filter(!is.na(value)) %>%
+    rename(Date        = name,
+           Cases_Daily = value) %>%
+    filter(!str_to_upper(Date) %in% c("TOTAL", "UNKNOWN DATE")) %>%
+    mutate(Date = ifelse(!is.na(as.integer(Date)),
+                         as.character(as.Date(as.integer(Date), origin = '1899-12-30')),
+                         as.character(as.Date(Date, format = '%m/%d/%Y'))
+    )
+    ) %>%
+    mutate(Date = as.Date(Date)) %>%
+    mutate(Cases_Daily = as.integer(Cases_Daily)) %>%
+    distinct()
+
+
+  return(cleaned_cases)
+}
+
+confirmed_cases = Clean_Cases(confirmed_case_url)
+probable_cases  = Clean_Cases(probable_case_url)
+
+DSHS_cases_long = confirmed_cases %>%
+  mutate(Case_Type = 'confirmed') %>%
+  rbind(probable_cases %>% mutate(Case_Type = 'probable')) %>%
+  rbind(
+    confirmed_cases %>%
+      rbind(probable_cases) %>%
+      mutate(Case_Type = 'confirmed_plus_probable')
   ) %>%
-  mutate(Date = as.Date(Date)) %>%
-  mutate(Cases_Daily = as.integer(Cases_Daily)) %>%
-  distinct()
+  mutate(Cases_Daily = ifelse(is.na(Cases_Daily), 0, Cases_Daily)) %>%
+  group_by(County, Date, Case_Type) %>%
+  summarize(Cases_Daily = sum(Cases_Daily, na.rm = TRUE))
 
 max_case_date = max(DSHS_cases_long$Date, na.rm = TRUE)
 
