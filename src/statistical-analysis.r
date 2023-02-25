@@ -513,69 +513,6 @@ write.csv(ARIMA_Hosp_Combined_df, 'tableau/stacked_hosp_timeseries.csv', row.nam
 
 
 # standard stats --------------------------------------------------------------------------------------------
-
-Calculate_Ratio = function(df) {
-  latestdate   = max(df$Date)
-  earliestdate = latestdate - 14
-  middate      = latestdate - 7
-
-  current_ratio = df %>%
-    setNames(c('Date', 'Level', 'Cases_Daily')) %>%
-    filter(Date > earliestdate) %>%
-    mutate(Week = ifelse(Date <= latestdate & Date > middate, 'Week_2', 'Week_1')) %>%
-    group_by(Level, Week) %>%
-    summarize(Cases_Daily_mean = mean(Cases_Daily), na.rm = TRUE) %>%
-    summarize(current_ratio = Cases_Daily_mean / lag(Cases_Daily_mean)) %>%
-    na.omit() %>%
-    mutate(current_ratio = replace(current_ratio,
-                                   is.infinite(current_ratio) |
-                                     is.nan(current_ratio) |
-                                     current_ratio <= 0,
-                                   NA)) %>%
-    mutate(current_ratio_cat = cut(current_ratio, breaks = unique(c(0, 0.5, 0.9, 1.1, 1.5, 2, 4, 8, max(current_ratio)))))
-
-  return(current_ratio)
-}
-
-Ratio_County_df = County_df %>%
-  dplyr::select(Date, County, Cases_Daily) %>%
-  Calculate_Ratio()
-
-Ratio_TSA_df = TSA_df %>%
-  dplyr::select(Date, TSA, Cases_Daily) %>%
-  Calculate_Ratio()
-
-Ratio_PHR_df = PHR_df %>%
-  dplyr::select(Date, PHR, Cases_Daily) %>%
-  Calculate_Ratio()
-
-Ratio_Metro_df = Metro_df %>%
-  dplyr::select(Date, Metro, Cases_Daily) %>%
-  Calculate_Ratio()
-
-Ratio_State_df = State_df %>%
-  mutate(State = 'Texas') %>%
-  dplyr::select(Date, State, Cases_Daily) %>%
-  Calculate_Ratio()
-
-Ratio_County_df$Level_Type = 'County'
-Ratio_Metro_df$Level_Type  = 'Metro'
-Ratio_TSA_df$Level_Type    = 'TSA'
-Ratio_PHR_df$Level_Type    = 'PHR'
-Ratio_State_df$Level_Type  = 'State'
-
-Ratio_Combined_df = rbind(Ratio_County_df, Ratio_TSA_df, Ratio_PHR_df,
-                          Ratio_Metro_df, Ratio_State_df)
-
-stacked_ratio_out = Ratio_Combined_df %>%
-  mutate(County = ifelse(Level_Type == 'County', as.character(Level), '')) %>%
-  mutate(TSA = ifelse(Level_Type == 'TSA', as.character(Level), '')) %>%
-  mutate(PHR = ifelse(Level_Type == 'PHR', as.character(Level), '')) %>%
-  mutate(`Metro Area` = ifelse(Level_Type == 'Metro', as.character(Level), '')) %>%
-  mutate(State = ifelse(Level_Type == 'State', as.character(Level), ''))
-
-write.csv(stacked_ratio_out, 'tableau/stacked_case_ratio.csv', row.names = FALSE)
-
 # pct change --------------------------------------------------------------------------------------------
 new_pct_change = function(level, dat, region) {
   # creates the % difference in cases and tests and smooth line with CIs
