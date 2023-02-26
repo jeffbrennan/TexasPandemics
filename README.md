@@ -181,3 +181,4 @@ note: "stacked" indicates file includes statistics at County, TSA, PHR, Metro & 
 ![Demo state plot](readme_images/demo_state.png?raw=True)
 
 - State level demographics: [Census quickfacts](https://www.census.gov/quickfacts/TX)
+- County level population estimates: [Census - County Population Totals](https://www.census.gov/data/tables/time-series/demo/popest/2020s-counties-total.html)
