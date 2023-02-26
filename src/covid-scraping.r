@@ -447,9 +447,11 @@ all_cpr_tpr = rbindlist(lapply(list.files('original-sources/historical/cpr/', fu
   mutate(Tests = as.integer(Tests))
 
 # vitals --------------------------------------------------------------------------------------------
-dshs_base_url      = 'https://www.dshs.texas.gov/sites/default/files/chs/data/COVID'
-confirmed_case_url = glue("{dshs_base_url}/Texas%20COVID-19%20New%20Confirmed%20Cases%20by%20County.xlsx")
-probable_case_url  = glue('{dshs_base_url}/Texas%20COVID-19%20New%20Probable%20Cases%20by%20County.xlsx')
+## globals --------------------------------------------------------------------------------------------
+dshs_base_url                   = 'https://www.dshs.texas.gov/sites/default/files/chs/data/COVID'
+confirmed_case_url              = glue("{dshs_base_url}/Texas%20COVID-19%20New%20Confirmed%20Cases%20by%20County.xlsx")
+probable_case_url               = glue('{dshs_base_url}/Texas%20COVID-19%20New%20Probable%20Cases%20by%20County.xlsx')
+PROBABLE_COMBINATION_START_DATE = as.Date('2022-04-01')
 
 Clean_Cases = function(case_url) {
   temp = tempfile()
@@ -483,10 +485,10 @@ probable_cases  = Clean_Cases(probable_case_url)
 
 DSHS_cases_long = confirmed_cases %>%
   mutate(Case_Type = 'confirmed') %>%
-  rbind(probable_cases %>% mutate(Case_Type = 'probable')) %>%
   rbind(
     confirmed_cases %>%
-      rbind(probable_cases) %>%
+      filter(Date >= PROBABLE_COMBINATION_START_DATE) %>%
+      rbind(probable_cases %>% filter(Date >= PROBABLE_COMBINATION_START_DATE)) %>%
       mutate(Case_Type = 'confirmed_plus_probable')
   ) %>%
   mutate(Cases_Daily = ifelse(is.na(Cases_Daily), 0, Cases_Daily)) %>%
@@ -546,7 +548,7 @@ stopifnot(
 )
 
 stopifnot(DSHS_vitals_long %>%
-            group_by(County, Date) %>%
+            group_by(County, Date, Case_Type) %>%
             filter(n() > 1) %>%
             nrow()
             == 0
@@ -560,7 +562,6 @@ county_tests = all_cpr_tpr %>%
   arrange(Date) %>%
   mutate(Tests_Cumulative = cumsum(Tests_Daily))
 
-merged_dshs_header = fread('tableau/county.csv', nrows = 0) %>% names()
 
 merged_dshs = DSHS_vitals_long %>%
   filter(County %in% unique(county_classifications$County)) %>%
@@ -576,10 +577,7 @@ merged_dshs = DSHS_vitals_long %>%
   mutate(Population_DSHS = as.numeric(Population_DSHS)) %>%
   filter(Date >= as.Date('2020-03-06') & !is.na(County)) %>%
   distinct() %>%
-  arrange(County, Date) %>%
-  mutate(Active_Cases_Cumulative = NA,
-         Active_Cases_Daily      = NA) %>%
-  select(all_of(merged_dshs_header))
+  arrange(County, Date, Case_Type)
 
 # diagnostic --------------------------------------------------------------------------------------------
 stopifnot(merged_dshs$County %>% unique() %>% length() == 254)
