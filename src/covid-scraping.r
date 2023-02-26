@@ -112,34 +112,11 @@ Download_Temp = function(url) {
 }
 
 # classifications --------------------------------------------------------------------------------------------
-# add metro and PHR code designations
-# source: https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls
-# add PHR readable names from https://dshs.state.tx.us/regions/default.shtm
-PHR_helper = data.frame(PHR      = c("1", "2/3", "4/5N",
-                                     "6/5S", "7", "8",
-                                     "9/10", "11"),
-                        PHR_Name = c('Lubbock PHR', 'Arlington PHR', 'Tyler PHR',
-                                     'Houston PHR', 'Temple PHR', 'San Antonio PHR',
-                                     'El Paso PHR', 'Harlingen PHR'))
-
-
-county_classifications = read_xlsx('original-sources/helpers/county_classifications.xlsx', sheet = 1) %>%
-  slice(1:254) %>%
-  dplyr::select(1, 5, 8) %>%
-  setNames(c('County', 'PHR', 'Metro_Area')) %>%
-  left_join(., PHR_helper, by = 'PHR') %>%
-  mutate(PHR_Combined = paste0(PHR, ' - ', PHR_Name))
-
-tsa_lookup_url    = 'https://raw.githubusercontent.com/jeffbrennan/TexasPandemics/master/tableau/county.csv'
-tsa_long_complete = fread(tsa_lookup_url, fill = TRUE) %>%
-  select(County, TSA, TSA_Name, TSA_Combined) %>%
-  distinct()
-
-dshs_pops =
-  fread('https://raw.githubusercontent.com/jeffbrennan/COVID-19/d03d476f7fb060dfd2e1a600a6a1e449df0ab8df/original-sources/DSHS_county_cases.csv') %>%
-    select(County, Population) %>%
-    distinct() %>%
-    rename(Population_DSHS = Population)
+# TSA: https://www.dshs.texas.gov/sites/default/files/emstraumasystems/Trauma/pdf/TSAMap-RACNames.pdf
+# Metro Area: https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls
+# PHR: readable names from https://dshs.state.tx.us/regions/default.shtm
+# Population: https://www.census.gov/data/tables/time-series/demo/popest/2020s-counties-total.html
+county_metadata = fread('tableau/helpers/county_metadata.csv')
 
 
 ## -county demographics --------------------------------------------------------------------------------------------
