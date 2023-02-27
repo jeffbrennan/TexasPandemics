@@ -432,23 +432,24 @@ county_tests = all_cpr_tpr %>%
   filter(!is.na(Tests_Daily)) %>%
   group_by(County) %>%
   arrange(Date) %>%
-  mutate(Tests_Cumulative = cumsum(Tests_Daily))
+  mutate(Tests_Cumulative = cumsum(Tests_Daily)) %>%
+  filter(County %in% county_metadata$County) %>%
+  mutate(Date = as.Date(Date))
 
 
 merged_dshs = DSHS_vitals_long %>%
-  filter(County %in% unique(county_classifications$County)) %>%
-  left_join(tsa_long_complete, by = 'County') %>%
-  left_join(dshs_pops, by = 'County') %>%
-  left_join(county_classifications, by = 'County') %>%
-  left_join(county_tests %>% mutate(Date = as.Date(Date)),
-            by = c('County', 'Date')) %>%
-  mutate(TSA_Combined = str_c(TSA, ' - ', TSA_Name),
-         PHR_Combined = str_c(PHR, ' - ', PHR_Name)
-  ) %>%
-  filter(County %in% unique(county_classifications$County)) %>%
-  mutate(Population_DSHS = as.numeric(Population_DSHS)) %>%
+  filter(County %in% county_metadata$County) %>%
+  left_join(county_populations, by = 'County') %>%
+  left_join(county_tests, by = c('County', 'Date')) %>%
   filter(Date >= as.Date('2020-03-06') & !is.na(County)) %>%
   distinct() %>%
+  mutate(Population_DSHS = case_when(
+    Date < '2020-07-01' ~ Population_2020_04_01,
+    Date >= '2020-07-01' & Date < '2021-07-01' ~ Population_2020_07_01,
+    Date >= '2021-07-01' ~ Population_2021_07_01,
+    TRUE ~ NA
+  )) %>%
+  select(-Population_2020_04_01, -Population_2020_07_01, -Population_2021_07_01) %>%
   arrange(County, Date, Case_Type)
 
 # diagnostic --------------------------------------------------------------------------------------------
@@ -479,8 +480,9 @@ cms_dates = list.files('original-sources/historical/cms_tpr/') %>%
 
 TPR_dates     = sort(unique(c(cpr_dates, cms_dates)))
 TPR_all_dates = data.frame(
-  County = rep(county_classifications$County %>% unique(), each = length(TPR_dates)),
-  Date   = rep(TPR_dates, times = length(county_classifications$County %>% unique())))
+  County = rep(county_metadata$County, each = length(TPR_dates)),
+  Date   = rep(TPR_dates, times = length(county_metadata$County))
+)
 
 cms_archive = tpr_df %>%
   filter(Date < '2020-12-16') %>%
