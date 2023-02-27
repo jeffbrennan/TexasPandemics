@@ -664,17 +664,15 @@ stopifnot(c(check_dupes, check_nonmissing_col))
 fwrite(vaccination_file_fixed, 'tableau/sandbox/county_daily_vaccine.csv')
 
 # state  --------------------------------------------------------------------------------------------
-state_demo = lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>%
-  discard(is.null) %>%
-  lapply(., function(x) x %>%
-    setNames(slice(., 1) %>% unlist()) %>%
-    rename(Date = ncol(.)) %>%
-    slice(2:nrow(.))) %>%
-  rbindlist(fill = TRUE) %>%
+state_demo_raw = all_dashboard_files[[length(all_dashboard_files)]][['By Age, Gender, Race']] %>%
+  setNames(slice(., 1) %>% unlist()) %>%
+  slice(2:nrow(.)) %>%
+  select(-ncol(.)) %>%
+  mutate(Date = max(vaccine_file_dates$Date)) %>%
   mutate(`Race/Ethnicity` = ifelse(is.na(`Race/Ethnicity`), str_c(Race, Ethnicity), `Race/Ethnicity`)) %>%
   select(-any_of(c('Race', 'Ethnicity', 'People Vaccinated with at Least One Dose', 'People Vaccinated'))) %>%
   unite(Age_Group, starts_with('Age'), remove = TRUE, na.rm = TRUE) %>%
-  unite(Booster, contains('Booster'), remove = TRUE, na.rm = TRUE) %>%
+  unite(Boosted, contains('Booster'), remove = TRUE, na.rm = TRUE) %>%
   rename(
     any_of(
       c(
@@ -692,31 +690,28 @@ state_demo = lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>%
   mutate(Age_Group = ifelse(Age_Group %in% c('44692', '45057'), '5-11 years', Age_Group)) %>%
   mutate(Age_Group = ifelse(Age_Group %in% c('45275', '44910'), '12-15 years', Age_Group)) %>%
   mutate(Age_Group = ifelse(!str_detect(Age_Group, 'years|Unknown'), glue('{Age_Group} years'), Age_Group)) %>%
-  mutate(Age_Group = str_squish(Age_Group)) %>%
-  # remove dupes
-  arrange(Date) %>%
-  group_by(Gender, Age_Group, `Race/Ethnicity`) %>%
-  mutate(dupe_val = Fully_Vaccinated == lag(Fully_Vaccinated)) %>%
-  group_by(Date) %>%
-  mutate(dupe_count = sum(dupe_val, na.rm = TRUE)) %>%
-  mutate(row_count = n()) %>%
-  ungroup() %>%
-  filter(dupe_count != row_count) %>%
-  filter(Date == max(Date)) %>%
-  select(-dupe_count, -row_count, -dupe_val) %>%
-  # add pops
+  mutate(Age_Group = str_squish(Age_Group))
+
+
+# add pops
+state_demo = state_demo_raw %>%
   left_join(county_demo_race %>%
               group_by(`Race/Ethnicity`) %>%
-              summarize(State_Race_Total = sum(Population_Total, na.rm = TRUE))) %>%
+              summarize(State_Race_Total = sum(Population_Total, na.rm = TRUE)),
+            by = 'Race/Ethnicity'
+  ) %>%
   left_join(county_demo_agesex %>%
-              filter(`Age Group` == '<16' | `Age Group` == '16+') %>%
+              filter(Age_Group == '<16 years' | Age_Group == '16+ years') %>%
               group_by(Gender) %>%
-              summarize(State_Gender_Total = sum(Population_Total, na.rm = TRUE))) %>%
+              summarize(State_Gender_Total = sum(Population_2021_07_01, na.rm = TRUE)),
+            by = 'Gender'
+  ) %>%
   left_join(county_demo_agesex %>%
-              group_by(`Age Group`) %>%
-              summarize(State_Age_Total = sum(Population_Total, na.rm = TRUE)) %>%
-              rename('Age_Group' = `Age Group`)) %>%
-  mutate_at(vars(-Gender, -Age_Group, -`Race/Ethnicity`), as.numeric) %>%
+              group_by(Age_Group) %>%
+              summarize(State_Age_Total = sum(Population_2021_07_01, na.rm = TRUE)),
+            by = 'Age_Group'
+  ) %>%
+  mutate(across(-c(Gender, Age_Group, `Race/Ethnicity`), as.integer)) %>%
   mutate(Doses_Administered_Per_Race        = Doses_Administered / State_Race_Total,
          Doses_Administered_Per_Gender      = Doses_Administered / State_Gender_Total,
          Doses_Administered_Per_Age         = Doses_Administered / State_Age_Total,
@@ -726,12 +721,12 @@ state_demo = lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>%
          Fully_Vaccinated_Per_Race          = Fully_Vaccinated / State_Race_Total,
          Fully_Vaccinated_Per_Gender        = Fully_Vaccinated / State_Gender_Total,
          Fully_Vaccinated_Per_Age           = Fully_Vaccinated / State_Age_Total,
-         Booster_Per_Race                   = Booster / State_Race_Total,
-         Booster_Per_Gender                 = Booster / State_Gender_Total,
-         Booster_Per_Age                    = Booster / State_Age_Total) %>%
+         Boosted_Per_Race                   = Boosted / State_Race_Total,
+         Boosted_Per_Gender                 = Boosted / State_Gender_Total,
+         Boosted_Per_Age                    = Boosted / State_Age_Total) %>%
   relocate(`Race/Ethnicity`, .after = Age_Group) %>%
-  mutate(Date = format(as.Date(Date, origin = '1970-01-01'), '%Y-%m-%d')) %>%
-  relocate(Date, .after = Booster_Per_Age)
+  relocate(Date, .after = Boosted_Per_Age) %>%
+  mutate(Date = format(as.Date(Date, origin = '1970-01-01'), '%Y-%m-%d'))
 
 fwrite(state_demo, 'tableau/sandbox/state_vaccine_demographics.csv')
 
