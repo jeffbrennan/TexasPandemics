@@ -128,6 +128,7 @@ county_populations = county_metadata %>% select(County, Population_2020_04_01, P
 county_demo_agesex = fread('tableau/helpers/county_demo_agesex.csv')
 county_demo_race   = fread('tableau/helpers/county_demo_race.csv')
 state_demo_pops    = fread('tableau/helpers/state_demo.csv')
+
 # wastewater --------------------------------------------------------------------------------------------
 
 # houston dashboard --------------------------------------------------------------------------------------------
@@ -576,6 +577,7 @@ dashboard_archive        = list.files('original-sources/historical/vaccinations'
 current_vaccination_file = fread('tableau/sandbox/county_daily_vaccine.csv')
 
 NUM_DAYS                   = 1L
+BIVALENT_START_DATE        = as.Date('2022-09-05')
 new_files                  = dashboard_archive[(length(dashboard_archive) - (NUM_DAYS - 1)):length(dashboard_archive)]
 all_dashboard_files        = lapply(new_files, read_excel_allsheets, add_date = TRUE, col_option = FALSE, skip_option = 0)
 names(all_dashboard_files) = new_files
@@ -632,7 +634,7 @@ county_vaccinations_combined = county_vaccinations_raw %>%
   mutate(across(c(Doses_Administered, At_Least_One_Dose, Fully_Vaccinated, Boosted), as.integer)) %>%
   distinct()
 
-county_vaccinations = county_vaccinations_combined %>%
+county_vaccinations_prefinal = county_vaccinations_combined %>%
   filter(Date < '2021-07-01') %>%
   left_join(county_vax_fix_2020_07_01, by = 'County') %>%
   rbind(
@@ -650,8 +652,20 @@ county_vaccinations = county_vaccinations_combined %>%
   arrange(County, Date) %>%
   distinct()
 
+county_vaccinations = county_vaccinations_prefinal %>%
+  mutate(Vaccination_Type = 'all') %>%
+  rbind(
+    county_vaccinations_prefinal %>%
+      filter(Date >= BIVALENT_START_DATE) %>%
+      mutate(Vaccination_Type = 'bivalent') %>%
+      group_by(County) %>%
+      mutate(across(c(Doses_Administered, At_Least_One_Dose, Fully_Vaccinated, Boosted), ~. - .[1])) %>%
+      mutate(across(c(Doses_Administered, At_Least_One_Dose, Fully_Vaccinated, Boosted), ~ifelse(. < 0, 0L, .)))
+  ) %>%
+  relocate(Vaccination_Type, .after = 'County')
+
 check_dupes = county_vaccinations %>%
-  group_by(County, Date) %>%
+  group_by(County, Date, Vaccination_Type) %>%
   summarise(n = n()) %>%
   filter(n > 1) %>%
   nrow() == 0
@@ -661,7 +675,7 @@ check_nonmissing_col = county_vaccinations %>%
   nrow() == 0
 
 stopifnot(c(check_dupes, check_nonmissing_col))
-fwrite(vaccination_file_fixed, 'tableau/sandbox/county_daily_vaccine.csv')
+fwrite(county_vaccinations, 'tableau/sandbox/county_daily_vaccine.csv')
 
 # state  --------------------------------------------------------------------------------------------
 state_demo_raw = all_dashboard_files[[length(all_dashboard_files)]][['By Age, Gender, Race']] %>%
@@ -731,29 +745,29 @@ fwrite(state_demo, 'tableau/sandbox/state_vaccine_demographics.csv')
 measure_cols             = c('Doses_Administered', 'At_Least_One_Vaccinated', 'Fully_Vaccinated', 'Boosted')
 state_demo_stacked_clean = state_demo %>%
   #-------------------------------------------Gender------------------------------------
-    select(all_of(c('Gender', measure_cols))) %>%
-    mutate(Group_Type = 'Gender') %>%
-    rename(Group = Gender) %>%
-    summarize(across(measure_cols, ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group)) %>%
-    # ----------------------------------------Race-----------------------------------------
-    rbind(
-      state_demo %>%
-        select(all_of(c('Race/Ethnicity', measure_cols))) %>%
-        mutate(Group_Type = 'Race') %>%
-        rename(Group = `Race/Ethnicity`) %>%
-        summarize(across(measure_cols, ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group))
-    ) %>%
-    #  --------------------------------------Age------------------------------------------------------
-    rbind(
-      state_demo %>%
-        select(c(contains('Age'), measure_cols, -contains('Per'))) %>%
-        mutate(Group_Type = 'Age') %>%
-        rename(Group            = Age_Group,
-               Population_Total = State_Age_Total) %>%
-        summarize(across(measure_cols, ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group))
-    ) %>%
-    relocate(Group_Type, .before = Group) %>%
-    left_join(state_demo_pops, by = c('Group_Type', 'Group'))
+  select(all_of(c('Gender', measure_cols))) %>%
+  mutate(Group_Type = 'Gender') %>%
+  rename(Group = Gender) %>%
+  summarize(across(measure_cols, ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group)) %>%
+  # ----------------------------------------Race-----------------------------------------
+  rbind(
+    state_demo %>%
+      select(all_of(c('Race/Ethnicity', measure_cols))) %>%
+      mutate(Group_Type = 'Race') %>%
+      rename(Group = `Race/Ethnicity`) %>%
+      summarize(across(measure_cols, ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group))
+  ) %>%
+  #  --------------------------------------Age------------------------------------------------------
+  rbind(
+    state_demo %>%
+      select(c(contains('Age'), measure_cols, -contains('Per'))) %>%
+      mutate(Group_Type = 'Age') %>%
+      rename(Group            = Age_Group,
+             Population_Total = State_Age_Total) %>%
+      summarize(across(measure_cols, ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group))
+  ) %>%
+  relocate(Group_Type, .before = Group) %>%
+  left_join(state_demo_pops, by = c('Group_Type', 'Group'))
 
 fwrite(state_demo_stacked_clean, 'tableau/sandbox/stacked_state_vaccine_demographics.csv')
 
@@ -831,7 +845,7 @@ DSHS_tsa_pops = merged_dshs %>%
   summarize(across(Population_DSHS, ~sum(., na.rm = TRUE)))
 
 
-DSHS_tsa = DSHS_tsa_counts %>%
+DSHS_tsa   = DSHS_tsa_counts %>%
   left_join(DSHS_tsa_pops, by = 'TSA')
 # hospitals --------------------------------------------------------------------------------------------
 ## TSA excel sheet --------------------------------------------------------------------------------------------
@@ -963,7 +977,7 @@ cdc_variant_data = lapply(list.files('original-sources/historical/cdc_variants/'
   ungroup() %>%
   unite(Sequences, c('Total Available sequences', 'Total Available Sequences', 'Total Sequences'), na.rm = TRUE) %>%
   select(-V3) %>%
-  mutate(across(everything(), ~gsub('\\%|\\,', '', .))) %>%
+  mutate(across(everything(), ~gsub('\\%|\\, ', '', .))) %>%
   mutate(across(-c(Date, State), as.numeric)) %>%
   reshape2::melt(id.vars = c('Date', 'State', 'Sequences')) %>%
   setNames(c('Date', 'State', 'Total_Sequences', 'Variant', 'Proportion')) %>%
@@ -1002,7 +1016,7 @@ Clean_Demo_New = function(sheet_name) {
       pivot_longer(!1) %>%
       setNames(c('Date', 'Group', stat_type)) %>%
       filter(!str_detect(Date, 'Total|Notes')) %>%
-      mutate(Date = as.Date(glue('01 {Date}'), '%d %B %Y')) %>%
+      mutate(Date = as.Date(glue('01 { Date }'), '%d %B %Y')) %>%
       mutate(Group_Type = group_type)
 
     return(clean_df)
