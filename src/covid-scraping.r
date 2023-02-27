@@ -711,13 +711,17 @@ state_demo_raw = all_dashboard_files[[length(all_dashboard_files)]][['By Age, Ge
 # add pops
 state_demo = state_demo_raw %>%
   left_join(county_demo_race %>%
+              filter(Age_Group == 'total') %>%
               group_by(`Race/Ethnicity`) %>%
               summarize(State_Race_Total = sum(Population_Total, na.rm = TRUE)),
             by = 'Race/Ethnicity'
   ) %>%
   left_join(county_demo_agesex %>%
               filter(Age_Group == 'Total') %>%
-              by = 'Gender'
+              select(Gender, Population_2021_07_01) %>%
+              group_by(Gender) %>%
+              summarize(State_Gender_Total = sum(Population_2021_07_01, na.rm = TRUE)),
+            by = 'Gender'
   ) %>%
   left_join(county_demo_agesex %>%
               group_by(Age_Group) %>%
@@ -741,6 +745,12 @@ state_demo = state_demo_raw %>%
   relocate(Date, .after = Boosted_Per_Age) %>%
   mutate(Date = format(as.Date(Date, origin = '1970-01-01'), '%Y-%m-%d'))
 
+check_state_demo_dupes = state_demo %>%
+  group_by(Gender, Age_Group, `Race/Ethnicity`) %>%
+  filter(n() > 1) %>%
+  nrow() == 0
+
+stopifnot(check_state_demo_dupes)
 fwrite(state_demo, 'tableau/sandbox/state_vaccine_demographics.csv')
 #  --------------------------------------------------------------------------------------------
 measure_cols             = c('Doses_Administered', 'At_Least_One_Vaccinated', 'Fully_Vaccinated', 'Boosted')
