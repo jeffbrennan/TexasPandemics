@@ -659,8 +659,9 @@ county_vaccinations = county_vaccinations_prefinal %>%
       filter(Date >= BIVALENT_START_DATE) %>%
       mutate(Vaccination_Type = 'bivalent') %>%
       group_by(County) %>%
-      mutate(across(c(Doses_Administered, At_Least_One_Dose, Fully_Vaccinated, Boosted), ~. - .[1])) %>%
-      mutate(across(c(Doses_Administered, At_Least_One_Dose, Fully_Vaccinated, Boosted), ~ifelse(. < 0, 0L, .)))
+      mutate(Boosted = Boosted - Boosted[1]) %>%
+      mutate(Boosted = ifelse(Boosted < 0, 0L, Boosted)) %>%
+      ungroup()
   ) %>%
   relocate(Vaccination_Type, .after = 'County')
 
