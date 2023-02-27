@@ -757,6 +757,7 @@ state_demo_stacked_clean = state_demo %>%
 
 fwrite(state_demo_stacked_clean, 'tableau/sandbox/stacked_state_vaccine_demographics.csv')
 
+#  --------------------------------------------------------------------------------------------
 county_vax_race = lapply(all_dashboard_files, `[[`, 'By County, Race') %>%
   discard(is.null) %>%
   .[[length(.)]] %>%
@@ -764,13 +765,17 @@ county_vax_race = lapply(all_dashboard_files, `[[`, 'By County, Race') %>%
   slice(2:nrow(.)) %>%
   select(1:(ncol(.) - 1)) %>%
   setNames(c('County', 'Race/Ethnicity',
-             'At_Least_One_Vaccinated', 'Fully_Vaccinated', 'Booster', 'Doses_Administered')) %>%
-  left_join(county_demo_race) %>%
-  mutate_at(vars(-County, -`Race/Ethnicity`), as.numeric) %>%
-  mutate(Doses_Administered_Per_Race = Doses_Administered / Population_Total) %>%
-  mutate(At_Least_One_Vaccinated_Per_Race = At_Least_One_Vaccinated / Population_Total) %>%
-  mutate(Fully_Vaccinated_Per_Race = Fully_Vaccinated / Population_Total) %>%
-  mutate(Booster_Per_Race = Booster / Population_Total) %>%
+             'At_Least_One_Vaccinated', 'Fully_Vaccinated', 'Boosted', 'Doses_Administered')) %>%
+  left_join(county_demo_race %>%
+              filter(Age_Group == 'total') %>%
+              select(County, `Race/Ethnicity`, Population_Total),
+            by = c('County', 'Race/Ethnicity')
+  ) %>%
+  mutate(across(-c(County, `Race/Ethnicity`), as.integer)) %>%
+  mutate(Doses_Administered_Per_Race      = Doses_Administered / Population_Total,
+         At_Least_One_Vaccinated_Per_Race = At_Least_One_Vaccinated / Population_Total,
+         Fully_Vaccinated_Per_Race        = Fully_Vaccinated / Population_Total,
+         Boosted_Per_Race                 = Boosted / Population_Total) %>%
   filter(!(County %in% c('Other', 'Grand Total'))) %>%
   select(-contains('_Per'))
 
