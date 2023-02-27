@@ -457,6 +457,7 @@ stopifnot(merged_dshs$County %>% unique() %>% length() == 254)
 stopifnot(merged_dshs$TSA_Combined %>%
             unique() %>%
             length() == 22)
+stopifnot(!is.na(merged_dshs$Date))
 fwrite(merged_dshs %>% arrange(County, Date), 'tableau/county.csv')
 
 # TPR --------------------------------------------------------------------------------------------
