@@ -116,145 +116,17 @@ Download_Temp = function(url) {
 # Metro Area: https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls
 # PHR: readable names from https://dshs.state.tx.us/regions/default.shtm
 # Population: https://www.census.gov/data/tables/time-series/demo/popest/2020s-counties-total.html
-county_metadata = fread('tableau/helpers/county_metadata.csv')
+county_metadata    = fread('tableau/helpers/county_metadata.csv')
+county_populations = county_metadata %>% select(County, Population_2020_04_01, Population_2020_07_01, Population_2021_07_01)
 
 
 ## -county demographics --------------------------------------------------------------------------------------------
 # https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-detail.html
-# 2019 county level race estimates
+# 2021 county level race estimates
 # collapse into asian, black, hispanic, white, other
 # exclude totals to avoid double counting
-race_group_df = data.frame(race       =
-                             c('AA', 'AAC', 'BA', 'BAC', 'H', 'HAA',
-                               'HAAC', 'HBA', 'HBAC', 'HIA', 'HIAC', 'HNA',
-                               'HNAC', 'HTOM', 'HWA', 'HWAC', 'IA', 'IAC',
-                               'NA', 'NAC', 'NH', 'NHAA', 'NHAAC', 'NHBA', 'NHBAC',
-                               'NHIA', 'NHIAC', 'NHNA', 'NHNAC', 'NHTOM', 'NHWA',
-                               'NHWAC', 'TOM', 'WA', 'WAC'),
-                           race_group =
-                             c(NA, NA, NA, NA, 'Hispanic', NA,
-                               NA, NA, NA, NA, NA, NA,
-                               NA, NA, NA, NA, NA, 'Other',
-                               NA, 'Other', NA, 'Asian', NA, 'Black', NA,
-                               NA, NA, NA, NA, NA, 'White',
-                               NA, 'Other', NA, NA))
-
-
-Get_County_Race = function(age_groups) {
-  county_demo_race_prelim = fread('original-sources/helpers/demographics/county/county_pop_race.csv') %>%
-    filter(YEAR == '12' & AGEGRP %in% age_groups) %>%
-    select(-c(SUMLEV, STATE, COUNTY, STNAME, YEAR, AGEGRP, TOT_POP, TOT_MALE, TOT_FEMALE)) %>%
-    reshape2::melt(idvars = 'CTYNAME') %>%
-    separate(variable, c('race', 'gender')) %>%
-    group_by(CTYNAME, race) %>%
-    summarize(Total = sum(value, na.rm = TRUE)) %>%
-    left_join(race_group_df) %>%
-    group_by(CTYNAME, race_group) %>%
-    summarize(Total = sum(Total, na.rm = TRUE)) %>%
-    filter(!is.na(race_group)) %>%
-    ungroup() %>%
-    mutate(CTYNAME = gsub(' County', '', CTYNAME)) %>%
-    setNames(c('County', 'Race/Ethnicity', 'Population_Total'))
-
-  county_demo_other_race = fread('original-sources/helpers/demographics/county/county_pop_race.csv') %>%
-    filter(YEAR == '12' & AGEGRP %in% age_groups) %>%
-    select(-c(SUMLEV, STATE, COUNTY, STNAME, YEAR, AGEGRP, TOT_POP, TOT_MALE, TOT_FEMALE)) %>%
-    reshape2::melt(idvars = 'CTYNAME') %>%
-    separate(variable, c('race', 'gender')) %>%
-    filter(race %in% c('AA', 'AAC', 'BA', 'BAC', 'NA', 'NAC', 'IA', 'IAC', 'WA', 'WAC')) %>%
-    group_by(CTYNAME, race) %>%
-    summarize(Total = sum(value, na.rm = TRUE)) %>%
-    mutate(Total_combo = Total - lag(Total)) %>%
-    filter(str_detect(race, 'C')) %>%
-    mutate(`Race/Ethnicity` = 'Other') %>%
-    mutate(CTYNAME = gsub(' County', '', CTYNAME)) %>%
-    select(CTYNAME, `Race/Ethnicity`, Total_combo) %>%
-    setNames(c('County', 'Race/Ethnicity', 'Population_Total'))
-
-  county_demo_race = rbind(county_demo_race_prelim, county_demo_other_race) %>%
-    group_by(County, `Race/Ethnicity`) %>%
-    summarize(Population_Total = sum(Population_Total)) %>%
-    ungroup() %>%
-    arrange(County, `Race/Ethnicity`)
-
-  return(county_demo_race)
-}
-
-county_demo_race        = Get_County_Race(c('0'))
-county_demo_race_age_15 = Get_County_Race(as.character(seq(4, 18))) %>% rename('Population_16' = 'Population_Total')
-county_demo_race_age_5  = Get_County_Race(as.character(seq(2, 18))) %>% rename('Population_5' = 'Population_Total')
-
-## age+sex --------------------------------------------------------------------------------------------
-age_lookup = data.frame(age       =
-                          c('POPEST', 'UNDER5', 'AGE513', 'AGE1417', 'AGE1824',
-                            'AGE16PLUS', 'AGE18PLUS', 'AGE1544', 'AGE2544',
-                            'AGE4564', 'AGE65PLUS', 'AGE04', 'AGE59', 'AGE1014',
-                            'AGE1519', 'AGE2024', 'AGE2529', 'AGE3034', 'AGE3539',
-                            'AGE4044', 'AGE4549', 'AGE5054', 'AGE5559', 'AGE6064',
-                            'AGE6569', 'AGE7074', 'AGE7579', 'AGE8084', 'AGE85PLUS'),
-                        age_group =
-                          c('Total', NA, NA, NA, NA,
-                            '16+', NA, NA, NA,
-                            NA, NA, NA, NA, NA,
-                            NA, NA, NA, NA, NA,
-                            NA, NA, '50-64 years', '50-64 years', '50-64 years',
-                            '65-79 years', '65-79 years', '65-79 years', '80+ years', '80+ years'))
-
-demo_12_15 = fread('original-sources/helpers/demographics/county/county_pop_age_sex.csv') %>%
-  filter(YEAR == '12') %>%
-  select(-c(SUMLEV, STATE, COUNTY, STNAME, YEAR,
-            POPESTIMATE,
-            MEDIAN_AGE_TOT, MEDIAN_AGE_MALE, MEDIAN_AGE_FEM)) %>%
-  reshape2::melt(idvars = 'CTYNAME') %>%
-  separate(variable, c('age', 'gender')) %>%
-  filter(gender != 'TOT') %>%
-  filter(age %in% c('AGE1014', 'AGE1519')) %>%
-  mutate(value = ifelse(age == 'AGE1014', value * 0.6, value * 0.2)) %>%
-  group_by(CTYNAME, gender) %>%
-  summarize(Population_Total = round(sum(value), 0)) %>%
-  mutate(`Age Group` = '12-15 years') %>%
-  rename(County = CTYNAME, Gender = gender)
-
-demo_5_11 = fread('original-sources/helpers/demographics/county/county_pop_age_sex.csv') %>%
-  filter(YEAR == '12') %>%
-  select(-c(SUMLEV, STATE, COUNTY, STNAME, YEAR,
-            POPESTIMATE,
-            MEDIAN_AGE_TOT, MEDIAN_AGE_MALE, MEDIAN_AGE_FEM)) %>%
-  reshape2::melt(idvars = 'CTYNAME') %>%
-  separate(variable, c('age', 'gender')) %>%
-  filter(gender != 'TOT') %>%
-  filter(age == 'AGE513') %>%
-  mutate(value = ifelse(age == 'AGE513', value * (7 / 9), value)) %>%
-  group_by(CTYNAME, gender) %>%
-  summarize(Population_Total = round(sum(value), 0)) %>%
-  mutate(`Age Group` = '5-11 years') %>%
-  rename(County = CTYNAME, Gender = gender)
-
-county_demo_agesex = fread('original-sources/helpers/demographics/county/county_pop_age_sex.csv') %>%
-  filter(YEAR == '12') %>%
-  select(-c(SUMLEV, STATE, COUNTY, STNAME, YEAR,
-            POPESTIMATE,
-            MEDIAN_AGE_TOT, MEDIAN_AGE_MALE, MEDIAN_AGE_FEM)) %>%
-  reshape2::melt(idvars = 'CTYNAME') %>%
-  separate(variable, c('age', 'gender')) %>%
-  filter(gender != 'TOT') %>%
-  left_join(age_lookup) %>%
-  group_by(CTYNAME, age_group, gender) %>%
-  summarize(Total = sum(value, na.rm = TRUE)) %>%
-  filter(!is.na(age_group)) %>%
-  spread(age_group, Total) %>%
-  mutate('<16' = Total - `16+`) %>%
-  mutate(`16-49 years` = `16+` -
-    `50-64 years` -
-    `65-79 years` -
-    `80+ years`) %>%
-  select(-Total) %>%
-  reshape2::melt(idvars = c('CTYNAME', 'gender')) %>%
-  setNames(c('County', 'Gender', 'Age Group', 'Population_Total')) %>%
-  rbind(demo_12_15) %>%
-  rbind(demo_5_11) %>%
-  mutate(County = gsub(' County', '', County)) %>%
-  mutate(Gender = recode(Gender, 'FEM' = 'Female', 'MALE' = 'Male'))
+county_demo_agesex = fread('tableau/helpers/county_demo_agesex.csv')
+county_demo_race   = fread('tableau/helpers/county_demo_race.csv')
 
 # wastewater --------------------------------------------------------------------------------------------
 
