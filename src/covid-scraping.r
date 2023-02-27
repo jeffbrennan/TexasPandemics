@@ -127,7 +127,7 @@ county_populations = county_metadata %>% select(County, Population_2020_04_01, P
 # exclude totals to avoid double counting
 county_demo_agesex = fread('tableau/helpers/county_demo_agesex.csv')
 county_demo_race   = fread('tableau/helpers/county_demo_race.csv')
-
+state_demo_pops    = fread('tableau/helpers/state_demo.csv')
 # wastewater --------------------------------------------------------------------------------------------
 
 # houston dashboard --------------------------------------------------------------------------------------------
@@ -701,10 +701,8 @@ state_demo = state_demo_raw %>%
             by = 'Race/Ethnicity'
   ) %>%
   left_join(county_demo_agesex %>%
-              filter(Age_Group == '<16 years' | Age_Group == '16+ years') %>%
-              group_by(Gender) %>%
-              summarize(State_Gender_Total = sum(Population_2021_07_01, na.rm = TRUE)),
-            by = 'Gender'
+              filter(Age_Group == 'Total') %>%
+              by = 'Gender'
   ) %>%
   left_join(county_demo_agesex %>%
               group_by(Age_Group) %>%
@@ -729,74 +727,33 @@ state_demo = state_demo_raw %>%
   mutate(Date = format(as.Date(Date, origin = '1970-01-01'), '%Y-%m-%d'))
 
 fwrite(state_demo, 'tableau/sandbox/state_vaccine_demographics.csv')
-
-measure_cols       = c('Doses_Administered', 'At_Least_One_Vaccinated', 'Fully_Vaccinated')
-state_demo_stacked =
-  state_demo %>%
-    select(c(contains('Gender'), measure_cols, -contains('Per'))) %>%
+#  --------------------------------------------------------------------------------------------
+measure_cols             = c('Doses_Administered', 'At_Least_One_Vaccinated', 'Fully_Vaccinated', 'Boosted')
+state_demo_stacked_clean = state_demo %>%
+  #-------------------------------------------Gender------------------------------------
+    select(all_of(c('Gender', measure_cols))) %>%
     mutate(Group_Type = 'Gender') %>%
-    rename(Group            = Gender,
-           Population_Total = State_Gender_Total) %>%
-    group_by(Group_Type, Group, Population_Total) %>%
-    summarize_at(measure_cols, sum, na.rm = TRUE) %>%
-    rbind(state_demo %>%
-            select(c(contains('Race'), measure_cols, -contains('Per'))) %>%
-            mutate(Group_Type = 'Race') %>%
-            rename(Group            = `Race/Ethnicity`,
-                   Population_Total = State_Race_Total)) %>%
-    group_by(Group_Type, Group, Population_Total) %>%
-    summarize_at(measure_cols, sum, na.rm = TRUE) %>%
-    rbind(state_demo %>%
-            select(c(contains('Age'), measure_cols, -contains('Per'))) %>%
-            mutate(Group_Type = 'Age') %>%
-            rename(Group            = Age_Group,
-                   Population_Total = State_Age_Total)) %>%
-    group_by(Group_Type, Group, Population_Total) %>%
-    summarize_at(measure_cols, sum, na.rm = TRUE) %>%
-    relocate(Group_Type, .before = Group)
-
-state_demo_stacked_clean =
-  state_demo_stacked %>%
-    # rbind(under_12) %>%
-    arrange(Group, Group_Type) %>%
-    mutate(Population_Total =
-             ifelse(Group == '65-79 years & 80+ years',
-                    county_demo_agesex %>%
-                      filter(`Age Group` %in% c('65-79 years', '80+ years')) %>%
-                      summarize(Population_Total = sum(Population_Total)) %>%
-                      select(Population_Total) %>%
-                      unlist(),
-                    Population_Total)) %>%
-    # pop16
-    left_join(county_demo_race_age_15 %>%
-                group_by(`Race/Ethnicity`) %>%
-                summarize(Population_16 = sum(Population_16)),
-              by = c('Group' = 'Race/Ethnicity')) %>%
-    mutate(Population_16 = ifelse(Group_Type == 'Age', Population_Total, Population_16)) %>%
-    mutate(Population_16 = ifelse(Group == '< 16 years', 0, Population_16)) %>%
-    left_join(county_demo_agesex %>%
-                filter(`Age Group` == '16+') %>%
-                group_by(Gender) %>%
-                summarize(Population_16 = sum(Population_Total)),
-              by = c('Group' = 'Gender')) %>%
-    mutate(Population_16 = ifelse(!is.na(Population_16.y), Population_16.y, Population_16.x)) %>%
-    select(-contains('.x'), -contains('.y')) %>%
-    relocate(Population_16, .after = Population_Total) %>%
-    # pop 5
-    left_join(county_demo_race_age_5 %>%
-                group_by(`Race/Ethnicity`) %>%
-                summarize(Population_5 = sum(Population_5)),
-              by = c('Group' = 'Race/Ethnicity')) %>%
-    mutate(Population_5 = ifelse(Group_Type == 'Age', Population_Total, Population_5)) %>%
-    left_join(county_demo_agesex %>%
-                filter(`Age Group` %in% c('5-11 years', '12-15 years', '16+')) %>%
-                group_by(Gender) %>%
-                summarize(Population_5 = sum(Population_Total)),
-              by = c('Group' = 'Gender')) %>%
-    mutate(Population_5 = ifelse(!is.na(Population_5.y), Population_5.y, Population_5.x)) %>%
-    select(-contains('.x'), -contains('.y')) %>%
-    relocate(Population_5, .after = Fully_Vaccinated) %>%
-    arrange(Group_Type)
+    rename(Group = Gender) %>%
+    summarize(across(measure_cols, ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group)) %>%
+    # ----------------------------------------Race-----------------------------------------
+    rbind(
+      state_demo %>%
+        select(all_of(c('Race/Ethnicity', measure_cols))) %>%
+        mutate(Group_Type = 'Race') %>%
+        rename(Group = `Race/Ethnicity`) %>%
+        summarize(across(measure_cols, ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group))
+    ) %>%
+    #  --------------------------------------Age------------------------------------------------------
+    rbind(
+      state_demo %>%
+        select(c(contains('Age'), measure_cols, -contains('Per'))) %>%
+        mutate(Group_Type = 'Age') %>%
+        rename(Group            = Age_Group,
+               Population_Total = State_Age_Total) %>%
+        summarize(across(measure_cols, ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group))
+    ) %>%
+    relocate(Group_Type, .before = Group) %>%
+    left_join(state_demo_pops, by = c('Group_Type', 'Group'))
 
 fwrite(state_demo_stacked_clean, 'tableau/sandbox/stacked_state_vaccine_demographics.csv')
 
