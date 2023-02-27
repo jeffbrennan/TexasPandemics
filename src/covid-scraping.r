@@ -780,6 +780,7 @@ county_vax_race = lapply(all_dashboard_files, `[[`, 'By County, Race') %>%
   select(-contains('_Per'))
 
 fwrite(county_vax_race, 'tableau/sandbox/county_vax_race.csv')
+#  --------------------------------------------------------------------------------------------
 
 county_vax_age = lapply(all_dashboard_files, `[[`, 'By County, Age') %>%
   discard(is.null) %>%
@@ -787,30 +788,29 @@ county_vax_age = lapply(all_dashboard_files, `[[`, 'By County, Age') %>%
   setNames(slice(., 1)) %>%
   slice(2:nrow(.)) %>%
   select(1:(ncol(.) - 1)) %>%
-  rename(any_of(c(`Age Group` = 'Agegrp',
-                  `Age Group` = 'Agegrp (group) 1',
-                  `Age Group` = 'Agegrp_v2'
+  rename(any_of(c(Age_Group = 'Agegrp',
+                  Age_Group = 'Agegrp (group) 1',
+                  Age_Group = 'Agegrp_v2'
   ))
   ) %>%
-  mutate(`Age Group` = ifelse(`Age Group` == '44692', '5-11 years', `Age Group`)) %>%
-  mutate(`Age Group` = ifelse(`Age Group` == '44910', '12-15 years', `Age Group`)) %>%
+  mutate(Age_Group = ifelse(Age_Group %in% c('44692', '45057'), '5-11 years', Age_Group)) %>%
+  mutate(Age_Group = ifelse(Age_Group %in% c('45275', '44910'), '12-15 years', Age_Group)) %>%
   setNames(c('County', 'Age_Group',
              'Doses_Administered', 'At_Least_One_Vaccinated', 'Fully_Vaccinated', 'Booster')) %>%
-  mutate(Age_Group = glue('{Age_Group} years')) %>%
+  mutate(Age_Group = glue('{ Age_Group } years')) %>%
   mutate(Age_Group = gsub('years years', 'years', Age_Group)) %>%
   mutate(Age_Group = gsub('Unknown years', 'Unknown', Age_Group)) %>%
+  mutate(Age_Group = str_replace_all(Age_Group, '6mo-4yr years', '6 months-4 years')) %>%
   mutate(Age_Group = str_squish(Age_Group)) %>%
   left_join(county_demo_agesex %>%
-              group_by(County, `Age Group`) %>%
-              summarize(Population_Total = sum(Population_Total, na.rm = TRUE)) %>%
-              rename('Age_Group' = `Age Group`)) %>%
-  mutate_at(vars(-County, -`Age_Group`), as.numeric) %>%
-  mutate(Doses_Administered_Per_Age = Doses_Administered / Population_Total) %>%
-  mutate(At_Least_One_Vaccinated_Per_Age = At_Least_One_Vaccinated / Population_Total) %>%
-  mutate(Fully_Vaccinated_Per_Age = Fully_Vaccinated / Population_Total) %>%
-  mutate(Booster_Per_Age = Booster / Population_Total) %>%
-  filter(!(County %in% c('Other', 'Grand Total'))) %>%
-  select(-contains('_Per'))
+              select(County, Age_Group, Population_2021_07_01) %>%
+              rename(Population_Total = Population_2021_07_01) %>%
+              group_by(County, Age_Group) %>%
+              summarize(Population_Total = sum(Population_Total, na.rm = TRUE)),
+            by = c('County', 'Age_Group')
+  ) %>%
+  mutate(across(-c(County, Age_Group), as.integer)) %>%
+  filter(!(County %in% c('Other', 'Grand Total')))
 
 fwrite(county_vax_age, 'tableau/sandbox/county_vax_age.csv')
 
