@@ -538,6 +538,24 @@ tpr_out$Date %>% unique() %>% sort()
 fwrite(tpr_out, 'tableau/county_TPR.csv')
 
 # vaccinations --------------------------------------------------------------------------------------------
+Create_Agesex_Population_df = function(county_demo_agesex, pop_col) {
+  pop_date_df = county_demo_agesex %>%
+    filter(Age_Group %in% c('5+ years', '12+ years', '16+ years', '65+ years')) %>%
+    select(all_of(c('County', 'Gender', 'Age_Group', pop_col))) %>%
+    rename('Population_DSHS' = pop_col) %>%
+    summarize(Population_DSHS = sum(Population_DSHS), .by = c(County, Age_Group)) %>%
+    pivot_wider(names_from  = Age_Group,
+                values_from = Population_DSHS
+    ) %>%
+    left_join(county_populations %>% select(all_of(c('County', pop_col))), by = 'County') %>%
+    rename('Population_Total' = pop_col) %>%
+    rename(Population_5 = `5+ years`, Population_12 = `12+ years`, Population_16 = `16+ years`, Population_65 = `65+ years`)
+  return(pop_date_df)
+}
+
+county_vaccinations_out_pops = Create_Agesex_Population_df(county_demo_agesex, 'Population_2021_07_01')
+county_vax_fix_2020_07_01    = Create_Agesex_Population_df(county_demo_agesex, 'Population_2020_07_01')
+
 ## download --------------------------------------------------------------------------------------------
 vaccine_county_dshs_url_base = 'https://www.dshs.texas.gov/sites/default/files/LIDS-Immunize-COVID19/COVID%20Dashboard/County%20Dashboard/COVID-19%20Vaccine%20Data%20by%20County_'
 if (format(date_out, '%A') == 'Wednesday') {
@@ -557,76 +575,93 @@ if (format(date_out, '%A') == 'Wednesday') {
 dashboard_archive        = list.files('original-sources/historical/vaccinations', full.names = TRUE)
 current_vaccination_file = fread('tableau/sandbox/county_daily_vaccine.csv')
 
-NUM_DAYS            = 1L
-new_files           = dashboard_archive[(length(dashboard_archive) - (NUM_DAYS - 1)):length(dashboard_archive)]
-all_dashboard_files = lapply(new_files, read_excel_allsheets, add_date = TRUE, col_option = FALSE, skip_option = 0)
+NUM_DAYS                   = 1L
+new_files                  = dashboard_archive[(length(dashboard_archive) - (NUM_DAYS - 1)):length(dashboard_archive)]
+all_dashboard_files        = lapply(new_files, read_excel_allsheets, add_date = TRUE, col_option = FALSE, skip_option = 0)
+names(all_dashboard_files) = new_files
 
-county_vaccinations =
-  rbindlist(
-    lapply(
-      lapply(all_dashboard_files, `[[`, 'By County'),
-      function(x) return(x %>%
-                           setNames(slice(., 1)) %>%
-                           slice(2:nrow(.)) %>%
-                           rename('Date' = ncol(.)))
-    )
-    , fill = TRUE) %>%
-    filter(`County Name` %in% (dshs_pops$County %>% unique())) %>%
-    select(Date, `County Name`,
-           `Total Doses Allocated`, `Vaccine Doses Administered`,
-           `People Vaccinated with at least One Dose`, `People Fully Vaccinated`,
-           ends_with('5+'), `Population, 16+`, `Population, 65+`) %>%
-    relocate(ends_with('5+'), .before = ends_with('16+')) %>%
-    relocate(ends_with('65+'), .after = ends_with('16+')) %>%
-    setNames(
-      c('Date', 'County', 'Doses_Allocated',
-        'Doses_Administered', 'At_Least_One_Dose', 'Fully_Vaccinated',
-        'Population_5', 'Population_16', 'Population_65')) %>%
-    mutate_at(vars(-County, -Date), as.numeric) %>%
-    mutate(
-      Doses_Allocated_Per_5     = Doses_Allocated / Population_5,
-      Doses_Allocated_Per_16    = Doses_Allocated / Population_16,
-      Doses_Allocated_Per_65    = Doses_Allocated / Population_65,
-      Doses_Administered_Per_5  = Doses_Administered / Population_5,
-      Doses_Administered_Per_16 = Doses_Administered / Population_16,
-      Doses_Administered_Per_65 = Doses_Administered / Population_65,
-      Fully_Vaccinated_Per_5    = Fully_Vaccinated / Population_5,
-      Fully_Vaccinated_Per_16   = Fully_Vaccinated / Population_16,
-    )
-population_12       = all_dashboard_files[[length(all_dashboard_files)]][[2]] %>%
-  setNames(slice(., 1)) %>%
-  setNames(str_replace_all(names(.), '\\r', '')) %>%
-  select(`County Name`, `Population\n12+`) %>%
-  filter(`County Name` %in% (dshs_pops$County %>% unique())) %>%
-  rename(County = `County Name`, Population_12 = `Population\n12+`) %>%
-  filter(!is.na(County))
 
-county_vaccinations_out = county_vaccinations %>%
-  left_join(tsa_long_complete %>% select(County, TSA_Combined)) %>%
-  left_join(county_classifications %>% select(County, PHR_Combined, Metro_Area)) %>%
-  select(-contains('_Per')) %>%
-  left_join(county_demo_agesex %>%
-              select(County, `Age Group`, Population_Total) %>%
-              filter(`Age Group` %in% c('<16', '16+')) %>%
-              group_by(County) %>%
-              summarize(Population_Total = sum(Population_Total)) %>%
-              arrange(-Population_Total)) %>%
-  left_join(population_12) %>%
-  relocate(Population_12, .before = Population_16) %>%
-  relocate(Population_Total, .before = TSA_Combined) %>%
-  group_by(County) %>%
-  mutate(Population_5 = coalesce(Population_5, NA)) %>%
-  tidyr::fill(Population_5, .direction = 'updown') %>%
-  plyr::rbind.fill(current_vaccination_file) %>%
-  arrange(Date, County) %>%
-  filter(TSA_Combined != '') %>%
+county_dashboard_data_exists      = map_lgl(all_dashboard_files, ~'By County' %in% names(.))
+county_dashboard_files_nonmissing = all_dashboard_files[county_dashboard_data_exists]
+
+vaccine_file_dates_raw = map(county_dashboard_files_nonmissing,
+                             ~.[['About the Data']] %>%
+                               slice(1) %>%
+                               setNames(c('Colname', 'Date_raw')) %>%
+                               select(Colname, Date_raw)
+)
+
+vaccine_file_dates = vaccine_file_dates_raw %>%
+  rbindlist(fill = TRUE) %>%
+  mutate(file_path = names(county_dashboard_files_nonmissing)) %>%
+  mutate(Date_file = str_extract(file_path, '\\d{4}-\\d{2}-\\d{2}')) %>%
+  mutate(Date_raw = ifelse(!str_detect(Date_raw, '\\d{5}'), NA, Date_raw)) %>%
+  mutate(Date_raw_parsed = as.Date(as.integer(Date_raw), origin = '1899-12-30')) %>%
+  mutate(Date = ifelse(is.na(Date_raw), as.character(Date_file), as.character(Date_raw_parsed))) %>%
+  mutate(Date = as.Date(Date)) %>%
+  select(file_path, Date) %>%
+  arrange(desc(file_path)) %>%
+  group_by(Date) %>%
+  slice(1) %>%
+  ungroup()
+
+county_vaccinations_raw = map(
+  names(county_dashboard_files_nonmissing),
+  function(x) return(
+    county_dashboard_files_nonmissing[[x]][['By County']] %>%
+      setNames(slice(., 1)) %>%
+      slice(2:nrow(.)) %>%
+      mutate(file_path = x))
+)
+
+county_vaccinations_combined = county_vaccinations_raw %>%
+  rbindlist(fill = TRUE) %>%
+  left_join(vaccine_file_dates, by = 'file_path') %>%
+  rename_with(~case_when(
+    . == "County Name" ~ "County",
+    . == "Vaccine Doses Administered" ~ "Doses_Administered",
+    . == "People Vaccinated with at least One Dose" ~ "At_Least_One_Dose",
+    . == "People Fully Vaccinated" ~ "Fully_Vaccinated",
+    # . == "People Vaccinated with Booster Dose" ~ "Boosted",
+    . == "People Vaccinated with at least One Booster Dose" ~ "Boosted",
+    TRUE ~ .
+  )) %>%
+  filter(County %in% county_metadata$County) %>%
+  # mutate(Boosted = ifelse(is.na(Boosted1), Boosted2, Boosted1)) %>%
+  select(County, Date, Doses_Administered, At_Least_One_Dose, Fully_Vaccinated, Boosted) %>%
+  mutate(across(c(Doses_Administered, At_Least_One_Dose, Fully_Vaccinated, Boosted), as.integer)) %>%
   distinct()
 
-stopifnot(county_vaccinations_out %>%
-            group_by(County, Date) %>%
-            filter(n() > 1) %>%
-            nrow() == 0)
-fwrite(county_vaccinations_out, 'tableau/sandbox/county_daily_vaccine.csv')
+county_vaccinations = county_vaccinations_combined %>%
+  filter(Date < '2021-07-01') %>%
+  left_join(county_vax_fix_2020_07_01, by = 'County') %>%
+  rbind(
+    county_vaccinations_combined %>%
+      filter(Date >= '2021-07-01') %>%
+      left_join(county_vaccinations_out_pops, by = 'County')
+  ) %>%
+  mutate(Date = as.Date(Date)) %>%
+  left_join(county_metadata %>% select(County, TSA_Combined, PHR_Combined, Metro_Area), by = 'County') %>%
+  select(Date, County, Doses_Administered, At_Least_One_Dose, Fully_Vaccinated, Boosted,
+         Population_5, Population_12, Population_16, Population_65, Population_Total,
+         TSA_Combined, PHR_Combined, Metro_Area
+  ) %>%
+  rbind(current_vaccination_file %>% mutate(Date = as.Date(Date))) %>%
+  arrange(County, Date) %>%
+  distinct()
+
+check_dupes = county_vaccinations %>%
+  group_by(County, Date) %>%
+  summarise(n = n()) %>%
+  filter(n > 1) %>%
+  nrow() == 0
+
+check_nonmissing_col = county_vaccinations %>%
+  filter(if_any(c(County, TSA_Combined, PHR_Combined, Metro_Area), ~is.na(.))) %>%
+  nrow() == 0
+
+stopifnot(c(check_dupes, check_nonmissing_col))
+fwrite(vaccination_file_fixed, 'tableau/sandbox/county_daily_vaccine.csv')
 
 # state  --------------------------------------------------------------------------------------------
 state_demo = lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>%
