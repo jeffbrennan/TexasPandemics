@@ -644,6 +644,7 @@ merged_dshs = DSHS_vitals_long %>%
   filter(County %in% county_metadata$County) %>%
   left_join(county_populations, by = 'County') %>%
   left_join(county_tests, by = c('County', 'Date')) %>%
+  left_join(county_metadata %>% select(County, TSA, TSA_Name, TSA_Combined, PHR, PHR_Name, PHR_Combined, Metro_Area), by = 'County') %>%
   filter(Date >= as.Date('2020-03-06') & !is.na(County)) %>%
   distinct() %>%
   mutate(Population_DSHS = case_when(
@@ -653,6 +654,14 @@ merged_dshs = DSHS_vitals_long %>%
     TRUE ~ NA
   )) %>%
   select(-Population_2020_04_01, -Population_2020_07_01, -Population_2021_07_01) %>%
+  select(Date, County, Case_Type,
+         Cases_Cumulative, Cases_Daily,
+         Deaths_Cumulative, Deaths_Daily,
+         Tests_Cumulative, Tests_Daily,
+         Population_DSHS,
+         TSA, TSA_Name, TSA_Combined,
+         PHR, PHR_Name, PHR_Combined, Metro_Area
+  ) %>%
   arrange(County, Date, Case_Type)
 
 # diagnostic --------------------------------------------------------------------------------------------
