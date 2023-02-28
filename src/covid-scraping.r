@@ -770,7 +770,9 @@ state_demo        = state_demo_prep %>%
              Boosted_Per_Age    = Boosted / State_Age_Total) %>%
       select(-Boosted_baseline) %>%
       mutate(Date = max(state_demo_prep$Date))
-  )
+  ) %>%
+  relocate(Vaccination_Type, .after = `Race/Ethnicity`) %>%
+  relocate(Date, .before = 'Gender')
 
 fwrite(state_demo, 'tableau/sandbox/state_vaccine_demographics.csv')
 #  --------------------------------------------------------------------------------------------
