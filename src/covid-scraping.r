@@ -709,7 +709,7 @@ state_demo_raw = all_dashboard_files[[length(all_dashboard_files)]][['By Age, Ge
 
 
 # add pops
-state_demo = state_demo_raw %>%
+state_demo_prep = state_demo_raw %>%
   left_join(county_demo_race %>%
               filter(Age_Group == 'total') %>%
               group_by(`Race/Ethnicity`) %>%
@@ -745,12 +745,33 @@ state_demo = state_demo_raw %>%
   relocate(Date, .after = Boosted_Per_Age) %>%
   mutate(Date = format(as.Date(Date, origin = '1970-01-01'), '%Y-%m-%d'))
 
-check_state_demo_dupes = state_demo %>%
+check_state_demo_dupes = state_demo_prep %>%
   group_by(Gender, Age_Group, `Race/Ethnicity`) %>%
   filter(n() > 1) %>%
   nrow() == 0
 
 stopifnot(check_state_demo_dupes)
+
+# add bivalent group
+bivalent_baseline = fread('tableau/helpers/state_demo_bivalent_baseline.csv')
+state_demo        = state_demo_prep %>%
+  mutate(Vaccination_Type = 'all') %>%
+  rbind(
+    state_demo_prep %>%
+      mutate(Vaccination_Type = 'bivalent') %>%
+      left_join(bivalent_baseline %>%
+                  select(-Date) %>%
+                  rename(Boosted_baseline = Boosted),
+                by = c('Gender', 'Age_Group', 'Race/Ethnicity')
+      ) %>%
+      mutate(Boosted = Boosted - Boosted_baseline) %>%
+      mutate(Boosted_Per_Race   = Boosted / State_Race_Total,
+             Boosted_Per_Gender = Boosted / State_Gender_Total,
+             Boosted_Per_Age    = Boosted / State_Age_Total) %>%
+      select(-Boosted_baseline) %>%
+      mutate(Date = max(state_demo_prep$Date))
+  )
+
 fwrite(state_demo, 'tableau/sandbox/state_vaccine_demographics.csv')
 #  --------------------------------------------------------------------------------------------
 measure_cols             = c('Doses_Administered', 'At_Least_One_Vaccinated', 'Fully_Vaccinated', 'Boosted')
