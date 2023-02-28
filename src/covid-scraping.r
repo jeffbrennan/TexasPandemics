@@ -249,11 +249,11 @@ Split_TPR = function(all_results, cpr_date_results) {
     mutate(Date = as.Date(Date), origin = '1970-01-01') %>%
     mutate(File_Date = as.Date(str_extract(file_path, '\\d{4}-\\d{2}-\\d{2}'), origin = '1970-01-01')) %>%
     mutate(bad_date = Date > File_Date)
-    # mutate(Date = format(Date, '%Y-%m-%d'))
+  # mutate(Date = format(Date, '%Y-%m-%d'))
 
   check_date = cpr_files_combined %>%
-      filter(bad_date) %>%
-      nrow() == 0
+    filter(bad_date) %>%
+    nrow() == 0
 
   stopifnot(check_date)
 
@@ -494,7 +494,7 @@ Get_TPR_Urls = function(n_days = 1) {
 }
 
 # download new files --------------------------------------------------------------------------------------------
-N_TPR_DAYS = Inf
+N_TPR_DAYS = 1
 tpr_urls   = Get_TPR_Urls(n_days = N_TPR_DAYS)
 dl_results = Manage_TPR_Download(tpr_urls, n_days)
 
