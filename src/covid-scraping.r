@@ -723,11 +723,9 @@ tpr_cases = merged_dshs %>%
     / Population_DSHS) * 100000) %>%
   filter(Date %in% TPR_dates) %>%
   dplyr::select(-Cases_Daily, -Population_DSHS, -Cases_100K_14Day_MA)
-
-tpr_cases$Date %>% unique() %>% sort()
-
 tpr_out = all_cpr_tpr %>%
-  rbind(TPR_all_dates %>% filter(Date >= '2020-12-16'), fill = TRUE) %>%
+  select(Date, County, Tests, TPR) %>%
+  plyr::rbind.fill(TPR_all_dates %>% filter(Date >= '2020-12-16')) %>%
   distinct() %>%
   arrange(County, Date) %>%
   rbind(cms_archive) %>%
@@ -745,8 +743,10 @@ tpr_out = all_cpr_tpr %>%
   mutate(count_0 = sum(TPR == 0)) %>%
   ungroup() %>%
   filter(count_0 < 254 | is.na(count_0)) %>%
-  select(-count_0)
-
+  select(-count_0) %>%
+  left_join(all_cpr_tpr %>% select(County, Date, Transmission_Level, Community_Level),
+            by = c('County', 'Date')
+  )
 
 fwrite(tpr_out, 'tableau/county_TPR.csv')
 
