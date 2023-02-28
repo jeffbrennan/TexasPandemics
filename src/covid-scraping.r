@@ -804,7 +804,7 @@ state_demo_stacked_clean = state_demo %>%
 fwrite(state_demo_stacked_clean, 'tableau/sandbox/stacked_state_vaccine_demographics.csv')
 
 #  --------------------------------------------------------------------------------------------
-county_vax_race = lapply(all_dashboard_files, `[[`, 'By County, Race') %>%
+county_vax_race_prep = lapply(all_dashboard_files, `[[`, 'By County, Race') %>%
   discard(is.null) %>%
   .[[length(.)]] %>%
   setNames(slice(., 1)) %>%
@@ -818,17 +818,30 @@ county_vax_race = lapply(all_dashboard_files, `[[`, 'By County, Race') %>%
             by = c('County', 'Race/Ethnicity')
   ) %>%
   mutate(across(-c(County, `Race/Ethnicity`), as.integer)) %>%
-  mutate(Doses_Administered_Per_Race      = Doses_Administered / Population_Total,
-         At_Least_One_Vaccinated_Per_Race = At_Least_One_Vaccinated / Population_Total,
-         Fully_Vaccinated_Per_Race        = Fully_Vaccinated / Population_Total,
-         Boosted_Per_Race                 = Boosted / Population_Total) %>%
-  filter(!(County %in% c('Other', 'Grand Total'))) %>%
-  select(-contains('_Per'))
+  filter(!(County %in% c('Other', 'Grand Total')))
+
+county_race_bivalent_baseline = fread('tableau/helpers/county_bivalent_baseline_race.csv')
+
+county_vax_race = county_vax_race_prep %>%
+  mutate(Vaccination_Type = 'all') %>%
+  rbind(
+    county_vax_race_prep %>%
+      left_join(county_race_bivalent_baseline %>%
+                  select(-Date) %>%
+                  rename(Boosted_baseline = Boosted),
+                by = c('County', 'Race/Ethnicity')
+      ) %>%
+      mutate(Boosted = Boosted - Boosted_baseline) %>%
+      select(-Boosted_baseline) %>%
+      mutate(Vaccination_Type = 'bivalent')
+  ) %>%
+  mutate(across(-c(County, `Race/Ethnicity`, Vaccination_Type), ~ifelse(. < 0, 0L, .))) %>%
+  relocate(Vaccination_Type, .after = `Race/Ethnicity`)
 
 fwrite(county_vax_race, 'tableau/sandbox/county_vax_race.csv')
 #  --------------------------------------------------------------------------------------------
 
-county_vax_age = lapply(all_dashboard_files, `[[`, 'By County, Age') %>%
+county_vax_age_prep = lapply(all_dashboard_files, `[[`, 'By County, Age') %>%
   discard(is.null) %>%
   .[[length(.)]] %>%
   setNames(slice(., 1)) %>%
@@ -842,7 +855,7 @@ county_vax_age = lapply(all_dashboard_files, `[[`, 'By County, Age') %>%
   mutate(Age_Group = ifelse(Age_Group %in% c('44692', '45057'), '5-11 years', Age_Group)) %>%
   mutate(Age_Group = ifelse(Age_Group %in% c('45275', '44910'), '12-15 years', Age_Group)) %>%
   setNames(c('County', 'Age_Group',
-             'Doses_Administered', 'At_Least_One_Vaccinated', 'Fully_Vaccinated', 'Booster')) %>%
+             'Doses_Administered', 'At_Least_One_Vaccinated', 'Fully_Vaccinated', 'Boosted')) %>%
   mutate(Age_Group = glue('{ Age_Group } years')) %>%
   mutate(Age_Group = gsub('years years', 'years', Age_Group)) %>%
   mutate(Age_Group = gsub('Unknown years', 'Unknown', Age_Group)) %>%
@@ -858,8 +871,25 @@ county_vax_age = lapply(all_dashboard_files, `[[`, 'By County, Age') %>%
   mutate(across(-c(County, Age_Group), as.integer)) %>%
   filter(!(County %in% c('Other', 'Grand Total')))
 
-fwrite(county_vax_age, 'tableau/sandbox/county_vax_age.csv')
+county_age_bivalent_baseline = fread('tableau/helpers/county_bivalent_baseline_age.csv')
 
+county_vax_age = county_vax_age_prep %>%
+  mutate(Vaccination_Type = 'all') %>%
+  rbind(
+    county_vax_age_prep %>%
+      left_join(county_age_bivalent_baseline %>%
+                  select(-Date) %>%
+                  rename(Boosted_baseline = Boosted),
+                by = c('County', 'Age_Group')
+      ) %>%
+      mutate(Boosted = Boosted - Boosted_baseline) %>%
+      select(-Boosted_baseline) %>%
+      mutate(Vaccination_Type = 'bivalent')
+  ) %>%
+  mutate(across(-c(County, Age_Group, Vaccination_Type), ~ifelse(. < 0, 0L, .))) %>%
+  relocate(Vaccination_Type, .after = Age_Group)
+
+fwrite(county_vax_age, 'tableau/sandbox/county_vax_age.csv')
 # TSA --------------------------------------------------------------------------------------------
 DSHS_tsa_counts =
   merged_dshs %>%
