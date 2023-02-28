@@ -777,29 +777,29 @@ fwrite(state_demo, 'tableau/sandbox/state_vaccine_demographics.csv')
 measure_cols             = c('Doses_Administered', 'At_Least_One_Vaccinated', 'Fully_Vaccinated', 'Boosted')
 state_demo_stacked_clean = state_demo %>%
   #-------------------------------------------Gender------------------------------------
-  select(all_of(c('Gender', measure_cols))) %>%
+  select(all_of(c('Gender', 'Vaccination_Type', measure_cols))) %>%
   mutate(Group_Type = 'Gender') %>%
   rename(Group = Gender) %>%
-  summarize(across(measure_cols, ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group)) %>%
+  summarize(across(measure_cols, ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group, Vaccination_Type)) %>%
   # ----------------------------------------Race-----------------------------------------
   rbind(
     state_demo %>%
-      select(all_of(c('Race/Ethnicity', measure_cols))) %>%
+      select(all_of(c('Race/Ethnicity', 'Vaccination_Type', measure_cols))) %>%
       mutate(Group_Type = 'Race') %>%
       rename(Group = `Race/Ethnicity`) %>%
-      summarize(across(measure_cols, ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group))
+      summarize(across(measure_cols, ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group, Vaccination_Type))
   ) %>%
   #  --------------------------------------Age------------------------------------------------------
   rbind(
     state_demo %>%
-      select(c(contains('Age'), measure_cols, -contains('Per'))) %>%
+      select(all_of(c('Age_Group', 'Vaccination_Type', measure_cols))) %>%
       mutate(Group_Type = 'Age') %>%
-      rename(Group            = Age_Group,
-             Population_Total = State_Age_Total) %>%
-      summarize(across(measure_cols, ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group))
+      rename(Group = Age_Group) %>%
+      summarize(across(measure_cols, ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group, Vaccination_Type))
   ) %>%
   relocate(Group_Type, .before = Group) %>%
-  left_join(state_demo_pops, by = c('Group_Type', 'Group'))
+  left_join(state_demo_pops, by = c('Group_Type', 'Group')) %>%
+  mutate(across(measure_cols, ~ifelse(. < 0, 0L, .)))
 
 fwrite(state_demo_stacked_clean, 'tableau/sandbox/stacked_state_vaccine_demographics.csv')
 
