@@ -519,14 +519,29 @@ plan(sequential)
 fwrite(PCT_Combined_df, 'tableau/stacked_pct_change_new.csv')
 
 # stack combo --------------------------------------------------------------------------------------------
+stacked_all = PCT_Combined_df %>%
+  left_join(ARIMA_Case_Combined_df %>%
+              rename(TS_CI_Lower = CI_Lower,
+                     TS_CI_Upper = CI_Upper),
+            by = c('Case_Type', 'Level_Type', 'Level', 'Date')
+  ) %>%
+  left_join(rt_df_out %>%
+              rename(RT_CI_Lower = lower,
+                     RT_CI_Upper = upper),
+            by = c('Case_Type', 'Level_Type', 'Level', 'Date')
+  ) %>%
+  left_join(ARIMA_Hosp_Combined_df %>%
+              rename(TS_Hosp_CI_Lower = CI_Lower,
+                     TS_Hosp_CI_Upper = CI_Upper),
+            by = c('Level_Type', 'Level', 'Date'),
+            multiple = 'all'
+  )
 
-Ratio_Combined_df$Date                = max(PCT_Combined_df$Date)
-colnames(ARIMA_Case_Combined_df)[5:6] = c('TS_CI_Lower', 'TS_CI_Upper')
-colnames(RT_Combined_df)[4:5]         = c('RT_CI_Lower', 'RT_CI_Upper')
-colnames(ARIMA_Hosp_Combined_df)[4:5] = c('TS_Hosp_CI_Lower', 'TS_Hosp_CI_Upper')
+check_dupe_stacked_all = stacked_all %>%
+  group_by(Date, Level_Type, Level, Case_Type) %>%
+  summarise(n = n()) %>%
+  filter(n > 1) %>%
+  nrow() == 0
+stopifnot(check_dupe_stacked_all)
 
-stacked_all = Reduce(function(x, y) merge(x, y, by = c('Level_Type', 'Level', 'Date'), all = TRUE),
-                     list(PCT_Combined_df, Ratio_Combined_df,
-                          ARIMA_Case_Combined_df, RT_Combined_df, ARIMA_Hosp_Combined_df))
-
-write.csv(stacked_all, 'tableau/stacked_critical_trends.csv', row.names = FALSE)
+fwrite(stacked_all, 'tableau/stacked_critical_trends.csv')
