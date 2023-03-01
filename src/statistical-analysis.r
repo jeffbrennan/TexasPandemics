@@ -370,69 +370,74 @@ fwrite(ARIMA_Case_Combined_df, 'tableau/stacked_case_timeseries.csv')
 
 # hosp time series --------------------------------------------------------------------------------------------
 
-covid.arima.forecast = function(mydata, prediction.period = 10, mindate) {
-  maxdate          = max(mydata$Date)
-  pred_start_label = format(mindate, format = '%m_%d')
+Predict_Hospitalizations = function(mydata, prediction.period = 10) {
+  mindate = as.Date('2020-04-12')
+  maxdate = max(mydata$Date)
+  mydata  = mydata %>% filter(Date >= mindate)
 
-  mydata       = subset(mydata, Date >= mindate)
-  model.length = as.numeric(length(mydata$Date) + prediction.period)
+  model.length = nrow(mydata) + prediction.period
 
   if (max(mydata$Hospitalizations_Total >= 100, na.rm = TRUE))
   {
     my.timeseries = ts(mydata$Hospitalizations_Total)
-
-    library(pracma)
     my.timeseries = movavg(my.timeseries, 7, "s")
 
-    arima.fit = forecast::auto.arima(my.timeseries)
-
-    # save parameters from arima autofit
-    p = arima.fit$arma[1]          # autoregressive order
-    q = arima.fit$arma[2]          # moving average order
-    d = arima.fit$arma[6]           # differencing order from model
-
-    # 10 day forecast, CI for lower and upper has confidence level 95% set by level =c(95,95)
+    arima.fit      = forecast::auto.arima(my.timeseries)
     arima.forecast = forecast::forecast(arima.fit, h = prediction.period, level = c(95, 95))
 
     #return a dataframe of the arima model (Daily cases by date)
-    arima.out = data.frame(Date                   = seq(mindate, maxdate + prediction.period, by = 'days'),
-                           # Cases_Raw = c(mydata$Hospitalizations_Total, rep(NA, times = prediction.period)),
-                           Hospitalizations_Total = c(my.timeseries, arima.forecast[['mean']]),
-                           CI_Lower               = c(rep(NA, times = length(my.timeseries)),
-                                                      arima.forecast[['lower']][, 2]),
-                           CI_Upper               = c(rep(NA, times = length(my.timeseries)),
-                                                      arima.forecast[['upper']][, 2]))
+    arima.out = data.frame(
+      Date                   = seq(mindate, maxdate + prediction.period, by = 'days'),
+      Level_Type             = mydata$Level_Type[1],
+      Level                  = mydata$Level[1],
+      Hospitalizations_Total = c(my.timeseries, arima.forecast[['mean']]),
+      CI_Lower               = c(rep(NA, times = length(my.timeseries)),
+                                 arima.forecast[['lower']][, 2]),
+      CI_Upper               = c(rep(NA, times = length(my.timeseries)),
+                                 arima.forecast[['upper']][, 2])) %>%
+      mutate(CI_Lower = ifelse(CI_Lower <= 0, 0, CI_Lower))
   } else {
     # insufficient data catch: return NA values for predictions
-    arima.out = data.frame(Date                   = seq(mindate, maxdate + prediction.period, by = 'days'),
-                           # Cases_Raw = c(mydata$Hospitalizations_Total, rep(NA, times = prediction.period)),
-                           Hospitalizations_Total = rep(NA, times = model.length),
-                           CI_Lower               = rep(NA, times = model.length),
-                           CI_Upper               = rep(NA, times = model.length))
+    arima.out = data.frame(
+      Date                   = seq(mindate, maxdate + prediction.period, by = 'days'),
+      Level_Type             = mydata$Level_Type[1],
+      Level                  = mydata$Level[1],
+      Hospitalizations_Total = rep(NA, times = model.length),
+      CI_Lower               = rep(NA, times = model.length),
+      CI_Upper               = rep(NA, times = model.length))
   }
-  #replace CI lower limit with 0 if negative
-  arima.out$CI_Lower = ifelse(arima.out$CI_Lower >= 0, arima.out$CI_Lower, 0)
   return(arima.out)
 }
 
-ARIMA_Hosp_TSA_output = nlme::gapply(TSA_df,
-                                     FUN     = covid.arima.forecast,
-                                     groups  = TSA_df$TSA,
-                                     mindate = as.Date('2020-04-12'))
+# hosp setup --------------------------------------------------------------------------------------------
+hospitalizations = fread("tableau/hospitalizations_tsa.csv") %>%
+  select(Date, TSA_Combined, Hospitalizations_Total) %>%
+  rename(TSA = TSA_Combined) %>%
+  mutate(Date = as.Date(Date)) %>%
+  arrange(Date, TSA)
 
-ARIMA_Hosp_TSA_df = rbindlist(ARIMA_Hosp_TSA_output, idcol = 'TSA')
+hospitalizations_df_split = hospitalizations %>%
+  rename(Level = TSA) %>%
+  mutate(Level_Type = 'TSA') %>%
+  rbind(
+    hospitalizations %>%
+      group_by(Date) %>%
+      summarize(Hospitalizations_Total = sum(Hospitalizations_Total, na.rm = TRUE)) %>%
+      mutate(Level = 'Texas') %>%
+      mutate(Level_Type = 'State')
+  ) %>%
+  group_split(Level) %>%
+  set_names(map_chr(., ~str_c(.x$Level[1])))
 
-ARIMA_Hosp_State_df = covid.arima.forecast(State_df, mindate = as.Date('2020-04-12'))
+plan(multisession, workers = N_CORES, gc = FALSE)
+arima_hosp_start_time = Sys.time()
+ARIMA_Hosp_Combined_df = future_map(hospitalizations_df_split, ~Predict_Hospitalizations(.)) %>%
+  rbindlist() %>%
+  mutate(Date = as.Date(Date))
+print(Sys.time() - arima_hosp_start_time)
 
-colnames(ARIMA_Hosp_TSA_df)[1] = 'Level'
-ARIMA_Hosp_State_df$Level      = 'Texas'
-
-ARIMA_Hosp_TSA_df$Level_Type   = 'TSA'
-ARIMA_Hosp_State_df$Level_Type = 'State'
-
-ARIMA_Hosp_Combined_df = rbind(ARIMA_Hosp_TSA_df, ARIMA_Hosp_State_df)
-write.csv(ARIMA_Hosp_Combined_df, 'tableau/stacked_hosp_timeseries.csv', row.names = FALSE)
-
+plan(sequential)
+fwrite(ARIMA_Hosp_Combined_df, 'tableau/stacked_hosp_timeseries.csv')
 
 # standard stats --------------------------------------------------------------------------------------------
 # pct change --------------------------------------------------------------------------------------------
