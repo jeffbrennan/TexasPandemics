@@ -58,7 +58,9 @@ Parse_RT_Results = function(level_combined, rt_results_raw) {
       mutate(
         Case_Type  = case_type,
         Level_Type = level_type,
-        Level      = level
+        Level      = level,
+        case_avg = case_df$case_avg[1],
+        threshold = case_df$threshold[1]
       ) %>%
       mutate(Date = as.Date(row.names(.))) %>%
       as.data.frame(row.names = 1:nrow(.)) %>%
@@ -67,7 +69,7 @@ Parse_RT_Results = function(level_combined, rt_results_raw) {
       rowwise() %>%
       mutate(across(c(Rt, lower, upper), ~ifelse(Rt == 0, NA, .))) %>%
       ungroup() %>%
-      select(Date, Level_Type, Level, Case_Type, Rt, lower, upper)
+      select(Date, Level_Type, Level, Case_Type, Rt, lower, upper, case_avg, threshold)
   }
   return(result_df)
 }
@@ -133,7 +135,12 @@ Prepare_RT = function(case_df) {
     filter(keep_row) %>%
     slice(1:max(which(Cases_Daily > 0))) %>%
     ungroup() %>%
-    select(Date, Case_Type, Level_Type, Level, MA_7day, Population_DSHS) %>%
+    left_join(case_quant, by = 'Case_Type') %>%
+    select(Date, Case_Type, Level_Type, Level, MA_7day, Population_DSHS, recent_case_avg, case_quant) %>%
+    rename(
+      case_avg = recent_case_avg,
+           threshold = case_quant
+    ) %>%
     group_split(Level, Case_Type) %>%
     set_names(map_chr(., ~str_c(.x$Level[1], ';', .x$Case_Type[1])))
   return(case_df_final)
@@ -290,7 +297,6 @@ stopifnot(check_rt_combined_dupe)
 
 fwrite(rt_df_out, 'tableau/stacked_rt.csv')
 # timeseries --------------------------------------------------------------------------------------------
-threshold = case_quant
 # Compute forecast (UPDATE PREDICTION PERIOD [days] AS NEEDED)
 covid.arima.forecast = function(mydata, prediction.period = 10, mindate, threshold) {
   mindate = min(mydata$Date)
