@@ -14,6 +14,7 @@ library(forecast)
 library(zoo)
 library(astsa)
 library(fpp2)
+library(pracma)
 
 library(furrr)
 library(future)
@@ -59,8 +60,8 @@ Parse_RT_Results = function(level_combined, rt_results_raw) {
         Case_Type  = case_type,
         Level_Type = level_type,
         Level      = level,
-        case_avg = case_df$case_avg[1],
-        threshold = case_df$threshold[1]
+        case_avg   = case_df$case_avg[1],
+        threshold  = case_df$threshold[1]
       ) %>%
       mutate(Date = as.Date(row.names(.))) %>%
       as.data.frame(row.names = 1:nrow(.)) %>%
@@ -136,10 +137,10 @@ Prepare_RT = function(case_df) {
     slice(1:max(which(Cases_Daily > 0))) %>%
     ungroup() %>%
     left_join(case_quant, by = 'Case_Type') %>%
-    select(Date, Case_Type, Level_Type, Level, MA_7day, Population_DSHS, recent_case_avg, case_quant) %>%
+    select(Date, Case_Type, Level_Type, Level, Cases_Daily, MA_7day, Population_DSHS, recent_case_avg, case_quant) %>%
     rename(
-      case_avg = recent_case_avg,
-           threshold = case_quant
+      case_avg  = recent_case_avg,
+      threshold = case_quant
     ) %>%
     group_split(Level, Case_Type) %>%
     set_names(map_chr(., ~str_c(.x$Level[1], ';', .x$Case_Type[1])))
@@ -298,115 +299,74 @@ stopifnot(check_rt_combined_dupe)
 fwrite(rt_df_out, 'tableau/stacked_rt.csv')
 # timeseries --------------------------------------------------------------------------------------------
 # Compute forecast (UPDATE PREDICTION PERIOD [days] AS NEEDED)
-covid.arima.forecast = function(mydata, prediction.period = 10, mindate, threshold) {
-  mindate = min(mydata$Date)
-  print(as.character(mydata[1, 2]))
-  maxdate          = max(mydata$Date)
-  pred_start_label = format(mindate, format = '%m_%d')
+Predict_Cases = function(df, prediction.period = 10) {
+  mindate = min(df$Date)
+  maxdate = max(df$Date)
 
-  mydata       = subset(mydata, Date >= mindate)
-  model.length = as.numeric(length(mydata$Date) + prediction.period)
-
-  recent_case_avg = mydata %>%
-    filter(Date > seq(max(Date), length = 2, by = "-3 weeks")[2]) %>%
-    summarize(mean(Cases_Daily, na.rm = TRUE)) %>%
-    unlist()
-
-  print(recent_case_avg)
+  # print(as.character(mydata[1, 2]))
+  # pred_start_label = format(mindate, format = '%m_%d')
+  #
+  # mydata       = subset(mydata, Date >= mindate)
+  prediction.period = 10L
+  model.length      = nrow(df) + prediction.period
+  recent_case_avg   = df$case_avg[1]
+  threshold         = df$threshold[1]
 
   if (recent_case_avg >= threshold) {
-    # arima requires cases to be a timeseries vector
-    my.timeseries = ts(mydata$Cases_Daily)
-
-    library(pracma)
+    my.timeseries = ts(df$Cases_Daily)
     my.timeseries = movavg(my.timeseries, 7, "s")
 
-    arima.fit = forecast::auto.arima(my.timeseries)
-    # save parameters from arima autofit
-    p         = arima.fit$arma[1]          # autoregressive order
-    q         = arima.fit$arma[2]          # moving average order
-    d         = arima.fit$arma[6]           # differencing order from model
-
-    # 10 day forecast, CI for lower and upper has confidence level 95% set by level =c(95,95)
+    arima.fit      = forecast::auto.arima(my.timeseries)
     arima.forecast = forecast::forecast(arima.fit, h = prediction.period, level = c(95, 95))
 
     #return a dataframe of the arima model(Daily cases by date)
-    arima.out = data.frame(Date        = seq(mindate, maxdate + prediction.period, by = 'days'),
-                           Cases_Raw   = c(mydata$Cases_Daily, rep(NA, times = prediction.period)),
-                           Cases_Daily = c(my.timeseries, arima.forecast[['mean']]),
-                           CI_Lower    = c(rep(NA, times = length(my.timeseries)),
-                                           arima.forecast[['lower']][, 2]),
-                           CI_Upper    = c(rep(NA, times = length(my.timeseries)),
-                                           arima.forecast[['upper']][, 2]))
+    arima.out = data.frame(
+      Date        = seq(mindate, (maxdate + prediction.period), by = 'days'),
+      Case_Type   = df$Case_Type[1],
+      Level_Type  = df$Level_Type[1],
+      Level       = df$Level[1],
+      Cases_Raw   = c(df$Cases_Daily, rep(NA, times = prediction.period)),
+      Cases_Daily = c(my.timeseries, arima.forecast[['mean']]),
+      CI_Lower    = c(rep(NA, times = length(my.timeseries)),
+                      arima.forecast[['lower']][, 2]),
+      CI_Upper    = c(rep(NA, times = length(my.timeseries)),
+                      arima.forecast[['upper']][, 2])) %>%
+      mutate(CI_Lower = ifelse(CI_Lower <= 0, 0, CI_Lower))
 
   } else {
     # insufficient data catch: return NA values for predictions
-    arima.out = data.frame(Date        = seq(mindate, maxdate + prediction.period, by = 'days'),
-                           Cases_Raw   = c(mydata$Cases_Daily, rep(NA, times = prediction.period)),
-                           Cases_Daily = rep(NA, times = model.length),
-                           CI_Lower    = rep(NA, times = model.length),
-                           CI_Upper    = rep(NA, times = model.length))
-
+    arima.out = data.frame(
+      Date        = seq(mindate, maxdate + prediction.period, by = 'days'),
+      Case_Type   = df$Case_Type[1],
+      Level_Type  = df$Level_Type[1],
+      Level       = df$Level[1],
+      Cases_Raw   = c(df$Cases_Daily, rep(NA, times = prediction.period)),
+      Cases_Daily = rep(NA, times = model.length),
+      CI_Lower    = rep(NA, times = model.length),
+      CI_Upper    = rep(NA, times = model.length))
   }
-  #replace CI lower limit with 0 if negative
-  arima.out$CI_Lower = ifelse(arima.out$CI_Lower >= 0, arima.out$CI_Lower, 0)
   return(arima.out)
 }
 
 
-ARIMA_Case_County_output = nlme::gapply(County_df,
-                                        FUN       = covid.arima.forecast,
-                                        groups    = County_df$County,
-                                        threshold = case_quant)
+# run arima --------------------------------------------------------------------------------------------
 
-ARIMA_Case_County_df = rbindlist(ARIMA_Case_County_output, idcol = 'County')
+plan(multisession, workers = N_CORES, gc = FALSE)
+arima_case_start_time = Sys.time()
+arima_case_output     = future_map(rt_prep_df,
+                                   ~Predict_Cases(df = .),
+                                   .options  = furrr_options(seed       = TRUE,
+                                                             scheduling = Inf),
+                                   .progress = TRUE
+)
+print(Sys.time() - arima_case_start_time)
+plan(sequential)
+# combine --------------------------------------------------------------------------------------------
+ARIMA_Case_Combined_df = rbindlist(arima_case_output)
 
-ARIMA_Case_TSA_output = nlme::gapply(TSA_df,
-                                     FUN       = covid.arima.forecast,
-                                     groups    = TSA_df$TSA,
-                                     threshold = case_quant)
-
-ARIMA_Case_TSA_df = rbindlist(ARIMA_Case_TSA_output, idcol = 'TSA')
-
-ARIMA_Case_TSA_output = nlme::gapply(TSA_df,
-                                     FUN       = covid.arima.forecast,
-                                     groups    = TSA_df$TSA,
-                                     threshold = case_quant)
-
-ARIMA_Case_TSA_df = rbindlist(ARIMA_Case_TSA_output, idcol = 'TSA')
-
-ARIMA_Case_PHR_output = nlme::gapply(PHR_df,
-                                     FUN       = covid.arima.forecast,
-                                     groups    = PHR_df$PHR,
-                                     threshold = case_quant)
-
-ARIMA_Case_PHR_df = rbindlist(ARIMA_Case_PHR_output, idcol = 'PHR')
-
-ARIMA_Case_Metro_output = nlme::gapply(Metro_df,
-                                       FUN       = covid.arima.forecast,
-                                       groups    = Metro_df$Metro,
-                                       threshold = case_quant)
-
-ARIMA_Case_Metro_df = rbindlist(ARIMA_Case_Metro_output, idcol = 'Metro')
-
-ARIMA_Case_State_df = covid.arima.forecast(State_df, mindate = as.Date('2020-03-04'), threshold = case_quant)
-
-colnames(ARIMA_Case_County_df)[1] = 'Level'
-colnames(ARIMA_Case_Metro_df)[1]  = 'Level'
-colnames(ARIMA_Case_TSA_df)[1]    = 'Level'
-ARIMA_Case_State_df$Level         = 'Texas'
-colnames(ARIMA_Case_PHR_df)[1]    = 'Level'
-
-ARIMA_Case_County_df$Level_Type = 'County'
-ARIMA_Case_Metro_df$Level_Type  = 'Metro'
-ARIMA_Case_TSA_df$Level_Type    = 'TSA'
-ARIMA_Case_PHR_df$Level_Type    = 'PHR'
-ARIMA_Case_State_df$Level_Type  = 'State'
-
-ARIMA_Case_Combined_df = rbind(ARIMA_Case_County_df, ARIMA_Case_TSA_df, ARIMA_Case_PHR_df,
-                               ARIMA_Case_Metro_df, ARIMA_Case_State_df)
-write.csv(ARIMA_Case_Combined_df, 'tableau/stacked_case_timeseries.csv', row.names = FALSE)
-
+# upload --------------------------------------------------------------------------------------------
+stopifnot(max(ARIMA_Case_Combined_df$Date) > Sys.Date())
+fwrite(ARIMA_Case_Combined_df, 'tableau/stacked_case_timeseries.csv')
 
 # hosp time series --------------------------------------------------------------------------------------------
 
