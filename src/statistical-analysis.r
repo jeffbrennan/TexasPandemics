@@ -150,9 +150,9 @@ Prepare_RT = function(case_df) {
 Clean_Data = function(df, level_type) {
   if (level_type == 'State') {
     clean_df = df %>%
-      select(Date, Case_Type, Cases_Daily, Population_DSHS) %>%
+      select(Date, Case_Type, Cases_Daily, Tests, Population_DSHS) %>%
       group_by(Case_Type, Date) %>%
-      summarize(across(c(Cases_Daily, Population_DSHS), ~sum(., na.rm = TRUE))) %>%
+      summarize(across(c(Cases_Daily, Tests, Population_DSHS), ~sum(., na.rm = TRUE))) %>%
       ungroup() %>%
       mutate(Date = as.Date(Date)) %>%
       arrange(Date) %>%
@@ -161,9 +161,9 @@ Clean_Data = function(df, level_type) {
 
   } else {
     clean_df = df %>%
-      select(Date, Case_Type, !!as.name(level_type), Cases_Daily, Population_DSHS) %>%
+      select(Date, Case_Type, !!as.name(level_type), Cases_Daily, Tests, Population_DSHS) %>%
       group_by(Case_Type, Date, !!as.name(level_type)) %>%
-      summarize(across(c(Cases_Daily, Population_DSHS), ~sum(., na.rm = TRUE))) %>%
+      summarize(across(c(Cases_Daily, Tests, Population_DSHS), ~sum(., na.rm = TRUE))) %>%
       ungroup() %>%
       mutate(Date = as.Date(Date)) %>%
       arrange(Date, !!as.name(level_type)) %>%
@@ -175,12 +175,17 @@ Clean_Data = function(df, level_type) {
 
 # load --------------------------------------------------------------------------------------------
 case_levels = c('County', 'TSA', 'PHR', 'Metro', 'State')
-county_raw  = fread('tableau/county.csv') %>%
-  select(Date, Case_Type, County, Cases_Daily)
+
+TPR = fread('tableau/county_TPR.csv') %>%
+  mutate(Date = as.Date(Date)) %>%
+  dplyr::select(Date, County, Tests)
 
 county_metadata = fread('tableau/helpers/county_metadata.csv')
 
-county = county_raw %>%
+county = fread('tableau/county.csv') %>%
+  select(Date, Case_Type, County, Cases_Daily) %>%
+  mutate(Date = as.Date(Date)) %>%
+  left_join(TPR, by = c('Date', 'County')) %>%
   left_join(
     county_metadata %>%
       select(
@@ -190,14 +195,17 @@ county = county_raw %>%
       rename(Population_DSHS = Population_2021_07_01),
     by = 'County') %>%
   mutate(Date = as.Date(Date)) %>%
-  select(Date, County, TSA_Combined, PHR_Combined, Metro_Area, Case_Type, Cases_Daily, Population_DSHS) %>%
+  select(Date, County, TSA_Combined, PHR_Combined, Metro_Area, Case_Type, Cases_Daily, Tests, Population_DSHS) %>%
   rename(TSA = TSA_Combined, PHR = PHR_Combined, Metro = Metro_Area)
 
 # combine --------------------------------------------------------------------------------------------
 
-cleaned_cases_combined = map(case_levels, ~Clean_Data(county, .)) %>%
+county_combined = map(case_levels, ~Clean_Data(county, .)) %>%
   rbindlist(., fill = TRUE) %>%
-  relocate(Level_Type, .before = 'Level') %>%
+  relocate(Level_Type, .before = 'Level')
+
+cleaned_cases_combined = county_combined %>%
+  select(-Tests) %>%
   mutate(Cases_Daily = ifelse(is.na(Cases_Daily) | Cases_Daily < 0,
                               0,
                               Cases_Daily
@@ -441,41 +449,34 @@ fwrite(ARIMA_Hosp_Combined_df, 'tableau/stacked_hosp_timeseries.csv')
 
 # standard stats --------------------------------------------------------------------------------------------
 # pct change --------------------------------------------------------------------------------------------
-new_pct_change = function(level, dat, region) {
+new_pct_change = function(df) {
   # creates the % difference in cases and tests and smooth line with CIs
   # level: either "TSA", "County", or "Metro". Note that "county" won't work for many counties unless have enough cases.
   # dat: dataset (e.g. "county", "metro", "tsa")
   # region: the region within the dataset (county, metro region, or tsa)
-
-  if (level != 'State') { dat = dat %>% filter(!!as.name(level) == region) }
-
   # restrict data to first test date (for % test increase)
-  start_date   = as.Date("2020-09-30")
-  dat          = dat %>% filter(Date >= start_date)
-  start_values = dat %>% filter(Date == start_date)
 
-  dat$ma_cases_y    = 100 * (as.vector(dat$Cases_MA_14 / start_values$Cases_MA_14) - 1)
-  dat$total_cases_y = 100 * (as.vector(dat$Cases_Total_14 / start_values$Cases_Total_14) - 1)
-  dat$ma_tests_y    = 100 * (as.vector(dat$Tests_MA_14 / start_values$Tests_MA_14) - 1)
-  dat$total_tests_y = 100 * (as.vector(dat$Tests_Total_14 / start_values$Tests_Total_14) - 1)
+  start_values = df %>% filter(Date == min(Date))
 
-  tmp.df = data.frame(Level                   = region,
-                      Date                    = dat$Date,
-                      cases_ma                = dat$Cases_MA_14,
-                      cases_total_14          = dat$Cases_Total_14,
-                      tests_ma                = dat$Tests_MA_14,
-                      tests_total_14          = dat$Tests_Total_14,
-                      cases_ma_percentdiff    = dat$ma_cases_y,
-                      cases_total_percentdiff = dat$total_cases_y,
-                      tests_ma_percentdiff    = dat$ma_tests_y,
-                      tests_total_percentdiff = dat$total_tests_y,
-                      Level_Type              = level)
-  return(tmp.df)
+  result_df = df %>%
+    mutate(
+      cases_ma_percentdiff    = 100 * ((Cases_MA_14 / start_values$Cases_MA_14) - 1),
+      cases_total_percentdiff = 100 * ((Cases_Total_14 / start_values$Cases_Total_14) - 1),
+      tests_ma_percentdiff    = 100 * ((Tests_MA_14 / start_values$Tests_MA_14) - 1),
+      tests_total_percentdiff = 100 * ((Tests_Total_14 / start_values$Tests_Total_14) - 1)
+    ) %>%
+    rename(cases_ma       = Cases_MA_14,
+           cases_total_14 = Cases_Total_14,
+           tests_ma       = Tests_MA_14,
+           tests_total_14 = Tests_Total_14
+    ) %>%
+    select(Date, Level_Type, Level, Case_Type,
+           cases_ma, cases_total_14, tests_ma, tests_total_14,
+           cases_ma_percentdiff, cases_total_percentdiff, tests_ma_percentdiff, tests_total_percentdiff)
+
+
+  return(result_df)
 }
-
-TPR = read.csv('tableau/county_TPR.csv') %>%
-  mutate(Date = as.Date(Date)) %>%
-  dplyr::select(Date, County, Tests)
 
 
 TPR_dates = list.files('original-sources/historical/cms_tpr/') %>%
@@ -483,58 +484,36 @@ TPR_dates = list.files('original-sources/historical/cms_tpr/') %>%
   gsub('.csv', '', .) %>%
   as.Date(.)
 
+PCT_START_DATE = as.Date("2020-09-30")
 
-TPR_merge = county %>%
-  dplyr::select(-Tests_Daily, -Population_DSHS) %>%
-  left_join(TPR, by = c('Date', 'County')) %>%
-  group_by(County) %>%
+PCT_prep_df = county_combined %>%
+  select(Date, Case_Type, Level_Type, Level, Cases_Daily, Tests) %>%
+  group_by(Case_Type, Level_Type, Level) %>%
+  arrange(Date) %>%
+  mutate(Tests = ifelse(Tests == 0, NA, Tests)) %>%
+  tidyr::fill(Tests, .direction = 'down') %>%
   mutate(Cases_Total_14 = rollsum(Cases_Daily, k = 14, na.pad = TRUE, align = 'right')) %>%
   mutate(Cases_MA_14 = rollmean(Cases_Daily, k = 14, na.pad = TRUE, align = 'right')) %>%
   mutate(Tests_MA_14 = Tests / 14) %>%
   ungroup() %>%
+  filter(Date >= PCT_START_DATE) %>%
   dplyr::select(-Cases_Daily) %>%
   rename(Tests_Total_14 = Tests) %>%
-  filter(!is.na(TSA))
-
-
-TPR_county = TPR_merge %>% dplyr::select(-c(TSA, PHR, Metro))
-TPR_TSA    = TPR_merge %>%
-  group_by(Date, TSA) %>%
-  summarize_if(is.numeric, sum, na.rm = TRUE)
-TPR_PHR    = TPR_merge %>%
-  group_by(Date, PHR) %>%
-  summarize_if(is.numeric, sum, na.rm = TRUE)
-TPR_Metro  = TPR_merge %>%
-  group_by(Date, Metro) %>%
-  summarize_if(is.numeric, sum, na.rm = TRUE)
-TPR_State  = TPR_merge %>%
-  group_by(Date) %>%
-  summarize_if(is.numeric, sum, na.rm = TRUE)
-
+  group_split(Level, Case_Type) %>%
+  set_names(map_chr(., ~str_c(.x$Level[1], ';', .x$Case_Type[1])))
 
 # calcs --------------------------------------------------------------------------------------------
-PCT_County_df = rbindlist(lapply(unique(TPR_county$County), function(x) new_pct_change('County', TPR_county, x)))
-
-PCT_TSA_df = rbindlist(lapply(unique(TPR_TSA$TSA), function(x) new_pct_change('TSA', TPR_TSA, x))) %>%
+pct_start_time = Sys.time()
+plan(multisession, workers = N_CORES, gc = TRUE)
+PCT_Combined_df = future_map(PCT_prep_df, ~new_pct_change(.x)) %>%
+  rbindlist() %>%
+  mutate(Date = as.Date(Date)) %>%
   mutate(tests_ma_percentdiff = ifelse(Date > min(Date) & tests_ma_percentdiff == -100, NA, tests_ma_percentdiff)) %>%
   mutate(tests_total_percentdiff = ifelse(Date > min(Date) & tests_total_percentdiff == -100, NA, tests_total_percentdiff))
+print(Sys.time() - pct_start_time)
+plan(sequential)
 
-PCT_PHR_df = rbindlist(lapply(unique(TPR_PHR$PHR), function(x) new_pct_change('PHR', TPR_PHR, x))) %>%
-  mutate(tests_ma_percentdiff = ifelse(Date > min(Date) & tests_ma_percentdiff == -100, NA, tests_ma_percentdiff)) %>%
-  mutate(tests_total_percentdiff = ifelse(Date > min(Date) & tests_total_percentdiff == -100, NA, tests_total_percentdiff))
-
-
-PCT_Metro_df = rbindlist(lapply(unique(TPR_Metro$Metro), function(x) new_pct_change('Metro', TPR_Metro, x))) %>%
-  mutate(tests_ma_percentdiff = ifelse(Date > min(Date) & tests_ma_percentdiff == -100, NA, tests_ma_percentdiff)) %>%
-  mutate(tests_total_percentdiff = ifelse(Date > min(Date) & tests_total_percentdiff == -100, NA, tests_total_percentdiff))
-
-
-PCT_State_df = new_pct_change('State', TPR_State, 'Texas') %>%
-  mutate(tests_ma_percentdiff = ifelse(Date > min(Date) & tests_ma_percentdiff == -100, NA, tests_ma_percentdiff)) %>%
-  mutate(tests_total_percentdiff = ifelse(Date > min(Date) & tests_total_percentdiff == -100, NA, tests_total_percentdiff))
-
-PCT_Combined_df = rbind(PCT_County_df, PCT_TSA_df, PCT_PHR_df, PCT_Metro_df, PCT_State_df)
-write.csv(PCT_Combined_df, 'tableau/stacked_pct_change_new.csv', row.names = FALSE)
+fwrite(PCT_Combined_df, 'tableau/stacked_pct_change_new.csv')
 
 # stack combo --------------------------------------------------------------------------------------------
 
