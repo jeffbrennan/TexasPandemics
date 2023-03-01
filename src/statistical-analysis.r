@@ -226,8 +226,6 @@ case_quant = cleaned_cases_combined %>%
 
 # perform initial rt preperation to minimize parallelized workload
 rt_prep_df = Prepare_RT(cleaned_cases_combined)
-# rt_prep_df      = rt_prep_df_orig[230:240]
-
 # rt loop --------------------------------------------------------------------------------------------
 # Generate Rt estimates for each county, using 70% quantile of cases in past 3 weeks as threshold
 start_time = Sys.time()
@@ -249,11 +247,16 @@ plan(sequential)
 rt_parsed = map(names(rt_output), ~Parse_RT_Results(., rt_output)) %>%
   rbindlist(fill = TRUE)
 
+stopifnot(rt_parsed %>%
+            filter(Level == 'Harris') %>%
+            filter(is.na(Rt)) %>%
+            nrow() < 10)
+
 #  --------------------------------------------------------------------------------------------
 RT_County_df = rt_parsed %>%
   filter(Level_Type == 'County') %>%
   rename(County = Level)
-TPR_df = read.csv('tableau/county_TPR.csv') %>%
+TPR_df       = read.csv('tableau/county_TPR.csv') %>%
   select(-any_of('Rt')) %>%
   mutate(Date = as.Date(Date))
 
@@ -438,7 +441,7 @@ hospitalizations_df_split = hospitalizations %>%
   set_names(map_chr(., ~str_c(.x$Level[1])))
 
 plan(multisession, workers = N_CORES, gc = FALSE)
-arima_hosp_start_time = Sys.time()
+arima_hosp_start_time  = Sys.time()
 ARIMA_Hosp_Combined_df = future_map(hospitalizations_df_split, ~Predict_Hospitalizations(.)) %>%
   rbindlist() %>%
   mutate(Date = as.Date(Date))
