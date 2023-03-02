@@ -723,7 +723,7 @@ tpr_cases = merged_dshs %>%
     / Population_DSHS) * 100000) %>%
   filter(Date %in% TPR_dates) %>%
   dplyr::select(-Cases_Daily, -Population_DSHS, -Cases_100K_14Day_MA)
-tpr_out = all_cpr_tpr %>%
+tpr_out   = all_cpr_tpr %>%
   select(Date, County, Tests, TPR) %>%
   plyr::rbind.fill(TPR_all_dates %>% filter(Date >= '2020-12-16')) %>%
   distinct() %>%
@@ -859,10 +859,7 @@ county_vaccinations_prefinal = county_vaccinations_combined %>%
   select(Date, County, Doses_Administered, At_Least_One_Dose, Fully_Vaccinated, Boosted,
          Population_5, Population_12, Population_16, Population_65, Population_Total,
          TSA_Combined, PHR_Combined, Metro_Area
-  ) %>%
-  rbind(current_vaccination_file %>% mutate(Date = as.Date(Date))) %>%
-  arrange(County, Date) %>%
-  distinct()
+  )
 
 county_vaccinations = county_vaccinations_prefinal %>%
   mutate(Vaccination_Type = 'all') %>%
@@ -875,7 +872,8 @@ county_vaccinations = county_vaccinations_prefinal %>%
       mutate(Boosted = ifelse(Boosted < 0, 0L, Boosted)) %>%
       ungroup()
   ) %>%
-  relocate(Vaccination_Type, .after = 'County')
+  relocate(Vaccination_Type, .after = 'County') %>%
+  rbind(current_vaccination_file %>% mutate(Date = as.Date(Date)))
 
 check_dupes = county_vaccinations %>%
   group_by(County, Date, Vaccination_Type) %>%
@@ -994,14 +992,14 @@ state_demo_stacked_clean = state_demo %>%
   select(all_of(c('Gender', 'Vaccination_Type', measure_cols))) %>%
   mutate(Group_Type = 'Gender') %>%
   rename(Group = Gender) %>%
-  summarize(across(measure_cols, ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group, Vaccination_Type)) %>%
+  summarize(across(all_of(measure_cols), ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group, Vaccination_Type)) %>%
   # ----------------------------------------Race-----------------------------------------
   rbind(
     state_demo %>%
       select(all_of(c('Race/Ethnicity', 'Vaccination_Type', measure_cols))) %>%
       mutate(Group_Type = 'Race') %>%
       rename(Group = `Race/Ethnicity`) %>%
-      summarize(across(measure_cols, ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group, Vaccination_Type))
+      summarize(across(all_of(measure_cols), ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group, Vaccination_Type))
   ) %>%
   #  --------------------------------------Age------------------------------------------------------
   rbind(
@@ -1009,7 +1007,7 @@ state_demo_stacked_clean = state_demo %>%
       select(all_of(c('Age_Group', 'Vaccination_Type', measure_cols))) %>%
       mutate(Group_Type = 'Age') %>%
       rename(Group = Age_Group) %>%
-      summarize(across(measure_cols, ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group, Vaccination_Type))
+      summarize(across(all_of(measure_cols), ~sum(., na.rm = TRUE)), .by = c(Group_Type, Group, Vaccination_Type))
   ) %>%
   relocate(Group_Type, .before = Group) %>%
   left_join(state_demo_pops, by = c('Group_Type', 'Group')) %>%
