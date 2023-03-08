@@ -585,18 +585,23 @@ Clean_Cases = function(case_url) {
 }
 
 confirmed_cases = Clean_Cases(confirmed_case_url)
-probable_cases  = Clean_Cases(probable_case_url)
+# probable_cases  = Clean_Cases(probable_case_url)
 
 DSHS_cases_long = confirmed_cases %>%
-  mutate(Case_Type = 'confirmed') %>%
-  rbind(probable_cases %>% mutate(Case_Type = 'probable')) %>%
-  rbind(
-    confirmed_cases %>%
-      rbind(probable_cases) %>%
-      mutate(Case_Type = 'confirmed_plus_probable')
-  ) %>%
+  # mutate(Case_Type = 'confirmed') %>%
+  # rbind(probable_cases %>%
+  #         mutate(Case_Type = 'probable'
+  #         )
+  # ) %>%
+  # rbind(
+  #   confirmed_cases %>%
+  #     rbind(probable_cases) %>%
+  #     mutate(Case_Type = 'confirmed_plus_probable')
+  # ) %>%
   mutate(Cases_Daily = ifelse(is.na(Cases_Daily), 0, Cases_Daily)) %>%
-  group_by(County, Date, Case_Type) %>%
+  group_by(County, Date,
+           # Case_Type
+  ) %>%
   summarize(Cases_Daily = sum(Cases_Daily, na.rm = TRUE))
 
 max_case_date = max(DSHS_cases_long$Date, na.rm = TRUE)
