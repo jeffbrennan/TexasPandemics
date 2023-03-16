@@ -890,7 +890,7 @@ stopifnot(c(check_dupes, check_nonmissing_col))
 fwrite(county_vaccinations, 'tableau/sandbox/county_daily_vaccine.csv')
 
 # state  --------------------------------------------------------------------------------------------
-state_demo_raw = all_dashboard_files[[length(all_dashboard_files)]][['By Age, Gender, Race']] %>%
+state_demo_raw = all_dashboard_files[[length(all_dashboard_files)]][['By Age, Sex, Race']] %>%
   setNames(slice(., 1) %>% unlist()) %>%
   slice(2:nrow(.)) %>%
   select(-ncol(.)) %>%
@@ -906,7 +906,7 @@ state_demo_raw = all_dashboard_files[[length(all_dashboard_files)]][['By Age, Ge
         At_Least_One_Vaccinated = 'People Vaccinated with at least One Dose',
         Fully_Vaccinated        = 'People Fully Vaccinated',
         Fully_Vaccinated        = 'People Fully Vaccinated ',
-        Gender                  = 'Gender '
+        Gender                  = 'Sex'
       )
     )
   ) %>%
