@@ -18,6 +18,7 @@ library(pracma)
 
 library(furrr)
 library(future)
+library(future.callr)
 library(lubridate)
 library(glue)
 
@@ -230,13 +231,16 @@ rt_prep_df = Prepare_RT(cleaned_cases_combined)
 # Generate Rt estimates for each county, using 70% quantile of cases in past 3 weeks as threshold
 start_time = Sys.time()
 df_levels  = names(rt_prep_df)
-message(glue('Running RT on {length(df_levels)} levels using {N_CORES} cores'))
+message(glue('Running RT on {length(df_levels)} levels using {N_CORES /2} cores'))
 rt_start_time = Sys.time()
-plan(multisession, workers = N_CORES, gc = TRUE)
+plan(multisession, workers = N_CORES /2, gc = TRUE)
 rt_output   = future_map(rt_prep_df,
                          ~Calculate_RT(case_df = .),
-                         .options  = furrr_options(seed       = TRUE,
-                                                   scheduling = Inf),
+                         .options  = furrr_options(
+                           seed       = 42,
+                           # scheduling = 1,
+                           # chunk_size = NULL
+                         ),
                          .progress = TRUE
 )
 rt_end_time = Sys.time()
@@ -533,7 +537,7 @@ stacked_all = PCT_Combined_df %>%
   left_join(ARIMA_Hosp_Combined_df %>%
               rename(TS_Hosp_CI_Lower = CI_Lower,
                      TS_Hosp_CI_Upper = CI_Upper),
-            by = c('Level_Type', 'Level', 'Date'),
+            by       = c('Level_Type', 'Level', 'Date'),
             multiple = 'all'
   )
 
