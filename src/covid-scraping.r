@@ -614,7 +614,8 @@ DSHS_vitals_long = DSHS_cases_long %>%
   mutate(Cases_Cumulative = cumsum(Cases_Daily)) %>%
   mutate(Deaths_Cumulative = cumsum(Deaths_Daily)) %>%
   ungroup() %>%
-  distinct()
+  distinct() %>%
+  filter(!is.na(Date))
 
 stopifnot(
   DSHS_vitals_long %>%
