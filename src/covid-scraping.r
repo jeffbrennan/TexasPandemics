@@ -652,7 +652,8 @@ DSHS_vitals_long = DSHS_cases_long %>%
          Deaths_Daily_Imputed      = NA,
          Cases_Cumulative_Imputed  = NA,
          Deaths_Cumulative_Imputed = NA) %>%
-  distinct()
+  distinct() %>%
+  filter(!is.na(Date))
 
 stopifnot(
   DSHS_vitals_long %>%

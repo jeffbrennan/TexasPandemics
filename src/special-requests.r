@@ -282,13 +282,14 @@ DSHS_vitals_long = all_cases %>%
   ) %>%
   mutate(Date = as.Date(Date)) %>%
   mutate(Cases_Daily = as.integer(Cases_Daily)) %>%
-  distinct()
+  distinct() %>%
+  filter(!is.na(Date))
 
 max_case_date = max(DSHS_vitals_long$Date, na.rm = TRUE)
 date_diff     = difftime(max_case_date, CURRENT_RT_DATE, units = 'days')
 # check cumulative file
 if (date_diff <= 1) {
-  temp         = tempfile()
+  temp = tempfile()
   curl::curl_download(new_case_url, temp, mode = 'wb')
   sheet_names = readxl::excel_sheets(temp)
 
@@ -329,7 +330,7 @@ TMC = DSHS_vitals_long %>%
     filter(County %in% TMC_COUNTIES) %>%
   left_join(county_pops, by = 'County') %>%
   mutate(Population_DSHS = as.numeric(Population_DSHS)) %>%
-    dplyr::select(-County) %>%
+  dplyr::select(-County) %>%
   melt(id = "Date") %>%
   dcast(Date ~ variable, sum, na.rm = TRUE)
 
