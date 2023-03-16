@@ -1628,25 +1628,36 @@ Clean_Demo_New = function(sheet_name) {
 }
 
 # monthly
-demo_releases = seq(as.Date('2022-01-01'), by = 'month', length = 50) + days(14)
+demo_releases         = seq(as.Date('2022-01-01'), by = 'month', length = 50) + days(14)
+all_demo_files        = list.files('original-sources/historical/demo-archive', full.names = TRUE)
+demo_update_threshold = 30L
 
-if (date_out %in% demo_releases) {
-  demo_url = 'https://dshs.state.tx.us/coronavirus/TexasCOVID19Demographics_Counts.xlsx'
-  curl::curl_download(demo_url, glue('original-sources/historical/demo-archive/demo_{date_out}.xlsx'))
+last_monthly_demo_update = all_demo_files[[length(all_demo_files)]] %>%
+  str_extract('\\d{4}-\\d{2}-\\d{2}') %>%
+  as.Date()
 
+last_update_delta = date_out - last_monthly_demo_update
 
-  all_demo_files       = list.files('original-sources/historical/demo-archive', full.names = TRUE)
-  monthly_update_dates = str_extract(all_demo_files, '\\d{4}-\\d{2}-\\d{2}') %>%
-    as.Date() %>%
-    .[which(. >= as.Date('2022-01-14'))]
+if (date_out %in% demo_releases | last_update_delta > demo_update_threshold) {
+  demo_url           = 'https://www.dshs.texas.gov/sites/default/files/chs/data/COVID/Texas%20COVID-19%20Demographics_Counts.xlsx'
+  demo_file_path_new = glue('original-sources/historical/demo-archive/demo_{date_out}.xlsx')
+  curl::curl_download(demo_url, demo_file_path_new, mode = 'wb')
 
-  monthly_updates = sapply(monthly_update_dates,
-                           function(x) str_detect(all_demo_files, as.character(x)) %>%
-                             which(.) %>%
-                             all_demo_files[.]
-  )
+  demographics_all = read_excel_allsheets(demo_file_path_new, skip = 3)
 
-  demographics_all = read_excel_allsheets(monthly_updates[length(monthly_updates)])
+  actual_update_date_check = demographics_all[['Confirmed Cases by Age']] %>%
+    filter(str_detect(Month.Year, as.character(year(date_out)))) %>%
+    filter(str_detect(Month.Year, format(date_out - months(1), '%B')))
+
+  if (nrow(actual_update_date_check) == 0) {
+    file.remove(glue('original-sources/historical/demo-archive/demo_{date_out}.xlsx'))
+    stop(
+      str_c(
+        'Case & Fatality demographics date does not match expected date.',
+        ' Check https://www.dshs.texas.gov/covid-19-coronavirus-disease-2019/texas-covid-19-data to verify'
+      )
+    )
+  }
 
   cleaned_demo_new = lapply(names(demographics_all), function(x) Clean_Demo_New(x)) %>%
     rbindlist(fill = TRUE) %>%
