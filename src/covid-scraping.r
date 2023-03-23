@@ -1277,22 +1277,24 @@ fwrite(cdc_variant_data, 'tableau/cdc_variant_data.csv')
 
 # dshs demographics new --------------------------------------------------------------------------------------------
 Clean_Demo_New = function(sheet_name) {
+  message(sheet_name)
   if (str_detect(sheet_name, 'Fatal|Confirmed')) {
 
     group_type = str_extract(sheet_name, 'Age|Sex|Gender|Race')
     stat_type  = str_extract(sheet_name, 'Cases|Fatalities')
 
     df = demographics_all[[sheet_name]]
-
     clean_df = df %>%
-      slice(3:nrow(df)) %>%
-      setNames(df[2,]) %>%
-      select(-Total) %>%
+      filter(!is.na(`Month.Year`) & `Month.Year` != 'Grand Total') %>%
+      mutate(across(everything(), as.character)) %>%
       pivot_longer(!1) %>%
       setNames(c('Date', 'Group', stat_type)) %>%
       filter(!str_detect(Date, 'Total|Notes')) %>%
-      mutate(Date = as.Date(glue('01 { Date }'), '%d %B %Y')) %>%
-      mutate(Group_Type = group_type)
+      mutate(Date = as.Date(glue('01 {Date}'), '%d %B %Y')) %>%
+      mutate(Group_Type = group_type) %>%
+      mutate(across(-c(Date, Group_Type, Group), as.integer)) %>%
+      filter(Group != 'Total') %>%
+      filter(!is.na(Date))
 
     return(clean_df)
   }
