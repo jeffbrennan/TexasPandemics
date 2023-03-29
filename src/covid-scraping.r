@@ -1465,13 +1465,6 @@ stopifnot(merged_tsa %>%
             nrow() == 0)
 
 
-TSA_hosp_combined_cleaned %>%
-  group_by(Date, TSA) %>%
-  filter(n() > 1) %>%
-  ungroup() %>%
-  arrange(TSA, Date) %>%
-  View()
-
 fwrite(merged_tsa, file = 'tableau/hospitalizations_tsa.csv')
 
 # state level --------------------------------------------------------------------------------------------
