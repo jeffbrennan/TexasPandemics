@@ -13,6 +13,8 @@ library(ggpubr)
 library(rvest)
 library(jsonlite)
 library(glue)
+library(future)
+library(arrow)
 
 select = dplyr::select
 filter = dplyr::filter
@@ -129,6 +131,9 @@ county_classifications = read_xlsx('original-sources/helpers/county_classificati
   setNames(c('County', 'PHR', 'Metro_Area')) %>%
   left_join(., PHR_helper, by = 'PHR') %>%
   mutate(PHR_Combined = paste0(PHR, ' - ', PHR_Name))
+
+county_names_vec = county_classifications$County %>% unique()
+
 
 tsa_lookup_url    = 'https://raw.githubusercontent.com/jeffbrennan/TexasPandemics/master/tableau/county.csv'
 tsa_long_complete = fread(tsa_lookup_url, fill = TRUE) %>%
@@ -457,95 +462,150 @@ write_xlsx(
 # TPR cpr --------------------------------------------------------------------------------------------
 # 11/25 - csv no longer available
 # get latest url
-Clean_TPR = function(newest_file) {
-  file_date = as.Date(str_match(newest_file, '\\d{8}'), '%Y%m%d')
-  file_url  = paste0('https://beta.healthdata.gov', newest_file) %>%
-    str_replace_all(.,
-                    'https://beta.healthdata.govhttps://beta.healthdata.gov',
-                    'https://beta.healthdata.gov') %>%
-    str_replace_all(., ' ', '%20')
+# Clean_TPR = function(newest_file) {
+#   file_date = as.Date(str_match(newest_file, '\\d{8}'), '%Y%m%d')
+#   file_url  = paste0('https://beta.healthdata.gov', newest_file) %>%
+#     str_replace_all(.,
+#                     'https://beta.healthdata.govhttps://beta.healthdata.gov',
+#                     'https://beta.healthdata.gov') %>%
+#     str_replace_all(., ' ', '%20')
+#
+#   temp = tempfile()
+#   download.file(file_url, temp, mode = 'wb')
+#
+#   tpr_names =
+#     read_xlsx(temp, sheet = 6, skip = 0, n_max = 1) %>%
+#       dplyr::select(contains('TESTING: LAST WEEK')) %>%
+#       names()
+#
+#
+#   cpr_day = tpr_names %>%
+#     str_match(., '(\\d{1,2}),') %>%
+#     .[2] %>%
+#     as.numeric()
+#
+#   cpr_month = tpr_names %>%
+#     str_extract_all(., 'January|February|March|April|May|June|July|August|September|October|November|December') %>%
+#     as.data.frame() %>%
+#     setNames('Date') %>%
+#     mutate(Date = as.Date(glue('{Date}-01-2022'), '%B-%d-%Y')) %>%
+#     arrange(desc(Date)) %>%
+#     slice(1) %>%
+#     pull(Date) %>%
+#     month()
+#
+#   cpr_date = as.Date(glue('{cpr_month}/{cpr_day}'), '%m/%d')
+#   if (cpr_date - Sys.Date() > 100) {
+#     cpr_date = seq.Date(cpr_date, length.out = 2, by = '-1 year')[2]
+#   }
+#
+#   print(cpr_date)
+#   cpr_tpr = read_xlsx(temp, sheet = 6, skip = 1) %>%
+#     filter(`State Abbreviation` == 'TX') %>%
+#     select('County',
+#            contains('NAAT positivity rate - last 7 days'),
+#            contains('Total NAATs - last 7 days')) %>%
+#     filter(County != 'Unallocated, TX') %>%
+#     mutate(County = gsub(' County, TX', '', County)) %>%
+#     setNames(c('County', 'TPR_CPR', 'Tests')) %>%
+#     mutate(Date = cpr_date) %>%
+#     arrange(County)
+#
+#   output        = list(cpr_tpr)
+#   names(output) = cpr_date
+#   return(output)
+# }
+#
+# page     = read_html('https://beta.healthdata.gov/National/COVID-19-Community-Profile-Report/gqxm-d9w9')
+# file_loc = page %>%
+#   html_nodes('script') %>%
+#   html_text() %>%
+#   str_detect('\\.xlsx') %>%
+#   which()
+#
+# file_text = page %>%
+#   html_nodes('script') %>%
+#   .[file_loc] %>%
+#   html_text() %>%
+#   str_replace(., '\n    var initialState =\n      ', '') %>%
+#   str_replace(., '\n   ;\n  ', '')
+#
+# tpr_url = fromJSON(file_text)$view$attachments %>%
+#   filter(href %>% str_detect('.xlsx')) %>%
+#   distinct() %>%
+#   arrange(desc(name)) %>%
+#   slice(1) %>%
+#   pull(href) %>%
+#   unname()
+#
+# tpr_results = map(tpr_url, ~Clean_TPR(.)) %>%
+#   unlist(., recursive = FALSE)
+#
+# map(names(tpr_results), ~fwrite(tpr_results[[.]],
+#                                 glue('original-sources/historical/cpr/cpr_tpr_{.}.csv'),
+#                                 quote = TRUE))
+#
+# # combine cpr archive
+# tpr_results_cleaned = rbindlist(lapply(list.files('original-sources/historical/cpr/', full.names = TRUE), read.csv)) %>%
+#   rename(TPR = TPR_CPR) %>%
+#   mutate(Date = as.Date(Date)) %>%
+#   mutate(TPR = ifelse(is.na(TPR), 0, TPR)) %>%
+#   mutate(Tests = as.integer(Tests))
 
-  temp = tempfile()
-  download.file(file_url, temp, mode = 'wb')
 
-  tpr_names =
-    read_xlsx(temp, sheet = 6, skip = 0, n_max = 1) %>%
-      dplyr::select(contains('TESTING: LAST WEEK')) %>%
-      names()
+Get_TPR_Data = function(county_name) {
+  county_fips_lookup = fread('original-sources/helpers/county_fips_lookup.csv')
+  tpr_url_base_path  = 'https://covid.cdc.gov/covid-data-tracker/COVIDData/getAjaxData?id=integrated_county_timeseries_fips_'
+  county_fips        = county_fips_lookup %>%
+    filter(County == county_name) %>%
+    pull(fips)
+  data_raw           = read_json(glue('{tpr_url_base_path}{county_fips}_external'))
 
-
-  cpr_day = tpr_names %>%
-    str_match(., '(\\d{1,2}),') %>%
-    .[2] %>%
-    as.numeric()
-
-  cpr_month = tpr_names %>%
-    str_extract_all(., 'January|February|March|April|May|June|July|August|September|October|November|December') %>%
-    as.data.frame() %>%
-    setNames('Date') %>%
-    mutate(Date = as.Date(glue('{Date}-01-2022'), '%B-%d-%Y')) %>%
-    arrange(desc(Date)) %>%
-    slice(1) %>%
-    pull(Date) %>%
-    month()
-
-  cpr_date = as.Date(glue('{cpr_month}/{cpr_day}'), '%m/%d')
-  if (cpr_date - Sys.Date() > 100) {
-    cpr_date = seq.Date(cpr_date, length.out = 2, by = '-1 year')[2]
-  }
-
-  print(cpr_date)
-  cpr_tpr = read_xlsx(temp, sheet = 6, skip = 1) %>%
-    filter(`State Abbreviation` == 'TX') %>%
-    select('County',
-           contains('NAAT positivity rate - last 7 days'),
-           contains('Total NAATs - last 7 days')) %>%
-    filter(County != 'Unallocated, TX') %>%
-    mutate(County = gsub(' County, TX', '', County)) %>%
-    setNames(c('County', 'TPR_CPR', 'Tests')) %>%
-    mutate(Date = cpr_date) %>%
-    arrange(County)
-
-  output        = list(cpr_tpr)
-  names(output) = cpr_date
-  return(output)
+  return(data_raw)
 }
 
-page     = read_html('https://beta.healthdata.gov/National/COVID-19-Community-Profile-Report/gqxm-d9w9')
-file_loc = page %>%
-  html_nodes('script') %>%
-  html_text() %>%
-  str_detect('\\.xlsx') %>%
-  which()
+Clean_TPR_Data = function(county_name) {
+  data_cleaned = suppressWarnings(
+  { tpr_results_raw[[county_name]][['integrated_county_timeseries_external_data']] %>%
+    rbindlist(fill = TRUE) %>%
+    mutate(County = county_name) %>%
+    select(County, date, percent_positive_7_day, new_test_results_reported_7_day_rolling_average) %>%
+    rename(
+      Date  = date,
+      TPR   = percent_positive_7_day,
+      Tests = new_test_results_reported_7_day_rolling_average
+    )
+  }
+  )
+  return(data_cleaned)
+}
 
-file_text = page %>%
-  html_nodes('script') %>%
-  .[file_loc] %>%
-  html_text() %>%
-  str_replace(., '\n    var initialState =\n      ', '') %>%
-  str_replace(., '\n   ;\n  ', '')
 
-tpr_url = fromJSON(file_text)$view$attachments %>%
-  filter(href %>% str_detect('.xlsx')) %>%
-  distinct() %>%
-  arrange(desc(name)) %>%
-  slice(1) %>%
-  pull(href) %>%
-  unname()
+# 23 seconds
+start_time = Sys.time()
+plan(multisession, workers = 12)
+tpr_results_raw = furrr::future_map(
+  county_names_vec,
+  Get_TPR_Data,
+  .progress = TRUE
+)
+plan(sequential)
+print(Sys.time() - start_time)
 
-tpr_results = map(tpr_url, ~Clean_TPR(.)) %>%
-  unlist(., recursive = FALSE)
+names(tpr_results_raw) = county_names_vec
 
-map(names(tpr_results), ~fwrite(tpr_results[[.]],
-                                glue('original-sources/historical/cpr/cpr_tpr_{.}.csv'),
-                                quote = TRUE))
+tpr_results_cleaned_raw = map(
+  names(tpr_results_raw),
+  ~Clean_TPR_Data(.)
+)
 
-# combine cpr archive
-all_cpr_tpr = rbindlist(lapply(list.files('original-sources/historical/cpr/', full.names = TRUE), read.csv)) %>%
-  rename(TPR = TPR_CPR) %>%
-  mutate(Date = as.Date(Date)) %>%
-  mutate(TPR = ifelse(is.na(TPR), 0, TPR)) %>%
-  mutate(Tests = as.integer(Tests))
+tpr_results_cleaned = tpr_results_cleaned_raw %>%
+  rbindlist() %>%
+  arrange(County, Date) %>%
+  mutate(TPR = TPR / 100) %>%
+  mutate(Tests = as.integer(floor(Tests)))
+
+arrow::write_parquet(tpr_results_cleaned, glue('original-sources/historical/cdc_tpr/{date_out}_cpr_tpr.parquet'))
 
 # Google mobility --------------------------------------------------------------------------------------------
 mobility_texas = fread('https://raw.githubusercontent.com/jeffbrennan/TexasPandemics/master/tableau/county.csv') %>%
@@ -668,7 +728,7 @@ stopifnot(DSHS_vitals_long %>%
             == 0
 )
 ## merge data --------------------------------------------------------------------------------------------
-county_tests = all_cpr_tpr %>%
+county_tests = tpr_results_cleaned %>%
   select(County, Date, Tests) %>%
   rename(Tests_Daily = Tests) %>%
   filter(!is.na(Tests_Daily)) %>%
@@ -712,46 +772,46 @@ stopifnot(merged_dshs$TSA_Combined %>%
 fwrite(merged_dshs %>% arrange(County, Date), 'tableau/county.csv')
 
 # TPR --------------------------------------------------------------------------------------------
-tpr_df = rbindlist(
-  lapply(list.files('original-sources/historical/cms_tpr/', full.names = TRUE), read.csv),
-  fill = TRUE) %>%
-  mutate(Date = as.Date(Date)) %>%
-  rename(TPR = TPR_CMS) %>%
-  mutate(TPR = ifelse(Date >= '2020-12-16', NA, TPR))
-
-# add cms archive (8/19 - 12/09) (data represented 2 weeks of cases)
-cpr_dates = list.files('original-sources/historical/cpr') %>%
-  gsub('cpr_tpr_', '', .) %>%
-  gsub('.csv', '', .) %>%
-  as.Date(.)
-
-cms_dates = list.files('original-sources/historical/cms_tpr/') %>%
-  gsub('TPR_', '', .) %>%
-  gsub('.csv', '', .) %>%
-  as.Date(.)
-
-TPR_dates     = sort(unique(c(cpr_dates, cms_dates)))
-TPR_all_dates = data.frame(
-  County = rep(county_classifications$County %>% unique(), each = length(TPR_dates)),
-  Date   = rep(TPR_dates, times = length(county_classifications$County %>% unique())))
-
-cms_archive = tpr_df %>%
-  filter(Date < '2020-12-16') %>%
-  select(Date, County, Tests, TPR)
-
-cms_new = tpr_df %>%
-  filter(Date >= '2020-12-16') %>%
-  rbind(TPR_all_dates %>%
-          filter(Date >= '2020-12-16'),
-        fill = TRUE) %>%
-  distinct() %>%
-  select(Date, County, Tests) %>%
-  filter(!is.na(Tests))
+# tpr_df = rbindlist(
+#   lapply(list.files('original-sources/historical/cms_tpr/', full.names = TRUE), read.csv),
+#   fill = TRUE) %>%
+#   mutate(Date = as.Date(Date)) %>%
+#   rename(TPR = TPR_CMS) %>%
+#   mutate(TPR = ifelse(Date >= '2020-12-16', NA, TPR))
+#
+# # add cms archive (8/19 - 12/09) (data represented 2 weeks of cases)
+# cpr_dates = list.files('original-sources/historical/cpr') %>%
+#   gsub('cpr_tpr_', '', .) %>%
+#   gsub('.csv', '', .) %>%
+#   as.Date(.)
+#
+# cms_dates = list.files('original-sources/historical/cms_tpr/') %>%
+#   gsub('TPR_', '', .) %>%
+#   gsub('.csv', '', .) %>%
+#   as.Date(.)
+#
+# TPR_dates = sort(unique(c(cpr_dates, cms_dates)))
+# TPR_all_dates = data.frame(
+#   County = rep(county_classifications$County %>% unique(), each = length(TPR_dates)),
+#   Date = rep(TPR_dates, times = length(county_classifications$County %>% unique())))
+#
+# cms_archive = tpr_df %>%
+#   filter(Date < '2020-12-16') %>%
+#   select(Date, County, Tests, TPR)
+#
+# cms_new = tpr_df %>%
+#   filter(Date >= '2020-12-16') %>%
+#   rbind(TPR_all_dates %>%
+#           filter(Date >= '2020-12-16'),
+#         fill = TRUE) %>%
+#   distinct() %>%
+#   select(Date, County, Tests) %>%
+#   filter(!is.na(Tests))
 
 # divide case total by 7
 tpr_cases = merged_dshs %>%
   dplyr::select(County, Date, Cases_Daily, Population_DSHS) %>%
-  filter(Date >= as.Date(min(TPR_dates)) - 13 & Date <= max(TPR_dates)) %>%
+  # filter(Date >= as.Date(min(TPR_dates)) - 13 & Date <= max(TPR_dates)) %>%
   group_by(County) %>%
   mutate(Cases_100K_7Day_MA = (rollmean(Cases_Daily, k = 7, align = 'right',
                                         na.pad         = TRUE, na.rm = TRUE)
@@ -759,21 +819,20 @@ tpr_cases = merged_dshs %>%
   mutate(Cases_100K_14Day_MA = (rollmean(Cases_Daily, k = 14, align = 'right',
                                          na.rm          = TRUE, na.pad = TRUE)
     / Population_DSHS) * 100000) %>%
-  filter(Date %in% TPR_dates) %>%
+  # filter(Date %in% TPR_dates) %>%
   dplyr::select(-Cases_Daily, -Population_DSHS, -Cases_100K_14Day_MA)
 
-tpr_cases$Date %>% unique() %>% sort()
-
-tpr_out = all_cpr_tpr %>%
-  rbind(TPR_all_dates %>% filter(Date >= '2020-12-16'), fill = TRUE) %>%
+tpr_out = tpr_results_cleaned %>%
+  mutate(Date = as.Date(Date)) %>%
+  # rbind(TPR_all_dates %>% filter(Date >= '2020-12-16'), fill = TRUE) %>%
   distinct() %>%
   arrange(County, Date) %>%
-  rbind(cms_archive) %>%
-  left_join(cms_new, by = c('County', 'Date')) %>%
+  # rbind(cms_archive) %>%
+  # left_join(cms_new, by = c('County', 'Date')) %>%
   left_join(tpr_cases, by = c('County', 'Date')) %>%
-  mutate(Tests.x = ifelse(is.na(Tests.y), Tests.x, Tests.y)) %>%
-  rename(Tests = Tests.x) %>%
-  dplyr::select(-Tests.y) %>%
+  # mutate(Tests.x = ifelse(is.na(Tests.y), Tests.x, Tests.y)) %>%
+  # rename(Tests = Tests.x) %>%
+  # dplyr::select(-Tests.y) %>%
   dplyr::select(County, Date, TPR, Tests, Cases_100K_7Day_MA) %>%
   arrange(County, Date) %>%
   group_by(County, Date) %>%
@@ -783,7 +842,7 @@ tpr_out = all_cpr_tpr %>%
   mutate(count_0 = sum(TPR == 0)) %>%
   ungroup() %>%
   filter(count_0 < 254 | is.na(count_0))
-tpr_out$Date %>% unique() %>% sort()
+
 
 fwrite(tpr_out, 'tableau/county_TPR.csv')
 
@@ -1464,6 +1523,13 @@ stopifnot(merged_tsa %>%
             filter(n() > 1) %>%
             nrow() == 0)
 
+#
+# TSA_hosp_combined_cleaned %>%
+#   group_by(Date, TSA) %>%
+#   filter(n() > 1) %>%
+#   ungroup() %>%
+#   arrange(TSA, Date) %>%
+#   View()
 
 fwrite(merged_tsa, file = 'tableau/hospitalizations_tsa.csv')
 
@@ -1605,7 +1671,7 @@ Clean_Demo_New = function(sheet_name) {
     group_type = str_extract(sheet_name, 'Age|Sex|Gender|Race')
     stat_type  = str_extract(sheet_name, 'Cases|Fatalities')
 
-    df = demographics_all[[sheet_name]]
+    df       = demographics_all[[sheet_name]]
     clean_df = df %>%
       filter(!is.na(`Month.Year`) & `Month.Year` != 'Grand Total') %>%
       mutate(across(everything(), as.character)) %>%
