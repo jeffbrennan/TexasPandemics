@@ -1030,7 +1030,7 @@ if (format(date_out, '%A') == 'Wednesday' & (date_out - date_modified == -1)) {
 dashboard_archive        = list.files('original-sources/historical/vaccinations', full.names = TRUE)
 current_vaccination_file = fread('tableau/sandbox/county_daily_vaccine.csv')
 
-NUM_DAYS  = 4
+NUM_DAYS  = 1
 new_files = dashboard_archive[(length(dashboard_archive) - (NUM_DAYS - 1)):length(dashboard_archive)]
 
 start_time          = Sys.time()
@@ -1105,7 +1105,9 @@ stopifnot(county_vaccinations_out %>%
 fwrite(county_vaccinations_out, 'tableau/sandbox/county_daily_vaccine.csv')
 
 # state  --------------------------------------------------------------------------------------------
-state_demo = lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>%
+dashboard_file_names = names(all_dashboard_files[[length(all_dashboard_files)]])
+state_demo_file_name = dashboard_file_names[str_detect(dashboard_file_names, 'By Age, Gender|Sex, Race')]
+state_demo = lapply(all_dashboard_files, `[[`, state_demo_file_name) %>%
   discard(is.null) %>%
   lapply(., function(x) x %>%
     setNames(slice(., 1) %>% unlist()) %>%
@@ -1123,7 +1125,7 @@ state_demo = lapply(all_dashboard_files, `[[`, 'By Age, Gender, Race') %>%
         At_Least_One_Vaccinated = 'People Vaccinated with at least One Dose',
         Fully_Vaccinated        = 'People Fully Vaccinated',
         Fully_Vaccinated        = 'People Fully Vaccinated ',
-        Gender                  = 'Gender '
+        Gender                  = 'Sex'
       )
     )
   ) %>%
