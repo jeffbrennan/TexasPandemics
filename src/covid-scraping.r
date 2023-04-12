@@ -928,7 +928,8 @@ county_vaccinations = county_vaccinations_prefinal %>%
       ungroup()
   ) %>%
   relocate(Vaccination_Type, .after = 'County') %>%
-  rbind(current_vaccination_file %>% mutate(Date = as.Date(Date)))
+  rbind(current_vaccination_file %>% mutate(Date = as.Date(Date))) %>%
+  distinct()
 
 check_dupes = county_vaccinations %>%
   group_by(County, Date, Vaccination_Type) %>%
