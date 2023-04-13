@@ -25,32 +25,32 @@ library(glue)
 select = dplyr::select
 set.seed(1)
 
-N_CORES         = availableCores()
+N_CORES = availableCores()
 GENERATION_TIME = generation.time("gamma", c(3.96, 4.75))
 
 
 # pull data --------------------------------------------------------------------------------------------
 Parse_RT_Results = function(level_combined, rt_results_raw) {
   rt_results_level = rt_results_raw[[level_combined]]
-  case_df          = rt_prep_df[[level_combined]]
+  case_df = rt_prep_df[[level_combined]]
 
   level_parsed = strsplit(level_combined, split = ';')[[1]]
-  level        = level_parsed[1]
-  case_type    = level_parsed[2]
-  level_type   = case_df$Level_Type[1]
+  level = level_parsed[1]
+  case_type = level_parsed[2]
+  level_type = case_df$Level_Type[1]
 
   if (all(is.na(rt_results_level))) {
     # message(glue('{level}: Rt generation error (despite sufficient cases)'))
 
-    result_df = data.frame(Date       = as.Date(case_df$Date),
-                           Case_Type  = case_type,
+    result_df = data.frame(Date = as.Date(case_df$Date),
+                           Case_Type = case_type,
                            Level_Type = level_type,
-                           Level      = level,
-                           Rt         = rep(NA, length(case_df$Date)),
-                           lower      = rep(NA, length(case_df$Date)),
-                           upper      = rep(NA, length(case_df$Date)),
-                           case_avg   = NA,
-                           threshold  = NA)
+                           Level = level,
+                           Rt = rep(NA, length(case_df$Date)),
+                           lower = rep(NA, length(case_df$Date)),
+                           upper = rep(NA, length(case_df$Date)),
+                           case_avg = NA,
+                           threshold = NA)
 
   } else {
     rt_results = rt_results_level$estimates$TD
@@ -58,11 +58,11 @@ Parse_RT_Results = function(level_combined, rt_results_raw) {
     # extract r0 estimate values into dataframe
     result_df = data.frame('Rt' = rt_results[['R']]) %>%
       mutate(
-        Case_Type  = case_type,
+        Case_Type = case_type,
         Level_Type = level_type,
-        Level      = level,
-        case_avg   = case_df$case_avg[1],
-        threshold  = case_df$threshold[1]
+        Level = level,
+        case_avg = case_df$case_avg[1],
+        threshold = case_df$threshold[1]
       ) %>%
       mutate(Date = as.Date(row.names(.))) %>%
       as.data.frame(row.names = 1:nrow(.)) %>%
@@ -79,7 +79,7 @@ Parse_RT_Results = function(level_combined, rt_results_raw) {
 Calculate_RT = function(case_df) {
   # message(level)
   set.seed(1)
-  level     = case_df$Level[1]
+  level = case_df$Level[1]
   level_pop = population_lookup %>%
     filter(Level == level) %>%
     pull(Population_DSHS)
@@ -93,13 +93,13 @@ Calculate_RT = function(case_df) {
   {
     result = suppressWarnings(
       estimate.R(
-        epid     = cases_ma7,
-        GT       = GENERATION_TIME,
-        begin    = 1L,
-        end      = length(cases_ma7),
-        methods  = 'TD',
+        epid = cases_ma7,
+        GT = GENERATION_TIME,
+        begin = 1L,
+        end = length(cases_ma7),
+        methods = 'TD',
         pop.size = level_pop,
-        nsim     = 1000
+        nsim = 1000
       )
     )
     return(result)
@@ -111,7 +111,7 @@ Calculate_RT = function(case_df) {
   return(rt_raw)
 }
 
-MIN_CONFIRMED_DATE      = as.Date('2020-03-08')
+MIN_CONFIRMED_DATE = as.Date('2020-03-08')
 MIN_CONFIRMED_PROB_DATE = as.Date('2022-04-01')
 
 Prepare_RT = function(case_df) {
@@ -140,7 +140,7 @@ Prepare_RT = function(case_df) {
     left_join(case_quant, by = 'Case_Type') %>%
     select(Date, Case_Type, Level_Type, Level, Cases_Daily, MA_7day, Population_DSHS, recent_case_avg, case_quant) %>%
     rename(
-      case_avg  = recent_case_avg,
+      case_avg = recent_case_avg,
       threshold = case_quant
     ) %>%
     group_split(Level, Case_Type) %>%
@@ -230,18 +230,18 @@ rt_prep_df = Prepare_RT(cleaned_cases_combined)
 # rt loop --------------------------------------------------------------------------------------------
 # Generate Rt estimates for each county, using 70% quantile of cases in past 3 weeks as threshold
 start_time = Sys.time()
-df_levels  = names(rt_prep_df)
+df_levels = names(rt_prep_df)
 message(glue('Running RT on {length(df_levels)} levels using {N_CORES /2} cores'))
 rt_start_time = Sys.time()
-plan(multisession, workers = N_CORES /2, gc = TRUE)
-rt_output   = future_map(rt_prep_df,
-                         ~Calculate_RT(case_df = .),
-                         .options  = furrr_options(
-                           seed       = 42,
-                           # scheduling = 1,
-                           # chunk_size = NULL
-                         ),
-                         .progress = TRUE
+plan(multisession, workers = (N_CORES / 2), gc = TRUE)
+rt_output = future_map(rt_prep_df,
+                       ~Calculate_RT(case_df = .),
+                       .options = furrr_options(
+                         seed = 42,
+                         # scheduling = 1,
+                         # chunk_size = NULL
+                       ),
+                       .progress = TRUE
 )
 rt_end_time = Sys.time()
 print(rt_end_time - rt_start_time)
@@ -260,7 +260,7 @@ stopifnot(rt_parsed %>%
 RT_County_df = rt_parsed %>%
   filter(Level_Type == 'County') %>%
   rename(County = Level)
-TPR_df       = read.csv('tableau/county_TPR.csv') %>%
+TPR_df = read.csv('tableau/county_TPR.csv') %>%
   select(-any_of('Rt')) %>%
   mutate(Date = as.Date(Date))
 
@@ -323,42 +323,42 @@ Predict_Cases = function(df, prediction.period = 10) {
   #
   # mydata       = subset(mydata, Date >= mindate)
   prediction.period = 10L
-  model.length      = nrow(df) + prediction.period
-  recent_case_avg   = df$case_avg[1]
-  threshold         = df$threshold[1]
+  model.length = nrow(df) + prediction.period
+  recent_case_avg = df$case_avg[1]
+  threshold = df$threshold[1]
 
   if (recent_case_avg >= threshold) {
     my.timeseries = ts(df$Cases_Daily)
     my.timeseries = movavg(my.timeseries, 7, "s")
 
-    arima.fit      = forecast::auto.arima(my.timeseries)
+    arima.fit = forecast::auto.arima(my.timeseries)
     arima.forecast = forecast::forecast(arima.fit, h = prediction.period, level = c(95, 95))
 
     #return a dataframe of the arima model(Daily cases by date)
     arima.out = data.frame(
-      Date        = seq(mindate, (maxdate + prediction.period), by = 'days'),
-      Case_Type   = df$Case_Type[1],
-      Level_Type  = df$Level_Type[1],
-      Level       = df$Level[1],
-      Cases_Raw   = c(df$Cases_Daily, rep(NA, times = prediction.period)),
+      Date = seq(mindate, (maxdate + prediction.period), by = 'days'),
+      Case_Type = df$Case_Type[1],
+      Level_Type = df$Level_Type[1],
+      Level = df$Level[1],
+      Cases_Raw = c(df$Cases_Daily, rep(NA, times = prediction.period)),
       Cases_Daily = c(my.timeseries, arima.forecast[['mean']]),
-      CI_Lower    = c(rep(NA, times = length(my.timeseries)),
-                      arima.forecast[['lower']][, 2]),
-      CI_Upper    = c(rep(NA, times = length(my.timeseries)),
-                      arima.forecast[['upper']][, 2])) %>%
+      CI_Lower = c(rep(NA, times = length(my.timeseries)),
+                   arima.forecast[['lower']][, 2]),
+      CI_Upper = c(rep(NA, times = length(my.timeseries)),
+                   arima.forecast[['upper']][, 2])) %>%
       mutate(CI_Lower = ifelse(CI_Lower <= 0, 0, CI_Lower))
 
   } else {
     # insufficient data catch: return NA values for predictions
     arima.out = data.frame(
-      Date        = seq(mindate, maxdate + prediction.period, by = 'days'),
-      Case_Type   = df$Case_Type[1],
-      Level_Type  = df$Level_Type[1],
-      Level       = df$Level[1],
-      Cases_Raw   = c(df$Cases_Daily, rep(NA, times = prediction.period)),
+      Date = seq(mindate, maxdate + prediction.period, by = 'days'),
+      Case_Type = df$Case_Type[1],
+      Level_Type = df$Level_Type[1],
+      Level = df$Level[1],
+      Cases_Raw = c(df$Cases_Daily, rep(NA, times = prediction.period)),
       Cases_Daily = rep(NA, times = model.length),
-      CI_Lower    = rep(NA, times = model.length),
-      CI_Upper    = rep(NA, times = model.length))
+      CI_Lower = rep(NA, times = model.length),
+      CI_Upper = rep(NA, times = model.length))
   }
   return(arima.out)
 }
@@ -368,11 +368,11 @@ Predict_Cases = function(df, prediction.period = 10) {
 
 plan(multisession, workers = N_CORES, gc = FALSE)
 arima_case_start_time = Sys.time()
-arima_case_output     = future_map(rt_prep_df,
-                                   ~Predict_Cases(df = .),
-                                   .options  = furrr_options(seed       = TRUE,
-                                                             scheduling = Inf),
-                                   .progress = TRUE
+arima_case_output = future_map(rt_prep_df,
+                               ~Predict_Cases(df = .),
+                               .options = furrr_options(seed = TRUE,
+                                                        scheduling = Inf),
+                               .progress = TRUE
 )
 print(Sys.time() - arima_case_start_time)
 plan(sequential)
@@ -388,7 +388,7 @@ fwrite(ARIMA_Case_Combined_df, 'tableau/stacked_case_timeseries.csv')
 Predict_Hospitalizations = function(mydata, prediction.period = 10) {
   mindate = as.Date('2020-04-12')
   maxdate = max(mydata$Date)
-  mydata  = mydata %>% filter(Date >= mindate)
+  mydata = mydata %>% filter(Date >= mindate)
 
   model.length = nrow(mydata) + prediction.period
 
@@ -397,29 +397,29 @@ Predict_Hospitalizations = function(mydata, prediction.period = 10) {
     my.timeseries = ts(mydata$Hospitalizations_Total)
     my.timeseries = movavg(my.timeseries, 7, "s")
 
-    arima.fit      = forecast::auto.arima(my.timeseries)
+    arima.fit = forecast::auto.arima(my.timeseries)
     arima.forecast = forecast::forecast(arima.fit, h = prediction.period, level = c(95, 95))
 
     #return a dataframe of the arima model (Daily cases by date)
     arima.out = data.frame(
-      Date                   = seq(mindate, maxdate + prediction.period, by = 'days'),
-      Level_Type             = mydata$Level_Type[1],
-      Level                  = mydata$Level[1],
+      Date = seq(mindate, maxdate + prediction.period, by = 'days'),
+      Level_Type = mydata$Level_Type[1],
+      Level = mydata$Level[1],
       Hospitalizations_Total = c(my.timeseries, arima.forecast[['mean']]),
-      CI_Lower               = c(rep(NA, times = length(my.timeseries)),
-                                 arima.forecast[['lower']][, 2]),
-      CI_Upper               = c(rep(NA, times = length(my.timeseries)),
-                                 arima.forecast[['upper']][, 2])) %>%
+      CI_Lower = c(rep(NA, times = length(my.timeseries)),
+                   arima.forecast[['lower']][, 2]),
+      CI_Upper = c(rep(NA, times = length(my.timeseries)),
+                   arima.forecast[['upper']][, 2])) %>%
       mutate(CI_Lower = ifelse(CI_Lower <= 0, 0, CI_Lower))
   } else {
     # insufficient data catch: return NA values for predictions
     arima.out = data.frame(
-      Date                   = seq(mindate, maxdate + prediction.period, by = 'days'),
-      Level_Type             = mydata$Level_Type[1],
-      Level                  = mydata$Level[1],
+      Date = seq(mindate, maxdate + prediction.period, by = 'days'),
+      Level_Type = mydata$Level_Type[1],
+      Level = mydata$Level[1],
       Hospitalizations_Total = rep(NA, times = model.length),
-      CI_Lower               = rep(NA, times = model.length),
-      CI_Upper               = rep(NA, times = model.length))
+      CI_Lower = rep(NA, times = model.length),
+      CI_Upper = rep(NA, times = model.length))
   }
   return(arima.out)
 }
@@ -445,7 +445,7 @@ hospitalizations_df_split = hospitalizations %>%
   set_names(map_chr(., ~str_c(.x$Level[1])))
 
 plan(multisession, workers = N_CORES, gc = FALSE)
-arima_hosp_start_time  = Sys.time()
+arima_hosp_start_time = Sys.time()
 ARIMA_Hosp_Combined_df = future_map(hospitalizations_df_split, ~Predict_Hospitalizations(.)) %>%
   rbindlist() %>%
   mutate(Date = as.Date(Date))
@@ -467,14 +467,14 @@ new_pct_change = function(df) {
 
   result_df = df %>%
     mutate(
-      cases_ma_percentdiff    = 100 * ((Cases_MA_14 / start_values$Cases_MA_14) - 1),
+      cases_ma_percentdiff = 100 * ((Cases_MA_14 / start_values$Cases_MA_14) - 1),
       cases_total_percentdiff = 100 * ((Cases_Total_14 / start_values$Cases_Total_14) - 1),
-      tests_ma_percentdiff    = 100 * ((Tests_MA_14 / start_values$Tests_MA_14) - 1),
+      tests_ma_percentdiff = 100 * ((Tests_MA_14 / start_values$Tests_MA_14) - 1),
       tests_total_percentdiff = 100 * ((Tests_Total_14 / start_values$Tests_Total_14) - 1)
     ) %>%
-    rename(cases_ma       = Cases_MA_14,
+    rename(cases_ma = Cases_MA_14,
            cases_total_14 = Cases_Total_14,
-           tests_ma       = Tests_MA_14,
+           tests_ma = Tests_MA_14,
            tests_total_14 = Tests_Total_14
     ) %>%
     select(Date, Level_Type, Level, Case_Type,
@@ -537,7 +537,7 @@ stacked_all = PCT_Combined_df %>%
   left_join(ARIMA_Hosp_Combined_df %>%
               rename(TS_Hosp_CI_Lower = CI_Lower,
                      TS_Hosp_CI_Upper = CI_Upper),
-            by       = c('Level_Type', 'Level', 'Date'),
+            by = c('Level_Type', 'Level', 'Date'),
             multiple = 'all'
   )
 

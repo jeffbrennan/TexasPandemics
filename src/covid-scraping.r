@@ -28,18 +28,18 @@ read_excel_allsheets = function(filename, col_option = TRUE, add_date = FALSE, s
   sheets = openxlsx::getSheetNames(filename)
 
   x = map(sheets, ~openxlsx::read.xlsx(filename,
-                                       sheet      = .,
-                                       startRow   = skip_option + 1,
-                                       colNames   = col_option,
+                                       sheet = .,
+                                       startRow = skip_option + 1,
+                                       colNames = col_option,
                                        na.strings = '.')
   )
 
   names(x) = sheets
-  x        = lapply(x, as.data.frame)
+  x = lapply(x, as.data.frame)
 
   if (add_date == TRUE) {
     file_date = str_extract(filename, '\\d.*\\d')
-    x         = map(x, ~.x %>% mutate(Date = as.Date(file_date)))
+    x = map(x, ~.x %>% mutate(Date = as.Date(file_date)))
   }
   return(x)
 }
@@ -67,11 +67,11 @@ Fix_Num_Dates = function(dates) {
 Fix_Char_Dates = function(dates) {
   #Matches 2 or 4 digits, separator, 2 or 4 digits, optional separator, optional 2 or 4 digits
   # Coerces all common separators to "-"
-  date_regex  = '(\\d{4}|\\d{2}|\\d{1})(\\.|\\-|\\/)(\\d{4}|\\d{2}|\\d{1})?(\\.|\\-|\\/)?(\\d{4}|\\d{2})'
+  date_regex = '(\\d{4}|\\d{2}|\\d{1})(\\.|\\-|\\/)(\\d{4}|\\d{2}|\\d{1})?(\\.|\\-|\\/)?(\\d{4}|\\d{2})'
   clean_dates = str_extract(dates, date_regex) %>% str_replace_all(., '\\/|\\.', '\\-')
 
   mdy_dates = which(!is.na(as.Date(clean_dates, format = '%m-%d-%y')))
-  md_dates  = which(is.na(as.Date(clean_dates, format = '%m-%d-%Y')))
+  md_dates = which(is.na(as.Date(clean_dates, format = '%m-%d-%Y')))
   # if (length(mdy_dates) == length(md_dates)) {
   #   md_dates = c()
   # }
@@ -81,7 +81,7 @@ Fix_Char_Dates = function(dates) {
     md_dates_2020 = which(format(as.Date(clean_dates[md_dates], '%m-%d'), '%m') %in% as.character(seq(as.numeric(format(date_out, '%m')) + 1, 12)))
 
     if (length(md_dates_2020) > 0) {
-      clean_dates[md_dates[md_dates_2020]]  = paste0('2020-', clean_dates[md_dates[md_dates_2020]])
+      clean_dates[md_dates[md_dates_2020]] = paste0('2020-', clean_dates[md_dates[md_dates_2020]])
       clean_dates[md_dates[-md_dates_2020]] = format(as.Date(clean_dates[md_dates[-md_dates_2020]],
                                                              '%m-%d'), '%Y-%m-%d')
     } else {
@@ -102,9 +102,9 @@ Date_Parser = function(raw_date) {
   if (length(numeric_loc) == 0) {
     clean_dates = Fix_Char_Dates(raw_date)
   } else {
-    clean_num_date  = Fix_Num_Dates(raw_date[numeric_loc])
+    clean_num_date = Fix_Num_Dates(raw_date[numeric_loc])
     clean_char_date = Fix_Char_Dates(raw_date[-numeric_loc])
-    clean_dates     = sort(c(clean_num_date, clean_char_date))
+    clean_dates = sort(c(clean_num_date, clean_char_date))
   }
   return(clean_dates)
 }
@@ -120,7 +120,7 @@ Download_Temp = function(url) {
 # Metro Area: https://www.dshs.state.tx.us/chs/info/TxCoPhrMsa.xls
 # PHR: readable names from https://dshs.state.tx.us/regions/default.shtm
 # Population: https://www.census.gov/data/tables/time-series/demo/popest/2020s-counties-total.html
-county_metadata    = fread('tableau/helpers/county_metadata.csv')
+county_metadata = fread('tableau/helpers/county_metadata.csv')
 county_names_vec = county_metadata$County
 county_populations = county_metadata %>% select(County, Population_2020_04_01, Population_2020_07_01, Population_2021_07_01)
 
@@ -131,17 +131,17 @@ county_populations = county_metadata %>% select(County, Population_2020_04_01, P
 # collapse into asian, black, hispanic, white, other
 # exclude totals to avoid double counting
 county_demo_agesex = fread('tableau/helpers/county_demo_agesex.csv')
-county_demo_race   = fread('tableau/helpers/county_demo_race.csv')
-state_demo_pops    = fread('tableau/helpers/state_demo.csv')
+county_demo_race = fread('tableau/helpers/county_demo_race.csv')
+state_demo_pops = fread('tableau/helpers/state_demo.csv')
 
 # wastewater --------------------------------------------------------------------------------------------
 
 # houston dashboard --------------------------------------------------------------------------------------------
 Scrape_Wastewater = function(data_type, offset = '') {
   plant_url = glue('https://services.arcgis.com/lqRTrQp2HrfnJt8U/ArcGIS/rest/services/WWTP_gdb/FeatureServer/0//query?where=0%3D0&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=*&returnGeometry=true&returnCentroid=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset={offset}&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pjson&token=')
-  zip_url   = glue('https://services.arcgis.com/lqRTrQp2HrfnJt8U/arcgis/rest/services/Wastewater_Zip_Case_Analysis/FeatureServer/0/query?where=1%3D1&objectIds=&time=&resultType=none&outFields=*&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset={offset}&resultRecordCount=&sqlFormat=none&f=pjson&token=')
+  zip_url = glue('https://services.arcgis.com/lqRTrQp2HrfnJt8U/arcgis/rest/services/Wastewater_Zip_Case_Analysis/FeatureServer/0/query?where=1%3D1&objectIds=&time=&resultType=none&outFields=*&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset={offset}&resultRecordCount=&sqlFormat=none&f=pjson&token=')
 
-  url_selection = c('zip'   = zip_url,
+  url_selection = c('zip' = zip_url,
                     'plant' = plant_url)
 
   ww_df = jsonlite::fromJSON(url_selection[[data_type]])[['features']][['attributes']]
@@ -159,13 +159,13 @@ Scrape_Wastewater = function(data_type, offset = '') {
       out_df = ww_df %>%
         mutate(across(contains('date'), function(x) as_datetime(x / 1000) %>% as_date())) %>%
         select(corname, date, vl_est, i_est_p, t_est, firstdate, lastdate, v1_est, v2_est, spline_ww) %>%
-        rename(Plant            = corname,
-               Date             = date,
-               Viral_Load_PCT   = vl_est,
-               p_value          = i_est_p,
-               Trend            = t_est,
-               Date_First       = firstdate,
-               Date_Last        = lastdate,
+        rename(Plant = corname,
+               Date = date,
+               Viral_Load_PCT = vl_est,
+               p_value = i_est_p,
+               Trend = t_est,
+               Date_First = firstdate,
+               Date_Last = lastdate,
                Viral_Copies_Log = spline_ww)
       message(glue('{offset} max date: {max(out_df$Date, na.rm = TRUE)}'))
     }
@@ -177,7 +177,7 @@ Scrape_Wastewater = function(data_type, offset = '') {
 }
 
 plant_offsets = c('', seq(2000, 15000, by = 2000))
-zip_offsets   = c('', seq(1000, 20000, by = 1000))
+zip_offsets = c('', seq(1000, 20000, by = 1000))
 
 ww_plant_df = map(plant_offsets, ~Scrape_Wastewater('plant', offset = .)) %>%
   rbindlist(., fill = TRUE)
@@ -191,7 +191,7 @@ ww_zip_df_clean = ww_zip_df %>%
   filter(!is.na(ZIPCODE)) %>%
   arrange(ZIPCODE, date)
 
-ww_zip_zipcode_n      = length(unique(ww_zip_df_clean$ZIPCODE))
+ww_zip_zipcode_n = length(unique(ww_zip_df_clean$ZIPCODE))
 ww_zip_missing_values = with(ww_zip_df_clean, table(ZIPCODE, date)) %>%
   as.data.frame() %>%
   pivot_wider(values_from = Freq, names_from = date) %>%
@@ -216,13 +216,13 @@ if (all(ww_zip_checks)) {
 
 ## cdc  --------------------------------------------------------------------------------------------
 # cdc
-cdc_ww       = fread('https://data.cdc.gov/api/views/2ew6-ywp6/rows.csv?accessType=DOWNLOAD')
+cdc_ww = fread('https://data.cdc.gov/api/views/2ew6-ywp6/rows.csv?accessType=DOWNLOAD')
 cdc_ww_texas = cdc_ww %>%
   filter(wwtp_jurisdiction == 'Texas') %>%
   select(county_names, wwtp_id, sample_location, key_plot_id, date_start, ptc_15d, detect_prop_15d, percentile) %>%
   relocate(date_start, .before = 'county_names') %>%
-  rename(Date        = date_start,
-         County      = county_names,
+  rename(Date = date_start,
+         County = county_names,
          Location_ID = wwtp_id) %>%
   mutate(Date = format(Date, '%Y-%m-%d'))
 
@@ -527,11 +527,11 @@ fwrite(cdc_ww_texas, 'tableau/wastewater_county_cdc.csv')
 
 Get_TPR_Data = function(county_name) {
   county_fips_lookup = fread('original-sources/helpers/county_fips_lookup.csv')
-  tpr_url_base_path  = 'https://covid.cdc.gov/covid-data-tracker/COVIDData/getAjaxData?id=integrated_county_timeseries_fips_'
-  county_fips        = county_fips_lookup %>%
+  tpr_url_base_path = 'https://covid.cdc.gov/covid-data-tracker/COVIDData/getAjaxData?id=integrated_county_timeseries_fips_'
+  county_fips = county_fips_lookup %>%
     filter(County == county_name) %>%
     pull(fips)
-  data_raw           = read_json(glue('{tpr_url_base_path}{county_fips}_external'))
+  data_raw = read_json(glue('{tpr_url_base_path}{county_fips}_external'))
 
   return(data_raw)
 }
@@ -543,8 +543,8 @@ Clean_TPR_Data = function(county_name) {
     mutate(County = county_name) %>%
     select(County, date, percent_positive_7_day, new_test_results_reported_7_day_rolling_average) %>%
     rename(
-      Date  = date,
-      TPR   = percent_positive_7_day,
+      Date = date,
+      TPR = percent_positive_7_day,
       Tests = new_test_results_reported_7_day_rolling_average
     )
   }
@@ -580,9 +580,9 @@ tpr_results_cleaned = tpr_results_cleaned_raw %>%
 arrow::write_parquet(tpr_results_cleaned, glue('original-sources/historical/cdc_tpr/{date_out}_cpr_tpr.parquet'))
 # vitals --------------------------------------------------------------------------------------------
 ## globals --------------------------------------------------------------------------------------------
-dshs_base_url                   = 'https://www.dshs.texas.gov/sites/default/files/chs/data/COVID'
-confirmed_case_url              = glue("{dshs_base_url}/Texas%20COVID-19%20New%20Confirmed%20Cases%20by%20County.xlsx")
-probable_case_url               = glue('{dshs_base_url}/Texas%20COVID-19%20New%20Probable%20Cases%20by%20County.xlsx')
+dshs_base_url = 'https://www.dshs.texas.gov/sites/default/files/chs/data/COVID'
+confirmed_case_url = glue("{dshs_base_url}/Texas%20COVID-19%20New%20Confirmed%20Cases%20by%20County.xlsx")
+probable_case_url = glue('{dshs_base_url}/Texas%20COVID-19%20New%20Probable%20Cases%20by%20County.xlsx')
 PROBABLE_COMBINATION_START_DATE = as.Date('2022-04-01')
 
 Clean_Cases = function(case_url) {
@@ -596,7 +596,7 @@ Clean_Cases = function(case_url) {
     rbindlist(fill = TRUE) %>%
     pivot_longer(!County) %>%
     filter(!is.na(value)) %>%
-    rename(Date        = name,
+    rename(Date = name,
            Cases_Daily = value) %>%
     filter(!str_to_upper(Date) %in% c("TOTAL", "UNKNOWN DATE")) %>%
     mutate(Date = ifelse(!is.na(as.integer(Date)),
@@ -613,7 +613,7 @@ Clean_Cases = function(case_url) {
 }
 
 confirmed_cases = Clean_Cases(confirmed_case_url)
-probable_cases  = Clean_Cases(probable_case_url)
+probable_cases = Clean_Cases(probable_case_url)
 
 DSHS_cases_long = confirmed_cases %>%
   mutate(Case_Type = 'confirmed') %>%
@@ -642,7 +642,7 @@ DSHS_deaths_long = all_fatalities %>%
   rbindlist(fill = TRUE) %>%
   pivot_longer(!County) %>%
   filter(!is.na(value)) %>%
-  rename(Date              = name,
+  rename(Date = name,
          Deaths_Cumulative = value) %>%
   filter(!str_to_upper(Date) %in% c("TOTAL", "UNKNOWN DATE")) %>%
   mutate(Date = ifelse(!is.na(as.integer(Date)),
@@ -773,10 +773,10 @@ tpr_cases = merged_dshs %>%
   # filter(Date >= as.Date(min(TPR_dates)) - 13 & Date <= max(TPR_dates)) %>%
   group_by(County) %>%
   mutate(Cases_100K_7Day_MA = (rollmean(Cases_Daily, k = 7, align = 'right',
-                                        na.pad         = TRUE, na.rm = TRUE)
+                                        na.pad = TRUE, na.rm = TRUE)
     / Population_DSHS) * 100000) %>%
   mutate(Cases_100K_14Day_MA = (rollmean(Cases_Daily, k = 14, align = 'right',
-                                         na.rm          = TRUE, na.pad = TRUE)
+                                         na.rm = TRUE, na.pad = TRUE)
     / Population_DSHS) * 100000) %>%
   # filter(Date %in% TPR_dates) %>%
   dplyr::select(-Cases_Daily, -Population_DSHS, -Cases_100K_14Day_MA)
@@ -812,7 +812,7 @@ Create_Agesex_Population_df = function(county_demo_agesex, pop_col) {
     select(all_of(c('County', 'Gender', 'Age_Group', pop_col))) %>%
     rename('Population_DSHS' = pop_col) %>%
     summarize(Population_DSHS = sum(Population_DSHS), .by = c(County, Age_Group)) %>%
-    pivot_wider(names_from  = Age_Group,
+    pivot_wider(names_from = Age_Group,
                 values_from = Population_DSHS
     ) %>%
     left_join(county_populations %>% select(all_of(c('County', pop_col))), by = 'County') %>%
@@ -822,7 +822,7 @@ Create_Agesex_Population_df = function(county_demo_agesex, pop_col) {
 }
 
 county_vaccinations_out_pops = Create_Agesex_Population_df(county_demo_agesex, 'Population_2021_07_01')
-county_vax_fix_2020_07_01    = Create_Agesex_Population_df(county_demo_agesex, 'Population_2020_07_01')
+county_vax_fix_2020_07_01 = Create_Agesex_Population_df(county_demo_agesex, 'Population_2020_07_01')
 
 ## download --------------------------------------------------------------------------------------------
 vaccine_date_out = format(date_out, '%Y%m%d')
@@ -833,7 +833,7 @@ if (format(date_out, '%A') == 'Wednesday') {
   try(
     curl::curl_download(
       vaccine_county_dshs_url,
-      mode     = 'wb',
+      mode = 'wb',
       destfile = glue('original-sources/historical/vaccinations/vaccinations_{date_out}.xlsx')
     ),
     silent = TRUE
@@ -841,17 +841,17 @@ if (format(date_out, '%A') == 'Wednesday') {
 }
 
 ## parse --------------------------------------------------------------------------------------------
-dashboard_archive        = list.files('original-sources/historical/vaccinations', full.names = TRUE)
+dashboard_archive = list.files('original-sources/historical/vaccinations', full.names = TRUE)
 current_vaccination_file = fread('tableau/sandbox/county_daily_vaccine.csv')
 
-NUM_DAYS                   = 1L
-BIVALENT_START_DATE        = as.Date('2022-09-05')
-new_files                  = dashboard_archive[(length(dashboard_archive) - (NUM_DAYS - 1)):length(dashboard_archive)]
-all_dashboard_files        = lapply(new_files, read_excel_allsheets, add_date = TRUE, col_option = FALSE, skip_option = 0)
+NUM_DAYS = 1L
+BIVALENT_START_DATE = as.Date('2022-09-05')
+new_files = dashboard_archive[(length(dashboard_archive) - (NUM_DAYS - 1)):length(dashboard_archive)]
+all_dashboard_files = lapply(new_files, read_excel_allsheets, add_date = TRUE, col_option = FALSE, skip_option = 0)
 names(all_dashboard_files) = new_files
 
 
-county_dashboard_data_exists      = map_lgl(all_dashboard_files, ~'By County' %in% names(.))
+county_dashboard_data_exists = map_lgl(all_dashboard_files, ~'By County' %in% names(.))
 county_dashboard_files_nonmissing = all_dashboard_files[county_dashboard_data_exists]
 
 vaccine_file_dates_raw = map(county_dashboard_files_nonmissing,
@@ -960,11 +960,11 @@ state_demo_raw = all_dashboard_files[[length(all_dashboard_files)]][[state_demo_
   rename(
     any_of(
       c(
-        Doses_Administered      = 'Doses Administered',
+        Doses_Administered = 'Doses Administered',
         At_Least_One_Vaccinated = 'People Vaccinated with at least One Dose',
-        Fully_Vaccinated        = 'People Fully Vaccinated',
-        Fully_Vaccinated        = 'People Fully Vaccinated ',
-        Gender                  = 'Sex'
+        Fully_Vaccinated = 'People Fully Vaccinated',
+        Fully_Vaccinated = 'People Fully Vaccinated ',
+        Gender = 'Sex'
       )
     )
   ) %>%
@@ -998,18 +998,18 @@ state_demo_prep = state_demo_raw %>%
             by = 'Age_Group'
   ) %>%
   mutate(across(-c(Gender, Age_Group, `Race/Ethnicity`), as.integer)) %>%
-  mutate(Doses_Administered_Per_Race        = Doses_Administered / State_Race_Total,
-         Doses_Administered_Per_Gender      = Doses_Administered / State_Gender_Total,
-         Doses_Administered_Per_Age         = Doses_Administered / State_Age_Total,
-         At_Least_One_Vaccinated_Per_Race   = At_Least_One_Vaccinated / State_Race_Total,
+  mutate(Doses_Administered_Per_Race = Doses_Administered / State_Race_Total,
+         Doses_Administered_Per_Gender = Doses_Administered / State_Gender_Total,
+         Doses_Administered_Per_Age = Doses_Administered / State_Age_Total,
+         At_Least_One_Vaccinated_Per_Race = At_Least_One_Vaccinated / State_Race_Total,
          At_Least_One_Vaccinated_Per_Gender = At_Least_One_Vaccinated / State_Gender_Total,
-         At_Least_One_Vaccinated_Per_Age    = At_Least_One_Vaccinated / State_Age_Total,
-         Fully_Vaccinated_Per_Race          = Fully_Vaccinated / State_Race_Total,
-         Fully_Vaccinated_Per_Gender        = Fully_Vaccinated / State_Gender_Total,
-         Fully_Vaccinated_Per_Age           = Fully_Vaccinated / State_Age_Total,
-         Boosted_Per_Race                   = Boosted / State_Race_Total,
-         Boosted_Per_Gender                 = Boosted / State_Gender_Total,
-         Boosted_Per_Age                    = Boosted / State_Age_Total) %>%
+         At_Least_One_Vaccinated_Per_Age = At_Least_One_Vaccinated / State_Age_Total,
+         Fully_Vaccinated_Per_Race = Fully_Vaccinated / State_Race_Total,
+         Fully_Vaccinated_Per_Gender = Fully_Vaccinated / State_Gender_Total,
+         Fully_Vaccinated_Per_Age = Fully_Vaccinated / State_Age_Total,
+         Boosted_Per_Race = Boosted / State_Race_Total,
+         Boosted_Per_Gender = Boosted / State_Gender_Total,
+         Boosted_Per_Age = Boosted / State_Age_Total) %>%
   relocate(`Race/Ethnicity`, .after = Age_Group) %>%
   relocate(Date, .after = Boosted_Per_Age) %>%
   mutate(Date = format(as.Date(Date, origin = '1970-01-01'), '%Y-%m-%d'))
@@ -1023,7 +1023,7 @@ stopifnot(check_state_demo_dupes)
 
 # add bivalent group
 bivalent_baseline = fread('tableau/helpers/state_demo_bivalent_baseline.csv')
-state_demo        = state_demo_prep %>%
+state_demo = state_demo_prep %>%
   mutate(Vaccination_Type = 'all') %>%
   rbind(
     state_demo_prep %>%
@@ -1034,9 +1034,9 @@ state_demo        = state_demo_prep %>%
                 by = c('Gender', 'Age_Group', 'Race/Ethnicity')
       ) %>%
       mutate(Boosted = Boosted - Boosted_baseline) %>%
-      mutate(Boosted_Per_Race   = Boosted / State_Race_Total,
+      mutate(Boosted_Per_Race = Boosted / State_Race_Total,
              Boosted_Per_Gender = Boosted / State_Gender_Total,
-             Boosted_Per_Age    = Boosted / State_Age_Total) %>%
+             Boosted_Per_Age = Boosted / State_Age_Total) %>%
       select(-Boosted_baseline) %>%
       mutate(Date = max(state_demo_prep$Date))
   ) %>%
@@ -1045,7 +1045,7 @@ state_demo        = state_demo_prep %>%
 
 fwrite(state_demo, 'tableau/sandbox/state_vaccine_demographics.csv')
 #  --------------------------------------------------------------------------------------------
-measure_cols             = c('Doses_Administered', 'At_Least_One_Vaccinated', 'Fully_Vaccinated', 'Boosted')
+measure_cols = c('Doses_Administered', 'At_Least_One_Vaccinated', 'Fully_Vaccinated', 'Boosted')
 state_demo_stacked_clean = state_demo %>%
   #-------------------------------------------Gender------------------------------------
   select(all_of(c('Gender', 'Vaccination_Type', measure_cols))) %>%
@@ -1178,7 +1178,7 @@ DSHS_tsa_pops = merged_dshs %>%
   summarize(across(Population_DSHS, ~sum(., na.rm = TRUE)))
 
 
-DSHS_tsa   = DSHS_tsa_counts %>%
+DSHS_tsa = DSHS_tsa_counts %>%
   left_join(DSHS_tsa_pops, by = 'TSA')
 # hospitals --------------------------------------------------------------------------------------------
 ## TSA excel sheet --------------------------------------------------------------------------------------------
@@ -1196,7 +1196,7 @@ TSA_hosp_combined = map(
 
     raw_sheet = TSA_hosp_all_sheets[[x]]
     if (!any(str_detect(names(raw_sheet), 'TSA'))) {
-      col_row   = which(str_detect(raw_sheet[, 1], 'TSA'))
+      col_row = which(str_detect(raw_sheet[, 1], 'TSA'))
       raw_sheet = raw_sheet %>%
         setNames(raw_sheet[col_row,]) %>%
         slice((col_row + 1):nrow(raw_sheet))
@@ -1221,29 +1221,29 @@ TSA_hosp_combined_cleaned = TSA_hosp_combined %>%
   filter(!is.na(value)) %>%
   filter(!str_detect(Hosp_Var, '%')) %>%
   mutate(value = as.integer(value)) %>%
-  pivot_wider(id_cols     = c(Date, TSA),
-              names_from  = Hosp_Var,
+  pivot_wider(id_cols = c(Date, TSA),
+              names_from = Hosp_Var,
               values_from = value) %>%
   rename(
     all_of(
       c(
         # ICU----------------------------------------------------
-        "Beds_Occupied_ICU"            = "ICU Beds Occupied",
-        "Beds_Available_ICU"           = "Adult ICU Beds Available",
-        "Hospitalizations_ICU"         = "Adult COVID-19 ICU",
+        "Beds_Occupied_ICU" = "ICU Beds Occupied",
+        "Beds_Available_ICU" = "Adult ICU Beds Available",
+        "Hospitalizations_ICU" = "Adult COVID-19 ICU",
 
         # General------------------------------------------------
-        "Hospitalizations_General"     = "Adult COVID-19 General",
-        "Beds_Available_Total"         = "Total Available Beds",
-        "Beds_Occupied_Total"          = "Total Occupied Beds",
+        "Hospitalizations_General" = "Adult COVID-19 General",
+        "Beds_Available_Total" = "Total Available Beds",
+        "Beds_Occupied_Total" = "Total Occupied Beds",
 
         # Pediatric ---------------------------------------------
-        "Hospitalizations_Pediatric"   = "Pediatric COVID-19",
+        "Hospitalizations_Pediatric" = "Pediatric COVID-19",
         "Pediatric_Beds_Available_ICU" = "Pediatric ICU Beds Available",
 
         # Other
-        "Hospitalizations_24"          = "COVID-19 Admits 24HR",
-        "Ventilators_Available"        = "Available Ventilators"
+        "Hospitalizations_24" = "COVID-19 Admits 24HR",
+        "Ventilators_Available" = "Available Ventilators"
       ))) %>%
   group_by(Date, TSA) %>%
   mutate(Hospitalizations_Total = sum(Hospitalizations_General, Hospitalizations_ICU, na.rm = TRUE)) %>%
@@ -1293,13 +1293,13 @@ fwrite(merged_tsa, file = 'tableau/hospitalizations_tsa.csv')
 # cdc variants --------------------------------------------------------------------------------------------
 variant_lookup = data.frame(
   stringsAsFactors = FALSE,
-  Variant          = c("B.1.1.7", "B.1.351", "P.1",
-                       "B.1.617.2", "AY.1", "AY.2", "B.1.526", "B.1.617.1",
-                       "B.1.621", "Other", "B.1.427/429", "B.1.525", "B.1.617.3",
-                       "P.2"),
-  Variant_Label    = c("Alpha", "Beta", "Gamma",
-                       "Delta", "Delta", "Delta", "Iota", "Kappa", "Mu", "Other",
-                       "Epsilon", "Eta", NA, "Zeta"))
+  Variant = c("B.1.1.7", "B.1.351", "P.1",
+              "B.1.617.2", "AY.1", "AY.2", "B.1.526", "B.1.617.1",
+              "B.1.621", "Other", "B.1.427/429", "B.1.525", "B.1.617.3",
+              "P.2"),
+  Variant_Label = c("Alpha", "Beta", "Gamma",
+                    "Delta", "Delta", "Delta", "Iota", "Kappa", "Mu", "Other",
+                    "Epsilon", "Eta", NA, "Zeta"))
 
 
 cdc_variant_data = lapply(list.files('original-sources/historical/cdc_variants/', full.names = TRUE),
@@ -1339,9 +1339,9 @@ Clean_Demo_New = function(sheet_name) {
   if (str_detect(sheet_name, 'Fatal|Confirmed')) {
 
     group_type = str_extract(sheet_name, 'Age|Sex|Gender|Race')
-    stat_type  = str_extract(sheet_name, 'Cases|Fatalities')
+    stat_type = str_extract(sheet_name, 'Cases|Fatalities')
 
-    df       = demographics_all[[sheet_name]]
+    df = demographics_all[[sheet_name]]
     clean_df = df %>%
       filter(!is.na(`Month.Year`) & `Month.Year` != 'Grand Total') %>%
       mutate(across(everything(), as.character)) %>%
@@ -1359,8 +1359,8 @@ Clean_Demo_New = function(sheet_name) {
 }
 
 # monthly
-demo_releases         = seq(as.Date('2022-01-01'), by = 'month', length = 50) + days(14)
-all_demo_files        = list.files('original-sources/historical/demo-archive', full.names = TRUE)
+demo_releases = seq(as.Date('2022-01-01'), by = 'month', length = 50) + days(14)
+all_demo_files = list.files('original-sources/historical/demo-archive', full.names = TRUE)
 demo_update_threshold = 30L
 
 last_monthly_demo_update = all_demo_files[[length(all_demo_files)]] %>%
@@ -1370,7 +1370,7 @@ last_monthly_demo_update = all_demo_files[[length(all_demo_files)]] %>%
 last_update_delta = date_out - last_monthly_demo_update
 
 if (date_out %in% demo_releases | last_update_delta > demo_update_threshold) {
-  demo_url           = 'https://www.dshs.texas.gov/sites/default/files/chs/data/COVID/Texas%20COVID-19%20Demographics_Counts.xlsx'
+  demo_url = 'https://www.dshs.texas.gov/sites/default/files/chs/data/COVID/Texas%20COVID-19%20Demographics_Counts.xlsx'
   demo_file_path_new = glue('original-sources/historical/demo-archive/demo_{date_out}.xlsx')
   curl::curl_download(demo_url, demo_file_path_new, mode = 'wb')
 
@@ -1393,7 +1393,7 @@ if (date_out %in% demo_releases | last_update_delta > demo_update_threshold) {
   cleaned_demo_new = lapply(names(demographics_all), function(x) Clean_Demo_New(x)) %>%
     rbindlist(fill = TRUE) %>%
     rename(Deaths_Monthly = Fatalities,
-           Cases_Monthly  = Cases) %>%
+           Cases_Monthly = Cases) %>%
     mutate(across(c(Deaths_Monthly, Cases_Monthly), as.numeric)) %>%
     group_by(Date, Group_Type, Group) %>%
     tidyr::fill(Deaths_Monthly, .direction = 'updown') %>%
