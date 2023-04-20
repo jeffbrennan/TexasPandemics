@@ -256,47 +256,6 @@ stopifnot(rt_parsed %>%
             filter(is.na(Rt)) %>%
             nrow() < 10)
 
-#  --------------------------------------------------------------------------------------------
-RT_County_df = rt_parsed %>%
-  filter(Level_Type == 'County') %>%
-  rename(County = Level)
-TPR_df = read.csv('tableau/county_TPR.csv') %>%
-  select(-any_of('Rt')) %>%
-  mutate(Date = as.Date(Date))
-
-cms_dates = list.files('original-sources/historical/cms_tpr') %>%
-  gsub('TPR_', '', .) %>%
-  gsub('.csv', '', .) %>%
-  as.Date()
-
-cms_TPR_padded =
-  TPR_df %>%
-    filter(Date %in% cms_dates) %>%
-    left_join(., RT_County_df[, c('County', 'Case_Type', 'Date', 'Rt')], by = c('County', 'Date')) %>%
-    group_by(County) %>%
-    arrange(County, Date) %>%
-    tidyr::fill(TPR, .direction = 'up') %>%
-    tidyr::fill(Tests, .direction = 'up') %>%
-    tidyr::fill(Rt, .direction = 'up') %>%
-    arrange(County, Date) %>%
-    ungroup() %>%
-    mutate(Tests = ifelse(Date < as.Date('2020-09-09'), NA, Tests))
-
-cpr_TPR = TPR_df %>%
-  filter(!(Date %in% cms_dates)) %>%
-  left_join(., RT_County_df[, c('County', 'Case_Type', 'Date', 'Rt')], by = c('County', 'Date'), multiple = 'all')
-
-county_TPR = cms_TPR_padded %>%
-  rbind(cpr_TPR) %>%
-  arrange(County, Date)
-
-check_dupe = county_TPR %>%
-  group_by(County, Date, Case_Type) %>%
-  filter(n() > 1) %>%
-  nrow() == 0
-
-stopifnot(check_dupe)
-# fwrite(county_TPR, 'tableau/county_TPR.csv')
 #   --------------------------------------------------------------------------------------------
 rt_df_out = rt_parsed %>%
   filter(Date != max(Date)) %>%
