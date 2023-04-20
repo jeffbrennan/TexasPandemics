@@ -509,7 +509,7 @@ tpr_out = tpr_results_cleaned %>%
   # slice(1) %>%
   distinct() %>%
   group_by(Date) %>%
-  mutate(count_0 = sum(TPR == 0)) %>%
+  mutate(count_0 = sum(TPR == 0, na.rm = TRUE)) %>%
   ungroup() %>%
   filter(count_0 < 254 | is.na(count_0))
 
