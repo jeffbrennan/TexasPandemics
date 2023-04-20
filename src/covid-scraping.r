@@ -478,9 +478,10 @@ fwrite(merged_dshs %>% arrange(County, Date), 'tableau/county.csv')
 #   filter(!is.na(Tests))
 
 tpr_cases = merged_dshs %>%
-  dplyr::select(County, Date, Cases_Daily, Population_DSHS) %>%
+  dplyr::select(County, Date, Case_Type, Cases_Daily, Population_DSHS) %>%
   # filter(Date >= as.Date(min(TPR_dates)) - 13 & Date <= max(TPR_dates)) %>%
-  group_by(County) %>%
+  group_by(County, Case_Type) %>%
+  arrange(Date) %>%
   mutate(Cases_100K_7Day_MA = (rollmean(Cases_Daily, k = 7, align = 'right',
                                         na.pad = TRUE, na.rm = TRUE)
     / Population_DSHS) * 100000) %>%
@@ -497,20 +498,25 @@ tpr_out = tpr_results_cleaned %>%
   arrange(County, Date) %>%
   # rbind(cms_archive) %>%
   # left_join(cms_new, by = c('County', 'Date')) %>%
-  left_join(tpr_cases, by = c('County', 'Date')) %>%
+  left_join(tpr_cases, by = c('County', 'Date'), multiple = 'all') %>%
   # mutate(Tests.x = ifelse(is.na(Tests.y), Tests.x, Tests.y)) %>%
   # rename(Tests = Tests.x) %>%
   # dplyr::select(-Tests.y) %>%
-  dplyr::select(County, Date, TPR, Tests, Cases_100K_7Day_MA) %>%
-  arrange(County, Date) %>%
-  group_by(County, Date) %>%
-  slice(1) %>%
+  dplyr::select(County, Date, TPR, Tests, Cases_100K_7Day_MA, Case_Type) %>%
+  filter(!is.na(Case_Type)) %>%
+  # arrange(County, Date) %>%
+  # group_by(County, Date)
+  # slice(1) %>%
   distinct() %>%
   group_by(Date) %>%
   mutate(count_0 = sum(TPR == 0)) %>%
   ungroup() %>%
   filter(count_0 < 254 | is.na(count_0))
 
+stopifnot(tpr_out %>%
+            group_by(County, Date, Case_Type) %>%
+            filter(n() > 1) %>%
+            nrow() == 0)
 
 fwrite(tpr_out, 'tableau/county_TPR.csv')
 
