@@ -917,19 +917,34 @@ county_vaccinations_prefinal = county_vaccinations_combined %>%
          TSA_Combined, PHR_Combined, Metro_Area
   )
 
-county_vaccinations = county_vaccinations_prefinal %>%
+boosted_start_df = fread('tableau/sandbox/county_daily_vaccine.csv') %>%
+  filter(Vaccination_Type == 'all') %>%
+  filter(Date >= BIVALENT_START_DATE) %>%
+  group_by(County) %>%
+  arrange(Date) %>%
+  slice(1) %>%
+  select(County, Boosted) %>%
+  rename(Boosted_Start_Value = Boosted)
+
+county_vaccinations_prep = county_vaccinations_prefinal %>%
   mutate(Vaccination_Type = 'all') %>%
   rbind(
     county_vaccinations_prefinal %>%
       filter(Date >= BIVALENT_START_DATE) %>%
       mutate(Vaccination_Type = 'bivalent') %>%
-      group_by(County) %>%
-      mutate(Boosted = Boosted - Boosted[1]) %>%
+      left_join(boosted_start_df, by = 'County', multiple = 'error') %>%
+      mutate(Boosted = Boosted - Boosted_Start_Value) %>%
       mutate(Boosted = ifelse(Boosted < 0, 0L, Boosted)) %>%
-      ungroup()
+      select(-Boosted_Start_Value)
   ) %>%
-  relocate(Vaccination_Type, .after = 'County') %>%
-  rbind(current_vaccination_file %>% mutate(Date = as.Date(Date))) %>%
+  relocate(Vaccination_Type, .after = 'County')
+
+  county_vaccinations = county_vaccinations_prep %>%
+  rbind(
+    current_vaccination_file %>%
+      mutate(Date = as.Date(Date)) %>%
+      filter(Date < min(county_vaccinations_prep$Date))
+  ) %>%
   distinct()
 
 check_dupes = county_vaccinations %>%
@@ -943,6 +958,20 @@ check_nonmissing_col = county_vaccinations %>%
   nrow() == 0
 
 stopifnot(c(check_dupes, check_nonmissing_col))
+
+ggplot(county_vaccinations %>%
+         filter(County == 'Harris'),
+       aes(x = Date, y = Boosted)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~Vaccination_Type, scales = 'free_y') +
+  theme_minimal()
+
+county_vaccinations %>%
+  filter(County == 'Harris') %>%
+  filter(Boosted == 0) %>%
+  nrow()
+
 fwrite(county_vaccinations, 'tableau/sandbox/county_daily_vaccine.csv')
 
 # state  --------------------------------------------------------------------------------------------
