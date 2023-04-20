@@ -271,6 +271,43 @@ check_rt_combined_dupe = rt_df_out %>%
 stopifnot(check_rt_combined_dupe)
 
 fwrite(rt_df_out, 'tableau/stacked_rt.csv')
+
+#  --------------------------------------------------------------------------------------------
+RT_County_df = fread('tableau/stacked_rt.csv') %>%
+  filter(Level_Type == 'County') %>%
+  rename(County = Level) %>%
+  mutate(Date = as.Date(Date))
+
+TPR_df = fread('tableau/county_TPR.csv') %>%
+  select(-any_of('Rt')) %>%
+  mutate(Date = as.Date(Date))
+
+county_tpr_updated = TPR_df %>%
+  left_join(
+    RT_County_df %>% select(County, Date, Case_Type, Rt),
+    by = c('County', 'Date', 'Case_Type'),
+    multiple = 'error'
+  )
+
+check_dupe = county_tpr_updated %>%
+  group_by(County, Date, Case_Type) %>%
+  filter(n() > 1) %>%
+  nrow() == 0
+
+ggplot(county_tpr_updated %>% filter(County == 'Harris'), aes(x = Date, y = Rt, color = Case_Type)) +
+  geom_line() +
+  theme_minimal() +
+  theme(legend.position = 'bottom')
+
+stopifnot(check_dupe)
+glimpse(county_tpr_updated)
+
+county_tpr_updated %>%
+    filter(County == 'Harris') %>%
+    View()
+
+fwrite(county_tpr_updated, 'tableau/county_TPR.csv')
+
 # timeseries --------------------------------------------------------------------------------------------
 # Compute forecast (UPDATE PREDICTION PERIOD [days] AS NEEDED)
 Predict_Cases = function(df, prediction.period = 10) {
