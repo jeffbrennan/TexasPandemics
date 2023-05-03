@@ -652,7 +652,7 @@ county_vaccinations_prep = county_vaccinations_prefinal %>%
   ) %>%
   relocate(Vaccination_Type, .after = 'County')
 
-  county_vaccinations = county_vaccinations_prep %>%
+county_vaccinations = county_vaccinations_prep %>%
   rbind(
     current_vaccination_file %>%
       mutate(Date = as.Date(Date)) %>%
