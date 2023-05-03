@@ -45,15 +45,13 @@ read_excel_allsheets = function(filename, col_option = TRUE, add_date = FALSE, s
 }
 
 # set date for writing files
-# If before 5 PM EST, then record as last date since DSHS data will not be updated yet
+# If before 11:55 AM CST, then record as last date since DSHS data will not be updated yet
 date_out = ifelse(
-  (Sys.time() < as.POSIXct(paste0(Sys.Date(), '15:45'), tz = 'America/Chicago')),
+  (Sys.time() < as.POSIXct(paste0(Sys.Date(), '11:55'), tz = 'America/Chicago')),
   Sys.Date() - 1,
   Sys.Date()
-)
-
-# convert numeric sys.date() to yyyy-mm-dd
-date_out = as.Date(date_out, origin = '1970-1-1')
+) %>%
+  as.Date(., origin = '1970-1-1')
 
 Fix_Num_Dates = function(dates) {
   clean_dates = as.Date(as.numeric(dates), '1899-12-30')
