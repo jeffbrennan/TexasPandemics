@@ -658,7 +658,14 @@ county_vaccinations = county_vaccinations_prep %>%
       mutate(Date = as.Date(Date)) %>%
       filter(Date < min(county_vaccinations_prep$Date))
   ) %>%
-  distinct()
+  distinct() %>%
+  mutate(
+    across(
+      c(At_Least_One_Dose, Fully_Vaccinated),
+      ~(if_else(Vaccination_Type == 'all', ., NA_integer_))
+    )
+  ) %>%
+  arrange(County, Vaccination_Type, Date)
 
 check_dupes = county_vaccinations %>%
   group_by(County, Date, Vaccination_Type) %>%
@@ -670,7 +677,12 @@ check_nonmissing_col = county_vaccinations %>%
   filter(if_any(c(County, TSA_Combined, PHR_Combined, Metro_Area), ~is.na(.))) %>%
   nrow() == 0
 
-stopifnot(c(check_dupes, check_nonmissing_col))
+check_bivalent_vals_are_nulls = county_vaccinations %>%
+  filter(Vaccination_Type == 'bivalent') %>%
+  filter(!is.na(At_Least_One_Dose) | !is.na(Fully_Vaccinated)) %>%
+  nrow() == 0
+
+stopifnot(c(check_dupes, check_nonmissing_col, check_bivalent_vals_are_nulls))
 
 ggplot(county_vaccinations %>%
          filter(County == 'Harris'),
