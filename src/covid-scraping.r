@@ -540,7 +540,7 @@ county_vax_fix_2020_07_01 = Create_Agesex_Population_df(county_demo_agesex, 'Pop
 ## download --------------------------------------------------------------------------------------------
 vaccine_date_out = format(date_out, '%Y%m%d')
 vaccine_base_url = 'https://www.dshs.texas.gov/sites/default/files/LIDS-Immunize-COVID19/COVID%20Dashboard/County%20Dashboard/COVID-19%20Vaccine%20Data%20by%20County'
-vaccine_county_dshs_url = glue('{vaccine_base_url}_{vaccine_date_out}.xlsx')
+vaccine_county_dshs_url = glue('{vaccine_base_url}%20{vaccine_date_out}.xlsx')
 
 if (format(date_out, '%A') == 'Wednesday') {
   try(
