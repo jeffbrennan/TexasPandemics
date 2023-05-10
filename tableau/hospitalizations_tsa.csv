@@ -1116,7 +1116,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,A,Amarillo,A - Amarillo,426987,5,4,1,140,0,249,6,628,89,0,1
 2023-05-01,A,Amarillo,A - Amarillo,426987,5,4,1,139,0,267,6,613,89,0,1
 2023-05-02,A,Amarillo,A - Amarillo,426987,5,5,0,138,0,249,6,641,92,0,0
-2023-05-03,A,Amarillo,A - Amarillo,426987,,,,,,,,,,,
+2023-05-03,A,Amarillo,A - Amarillo,426987,5,5,0,138,0,256,6,634,93,0,0
+2023-05-04,A,Amarillo,A - Amarillo,426987,5,5,0,138,0,238,6,650,91,0,0
+2023-05-05,A,Amarillo,A - Amarillo,426987,5,5,0,138,0,243,4,643,93,0,0
+2023-05-06,A,Amarillo,A - Amarillo,426987,5,5,0,138,0,253,4,630,93,0,0
+2023-05-07,A,Amarillo,A - Amarillo,426987,5,5,0,139,0,263,5,624,92,0,0
+2023-05-08,A,Amarillo,A - Amarillo,426987,7,7,0,139,0,269,5,622,93,0,1
+2023-05-09,A,Amarillo,A - Amarillo,426987,7,7,0,139,0,249,5,640,93,0,1
+2023-05-10,A,Amarillo,A - Amarillo,426987,,,,,,,,,,,
 2020-04-11,B,Lubbock,B - Lubbock,492885,34,22,12,,,613,93,755,,24,
 2020-04-12,B,Lubbock,B - Lubbock,492885,35,23,12,,,628,89,744,,26,
 2020-04-13,B,Lubbock,B - Lubbock,492885,31,17,14,,,660,91,734,,24,
@@ -2234,7 +2241,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,B,Lubbock,B - Lubbock,492885,6,4,2,183,0,390,38,905,146,16,0
 2023-05-01,B,Lubbock,B - Lubbock,492885,5,3,2,190,0,373,29,982,154,11,0
 2023-05-02,B,Lubbock,B - Lubbock,492885,7,6,1,189,0,363,18,1029,172,11,4
-2023-05-03,B,Lubbock,B - Lubbock,492885,,,,,,,,,,,
+2023-05-03,B,Lubbock,B - Lubbock,492885,4,4,0,195,0,331,22,1014,162,10,0
+2023-05-04,B,Lubbock,B - Lubbock,492885,4,3,1,185,0,361,22,982,175,10,2
+2023-05-05,B,Lubbock,B - Lubbock,492885,5,4,1,186,0,380,23,956,175,11,2
+2023-05-06,B,Lubbock,B - Lubbock,492885,5,4,1,188,0,353,21,993,172,15,3
+2023-05-07,B,Lubbock,B - Lubbock,492885,6,5,1,192,0,395,34,911,152,19,1
+2023-05-08,B,Lubbock,B - Lubbock,492885,6,4,2,194,0,366,16,946,158,16,1
+2023-05-09,B,Lubbock,B - Lubbock,492885,9,7,2,185,0,355,24,1025,156,10,3
+2023-05-10,B,Lubbock,B - Lubbock,492885,,,,,,,,,,,
 2020-04-11,C,Wichita Falls,C - Wichita Falls,215428,5,4,1,,,348,20,240,,0,
 2020-04-12,C,Wichita Falls,C - Wichita Falls,215428,5,5,0,,,366,18,223,,0,
 2020-04-13,C,Wichita Falls,C - Wichita Falls,215428,6,6,0,,,341,19,231,,0,
@@ -3352,7 +3366,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,C,Wichita Falls,C - Wichita Falls,215428,3,3,0,63,0,379,1,699,23,0,1
 2023-05-01,C,Wichita Falls,C - Wichita Falls,215428,2,2,0,64,0,371,2,708,24,0,1
 2023-05-02,C,Wichita Falls,C - Wichita Falls,215428,2,2,0,65,0,369,3,723,24,0,1
-2023-05-03,C,Wichita Falls,C - Wichita Falls,215428,,,,,,,,,,,
+2023-05-03,C,Wichita Falls,C - Wichita Falls,215428,3,3,0,65,0,359,6,736,21,0,2
+2023-05-04,C,Wichita Falls,C - Wichita Falls,215428,2,2,0,65,0,356,1,745,26,0,1
+2023-05-05,C,Wichita Falls,C - Wichita Falls,215428,1,1,0,64,0,363,2,734,25,0,1
+2023-05-06,C,Wichita Falls,C - Wichita Falls,215428,0,0,0,64,0,362,1,725,26,0,1
+2023-05-07,C,Wichita Falls,C - Wichita Falls,215428,0,0,0,64,0,356,2,714,25,0,1
+2023-05-08,C,Wichita Falls,C - Wichita Falls,215428,0,0,0,65,0,358,2,714,22,0,1
+2023-05-09,C,Wichita Falls,C - Wichita Falls,215428,1,1,0,62,0,362,3,731,22,0,1
+2023-05-10,C,Wichita Falls,C - Wichita Falls,215428,,,,,,,,,,,
 2020-04-11,D,Abilene,D - Abilene,304737,6,4,2,,,479,36,214,,3,
 2020-04-12,D,Abilene,D - Abilene,304737,7,4,3,,,478,36,146,,3,
 2020-04-13,D,Abilene,D - Abilene,304737,2,2,0,,,498,27,268,,3,
@@ -4470,7 +4491,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,D,Abilene,D - Abilene,304737,1,0,1,118,0,263,7,455,29,0,0
 2023-05-01,D,Abilene,D - Abilene,304737,1,1,0,119,0,302,12,480,25,0,0
 2023-05-02,D,Abilene,D - Abilene,304737,3,3,0,118,0,295,8,539,28,0,3
-2023-05-03,D,Abilene,D - Abilene,304737,,,,,,,,,,,
+2023-05-03,D,Abilene,D - Abilene,304737,2,2,0,116,0,285,9,575,34,0,1
+2023-05-04,D,Abilene,D - Abilene,304737,1,1,0,119,0,278,5,550,34,0,2
+2023-05-05,D,Abilene,D - Abilene,304737,1,1,0,118,0,283,8,569,37,0,0
+2023-05-06,D,Abilene,D - Abilene,304737,2,2,0,118,0,257,4,511,36,0,3
+2023-05-07,D,Abilene,D - Abilene,304737,1,1,0,119,0,251,3,492,31,0,0
+2023-05-08,D,Abilene,D - Abilene,304737,0,0,0,121,0,258,4,528,32,0,2
+2023-05-09,D,Abilene,D - Abilene,304737,0,0,0,118,0,267,10,516,35,0,2
+2023-05-10,D,Abilene,D - Abilene,304737,,,,,,,,,,,
 2020-04-11,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8044641,369,208,161,,,5095,623,7347,,40,
 2020-04-12,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8044641,365,109,256,,,5223,603,8219,,49,
 2020-04-13,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8044641,373,223,150,,,5347,612,8589,,48,
@@ -5588,7 +5616,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8044641,186,150,36,2271,6,1959,235,12415,1554,24,36
 2023-05-01,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8044641,195,162,33,2274,8,1789,203,12537,1594,26,29
 2023-05-02,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8044641,187,155,32,2211,7,1634,197,12997,1630,27,38
-2023-05-03,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8044641,,,,,,,,,,,
+2023-05-03,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8044641,194,159,35,2224,6,1550,208,13346,1674,17,35
+2023-05-04,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8044641,184,150,34,2237,5,1511,200,13482,1678,14,29
+2023-05-05,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8044641,179,147,32,2244,5,1558,210,13434,1674,12,24
+2023-05-06,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8044641,175,140,35,2266,4,1717,212,13022,1659,8,23
+2023-05-07,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8044641,179,143,36,2208,3,1852,215,12630,1545,25,21
+2023-05-08,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8044641,166,135,31,2237,4,1737,223,12845,1565,30,18
+2023-05-09,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8044641,152,128,24,2251,4,1586,236,13514,1619,16,32
+2023-05-10,E,Dallas/Ft. Worth,E - Dallas/Ft. Worth,8044641,,,,,,,,,,,
 2020-04-11,F,Paris,F - Paris,268259,14,2,12,,,,36,421,,0,
 2020-04-12,F,Paris,F - Paris,268259,16,5,11,,,,32,405,,0,
 2020-04-13,F,Paris,F - Paris,268259,21,12,9,,,,27,416,,0,
@@ -6706,7 +6741,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,F,Paris,F - Paris,268259,11,10,1,143,0,155,16,520,46,0,1
 2023-05-01,F,Paris,F - Paris,268259,8,7,1,144,0,150,16,518,52,0,1
 2023-05-02,F,Paris,F - Paris,268259,19,15,4,127,0,189,14,527,54,0,6
-2023-05-03,F,Paris,F - Paris,268259,,,,,,,,,,,
+2023-05-03,F,Paris,F - Paris,268259,16,15,1,119,0,175,14,536,39,0,1
+2023-05-04,F,Paris,F - Paris,268259,16,15,1,118,0,178,11,554,56,0,4
+2023-05-05,F,Paris,F - Paris,268259,19,17,2,127,0,192,11,571,55,0,7
+2023-05-06,F,Paris,F - Paris,268259,20,18,2,128,0,171,12,581,53,0,5
+2023-05-07,F,Paris,F - Paris,268259,27,25,2,127,0,186,16,536,53,0,7
+2023-05-08,F,Paris,F - Paris,268259,28,26,2,129,0,181,19,516,44,0,3
+2023-05-09,F,Paris,F - Paris,268259,24,21,3,123,0,184,19,533,46,0,4
+2023-05-10,F,Paris,F - Paris,268259,,,,,,,,,,,
 2020-04-11,G,Longview/Tyler,G - Longview/Tyler,960859,32,16,16,,,714,103,921,,0,
 2020-04-12,G,Longview/Tyler,G - Longview/Tyler,960859,26,13,13,,,734,103,932,,0,
 2020-04-13,G,Longview/Tyler,G - Longview/Tyler,960859,33,16,17,,,739,95,969,,0,
@@ -7824,7 +7866,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,G,Longview/Tyler,G - Longview/Tyler,960859,33,26,7,226,0,657,21,1786,233,0,5
 2023-05-01,G,Longview/Tyler,G - Longview/Tyler,960859,33,25,8,227,0,643,24,1754,232,0,5
 2023-05-02,G,Longview/Tyler,G - Longview/Tyler,960859,34,26,8,222,0,598,22,1813,235,0,7
-2023-05-03,G,Longview/Tyler,G - Longview/Tyler,960859,,,,,,,,,,,
+2023-05-03,G,Longview/Tyler,G - Longview/Tyler,960859,35,29,6,217,0,600,24,1862,234,0,5
+2023-05-04,G,Longview/Tyler,G - Longview/Tyler,960859,36,26,10,226,0,616,24,1814,233,0,5
+2023-05-05,G,Longview/Tyler,G - Longview/Tyler,960859,36,26,10,230,0,608,26,1815,231,0,3
+2023-05-06,G,Longview/Tyler,G - Longview/Tyler,960859,36,26,10,230,0,577,23,1832,235,0,3
+2023-05-07,G,Longview/Tyler,G - Longview/Tyler,960859,36,25,11,234,0,601,26,1773,231,0,4
+2023-05-08,G,Longview/Tyler,G - Longview/Tyler,960859,36,25,11,238,0,608,22,1764,240,0,6
+2023-05-09,G,Longview/Tyler,G - Longview/Tyler,960859,38,28,10,236,0,579,23,1831,241,0,6
+2023-05-10,G,Longview/Tyler,G - Longview/Tyler,960859,,,,,,,,,,,
 2020-04-11,H,Lufkin,H - Lufkin,266183,15,10,5,,,257,35,190,,0,
 2020-04-12,H,Lufkin,H - Lufkin,266183,18,14,4,,,253,33,198,,0,
 2020-04-13,H,Lufkin,H - Lufkin,266183,23,18,5,,,217,28,149,,0,
@@ -8942,7 +8991,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,H,Lufkin,H - Lufkin,266183,2,1,1,101,0,93,8,269,44,0,2
 2023-05-01,H,Lufkin,H - Lufkin,266183,3,2,1,97,0,72,11,185,30,0,0
 2023-05-02,H,Lufkin,H - Lufkin,266183,5,4,1,103,0,90,11,214,36,0,1
-2023-05-03,H,Lufkin,H - Lufkin,266183,,,,,,,,,,,
+2023-05-03,H,Lufkin,H - Lufkin,266183,3,2,1,102,0,120,11,301,43,9,0
+2023-05-04,H,Lufkin,H - Lufkin,266183,3,3,0,103,0,77,7,339,54,0,1
+2023-05-05,H,Lufkin,H - Lufkin,266183,4,4,0,103,0,71,2,328,57,0,0
+2023-05-06,H,Lufkin,H - Lufkin,266183,3,3,0,86,0,73,2,318,60,0,0
+2023-05-07,H,Lufkin,H - Lufkin,266183,3,3,0,87,0,63,3,302,52,0,2
+2023-05-08,H,Lufkin,H - Lufkin,266183,4,4,0,106,0,52,11,207,35,0,1
+2023-05-09,H,Lufkin,H - Lufkin,266183,4,4,0,100,0,86,10,224,32,0,0
+2023-05-10,H,Lufkin,H - Lufkin,266183,,,,,,,,,,,
 2020-04-11,I,El Paso,I - El Paso,871047,14,8,6,,,702,73,328,,27,
 2020-04-12,I,El Paso,I - El Paso,871047,23,14,9,,,693,67,471,,28,
 2020-04-13,I,El Paso,I - El Paso,871047,12,6,6,,,693,86,318,,25,
@@ -10060,7 +10116,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,I,El Paso,I - El Paso,871047,50,36,14,277,0,273,10,1538,151,11,8
 2023-05-01,I,El Paso,I - El Paso,871047,55,41,14,283,0,261,11,1568,153,12,6
 2023-05-02,I,El Paso,I - El Paso,871047,57,42,15,279,1,258,12,1646,155,15,10
-2023-05-03,I,El Paso,I - El Paso,871047,,,,,,,,,,,
+2023-05-03,I,El Paso,I - El Paso,871047,49,38,11,281,2,268,10,1676,166,15,6
+2023-05-04,I,El Paso,I - El Paso,871047,48,40,8,279,2,263,12,1676,167,14,7
+2023-05-05,I,El Paso,I - El Paso,871047,50,41,9,286,3,273,12,1643,165,15,6
+2023-05-06,I,El Paso,I - El Paso,871047,48,41,7,285,3,271,14,1597,155,13,7
+2023-05-07,I,El Paso,I - El Paso,871047,42,35,7,289,1,303,17,1540,156,12,4
+2023-05-08,I,El Paso,I - El Paso,871047,44,34,10,286,2,286,14,1587,151,12,8
+2023-05-09,I,El Paso,I - El Paso,871047,47,37,10,280,0,260,11,1645,154,9,7
+2023-05-10,I,El Paso,I - El Paso,871047,,,,,,,,,,,
 2020-04-11,J,Midland/Odessa,J - Midland/Odessa,470833,10,6,4,,,732,42,663,,0,
 2020-04-12,J,Midland/Odessa,J - Midland/Odessa,470833,11,7,4,,,689,37,676,,0,
 2020-04-13,J,Midland/Odessa,J - Midland/Odessa,470833,17,8,9,,,677,45,640,,0,
@@ -11178,7 +11241,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,J,Midland/Odessa,J - Midland/Odessa,470833,7,6,1,287,0,777,58,772,51,0,3
 2023-05-01,J,Midland/Odessa,J - Midland/Odessa,470833,7,6,1,287,0,759,51,756,56,0,1
 2023-05-02,J,Midland/Odessa,J - Midland/Odessa,470833,8,8,0,286,0,725,45,820,62,0,2
-2023-05-03,J,Midland/Odessa,J - Midland/Odessa,470833,,,,,,,,,,,
+2023-05-03,J,Midland/Odessa,J - Midland/Odessa,470833,7,7,0,287,0,699,35,855,64,0,2
+2023-05-04,J,Midland/Odessa,J - Midland/Odessa,470833,7,7,0,287,0,688,35,848,73,0,1
+2023-05-05,J,Midland/Odessa,J - Midland/Odessa,470833,6,6,0,289,0,663,32,870,81,0,1
+2023-05-06,J,Midland/Odessa,J - Midland/Odessa,470833,6,6,0,288,0,685,46,853,75,0,1
+2023-05-07,J,Midland/Odessa,J - Midland/Odessa,470833,7,7,0,289,0,698,39,851,74,0,1
+2023-05-08,J,Midland/Odessa,J - Midland/Odessa,470833,6,6,0,288,0,670,36,833,76,0,3
+2023-05-09,J,Midland/Odessa,J - Midland/Odessa,470833,7,7,0,288,0,665,28,865,84,0,1
+2023-05-10,J,Midland/Odessa,J - Midland/Odessa,470833,,,,,,,,,,,
 2020-04-11,K,San Angelo,K - San Angelo,169513,0,0,0,,,284,13,208,,0,
 2020-04-12,K,San Angelo,K - San Angelo,169513,0,0,0,,,293,15,199,,0,
 2020-04-13,K,San Angelo,K - San Angelo,169513,0,0,0,,,298,18,210,,0,
@@ -12296,7 +12366,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,K,San Angelo,K - San Angelo,169513,3,3,0,109,0,230,19,305,17,0,0
 2023-05-01,K,San Angelo,K - San Angelo,169513,3,3,0,115,0,242,21,308,15,0,0
 2023-05-02,K,San Angelo,K - San Angelo,169513,2,2,0,115,0,223,21,308,15,0,0
-2023-05-03,K,San Angelo,K - San Angelo,169513,,,,,,,,,,,
+2023-05-03,K,San Angelo,K - San Angelo,169513,3,3,0,111,0,208,20,343,16,0,1
+2023-05-04,K,San Angelo,K - San Angelo,169513,3,3,0,115,0,215,19,342,17,0,0
+2023-05-05,K,San Angelo,K - San Angelo,169513,3,3,0,115,0,227,22,326,14,0,0
+2023-05-06,K,San Angelo,K - San Angelo,169513,5,5,0,111,0,224,21,322,15,0,0
+2023-05-07,K,San Angelo,K - San Angelo,169513,6,6,0,109,0,224,20,324,16,0,3
+2023-05-08,K,San Angelo,K - San Angelo,169513,6,6,0,99,0,221,18,325,18,0,1
+2023-05-09,K,San Angelo,K - San Angelo,169513,6,6,0,115,2,223,19,328,17,0,2
+2023-05-10,K,San Angelo,K - San Angelo,169513,,,,,,,,,,,
 2020-04-11,L,Belton/Killeen,L - Belton/Killeen,529767,11,1,10,,,663,56,434,,15,
 2020-04-12,L,Belton/Killeen,L - Belton/Killeen,529767,12,6,6,,,633,46,397,,14,
 2020-04-13,L,Belton/Killeen,L - Belton/Killeen,529767,13,7,6,,,647,57,308,,13,
@@ -13414,7 +13491,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,L,Belton/Killeen,L - Belton/Killeen,529767,14,9,5,162,1,160,8,876,101,2,3
 2023-05-01,L,Belton/Killeen,L - Belton/Killeen,529767,14,9,5,163,1,170,9,844,94,2,5
 2023-05-02,L,Belton/Killeen,L - Belton/Killeen,529767,15,10,5,162,1,164,8,863,91,1,4
-2023-05-03,L,Belton/Killeen,L - Belton/Killeen,529767,,,,,,,,,,,
+2023-05-03,L,Belton/Killeen,L - Belton/Killeen,529767,16,11,5,159,1,152,7,921,102,2,4
+2023-05-04,L,Belton/Killeen,L - Belton/Killeen,529767,18,13,5,156,1,172,8,912,107,1,4
+2023-05-05,L,Belton/Killeen,L - Belton/Killeen,529767,18,13,5,156,1,159,8,859,96,1,3
+2023-05-06,L,Belton/Killeen,L - Belton/Killeen,529767,17,12,5,159,1,207,16,858,100,1,2
+2023-05-07,L,Belton/Killeen,L - Belton/Killeen,529767,17,12,5,166,2,211,23,859,87,1,3
+2023-05-08,L,Belton/Killeen,L - Belton/Killeen,529767,16,11,5,167,2,198,24,858,85,0,3
+2023-05-09,L,Belton/Killeen,L - Belton/Killeen,529767,15,10,5,163,2,217,26,856,94,0,2
+2023-05-10,L,Belton/Killeen,L - Belton/Killeen,529767,,,,,,,,,,,
 2020-04-11,M,Waco,M - Waco,336834,9,4,5,,,363,26,262,,0,
 2020-04-12,M,Waco,M - Waco,336834,2,0,2,,,238,21,133,,0,
 2020-04-13,M,Waco,M - Waco,336834,5,3,2,,,333,26,137,,0,
@@ -14532,7 +14616,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,M,Waco,M - Waco,336834,5,5,0,60,0,124,6,412,39,0,1
 2023-05-01,M,Waco,M - Waco,336834,4,4,0,62,0,115,5,417,41,0,1
 2023-05-02,M,Waco,M - Waco,336834,3,3,0,60,0,128,11,423,38,0,0
-2023-05-03,M,Waco,M - Waco,336834,,,,,,,,,,,
+2023-05-03,M,Waco,M - Waco,336834,3,3,0,56,0,113,5,457,42,0,0
+2023-05-04,M,Waco,M - Waco,336834,1,1,0,60,0,113,10,454,37,0,0
+2023-05-05,M,Waco,M - Waco,336834,0,0,0,56,0,107,5,470,41,0,0
+2023-05-06,M,Waco,M - Waco,336834,0,0,0,59,0,132,8,461,42,0,0
+2023-05-07,M,Waco,M - Waco,336834,0,0,0,59,0,125,10,421,43,0,1
+2023-05-08,M,Waco,M - Waco,336834,0,0,0,60,0,124,14,446,41,0,1
+2023-05-09,M,Waco,M - Waco,336834,2,2,0,60,0,100,14,458,38,0,0
+2023-05-10,M,Waco,M - Waco,336834,,,,,,,,,,,
 2020-04-11,N,Bryan/College Station,N - Bryan/College Station,362495,24,16,8,,,278,15,234,,0,
 2020-04-12,N,Bryan/College Station,N - Bryan/College Station,362495,31,14,17,,,274,26,247,,0,
 2020-04-13,N,Bryan/College Station,N - Bryan/College Station,362495,13,7,6,,,293,27,111,,0,
@@ -15650,7 +15741,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,N,Bryan/College Station,N - Bryan/College Station,362495,7,6,1,86,0,40,0,360,54,2,1
 2023-05-01,N,Bryan/College Station,N - Bryan/College Station,362495,7,6,1,86,0,36,0,372,57,2,1
 2023-05-02,N,Bryan/College Station,N - Bryan/College Station,362495,7,6,1,86,0,46,0,366,55,2,2
-2023-05-03,N,Bryan/College Station,N - Bryan/College Station,362495,,,,,,,,,,,
+2023-05-03,N,Bryan/College Station,N - Bryan/College Station,362495,6,6,0,86,0,40,0,368,55,2,0
+2023-05-04,N,Bryan/College Station,N - Bryan/College Station,362495,7,6,1,86,0,42,0,374,58,2,0
+2023-05-05,N,Bryan/College Station,N - Bryan/College Station,362495,6,4,2,86,0,46,0,369,55,2,0
+2023-05-06,N,Bryan/College Station,N - Bryan/College Station,362495,4,3,1,86,0,49,0,339,53,2,0
+2023-05-07,N,Bryan/College Station,N - Bryan/College Station,362495,4,3,1,86,0,51,0,330,51,2,0
+2023-05-08,N,Bryan/College Station,N - Bryan/College Station,362495,4,3,1,86,0,42,0,347,51,2,0
+2023-05-09,N,Bryan/College Station,N - Bryan/College Station,362495,4,3,1,86,0,45,0,369,44,2,0
+2023-05-10,N,Bryan/College Station,N - Bryan/College Station,362495,,,,,,,,,,,
 2020-04-11,O,Austin,O - Austin,2412761,22,10,12,,,1408,144,1059,,7,
 2020-04-12,O,Austin,O - Austin,2412761,26,11,15,,,1227,156,1028,,8,
 2020-04-13,O,Austin,O - Austin,2412761,28,12,16,,,1427,164,1148,,12,
@@ -16768,7 +16866,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,O,Austin,O - Austin,2412761,82,68,14,382,4,390,34,2904,336,1,14
 2023-05-01,O,Austin,O - Austin,2412761,81,66,15,381,4,392,34,2881,329,1,13
 2023-05-02,O,Austin,O - Austin,2412761,82,67,15,381,4,390,34,3012,337,2,13
-2023-05-03,O,Austin,O - Austin,2412761,,,,,,,,,,,
+2023-05-03,O,Austin,O - Austin,2412761,83,69,14,382,4,371,30,3086,340,2,12
+2023-05-04,O,Austin,O - Austin,2412761,83,69,14,382,4,378,32,3053,342,1,11
+2023-05-05,O,Austin,O - Austin,2412761,84,70,14,384,4,383,36,3104,332,3,15
+2023-05-06,O,Austin,O - Austin,2412761,87,71,16,383,4,402,33,3047,331,3,14
+2023-05-07,O,Austin,O - Austin,2412761,84,68,16,378,4,417,36,2943,331,3,11
+2023-05-08,O,Austin,O - Austin,2412761,74,61,13,374,3,414,35,2937,327,2,13
+2023-05-09,O,Austin,O - Austin,2412761,80,66,14,379,4,390,35,2999,332,2,14
+2023-05-10,O,Austin,O - Austin,2412761,,,,,,,,,,,
 2020-04-11,P,San Antonio,P - San Antonio,2852509,57,35,22,,,2488,351,3398,,73,
 2020-04-12,P,San Antonio,P - San Antonio,2852509,57,35,22,,,2596,333,3405,,67,
 2020-04-13,P,San Antonio,P - San Antonio,2852509,64,39,25,,,2493,342,3276,,64,
@@ -17886,7 +17991,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,P,San Antonio,P - San Antonio,2852509,79,59,20,818,4,1333,125,4714,749,39,11
 2023-05-01,P,San Antonio,P - San Antonio,2852509,83,64,19,806,6,1207,119,4803,761,37,8
 2023-05-02,P,San Antonio,P - San Antonio,2852509,75,56,19,801,7,1085,112,5035,791,22,8
-2023-05-03,P,San Antonio,P - San Antonio,2852509,,,,,,,,,,,
+2023-05-03,P,San Antonio,P - San Antonio,2852509,83,67,16,795,9,1025,96,5033,783,35,14
+2023-05-04,P,San Antonio,P - San Antonio,2852509,79,65,14,792,9,1117,110,5171,782,31,15
+2023-05-05,P,San Antonio,P - San Antonio,2852509,75,61,14,783,10,1073,115,5121,776,20,10
+2023-05-06,P,San Antonio,P - San Antonio,2852509,73,60,13,785,10,1163,119,5008,758,19,15
+2023-05-07,P,San Antonio,P - San Antonio,2852509,68,55,13,795,8,1211,128,4946,762,21,11
+2023-05-08,P,San Antonio,P - San Antonio,2852509,72,55,17,797,8,1179,115,4904,777,18,13
+2023-05-09,P,San Antonio,P - San Antonio,2852509,71,53,18,801,10,1010,97,5165,804,25,18
+2023-05-10,P,San Antonio,P - San Antonio,2852509,,,,,,,,,,,
 2020-04-11,Q,Houston,Q - Houston,6436110,516,302,214,,,4062,403,6949,,114,
 2020-04-12,Q,Houston,Q - Houston,6436110,319,185,134,,,3562,341,5616,,120,
 2020-04-13,Q,Houston,Q - Houston,6436110,527,293,234,,,3531,401,7254,,119,
@@ -19004,7 +19116,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,Q,Houston,Q - Houston,6436110,226,193,33,1346,15,1104,115,9896,1270,46,30
 2023-05-01,Q,Houston,Q - Houston,6436110,242,210,32,1295,12,1128,122,10360,1322,39,35
 2023-05-02,Q,Houston,Q - Houston,6436110,235,201,34,1315,12,1006,100,10436,1435,40,50
-2023-05-03,Q,Houston,Q - Houston,6436110,,,,,,,,,,,
+2023-05-03,Q,Houston,Q - Houston,6436110,233,194,39,1350,12,1185,88,11224,1433,21,34
+2023-05-04,Q,Houston,Q - Houston,6436110,210,178,32,1373,12,1272,109,10613,1455,31,54
+2023-05-05,Q,Houston,Q - Houston,6436110,210,174,36,1391,12,1198,103,10541,1319,35,39
+2023-05-06,Q,Houston,Q - Houston,6436110,191,158,33,1315,14,1361,94,10121,1341,36,40
+2023-05-07,Q,Houston,Q - Houston,6436110,210,170,40,1322,14,1410,109,10157,1327,37,40
+2023-05-08,Q,Houston,Q - Houston,6436110,217,177,40,1407,16,1421,159,10169,1321,48,23
+2023-05-09,Q,Houston,Q - Houston,6436110,197,164,33,1340,18,1393,180,9716,1418,36,28
+2023-05-10,Q,Houston,Q - Houston,6436110,,,,,,,,,,,
 2020-04-11,R,Galveston,R - Galveston,1303674,76,46,30,,,572,48,867,,8,
 2020-04-12,R,Galveston,R - Galveston,1303674,84,50,34,,,558,49,855,,6,
 2020-04-13,R,Galveston,R - Galveston,1303674,97,60,37,,,621,47,875,,5,
@@ -20122,7 +20241,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,R,Galveston,R - Galveston,1303674,17,15,2,204,1,200,27,1134,182,4,4
 2023-05-01,R,Galveston,R - Galveston,1303674,18,16,2,262,1,216,23,1188,195,13,3
 2023-05-02,R,Galveston,R - Galveston,1303674,26,23,3,260,1,222,14,1297,215,11,5
-2023-05-03,R,Galveston,R - Galveston,1303674,,,,,,,,,,,
+2023-05-03,R,Galveston,R - Galveston,1303674,27,23,4,212,1,191,14,1338,219,11,10
+2023-05-04,R,Galveston,R - Galveston,1303674,24,21,3,227,1,211,8,1260,214,11,7
+2023-05-05,R,Galveston,R - Galveston,1303674,18,17,1,235,1,219,11,1225,200,12,6
+2023-05-06,R,Galveston,R - Galveston,1303674,19,16,3,237,1,193,8,1141,195,1,9
+2023-05-07,R,Galveston,R - Galveston,1303674,21,18,3,217,1,177,8,1194,190,1,9
+2023-05-08,R,Galveston,R - Galveston,1303674,22,21,1,260,1,181,7,1266,192,14,10
+2023-05-09,R,Galveston,R - Galveston,1303674,17,15,2,245,2,182,5,1098,207,14,10
+2023-05-10,R,Galveston,R - Galveston,1303674,,,,,,,,,,,
 2020-04-11,S,Victoria,S - Victoria,173586,16,12,4,,,277,30,254,,0,
 2020-04-12,S,Victoria,S - Victoria,173586,21,15,6,,,278,33,240,,0,
 2020-04-13,S,Victoria,S - Victoria,173586,22,17,5,,,290,31,248,,0,
@@ -21240,7 +21366,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,S,Victoria,S - Victoria,173586,6,5,1,60,0,168,18,277,30,0,0
 2023-05-01,S,Victoria,S - Victoria,173586,6,4,2,59,0,192,16,279,30,0,1
 2023-05-02,S,Victoria,S - Victoria,173586,7,5,2,60,0,182,11,301,35,0,0
-2023-05-03,S,Victoria,S - Victoria,173586,,,,,,,,,,,
+2023-05-03,S,Victoria,S - Victoria,173586,8,6,2,61,0,190,8,294,38,0,1
+2023-05-04,S,Victoria,S - Victoria,173586,9,7,2,59,0,187,10,285,36,0,1
+2023-05-05,S,Victoria,S - Victoria,173586,11,10,1,56,0,172,11,301,36,0,1
+2023-05-06,S,Victoria,S - Victoria,173586,11,11,0,59,0,185,16,284,36,0,2
+2023-05-07,S,Victoria,S - Victoria,173586,10,10,0,57,0,174,11,291,38,0,0
+2023-05-08,S,Victoria,S - Victoria,173586,8,8,0,58,0,190,17,288,33,0,0
+2023-05-09,S,Victoria,S - Victoria,173586,8,7,1,56,0,156,14,315,36,0,0
+2023-05-10,S,Victoria,S - Victoria,173586,,,,,,,,,,,
 2020-04-11,T,Laredo,T - Laredo,285841,25,13,12,,,100,15,255,,0,
 2020-04-12,T,Laredo,T - Laredo,285841,24,13,11,,,110,21,238,,0,
 2020-04-13,T,Laredo,T - Laredo,285841,28,17,11,,,86,16,241,,0,
@@ -22358,7 +22491,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,T,Laredo,T - Laredo,285841,1,1,0,74,0,21,3,271,31,0,0
 2023-05-01,T,Laredo,T - Laredo,285841,0,0,0,74,0,31,3,279,33,0,0
 2023-05-02,T,Laredo,T - Laredo,285841,0,0,0,76,0,33,4,305,33,0,0
-2023-05-03,T,Laredo,T - Laredo,285841,,,,,,,,,,,
+2023-05-03,T,Laredo,T - Laredo,285841,1,0,1,76,0,23,2,313,36,0,0
+2023-05-04,T,Laredo,T - Laredo,285841,1,0,1,76,0,24,3,293,38,0,0
+2023-05-05,T,Laredo,T - Laredo,285841,1,0,1,76,0,38,4,304,30,0,0
+2023-05-06,T,Laredo,T - Laredo,285841,0,0,0,76,0,36,7,300,28,0,0
+2023-05-07,T,Laredo,T - Laredo,285841,0,0,0,76,0,16,5,276,34,0,1
+2023-05-08,T,Laredo,T - Laredo,285841,4,3,1,76,0,21,2,284,39,0,0
+2023-05-09,T,Laredo,T - Laredo,285841,3,2,1,76,0,15,4,320,43,0,0
+2023-05-10,T,Laredo,T - Laredo,285841,,,,,,,,,,,
 2020-04-11,U,Corpus Christi,U - Corpus Christi,582674,9,4,5,,,360,21,785,,11,
 2020-04-12,U,Corpus Christi,U - Corpus Christi,582674,12,7,5,,,382,23,765,,11,
 2020-04-13,U,Corpus Christi,U - Corpus Christi,582674,9,4,5,,,360,15,779,,11,
@@ -23476,7 +23616,14 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,U,Corpus Christi,U - Corpus Christi,582674,52,41,11,170,1,216,12,944,138,3,8
 2023-05-01,U,Corpus Christi,U - Corpus Christi,582674,47,36,11,171,1,181,8,984,145,3,3
 2023-05-02,U,Corpus Christi,U - Corpus Christi,582674,45,31,14,173,2,183,11,1009,146,0,6
-2023-05-03,U,Corpus Christi,U - Corpus Christi,582674,,,,,,,,,,,
+2023-05-03,U,Corpus Christi,U - Corpus Christi,582674,43,30,13,170,2,190,15,1021,150,0,9
+2023-05-04,U,Corpus Christi,U - Corpus Christi,582674,45,36,9,166,2,200,10,995,143,0,7
+2023-05-05,U,Corpus Christi,U - Corpus Christi,582674,49,38,11,170,2,209,19,1015,149,0,10
+2023-05-06,U,Corpus Christi,U - Corpus Christi,582674,44,34,10,164,1,161,20,1024,152,0,9
+2023-05-07,U,Corpus Christi,U - Corpus Christi,582674,48,41,7,164,1,156,14,993,145,0,9
+2023-05-08,U,Corpus Christi,U - Corpus Christi,582674,47,40,7,167,1,155,9,986,150,0,3
+2023-05-09,U,Corpus Christi,U - Corpus Christi,582674,45,37,8,161,1,169,26,1015,144,4,8
+2023-05-10,U,Corpus Christi,U - Corpus Christi,582674,,,,,,,,,,,
 2020-04-11,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1377882,57,39,18,,,881,108,1219,,27,
 2020-04-12,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1377882,65,43,22,,,861,105,1157,,30,
 2020-04-13,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1377882,68,36,32,,,817,101,1333,,29,
@@ -24594,4 +24741,11 @@ Date,TSA,TSA_Name,TSA_Combined,Population_DSHS,Hospitalizations_Total,Hospitaliz
 2023-04-30,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1377882,42,33,9,347,2,434,43,2215,268,9,14
 2023-05-01,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1377882,42,34,8,346,0,418,53,2218,263,8,13
 2023-05-02,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1377882,41,33,8,342,0,409,50,2262,265,9,13
-2023-05-03,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1377882,,,,,,,,,,,
+2023-05-03,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1377882,39,31,8,343,0,413,48,2296,263,12,15
+2023-05-04,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1377882,40,31,9,345,2,411,45,2284,267,12,15
+2023-05-05,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1377882,44,36,8,338,2,423,54,2358,266,12,15
+2023-05-06,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1377882,44,36,8,332,2,445,55,2345,266,12,15
+2023-05-07,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1377882,44,36,8,338,2,467,54,2287,269,12,15
+2023-05-08,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1377882,46,35,11,337,2,480,45,2214,278,10,17
+2023-05-09,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1377882,57,48,9,335,3,483,46,2183,277,11,15
+2023-05-10,V,Lower Rio Grande Valley,V - Lower Rio Grande Valley,1377882,,,,,,,,,,,
