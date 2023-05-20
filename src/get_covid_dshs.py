@@ -5,6 +5,7 @@ import regex as re
 
 from datetime import datetime as dt
 from datetime import timedelta
+import matplotlib.pyplot as plt
 
 
 def get_result_table(base_url: str) -> pd.DataFrame:
@@ -106,8 +107,8 @@ def reshape_df(cleaned_df: pd.DataFrame) -> pd.DataFrame:
     return reshaped_df
 
 
-def write_update(final_df: pd.DataFrame) -> None:
-    final_df.to_csv('tableau/state_vitals.csv', index=False)
+def write_update(df: pd.DataFrame) -> None:
+    df.to_csv('tableau/state_vitals.csv', index=False)
 
 
 def clean_pivoted_df(reshaped_df: pd.DataFrame, report_date: str) -> pd.DataFrame:
@@ -129,9 +130,36 @@ def clean_pivoted_df(reshaped_df: pd.DataFrame, report_date: str) -> pd.DataFram
     return final_df
 
 
-def run_diagnostics(final_df: pd.DataFrame) -> None:
-    null_vals_exist = final_df.isnull().values.any()
-    assert not (null_vals_exist)
+def run_diagnostics(output_df: pd.DataFrame, create_plot: bool) -> None:
+    def check_cumulative_decrease(df: pd.DataFrame, col: str) -> bool:
+        return df[col].diff().le(0).any()
+
+    if create_plot:
+        output_df.plot(x='Date', y=output_cols[3:], subplots=True, layout=(4, 3), figsize=(15, 10))
+        plt.show()
+
+    # display as column name list
+    cumulative_cols = ['cumulative_cases_probable_plus_confirmed', 'cumulative_cases_confirmed',
+                       'cumulative_cases_probable']
+    cumulative_cols_decrease = any([check_cumulative_decrease(output_df, col) for col in cumulative_cols])
+    check_date_not_null = output_df['Date'].isnull().any() == False
+    check_county_not_null = output_df['Level'].isnull().any() == False
+
+    checks = [
+        cumulative_cols_decrease == False,
+        check_date_not_null,
+        check_county_not_null
+    ]
+
+    assert checks
+
+
+def combine_with_existing(final_df: pd.DataFrame, existing_df: pd.DataFrame) -> pd.DataFrame:
+    combined_df = (
+        pd.concat([existing_df, final_df])
+        .drop_duplicates()
+    )
+    return combined_df
 
 
 # region initial setup --------------------------------------------------------------------------------
@@ -160,7 +188,13 @@ fixed_names = fix_table_names(raw_table)
 cleaned_table = apply_metric_fixes(fixed_names)
 reshaped_df = reshape_df(cleaned_table)
 final_df = clean_pivoted_df(reshaped_df, report_date)
+# endregion
 
-run_diagnostics(final_df)
+# region combine --------------------------------------------------------------------------------
+output_df = combine_with_existing(final_df, existing_df)
+# endregion
 
-write_update(final_df)
+# region diagnostics + upload --------------------------------------------------------------------------------
+run_diagnostics(output_df, create_plot=False)
+write_update(output_df)
+# endregion
