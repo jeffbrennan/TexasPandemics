@@ -3,7 +3,6 @@ import requests
 from bs4 import BeautifulSoup
 import regex as re
 
-dshs_base_url = 'https://www.dshs.texas.gov/covid-19-coronavirus-disease/texas-covid-19-surveillance'
 from datetime import datetime as dt
 from datetime import timedelta
 
@@ -135,8 +134,28 @@ def run_diagnostics(final_df: pd.DataFrame) -> None:
     assert not (null_vals_exist)
 
 
+# region initial setup --------------------------------------------------------------------------------
+existing_df = pd.read_csv('tableau/state_vitals.csv')
+
+output_cols = [
+    'Date', 'Level_Type', 'Level',
+    'new_cases_probable_plus_confirmed', 'new_cases_confirmed', 'new_cases_probable',
+    'cumulative_cases_probable_plus_confirmed', 'cumulative_cases_confirmed', 'cumulative_cases_probable',
+    'new_deaths',
+    'new_hospitalizations', 'hospitalizations_7_day',
+]
+
+dshs_base_url = 'https://www.dshs.texas.gov/covid-19-coronavirus-disease/texas-covid-19-surveillance'
+
+# endregion
+
+# region pull --------------------------------------------------------------------------------
 raw_table = get_result_table(base_url=dshs_base_url)
 report_date = get_report_date(base_url=dshs_base_url)
+
+# endregion
+
+# region clean --------------------------------------------------------------------------------
 fixed_names = fix_table_names(raw_table)
 cleaned_table = apply_metric_fixes(fixed_names)
 reshaped_df = reshape_df(cleaned_table)
