@@ -1,11 +1,12 @@
-import pandas as pd
-import requests
-from bs4 import BeautifulSoup
-import regex as re
-
 from datetime import datetime as dt
 from datetime import timedelta
+
 import matplotlib.pyplot as plt
+import pandas as pd
+import regex as re
+import requests
+from bs4 import BeautifulSoup
+import src.utils
 
 
 def get_result_table(base_url: str) -> pd.DataFrame:
@@ -107,10 +108,6 @@ def reshape_df(cleaned_df: pd.DataFrame) -> pd.DataFrame:
     return reshaped_df
 
 
-def write_update(df: pd.DataFrame) -> None:
-    df.to_csv('tableau/state_vitals.csv', index=False)
-
-
 def clean_pivoted_df(reshaped_df: pd.DataFrame, report_date: str) -> pd.DataFrame:
     final_df = (
         reshaped_df
@@ -196,5 +193,5 @@ output_df = combine_with_existing(final_df, existing_df)
 
 # region diagnostics + upload --------------------------------------------------------------------------------
 run_diagnostics(output_df, create_plot=False)
-write_update(output_df)
+src.utils.file(output_df, 'tableau/state_vitals')
 # endregion
