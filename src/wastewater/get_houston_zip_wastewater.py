@@ -3,7 +3,7 @@ import pandas as pd
 import json
 
 import src.utils
-from src.wastewater.houston_wastewater_common import get_offsets, get_data, get_data_manager
+from src.wastewater.houston_wastewater_common import get_offsets, get_data_manager, run_diagnostics
 from datetime import date, datetime
 
 
@@ -34,10 +34,6 @@ def houston_zip_wastewater():
 
         return clean_df
 
-    def run_diagnostics(df: pd.DataFrame) -> None:
-        check_if_zipcode_null = df.zipcode.isnull().any()
-        assert not check_if_zipcode_null, 'Null zipcode found'
-
     # region  --------------------------------------------------------------------------------
     num_records_request_url = 'https://services.arcgis.com/lqRTrQp2HrfnJt8U/arcgis/rest/services/Wastewater_Zip_Case_Analysis/FeatureServer/0/query?where=1%3D1&objectIds=&time=&resultType=none&outFields=count%28*%29+as+n&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&sqlFormat=none&f=pjson&token='
     request_url_prefix = 'https://services.arcgis.com/lqRTrQp2HrfnJt8U/ArcGIS/rest/services/Wastewater_Zip_Case_Analysis/FeatureServer/0/query?where=1%3D1&objectIds=&time=&resultType=none&outFields=*&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false&orderByFields=date+desc&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset='
@@ -60,8 +56,7 @@ def houston_zip_wastewater():
 
     # region  --------------------------------------------------------------------------------
     clean_df = clean_data(new_dfs_combined)
-
-    run_diagnostics(clean_df)
+    run_diagnostics(clean_df, id_col='zipcode')
     src.utils.write_file(clean_df, 'tableau/wastewater/houston_zip_wastewater')
 
 
