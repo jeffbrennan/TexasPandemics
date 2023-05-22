@@ -11,6 +11,16 @@ def run_diagnostics(df: pd.DataFrame, id_col: str) -> None:
     assert not check_if_date_null, 'Null date found'
 
 
+def get_max_timestamp(path: str | None) -> int:
+    if path is None:
+        max_date = dt.strftime(dt(1999, 12, 31), '%Y-%m-%d')
+    else:
+        max_date = pd.read_csv(path)['Date'].max()
+
+    max_date_timestamp = int(dt.strptime(max_date, '%Y-%m-%d').timestamp() * 1000)
+    return max_date_timestamp
+
+
 def get_offsets(request_url: str, step_interval: int) -> list:
     # retrieves value from rest request "count(*) as n"
     def get_num_records(url) -> int:
