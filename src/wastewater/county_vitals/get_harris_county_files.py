@@ -33,27 +33,22 @@ def get_harris_vitals(data_type: str) -> None:
 
         return clean_df
 
-    url_prefix = 'https://services.arcgis.com/su8ic9KbA7PYVxPS/arcgis/rest/services/Download_Reported_COVID_Cases_Timeline/FeatureServer/0/query?where=1%3D1&outFields=Date as date,Total,Source&outSR=4326&f=json&resultOffset='
-    num_records_request = 'https://services.arcgis.com/su8ic9KbA7PYVxPS/arcgis/rest/services/Download_Reported_COVID_Cases_Timeline/FeatureServer/0/query?where=1%3D1&outFields=count(*) as n&returnGeometry=false&outSR=4326&f=json'
+    request_url = 'https://services.arcgis.com/su8ic9KbA7PYVxPS/arcgis/rest/services/Download_Reported_COVID_Cases_Timeline/FeatureServer/0/query?where=1%3D1&outFields=Date as date,Total,Source&outSR=4326&f=json&resultOffset='
 
-
-    current_max_date = pd.read_csv('tableau/vitals/staging/harris_vitals.csv')['Date'].max()
-    current_max_date_timestamp = int(dt.strptime(current_max_date, '%Y-%m-%d').timestamp() * 1000)
-
+    current_max_date_timestamp = get_max_timestamp('tableau/vitals/staging/harris_vitals.csv')
     offsets = get_offsets(
-        request_url=num_records_request,
+        request_url=request_url,
         step_interval=2000
     )
 
     raw_data = get_data_manager(
-        url_prefix=url_prefix,
-        url_suffix='',
+        url=request_url,
         offsets=offsets,
         max_date=current_max_date_timestamp
     )
 
     if raw_data is None:
-        print(f'No new data found using max date: {current_max_date}')
+        print(f'No new data found')
         return
 
     clean_df = clean_data(raw_data)

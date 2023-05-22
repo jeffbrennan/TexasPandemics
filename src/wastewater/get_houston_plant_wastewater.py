@@ -35,21 +35,17 @@ def houston_plant_wastewater() -> None:
         return clean_df
 
     # region  --------------------------------------------------------------------------------
-    request_url_prefix = 'https://services.arcgis.com/lqRTrQp2HrfnJt8U/ArcGIS/rest/services/WWTP_gdb/FeatureServer/0//query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&relationParam=&returnGeodetic=false&outFields=*&returnGeometry=false&returnCentroid=false&featureEncoding=esriDefault&multipatchOption=none&maxAllowableOffset=&geometryPrecision=&outSR=&defaultSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=date&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset='
-    request_url_suffix = '&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pjson&token='
-    num_records_request_url = 'https://services.arcgis.com/lqRTrQp2HrfnJt8U/ArcGIS/rest/services/WWTP_gdb/FeatureServer/0//query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&relationParam=&returnGeodetic=false&outFields=count%28*%29+as+n&returnGeometry=false&returnCentroid=false&featureEncoding=esriDefault&multipatchOption=none&maxAllowableOffset=&geometryPrecision=&outSR=&defaultSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=standard&f=pjson&token='
+    request_url = 'https://services.arcgis.com/lqRTrQp2HrfnJt8U/ArcGIS/rest/services/WWTP_gdb/FeatureServer/0/query?where=1%3D1&outFields=date%2C+corname%2C+vl_est%2C+spline_ww%2C+firstdate%2C+lastdate&sqlFormat=none&f=pjson&token=&resultOffset='
 
-    current_max_date = dt(1999, 12, 31)
-    current_max_date_as_timestamp = int(current_max_date.timestamp() * 1000)
+    current_max_date_as_timestamp = get_max_timestamp(None)
     # endregion
 
     # region  --------------------------------------------------------------------------------
-    offsets = get_offsets(request_url=num_records_request_url, step_interval=2000)
+    offsets = get_offsets(request_url=request_url, step_interval=2000)
     new_dfs_combined = get_data_manager(
-        request_url_prefix,
-        request_url_suffix,
-        offsets,
-        current_max_date_as_timestamp
+        url=request_url,
+        offsets=offsets,
+        max_date=current_max_date_as_timestamp
     )
     assert new_dfs_combined.empty is False, 'No data found'
     # endregion

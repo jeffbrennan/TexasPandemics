@@ -37,21 +37,17 @@ def houston_zip_wastewater():
         return clean_df
 
     # region  --------------------------------------------------------------------------------
-    num_records_request_url = 'https://services.arcgis.com/lqRTrQp2HrfnJt8U/arcgis/rest/services/Wastewater_Zip_Case_Analysis/FeatureServer/0/query?where=1%3D1&objectIds=&time=&resultType=none&outFields=count%28*%29+as+n&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&sqlFormat=none&f=pjson&token='
-    request_url_prefix = 'https://services.arcgis.com/lqRTrQp2HrfnJt8U/ArcGIS/rest/services/Wastewater_Zip_Case_Analysis/FeatureServer/0/query?where=1%3D1&objectIds=&time=&resultType=none&outFields=*&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false&orderByFields=date+desc&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset='
-    request_url_suffix = '&resultRecordCount=&sqlFormat=none&f=pjson&token='
+    request_url = 'https://services.arcgis.com/lqRTrQp2HrfnJt8U/ArcGIS/rest/services/Wastewater_Zip_Case_Analysis/FeatureServer/0//query?where=1%3D1&outFields=date%2C+ZIPCODE%2C+pop%2C+Spline_PR%2C+Spline_WW_Weight%2C+Spline_WW_weight_Percent_10&f=pjson&token=&resultOffset='
 
-    current_max_date = datetime(1999, 12, 31)
-    current_max_date_as_timestamp = int(current_max_date.timestamp() * 1000)
+    current_max_date_timestamp = get_max_timestamp(None)
     # endregion
 
     # region  --------------------------------------------------------------------------------
-    offsets = get_offsets(request_url=num_records_request_url, step_interval=1000)
+    offsets = get_offsets(request_url, step_interval=1000)
     new_dfs_combined = get_data_manager(
-        request_url_prefix,
-        request_url_suffix,
-        offsets,
-        current_max_date_as_timestamp
+        url=request_url,
+        offsets=offsets,
+        max_date=current_max_date_timestamp
     )
     assert new_dfs_combined.empty is False, 'No data found'
     # endregion
