@@ -1,10 +1,12 @@
-import requests
 import pandas as pd
-import json
 
 import src.utils
-from src.wastewater.houston_wastewater_common import get_offsets, get_data_manager, run_diagnostics
-from datetime import date, datetime
+from src.wastewater.houston_wastewater_common import (
+    get_offsets,
+    get_data_manager,
+    run_diagnostics,
+    get_max_timestamp
+)
 
 
 def houston_zip_wastewater():

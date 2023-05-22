@@ -3,7 +3,12 @@ from datetime import datetime as dt
 import pandas as pd
 
 import src.utils
-from src.wastewater.houston_wastewater_common import get_offsets, get_data_manager, run_diagnostics
+from src.wastewater.houston_wastewater_common import (
+    get_offsets,
+    get_data_manager,
+    run_diagnostics,
+    get_max_timestamp
+)
 
 
 def houston_plant_wastewater() -> None:
