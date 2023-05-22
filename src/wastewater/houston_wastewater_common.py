@@ -22,7 +22,7 @@ def get_offsets(request_url: str, step_interval: int) -> list:
     return offsets
 
 
-def get_data_manager(url_prefix, url_suffix, offsets: list, max_date: str) -> pd.DataFrame:
+def get_data_manager(url_prefix, url_suffix, offsets: list, max_date: int) -> pd.DataFrame | None:
     def get_data(url_prefix: str, url_suffix: str, offset: int):
         url = f'{url_prefix}{offset}{url_suffix}'
         request = requests.get(url)
@@ -42,6 +42,9 @@ def get_data_manager(url_prefix, url_suffix, offsets: list, max_date: str) -> pd
             break
 
         new_df_list.append(df_new)
+
+    if not new_df_list:
+        return None
 
     new_df_combined = pd.concat(new_df_list)
     return new_df_combined
