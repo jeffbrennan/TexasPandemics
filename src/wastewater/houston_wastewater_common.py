@@ -1,6 +1,7 @@
 import pandas as pd
 import json
 import requests
+from datetime import datetime as dt
 
 
 def run_diagnostics(df: pd.DataFrame, id_col: str) -> None:
