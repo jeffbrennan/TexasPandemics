@@ -40,9 +40,9 @@ def get_offsets(request_url: str, step_interval: int) -> list:
     return offsets
 
 
-def get_data_manager(url_prefix, url_suffix, offsets: list, max_date: int) -> pd.DataFrame | None:
-    def get_data(url_prefix: str, url_suffix: str, offset: int):
-        url = f'{url_prefix}{offset}{url_suffix}'
+def get_data_manager(url: str, offsets: list, max_date: int) -> pd.DataFrame | None:
+    def get_data(url: str, offset: int):
+        url = f'{url}{offset}'
         request = requests.get(url)
         response = json.loads(request.content)['features']
         df = pd.DataFrame.from_records(i['attributes'] for i in response)
@@ -52,7 +52,7 @@ def get_data_manager(url_prefix, url_suffix, offsets: list, max_date: int) -> pd
     for offset in offsets:
         print(f'Obtaining data with offset: {offset}')
 
-        df = get_data(url_prefix, url_suffix, offset)
+        df = get_data(url, offset)
 
         # filtering by date/timestamp in rest query wasn't working
         df_new = (df.query('date > @max_date'))
