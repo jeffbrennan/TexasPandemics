@@ -22,13 +22,20 @@ def get_max_timestamp(path: str | None) -> int:
 
 
 def get_offsets(request_url: str, step_interval: int) -> list:
+    def create_num_records_request(url: str) -> str:
+        url_base = url.split('query?')[0]
+        url_count_suffix = 'query?where=1%3D1&returnCountOnly=true&f=pjson'
+        url_out = f'{url_base}{url_count_suffix}'
+        return url_out
+
     # retrieves value from rest request "count(*) as n"
     def get_num_records(url) -> int:
         response = requests.get(url)
         output = json.loads(response.content)['features'][0]['attributes']['n']
         return output
 
-    offsets = list(range(0, get_num_records(request_url), step_interval))
+    num_records_request = create_num_records_request(request_url)
+    offsets = list(range(0, get_num_records(num_records_request), step_interval))
     return offsets
 
 
