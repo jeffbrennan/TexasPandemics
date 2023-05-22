@@ -31,7 +31,7 @@ def get_offsets(request_url: str, step_interval: int) -> list:
     # retrieves value from rest request "count(*) as n"
     def get_num_records(url) -> int:
         response = requests.get(url)
-        output = json.loads(response.content)['features'][0]['attributes']['n']
+        output = json.loads(response.content)['count']
         return output
 
     num_records_request = create_num_records_request(request_url)
