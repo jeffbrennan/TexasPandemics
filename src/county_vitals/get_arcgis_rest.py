@@ -19,7 +19,7 @@ def load_csv(url: str) -> pd.DataFrame:
 
 def get_data_manager(config: dict) -> pd.DataFrame | None:
     def get_max_timestamp(config: dict) -> int:
-        if config['full_refresh'] and config['file_exists']:
+        if not config['full_refresh'] and config['file_exists']:
             file_path = f'{config["out"]["dir"]}/{config["out"]["table_name"]}'
 
             max_file = load_csv(file_path)
