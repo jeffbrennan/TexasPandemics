@@ -5,7 +5,7 @@ from pathlib import Path
 import pandas as pd
 import requests
 import yaml
-
+import time
 
 def write_file(df: pd.DataFrame, table_path: str) -> None:
     print(f'Writing file to {table_path}')
@@ -126,7 +126,17 @@ def clean_data(df: pd.DataFrame, config) -> pd.DataFrame:
 
 def get_vitals(config: dict) -> None:
     print(f'================Obtaining {config["data_type"]} - {config["county"]}==============================')
-    raw_data = get_data_manager(config)
+
+    attempts = 0
+    while attempts < 5:
+        try:
+            raw_data = get_data_manager(config)
+            break
+        except KeyError:
+            attempts += 1
+            print(f'Attempt {attempts} failed')
+            time.sleep(2 * 60)
+            continue
 
     if raw_data is None:
         print(f'No new data found')
@@ -138,9 +148,9 @@ def get_vitals(config: dict) -> None:
     write_file(clean_df, df_out_path)
 
 
-CONFIG = yaml.safe_load(Path('src/county_vitals/config/arcgis_rest_vitals.yml').read_text())
+CONFIG = yaml.safe_load(Path('src/county_vitals/config/arcgis_rest_vitals.yaml').read_text())
 counties = list(CONFIG.keys())
-config = CONFIG['harris']
+config = CONFIG['travis']
 get_vitals(config)
 
 # [get_vitals(conf[county]) for county in counties]
