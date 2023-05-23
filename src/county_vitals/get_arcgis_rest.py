@@ -17,13 +17,12 @@ def load_csv(url: str) -> pd.DataFrame:
     return df
 
 
-# def get_data_manager(url: str, offsets: list, max_date: int) -> pd.DataFrame | None:
 def get_data_manager(config: dict) -> pd.DataFrame | None:
     def get_max_timestamp(config: dict) -> int:
         if config['full_refresh'] and config['file_exists']:
             file_path = f'{config["out"]["dir"]}/{config["out"]["table_name"]}'
 
-            max_file = pd.read_csv(file_path)
+            max_file = load_csv(file_path)
             max_date = max_file['Date'].max()
         else:
             max_date = dt.strftime(dt(1999, 12, 31), '%Y-%m-%d')
