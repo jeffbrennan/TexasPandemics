@@ -1,0 +1,24 @@
+bexar:
+  data_type: "vitals"
+  county: "Bexar"
+  step_interval: 2000
+  full_refresh: true
+  file_exists: false
+  col:
+    input: [ "reporting_date", "case_count_weekly_change", "death_count_weekly_change" ]
+    output: [ 'County', 'Date', 'cases_daily', 'deaths_daily' ]
+    rename:
+      reporting_date: "Date"
+      case_count_weekly_change: "cases_daily"
+      death_count_weekly_change: "deaths_daily"
+    dtypes:
+      reporting_date: 'int64[pyarrow]'
+      case_count_weekly_change: "int32[pyarrow]"
+      death_count_weekly_change: "int32[pyarrow]"
+    uid: [ 'Date' ]
+  url:
+    owner: "g1fRTDLeMgspWrYp"
+    source_table: "Weekly_Bexar_County_CoVID19_Surveillance_Data_Public"
+  out:
+    dir: "tableau/vitals/staging"
+    table_name: "bexar_vitals"
