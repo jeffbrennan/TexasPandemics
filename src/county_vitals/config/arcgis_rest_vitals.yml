@@ -22,3 +22,29 @@ bexar:
   out:
     dir: "tableau/vitals/staging"
     table_name: "bexar_vitals"
+harris:
+  data_type: "vitals"
+  county: "Harris"
+  step_interval: 2000
+  full_refresh: true
+  file_exists: true
+  col:
+    filter:
+      col: 'Source'
+      operator: '=='
+      value: 'HCTX'
+    input: [ "Date", "Total", "Source"]
+    output: [ 'County', 'Date', 'cases_daily']
+    rename:
+      Date: "Date"
+      Total: "cases_daily"
+    dtypes:
+      Date: 'int64[pyarrow]'
+      Total: "int32[pyarrow]"
+    uid: [ 'Date' ]
+  url:
+    owner: "su8ic9KbA7PYVxPS"
+    source_table: "Download_Reported_COVID_Cases_Timeline"
+  out:
+    dir: "tableau/vitals/staging"
+    table_name: "harris_vitals"
