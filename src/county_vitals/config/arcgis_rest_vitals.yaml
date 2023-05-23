@@ -48,3 +48,27 @@ harris:
     out:
         dir:        "tableau/vitals/staging"
         table_name: "harris_vitals"
+travis:
+    data_type:     "vitals"
+    county:        "Travis"
+    step_interval: 2000
+    full_refresh:  true
+    file_exists:   true
+    col:
+        input: [ "Updated", "TotalCases", "TotalDeaths" ]
+        output: [ 'County', 'Date', 'cases_daily', 'deaths_daily' ]
+        rename:
+            Updated:     "Date"
+            TotalCases:  "cases_daily"
+            TotalDeaths: "deaths_daily"
+        dtypes:
+            Updated:        'int64[pyarrow]'
+            TotalCases:  "int32[pyarrow]"
+            TotalDeaths: "int32[pyarrow]"
+        uid: [ 'Date' ]
+    url:
+        owner:        "0L95CJ0VTaxqcmED"
+        source_table: "Daily_Count_COVID_view"
+    out:
+        dir:        "tableau/vitals/staging"
+        table_name: "travis_vitals"
