@@ -106,6 +106,11 @@ def get_data_manager(config: dict) -> pd.DataFrame | None:
 
 
 def clean_data(df: pd.DataFrame, config) -> pd.DataFrame:
+    if 'filter' in config['col']:
+        filter_config = config['col']['filter']
+        filter_value = filter_config['value']
+        df = df.query(f'{filter_config["col"]} {filter_config["operator"]} @filter_value')
+
     clean_df = (
         df
         .astype(config['col']['dtypes'])
@@ -135,7 +140,7 @@ def get_vitals(config: dict) -> None:
 
 CONFIG = yaml.safe_load(Path('src/county_vitals/config/arcgis_rest_vitals.yml').read_text())
 counties = list(CONFIG.keys())
-config = CONFIG['bexar']
+config = CONFIG['harris']
 get_vitals(config)
 
 # [get_vitals(conf[county]) for county in counties]
