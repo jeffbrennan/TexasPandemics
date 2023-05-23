@@ -150,7 +150,4 @@ def get_vitals(config: dict) -> None:
 
 CONFIG = yaml.safe_load(Path('src/county_vitals/config/arcgis_rest_vitals.yaml').read_text())
 counties = list(CONFIG.keys())
-config = CONFIG['travis']
-get_vitals(config)
-
-# [get_vitals(conf[county]) for county in counties]
+[get_vitals(CONFIG[county]) for county in counties]
