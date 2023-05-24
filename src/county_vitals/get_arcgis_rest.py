@@ -53,7 +53,7 @@ def get_data_manager(config: dict) -> pd.DataFrame | None:
         source_table = url_config['source_table']
         owner = url_config['owner']
 
-        url_location = 'https://services.arcgis.com'
+        url_location = url_config['base']
         url_suffix = '&outSR=4326&f=json&resultOffset='
 
         url_base = f'{url_location}/{owner}/arcgis/rest/services/{source_table}/FeatureServer/0'
