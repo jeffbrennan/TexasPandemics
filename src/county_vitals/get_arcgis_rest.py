@@ -115,7 +115,7 @@ def clean_data(df: pd.DataFrame, config) -> pd.DataFrame:
         df
         .astype(config['col']['dtypes'])
         .rename(columns=config['col']['rename'])
-        .assign(Date=lambda x: pd.to_datetime(x['Date'] * 1_000_000).dt.date)
+        .assign(Date=lambda x: convert_timestamp(x['Date']))
         .dropna(subset=config['col']['uid'])
         .assign(County=config['county'])
         [config['col']['output']]
