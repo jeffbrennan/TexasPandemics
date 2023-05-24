@@ -1,0 +1,129 @@
+tarrant:
+    county: Tarrant
+    col:
+        metric_out: [ "cases_daily" ]
+        output: [ 'County', 'Date', 'cases_daily' ]
+        rename:
+            0: "Date"
+            4: "cases_daily"
+        dtypes:
+            0: 'int64[pyarrow]'
+            4: "int32[pyarrow]"
+        uid: [ 'Date' ]
+        date_format: "timestamp_int"
+    out:
+        dir:        tableau/vitals/staging
+        table_name: tarrant_vitals
+    url:
+        base: https://wabi-us-gov-iowa-api.analysis.usgovcloudapi.net/public/reports/querydata
+        headers:
+            User-Agent:            Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101
+                                   Firefox/113.0
+            Accept:                application/json, text/plain, */*
+            Accept-Language:       en-US,en;q=0.5
+            ActivityId:            7344a56b-f125-426a-b60b-146cd92364fa
+            RequestId:             b86f4a37-b68c-2ef8-08b0-bd803d95407c
+            X-PowerBI-ResourceKey: b830a566-31aa-44aa-a9d0-bec2a4f88118
+            Content-Type:          application/json;charset=UTF-8
+            Origin:                https://app.powerbigov.us
+            Connection:            keep-alive
+            Referer:               https://app.powerbigov.us/
+            Sec-Fetch-Dest:        empty
+            Sec-Fetch-Mode:        cors
+            Sec-Fetch-Site:        cross-site
+        payload:
+            version: 1.0.0
+            queries:
+                -   Query:
+                        Commands:
+                            -   SemanticQueryDataShapeCommand:
+                                    Query:
+                                        Version: 2
+                                        From:
+                                            -   Name:   c1
+                                                Entity: CV19_Case Data by Date
+                                                Type:   0
+                                            -   Name:   c
+                                                Entity: CV19_CLI
+                                                Type:   0
+                                        Select:
+                                            -   Column:
+                                                    Expression:
+                                                        SourceRef:
+                                                            Source: c1
+                                                    Property: Week
+                                                Name: 'CV19_Case Data by Date.Week '
+                                            -   Aggregation:
+                                                    Expression:
+                                                        Column:
+                                                            Expression:
+                                                                SourceRef:
+                                                                    Source: c1
+                                                            Property: Probable_Specimen Date
+                                                    Function: 0
+                                                Name: Sum(CV19_Case Data by Date.Probable_Specimen Date)
+                                            -   Aggregation:
+                                                    Expression:
+                                                        Column:
+                                                            Expression:
+                                                                SourceRef:
+                                                                    Source: c1
+                                                            Property: Confirm_Specimen Date
+                                                    Function: 0
+                                                Name: Sum(CV19_Case Data by Date.Confirm_Specimen Date)
+                                            -   Aggregation:
+                                                    Expression:
+                                                        Column:
+                                                            Expression:
+                                                                SourceRef:
+                                                                    Source: c1
+                                                            Property: 7Day_Spec
+                                                    Function: 0
+                                                Name: Sum(CV19_Case Data by Date.7Day_Spec)
+                                            -   Aggregation:
+                                                    Expression:
+                                                        Column:
+                                                            Expression:
+                                                                SourceRef:
+                                                                    Source: c1
+                                                            Property: Cases_Specimen Date
+                                                    Function: 0
+                                                Name: Sum(CV19_Case Data by Date.Cases_Specimen Date)
+                                        Where:
+                                            -   Condition:
+                                                    In:
+                                                        Expressions:
+                                                            -   Column:
+                                                                    Expression:
+                                                                        SourceRef:
+                                                                            Source: c
+                                                                    Property: Year
+                                                        Values:
+                                                            -
+                                                                -   Literal:
+                                                                        Value: "'2020'"
+                                                            -
+                                                                -   Literal:
+                                                                        Value: "'2022-2023'"
+                                                            -
+                                                                -   Literal:
+                                                                        Value: "'2021'"
+                                    Binding:
+                                        Primary:
+                                            Groupings:
+                                                -   Projections:
+                                                        - 0
+                                                        - 3
+                                                        - 2
+                                                        - 1
+                                                        - 4
+                                        DataReduction:
+                                            DataVolume: 4
+                                            Primary:
+                                                Sample: { }
+                                        SuppressedJoinPredicates:
+                                            - 4
+                                        Version: 1
+                    QueryId: ''
+            cancelQueries: [ ]
+            modelId: 383287
