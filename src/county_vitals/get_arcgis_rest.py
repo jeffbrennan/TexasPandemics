@@ -104,6 +104,8 @@ def get_data_manager(config: dict) -> pd.DataFrame | None:
 
 
 def clean_data(df: pd.DataFrame, config) -> pd.DataFrame:
+    agg_dict = {col: 'sum' for col in config['col']['metric_out']}
+
     clean_df = (
         df
         .astype(config['col']['dtypes'])
@@ -111,6 +113,8 @@ def clean_data(df: pd.DataFrame, config) -> pd.DataFrame:
         .assign(Date=lambda x: convert_timestamp(x['Date']))
         .dropna(subset=config['col']['uid'])
         .assign(County=config['county'])
+        .groupby(['County', 'Date'], as_index=False)
+        .agg(agg_dict)
     )
 
     clean_df = clean_df[config['col']['output']]
