@@ -59,13 +59,13 @@ travis:
     full_refresh:  true
     file_exists:   true
     col:
-        metric_out: [ "cases_daily", "deaths_daily" ]
+        metric_out: [ "cases_cumulative", "deaths_cumulative" ]
         input: [ "Updated", "TotalCases", "TotalDeaths" ]
-        output: [ 'County', 'Date', 'cases_daily', 'deaths_daily' ]
+        output: [ 'County', 'Date', 'cases_cumulative', 'deaths_cumulative' ]
         rename:
             Updated:     "Date"
-            TotalCases:  "cases_daily"
-            TotalDeaths: "deaths_daily"
+            TotalCases:  "cases_cumulative"
+            TotalDeaths: "deaths_cumulative"
         dtypes:
             Updated:     'int64[pyarrow]'
             TotalCases:  "int32[pyarrow]"
