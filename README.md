@@ -2,9 +2,10 @@
 
 Scraping, statistics, and diagnostics of Texas COVID-19 data
 
-2023-05-10 update: As the public health emergency has declared to have ended, DSHS has ceased reporting county level updates on their original site. New state level data is available weekly here: https://www.dshs.texas.gov/covid-19-coronavirus-disease/texas-covid-19-surveillance
+2023-05-10 update: DSHS has ceased reporting county level updates on their original site. New state level data is available weekly here: https://www.dshs.texas.gov/covid-19-coronavirus-disease/texas-covid-19-surveillance
 
-More data will be added if found.
+County level data is being individually scraped and aggregated in [tableau/vitals](tableau/vitals/)
+
 ---
 
 ## Core Data
