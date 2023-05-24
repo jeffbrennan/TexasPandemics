@@ -17,6 +17,7 @@ bexar:
             death_count_weekly_change: "int32[pyarrow]"
         uid: [ 'Date' ]
     url:
+        base:         'https://services.arcgis.com'
         owner:        "g1fRTDLeMgspWrYp"
         source_table: "Weekly_Bexar_County_CoVID19_Surveillance_Data_Public"
     out:
@@ -43,6 +44,7 @@ harris:
             Total: "int32[pyarrow]"
         uid: [ 'Date' ]
     url:
+        base:         'https://services.arcgis.com'
         owner:        "su8ic9KbA7PYVxPS"
         source_table: "Download_Reported_COVID_Cases_Timeline"
     out:
@@ -62,11 +64,12 @@ travis:
             TotalCases:  "cases_daily"
             TotalDeaths: "deaths_daily"
         dtypes:
-            Updated:        'int64[pyarrow]'
+            Updated:     'int64[pyarrow]'
             TotalCases:  "int32[pyarrow]"
             TotalDeaths: "int32[pyarrow]"
         uid: [ 'Date' ]
     url:
+        base:         'https://services.arcgis.com'
         owner:        "0L95CJ0VTaxqcmED"
         source_table: "Daily_Count_COVID_view"
     out:
