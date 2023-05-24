@@ -168,3 +168,31 @@ potter:
     out:
         dir:        "tableau/vitals/staging"
         table_name: "potter_vitals"
+denton:
+    data_type:     "vitals"
+    county:        "Denton"
+    step_interval: 2000
+    full_refresh:  true
+    file_exists:   true
+    col:
+        metric_out: [ "cases_daily", "deaths_daily" ]
+        input: [ "DateOfObservation", "Total", "Deaths" ]
+        output: [ 'County', 'Date', 'cases_daily', 'deaths_daily' ]
+        rename:
+            DateOfObservation: "Date"
+            Total:             "cases_daily"
+            Deaths:            "deaths_daily"
+        dtypes:
+            DateOfObservation: 'string'
+            Total:             "int32[pyarrow]"
+            Deaths:            "int32[pyarrow]"
+        uid: [ 'Date' ]
+        date_format: "%Y/%m/%d"
+    url:
+        base:              'https://services.arcgis.com'
+        feature_server_id: 1
+        owner:             "oTsZYNubyv7xK5yP"
+        source_table:      "vDailyObservationsRT_WFL1"
+    out:
+        dir:        "tableau/vitals/staging"
+        table_name: "denton_vitals"
