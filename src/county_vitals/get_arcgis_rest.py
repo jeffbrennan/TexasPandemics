@@ -60,11 +60,14 @@ def get_data_manager(config: dict) -> pd.DataFrame | None:
         url_config = config['url']
         source_table = url_config['source_table']
         owner = url_config['owner']
+        feature_server_id = url_config['feature_server_id']
 
         url_location = url_config['base']
         url_suffix = '&outSR=4326&f=json&resultOffset='
 
-        url_base = f'{url_location}/{owner}/arcgis/rest/services/{source_table}/FeatureServer/0'
+        url_base_prep = f'{url_location}/{owner}/arcgis/rest/services/{source_table}'
+        url_base = f'{url_base_prep}/FeatureServer/{feature_server_id}'
+
         if 'filter' in config['col']:
             filter_config = config['col']['filter']
             url_query_where = f'where={filter_config["col"]}%3D%27{filter_config["value"]}%27'
