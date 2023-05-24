@@ -8,7 +8,7 @@ import yaml
 import time
 
 from src.utils import load_csv, write_file, convert_timestamp
-
+from functools import reduce
 
 
 def get_data_manager(config: dict) -> pd.DataFrame | None:
@@ -111,15 +111,14 @@ def clean_data(df: pd.DataFrame, config) -> pd.DataFrame:
         .assign(Date=lambda x: convert_timestamp(x['Date']))
         .dropna(subset=config['col']['uid'])
         .assign(County=config['county'])
-        [config['col']['output']]
     )
+
+    clean_df = clean_df[config['col']['output']]
 
     return clean_df
 
 
-def get_vitals(config: dict) -> None:
-    print(f'================Obtaining {config["data_type"]} - {config["county"]}==============================')
-
+def parse_data_manager(config: dict) -> pd.DataFrame:
     attempts = 0
     while attempts < 5:
         try:
@@ -135,7 +134,40 @@ def get_vitals(config: dict) -> None:
         print(f'No new data found')
         return None
 
-    clean_df = clean_data(raw_data, config)
+    clean_df_raw = clean_data(raw_data, config)
+    return clean_df_raw
+
+
+def create_config_list(config: dict) -> list:
+    if list(config['col'].keys()) != ['cases', 'deaths']:
+        return [config]
+
+    # handle data structures where county, case, and death dates are in different columns (amarillo ???)
+    config_cases = config.copy()
+    config_cases['col'] = config['col']['cases']
+
+    config_deaths = config.copy()
+    config_deaths['col'] = config['col']['deaths']
+
+    return [config_cases, config_deaths]
+
+
+def get_vitals(config: dict) -> None:
+    print(f'================Obtaining {config["data_type"]} - {config["county"]}==============================')
+    config_list = create_config_list(config)
+
+    all_clean_data = []
+    for config in config_list:
+        clean_data_raw = parse_data_manager(config)
+        all_clean_data.append(clean_data_raw)
+
+    if len(all_clean_data) > 1:
+        clean_df = reduce(
+            lambda x, y: pd.merge(x, y, on=['County', 'Date'], how='outer'),
+            all_clean_data
+        )
+    else:
+        clean_df = all_clean_data[0]
 
     df_out_path = f'{config["out"]["dir"]}/{config["out"]["table_name"]}'
     write_file(clean_df, df_out_path)
