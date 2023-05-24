@@ -5,6 +5,7 @@ bexar:
     full_refresh:  true
     file_exists:   false
     col:
+        metric_out: [ "cases_daily", "deaths_daily" ]
         input: [ "reporting_date", "case_count_weekly_change", "death_count_weekly_change" ]
         output: [ 'County', 'Date', 'cases_daily', 'deaths_daily' ]
         rename:
@@ -30,6 +31,7 @@ harris:
     full_refresh:  true
     file_exists:   true
     col:
+        metric_out: [ "cases_daily" ]
         filter:
             col:      'Source'
             operator: '=='
@@ -57,6 +59,7 @@ travis:
     full_refresh:  true
     file_exists:   true
     col:
+        metric_out: [ "cases_daily", "deaths_daily" ]
         input: [ "Updated", "TotalCases", "TotalDeaths" ]
         output: [ 'County', 'Date', 'cases_daily', 'deaths_daily' ]
         rename:
@@ -83,6 +86,7 @@ randall:
     file_exists:   true
     col:
         cases:
+            metric_out: [ "cases_daily" ]
             filter:
                 col:      'case_data_county'
                 operator: '=='
@@ -97,6 +101,11 @@ randall:
                 case_data_count:        "int32[pyarrow]"
             uid: [ 'Date' ]
         deaths:
+            metric_out: [ "deaths_daily" ]
+            filter:
+                col:      'death_data_county'
+                operator: '=='
+                value:    'Randall'
             input: [ 'death_data_date_of_death', 'death_data_county', 'death_data_count' ]
             output: [ 'County', 'Date',  'deaths_daily' ]
             rename:
@@ -122,6 +131,7 @@ potter:
     file_exists:   true
     col:
         cases:
+            metric_out: ["cases_daily"]
             filter:
                 col:      'case_data_county'
                 operator: '=='
@@ -136,6 +146,11 @@ potter:
                 case_data_count:        "int32[pyarrow]"
             uid: [ 'Date' ]
         deaths:
+            metric_out: [ "deaths_daily" ]
+            filter:
+                col:      'death_data_county'
+                operator: '=='
+                value:    'Potter'
             input: [ 'death_data_date_of_death', 'death_data_county', 'death_data_count' ]
             output: [ 'County', 'Date',  'deaths_daily' ]
             rename:
