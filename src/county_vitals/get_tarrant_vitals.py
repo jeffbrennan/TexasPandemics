@@ -231,6 +231,7 @@ def clean_data(result_df: pd.DataFrame) -> pd.DataFrame:
         .rename(columns={0: 'Date', 1: 'probable', 2: 'confirmed', 3: '7day', 4: 'cases_daily'})
         .assign(Date=lambda x: convert_timestamp(x['Date']))
         .astype({'cases_daily': 'int32[pyarrow]'})
+        .dropna(subset=['cases_daily'])
         .assign(County='Tarrant')
         [['Date', 'cases_daily']]
     )
