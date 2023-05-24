@@ -10,5 +10,9 @@ def load_csv(url: str) -> pd.DataFrame:
     df = pd.read_csv(url)
     return df
 
-def convert_timestamp(x: pd.Series) -> pd.Series:
-    return pd.to_datetime(x * 1_000_000).dt.date
+
+def convert_date(date_series: pd.Series, date_format: str) -> pd.Series:
+    if date_format == 'timestamp_int':
+        return pd.to_datetime(date_series * 1_000_000).dt.date
+
+    return pd.to_datetime(date_series, format=date_format).dt.date
