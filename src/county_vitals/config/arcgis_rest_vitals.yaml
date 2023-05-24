@@ -17,6 +17,7 @@ bexar:
             case_count_weekly_change:  "int32[pyarrow]"
             death_count_weekly_change: "int32[pyarrow]"
         uid: [ 'Date' ]
+        date_format: 'timestamp_int'
     url:
         base:              'https://services.arcgis.com'
         feature_server_id: 0
@@ -46,6 +47,7 @@ harris:
             Date:  'int64[pyarrow]'
             Total: "int32[pyarrow]"
         uid: [ 'Date' ]
+        date_format: 'timestamp_int'
     url:
         base:              'https://services.arcgis.com'
         feature_server_id: 0
@@ -73,6 +75,7 @@ travis:
             TotalCases:  "int32[pyarrow]"
             TotalDeaths: "int32[pyarrow]"
         uid: [ 'Date' ]
+        date_format: 'timestamp_int'
     url:
         base:              'https://services.arcgis.com'
         feature_server_id: 0
@@ -103,6 +106,7 @@ randall:
                 case_data_date_of_test: 'int64[pyarrow]'
                 case_data_count:        "int32[pyarrow]"
             uid: [ 'Date' ]
+            date_format: 'timestamp_int'
         deaths:
             metric_out: [ "deaths_daily" ]
             filter:
@@ -118,7 +122,7 @@ randall:
                 death_data_date_of_death: 'int64[pyarrow]'
                 death_data_count:         "int32[pyarrow]"
             uid: [ 'Date' ]
-
+            date_format: 'timestamp_int'
     url:
         base:              'https://services6.arcgis.com'
         feature_server_id: 0
@@ -135,7 +139,7 @@ potter:
     file_exists:   true
     col:
         cases:
-            metric_out: ["cases_daily"]
+            metric_out: [ "cases_daily" ]
             filter:
                 col:      'case_data_county'
                 operator: '=='
@@ -149,6 +153,7 @@ potter:
                 case_data_date_of_test: 'int64[pyarrow]'
                 case_data_count:        "int32[pyarrow]"
             uid: [ 'Date' ]
+            date_format: 'timestamp_int'
         deaths:
             metric_out: [ "deaths_daily" ]
             filter:
@@ -164,6 +169,7 @@ potter:
                 death_data_date_of_death: 'int64[pyarrow]'
                 death_data_count:         "int32[pyarrow]"
             uid: [ 'Date' ]
+            date_format: 'timestamp_int'
 
     url:
         base:              'https://services6.arcgis.com'
