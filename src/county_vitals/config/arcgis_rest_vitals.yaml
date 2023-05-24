@@ -18,9 +18,10 @@ bexar:
             death_count_weekly_change: "int32[pyarrow]"
         uid: [ 'Date' ]
     url:
-        base:         'https://services.arcgis.com'
-        owner:        "g1fRTDLeMgspWrYp"
-        source_table: "Weekly_Bexar_County_CoVID19_Surveillance_Data_Public"
+        base:              'https://services.arcgis.com'
+        feature_server_id: 0
+        owner:             "g1fRTDLeMgspWrYp"
+        source_table:      "Weekly_Bexar_County_CoVID19_Surveillance_Data_Public"
     out:
         dir:        "tableau/vitals/staging"
         table_name: "bexar_vitals"
@@ -46,9 +47,10 @@ harris:
             Total: "int32[pyarrow]"
         uid: [ 'Date' ]
     url:
-        base:         'https://services.arcgis.com'
-        owner:        "su8ic9KbA7PYVxPS"
-        source_table: "Download_Reported_COVID_Cases_Timeline"
+        base:              'https://services.arcgis.com'
+        feature_server_id: 0
+        owner:             "su8ic9KbA7PYVxPS"
+        source_table:      "Download_Reported_COVID_Cases_Timeline"
     out:
         dir:        "tableau/vitals/staging"
         table_name: "harris_vitals"
@@ -72,9 +74,10 @@ travis:
             TotalDeaths: "int32[pyarrow]"
         uid: [ 'Date' ]
     url:
-        base:         'https://services.arcgis.com'
-        owner:        "0L95CJ0VTaxqcmED"
-        source_table: "Daily_Count_COVID_view"
+        base:              'https://services.arcgis.com'
+        feature_server_id: 0
+        owner:             "0L95CJ0VTaxqcmED"
+        source_table:      "Daily_Count_COVID_view"
     out:
         dir:        "tableau/vitals/staging"
         table_name: "travis_vitals"
@@ -117,9 +120,10 @@ randall:
             uid: [ 'Date' ]
 
     url:
-        base:         'https://services6.arcgis.com'
-        owner:        "Vdk8uHgdgYx8ZqS6"
-        source_table: "public_health_dashboard_upload"
+        base:              'https://services6.arcgis.com'
+        feature_server_id: 0
+        owner:             "Vdk8uHgdgYx8ZqS6"
+        source_table:      "public_health_dashboard_upload"
     out:
         dir:        "tableau/vitals/staging"
         table_name: "randall_vitals"
@@ -162,9 +166,10 @@ potter:
             uid: [ 'Date' ]
 
     url:
-        base:         'https://services6.arcgis.com'
-        owner:        "Vdk8uHgdgYx8ZqS6"
-        source_table: "public_health_dashboard_upload"
+        base:              'https://services6.arcgis.com'
+        feature_server_id: 0
+        owner:             "Vdk8uHgdgYx8ZqS6"
+        source_table:      "public_health_dashboard_upload"
     out:
         dir:        "tableau/vitals/staging"
         table_name: "potter_vitals"
