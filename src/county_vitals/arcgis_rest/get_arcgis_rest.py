@@ -7,7 +7,8 @@ import requests
 import yaml
 import time
 
-from src.utils import load_csv, write_file, convert_date
+from src.utils import load_csv, write_file
+from src.county_vitals.request_common import clean_request_data
 from functools import reduce
 
 
@@ -113,32 +114,9 @@ def get_data_manager(config: dict) -> pd.DataFrame | None:
     new_df_combined = pd.concat(new_df_list)
     return new_df_combined
 
-
-def clean_data(df: pd.DataFrame, config) -> pd.DataFrame:
-    agg_dict = {col: 'sum' for col in config['col']['metric_out']}
-
-    clean_df = (
-        df
-        .astype(config['col']['dtypes'])
-        .rename(columns=config['col']['rename'])
-        .assign(
-            Date=lambda x: convert_date(
-                date_series=x['Date'],
-                date_format=config['col']['date_format'])
-        )
-        .dropna(subset=config['col']['uid'])
-        .assign(County=config['county'])
-        .groupby(['County', 'Date'], as_index=False)
-        .agg(agg_dict)
-    )
-
-    clean_df = clean_df[config['col']['output']]
-
-    return clean_df
-
-
-def parse_data_manager(config: dict) -> pd.DataFrame:
+def parse_data_manager(config: dict) -> pd.DataFrame | None:
     attempts = 0
+    raw_data = None
     while attempts < 5:
         try:
             raw_data = get_data_manager(config)
@@ -153,7 +131,7 @@ def parse_data_manager(config: dict) -> pd.DataFrame:
         print(f'No new data found')
         return None
 
-    clean_df_raw = clean_data(raw_data, config)
+    clean_df_raw = clean_request_data(raw_data, config)
     return clean_df_raw
 
 
@@ -192,6 +170,6 @@ def get_vitals(config: dict) -> None:
     write_file(clean_df, df_out_path)
 
 
-CONFIG = yaml.safe_load(Path('src/county_vitals/config/arcgis_rest_vitals.yaml').read_text())
+CONFIG = yaml.safe_load(Path('src/county_vitals/arcgis_rest/arcgis_rest_vitals.yaml').read_text())
 counties = list(CONFIG.keys())
 [get_vitals(CONFIG[county]) for county in counties]
