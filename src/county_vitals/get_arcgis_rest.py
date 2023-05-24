@@ -26,8 +26,8 @@ def get_data_manager(config: dict) -> pd.DataFrame | None:
 
     def get_offsets(request_url: str, step_interval: int) -> list:
         def create_num_records_request(url: str) -> str:
-            url_base = url.split('query?')[0]
-            url_count_suffix = 'query?where=1%3D1&returnCountOnly=true&f=pjson'
+            url_base = url.split('&outFields=')[0]
+            url_count_suffix = '&returnCountOnly=true&f=pjson'
             url_out = f'{url_base}{url_count_suffix}'
             return url_out
 
@@ -57,11 +57,15 @@ def get_data_manager(config: dict) -> pd.DataFrame | None:
         url_suffix = '&outSR=4326&f=json&resultOffset='
 
         url_base = f'{url_location}/{owner}/arcgis/rest/services/{source_table}/FeatureServer/0'
-        url_query_base = 'query?where=1%3D1&outFields='
+        if 'filter' in config['col']:
+            filter_config = config['col']['filter']
+            url_query_where = f'where={filter_config["col"]}%3D%27{filter_config["value"]}%27'
+        else:
+            url_query_where = 'where=1%3D1'
 
         col_list = config['col']['input']
         col_list_formatted = '%2C+'.join(col_list)
-        url_query = f'{url_query_base}{col_list_formatted}{url_suffix}'
+        url_query = f'query?{url_query_where}&outFields={col_list_formatted}{url_suffix}'
 
         url_out = f'{url_base}/{url_query}'
 
@@ -100,11 +104,6 @@ def get_data_manager(config: dict) -> pd.DataFrame | None:
 
 
 def clean_data(df: pd.DataFrame, config) -> pd.DataFrame:
-    if 'filter' in config['col']:
-        filter_config = config['col']['filter']
-        filter_value = filter_config['value']
-        df = df.query(f'{filter_config["col"]} {filter_config["operator"]} @filter_value')
-
     clean_df = (
         df
         .astype(config['col']['dtypes'])
