@@ -7,14 +7,8 @@ import requests
 import yaml
 import time
 
-def write_file(df: pd.DataFrame, table_path: str) -> None:
-    print(f'Writing file to {table_path}')
-    df.to_csv(f'{table_path}.csv', index=False)
+from src.utils import load_csv, write_file, convert_timestamp
 
-
-def load_csv(url: str) -> pd.DataFrame:
-    df = pd.read_csv(url)
-    return df
 
 
 def get_data_manager(config: dict) -> pd.DataFrame | None:
