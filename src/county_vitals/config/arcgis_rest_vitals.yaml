@@ -72,3 +72,81 @@ travis:
     out:
         dir:        "tableau/vitals/staging"
         table_name: "travis_vitals"
+randall:
+    data_type:     "vitals"
+    county:        "Randall"
+    step_interval: 1000
+    full_refresh:  true
+    file_exists:   true
+    col:
+        cases:
+            filter:
+                col:      'case_data_county'
+                operator: '=='
+                value:    'Randall'
+            input: [ 'case_data_date_of_test', 'case_data_county', 'case_data_count' ]
+            output: [ 'County', 'Date', 'cases_daily' ]
+            rename:
+                case_data_date_of_test: "Date"
+                case_data_count:        "cases_daily"
+            dtypes:
+                case_data_date_of_test: 'int64[pyarrow]'
+                case_data_count:        "int32[pyarrow]"
+            uid: [ 'Date' ]
+        deaths:
+            input: [ 'death_data_date_of_death', 'death_data_county', 'death_data_count' ]
+            output: [ 'County', 'Date',  'deaths_daily' ]
+            rename:
+                death_data_date_of_death: "Date"
+                death_data_count:         "deaths_daily"
+            dtypes:
+                death_data_date_of_death: 'int64[pyarrow]'
+                death_data_count:         "int32[pyarrow]"
+            uid: [ 'Date' ]
+
+    url:
+        base:         'https://services6.arcgis.com'
+        owner:        "Vdk8uHgdgYx8ZqS6"
+        source_table: "public_health_dashboard_upload"
+    out:
+        dir:        "tableau/vitals/staging"
+        table_name: "randall_vitals"
+potter:
+    data_type:     "vitals"
+    county:        "Potter"
+    step_interval: 1000
+    full_refresh:  true
+    file_exists:   true
+    col:
+        cases:
+            filter:
+                col:      'case_data_county'
+                operator: '=='
+                value:    'Potter'
+            input: [ 'case_data_date_of_test', 'case_data_county', 'case_data_count' ]
+            output: [ 'County', 'Date', 'cases_daily' ]
+            rename:
+                case_data_date_of_test: "Date"
+                case_data_count:        "cases_daily"
+            dtypes:
+                case_data_date_of_test: 'int64[pyarrow]'
+                case_data_count:        "int32[pyarrow]"
+            uid: [ 'Date' ]
+        deaths:
+            input: [ 'death_data_date_of_death', 'death_data_county', 'death_data_count' ]
+            output: [ 'County', 'Date',  'deaths_daily' ]
+            rename:
+                death_data_date_of_death: "Date"
+                death_data_count:         "deaths_daily"
+            dtypes:
+                death_data_date_of_death: 'int64[pyarrow]'
+                death_data_count:         "int32[pyarrow]"
+            uid: [ 'Date' ]
+
+    url:
+        base:         'https://services6.arcgis.com'
+        owner:        "Vdk8uHgdgYx8ZqS6"
+        source_table: "public_health_dashboard_upload"
+    out:
+        dir:        "tableau/vitals/staging"
+        table_name: "potter_vitals"
