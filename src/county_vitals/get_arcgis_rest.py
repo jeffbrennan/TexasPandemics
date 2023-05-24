@@ -7,12 +7,19 @@ import requests
 import yaml
 import time
 
-from src.utils import load_csv, write_file, convert_timestamp
+from src.utils import load_csv, write_file, convert_date
 from functools import reduce
 
 
 def get_data_manager(config: dict) -> pd.DataFrame | None:
-    def get_max_timestamp(config: dict) -> int:
+    def format_date(max_date_timestamp: int, config: dict) -> int | str:
+        if config['col']['date_format'] == 'timestamp_int':
+            return max_date_timestamp
+
+        formatted_date = dt.fromtimestamp(max_date_timestamp / 1000).strftime(config['col']['date_format'])
+        return formatted_date
+
+    def get_max_date(config: dict) -> int | str:
         if not config['full_refresh'] and config['file_exists']:
             file_path = f'{config["out"]["dir"]}/{config["out"]["table_name"]}'
 
@@ -22,7 +29,8 @@ def get_data_manager(config: dict) -> pd.DataFrame | None:
             max_date = dt.strftime(dt(1999, 12, 31), '%Y-%m-%d')
 
         max_date_timestamp = int(dt.strptime(max_date, '%Y-%m-%d').timestamp() * 1000)
-        return max_date_timestamp
+        date_out = format_date(max_date_timestamp, config)
+        return date_out
 
     def get_offsets(request_url: str, step_interval: int) -> list:
         def create_num_records_request(url: str) -> str:
@@ -76,8 +84,8 @@ def get_data_manager(config: dict) -> pd.DataFrame | None:
 
     request_url = create_request_url(config)
     date_col = get_date_col(config)
+    max_date = get_max_date(config)
 
-    max_timestamp = get_max_timestamp(config)
     offsets = get_offsets(
         request_url=request_url,
         step_interval=config['step_interval']
@@ -90,7 +98,7 @@ def get_data_manager(config: dict) -> pd.DataFrame | None:
         df = get_data(request_url, offset)
 
         # filtering by date/timestamp in rest query wasn't working
-        df_new = (df.query(f'{date_col} > @max_timestamp'))
+        df_new = (df.query(f'{date_col} > @max_date'))
         if df_new.empty:
             break
 
@@ -110,7 +118,11 @@ def clean_data(df: pd.DataFrame, config) -> pd.DataFrame:
         df
         .astype(config['col']['dtypes'])
         .rename(columns=config['col']['rename'])
-        .assign(Date=lambda x: convert_timestamp(x['Date']))
+        .assign(
+            Date=lambda x: convert_date(
+                date_series=x['Date'],
+                date_format=config['col']['date_format'])
+        )
         .dropna(subset=config['col']['uid'])
         .assign(County=config['county'])
         .groupby(['County', 'Date'], as_index=False)
