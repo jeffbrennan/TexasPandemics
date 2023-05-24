@@ -5,10 +5,10 @@ tarrant:
         output: [ 'County', 'Date', 'cases_daily' ]
         rename:
             0: "Date"
-            4: "cases_daily"
+            1: "cases_daily"
         dtypes:
             0: 'int64[pyarrow]'
-            4: "int32[pyarrow]"
+            1: "int32[pyarrow]"
         uid: [ 'Date' ]
         date_format: "timestamp_int"
     out:
@@ -59,33 +59,6 @@ tarrant:
                                                             Expression:
                                                                 SourceRef:
                                                                     Source: c1
-                                                            Property: Probable_Specimen Date
-                                                    Function: 0
-                                                Name: Sum(CV19_Case Data by Date.Probable_Specimen Date)
-                                            -   Aggregation:
-                                                    Expression:
-                                                        Column:
-                                                            Expression:
-                                                                SourceRef:
-                                                                    Source: c1
-                                                            Property: Confirm_Specimen Date
-                                                    Function: 0
-                                                Name: Sum(CV19_Case Data by Date.Confirm_Specimen Date)
-                                            -   Aggregation:
-                                                    Expression:
-                                                        Column:
-                                                            Expression:
-                                                                SourceRef:
-                                                                    Source: c1
-                                                            Property: 7Day_Spec
-                                                    Function: 0
-                                                Name: Sum(CV19_Case Data by Date.7Day_Spec)
-                                            -   Aggregation:
-                                                    Expression:
-                                                        Column:
-                                                            Expression:
-                                                                SourceRef:
-                                                                    Source: c1
                                                             Property: Cases_Specimen Date
                                                     Function: 0
                                                 Name: Sum(CV19_Case Data by Date.Cases_Specimen Date)
@@ -113,16 +86,13 @@ tarrant:
                                             Groupings:
                                                 -   Projections:
                                                         - 0
-                                                        - 3
-                                                        - 2
                                                         - 1
-                                                        - 4
                                         DataReduction:
-                                            DataVolume: 4
+                                            DataVolume: 2
                                             Primary:
                                                 Sample: { }
                                         SuppressedJoinPredicates:
-                                            - 4
+                                            - 2
                                         Version: 1
                     QueryId: ''
             cancelQueries: [ ]
