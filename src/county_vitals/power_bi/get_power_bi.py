@@ -16,7 +16,7 @@ def parse_response(response: requests.Response, config: dict) -> pd.DataFrame | 
     result_df = None
     try:
         result_data_source = response_json['results'][0]['result']['data']['dsr']['DS'][0]['PH'][0]['DM0']
-        result_data_series = pd.DataFrame(result_data_source)['C']
+        result_data_series = pd.DataFrame(result_data_source)[config["col"]["metric_key"]]
         result_df = pd.DataFrame(result_data_series.tolist())
     except KeyError as e:
         print(f'Error: {e}')
@@ -39,7 +39,7 @@ def get_data(config: dict) -> requests.Response:
 def get_vitals(config) -> None:
     print(f'Getting data for {config["county"]} County')
     response = get_data(config)
-    result_df = parse_response(response)
+    result_df = parse_response(response, config)
 
     if result_df is not None:
         clean_df = clean_request_data(result_df, config)
