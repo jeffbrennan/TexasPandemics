@@ -1,6 +1,8 @@
 tarrant:
     county: Tarrant
     col:
+        date_missing: false
+        metric_key: 'C'
         metric_out: [ "cases_daily" ]
         output: [ 'County', 'Date', 'cases_daily' ]
         rename:
@@ -72,14 +74,11 @@ tarrant:
                                                                             Source: c
                                                                     Property: Year
                                                         Values:
-                                                            -
-                                                                -   Literal:
+                                                            -   -   Literal:
                                                                         Value: "'2020'"
-                                                            -
-                                                                -   Literal:
+                                                            -   -   Literal:
                                                                         Value: "'2022-2023'"
-                                                            -
-                                                                -   Literal:
+                                                            -   -   Literal:
                                                                         Value: "'2021'"
                                     Binding:
                                         Primary:
@@ -100,16 +99,16 @@ tarrant:
 el paso:
     county: 'El Paso'
     col:
+        date_missing: true
         metric_out: [ "cases_daily" ]
+        metric_key: 'M0'
         output: [ 'County', 'Date', 'cases_daily' ]
         rename:
-            0: "Date"
-            1: "cases_daily"
+            0: "cases_daily"
         dtypes:
-            0: 'int64[pyarrow]'
-            1: "int32[pyarrow]"
+            0: 'int32[pyarrow]'
         uid: [ 'Date' ]
-        date_format: "timestamp_int"
+        date_format: "%Y-%m-%d"
     out:
         dir:        tableau/vitals/staging
         table_name: el_paso_vitals
@@ -132,42 +131,22 @@ el paso:
         payload:
             cancelQueries: [ ]
             modelId: 382720
+            version: 1.0.0
             queries:
                 -   Query:
                         Commands:
-                            - TODO: make this match above
                             -   SemanticQueryDataShapeCommand:
-                                    Binding:
-                                        DataReduction:
-                                            DataVolume: 3
-                                            Primary:
-                                                Top: { }
-                                        Primary:
-                                            Groupings:
-                                                -   Projections:
-                                                        - 0
-                                        Projections:
-                                            - 1
-                                        Version: 1
-                                    ExecutionMetricsKind: 1
                                     Query:
+                                        Version: 2
                                         From:
                                             -   Entity: Measures_Table
-                                                Name:   m
-                                                Type:   0
+                                                Name:   c
+                                                Type:   1
                                         Select:
                                             -   Measure:
                                                     Expression:
                                                         SourceRef:
-                                                            Source: m
+                                                            Source: c
                                                     Property: New Cases
                                                 Name: Measures_Table.New Cases
-                                            -   Measure:
-                                                    Expression:
-                                                        SourceRef:
-                                                            Source: m
-                                                    Property: rf_new_cases
-                                                Name: Measures_Table.rf_new_cases
-                                        Version: 2
-                QueryId: ''
-            version: 1.0.0
+                                    ExecutionMetricsKind: 1
