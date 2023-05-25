@@ -37,15 +37,17 @@ def get_data(config: dict) -> requests.Response:
     return response
 
 
-def get_vitals(config) -> None:
+def get_vitals(config) -> str:
     print(f'Getting data for {config["county"]} County')
     response = get_data(config)
     result_df = parse_response(response, config)
 
-    if result_df is not None:
-        clean_df = clean_request_data(result_df, config)
-        write_file(clean_df, 'tableau/vitals/staging/tarrant_vitals')
+    if result_df is None:
+        return 'Failed to get data'
 
+    clean_df = clean_request_data(result_df, config)
+    write_file(clean_df, f'{config["out"]["dir"]}/{config["out"]["table_name"]}')
+    return 'Success'
 
 CONFIG = yaml.safe_load(Path('src/county_vitals/power_bi/power_bi_config.yaml').read_text())
 counties = list(CONFIG.keys())
