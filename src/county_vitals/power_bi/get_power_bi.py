@@ -8,7 +8,7 @@ from src.county_vitals.request_common import clean_request_data
 from src.utils import write_file
 
 
-def parse_response(response: requests.Response) -> pd.DataFrame | None:
+def parse_response(response: requests.Response, config: dict) -> pd.DataFrame | None:
     if response.status_code != 200:
         raise Exception(f'Error: {response.status_code}')
 
@@ -20,6 +20,9 @@ def parse_response(response: requests.Response) -> pd.DataFrame | None:
         result_df = pd.DataFrame(result_data_series.tolist())
     except KeyError as e:
         print(f'Error: {e}')
+
+    if config['col']['date_missing']:
+        result_df['Date'] = dt.strftime(dt.today(), config['col']['date_format'])
 
     return result_df
 
