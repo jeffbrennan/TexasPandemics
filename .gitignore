@@ -28,3 +28,4 @@ src/unpublished
 *.DS_Store
 *.pyc
 *.env
+src/county_vitals/power_bi/temp_config.yaml
