@@ -6,6 +6,7 @@ import yaml
 
 from src.county_vitals.request_common import clean_request_data
 from src.utils import write_file
+from datetime import datetime as dt
 
 
 def parse_response(response: requests.Response, config: dict) -> pd.DataFrame | None:
