@@ -14,7 +14,7 @@ tarrant:
         uid: [ 'Date' ]
         date_format: "timestamp_int"
     out:
-        dir:        tableau/vitals/staging
+        dir:        tableau/vitals/staging/county_dashboard
         table_name: tarrant_vitals
     url:
         base: https://wabi-us-gov-iowa-api.analysis.usgovcloudapi.net/public/reports/querydata
@@ -110,7 +110,7 @@ el paso:
         uid: [ 'Date' ]
         date_format: "%Y-%m-%d"
     out:
-        dir:        tableau/vitals/staging
+        dir:        tableau/vitals/staging/county_dashboard
         table_name: el_paso_vitals
     url:
         base: https://wabi-us-gov-iowa-api.analysis.usgovcloudapi.net/public/reports/querydata

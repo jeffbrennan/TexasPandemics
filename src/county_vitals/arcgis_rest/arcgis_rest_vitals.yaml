@@ -24,7 +24,7 @@ bexar:
         owner:             "g1fRTDLeMgspWrYp"
         source_table:      "Weekly_Bexar_County_CoVID19_Surveillance_Data_Public"
     out:
-        dir:        "tableau/vitals/staging"
+        dir:        "tableau/vitals/staging/county_dashboard"
         table_name: "bexar_vitals"
 harris:
     data_type:     "vitals"
@@ -54,7 +54,7 @@ harris:
         owner:             "su8ic9KbA7PYVxPS"
         source_table:      "Download_Reported_COVID_Cases_Timeline"
     out:
-        dir:        "tableau/vitals/staging"
+        dir:        "tableau/vitals/staging/county_dashboard"
         table_name: "harris_vitals"
 travis:
     data_type:     "vitals"
@@ -82,7 +82,7 @@ travis:
         owner:             "0L95CJ0VTaxqcmED"
         source_table:      "Daily_Count_COVID_view"
     out:
-        dir:        "tableau/vitals/staging"
+        dir:        "tableau/vitals/staging/county_dashboard"
         table_name: "travis_vitals"
 randall:
     data_type:     "vitals"
@@ -129,7 +129,7 @@ randall:
         owner:             "Vdk8uHgdgYx8ZqS6"
         source_table:      "public_health_dashboard_upload"
     out:
-        dir:        "tableau/vitals/staging"
+        dir:        "tableau/vitals/staging/county_dashboard"
         table_name: "randall_vitals"
 potter:
     data_type:     "vitals"
@@ -177,7 +177,7 @@ potter:
         owner:             "Vdk8uHgdgYx8ZqS6"
         source_table:      "public_health_dashboard_upload"
     out:
-        dir:        "tableau/vitals/staging"
+        dir:        "tableau/vitals/staging/county_dashboard"
         table_name: "potter_vitals"
 denton:
     data_type:     "vitals"
@@ -205,7 +205,7 @@ denton:
         owner:             "oTsZYNubyv7xK5yP"
         source_table:      "vDailyObservationsRT_WFL1"
     out:
-        dir:        "tableau/vitals/staging"
+        dir:        "tableau/vitals/staging/county_dashboard"
         table_name: "denton_vitals"
 nueces:
     data_type:     "vitals"
@@ -234,5 +234,5 @@ nueces:
         source_table:      "CC_COVID19_PUBLIC_DASH___WIP"
 
     out:
-        dir:        "tableau/vitals/staging"
+        dir:        "tableau/vitals/staging/county_dashboard"
         table_name: "nueces_vitals"
