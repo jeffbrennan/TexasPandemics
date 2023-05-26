@@ -207,3 +207,32 @@ denton:
     out:
         dir:        "tableau/vitals/staging"
         table_name: "denton_vitals"
+nueces:
+    data_type:     "vitals"
+    county:        "Nueces"
+    step_interval: 2000
+    full_refresh:  true
+    file_exists:   true
+    col:
+        metric_out: [ "cases_daily", "deaths_daily" ]
+        input: [ "REPORT_DATE", "NEW_TOTAL_CASES", "NEW_DEATH" ]
+        output: [ 'County', 'Date', 'cases_daily', 'deaths_daily' ]
+        rename:
+            REPORT_DATE:     "Date"
+            NEW_TOTAL_CASES: "cases_daily"
+            NEW_DEATH:       "deaths_daily"
+        dtypes:
+            REPORT_DATE: 'int64[pyarrow]'
+            NEW_TOTAL_CASES:             "int32[pyarrow]"
+            NEW_DEATH:            "int32[pyarrow]"
+        uid: [ 'Date' ]
+        date_format: "timestamp_int"
+    url:
+        base:              'https://services.arcgis.com'
+        feature_server_id: 1
+        owner:             "0J4ZNc4NaTguvRy0"
+        source_table:      "CC_COVID19_PUBLIC_DASH___WIP"
+
+    out:
+        dir:        "tableau/vitals/staging"
+        table_name: "nueces_vitals"
