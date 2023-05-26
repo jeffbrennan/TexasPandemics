@@ -7,7 +7,7 @@ from pathlib import Path
 from src.county_vitals.request_common import clean_request_data
 
 
-def explore_data(workbook: TableauWorkbook):
+def explore_data(workbook: TableauWorkbook) -> None:
     # pick a sheet
     sheets = workbook.getSheets()
     for sheet in sheets:
@@ -45,15 +45,15 @@ def get_data(workbook: TableauWorkbook, config: dict) -> pd.DataFrame | None:
     return result
 
 
-def create_ts_client(url):
+def create_workbook(url: str) -> TableauWorkbook:
     ts = TS()
     ts.loads(url)
     workbook = ts.getWorkbook()
-    return ts, workbook
+    return workbook
 
 
-def get_vitals(config) -> str:
-    ts, workbook = create_ts_client(config['url'])
+def get_vitals(config: dict) -> str:
+    workbook = create_workbook(config['url'])
     raw_data = get_data(workbook, config)
 
     if raw_data is None:
