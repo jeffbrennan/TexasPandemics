@@ -1,0 +1,19 @@
+galveston:
+    url: "https://www.gchd.org/public-health-services/covid-19/covid-19-dashboard"
+    county: 'Galveston'
+    target_sheet: 'County Trends'
+    target_worksheet: 'Positives w/ MA'
+    out:
+        dir:        "tableau/vitals/staging"
+        table_name: "galveston_vitals"
+    col:
+        metric_out: [ "cases_daily" ]
+        rename:
+            DAY(Case Date)-value: "Date"
+            AGG(Total Positive Cases)-value: "cases_daily"
+        output: [ 'County', 'Date', 'cases_daily']
+        dtypes:
+            DAY(Case Date)-value: 'string'
+            AGG(Total Positive Cases)-value: "int32[pyarrow]"
+        uid: [ 'Date' ]
+        date_format: "%Y-%m-%d %H:%M:%S"
