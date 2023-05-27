@@ -8,14 +8,16 @@ from src.wastewater.get_cdc_wastewater import (
     clean_data
 )
 
+from src.utils import load_csv
+
 
 @asset(
     name="cdc_wastewater",
     group_name="wastewater",
-    key_prefix=['vitals', 'tableau'],
+    key_prefix=['wastewater', 'cdc'],
     metadata={
         "schema": "vitals",
-        "table_name": "galveston_vitals",
+        "table_name": "cdc_wastewater",
         "add_archive": True
     },
     io_manager_key='pandas_io_manager'
@@ -23,9 +25,12 @@ from src.wastewater.get_cdc_wastewater import (
 def get_cdc_wastewater() -> pd.DataFrame:
     DATASET_ID = "2ew6-ywp6"
     client = create_client()
+    current_df = load_csv('tableau/wastewater/cdc_wastewater.csv')
+    current_max_date = current_df['Date'].max()
+
     # region pull data --------------------------------------------------------------------------------
-    offsets = create_offsets(client, DATASET_ID)
-    results = [get_data(offset, DATASET_ID) for offset in offsets]
+    offsets = create_offsets(client, DATASET_ID, current_max_date)
+    results = [get_data(client, offset, DATASET_ID, current_max_date) for offset in offsets]
     results_df = pd.concat([pd.DataFrame.from_records(i) for i in results])
     # endregion
 

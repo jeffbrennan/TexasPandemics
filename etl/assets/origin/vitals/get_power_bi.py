@@ -51,4 +51,4 @@ def get_vitals_tarrant() -> pd.DataFrame:
     io_manager_key='pandas_io_manager'
 )
 def get_vitals_el_paso() -> pd.DataFrame:
-    return get_vitals(POWER_BI_CONFIG['el_paso'])
+    return get_vitals(POWER_BI_CONFIG['el paso'])
