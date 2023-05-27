@@ -1,6 +1,0 @@
-[32m2023-05-27 10:12:31 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 280d50ff-278b-486d-9a8a-b61f66b50fd9 - 44372 - LOGS_CAPTURED - Started capturing logs in process (pid: 44372).
-[32m2023-05-27 10:12:31 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 280d50ff-278b-486d-9a8a-b61f66b50fd9 - 44372 - vitals__tableau__galveston - STEP_START - Started execution of step "vitals__tableau__galveston".
-[32m2023-05-27 10:12:39 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 280d50ff-278b-486d-9a8a-b61f66b50fd9 - 44372 - vitals__tableau__galveston - STEP_OUTPUT - Yielded output "result" of type "DataFrame". (Type check passed).
-[32m2023-05-27 10:12:39 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 280d50ff-278b-486d-9a8a-b61f66b50fd9 - 44372 - vitals__tableau__galveston - ASSET_MATERIALIZATION - Materialized value vitals tableau galveston.
-[32m2023-05-27 10:12:39 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 280d50ff-278b-486d-9a8a-b61f66b50fd9 - 44372 - vitals__tableau__galveston - HANDLED_OUTPUT - Handled output "result" using IO manager "pandas_io_manager"
-[32m2023-05-27 10:12:39 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 280d50ff-278b-486d-9a8a-b61f66b50fd9 - 44372 - vitals__tableau__galveston - STEP_SUCCESS - Finished execution of step "vitals__tableau__galveston" in 7.35s.
