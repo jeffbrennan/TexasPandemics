@@ -1,0 +1,6 @@
+[32m2023-05-27 10:05:33 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - ebddd4e7-f42b-48d5-bf77-43eb58c84401 - 43680 - LOGS_CAPTURED - Started capturing logs in process (pid: 43680).
+[32m2023-05-27 10:05:33 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - ebddd4e7-f42b-48d5-bf77-43eb58c84401 - 43680 - vitals__state__new_texas_vitals - STEP_START - Started execution of step "vitals__state__new_texas_vitals".
+[32m2023-05-27 10:05:35 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - ebddd4e7-f42b-48d5-bf77-43eb58c84401 - 43680 - vitals__state__new_texas_vitals - STEP_OUTPUT - Yielded output "result" of type "DataFrame". (Type check passed).
+[32m2023-05-27 10:05:35 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - ebddd4e7-f42b-48d5-bf77-43eb58c84401 - 43680 - vitals__state__new_texas_vitals - ASSET_MATERIALIZATION - Materialized value vitals state new_texas_vitals.
+[32m2023-05-27 10:05:35 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - ebddd4e7-f42b-48d5-bf77-43eb58c84401 - 43680 - vitals__state__new_texas_vitals - HANDLED_OUTPUT - Handled output "result" using IO manager "pandas_io_manager"
+[32m2023-05-27 10:05:35 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - ebddd4e7-f42b-48d5-bf77-43eb58c84401 - 43680 - vitals__state__new_texas_vitals - STEP_SUCCESS - Finished execution of step "vitals__state__new_texas_vitals" in 2.38s.

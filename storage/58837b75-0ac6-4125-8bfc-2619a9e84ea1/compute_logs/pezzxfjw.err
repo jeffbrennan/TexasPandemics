@@ -1,0 +1,6 @@
+[32m2023-05-27 10:11:52 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 58837b75-0ac6-4125-8bfc-2619a9e84ea1 - 44307 - LOGS_CAPTURED - Started capturing logs in process (pid: 44307).
+[32m2023-05-27 10:11:52 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 58837b75-0ac6-4125-8bfc-2619a9e84ea1 - 44307 - vitals__power_bi__el_paso - STEP_START - Started execution of step "vitals__power_bi__el_paso".
+[32m2023-05-27 10:11:53 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 58837b75-0ac6-4125-8bfc-2619a9e84ea1 - 44307 - vitals__power_bi__el_paso - STEP_OUTPUT - Yielded output "result" of type "DataFrame". (Type check passed).
+[32m2023-05-27 10:11:53 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 58837b75-0ac6-4125-8bfc-2619a9e84ea1 - 44307 - vitals__power_bi__el_paso - ASSET_MATERIALIZATION - Materialized value vitals power_bi el_paso.
+[32m2023-05-27 10:11:53 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 58837b75-0ac6-4125-8bfc-2619a9e84ea1 - 44307 - vitals__power_bi__el_paso - HANDLED_OUTPUT - Handled output "result" using IO manager "pandas_io_manager"
+[32m2023-05-27 10:11:53 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 58837b75-0ac6-4125-8bfc-2619a9e84ea1 - 44307 - vitals__power_bi__el_paso - STEP_SUCCESS - Finished execution of step "vitals__power_bi__el_paso" in 1.13s.

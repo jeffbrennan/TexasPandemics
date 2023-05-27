@@ -1,0 +1,6 @@
+[32m2023-05-27 10:10:48 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 9b932126-473d-492f-9fdb-9e156c4ff6f5 - 44187 - LOGS_CAPTURED - Started capturing logs in process (pid: 44187).
+[32m2023-05-27 10:10:48 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 9b932126-473d-492f-9fdb-9e156c4ff6f5 - 44187 - vitals__power_bi__tarrant - STEP_START - Started execution of step "vitals__power_bi__tarrant".
+[32m2023-05-27 10:10:49 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 9b932126-473d-492f-9fdb-9e156c4ff6f5 - 44187 - vitals__power_bi__tarrant - STEP_OUTPUT - Yielded output "result" of type "DataFrame". (Type check passed).
+[32m2023-05-27 10:10:49 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 9b932126-473d-492f-9fdb-9e156c4ff6f5 - 44187 - vitals__power_bi__tarrant - ASSET_MATERIALIZATION - Materialized value vitals power_bi tarrant.
+[32m2023-05-27 10:10:49 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 9b932126-473d-492f-9fdb-9e156c4ff6f5 - 44187 - vitals__power_bi__tarrant - HANDLED_OUTPUT - Handled output "result" using IO manager "pandas_io_manager"
+[32m2023-05-27 10:10:49 -0400[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 9b932126-473d-492f-9fdb-9e156c4ff6f5 - 44187 - vitals__power_bi__tarrant - STEP_SUCCESS - Finished execution of step "vitals__power_bi__tarrant" in 953ms.
