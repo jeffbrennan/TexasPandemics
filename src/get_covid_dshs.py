@@ -1,20 +1,19 @@
 from datetime import datetime as dt
 from datetime import timedelta
-
-import matplotlib.pyplot as plt
 import pandas as pd
-import regex as re
+import re
 import requests
 from bs4 import BeautifulSoup
-import src.utils
 
 
 def get_result_table(base_url: str) -> pd.DataFrame:
     dshs_table = pd.read_html(base_url)
     raw_data_orig = dshs_table[0]
 
+    raw_data_orig.columns
+
     # remove footnote
-    raw_data = raw_data_orig[raw_data_orig.iloc[:, 0].str.contains("provisional") == False]
+    raw_data = raw_data_orig[~raw_data_orig.iloc[:, 0].str.contains("provisional")]
 
     # check if columns contain string surveillance component and last week
     # TODO: update with full col substr list
@@ -45,7 +44,8 @@ def fix_table_names(raw_df: pd.DataFrame) -> pd.DataFrame:
 def get_report_date(base_url: str) -> str:
     page_response = requests.get(base_url)
     soup = BeautifulSoup(page_response.text, "html.parser")
-    report_date: str = soup.find('b', text=re.compile('\d{1,2}/\d{1,2}/\d{4}')).text
+    report_date: str = soup.find('b', string=re.compile('\d{1,2}/\d{1,2}/\d{4}')).text
+
     # return data formatted as yyyy-mm-dd
     parsed_date = dt.strptime(report_date, '%m/%d/%Y').date()
 
@@ -63,9 +63,6 @@ def get_report_date(base_url: str) -> str:
     # return
     formatted_date = dt.strftime(parsed_date, '%Y-%m-%d')
     return formatted_date
-
-
-get_report_date(dshs_base_url)
 
 
 def fix_metric(metric: str) -> str:
@@ -108,21 +105,15 @@ def reshape_df(cleaned_df: pd.DataFrame) -> pd.DataFrame:
     return reshaped_df
 
 
-def clean_pivoted_df(reshaped_df: pd.DataFrame, report_date: str) -> pd.DataFrame:
+def clean_pivoted_df(reshaped_df: pd.DataFrame, report_date: str, output_cols: list) -> pd.DataFrame:
     final_df = (
         reshaped_df
-        .replace('▼|▲|\s', '', regex=True)
+        .replace('▼|▲|†|\,|\s', '', regex=True)
         .astype('int32')
         .assign(Date=report_date)
         .assign(Level_Type='State')
         .assign(Level='Texas')
-
-        [['Date', 'Level_Type', 'Level',
-          'new_cases_probable_plus_confirmed', 'new_cases_confirmed', 'new_cases_probable',
-          'cumulative_cases_probable_plus_confirmed', 'cumulative_cases_confirmed', 'cumulative_cases_probable',
-          'new_deaths',
-          'new_hospitalizations', 'hospitalizations_7_day',
-          ]]
+        [output_cols]
     )
     return final_df
 
@@ -158,40 +149,40 @@ def combine_with_existing(final_df: pd.DataFrame, existing_df: pd.DataFrame) -> 
     )
     return combined_df
 
-
-# region initial setup --------------------------------------------------------------------------------
-existing_df = pd.read_csv('tableau/state_vitals.csv')
-
-output_cols = [
-    'Date', 'Level_Type', 'Level',
-    'new_cases_probable_plus_confirmed', 'new_cases_confirmed', 'new_cases_probable',
-    'cumulative_cases_probable_plus_confirmed', 'cumulative_cases_confirmed', 'cumulative_cases_probable',
-    'new_deaths',
-    'new_hospitalizations', 'hospitalizations_7_day',
-]
-
-dshs_base_url = 'https://www.dshs.texas.gov/covid-19-coronavirus-disease/texas-covid-19-surveillance'
-
-# endregion
-
-# region pull --------------------------------------------------------------------------------
-raw_table = get_result_table(base_url=dshs_base_url)
-report_date = get_report_date(base_url=dshs_base_url)
-
-# endregion
-
-# region clean --------------------------------------------------------------------------------
-fixed_names = fix_table_names(raw_table)
-cleaned_table = apply_metric_fixes(fixed_names)
-reshaped_df = reshape_df(cleaned_table)
-final_df = clean_pivoted_df(reshaped_df, report_date)
-# endregion
-
-# region combine --------------------------------------------------------------------------------
-output_df = combine_with_existing(final_df, existing_df)
-# endregion
-
-# region diagnostics + upload --------------------------------------------------------------------------------
-run_diagnostics(output_df, create_plot=False)
-src.utils.file(output_df, 'tableau/state_vitals')
+#
+# # region initial setup --------------------------------------------------------------------------------
+# existing_df = pd.read_csv('tableau/state_vitals.csv')
+#
+# output_cols = [
+#     'Date', 'Level_Type', 'Level',
+#     'new_cases_probable_plus_confirmed', 'new_cases_confirmed', 'new_cases_probable',
+#     'cumulative_cases_probable_plus_confirmed', 'cumulative_cases_confirmed', 'cumulative_cases_probable',
+#     'new_deaths',
+#     'new_hospitalizations', 'hospitalizations_7_day',
+# ]
+#
+# dshs_base_url = 'https://www.dshs.texas.gov/covid-19-coronavirus-disease/texas-covid-19-surveillance'
+#
+# # endregion
+#
+# # region pull --------------------------------------------------------------------------------
+# raw_table = get_result_table(base_url=dshs_base_url)
+# report_date = get_report_date(base_url=dshs_base_url)
+#
+# # endregion
+#
+# # region clean --------------------------------------------------------------------------------
+# fixed_names = fix_table_names(raw_table)
+# cleaned_table = apply_metric_fixes(fixed_names)
+# reshaped_df = reshape_df(cleaned_table)
+# final_df = clean_pivoted_df(reshaped_df, report_date)
+# # endregion
+#
+# # region combine --------------------------------------------------------------------------------
+# output_df = combine_with_existing(final_df, existing_df)
+# # endregion
+#
+# # region diagnostics + upload --------------------------------------------------------------------------------
+# run_diagnostics(output_df, create_plot=False)
+# src.utils.file(output_df, 'tableau/state_vitals')
 # endregion

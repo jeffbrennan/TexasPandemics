@@ -64,7 +64,12 @@ def get_vitals(config: dict) -> str:
     return 'Success'
 
 
-CONFIG = yaml.safe_load(Path('src/county_vitals/arcgis_rest/tableau_config.yaml').read_text())
-counties = list(CONFIG.keys())
-counties = ['galveston']
-[get_vitals(CONFIG[county]) for county in counties]
+def main():
+    CONFIG = yaml.safe_load(Path('src/county_vitals/arcgis_rest/tableau_config.yaml').read_text())
+    counties = list(CONFIG.keys())
+    counties = ['galveston']
+    [get_vitals(CONFIG[county]) for county in counties]
+
+
+if __name__ == '__main__':
+    main()

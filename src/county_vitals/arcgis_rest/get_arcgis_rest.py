@@ -168,8 +168,3 @@ def get_vitals(config: dict) -> None:
 
     df_out_path = f'{config["out"]["dir"]}/{config["out"]["table_name"]}'
     write_file(clean_df, df_out_path)
-
-
-CONFIG = yaml.safe_load(Path('src/county_vitals/arcgis_rest/arcgis_rest_vitals.yaml').read_text())
-counties = list(CONFIG.keys())
-[get_vitals(CONFIG[county]) for county in counties]

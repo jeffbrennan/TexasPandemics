@@ -11,29 +11,35 @@ from src.wastewater.houston_wastewater_common import (
 )
 
 
-def houston_plant_wastewater() -> None:
-    def clean_data(df: pd.DataFrame) -> pd.DataFrame:
-        clean_df = (
-            df
-            .query('corname.str.upper() != "Z.TOTAL"')
-            .rename(
-                columns={
-                    'corname': 'Plant_Name',
-                    'vl_est': 'viral_load_pct',
-                    'spline_ww': 'viral_load_log10',
-                    'firstdate': 'date_first',
-                    'lastdate': 'date_last',
-                }
-            )
-            .assign(Date=lambda x: pd.to_datetime(x['date'] * 1_000_000))
-            .assign(County='Harris')
-            .assign(viral_load=lambda x: 10 ** x['viral_load_log10'])
-            [['County', 'Plant_Name', 'Date', 'viral_load_log10', 'viral_load', 'viral_load_pct']]
-            .sort_values(['Plant_Name', 'Date'])
+def handle_output(df: pd.DataFrame) -> None:
+    run_diagnostics(df=df, id_col='Plant_Name')
+    src.utils.write_file(df, 'tableau/wastewater/houston_plant_wastewater')
+
+
+def clean_data(df: pd.DataFrame) -> pd.DataFrame:
+    clean_df = (
+        df
+        .query('corname.str.upper() != "Z.TOTAL"')
+        .rename(
+            columns={
+                'corname': 'Plant_Name',
+                'vl_est': 'viral_load_pct',
+                'spline_ww': 'viral_load_log10',
+                'firstdate': 'date_first',
+                'lastdate': 'date_last',
+            }
         )
+        .assign(Date=lambda x: pd.to_datetime(x['date'] * 1_000_000))
+        .assign(County='Harris')
+        .assign(viral_load=lambda x: 10 ** x['viral_load_log10'])
+        [['County', 'Plant_Name', 'Date', 'viral_load_log10', 'viral_load', 'viral_load_pct']]
+        .sort_values(['Plant_Name', 'Date'])
+    )
 
-        return clean_df
+    return clean_df
 
+
+def manage_houston_plant_wastewater() -> pd.DataFrame:
     # region  --------------------------------------------------------------------------------
     request_url = 'https://services.arcgis.com/lqRTrQp2HrfnJt8U/ArcGIS/rest/services/WWTP_gdb/FeatureServer/0/query?where=1%3D1&outFields=date%2C+corname%2C+vl_est%2C+spline_ww%2C+firstdate%2C+lastdate&sqlFormat=none&f=pjson&token=&resultOffset='
 
@@ -52,9 +58,4 @@ def houston_plant_wastewater() -> None:
 
     # region  --------------------------------------------------------------------------------
     clean_df = clean_data(new_dfs_combined)
-    run_diagnostics(df=clean_df, id_col='Plant_Name')
-    src.utils.write_file(clean_df, 'tableau/wastewater/houston_plant_wastewater')
-    # endregion
-
-
-houston_plant_wastewater()
+    return clean_df

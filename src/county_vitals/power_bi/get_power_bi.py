@@ -49,8 +49,13 @@ def get_vitals(config) -> str:
     write_file(clean_df, f'{config["out"]["dir"]}/{config["out"]["table_name"]}')
     return 'Success'
 
-CONFIG = yaml.safe_load(Path('src/county_vitals/power_bi/power_bi_config.yaml').read_text())
-counties = list(CONFIG.keys())
-config = CONFIG[counties[0]]
 
-# [get_vitals(CONFIG[county]) for county in counties]
+def main():
+    CONFIG = yaml.safe_load(Path('src/county_vitals/power_bi/power_bi_config.yaml').read_text())
+    counties = list(CONFIG.keys())
+    config = CONFIG[counties[0]]
+    pass
+
+
+if __name__ == '__main__':
+    main()
