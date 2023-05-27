@@ -1,6 +1,7 @@
 backend/
 diagnostics/
 special-requests/
+storage/ 
 
 original-sources/historical/cpr_archive
 original-sources/helpers/unpublished
@@ -28,3 +29,4 @@ src/unpublished
 *.pyc
 *.env
 src/county_vitals/power_bi/temp_config.yaml
+
