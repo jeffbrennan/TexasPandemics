@@ -12,10 +12,10 @@ from src.county_vitals.combine_vitals import (
 
 @asset(
     name="vitals_combined",
-    key_prefix=["intermediate"],
+    key_prefix=["vitals", "intermediate"],
     group_name="intermediate",
     metadata={
-        "schema": "intermediate",
+        "schema": "intermediate/vitals",
         "table_name": "vitals_combined",
         "add_archive": True
     },
@@ -39,7 +39,7 @@ from src.county_vitals.combine_vitals import (
     },
     io_manager_key="pandas_io_manager"
 )
-def get_vitals_combined() -> pd.DataFrame:
+def vitals_combined() -> pd.DataFrame:
     county_files = list_files()
     county_files_combined_raw = load_files(county_files)
     county_files_combined = combine_vitals(county_files_combined_raw)
