@@ -38,7 +38,7 @@ ARCGIS_CONFIG = yaml.safe_load(Path('src/county_vitals/arcgis_rest/arcgis_rest_v
     group_name="vitals_arcgis",
     key_prefix=['vitals', 'arcgis'],
     metadata={
-        "schema": "vitals",
+        "schema": "origin/vitals",
         "table_name": "harris_vitals",
         "add_archive": True
     },
@@ -53,7 +53,7 @@ def get_vitals_harris(context) -> pd.DataFrame:
     group_name="vitals_arcgis",
     key_prefix=['vitals', 'arcgis'],
     metadata={
-        "schema": "vitals",
+        "schema": "origin/vitals",
         "table_name": "travis_vitals",
         "add_archive": True
     },
@@ -68,7 +68,7 @@ def get_vitals_travis(context) -> pd.DataFrame:
     group_name="vitals_arcgis",
     key_prefix=["vitals", "arcgis"],
     metadata={
-        "schema": "vitals",
+        "schema": "origin/vitals",
         "table_name": "bexar_vitals",
         "add_archive": True
     },
@@ -83,7 +83,7 @@ def get_vitals_bexar(context) -> pd.DataFrame:
     group_name="vitals_arcgis",
     key_prefix=['vitals', 'arcgis'],
     metadata={
-        "schema": "vitals",
+        "schema": "origin/vitals",
         "table_name": "randall_vitals",
         "add_archive": True
     },
@@ -98,7 +98,7 @@ def get_vitals_randall(context) -> pd.DataFrame:
     group_name="vitals_arcgis",
     key_prefix=['vitals', 'arcgis'],
     metadata={
-        "schema": "vitals",
+        "schema": "origin/vitals",
         "table_name": "potter_vitals",
         "add_archive": True
     },
@@ -113,7 +113,7 @@ def get_vitals_potter(context) -> pd.DataFrame:
     group_name="vitals_arcgis",
     key_prefix=['vitals', 'arcgis'],
     metadata={
-        "schema": "vitals",
+        "schema": "origin/vitals",
         "table_name": "denton_vitals",
         "add_archive": True
     },
@@ -128,7 +128,7 @@ def get_vitals_denton(context) -> pd.DataFrame:
     group_name="vitals_arcgis",
     key_prefix=['vitals', 'arcgis'],
     metadata={
-        "schema": "vitals",
+        "schema": "origin/vitals",
         "table_name": "nueces_vitals",
         "add_archive": True
     },

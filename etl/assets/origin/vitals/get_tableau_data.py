@@ -28,7 +28,7 @@ TABLEAU_CONFIG = yaml.safe_load(Path('src/county_vitals/tableau/tableau_config.y
     group_name="vitals_tableau",
     key_prefix=['vitals', 'tableau'],
     metadata={
-        "schema": "vitals",
+        "schema": "origin/vitals",
         "table_name": "galveston_vitals",
         "add_archive": True
     },

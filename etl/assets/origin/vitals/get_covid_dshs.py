@@ -16,7 +16,7 @@ from src.get_covid_dshs import (
     group_name="vitals_state",
     key_prefix=['vitals', 'state'],
     metadata={
-        "schema": "vitals_state",
+        "schema": "origin/vitals_state",
         "table_name": "new_texas_vitals",
         "add_archive": True
     },

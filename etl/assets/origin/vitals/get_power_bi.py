@@ -29,7 +29,7 @@ POWER_BI_CONFIG = yaml.safe_load(Path('src/county_vitals/power_bi/power_bi_confi
     group_name="vitals_power_bi",
     key_prefix=['vitals', 'power_bi'],
     metadata={
-        "schema": "vitals",
+        "schema": "origin/vitals",
         "table_name": "tarrant_vitals",
         "add_archive": True
     },
@@ -44,7 +44,7 @@ def get_vitals_tarrant() -> pd.DataFrame:
     group_name="vitals_power_bi",
     key_prefix=['vitals', 'power_bi'],
     metadata={
-        "schema": "vitals",
+        "schema": "origin/vitals",
         "table_name": "el_paso_vitals",
         "add_archive": True
     },
