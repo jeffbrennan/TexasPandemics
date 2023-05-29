@@ -17,8 +17,7 @@ class PandasManager(ConfigurableIOManager):
 
     @staticmethod
     def read_dataframe_from_disk(schema: str, table_name: str) -> pd.DataFrame:
-        df = pd.read_csv(f'data/{schema}/{table_name}.csv')
-        return df
+        return pd.read_parquet(f'data/{schema}/{table_name}.parquet')
 
     @staticmethod
     def write_dataframe_to_disk(schema: str, table_name: str, add_archive: bool, dataframe: pd.DataFrame) -> None:
@@ -27,9 +26,9 @@ class PandasManager(ConfigurableIOManager):
 
         if add_archive:
             Path(f'{base_dir}/archive').mkdir(parents=True, exist_ok=True)
-            dataframe.to_csv(f'{base_dir}/archive/{table_name}_{dt.now().strftime("%Y-%m-%d")}.csv', index=False)
+            dataframe.to_parquet(f'{base_dir}/archive/{table_name}_{dt.now().strftime("%Y-%m-%d")}.parquet', index=False)
 
-        dataframe.to_csv(f'{base_dir}/{table_name}.csv', index=False)
+        dataframe.to_parquet(f'{base_dir}/{table_name}.parquet', index=False)
 
     def handle_output(self, context, obj: pd.DataFrame) -> None:
         self.write_dataframe_to_disk(
