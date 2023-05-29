@@ -5,7 +5,6 @@ from src.county_vitals.combine_vitals import (
     list_files,
     load_files,
     combine_vitals,
-    run_diagnostics,
     clean_vitals
 )
 

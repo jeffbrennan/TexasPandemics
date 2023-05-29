@@ -6,6 +6,7 @@ from sodapy import Socrata
 
 import src.utils
 
+
 def create_client() -> Socrata:
     load_dotenv('.env')
     client = Socrata(
@@ -15,7 +16,7 @@ def create_client() -> Socrata:
     return client
 
 
-def get_data(offset: int, dataset_id: str) -> list[dict]:
+def get_data(client: Socrata, offset: int, dataset_id: str, current_max_date: str) -> list[dict]:
     results = client.get(
         dataset_identifier=dataset_id,
         select="county_names, sample_location, key_plot_id, population_served, first_sample_date, date_start, date_end, ptc_15d, percentile, detect_prop_15d",
@@ -95,19 +96,29 @@ def write_raw_results(df: pd.DataFrame) -> None:
     src.utils.write_file(df, f'original-sources/historical/wastewater/cdc/cdc_wastewater_raw_{write_date}')
 
 
-def create_offsets(client: object, dataset_id: str):
+def create_offsets(client: object, dataset_id: str, current_max_date: str) -> list[int]:
+    def get_max_date(client: object, dataset_id: str) -> str:
+        response = client.get(
+            dataset_identifier=dataset_id,
+            select="MAX(date_end) as max_date",
+            where=f"reporting_jurisdiction = 'Texas'"
+        )
+        output = response[0]['max_date']
+        return output
+
     def get_num_records(client: object, dataset_id: str):
         response = client.get(
             dataset_identifier=dataset_id,
             select="COUNT(*) as n ",
-            where=f"reporting_jurisdiction = 'Texas' and date_start > '{current_max_date}'"
+            where=f"reporting_jurisdiction = 'Texas' and date_end > '{current_max_date}'"
         )
 
         output = int(response[0]['n'])
         return output
 
+    live_max_date = get_max_date(client, dataset_id)
     num_records = get_num_records(client, dataset_id)
-    assert num_records > 0, 'No new records found'
+    assert num_records > 0, f'No new records found, max date available is {live_max_date}'
 
     offsets = [i for i in range(0, num_records, 1000)]
     return offsets
@@ -115,7 +126,7 @@ def create_offsets(client: object, dataset_id: str):
 
 def run_diagnostics(df: pd.DataFrame) -> None:
     check_duplicate_values = (
-       df
+        df
         .groupby(['County', 'Date', 'key_plot_id'])
         .size()
         .reset_index()
@@ -123,7 +134,8 @@ def run_diagnostics(df: pd.DataFrame) -> None:
         .query('count > 1')
     )
 
-    assert check_duplicate_values.shape[0] == 0, f'Found {check_duplicate_values.shape[0]} duplicate county/date/plant pairs'
+    assert check_duplicate_values.shape[
+               0] == 0, f'Found {check_duplicate_values.shape[0]} duplicate county/date/plant pairs'
 
     check_county_not_null = df[df['County'].isnull()]
     assert check_county_not_null.shape[0] == 0, f'Found {check_county_not_null.shape[0]} null counties'
@@ -133,26 +145,32 @@ def run_diagnostics(df: pd.DataFrame) -> None:
 
 
 # region setup --------------------------------------------------------------------------------
-client = create_client()
 
-DATASET_ID = "2ew6-ywp6"
+def main():
+    client = create_client()
 
-current_df = src.utils.load_csv('tableau/wastewater/cdc_wastewater.csv')
-current_max_date = current_df['Date'].max()
+    DATASET_ID = "2ew6-ywp6"
 
-# region pull data --------------------------------------------------------------------------------
-offsets = create_offsets(client, DATASET_ID)
-results = [get_data(offset, DATASET_ID) for offset in offsets]
-results_df = pd.concat([pd.DataFrame.from_records(i) for i in results])
-write_raw_results(results_df)
-# endregion
+    current_df = src.utils.load_csv('tableau/wastewater/cdc_wastewater.csv')
+    current_max_date = current_df['Date'].max()
 
-# region clean_data --------------------------------------------------------------------------------
-clean_df = clean_data(results_df)
-clean_df_out = pd.concat([current_df, clean_df]).drop_duplicates()
-# endregion
+    # region pull data --------------------------------------------------------------------------------
+    offsets = create_offsets(client, DATASET_ID, current_max_date)
+    results = [get_data(client, offset, DATASET_ID, current_max_date) for offset in offsets]
+    results_df = pd.concat([pd.DataFrame.from_records(i) for i in results])
+    write_raw_results(results_df)
+    # endregion
 
-# region diagnostics + upload --------------------------------------------------------------------------------
-run_diagnostics(clean_df_out)
-src.utils.write_file(clean_df_out, 'tableau/wastewater/cdc_wastewater')
+    # region clean_data --------------------------------------------------------------------------------
+    clean_df = clean_data(results_df)
+    clean_df_out = pd.concat([current_df, clean_df]).drop_duplicates()
+    # endregion
+
+    # region diagnostics + upload --------------------------------------------------------------------------------
+    run_diagnostics(clean_df_out)
+    src.utils.write_file(clean_df_out, 'tableau/wastewater/cdc_wastewater')
+
+
+if __name__ == '__main__':
+    main()
 # endregion
