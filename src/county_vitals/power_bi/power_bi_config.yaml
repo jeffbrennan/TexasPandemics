@@ -2,17 +2,17 @@ tarrant:
     county: Tarrant
     col:
         date_missing: false
-        metric_key: 'C'
+        metric_key:   'C'
         metric_out: [ "cases_daily" ]
         output: [ 'County', 'Date', 'cases_daily' ]
         rename:
             0: "Date"
             1: "cases_daily"
         dtypes:
-            0: 'int64[pyarrow]'
-            1: "int32[pyarrow]"
+            0: 'Int64'
+            1: "Int32"
         uid: [ 'Date' ]
-        date_format: "timestamp_int"
+        date_format:  "timestamp_int"
     out:
         dir:        tableau/vitals/staging/county_dashboard
         table_name: tarrant_vitals
@@ -101,14 +101,14 @@ el paso:
     col:
         date_missing: true
         metric_out: [ "cases_daily" ]
-        metric_key: 'M0'
+        metric_key:   'M0'
         output: [ 'County', 'Date', 'cases_daily' ]
         rename:
             0: "cases_daily"
         dtypes:
-            0: 'int32[pyarrow]'
+            0: 'Int32'
         uid: [ 'Date' ]
-        date_format: "%Y-%m-%d"
+        date_format:  "%Y-%m-%d"
     out:
         dir:        tableau/vitals/staging/county_dashboard
         table_name: el_paso_vitals

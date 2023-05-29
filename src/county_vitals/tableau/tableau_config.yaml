@@ -14,6 +14,6 @@ galveston:
         output: [ 'County', 'Date', 'cases_daily']
         dtypes:
             DAY(Case Date)-value: 'string'
-            AGG(Total Positive Cases)-value: "int32[pyarrow]"
+            AGG(Total Positive Cases)-value: "Int32"
         uid: [ 'Date' ]
         date_format: "%Y-%m-%d %H:%M:%S"

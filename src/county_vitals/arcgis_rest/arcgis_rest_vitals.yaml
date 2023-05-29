@@ -13,9 +13,9 @@ bexar:
             case_count_weekly_change:  "cases_daily"
             death_count_weekly_change: "deaths_daily"
         dtypes:
-            reporting_date:            'int64[pyarrow]'
-            case_count_weekly_change:  "int32[pyarrow]"
-            death_count_weekly_change: "int32[pyarrow]"
+            reporting_date:            'Int64'
+            case_count_weekly_change:  "Int32"
+            death_count_weekly_change: "Int32"
         uid: [ 'Date' ]
         date_format: 'timestamp_int'
     url:
@@ -44,8 +44,8 @@ harris:
             Date:  "Date"
             Total: "cases_daily"
         dtypes:
-            Date:  'int64[pyarrow]'
-            Total: "int32[pyarrow]"
+            Date:  'Int64'
+            Total: "Int32"
         uid: [ 'Date' ]
         date_format: 'timestamp_int'
     url:
@@ -71,9 +71,9 @@ travis:
             TotalCases:  "cases_cumulative"
             TotalDeaths: "deaths_cumulative"
         dtypes:
-            Updated:     'int64[pyarrow]'
-            TotalCases:  "int32[pyarrow]"
-            TotalDeaths: "int32[pyarrow]"
+            Updated:     'Int64'
+            TotalCases:  "Int32"
+            TotalDeaths: "Int32"
         uid: [ 'Date' ]
         date_format: 'timestamp_int'
     url:
@@ -103,8 +103,8 @@ randall:
                 case_data_date_of_test: "Date"
                 case_data_count:        "cases_daily"
             dtypes:
-                case_data_date_of_test: 'int64[pyarrow]'
-                case_data_count:        "int32[pyarrow]"
+                case_data_date_of_test: 'Int64'
+                case_data_count:        "Int32"
             uid: [ 'Date' ]
             date_format: 'timestamp_int'
         deaths:
@@ -119,8 +119,8 @@ randall:
                 death_data_date_of_death: "Date"
                 death_data_count:         "deaths_daily"
             dtypes:
-                death_data_date_of_death: 'int64[pyarrow]'
-                death_data_count:         "int32[pyarrow]"
+                death_data_date_of_death: 'Int64'
+                death_data_count:         "Int32"
             uid: [ 'Date' ]
             date_format: 'timestamp_int'
     url:
@@ -150,8 +150,8 @@ potter:
                 case_data_date_of_test: "Date"
                 case_data_count:        "cases_daily"
             dtypes:
-                case_data_date_of_test: 'int64[pyarrow]'
-                case_data_count:        "int32[pyarrow]"
+                case_data_date_of_test: 'Int64'
+                case_data_count:        "Int32"
             uid: [ 'Date' ]
             date_format: 'timestamp_int'
         deaths:
@@ -166,8 +166,8 @@ potter:
                 death_data_date_of_death: "Date"
                 death_data_count:         "deaths_daily"
             dtypes:
-                death_data_date_of_death: 'int64[pyarrow]'
-                death_data_count:         "int32[pyarrow]"
+                death_data_date_of_death: 'Int64'
+                death_data_count:         "Int32"
             uid: [ 'Date' ]
             date_format: 'timestamp_int'
 
@@ -195,8 +195,8 @@ denton:
             Deaths:            "deaths_daily"
         dtypes:
             DateOfObservation: 'string'
-            Total:             "int32[pyarrow]"
-            Deaths:            "int32[pyarrow]"
+            Total:             "Int32"
+            Deaths:            "Int32"
         uid: [ 'Date' ]
         date_format: "%Y/%m/%d"
     url:
@@ -222,9 +222,9 @@ nueces:
             NEW_TOTAL_CASES: "cases_daily"
             NEW_DEATH:       "deaths_daily"
         dtypes:
-            REPORT_DATE: 'int64[pyarrow]'
-            NEW_TOTAL_CASES:             "int32[pyarrow]"
-            NEW_DEATH:            "int32[pyarrow]"
+            REPORT_DATE:     'Int64'
+            NEW_TOTAL_CASES: "Int32"
+            NEW_DEATH:       "Int32"
         uid: [ 'Date' ]
         date_format: "timestamp_int"
     url:
