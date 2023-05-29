@@ -11,3 +11,6 @@ pytest
 pyarrow
 chardet
 lxml
+dagster-ge
+pandera
+dagster_pandera
