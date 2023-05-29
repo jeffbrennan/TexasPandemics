@@ -1,18 +1,15 @@
 import pandas as pd
 import glob
-from src.utils import write_file, load_csv
-
-
-# get list of all county files
+from src.utils import write_file, load_parquet
 
 
 def list_files() -> list:
-    vitals_dir = 'tableau/vitals/staging/'
-    return glob.glob(f'{vitals_dir}/*_vitals.csv')
+    vitals_dir = 'data/origin/vitals/'
+    return glob.glob(f'{vitals_dir}/*_vitals.parquet')
 
 
 def load_files(file_list: list) -> pd.DataFrame:
-    return pd.concat([load_csv(f) for f in file_list], axis=0)
+    return pd.concat([load_parquet(f) for f in file_list], axis=0)
 
 
 def combine_vitals(df: pd.DataFrame) -> pd.DataFrame:
@@ -44,25 +41,62 @@ def combine_vitals(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def clean_vitals(df: pd.DataFrame) -> pd.DataFrame:
-    county_files_clean = (
-        df
-        .sort_values(['County', 'Date'])
+    def replace_cumulative_vals(row: pd.Series, column: str) -> pd.Series:
+        if pd.isna(row['diff']):
+            return row[column]
+        elif row['diff'] < 0:
+            return row['shifted']
+        else:
+            return row[column]
+
+    def clean_vitals_prep(df: pd.DataFrame) -> pd.DataFrame:
+        county_vitals_prep = (
+            df
+            .assign(Date=lambda x: pd.to_datetime(x['Date']).dt.date)
+            .assign(cases_daily=lambda x: x['cases_daily'].clip(lower=0))
+            .assign(cases_daily=lambda x: x['cases_daily'].fillna(0))
+            .assign(deaths_daily=lambda x: x['deaths_daily'].clip(lower=0))
+            .assign(deaths_daily=lambda x: x['deaths_daily'].fillna(0))
+            .sort_values(['County', 'Date'])
+        )
+        return county_vitals_prep
+
+    def clean_vitals_monotonic(df: pd.DataFrame, column) -> pd.DataFrame:
+        county_vitals_ensure_monotonic = (
+            df
+            .groupby('County', group_keys=True)
+            .apply(lambda group: group
+                   .assign(diff=lambda x: x[column].diff())
+                   .assign(shifted=lambda x: x[column].shift())
+                   .assign(**{column: lambda x: x.apply(lambda row: replace_cumulative_vals(row, column), axis=1)})
+                   .drop(['diff', 'shifted'], axis=1))
+            .reset_index(drop=True)
+        )
+        return county_vitals_ensure_monotonic
+
+    county_vitals_prep = clean_vitals_prep(df)
+
+    county_vitals_ensure_monotonic_cases = clean_vitals_monotonic(
+        county_vitals_prep,
+        'cases_cumulative'
+    )
+    county_vitals_ensure_monotonic_deaths = clean_vitals_monotonic(
+        county_vitals_ensure_monotonic_cases,
+        'deaths_cumulative'
+    )
+
+    county_vitals_clean = (
+        county_vitals_ensure_monotonic_deaths
         .astype(
             {
-                'cases_cumulative': 'Int32[pyarrow]',
-                'deaths_cumulative': 'Int32[pyarrow]',
-                'cases_daily': 'Int32[pyarrow]',
-                'deaths_daily': 'Int32[pyarrow]'
+                'cases_cumulative': 'Int32',
+                'cases_daily': 'Int32',
+                'deaths_cumulative': 'Int32',
+                'deaths_daily': 'Int32'
             }
         )
     )
-    return county_files_clean
-
-
-def run_diagnostics(df: pd.DataFrame) -> None:
-    # cumulative counts monotonic increase
-    # no negatives in daily or cumulative counts
-    pass
+    return county_vitals_clean
 
 
 def main():
@@ -71,7 +105,6 @@ def main():
     county_files_combined = combine_vitals(county_files_combined_raw)
     county_files_clean = clean_vitals(county_files_combined)
 
-    run_diagnostics(county_files_clean)
     write_file(county_files_clean, 'tableau/vitals/county_vitals')
 
 
