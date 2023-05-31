@@ -20,7 +20,7 @@ def get_data(client: Socrata, offset: int, dataset_id: str, current_max_date: st
     results = client.get(
         dataset_identifier=dataset_id,
         select="county_names, sample_location, key_plot_id, population_served, first_sample_date, date_start, date_end, ptc_15d, percentile, detect_prop_15d",
-        where=f"reporting_jurisdiction = 'Texas' and date_start > '{current_max_date}'",
+        where=f"reporting_jurisdiction = 'Texas' and date_end> '{current_max_date}'",
         order="date_start",
         limit=1000,
         offset=offset
@@ -157,6 +157,10 @@ def main():
     # region pull data --------------------------------------------------------------------------------
     offsets = create_offsets(client, DATASET_ID, current_max_date)
     results = [get_data(client, offset, DATASET_ID, current_max_date) for offset in offsets]
+    if results.shape[0] == 0:
+        print('No new records found')
+        return None
+
     results_df = pd.concat([pd.DataFrame.from_records(i) for i in results])
     write_raw_results(results_df)
     # endregion

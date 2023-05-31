@@ -6,6 +6,10 @@ Scraping, statistics, and diagnostics of Texas COVID-19 data
 
 County level data is being individually scraped and aggregated in [tableau/vitals](tableau/vitals/)
 
+Current ETL: 
+![ETL](readme_images/etl.svg)
+
+
 ---
 
 ## Core Data
