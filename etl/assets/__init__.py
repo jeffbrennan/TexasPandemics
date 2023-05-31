@@ -2,6 +2,10 @@
 # region vitals --------------------------------------------------------------------------------
 # region county --------------------------------------------------------------------------------
 
+from etl.assets.origin.vitals.get_usa_facts import (
+    get_usa_facts_vitals
+)
+
 from etl.assets.origin.vitals.get_arcgis_rest import (
     get_vitals_harris,
     get_vitals_bexar,
@@ -21,7 +25,9 @@ from etl.assets.origin.vitals.get_tableau_data import (
     get_vitals_galveston
 )
 
-from etl.assets.intermediate.vitals.combine_vitals import vitals_combined
+from etl.assets.intermediate.vitals.clean_usa_facts import clean_usa_fact_vitals
+from etl.assets.intermediate.vitals.combine_dashboard_vitals import dashboard_vitals_combined
+from etl.assets.intermediate.vitals.combine_all_vitals import all_county_vitals_combined
 
 from etl.assets.tableau.county_vitals import county_vitals
 
