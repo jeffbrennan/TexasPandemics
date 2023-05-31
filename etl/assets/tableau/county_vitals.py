@@ -38,16 +38,16 @@ class CountyVitals(pa.DataFrameModel):
         "add_archive": False
     },
     ins={
-        'combined_vitals':
+        'all_county_vitals_combined':
             AssetIn(
-                key=["vitals", "intermediate", "vitals_combined"]
+                key=["vitals", "intermediate", "all_county_vitals_combined"]
             )
     },
     dagster_type=pandera_schema_to_dagster_type(CountyVitals),
     io_manager_key="pandas_io_manager"
 )
-def county_vitals(combined_vitals: pd.DataFrame) -> DataFrame[CountyVitals]:
-    county_vitals_df = combined_vitals
+def county_vitals(all_county_vitals_combined: pd.DataFrame) -> DataFrame[CountyVitals]:
+    county_vitals_df = all_county_vitals_combined
 
     try:
         CountyVitals.validate(county_vitals_df)
