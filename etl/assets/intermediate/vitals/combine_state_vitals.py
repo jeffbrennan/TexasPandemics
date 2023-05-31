@@ -8,11 +8,11 @@ from src.get_covid_dshs import (
 
 @asset(
     name="texas_vitals",
-    group_name="intermediate",
+    group_name="intermediate_vitals",
     key_prefix=['intermediate'],
     ins={
         "new_texas_vitals": AssetIn(
-            key=["vitals", "state", "new_texas_vitals"],
+            key=["origin", "vitals", "new_texas_vitals"],
         )
     },
     metadata={
