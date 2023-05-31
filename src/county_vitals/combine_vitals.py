@@ -95,6 +95,8 @@ def clean_vitals(df: pd.DataFrame) -> pd.DataFrame:
                 'deaths_daily': 'Int32'
             }
         )
+        .assign(source='county level dashboards')
+        .assign(Date=lambda x: pd.to_datetime(x['Date']).dt.date)
     )
     return county_vitals_clean
 
