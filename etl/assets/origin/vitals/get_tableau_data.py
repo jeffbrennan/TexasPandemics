@@ -1,7 +1,4 @@
 import pandas as pd
-from tableauscraper import TableauScraper as TS
-from tableauscraper import TableauWorkbook
-from src.utils import write_file
 import yaml
 from pathlib import Path
 from src.county_vitals.request_common import clean_request_data
@@ -25,8 +22,8 @@ TABLEAU_CONFIG = yaml.safe_load(Path('src/county_vitals/tableau/tableau_config.y
 
 @asset(
     name="galveston",
-    group_name="vitals_tableau",
-    key_prefix=['vitals', 'tableau'],
+    group_name="origin_vitals",
+    key_prefix=['origin', 'vitals'],
     metadata={
         "schema": "origin/vitals",
         "table_name": "galveston_vitals",

@@ -13,8 +13,8 @@ from src.get_covid_dshs import (
 
 @asset(
     name="new_texas_vitals",
-    group_name="vitals_state",
-    key_prefix=['vitals', 'state'],
+    group_name="origin_vitals",
+    key_prefix=['origin', 'vitals'],
     metadata={
         "schema": "origin/vitals_state",
         "table_name": "new_texas_vitals",

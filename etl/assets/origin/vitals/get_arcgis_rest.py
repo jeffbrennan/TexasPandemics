@@ -11,6 +11,7 @@ from src.county_vitals.arcgis_rest.get_arcgis_rest import (
 
 )
 
+
 def get_vitals_manager(config: dict) -> pd.DataFrame:
     print(f'================Obtaining {config["data_type"]} - {config["county"]}==============================')
     config_list = create_config_list(config)
@@ -33,10 +34,11 @@ def get_vitals_manager(config: dict) -> pd.DataFrame:
 
 ARCGIS_CONFIG = yaml.safe_load(Path('src/county_vitals/arcgis_rest/arcgis_rest_vitals.yaml').read_text())
 
+
 @asset(
     name="harris",
-    group_name="vitals_arcgis",
-    key_prefix=['vitals', 'arcgis'],
+    group_name="origin_vitals",
+    key_prefix=['origin', 'vitals'],
     metadata={
         "schema": "origin/vitals",
         "table_name": "harris_vitals",
@@ -50,8 +52,8 @@ def get_vitals_harris(context) -> pd.DataFrame:
 
 @asset(
     name="travis",
-    group_name="vitals_arcgis",
-    key_prefix=['vitals', 'arcgis'],
+    group_name="origin_vitals",
+    key_prefix=['origin', 'vitals'],
     metadata={
         "schema": "origin/vitals",
         "table_name": "travis_vitals",
@@ -65,8 +67,8 @@ def get_vitals_travis(context) -> pd.DataFrame:
 
 @asset(
     name="bexar",
-    group_name="vitals_arcgis",
-    key_prefix=["vitals", "arcgis"],
+    group_name="origin_vitals",
+    key_prefix=['origin', 'vitals'],
     metadata={
         "schema": "origin/vitals",
         "table_name": "bexar_vitals",
@@ -80,8 +82,8 @@ def get_vitals_bexar(context) -> pd.DataFrame:
 
 @asset(
     name="randall",
-    group_name="vitals_arcgis",
-    key_prefix=['vitals', 'arcgis'],
+    group_name="origin_vitals",
+    key_prefix=['origin', 'vitals'],
     metadata={
         "schema": "origin/vitals",
         "table_name": "randall_vitals",
@@ -95,8 +97,8 @@ def get_vitals_randall(context) -> pd.DataFrame:
 
 @asset(
     name="potter",
-    group_name="vitals_arcgis",
-    key_prefix=['vitals', 'arcgis'],
+    group_name="origin_vitals",
+    key_prefix=['origin', 'vitals'],
     metadata={
         "schema": "origin/vitals",
         "table_name": "potter_vitals",
@@ -110,8 +112,8 @@ def get_vitals_potter(context) -> pd.DataFrame:
 
 @asset(
     name="denton",
-    group_name="vitals_arcgis",
-    key_prefix=['vitals', 'arcgis'],
+    group_name="origin_vitals",
+    key_prefix=['origin', 'vitals'],
     metadata={
         "schema": "origin/vitals",
         "table_name": "denton_vitals",
@@ -125,8 +127,8 @@ def get_vitals_denton(context) -> pd.DataFrame:
 
 @asset(
     name="nueces",
-    group_name="vitals_arcgis",
-    key_prefix=['vitals', 'arcgis'],
+    group_name="origin_vitals",
+    key_prefix=['origin', 'vitals'],
     metadata={
         "schema": "origin/vitals",
         "table_name": "nueces_vitals",
