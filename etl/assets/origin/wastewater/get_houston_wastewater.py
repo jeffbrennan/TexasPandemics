@@ -11,10 +11,10 @@ from src.wastewater.get_houston_zip_wastewater import (
 
 @asset(
     name="houston_plant",
-    group_name="wastewater_houston",
-    key_prefix=["wastewater", "houston"],
+    group_name="origin_wastewater",
+    key_prefix=["origin", "wastewater"],
     metadata={
-        "schema": "wastewater",
+        "schema": "origin/wastewater",
         "table_name": "houston_plant",
         "add_archive": True
     },
@@ -26,10 +26,10 @@ def get_houston_wastewater_plant() -> pd.DataFrame:
 
 @asset(
     name="houston_zip",
-    group_name="wastewater_houston",
-    key_prefix=["wastewater", "houston"],
+    group_name="origin_wastewater",
+    key_prefix=["origin", "wastewater"],
     metadata={
-        "schema": "wastewater",
+        "schema": "origin/wastewater",
         "table_name": "houston_zip",
         "add_archive": True
     },

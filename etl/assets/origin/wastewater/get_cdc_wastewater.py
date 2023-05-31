@@ -13,10 +13,10 @@ from src.utils import load_csv
 
 @asset(
     name="cdc_wastewater",
-    group_name="wastewater",
-    key_prefix=['wastewater', 'cdc'],
-    metadata={
-        "schema": "vitals",
+    group_name="origin_wastewater",
+    key_prefix=['origin', 'wastewater'],
+metadata={
+        "schema": "origin/wastewater",
         "table_name": "cdc_wastewater",
         "add_archive": True
     },
@@ -25,6 +25,8 @@ from src.utils import load_csv
 def get_cdc_wastewater() -> pd.DataFrame:
     DATASET_ID = "2ew6-ywp6"
     client = create_client()
+
+    # TODO: update path
     current_df = load_csv('tableau/wastewater/cdc_wastewater.csv')
     current_max_date = current_df['Date'].max()
 

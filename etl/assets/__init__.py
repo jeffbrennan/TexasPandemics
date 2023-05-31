@@ -56,4 +56,8 @@ from etl.assets.origin.wastewater.get_cdc_wastewater import (
     get_cdc_wastewater
 )
 
+from etl.assets.intermediate.wastewater.combine_wastewater import (
+    combine_wastewater
+)
+
 # endregion
