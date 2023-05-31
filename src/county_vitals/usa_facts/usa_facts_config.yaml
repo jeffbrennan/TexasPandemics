@@ -1,0 +1,36 @@
+cases:
+  cookies:
+    _dd_s: rum=0&expire=1685106111009
+  headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+    Accept-Language: en-US,en;q=0.5
+    Cache-Control: no-cache
+    Connection: keep-alive
+    Pragma: no-cache
+    Sec-Fetch-Dest: document
+    Sec-Fetch-Mode: navigate
+    Sec-Fetch-Site: same-site
+    Sec-Fetch-User: ?1
+    Upgrade-Insecure-Requests: '1'
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101
+      Firefox/113.0
+  url: https://static.usafacts.org/public/data/covid-19/covid_confirmed_usafacts.csv
+  vital_type: cases
+deaths:
+  cookies:
+    _dd_s: rum=0&expire=1685106685662
+  headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+    Accept-Language: en-US,en;q=0.5
+    Cache-Control: no-cache
+    Connection: keep-alive
+    Pragma: no-cache
+    Sec-Fetch-Dest: document
+    Sec-Fetch-Mode: navigate
+    Sec-Fetch-Site: same-site
+    Sec-Fetch-User: ?1
+    Upgrade-Insecure-Requests: '1'
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101
+      Firefox/113.0
+  url: https://static.usafacts.org/public/data/covid-19/covid_deaths_usafacts.csv
+  vital_type: deaths
