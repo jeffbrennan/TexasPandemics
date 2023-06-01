@@ -1,11 +1,14 @@
+source("src/rt/common.r")
+
 require("tidyverse")
 require("arrow")
 require("data.table")
-
+require("furrr")
+require("future")
 select = dplyr::select
 
-source("src/rt/common.r")
 
+N_CORES = parallel::detectCores()
 args = commandArgs(trailingOnly = TRUE)
 input_file = args[1]
 output_file = args[2]
@@ -26,9 +29,7 @@ colnames(population_lookup) = c('Level', 'Population_DSHS')
 
 TMC_COUNTIES = c(
   'Austin', 'Brazoria', 'Chambers', 'Fort Bend', 'Galveston',
-  'Harris', 'Liberty', 'Montgomery', 'Waller',
-  #testing
-  "Bexar"
+  'Harris', 'Liberty', 'Montgomery', 'Waller'
 )
 
 daily_df = data.frame(
@@ -57,13 +58,10 @@ rt_prep_combined = county_vitals_clean %>%
   )
 
 rt_prep_df = Prepare_RT(rt_prep_combined)
-require("furrr")
-require("future")
 
-
+#  --------------------------------------------------------------------------------------------
 start_time = Sys.time()
 df_levels = names(rt_prep_df)
-N_CORES = parallel::detectCores()
 
 message(glue('Running RT on {length(df_levels)} levels using {N_CORES /2} cores'))
 rt_start_time = Sys.time()
@@ -74,8 +72,6 @@ rt_output = future_map(
   ~Calculate_RT(case_df = .),
   .options = furrr_options(
     seed = 42,
-    # scheduling = 1,
-    # chunk_size = NULL
   ),
   .progress = TRUE
 )
@@ -106,7 +102,6 @@ check_rt_combined_dupe = rt_df_out %>%
   nrow() == 0
 
 # diagnostics --------------------------------------------------------------------------------------------
-
 rt_df_out %>%
   ggplot(aes(x = Date, y = Rt)) +
   geom_line() +

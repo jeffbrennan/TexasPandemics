@@ -3,8 +3,9 @@ require("zoo")   # moving averages
 require("glue")  # message output
 require("lubridate")
 select = dplyr::select
-GENERATION_TIME = generation.time("gamma", c(3.96, 4.75))
 
+GENERATION_TIME = generation.time("gamma", c(3.96, 4.75))
+MIN_CONFIRMED_DATE = as.Date('2020-03-08')
 
 # pull data --------------------------------------------------------------------------------------------
 Parse_RT_Results = function(level_combined, rt_results_raw) {
@@ -80,9 +81,6 @@ Calculate_RT = function(case_df) {
   return(rt_raw)
 }
 
-MIN_CONFIRMED_DATE = as.Date('2020-03-08')
-MIN_CONFIRMED_PROB_DATE = as.Date('2022-04-01')
-
 Convert_Cases_To_Daily = function(case_df) {
   case_df_split = case_df %>% group_split(Level_Type, Level)
   case_df_daily = map(
@@ -128,4 +126,3 @@ Prepare_RT = function(case_df) {
 
   return(case_df_final)
 }
-
