@@ -31,6 +31,7 @@ def convert_date(date_series: pd.Series, date_format: str) -> pd.Series:
 # TODO: generalize config args
 def run_r_script(config: dict) -> bool:
     # https://stackoverflow.com/questions/62716500/call-and-execute-an-r-script-from-python
+    print(f'Running R script: {config["script_path"]}')
     try:
         p = subprocess.Popen(
             ["Rscript",
