@@ -12,9 +12,6 @@ N_CORES = parallel::detectCores()
 args = commandArgs(trailingOnly = TRUE)
 input_file = args[1]
 output_file = args[2]
-
-# input_file = 'data/tableau/county_vitals.parquet'
-# output_file = "data/intermediate/rt_results.parquet"
 #  --------------------------------------------------------------------------------------------
 county_vitals_raw = arrow::read_parquet(input_file)
 county_vitals = county_vitals_raw %>%
@@ -41,16 +38,16 @@ daily_df = data.frame(
 #  --------------------------------------------------------------------------------------------
 county_vitals_clean = county_vitals %>%
   select(County, Date, Cases_Daily) %>%
-  left_join(county_pops, by = 'County') %>%
+  rename(Level = County) %>%
+  mutate(Level_Type = 'County') %>%
+  left_join(population_lookup, by = 'Level') %>%
   mutate(Population_DSHS = as.integer(Population_DSHS))
 
 rt_prep_combined = county_vitals_clean %>%
-  mutate(Level_Type = "County") %>%
-  rename(Level = County) %>%
   select(Level_Type, Level, Date, Cases_Daily, Population_DSHS) %>%
   rbind(
     county_vitals_clean %>%
-      filter(County %in% TMC_COUNTIES) %>%
+      filter(Level %in% TMC_COUNTIES) %>%
       group_by(Date) %>%
       summarize(Cases_Daily = sum(Cases_Daily), Population_DSHS = sum(Population_DSHS)) %>%
       mutate(Level = 'TMC') %>%
