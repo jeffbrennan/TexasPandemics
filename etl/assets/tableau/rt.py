@@ -18,6 +18,24 @@ class RtFinal(pa.DataFrameModel):
         unique = ["Level_Type", "Level", "Date"]
 
 
+def clean_rt(df: pd.DataFrame) -> pd.DataFrame:
+    # drop na values except when run_result is 0
+    clean_df = (
+        df
+        .query("Level_Type != 'TMC'")
+        .query("~Rt.isnull() or result_success == 0")
+        .astype(
+            {
+                'Rt': 'float32',
+                'lower': 'float32',
+                'upper': 'float32'
+            }
+        )
+    )
+    [['Date', 'Level_Type', 'Level', 'Rt', 'lower', 'upper']]
+    return clean_df
+
+
 @asset(
     name="rt",
     key_prefix=["tableau", "stats"],
@@ -37,10 +55,7 @@ class RtFinal(pa.DataFrameModel):
     io_manager_key="pandas_io_manager"
 )
 def rt(rt_raw: pd.DataFrame) -> DataFrame[RtFinal]:
-    rt_clean = (
-        rt_raw.query("Level_Type != 'TMC'")
-    )
-
+    rt_clean = clean_rt(rt_raw)
     try:
         RtFinal.validate(rt_clean)
     except pa.errors.SchemaErrors as err:
