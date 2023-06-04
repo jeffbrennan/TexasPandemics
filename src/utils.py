@@ -58,3 +58,12 @@ def run_r_script(config: dict) -> bool:
         print(e)
 
         return False
+
+
+def union_df_list(df_list: list) -> pd.DataFrame:
+    combined_df = (
+        pd.concat(df_list)
+        .reset_index(drop=True)
+        .assign(Date=lambda df: pd.to_datetime(df.Date))
+    )
+    return combined_df
