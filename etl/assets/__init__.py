@@ -56,8 +56,20 @@ from etl.assets.origin.wastewater.get_cdc_wastewater import (
     get_cdc_wastewater
 )
 
+from etl.assets.origin.wastewater.get_biobot_wastewater import (
+    get_biobot_wastewater
+)
+
 from etl.assets.intermediate.wastewater.combine_wastewater import (
     combine_wastewater
 )
 
+from etl.assets.tableau.wastewater import (
+    wastewater
+)
+
 # endregion
+
+# region rt --------------------------------------------------------------------------------
+from etl.ops.run_rt import compute_rt
+from etl.assets.tableau.rt import rt
