@@ -14,7 +14,7 @@ USA_FACTS_CONFIG = yaml.safe_load(Path('src/county_vitals/usa_facts/usa_facts_co
     group_name="origin_vitals",
     key_prefix=['origin', 'vitals'],
     metadata={
-        "schema": "origin/vitals",
+        "schema": "origin/vitals/other_sources",
         "table_name": "usa_facts_vitals",
         "add_archive": True
     },
