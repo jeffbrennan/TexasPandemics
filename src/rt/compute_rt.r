@@ -55,7 +55,6 @@ rt_prep_combined = county_vitals_clean %>%
   )
 
 rt_prep_df = Prepare_RT(rt_prep_combined)
-
 #  --------------------------------------------------------------------------------------------
 start_time = Sys.time()
 df_levels = names(rt_prep_df)
@@ -81,6 +80,17 @@ plan(sequential)
 rt_parsed = map(names(rt_output), ~Parse_RT_Results(., rt_output)) %>%
   rbindlist(fill = TRUE)
 
+# result printout to console
+rt_parsed %>%
+  group_by(result_success, Level) %>%
+  summarize(
+    result_success = max(result_success),
+    max_date = max(Date)
+  ) %>%
+  ungroup() %>%
+  arrange(max_date) %>%
+  mutate(update_delta = Sys.Date() - max_date)
+
 stopifnot(rt_parsed %>%
             filter(Level == 'Bexar') %>%
             filter(is.na(Rt)) %>%
@@ -89,7 +99,7 @@ stopifnot(rt_parsed %>%
 #   --------------------------------------------------------------------------------------------
 rt_df_out = rt_parsed %>%
   filter(Date != max(Date)) %>%
-  select(Level_Type, Level, Date, Rt, lower, upper) %>%
+  select(Level_Type, Level, Date, Rt, lower, upper, result_success) %>%
   arrange(Level_Type, Level, Date)
 
 
@@ -99,13 +109,42 @@ check_rt_combined_dupe = rt_df_out %>%
   nrow() == 0
 
 # diagnostics --------------------------------------------------------------------------------------------
-rt_df_out %>%
-  ggplot(aes(x = Date, y = Rt)) +
-  geom_line() +
-  geom_point() +
-  facet_wrap(~Level, scales = 'free_y') +
-  theme_bw()
+# all separate
+Visual_Diagnostics = function(df, target_level) {
+  all_rt_plot = df %>%
+    ggplot(aes(x = Date, y = Rt)) +
+    geom_line() +
+    geom_point() +
+    facet_wrap(~Level, scales = 'free_y') +
+    theme_bw()
 
+  # together
+  stacked_rt_plot = rt_df_out %>%
+    ggplot(aes(x = Date, y = Rt, color = Level)) +
+    geom_line() +
+    geom_point() +
+    theme_bw()
+
+  # together with one highlight
+  highlight_plot = rt_df_out %>%
+    mutate(Highlight = ifelse(Level == target_level, target_level, 'Other')) %>%
+    mutate(Highlight = factor(Highlight, levels = c(target_level, 'Other'))) %>%
+    ggplot(aes(x = Date, y = Rt, color = Highlight, alpha = Highlight)) +
+    geom_line() +
+    scale_color_manual(values = c('red', 'black')) +
+    scale_alpha_manual(values = c(1, 0.1)) +
+    theme_bw()
+
+  output = list(
+    all_rt_plot = all_rt_plot,
+    stacked_rt_plot = stacked_rt_plot,
+    highlight_plot = highlight_plot
+  )
+  return(output)
+}
+
+# diagnostics = Visual_Diagnostics(rt_df_out, 'Harris')
+# diagnostics$highlight_plot
 
 # checks --------------------------------------------------------------------------------------------
 arrow::write_parquet(rt_df_out, output_file)
