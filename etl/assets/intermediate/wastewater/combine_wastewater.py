@@ -1,20 +1,6 @@
 from dagster import asset, AssetIn
 import pandas as pd
-import pandera as pa
-from dagster_pandera import pandera_schema_to_dagster_type
-from pandera.typing import Series, DataFrame
-
-dashboard_vitals = pd.read_parquet('data/intermediate/vitals/dashboard_vitals_combined.parquet')
-usa_vitals = pd.read_parquet('data/origin/vitals/usa_facts_vitals.parquet')
-
-
-def combine_wastewater(df_list: list) -> pd.DataFrame:
-    combined_df = (
-        pd.concat(df_list)
-        .reset_index(drop=True)
-        .assign(Date=lambda df: pd.to_datetime(df.Date))
-    )
-    return combined_df
+from src.utils import union_df_list
 
 
 @asset(
@@ -27,26 +13,51 @@ def combine_wastewater(df_list: list) -> pd.DataFrame:
         "add_archive": False
     },
     ins={
-        'cdc_wastewater':
+        'biobot':
             AssetIn(
-                key=["origin", "wastewater", "cdc_wastewater"]
+                key=["origin", "wastewater", "biobot_wastewater"]
             ),
-        'houston_wastewater_plant':
+        'houston_plant':
             AssetIn(
                 key=["origin", "wastewater", "houston_plant"]
             ),
-        'houston_wastewater_zip':
+        'houston_zip':
             AssetIn(
                 key=["origin", "wastewater", "houston_zip"]
             )
     },
+
     io_manager_key="pandas_io_manager"
 )
-def combine_wastewater(
-        cdc_wastewater: pd.DataFrame,
-        houston_wastewater_plant: pd.DataFrame,
-        houston_wastewater_zip: pd.DataFrame
-) -> None:
-    # TODO: implement combination
-    combined_df = combine_wastewater([cdc_wastewater, houston_wastewater_plant, houston_wastewater_zip])
+def combine_wastewater(biobot, houston_plant, houston_zip) -> pd.DataFrame:
+    houston_wastewater = (
+        pd.concat(
+            [
+                houston_plant[['Date', 'viral_load_log10']],
+                houston_zip[['Date', 'viral_load_log10']]
+            ]
+        )
+        .groupby('Date')
+        .mean()
+        # approximate biobot measurement
+        .assign(viral_load_log10=lambda x: x['viral_load_log10'] * 10)
+        .assign(County="Harris")
+        .assign(source='houston_wastewater_dashboard')
+        .rename(columns={"viral_load_log10": "viral_load"})
+        .reset_index()
+    )
+
+    biobot_clean = (
+        biobot
+        [['County', 'Date', 'viral_copies_per_ml']]
+        .rename(columns={"viral_copies_per_ml": "viral_load"})
+        .assign(source='biobot')
+    )
+
+    # favor biobot over cdc
+    combined_df = (
+        union_df_list([biobot_clean, houston_wastewater])
+        [['County', 'Date', 'viral_load', 'source']]
+    )
+
     return combined_df
