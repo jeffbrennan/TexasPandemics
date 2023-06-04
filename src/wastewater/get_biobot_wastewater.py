@@ -4,7 +4,7 @@ import pandas as pd
 import src.utils
 
 
-def obtain_urls(num_reports: int = 1) -> list[str]:
+def obtain_urls(num_reports: int = 1) -> dict:
     url_prefix = 'https://d1t7q96h7r5kqm.cloudfront.net/'
     url_suffix = '_automated_csvs/wastewater_by_county.csv'
 
@@ -62,27 +62,28 @@ def check_if_new(new_df: pd.DataFrame, current_df: pd.DataFrame) -> None:
 
 
 # region setup --------------------------------------------------------------------------------
-raw_output_base_path = 'original-sources/historical/wastewater/biobot/biobot_wastewater_raw'
 
-current_df = src.utils.load_csv('tableau/wastewater/biobot_wastewater.csv')
+def main():
+    raw_output_base_path = 'original-sources/historical/wastewater/biobot/biobot_wastewater_raw'
+    current_df = src.utils.load_csv('tableau/wastewater/biobot_wastewater.csv')
+
+    wastewater_run_data = obtain_urls(1)
+    raw_data = [src.utils.load_csv(i) for i in wastewater_run_data['urls']]
+    check_if_new(raw_data, current_df)
+
+    for i, ww_df in enumerate(raw_data):
+        src.utils.write_file(
+            df=ww_df,
+            table_path=f'{raw_output_base_path}_{wastewater_run_data["expected_dates"][i]}'
+        )
+
+    cleaned_biobot_data = pd.concat([clean_data(i) for i in raw_data]).drop_duplicates()
+    run_diagnostics(cleaned_biobot_data)
+
+    src.utils.write_file(cleaned_biobot_data, 'tableau/wastewater/biobot_wastewater')
+
 
 # endregion
 
-# region get + write --------------------------------------------------------------------------------
-wastewater_run_data = obtain_urls(1)
-raw_data = [src.utils.load_csv(i) for i in wastewater_run_data['urls']]
-check_if_new(raw_data, current_df)
-
-for i, ww_df in enumerate(raw_data):
-    src.utils.write_file(
-        df=ww_df,
-        table_path=f'{raw_output_base_path}_{wastewater_run_data["expected_dates"][i]}'
-    )
-# endregion
-
-# region clean = upload --------------------------------------------------------------------------------
-clean_data = pd.concat([clean_data(i) for i in raw_data]).drop_duplicates()
-run_diagnostics(clean_data)
-
-src.utils.write_file(clean_data, 'tableau/wastewater/biobot_wastewater')
-# endregion
+if __name__ == '__main__':
+    main()
