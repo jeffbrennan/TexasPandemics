@@ -4,9 +4,6 @@ import pandera as pa
 from dagster_pandera import pandera_schema_to_dagster_type
 from pandera.typing import Series, DataFrame
 
-dashboard_vitals = pd.read_parquet('data/intermediate/vitals/dashboard_vitals_combined.parquet')
-usa_vitals = pd.read_parquet('data/origin/vitals/usa_facts_vitals.parquet')
-
 
 class VitalsCombined(pa.DataFrameModel):
     County: Series[pa.String] = pa.Field(description="Texas county name")
@@ -25,6 +22,7 @@ def combine_vitals(vital_list: list) -> pd.DataFrame:
         .sort_values(by=['County', 'Date'])
     )
     return combined_df
+
 
 @asset(
     name="all_county_vitals_combined",
@@ -52,8 +50,6 @@ def all_county_vitals_combined(
         dashboard_combined_vitals: pd.DataFrame,
         usa_facts_vitals: pd.DataFrame
 ) -> DataFrame[VitalsCombined]:
-
     # usa_facts not consistent with counts, also doesn't seem to be updated
     combined_df = dashboard_combined_vitals
-    # combined_df = combine_vitals([combined_df, usa_facts_vitals])
     return combined_df
