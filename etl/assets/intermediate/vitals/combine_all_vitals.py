@@ -31,7 +31,7 @@ def combine_vitals(vital_list: list) -> pd.DataFrame:
     key_prefix=["vitals", "intermediate"],
     group_name="intermediate_vitals",
     metadata={
-        "schema": "intermediate",
+        "schema": "intermediate/vitals",
         "table_name": "all_county_vitals_combined",
         "add_archive": False
     },
