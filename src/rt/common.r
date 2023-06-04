@@ -24,7 +24,8 @@ Parse_RT_Results = function(level_combined, rt_results_raw) {
       Level = level,
       Rt = rep(NA, length(case_df$Date)),
       lower = rep(NA, length(case_df$Date)),
-      upper = rep(NA, length(case_df$Date))
+      upper = rep(NA, length(case_df$Date)),
+      result_success = 0
     )
 
   } else {
@@ -45,7 +46,8 @@ Parse_RT_Results = function(level_combined, rt_results_raw) {
       rowwise() %>%
       mutate(across(c(Rt, lower, upper), ~ifelse(Rt == 0, NA, .))) %>%
       ungroup() %>%
-      select(Date, Level_Type, Level, Rt, lower, upper)
+      mutate(result_success = 1) %>%
+      select(Date, Level_Type, Level, Rt, lower, upper, result_success)
   }
   return(result_df)
 }
@@ -117,6 +119,7 @@ Prepare_RT = function(case_df) {
     filter(keep_row) %>%
     slice(1:max(which(Cases_Daily > 0))) %>%
     ungroup() %>%
+    filter(!is.na(MA_7day)) %>%
     select(Date, Level_Type, Level, Cases_Daily, MA_7day, Population_DSHS, recent_case_avg) %>%
     rename(
       case_avg = recent_case_avg,
