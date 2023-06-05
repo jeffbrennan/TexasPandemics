@@ -1,16 +1,16 @@
-import pandas as pd
-import plotly.io as pio
-import plotly.graph_objects as go
 from datetime import timedelta
 
-pio.renderers.default = "browser"
+import pandas as pd
+import plotly.graph_objects as go
+import plotly.io as pio
 from plotly.subplots import make_subplots
+
 from src.utils import filter_df_date
+
+pio.renderers.default = "browser"
 
 
 def get_clean_rt() -> pd.DataFrame:
-    # def save_rt_file(df):
-
     def format_rt_file(df: pd.DataFrame):
         clean_df = (
             df.query("Level == 'TMC'")
@@ -28,28 +28,6 @@ def get_clean_rt() -> pd.DataFrame:
 
 
 def county_cases_plot(county_cases: pd.DataFrame, case_summary: pd.DataFrame):
-    def update_layout(fig, case_summary):
-        y_min = 0
-        cases_daily_max = case_summary['cases_daily'].max()
-        ma7_max = case_summary['ma_7day'].max()
-        y_max = max(cases_daily_max, ma7_max) * 1.1
-
-        fig.update_layout(barmode='stack')
-        fig.update_yaxes(title_text="7-day MA", secondary_y=False, range=[y_min, y_max])
-        fig.update_yaxes(title_text="Daily Cases", secondary_y=True, range=[y_min, y_max])
-        fig.update_layout(xaxis=dict(tickformat="%m/%d"))
-        fig.update_layout(plot_bgcolor='white')
-        fig.update_yaxes(visible=False)
-        fig.update_xaxes(tickmode='linear')
-        # add title
-        fig.update_layout(
-            title_text="TMC County Cases (Past 2 Weeks) ",
-            title_font_size=24,
-            title_font_color='black',
-            title_font_family='Arial'
-        )
-        return fig
-
     def create_case_labels(df):
         case_total_text = go.Scatter(
             x=df.index,
@@ -87,12 +65,12 @@ def county_cases_plot(county_cases: pd.DataFrame, case_summary: pd.DataFrame):
                 color='black',
                 width=2,
             ),
-            name='7-day MA',
+            name='7-Day Moving Average',
             marker=dict(
                 color='black',
                 size=10
             ),
-            showlegend=False,
+            showlegend=True,
         )
         return scatter_plot
 
@@ -101,21 +79,20 @@ def county_cases_plot(county_cases: pd.DataFrame, case_summary: pd.DataFrame):
 
     fig = make_subplots(specs=[[{"secondary_y": True}]], shared_yaxes=True)
     fig.add_trace(case_labels)
-    fig.add_trace(ma_plot, secondary_y=True)
     fig.add_trace(create_county_bar_plot(county_cases, 'Harris'), secondary_y=True)
     fig.add_trace(create_county_bar_plot(county_cases, 'Galveston'), secondary_y=True)
-    final_fig = update_layout(fig, case_summary)
-    return final_fig
+    fig.add_trace(ma_plot, secondary_y=True)
+    return fig
 
 
-def rt_estimate_plot(df: pd.DataFrame, plot_type: str = "test") -> go.Figure:
+def rt_estimate_plot(df: pd.DataFrame) -> go.Figure:
     rt_line = go.Scatter(
         name='Measurement',
         x=df['Date'],
         y=df['Rt'],
         mode='lines+markers',
         line=dict(color='grey', width=2),
-        marker=dict(color='black', size=10),
+        marker=dict(color='black', size=6),
         showlegend=False
     )
 
@@ -148,28 +125,15 @@ def rt_estimate_plot(df: pd.DataFrame, plot_type: str = "test") -> go.Figure:
         line=dict(color='blue', width=1, dash='dash'),
         showlegend=False)
 
-    def set_xaxis(fig, plot_type):
-        if plot_type == 'Past 2 Weeks':
-            fig.update_layout(xaxis=dict(tickformat="%m/%d"))
-            fig.update_xaxes(tickmode='linear')
-        return fig
-
     fig = go.Figure(
         [rt_line, rt_upper, rt_lower, rt_threshold],
-    )
-    fig.update_layout(plot_bgcolor='white')
-    fig = set_xaxis(fig, plot_type)
-    fig.update_layout(
-        title_text=f"TMC Rt Estimate ({plot_type})",
-        title_font_size=24,
-        title_font_color='black',
-        title_font_family='Arial'
     )
 
     return fig
 
 
 def get_case_dfs() -> list[pd.DataFrame, pd.DataFrame]:
+    TMC_COUNTIES = ['Harris', 'Galveston']
     county_vitals = pd.read_parquet('data/tableau/county_vitals.parquet')
     tmc_county_vitals = county_vitals.query("County in @TMC_COUNTIES")
     max_date = tmc_county_vitals['Date'].max()
@@ -190,29 +154,74 @@ def get_case_dfs() -> list[pd.DataFrame, pd.DataFrame]:
         .sum()
         .reset_index()
         .assign(ma_7day=lambda x: x['cases_daily'].rolling(window=7).mean())
+        .query("Date >= @min_date")
+        .set_index('Date')
     )
 
     return tmc_county_cases, tmc_summary_prepped
 
 
-# TODO: figure out how to set layout and styling for each subplot
-def create_viz(county_cases, rt_2_weeks, rt_2_months):
-    combined_fig = make_subplots(
-        rows=2, cols=2,
-        specs=[[{'colspan': 2}, None], [{}, {}]],
-    )
+def create_viz(county_cases: go.Figure, rt_2_weeks: go.Figure, rt_2_months: go.Figure) -> go.Figure:
+    def format_viz(fig: go.Figure) -> go.Figure:
+        fig.update_layout(height=1000, width=1500)
+        fig.update_layout(barmode='stack')
+        fig.update_layout(plot_bgcolor='white')
+        fig.layout.annotations
 
-    for trace in county_cases.data:
-        combined_fig.add_trace(trace, row=1, col=1)
+        fig.layout.annotations[0].update(x=0.01, xanchor='left')
+        fig.layout.annotations[1].update(x=0.01, xanchor='left')
+        fig.layout.annotations[2].update(x=0.53, xanchor='left')
 
-    for trace in rt_2_weeks.data:
-        combined_fig.add_trace(trace, row=2, col=1)
+        fig['layout'].update(
+            xaxis=dict(
+                tickformat="%m/%d",
+                tickmode='linear',
+            )
+        )
+        fig['layout'].update(
+            xaxis2=dict(
+                tickformat="%m/%d",
+                tickmode='linear',
+                tickangle=45,
+            )
+        )
 
-    for trace in rt_2_months.data:
-        combined_fig.add_trace(trace, row=2, col=2)
+        fig['layout']['yaxis']['title'] = 'Daily Cases'
+        fig['layout']['yaxis2']['title'] = 'Rt'
+        fig['layout']['yaxis3']['title'] = 'Rt'
 
-    combined_fig.update_layout(height=1000, width=1500, title_text="Combined Figure")
-    return combined_fig
+        fig.update_yaxes(showline=True, linewidth=2, linecolor='black')
+        fig.update_xaxes(showline=True, linewidth=2, linecolor='black')
+
+        return fig
+
+    def initialize_fig(fig1, fig2, fig3) -> go.Figure:
+        combined_fig = make_subplots(
+            rows=2, cols=2,
+            specs=[[{'colspan': 2}, None], [{}, {}]],
+            subplot_titles=(
+                "TMC County Cases (Past 2 Weeks)",
+                "TMC Rt Estimate (Past 2 Weeks)",
+                "TMC Rt Estimate (Past 2 Months)",
+            ),
+            horizontal_spacing=0.05,
+            vertical_spacing=0.1,
+        )
+
+        for trace in fig1.data:
+            combined_fig.add_trace(trace, row=1, col=1)
+
+        for trace in fig2.data:
+            combined_fig.add_trace(trace, row=2, col=1)
+
+        for trace in fig3.data:
+            combined_fig.add_trace(trace, row=2, col=2)
+
+        return combined_fig
+
+    combined_fig = initialize_fig(county_cases, rt_2_weeks, rt_2_months)
+    final_fig = format_viz(combined_fig)
+    return final_fig
 
 
 def save_figure(fig: go.Figure, path: str) -> None:
@@ -224,18 +233,16 @@ def main():
 
     tmc_county_cases, tmc_summary_prepped = get_case_dfs()
 
-    rt_2_weeks = rt_estimate_plot(
+    rt_2_weeks_viz = rt_estimate_plot(
         filter_df_date(tmc_rt, 14),
-        plot_type="Past 2 Weeks"
     )
 
-    rt_2_months = rt_estimate_plot(
+    rt_2_months_viz = rt_estimate_plot(
         filter_df_date(tmc_rt, 60),
-        plot_type="Past 2 Months"
     )
 
-    county_cases = county_cases_plot(tmc_county_cases, tmc_summary_prepped)
-    combined_viz = create_viz(county_cases, rt_2_weeks, rt_2_months)
+    county_cases_viz = county_cases_plot(tmc_county_cases, tmc_summary_prepped)
+    combined_viz = create_viz(county_cases_viz, rt_2_weeks_viz, rt_2_months_viz)
 
     # output
     tmc_rt.to_csv('data/tmc/rt.csv', index=False, lineterminator='\r\n')
