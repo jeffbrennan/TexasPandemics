@@ -245,5 +245,5 @@ def main():
     combined_viz = create_viz(county_cases_viz, rt_2_weeks_viz, rt_2_months_viz)
 
     # output
-    tmc_rt.to_csv('data/tmc/rt.csv', index=False, lineterminator='\r\n')
+    tmc_rt.to_csv('data/tmc/rt_estimate.csv', index=False, lineterminator='\r\n')
     save_figure(combined_viz, 'data/tmc/stacked_plot.png')
