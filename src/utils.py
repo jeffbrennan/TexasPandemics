@@ -1,5 +1,6 @@
 import pandas as pd
 from datetime import datetime as dt
+from datetime import timedelta
 import subprocess
 
 
@@ -67,3 +68,8 @@ def union_df_list(df_list: list) -> pd.DataFrame:
         .assign(Date=lambda df: pd.to_datetime(df.Date))
     )
     return combined_df
+
+
+def filter_df_date(df: pd.DataFrame, days: int = 14) -> pd.DataFrame:
+    min_date = max(df['Date']) - timedelta(days=days)
+    return df.query("Date >= @min_date")
