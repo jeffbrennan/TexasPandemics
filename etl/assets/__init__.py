@@ -42,6 +42,10 @@ from etl.assets.intermediate.vitals.combine_state_vitals import (
     combine_state_vitals
 )
 
+from etl.assets.tableau.state_vitals import (
+    state_vitals
+)
+
 # endregion
 # endregion
 
