@@ -146,6 +146,7 @@ def combine_with_existing(final_df: pd.DataFrame, existing_df: pd.DataFrame) -> 
     combined_df = (
         pd.concat([existing_df, final_df])
         .drop_duplicates()
+        .sort_values(['Level_Type', 'Level', 'Date'])
     )
     return combined_df
 
