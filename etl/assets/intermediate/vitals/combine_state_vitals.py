@@ -7,23 +7,22 @@ from src.get_covid_dshs import (
 
 
 @asset(
-    name="texas_vitals",
+    name="state_vitals_combined",
     group_name="intermediate_vitals",
-    key_prefix=['intermediate'],
+    key_prefix=['intermediate', 'vitals'],
     ins={
         "new_texas_vitals": AssetIn(
             key=["origin", "vitals", "new_texas_vitals"],
-        )
+        ),
     },
     metadata={
-        "schema": "intermediate",
+        "schema": "intermediate/vitals",
         "table_name": "state_vitals_combined",
         "add_archive": True
     },
     io_manager_key='pandas_io_manager'
 )
-# TODO: update existing path to reference self
 def combine_state_vitals(new_texas_vitals) -> pd.DataFrame:
-    existing_vitals = pd.read_csv('tableau/state_vitals.csv')
+    existing_vitals = pd.read_parquet('data/tableau/state_vitals.parquet')
     combined_df = combine_with_existing(new_texas_vitals, existing_vitals)
     return combined_df
