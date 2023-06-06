@@ -47,7 +47,11 @@ class CountyVitals(pa.DataFrameModel):
     io_manager_key="pandas_io_manager"
 )
 def county_vitals(all_county_vitals_combined: pd.DataFrame) -> DataFrame[CountyVitals]:
-    county_vitals_df = all_county_vitals_combined
+    # TODO: fix el paso historical
+    county_vitals_df = (
+        all_county_vitals_combined
+        .query("County != 'El Paso'")
+    )
 
     try:
         CountyVitals.validate(county_vitals_df)
@@ -55,5 +59,5 @@ def county_vitals(all_county_vitals_combined: pd.DataFrame) -> DataFrame[CountyV
         print(err.failure_cases)
         raise err
 
-    write_file(county_vitals_df, "tableau/county_vitals", add_date=False)
+    write_file(county_vitals_df, "tableau/post_emergency/county_vitals", add_date=False)
     return county_vitals_df
