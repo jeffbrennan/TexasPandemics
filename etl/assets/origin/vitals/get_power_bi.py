@@ -38,7 +38,7 @@ POWER_BI_CONFIG = yaml.safe_load(Path('src/county_vitals/power_bi/power_bi_confi
 def get_vitals_tarrant() -> pd.DataFrame:
     return get_vitals(POWER_BI_CONFIG['tarrant'])
 
-
+# TODO: fix el paso - need to combine individual level vitals
 @asset(
     name="el_paso",
     group_name="origin_vitals",
