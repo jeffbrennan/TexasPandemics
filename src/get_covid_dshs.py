@@ -57,8 +57,8 @@ def get_report_date(base_url: str) -> str:
     date_is_less_than_or_equal_to_current = parsed_date <= current_date
     date_is_greater_or_equal_to_delta = parsed_date >= min_date
 
-    assert date_is_less_than_or_equal_to_current
-    assert date_is_greater_or_equal_to_delta
+    assert date_is_less_than_or_equal_to_current, f'parsed_date: {parsed_date}, current_date: {current_date}'
+    assert date_is_greater_or_equal_to_delta, f'parsed_date: {parsed_date}, min_date: {min_date}'
 
     # return
     formatted_date = dt.strftime(parsed_date, '%Y-%m-%d')
