@@ -10,7 +10,7 @@ def obtain_urls(num_reports: int = 1) -> dict:
 
     start_date = date(2020, 3, 5)
     end_date = dt.today().date()
-    expected_dates = pd.date_range(start_date, end_date, freq='W-MON').strftime('%Y-%m-%d').tolist()
+    expected_dates = pd.date_range(start_date, end_date, freq='W-THU').strftime('%Y-%m-%d').tolist()
     url_list = [f'{url_prefix}{expected_date}{url_suffix}' for expected_date in expected_dates[-num_reports:]]
 
     output = {
