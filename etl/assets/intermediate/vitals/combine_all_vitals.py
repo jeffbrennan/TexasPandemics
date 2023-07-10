@@ -38,17 +38,17 @@ def combine_vitals(vital_list: list) -> pd.DataFrame:
             AssetIn(
                 key=["vitals", "intermediate", "dashboard_vitals_combined"]
             ),
-        'usa_facts_vitals':
-            AssetIn(
-                key=["vitals", "intermediate", "usa_facts"]
-            )
+        # 'usa_facts_vitals':
+            # AssetIn(
+                # key=["vitals", "intermediate", "usa_facts"]
+            # )
     },
     dagster_type=pandera_schema_to_dagster_type(VitalsCombined),
     io_manager_key="pandas_io_manager"
 )
 def all_county_vitals_combined(
-        dashboard_combined_vitals: pd.DataFrame,
-        usa_facts_vitals: pd.DataFrame
+        dashboard_combined_vitals: pd.DataFrame
+        # usa_facts_vitals: pd.DataFrame
 ) -> DataFrame[VitalsCombined]:
     # usa_facts not consistent with counts, also doesn't seem to be updated
     combined_df = dashboard_combined_vitals
