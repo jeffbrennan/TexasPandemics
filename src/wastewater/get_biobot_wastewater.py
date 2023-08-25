@@ -67,8 +67,7 @@ def main():
     current_df = src.utils.load_csv('tableau/wastewater/biobot_wastewater.csv')
 
     wastewater_run_data = obtain_urls(1)
-    raw_data = [src.utils.load_csv(i) for i in wastewater_run_data['urls']]
-
+    raw_data = [src.utils.load_csv(url=i, skip_rows=1) for i in wastewater_run_data['urls']]
     for i, ww_df in enumerate(raw_data):
         check_if_new(ww_df, current_df)
 

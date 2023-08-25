@@ -13,8 +13,8 @@ def write_file(df: pd.DataFrame, table_path: str, add_date: bool = True) -> None
         df.to_csv(f'{table_path}.csv', index=False)
 
 
-def load_csv(url: str) -> pd.DataFrame:
-    df = pd.read_csv(url)
+def load_csv(url: str, skip_rows: int = 0) -> pd.DataFrame:
+    df = pd.read_csv(url, skiprows=skip_rows)
     return df
 
 
