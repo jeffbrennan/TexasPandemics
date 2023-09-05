@@ -68,8 +68,17 @@ from etl.assets.intermediate.wastewater.combine_wastewater import (
     combine_wastewater
 )
 
+from etl.assets.intermediate.wastewater.wastewater_plant_combined import (
+   wastewater_plant_combined
+)
+
+
 from etl.assets.tableau.wastewater import (
-    wastewater
+    wastewater,
+)
+
+from etl.assets.tableau.wastewater_plant import (
+    wastewater_plant
 )
 
 # endregion
