@@ -4,7 +4,7 @@ Scraping, statistics, and diagnostics of Texas COVID-19 data
 
 # Installation
 
-1. Clone the repository
+1. Clone the repository using `git clone --depth 1  https://github.com/jeffbrennan/TexasPandemics.git`. The --depth 1 flag is optional and will only pull the latest commit to increase install speed.
 2. Install the requirements using `pip install -r requirements.txt` (preferably in a virtual environment)
 3. Configure the environment variables in `.env` (see `.env.example` for an example)
 4. Configure the dagster environment variables [see the dagster docs](https://docs.dagster.io/guides/running-dagster-locally)
