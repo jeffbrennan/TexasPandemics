@@ -1,9 +1,10 @@
-install.packages("tidyverse")
-install.packages("arrow")
-install.packages("data.table")
-install.packages("furrr")
-install.packages("future")
-install.packages("R0")    # rt calculation
-install.packages("zoo")   # moving averages
-install.packages("glue")  # message output
-install.packages("lubridate")
+install.packages("tidyverse", repos = "http://cran.us.r-project.org")
+install.packages("arrow", repos = "http://cran.us.r-project.org")
+install.packages("arrow", repos = "http://cran.us.r-project.org")
+install.packages("data.table", repos = "http://cran.us.r-project.org")
+install.packages("furrr", repos = "http://cran.us.r-project.org")
+install.packages("future", repos = "http://cran.us.r-project.org")
+install.packages("R0", repos = "http://cran.us.r-project.org")    # rt calculation
+install.packages("zoo", repos = "http://cran.us.r-project.org")   # moving averages
+install.packages("glue", repos = "http://cran.us.r-project.org")  # message output
+install.packages("lubridate", repos = "http://cran.us.r-project.org")
