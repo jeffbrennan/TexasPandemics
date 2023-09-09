@@ -56,10 +56,6 @@ from etl.assets.origin.wastewater.get_houston_wastewater import (
     get_houston_wastewater_zip
 )
 
-from etl.assets.origin.wastewater.get_cdc_wastewater import (
-    get_cdc_wastewater
-)
-
 from etl.assets.origin.wastewater.get_biobot_wastewater import (
     get_biobot_wastewater
 )
